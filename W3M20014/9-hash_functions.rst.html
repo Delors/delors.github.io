@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="hash functions" name="keywords" />
+<meta content="Cryptographic Hash Functions" lang="en" name="description" xml:lang="en" />
+<meta content="Kryptografische Hashfunktionen" lang="de" name="description" xml:lang="de" />
+<meta content="2023_10-W3M20014-hash_functions" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Cryptographic Hash Functions</title>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js?config=TeX-AMS_CHTML"></script>
+<link rel="stylesheet" href="ld/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="ld/ld-help.js" type="text/javascript"></script>
+    <script src="ld/ld-core.js" type="text/javascript"></script>    
+    <link rel="stylesheet" href="ld/ld.css" type="text/css" />
+    <link rel="stylesheet" href="ld/default.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Cryptographic Hash Functions</h1>
+<dl class="docinfo simple">
+<dt class="lecturer">Lecturer<span class="colon">:</span></dt>
+<dd class="lecturer"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2023-10-12</dd>
+<dt class="based-on">Based on<span class="colon">:</span></dt>
+<dd class="based-on"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
+</dd>
+</dl>
+<img alt="DHBW CAS Logo" class="logo" src="logo.svg" />
+</div>
+<div class="ld-slide" id="hash-function">
+<h2>Hash Function</h2>
+<ul class="incremental simple">
+<li><p>A hash function H accepts a variable-length block of data <span class="math">\(M\)</span> as input and produces a fixed-size result <span class="math">\(h = H(M)\)</span>.</p></li>
+<li><p>A good hash function will produce outputs that are evenly distributed and apparently random.</p></li>
+<li><p>Often used to ensure data integrity. A change to any bit in M should result with a high probability in a change of the hash value.</p></li>
+<li><p>Cryptographic hash functions are nedded for security applications.</p></li>
+<li><p>Applications:</p>
+<ul>
+<li><p>Message Authentication</p></li>
+<li><p>Digitial Signatures</p></li>
+<li><p>One-way Password Files</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="security-requirements-for-a-cryptographic-hash-function-h">
+<h2>Security Requirements for a Cryptographic Hash Function H</h2>
+<dl class="field-list">
+<dt>Variable Input Size<span class="colon">:</span></dt>
+<dd><p>H can be applied to a block of data of any size.</p>
+</dd>
+<dt>Fixed Output Size<span class="colon">:</span></dt>
+<dd><p>H produces a fixed-length output</p>
+</dd>
+<dt>Efficiency<span class="colon">:</span></dt>
+<dd><p>When used for message authentication and digital signatures <span class="math">\(H(x)\)</span> is relatively easy to compute for any given <span class="math">\(x\)</span>, making both hardware and software implementations practical.</p>
+<p>vs.</p>
+<p>When used for password hashing it is hard to efficiently compute the hash even on specialized hardware (GPUs, ASICs) to thwart attackers.</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="security-requirements-for-a-cryptographic-hash-function-h-1">
+<h2>Security Requirements for a Cryptographic Hash Function H</h2>
+<dl class="field-list simple">
+<dt>Preimage resistant (one-way property)<span class="colon">:</span></dt>
+<dd><p>For any given hash value <span class="math">\(h\)</span>, it is computationally infeasible to find <span class="math">\(y\)</span> such that <span class="math">\(H(y) = h\)</span></p>
+</dd>
+<dt>Second preimage resistant (weak collision resistant)<span class="colon">:</span></dt>
+<dd><p>For any given block x, it is computationally infeasible to find <span class="math">\(y \neq x\)</span> with <span class="math">\(H(x) = H(y)\)</span></p>
+</dd>
+<dt>Collision resistant (strong collision resistant)<span class="colon">:</span></dt>
+<dd><p>It is computationally infeasible to find any pair <span class="math">\((x,y)\)</span> with <span class="math">\(x \neq y\)</span>, such that <span class="math">\(H(x) = H(y)\)</span></p>
+</dd>
+<dt>Pseudorandomness<span class="colon">:</span></dt>
+<dd><p>Output of H meets standard tests for pseudorandomness.</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="hash-function-resistance-properties-required">
+<h2>Hash Function Resistance Properties Required</h2>
+<table class="smaller">
+<thead>
+<tr><th class="head"></th>
+<th class="head"><p>Preimage Resistant</p></th>
+<th class="head"><p>Second Preimage Resistant</p></th>
+<th class="head"><p>Collision Resistant</p></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Hash + digital signature</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td></td>
+</tr>
+<tr><td><p>Intrusion detection and virus detection</p></td>
+<td></td>
+<td><p>yes</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>Hash + symmetric encryption</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>One-way password file</p></td>
+<td><p>yes</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>MAC</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="relationship-among-hash-function-properties">
+<h2>Relationship Among Hash Function Properties</h2>
+<img alt="9-hash_function_properties.svg" class="align-center" src="9-hash_function_properties.svg" style="width: 700px;" />
+<aside class="admonition small incremental">
+<p class="admonition-title">Note</p>
+<p>A collision attack requires less effort than a preimage or second preimage attack.</p>
+<p>This is explained by the birthday paradox. If we choose random variables from a uniform distribution in the range 0 through N-1, then the probability that a repeated element is encountered exceeds 0.5 after <span class="math">\(\sqrt{N}\)</span> choices. Hence, for an m-bit hash value, if we pick data blocks at random, we can expect to find two data blocks within <span class="math">\(\sqrt{2^m} = 2^{m/2}\)</span> attempts.</p>
+<div class="incremental small separated docutils container">
+<p>Constructing similar messages is relatively easy. If your text has 8 places where you could
+exchange a word with another one you already have <span class="math">\(2^{8}\)</span> different texts.</p>
+<p>Constructing comparable(1) messages is very(2) simple(3). If your text has 8 places where you could replace(4) a character sequence(5) with another word(6) you will(7) have <span class="math">\(2^{8}\)</span> different messages(8).</p>
+</div>
+</aside>
+</div><div class="ld-slide" id="structure-of-secure-hash-code">
+<h2>Structure of Secure Hash Code</h2>
+<img alt="9-structure_of_secure_hash_code.svg" class="align-center" src="9-structure_of_secure_hash_code.svg" style="width: 1400px;" />
+<div class="two-columns smaller docutils container">
+<p><span class="math">\(IV\)</span> = Initial Value (algorithm dependent)</p>
+<p><span class="math">\(CV_i\)</span> = Chaining variable</p>
+<p><span class="math">\(Y_i\)</span> = ith input block</p>
+<p><span class="math">\(f\)</span> = compression function</p>
+<p><span class="math">\(n\)</span> = Length of block</p>
+<p><span class="math">\(L\)</span> = Number of input blocks</p>
+<p><span class="math">\(b\)</span> = Length of input block</p>
+</div>
+</div><div class="ld-slide" id="password-recovery">
+<h2>Password Recovery</h2>
+<p>Passwords are often stored using hashes.</p>
+<p>Example using the md5 hash function:</p>
+<pre class="hexdump literal-block">md5 (&quot;Hello&quot;) = 8b1a9953c4611296a827abf8c47804d7
+md5 (&quot;hello&quot;) = 5d41402abc4b2a76b9719d911017c592
+md5 (&quot;Dieses Passwort ist wirklich total sicher
+      und falls Du es mir nicht glaubst, dann
+      tippe es zweimal hintereinander blind
+      fehlerfrei ein.&quot;)
+              = 8fcf22b1f8327e3a005f0cba48dd44c8</pre>
+</div><div class="ld-slide" id="usage-of-cryptographic-hash-functions">
+<h2>Usage of Cryptographic Hash Functions</h2>
+<ul class="simple">
+<li><p>Known cryptographic hash functions: MD4, MD5, SHA-256, SHA-512, RIPE-MD, PBKDF2, …</p></li>
+<li><p>When used for password hashing the algorithms are usually applied many times to increase the runtime to make it harder for adversaries.</p></li>
+<li><p>Several hash algorithms were explicitly designed for passwort hashing to withstand common attacks. E.g., bcrypt, scrypt, Argon2</p></li>
+<li><p>Some of these algorithms are so computationally involved that they are not suitable for web applications/situations where have to authorize many users at a time. These algorithms are typically used to protect local harddisks or containers.</p></li>
+</ul>
+</div><div class="ld-slide" id="passwords-are-not-always-explicitly-stored">
+<h2>Passwords are not always explicitly stored</h2>
+<div class="section" id="encryption-of-containers-e-g-veracrypt">
+<h3>Encryption of Containers (e.g., Veracrypt)</h3>
+<img alt="Generic File Encryption" class="align-center" src="9-encryption_used_by_veracrypt.svg" style="width: 1600px;" />
+</div></div><div class="ld-slide" id="passwords-are-not-always-explicitly-stored-1">
+<h2>Passwords are not always explicitly stored</h2>
+<div class="section" id="generic-file-encryption">
+<h3>Generic File Encryption</h3>
+<img alt="Generic File Encryption" class="align-center" src="9-generic_file_encryption.svg" style="width: 1600px;" />
+</div></div><div class="ld-slide" id="password-recovery-1">
+<h2>Password Recovery</h2>
+<ol class="arabic simple">
+<li><p>know where to “find” the hash to recovery</p></li>
+</ol>
+<ol class="arabic simple incremental" start="2">
+<li><p>extract the hash</p></li>
+<li><p>recover the hash</p></li>
+</ol>
+<p class="incremental smaller"><strong>Example - recovery of a linux login password</strong></p>
+<pre class="code bash incremental smaller literal-block"><code>~%<span class="whitespace"> </span>sudo<span class="whitespace"> </span>cat<span class="whitespace"> </span>/etc/shadow<span class="whitespace">
+</span><span class="operator">[</span>...<span class="operator">]</span><span class="whitespace">
+</span>john:<span class="name variable">$6$zElzjLsMqi36JXWG$FX2Br1</span>/<span class="operator">[</span>...<span class="operator">]</span>.<span class="whitespace"> </span>↩︎<span class="whitespace">
+</span>RxAHnNCBsqiouWUz751crHodXxs0iqZfBt9j40l3G0:19425:0:99999:7:::<span class="whitespace">
+</span><span class="operator">[</span>...<span class="operator">]</span></code></pre>
+<pre class="code bash incremental smaller literal-block"><code>%<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string single">'$6$zElzjLsMqi36JXWG$FX2Br1/[...]. ↩︎
+RxAHnNCBsqiouWUz751crHodXxs0iqZfBt9j40l3G0'</span><span class="whitespace"> </span>&gt;<span class="whitespace"> </span>hash.txt</code></pre>
+<pre class="code bash incremental smaller literal-block"><code>%<span class="whitespace"> </span>hashcat<span class="whitespace"> </span>-m<span class="whitespace"> </span><span class="literal number">1800</span><span class="whitespace"> </span>hash.txt<span class="whitespace"> </span>-a<span class="whitespace"> </span><span class="literal number">3</span><span class="whitespace"> </span>‘?d?d?d?d?d?d<span class="error">'</span></code></pre>
+</div><div class="ld-slide" id="sources-of-passwords">
+<h2>Sources of Passwords</h2>
+<p>Passwords are often created using one or more of the following sources:</p>
+<ul class="simple">
+<li><p>Pins (e.g., 1111, 1234, 123456, …)</p></li>
+<li><p>Keyboard Walks (e.g., asdfg, q2w3e4r5t)</p></li>
+<li><p>Patterns (e.g., aaaaa, ababab, abcabcabc)</p></li>
+<li><p>Dictionaries (e.g., Duden, Webster, …)</p></li>
+<li><p>Context Information</p></li>
+<li><p>Password Generators</p></li>
+</ul>
+<p>A good source for studying the construction of passwords are so-called <em>leaks</em> and <em>lists with common password</em>.</p>
+</div><div class="ld-slide" id="common-password-lists">
+<h2>Common Password Lists</h2>
+<div class="three-columns docutils container">
+<p>123456
+password
+123456789
+12345
+12345678
+qwerty
+1234567
+111111
+1234567890
+123123
+abc123
+1234
+password1
+iloveyou
+1q2w3e4r
+000000
+qwerty123
+zaq12wsx
+dragon
+sunshine
+princess
+letmein
+654321
+monkey
+27653
+1qaz2wsx
+123321
+qwertyuiop
+superman
+asdfghjkl</p>
+</div>
+<p>Source: <a class="reference external" href="https://www.beckershospitalreview.com/cybersecurity/30-most-common-passwords-of-2023.html">Becker's Health IT</a></p>
+<ul class="simple">
+<li><p>The lists typically don't change much year-over-year.</p></li>
+<li><p>The methodology is often questionable.</p></li>
+</ul>
+</div><div class="ld-slide" id="challenges-when-recovering-passwords-hashrates">
+<h2>Challenges When Recovering Passwords (Hashrates)</h2>
+<table class="incremental small">
+<tbody>
+<tr><td><p>Hashcat Mode (Hashcat 6.2.6)</p></td>
+<td><p>Hash</p></td>
+<td><p>RTX 1080Ti
+250 W</p></td>
+<td><p>RTX 2080TI
+260 W</p></td>
+<td><p>RTX 3090
+350 W</p></td>
+<td><p>RTX 4090
+450 W</p></td>
+</tr>
+<tr><td><p>25700</p></td>
+<td><p>Murmur</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>643700.0 (643 GH/s)</p></td>
+</tr>
+<tr><td><p>23</p></td>
+<td><p>Skype</p></td>
+<td><p>21330.1</p></td>
+<td><p>27843.1</p></td>
+<td><p>37300.7</p></td>
+<td><p>84654.8</p></td>
+</tr>
+<tr><td><p>1400</p></td>
+<td><p>SHA2-256</p></td>
+<td><p>4459.7</p></td>
+<td><p>7154.8</p></td>
+<td><p>9713.2</p></td>
+<td><p>21975.5</p></td>
+</tr>
+<tr><td><p>10500</p></td>
+<td><p>PDF1.4-1.6</p></td>
+<td><p>24.9</p></td>
+<td><p>29.8</p></td>
+<td><p>76.8</p></td>
+<td><p>122.0</p></td>
+</tr>
+<tr><td><p>1800</p></td>
+<td><p>SHA 512 Unix (5000 Iterations)</p></td>
+<td><p>0.2</p></td>
+<td><p>0.3</p></td>
+<td><p>0.5</p></td>
+<td><p>1.2</p></td>
+</tr>
+<tr><td><p>13723</p></td>
+<td><p>Veracrypt SHA2- 512 + XTX 1536Bit</p></td>
+<td><p>0.0004</p></td>
+<td><p>0.0006</p></td>
+<td><p>0.0009</p></td>
+<td><p>0.002
+(2000 H/s)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="small incremental docutils container">
+<p><strong>Sources:</strong></p>
+<dl class="field-list simple">
+<dt>4090<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://gist.github.com/Chick3nman/e4fcee00cb6d82874dace72106d73fef">https://gist.github.com/Chick3nman/e4fcee00cb6d82874dace72106d73fef</a></p>
+</dd>
+<dt>3090<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://gist.github.com/Chick3nman/e4fcee00cb6d82874dace72106d73fef">https://gist.github.com/Chick3nman/e4fcee00cb6d82874dace72106d73fef</a></p>
+</dd>
+<dt>1080Ti<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://www.onlinehashcrack.com/tools-benchmark-hashcat-nvidia-gtx-1080-ti.php">https://www.onlinehashcrack.com/tools-benchmark-hashcat-nvidia-gtx-1080-ti.php</a></p>
+</dd>
+<dt>2080Ti<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://gist.github.com/binary1985/c8153c8ec44595fdabbf03157562763e">https://gist.github.com/binary1985/c8153c8ec44595fdabbf03157562763e</a></p>
+</dd>
+</dl>
+</div>
+</div><div class="ld-slide" id="challenges-when-recovering-passwords-hashrates-1">
+<h2>Challenges When Recovering Passwords - (Hashrates)</h2>
+<img alt="9-password_cracking_times.svg" src="9-password_cracking_times.svg" style="width: 1600px;" />
+</div><div class="ld-slide" id="challenges-when-recovering-passwords-hashrates-2">
+<h2>Challenges When Recovering Passwords - (Hashrates)</h2>
+<blockquote>
+<p><strong>Attacking LUKS2 with Argon2</strong></p>
+<p>[…] The choice of Argon2 as a KDF makes GPU acceleration impossible. As a result, you’ll be restricted to CPU-only attacks, which may be very slow or extremely slow depending on your CPU. To give an idea, you can try 2 (that’s right, two) passwords per second on a single Intel(R) Core(TM) i7-9700K CPU &#64; 3.60GHz. Modern CPUs will deliver a slightly better performance, but don’t expect a miracle: LUKS2 default KDF is deliberately made to resist attacks. […]</p>
+<p><a class="reference external" href="https://blog.elcomsoft.com/2022/08/probing-linux-disk-encryption-luks2-argon-2-and-gpu-acceleration">https://blog.elcomsoft.com/2022/08/probing-linux-disk-encryption-luks2-argon-2-and-gpu-acceleration</a></p>
+</blockquote>
+</div><div class="ld-slide" id="challenges-when-recovering-passwords-password-policies">
+<h2>Challenges When Recovering Passwords - (Password Policies)</h2>
+<p>Modern password policies make it impossible to directly use older leaks.</p>
+<aside class="admonition small note">
+<p class="admonition-title">Note</p>
+<p>If you want to have some fun with passwords:</p>
+<p><a class="reference external" href="https://neal.fun/password-game/">https://neal.fun/password-game/</a></p>
+</aside>
+<p><em>Examples:</em></p>
+<ul class="incremental simple">
+<li><p>minimum number of characters (maximum number of characters)</p></li>
+<li><p>requirements on the number of digits, special chars, upper and lower case letters</p></li>
+<li><p>requirements on the diversity of the used characters</p></li>
+<li><p>some passwords (e.g., from known leaks and dictionaries) are forbidden</p></li>
+<li><p>...</p></li>
+</ul>
+</div><div class="ld-slide" id="understanding-the-nature-of-passwords">
+<h2>Understanding the Nature of Passwords</h2>
+<p>Here, we mapped every lowercase letter to l, upper case letters to u, digits to d and special chars to s.</p>
+<p class="small">Analysis based on the “famous” rockyou leak.</p>
+<table class="align-left small" style="width: 1800px;">
+<tbody>
+<tr><td><p>llllllll</p></td>
+<td><p>4</p></td>
+<td><p>8037 %</p></td>
+<td><p>lllllllldd</p></td>
+<td><p>1</p></td>
+<td><p>4869 %</p></td>
+<td><p>dddddddddddd</p></td>
+<td><p>0</p></td>
+<td><p>2683 %</p></td>
+<td><p>ddddddll</p></td>
+<td><p>0</p></td>
+<td><p>1631 %</p></td>
+</tr>
+<tr><td><p>llllll</p></td>
+<td><p>4</p></td>
+<td><p>1978 %</p></td>
+<td><p>lllllld</p></td>
+<td><p>1</p></td>
+<td><p>3474 %</p></td>
+<td><p>lllddddd</p></td>
+<td><p>0</p></td>
+<td><p>2625 %</p></td>
+<td><p>lllllls</p></td>
+<td><p>0</p></td>
+<td><p>1615 %</p></td>
+</tr>
+<tr><td><p>lllllll</p></td>
+<td><p>4</p></td>
+<td><p>0849 %</p></td>
+<td><p>llllllld</p></td>
+<td><p>1</p></td>
+<td><p>3246 %</p></td>
+<td><p>lllllllllldd</p></td>
+<td><p>0</p></td>
+<td><p>2511 %</p></td>
+<td><p>ddddlll</p></td>
+<td><p>0</p></td>
+<td><p>1613 %</p></td>
+</tr>
+<tr><td><p>lllllllll</p></td>
+<td><p>3</p></td>
+<td><p>6086 %</p></td>
+<td><p>llllllllllll</p></td>
+<td><p>1</p></td>
+<td><p>3223 %</p></td>
+<td><p>llllllllllllllll</p></td>
+<td><p>0</p></td>
+<td><p>2340 %</p></td>
+<td><p>dlllllll</p></td>
+<td><p>0</p></td>
+<td><p>1583 %</p></td>
+</tr>
+<tr><td><p>ddddddd</p></td>
+<td><p>3</p></td>
+<td><p>4003 %</p></td>
+<td><p>llldddd</p></td>
+<td><p>1</p></td>
+<td><p>2439 %</p></td>
+<td><p>lllldddddd</p></td>
+<td><p>0</p></td>
+<td><p>2322 %</p></td>
+<td><p>dllllll</p></td>
+<td><p>0</p></td>
+<td><p>1575 %</p></td>
+</tr>
+<tr><td><p>dddddddddd</p></td>
+<td><p>3</p></td>
+<td><p>3359 %</p></td>
+<td><p>llllldddd</p></td>
+<td><p>1</p></td>
+<td><p>2109 %</p></td>
+<td><p>llddddd</p></td>
+<td><p>0</p></td>
+<td><p>2270 %</p></td>
+<td><p>llllddddd</p></td>
+<td><p>0</p></td>
+<td><p>1560 %</p></td>
+</tr>
+<tr><td><p>dddddddd</p></td>
+<td><p>2</p></td>
+<td><p>9878 %</p></td>
+<td><p>lllllldddd</p></td>
+<td><p>1</p></td>
+<td><p>1204 %</p></td>
+<td><p>uuuuuudd</p></td>
+<td><p>0</p></td>
+<td><p>2189 %</p></td>
+<td><p>dddddddl</p></td>
+<td><p>0</p></td>
+<td><p>1557 %</p></td>
+</tr>
+<tr><td><p>lllllldd</p></td>
+<td><p>2</p></td>
+<td><p>9326 %</p></td>
+<td><p>lllllllld</p></td>
+<td><p>1</p></td>
+<td><p>1168 %</p></td>
+<td><p>ddddll</p></td>
+<td><p>0</p></td>
+<td><p>2169 %</p></td>
+<td><p>uuuudd</p></td>
+<td><p>0</p></td>
+<td><p>1551 %</p></td>
+</tr>
+<tr><td><p>llllllllll</p></td>
+<td><p>2</p></td>
+<td><p>9110 %</p></td>
+<td><p>lllllddd</p></td>
+<td><p>1</p></td>
+<td><p>0633 %</p></td>
+<td><p>lddddddd</p></td>
+<td><p>0</p></td>
+<td><p>2064 %</p></td>
+<td><p>lllllddddd</p></td>
+<td><p>0</p></td>
+<td><p>1395 %</p></td>
+</tr>
+<tr><td><p>dddddd</p></td>
+<td><p>2</p></td>
+<td><p>7243 %</p></td>
+<td><p>llllllddd</p></td>
+<td><p>0</p></td>
+<td><p>9225 %</p></td>
+<td><p>ddddddddddddd</p></td>
+<td><p>0</p></td>
+<td><p>2017 %</p></td>
+<td><p>ddllllll</p></td>
+<td><p>0</p></td>
+<td><p>1391 %</p></td>
+</tr>
+<tr><td><p>ddddddddd</p></td>
+<td><p>2</p></td>
+<td><p>1453 %</p></td>
+<td><p>llllllllld</p></td>
+<td><p>0</p></td>
+<td><p>9059 %</p></td>
+<td><p>ullllldd</p></td>
+<td><p>0</p></td>
+<td><p>1930 %</p></td>
+<td><p>ulllll</p></td>
+<td><p>0</p></td>
+<td><p>1379 %</p></td>
+</tr>
+<tr><td><p>llllldd</p></td>
+<td><p>2</p></td>
+<td><p>0395 %</p></td>
+<td><p>lllll</p></td>
+<td><p>0</p></td>
+<td><p>8793 %</p></td>
+<td><p>ddddllll</p></td>
+<td><p>0</p></td>
+<td><p>1905 %</p></td>
+<td><p>uuuuuuuuuu</p></td>
+<td><p>0</p></td>
+<td><p>1378 %</p></td>
+</tr>
+<tr><td><p>llllllldd</p></td>
+<td><p>1</p></td>
+<td><p>9092 %</p></td>
+<td><p>lllllllllllll</p></td>
+<td><p>0</p></td>
+<td><p>8334 %</p></td>
+<td><p>uuuuuuuuu</p></td>
+<td><p>0</p></td>
+<td><p>1886 %</p></td>
+<td><p>llllllls</p></td>
+<td><p>0</p></td>
+<td><p>1374 %</p></td>
+</tr>
+<tr><td><p>lllllllllll</p></td>
+<td><p>1</p></td>
+<td><p>8697 %</p></td>
+<td><p>llllld</p></td>
+<td><p>0</p></td>
+<td><p>8005 %</p></td>
+<td><p>uuuuudd</p></td>
+<td><p>0</p></td>
+<td><p>1815 %</p></td>
+<td><p>lllllllllld</p></td>
+<td><p>0</p></td>
+<td><p>1345 %</p></td>
+</tr>
+<tr><td><p>lllldddd</p></td>
+<td><p>1</p></td>
+<td><p>6420 %</p></td>
+<td><p>llllddd</p></td>
+<td><p>0</p></td>
+<td><p>7759 %</p></td>
+<td><p>lllllllllddd</p></td>
+<td><p>0</p></td>
+<td><p>1808 %</p></td>
+<td><p>llllllllllldd</p></td>
+<td><p>0</p></td>
+<td><p>1344 %</p></td>
+</tr>
+<tr><td><p>lllldd</p></td>
+<td><p>1</p></td>
+<td><p>5009 %</p></td>
+<td><p>ddddddddddd</p></td>
+<td><p>0</p></td>
+<td><p>7524 %</p></td>
+<td><p>llllllllldddd</p></td>
+<td><p>0</p></td>
+<td><p>1725 %</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="understanding-the-nature-of-passwords-1">
+<h2>Understanding the Nature of Passwords</h2>
+<p class="small">Analysis based on the “famous” rockyou leak.</p>
+<aside class="admonition incremental small note">
+<p class="admonition-title">Note</p>
+<p>The languages that were considered when identifying words were: &quot;de, en, fr, es, pt, nl&quot;.</p>
+<p><em>Popular words</em> are words used on Twitter or Facebook, e.g., &quot;iloveu&quot;, &quot;iluvu&quot;, ....</p>
+</aside>
+<table class="small">
+<thead>
+<tr><th class="head"><p>all passwords</p></th>
+<th class="head"><p>14.334.851</p></th>
+<th class="head"><p>100%</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>pins</p></td>
+<td><p>2.346.591</p></td>
+<td><p>16,37 %</p></td>
+</tr>
+<tr><td><p>passwords with letters</p></td>
+<td><p>11.905.977</p></td>
+<td><p>83,34 %</p></td>
+</tr>
+</tbody>
+</table>
+<table class="small no-borders">
+<thead>
+<tr><th class="head"><p>Category</p></th>
+<th class="head"><p>Absolute</p></th>
+<th class="head"><p>Percentage</p></th>
+<th class="head"><p>Examples</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>emails</p></td>
+<td><p>26.749</p></td>
+<td><p>0,22 %</p></td>
+<td><p><a class="reference external" href="mailto:me&#64;me.com">me&#64;me.com</a></p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>numbers framed by letters</p></td>
+<td><p>35696</p></td>
+<td><p>0,30 %</p></td>
+<td><p>a123456a</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>leetspeak</p></td>
+<td><p>64.672</p></td>
+<td><p>0,54 %</p></td>
+<td><p>G3tm0n3y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>patterns</p></td>
+<td><p>124.347</p></td>
+<td><p>1,04 %</p></td>
+<td><p>lalala</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>regular or popular words</p></td>
+<td><p>4.911.647</p></td>
+<td><p><strong>41,25 %</strong></p></td>
+<td><p>princess</p></td>
+<td><p>iloveu</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>sequences</p></td>
+<td><p>5.290</p></td>
+<td><p>0,04 %</p></td>
+<td><p>abcdefghij</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>keyboard walks (de/en)</p></td>
+<td><p>14.662</p></td>
+<td><p>0,12 %</p></td>
+<td><p>q2w3e4r</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>simple word combinations</p></td>
+<td><p>535.037</p></td>
+<td><p>4,49 %</p></td>
+<td><p>pinkpink</p></td>
+<td><p>sexy4u</p></td>
+<td><p>te amo</p></td>
+<td></td>
+</tr>
+<tr><td><p>complex word combinations</p></td>
+<td><p>5.983.259</p></td>
+<td><p><strong>50,25 %</strong></p></td>
+<td><p>Inparadise</p></td>
+<td><p>kelseylovesbarry</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>&lt;rest&gt;</p></td>
+<td><p>204.618</p></td>
+<td><p>1,72 %</p></td>
+<td><p>j4**9c+p</p></td>
+<td><p>i(L)you</p></td>
+<td><p><a class="reference external" href="mailto:p&#64;55w0rd">p&#64;55w0rd</a></p></td>
+<td><p>sk8er4life</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="understanding-the-nature-of-passwords-2">
+<h2>Understanding the Nature of Passwords</h2>
+<div class="section" id="the-effect-of-password-policies">
+<h3>The effect of password policies</h3>
+<p>Real-world Policy:</p>
+<blockquote>
+<p>Use 1 upper, 1 lower, 2 symbols, 2 digits, 4 letters, 4 non-letters</p>
+</blockquote>
+<div class="incremental docutils container">
+<p>Effect:</p>
+<blockquote>
+<p>Password11##
+Password12!!</p>
+</blockquote>
+</div>
+</div></div><div class="ld-slide" id="understanding-the-nature-of-passwords-3">
+<h2>Understanding the Nature of Passwords</h2>
+<ul class="simple">
+<li><p>Passwords that need to be entered frequently are in the vast majority of cases based on “real” words.</p></li>
+<li><p>Real words are often not used as is, but are transformed using simple rules; e.g., by appending a number or by appending a special character, …</p></li>
+</ul>
+<aside class="admonition incremental small">
+<p class="admonition-title">Question</p>
+<p>How can we identify/generate good password candidates if a leak is not sufficient or if only a small number of passwords can be tested?</p>
+<p>E.g., testing all passwords of rockyou takes…:</p>
+<p>~13.000.000 Passwords / 5 H/s = ~1 month</p>
+<p>~13.000.000 Passwords / 5 H/h = ~297 years</p>
+</aside>
+</div><div class="ld-slide" id="password-cracking-using-probabilistic-context-free-grammars">
+<h2>Password Cracking Using Probabilistic Context-Free Grammars</h2>
+<ul class="incremental simple">
+<li><p>Generate password patterns in order of decreasing probability.</p>
+<ul>
+<li><p>Directly useable as guesses</p></li>
+<li><p>Used as word-mangling templates that are to be filled using dictionaries(E.g., pre-terminal structure: <span class="docutils literal">S → D1L3S2 → 1L3!! → 1luv!!</span> )</p></li>
+</ul>
+</li>
+<li><p>Learn the patterns, words, special chars and digits based on real-world leaks</p></li>
+<li><p>Process:</p>
+<ol class="arabic simple">
+<li><p>Pre-processing to identify base structures and probabilities(e.g. 2 numbers followed by special char by 8 letters)</p></li>
+<li><p>Password guess generation taking the probabilities of the rules and the digits/special chars into account; the probability of the alpha strings is not considered.</p></li>
+</ol>
+</li>
+</ul>
+</div><div class="ld-slide" id="sepass-semantic-password-guessing-using-k-nn-similarity-search-in-word-embeddings">
+<h2>SePass: Semantic Password Guessing Using k-nn Similarity Search in Word Embeddings</h2>
+<p>Extension of PCFG where additional candidate words are identified using <em>Word Embeddings</em>. Enables to automatically find related words.</p>
+<p><strong>Example</strong></p>
+<div class="two-columns smaller docutils container">
+<div class="docutils container">
+<p>Given:</p>
+<blockquote>
+<p><em>Ferrari</em>01</p>
+<p>!*Audi*!</p>
+<p><em>Mercedes</em>88</p>
+<p><em>Bugatti</em>666</p>
+</blockquote>
+</div>
+<div class="docutils container">
+<p>(&quot;Obvious&quot;) Base Word Candidates:</p>
+<blockquote>
+<div class="incremental docutils container">
+<p>Porsche</p>
+<p>Mclaren</p>
+<p>Lamborghini</p>
+<p>Aston Martin</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div><div class="ld-slide" id="sepass-semantic-password-guessing-using-k-nn-similarity-search-in-word-embeddings-1">
+<h2>SePass: Semantic Password Guessing Using k-nn Similarity Search in Word Embeddings</h2>
+<p>Avoids human bias.</p>
+<p><strong>Example</strong></p>
+<div class="two-columns smaller docutils container">
+<div class="docutils container">
+<p>Given:</p>
+<blockquote>
+<p>Luke2017</p>
+<p>John1976</p>
+<p>01Mark!</p>
+</blockquote>
+</div>
+<div class="docutils container">
+<p>(&quot;Obvious&quot;) Base Word Candidates:</p>
+<blockquote>
+<div class="incremental docutils container">
+<p>Matthew</p>
+<p>Bible</p>
+<p>Gospel</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div><div class="ld-slide" id="sepass-semantic-password-guessing-using-k-nn-similarity-search-in-word-embeddings-2">
+<h2>SePass: Semantic Password Guessing Using k-nn Similarity Search in Word Embeddings</h2>
+<p>Avoids human bias.</p>
+<p><strong>Example</strong></p>
+<div class="two-columns smaller docutils container">
+<div class="docutils container">
+<p>Given:</p>
+<blockquote>
+<p>Luke2017</p>
+<p>John1976</p>
+<p>01Mark!</p>
+</blockquote>
+</div>
+<div class="docutils container">
+<p>(&quot;Obvious&quot;) Base Word Candidates:</p>
+<blockquote>
+<div class="incremental docutils container">
+<p>Leia</p>
+<p>Darth Vader</p>
+<p>Palpatine</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div><div class="ld-slide" id="sepass-conceptual">
+<h2>SePass: Conceptual</h2>
+<img alt="9-sepass_conceptual_overview.svg" class="align-center" src="9-sepass_conceptual_overview.svg" style="width: 1650px;" />
+</div>
+</body>
+</html>

@@ -86,11 +86,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
     `
     body.prepend(ld_jump_target_pane);
 
+    const slide_count = document.querySelectorAll("body>div.ld-slide").length
     const ld_light_table_pane = document.createElement("DIV")
     ld_light_table_pane.id = "ld-light-table-pane"
     ld_light_table_pane.innerHTML = `
         <div id="ld-light-table">
-            <div id="ld-light-table-header">Lighttable</div>
+            <div id="ld-light-table-header">Lighttable: ${slide_count} slides</div>
             <div id="ld-light-table-slides"></div>        
         </div>
     `
@@ -177,7 +178,7 @@ window.addEventListener("load", (event) => {
             console.error(error)
         }
     }
-    console.info("the first slide is: " + currentSlideNo);
+    console.info("the presentation starts with slide: " + currentSlideNo);
     showSlide(currentSlideNo);
 
     /*  Initialize the span element which shows the  

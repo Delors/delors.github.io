@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="version" content="LD2 0.1" />
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.20.1: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Michael Eichberg" name="author" />
-<meta content="Cryptography" name="keywords" />
-<meta content="IT-Security Cryptography and Secure Communications" lang="en" name="description" xml:lang="en" />
-<meta content="2023_10-W3M20014-introduction" name="id" />
-<meta content="last-viewed" name="first-slide" />
-<title>IT-Security Cryptography and Secure Communications</title>
-<link rel="stylesheet" href="ld/normalize.css" type="text/css" />
+<meta content="exercise, aes" name="keywords" />
+<title>5-aes-exercise.rst</title>
 <style type="text/css">
 
 /* Minimal style sheet for the HTML output of Docutils.                    */
@@ -608,77 +604,475 @@ a { text-decoration: none; }
 /*   a.citation-reference */
 
 </style>
-    <script src="ld/ld-help.js" type="text/javascript"></script>
-    <script src="ld/ld-core.js" type="text/javascript"></script>    
-    <link rel="stylesheet" href="ld/ld.css" type="text/css" />
-    <link rel="stylesheet" href="ld/default.css" type="text/css" />
+<style type="text/css">
+
+/*
+*   math2html: convert LaTeX equations to HTML output.
+*
+*   Copyright (C) 2009,2010 Alex Fernández
+*                 2021      Günter Milde
+*
+*   Released under the terms of the `2-Clause BSD license'_, in short:
+*   Copying and distribution of this file, with or without modification,
+*   are permitted in any medium without royalty provided the copyright
+*   notice and this notice are preserved.
+*   This file is offered as-is, without any warranty.
+*
+* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
+*
+*   Based on eLyXer: convert LyX source files to HTML output.
+*   http://elyxer.nongnu.org/
+*
+*
+* CSS file for LaTeX formulas.
+*
+* References: http://www.zipcon.net/~swhite/docs/math/math.html
+*             http://www.cs.tut.fi/~jkorpela/math/
+*/
+
+/* Formulas */
+.formula {
+	text-align: center;
+	margin: 1.2em 0;
+	line-height: 1.4;
+}
+span.formula {
+	white-space: nowrap;
+}
+div.formula {
+	padding: 0.5ex;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Basic features */
+a.eqnumber {
+	display: inline-block;
+	float: right;
+	clear: right;
+	font-weight: bold;
+}
+span.unknown {
+	color: #800000;
+}
+span.ignored, span.arraydef {
+	display: none;
+}
+.phantom {
+	visibility: hidden;
+}
+.formula i {
+	letter-spacing: 0.1ex;
+}
+
+/* Alignment */
+.align-left, .align-l {
+	text-align: left;
+}
+.align-right, .align-r {
+	text-align: right;
+}
+.align-center, .align-c {
+	text-align: center;
+}
+
+/* Structures */
+span.hspace {
+	display: inline-block;
+}
+span.overline, span.bar {
+	text-decoration: overline;
+}
+.fraction, .fullfraction, .textfraction {
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+}
+span.formula .fraction,
+.textfraction,
+span.smallmatrix {
+	font-size: 80%;
+	line-height: 1;
+}
+span.numerator {
+	display: block;
+	line-height: 1;
+}
+span.denominator {
+	display: block;
+	line-height: 1;
+	padding: 0ex;
+	border-top: thin solid;
+}
+.formula sub, .formula sup {
+	font-size: 80%;
+}
+sup.numerator, sup.unit {
+	vertical-align: 80%;
+}
+sub.denominator, sub.unit {
+	vertical-align: -20%;
+}
+span.smallsymbol {
+	font-size: 75%;
+	line-height: 75%;
+}
+span.boldsymbol {
+	font-weight: bold;
+}
+span.sqrt {
+	display: inline-block;
+	vertical-align: middle;
+	padding: 0.1ex;
+}
+sup.root {
+	position: relative;
+	left: 1.4ex;
+}
+span.radical {
+	display: inline-block;
+	padding: 0ex;
+	/* font-size: 160%; for DejaVu, not required with STIX */
+	line-height: 100%;
+	vertical-align: top;
+	vertical-align: middle;
+}
+
+span.root {
+	display: inline-block;
+	border-top: thin solid;
+	padding: 0ex;
+	vertical-align: middle;
+}
+div.formula .bigoperator,
+.displaystyle .bigoperator,
+.displaystyle .bigoperator {
+	line-height: 120%;
+	font-size: 140%;
+	padding-right: 0.2ex;
+}
+span.fraction .bigoperator,
+span.scriptstyle .bigoperator {
+	line-height: inherit;
+	font-size: inherit;
+	padding-right: 0;
+}
+span.bigdelimiter {
+	display: inline-block;
+}
+span.bigdelimiter.size1 {
+	transform: scale(1, 1.2);
+	line-height: 1.2;
+}
+span.bigdelimiter.size2 {
+	transform: scale(1, 1.62);
+	line-height: 1.62%;
+
+}
+span.bigdelimiter.size3 {
+	transform: scale(1, 2.05);
+	line-height: 2.05%;
+}
+span.bigdelimiter.size4 {
+	transform: scale(1, 2.47);
+	line-height: 2.47%;
+}
+/* vertically stacked sub and superscript */
+span.scripts {
+	display: inline-table;
+	vertical-align: middle;
+	padding-right: 0.2ex;
+}
+.script {
+	display: table-row;
+	text-align: left;
+	line-height: 150%;
+}
+span.limits {
+	display: inline-table;
+	vertical-align: middle;
+}
+.limit {
+	display: table-row;
+	line-height: 99%;
+}
+sup.limit, sub.limit {
+	line-height: 100%;
+}
+span.embellished,
+span.embellished > .base {
+	display: inline-block;
+}
+span.embellished > sup,
+span.embellished > sub {
+	display: inline-block;
+	font-size: 100%;
+	position: relative;
+	bottom: 0.3em;
+	width: 0px;
+}
+span.embellished > sub {
+	top: 0.4em;
+}
+
+/* Environments */
+span.array, span.bracketcases, span.binomial, span.environment {
+	display: inline-table;
+	text-align: center;
+	vertical-align: middle;
+}
+span.arrayrow, span.binomrow {
+	display: table-row;
+	padding: 0;
+	border: 0;
+}
+span.arraycell, span.bracket, span.case, span.binomcell, span.environmentcell {
+	display: table-cell;
+	padding: 0ex 0.2ex;
+	line-height: 1; /* 99%; */
+	border: 0ex;
+}
+.environment.align > .arrayrow > .arraycell.align-l {
+	padding-right: 2em;
+}
+
+/* Inline binomials */
+span.binom {
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 80%;
+}
+span.binomstack {
+	display: block;
+	padding: 0em;
+}
+
+/* Over- and underbraces */
+span.overbrace {
+	border-top: 2pt solid;
+}
+span.underbrace {
+	border-bottom: 2pt solid;
+}
+
+/* Stackrel */
+span.stackrel {
+	display: inline-block;
+	text-align: center;
+}
+span.upstackrel {
+	display: block;
+	padding: 0em;
+	font-size: 80%;
+	line-height: 64%;
+	position: relative;
+	top: 0.15em;
+
+}
+span.downstackrel {
+	display: block;
+	vertical-align: bottom;
+	padding: 0em;
+}
+
+/* Fonts */
+.formula {
+	font-family: STIX, "DejaVu Serif", "DejaVu Math TeX Gyre", serif;
+}
+span.radical,   /* ensure correct size of square-root sign */
+span.integral { /* upright integral signs for better alignment of indices */
+	font-family: "STIXIntegralsUp", STIX;
+	/* font-size: 115%; match apparent size with DejaVu */
+}
+span.bracket {
+  /* some "STIX" and "DejaVu Math TeX Gyre" bracket pieces don't fit */
+	font-family: "DejaVu Serif", serif;
+}
+span.mathsf, span.textsf {
+	font-family: sans-serif;
+}
+span.mathrm, span.textrm {
+	font-family: STIX, "DejaVu Serif", "DejaVu Math TeX Gyre", serif;
+}
+span.mathtt, span.texttt {
+	font-family: monospace;
+}
+span.text, span.textnormal,
+span.mathsf, span.mathtt, span.mathrm {
+	font-style: normal;
+}
+span.fraktur {
+	font-family: "Lucida Blackletter", eufm10, blackletter;
+}
+span.blackboard {
+	font-family: Blackboard, msbm10, serif;
+}
+span.scriptfont {
+	font-family: "Monotype Corsiva", "Apple Chancery", "URW Chancery L", cursive;
+	font-style: italic;
+}
+span.mathscr {
+  font-family: MathJax_Script, rsfs10,  cursive;
+  font-style: italic;
+}
+span.textsc {
+	font-variant: small-caps;
+}
+span.textsl {
+	font-style: oblique;
+}
+
+/* Colors */
+span.colorbox {
+	display: inline-block;
+	padding: 5px;
+}
+span.fbox {
+	display: inline-block;
+	border: thin solid black;
+	padding: 2px;
+}
+span.boxed, span.framebox {
+	display: inline-block;
+	border: thin solid black;
+	padding: 5px;
+}
+
+</style>
 </head>
 <body>
-<div class="ld-slide" id="slide0">
-<h1 class="title">IT-Security Cryptography and Secure Communications</h1>
+<main>
 
-<p><strong>Prof. Dr. Michael Eichberg</strong></p>
-<div class="small docutils container">
-<p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
-</div>
-<div class="smaller docutils container">
+
+<img alt="logo.png" class="align-right" src="logo.png" />
+<section id="it-security-cryptography-and-secure-communications">
+<h2>IT-Security Cryptography and Secure Communications</h2>
 <dl class="field-list simple">
-<dt>since Oct. 2023<span class="colon">:</span></dt>
-<dd><p>Professor at DHBW Mannheim</p>
+<dt>Excercise<span class="colon">:</span></dt>
+<dd><p><strong>AES</strong></p>
 </dd>
-<dt>4 years<span class="colon">:</span></dt>
-<dd><p>Federal Criminal Police Office</p>
+<dt>Lecturer<span class="colon">:</span></dt>
+<dd><p><em>Prof. Dr. Michael Eichberg</em></p>
 </dd>
-<dt>12 years<span class="colon">:</span></dt>
-<dd><p>Postdoc at Software Technology Group - TU Darmstadt</p>
-</dd>
-<dt>2007<span class="colon">:</span></dt>
-<dd><p>PhD (Dr. Ing.) at Software Technology Group - TU Darmstadt</p>
-</dd>
-<dt>course material<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io">https://delors.github.io</a></p>
-</dd>
-<dt>sources<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://github.com/Delors/Course_W3M20014/">https://github.com/Delors/Course_W3M20014/</a></p>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>2023-10-12</p>
 </dd>
 </dl>
-</div>
-<img alt="DHBW CAS Logo" class="logo" src="logo.svg" />
-</div>
-<div class="ld-slide" id="overview">
-<h2>Overview</h2>
-<p>This lecture is based on the book:</p>
-<p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
-<div class="two-columns smaller docutils container">
-<div class="column docutils container">
-<p><strong>Slides</strong></p>
+<p>For this exercise let's assume that we have a 128 bit key.</p>
+<ol class="arabic">
+<li><p>RoundKey computation:</p>
+<p>Given the following RoundKey:</p>
+<p><span class="formula"><i>rc</i><sub>1</sub> = <i>w</i>[4]||<i>w</i>[5]||<i>w</i>[6]||<i>w</i>[7]</span> <span class="formula"> = </span></p>
+<p><span class="docutils literal"><span class="pre">-w[4]------</span>   <span class="pre">-w[5]------</span>   <span class="pre">-w[6]------</span>   <span class="pre">-w[7]------</span></span></p>
+<p><span class="docutils literal">E2 32 FC F1   91 12 91 88   B1 59 E4 E6   D6 79 A2 93</span></p>
+<p>Calculate <span class="formula"><i>rc</i><sub>2</sub></span>; i.e. the Roundkey for the second round.</p>
 <ol class="arabic simple">
-<li><p><a class="reference external" href="1-introduction_to_number_theory.rst.html">Introduction to Number Theory</a></p></li>
-<li><p><a class="reference external" href="2-classical_encryption_techniques.rst.html">Classical Encryption Techniques</a></p></li>
-<li><p><a class="reference external" href="3-block_ciphers.rst.html">Block Ciphers and the Data Encryption Standard</a></p></li>
-<li><p><a class="reference external" href="4-finite_fields.rst.html">Finite Fields</a></p></li>
-<li><p><a class="reference external" href="5-aes.rst.html">Advanced Encryption Standard (AES)</a></p></li>
-<li><p><a class="reference external" href="6-block_cipher_operations.rst.html">Block Cipher Operations</a></p></li>
-<li><p><a class="reference external" href="7-stream_ciphers.rst.html">Random Bit Generation and Stream Ciphers</a></p></li>
-<li><p><a class="reference external" href="8-public_key_cryptography.rst.html">Public-Key Cryptography and RSA</a></p></li>
-<li><p><a class="reference external" href="9-hash_functions.rst.html">Cryptographic Hash Functions</a></p></li>
+<li><p>Before performing the concrete computation, first write down the formulae:</p></li>
 </ol>
+<blockquote>
+<div class="formula">
+<i>w</i>[8]<span class="thickspace"> </span><span class="thickspace"> </span> = <span class="thickspace"> </span>...⊕...
 </div>
-<div class="column docutils container">
-<p><strong>Exercise</strong></p>
-<ol class="arabic simple">
-<li><p><a class="reference external" href="1-introduction_to_number_theory-exercise.rst.html">Introduction to Number Theory</a></p></li>
-<li><p><a class="reference external" href="2-classical_encryption_techniques-exercise.rst.html">Classical Encryption Techniques</a></p></li>
-<li><p><a class="reference external" href="3-block_ciphers-exercise.rst.html">Block Ciphers and the Data Encryption Standard</a></p></li>
-<li><p><a class="reference external" href="4-finite_fields-exercise.rst.html">Finite Fields</a></p></li>
-<li><p><a class="reference external" href="5-aes-exercise.rst.html">Advanced Encryption Standard (AES)</a></p></li>
-<li><p><a class="reference external" href="6-block_cipher_operations-exercise.rst.html">Block Cipher Operations</a></p></li>
-<li><p><a class="reference external" href="7-stream_ciphers-exercise.rst.html">Random Bit Generation and Stream Ciphers</a></p></li>
-<li><p><a class="reference external" href="8-public_key_cryptography-exercise.rst.html">Public-Key Cryptography and RSA</a></p></li>
-<li><p><a class="reference external" href="9-hash_functions-exercise.rst.html">Cryptographic Hash Functions</a></p></li>
+<div class="formula">
+<i>w</i>[9]<span class="thickspace"> </span><span class="thickspace"> </span> = <span class="thickspace"> </span>...⊕...
+</div>
+<div class="formula">
+<i>w</i>[10] = <span class="thickspace"> </span>...⊕...
+</div>
+<div class="formula">
+<i>w</i>[11] = <span class="thickspace"> </span>...⊕...
+</div>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li><p>Calculate <cite>w[8]</cite> and <cite>w[9]</cite>.</p></li>
 </ol>
-</div>
-</div>
-</div>
+<!-- Solution
+w[8] = w[4] \oplus g(w[7])
+w[9] = w[5] \oplus w[8]
+w[10] = w[6] \oplus w[9]
+w[11] = w[7] \oplus w[10]
+
+g(w[7]):
+1. after left shift of w[7]:        79 A2 93 D6
+2. after s-box substituion:         B6 3A DC F6
+3. after add RoundKey (02 00 00 00): B6 3A DC F6 \oplus 02 00 00 00 = B4 3A DC F6
+
+w[8] = E2 32 FC F1 \oplus B4 3A DC F6 = 56 08 20 07
+w[9] = w[8] \oplus 91 12 91 88 = C7 1A B1 8F -->
+</li>
+<li><p>Let's assume that the current State matrix is:</p>
+<blockquote>
+<p><span class="docutils literal">00 3C 6E 47</span></p>
+<p><span class="docutils literal">1F 4E 22 74</span></p>
+<p><span class="docutils literal">0E 08 1B 31</span></p>
+<p><span class="docutils literal">54 59 0B 1A</span></p>
+</blockquote>
+<p>Perform the step <em>substitute bytes</em>; i.e., apply the s-box transformation.</p>
+</li>
+</ol>
+<blockquote>
+<!-- Solution:
+63 EB 9F A0
+C0 2F 93 92
+AB 30 AF C7
+20 CB 2B A2 -->
+</blockquote>
+<ol class="arabic" start="3">
+<li><p>Perform the <em>shift rows transformation</em> on your previous result.</p>
+<!-- Solution:
+63 EB 9F A0
+2F 93 92 C0
+AF C7 AB 30
+A2 20 CB 2B -->
+</li>
+<li><p>Given the following State matrix:</p>
+<blockquote>
+<p><span class="docutils literal">6A 59 CB BD</span></p>
+<p><span class="docutils literal">4E 48 12 A0</span></p>
+<p><span class="docutils literal">98 9E 30 9B</span></p>
+<p><span class="docutils literal">8B 3D F4 9B</span></p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>Perform the mix columns transformation for the missing field (<span class="formula"><i>S</i>’<sub>0, 0</sub></span> ):</p>
+<blockquote>
+<p><span class="docutils literal"><span class="pre">??</span> C9 7F 9D</span></p>
+<p><span class="docutils literal">CE 4D 4B C2</span></p>
+<p><span class="docutils literal">89 71 BE 88</span></p>
+<p><span class="docutils literal">65 47 97 CD</span></p>
+</blockquote>
+<!-- Solution 0x15:
+02 x 6A = (simple left shift orf 6A): 1101 0100
+03 x 4E = 4e \oplus (02 x 4E) = 0100 1110 \oplus 1001 1100 = 1101 0010
+S'_{0,0} = 1101 0100 \oplus 1101 0010 \oplus 0x98 \oplus 0x8B -->
+</blockquote>
+<ol class="arabic" start="5">
+<li><p>Apply the RoundKey:</p>
+<p><span class="docutils literal"><span class="pre">-w[x]------</span>   <span class="pre">-w[x+1]----</span>   <span class="pre">-w[x+2]----</span>   <span class="pre">-w[x+3]----</span></span></p>
+<p><span class="docutils literal">D2 60 0D E7   15 7A BC 68   63 39 E9 01   C3 03 1E FB</span></p>
+<p>to the State:</p>
+<p><span class="docutils literal">AA 65 FA 88</span></p>
+<p><span class="docutils literal">16 0C 05 3A</span></p>
+<p><span class="docutils literal">3D C1 DE 2A</span></p>
+<p><span class="docutils literal">B3 4B 5A 0A</span></p>
+<!-- solution (recall the round key applies to the column!)
+78 70 99 4B
+76 76 3C 39
+30 7D 37 34
+54 23 5B F1 -->
+</li>
+<li><p>Ask yourself what happens if you encrypt a block just consisting of <span class="docutils literal">0x00</span>s with a key also consisting only of <span class="docutils literal">0x00</span>s?</p></li>
+</ol>
+<blockquote>
+<!-- Solution
+- Substition will map all values to the same value. 52
+- Shift row will do nothing.
+- Mix columns (because the values are no longer 00 will will lead to further diffusion 02 x 52 and 03 x 53 is not 52. )
+- add round key will also have an effect -->
+</blockquote>
+</section>
+</main>
 </body>
 </html>

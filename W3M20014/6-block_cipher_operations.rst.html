@@ -5,11 +5,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="version" content="LD2 0.1" />
 <meta content="Michael Eichberg" name="author" />
-<meta content="Cryptography" name="keywords" />
-<meta content="IT-Security Cryptography and Secure Communications" lang="en" name="description" xml:lang="en" />
-<meta content="2023_10-W3M20014-introduction" name="id" />
+<meta content="Block Cipher Operation" name="keywords" />
+<meta content="Block Cipher Operations" lang="en" name="description" xml:lang="en" />
+<meta content="Betriebsmodi bei Blockchiffren" lang="de" name="description" xml:lang="de" />
+<meta content="2023_10-W3M20014-block_cipher_operations" name="id" />
 <meta content="last-viewed" name="first-slide" />
-<title>IT-Security Cryptography and Secure Communications</title>
+<title>Block Cipher Operations</title>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js?config=TeX-AMS_CHTML"></script>
 <link rel="stylesheet" href="ld/normalize.css" type="text/css" />
 <style type="text/css">
 
@@ -615,69 +617,276 @@ a { text-decoration: none; }
 </head>
 <body>
 <div class="ld-slide" id="slide0">
-<h1 class="title">IT-Security Cryptography and Secure Communications</h1>
-
-<p><strong>Prof. Dr. Michael Eichberg</strong></p>
-<div class="small docutils container">
-<p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
-</div>
-<div class="smaller docutils container">
-<dl class="field-list simple">
-<dt>since Oct. 2023<span class="colon">:</span></dt>
-<dd><p>Professor at DHBW Mannheim</p>
+<h1 class="title">Block Cipher Operations</h1>
+<dl class="docinfo simple">
+<dt class="lecturer">Lecturer<span class="colon">:</span></dt>
+<dd class="lecturer"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
 </dd>
-<dt>4 years<span class="colon">:</span></dt>
-<dd><p>Federal Criminal Police Office</p>
-</dd>
-<dt>12 years<span class="colon">:</span></dt>
-<dd><p>Postdoc at Software Technology Group - TU Darmstadt</p>
-</dd>
-<dt>2007<span class="colon">:</span></dt>
-<dd><p>PhD (Dr. Ing.) at Software Technology Group - TU Darmstadt</p>
-</dd>
-<dt>course material<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io">https://delors.github.io</a></p>
-</dd>
-<dt>sources<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://github.com/Delors/Course_W3M20014/">https://github.com/Delors/Course_W3M20014/</a></p>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2023-10-11</dd>
+<dt class="based-on">Based on<span class="colon">:</span></dt>
+<dd class="based-on"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
 </dl>
-</div>
 <img alt="DHBW CAS Logo" class="logo" src="logo.svg" />
 </div>
-<div class="ld-slide" id="overview">
-<h2>Overview</h2>
-<p>This lecture is based on the book:</p>
-<p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
-<div class="two-columns smaller docutils container">
-<div class="column docutils container">
-<p><strong>Slides</strong></p>
-<ol class="arabic simple">
-<li><p><a class="reference external" href="1-introduction_to_number_theory.rst.html">Introduction to Number Theory</a></p></li>
-<li><p><a class="reference external" href="2-classical_encryption_techniques.rst.html">Classical Encryption Techniques</a></p></li>
-<li><p><a class="reference external" href="3-block_ciphers.rst.html">Block Ciphers and the Data Encryption Standard</a></p></li>
-<li><p><a class="reference external" href="4-finite_fields.rst.html">Finite Fields</a></p></li>
-<li><p><a class="reference external" href="5-aes.rst.html">Advanced Encryption Standard (AES)</a></p></li>
-<li><p><a class="reference external" href="6-block_cipher_operations.rst.html">Block Cipher Operations</a></p></li>
-<li><p><a class="reference external" href="7-stream_ciphers.rst.html">Random Bit Generation and Stream Ciphers</a></p></li>
-<li><p><a class="reference external" href="8-public_key_cryptography.rst.html">Public-Key Cryptography and RSA</a></p></li>
-<li><p><a class="reference external" href="9-hash_functions.rst.html">Cryptographic Hash Functions</a></p></li>
-</ol>
+<div class="ld-slide" id="double-encryption">
+<h2>Double Encryption</h2>
+<img alt="6-double_encryption.svg" class="align-center" src="6-double_encryption.svg" style="width: 1200px;" />
+</div><div class="ld-slide" id="meet-in-the-middle-attack">
+<h2>Meet-in-the-Middle Attack</h2>
+<ul class="simple">
+<li><p>Observation: <span class="math">\(E(K_2,E(K_1,P)) = E(K_3,P)\)</span> does not hold. I.e., the use of double DES results in a mapping that is not equivalent to a single DES encryption.</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>The meet-in-the-middle algorithm will attack this scheme. It does not depend on any particular property of DES but will work against any block encryption cipher.</p></li>
+<li><p>The result is that a known plaintext attack against double-DES will succeed with an effort on the order <span class="math">\(2^{56}\)</span> compared to <span class="math">\(2^{55}\)</span> for a single DES.</p></li>
+</ul>
+</div><div class="ld-slide" id="triple-encryption-e-g-triple-des-with-three-keys">
+<h2>Triple Encryption (E.g., Triple-DES with Three-Keys)</h2>
+<img alt="6-triple_encryption.svg" class="align-center" src="6-triple_encryption.svg" style="width: 1500px;" />
+</div><div class="ld-slide" id="triple-des-with-two-keys">
+<h2>Triple-DES with Two Keys</h2>
+<p>Obvious counter to the meet-in-the-middle attack is to use three stages of encryption with three different keys.</p>
+<ul class="simple">
+<li><p>This raises the cost of the meet-in-the-middle attack to <span class="math">\(2^{112}\)</span>, which is beyond what is practical.</p></li>
+<li><p>Has the drawback of requiring a key length of <span class="math">\(56\,bits \times 3 = 168\,bits\)</span>, which may be somewhat unwieldy.</p></li>
+<li><p>As an alternative Tuchman proposed a triple encryption method that uses only two keys.</p></li>
+<li><p>3DES with two keys is a relatively popular alternative to DES and has been adopted for use in the key management standards ANSI X9.17 and ISO 8732.</p></li>
+</ul>
+</div><div class="ld-slide" id="triple-des-with-three-keys">
+<h2>Triple-DES with Three Keys</h2>
+<ul class="simple">
+<li><p>Several attacks against 3DES with 2 keys have been developed, which are - however - still not practical.</p></li>
+<li><p>Many researchers now feel that three-key 3DES is the preferred alternative.</p></li>
+<li><p>Three-key 3DES has an effective key length of 168 bits and is defined as: <span class="math">\(C=E(K_3,D(K_2,E(K_1, P)))\)</span></p></li>
+<li><p>Backward compatibility with DES is provided by putting: <span class="math">\(K_3 =K_2\)</span> or <span class="math">\(K_1 =K_2\)</span>.</p></li>
+</ul>
+</div><div class="ld-slide" id="modes-of-operation">
+<h2>Modes of Operation</h2>
+<ul class="simple">
+<li><p>A technique for enhancing the effect of a cryptographic algorithm or adapting the algorithm for an application.</p></li>
+<li><p>To apply a block cipher in a variety of applications, five modes of operation have been defined by NIST.</p>
+<ul>
+<li><p>The five modes are intended to cover a wide variety of applications of encryption for which a block cipher could be used</p></li>
+<li><p>These modes are intended for use with any symmetric block cipher, including 3DES and AES.</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="modes-of-operation-overview">
+<h2>Modes of Operation - Overview</h2>
+<table class="small" style="width: 100%;">
+<thead>
+<tr><th class="head"><p>Mode</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Typical Application</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Electronic Codebook (ECB)</p></td>
+<td><p>Each block of plaintext bits is encoded independently using the same key.</p></td>
+<td><ul class="simple">
+<li><p>Secure transmission of single values (e.g., an encryption key)</p></li>
+</ul>
+</td>
+</tr>
+<tr><td><p>Cipher Block Chaining (CBC)</p></td>
+<td><p>The input to the encryption algorithm is the XOR of the next block of plaintext and the preceding block of ciphertext.</p></td>
+<td><ul class="simple">
+<li><p>General-purpose block-oriented transmission</p></li>
+<li><p>Authentication</p></li>
+</ul>
+</td>
+</tr>
+<tr><td><p>Cipher Feedback (CFB)</p></td>
+<td><p>Input is processed s bits at a time.
+Preceding ciphertext is used as input to the encryption algorithm to produce pseudorandom output, which is XORed with plaintext to produce next unit of ciphertext.</p></td>
+<td><ul class="simple">
+<li><p>General-purpose stream-oriented transmission</p></li>
+<li><p>Authentication</p></li>
+</ul>
+</td>
+</tr>
+<tr><td><p>Output Feedback (OFB)</p></td>
+<td><p>Similar to CFB, except that the input to the encryption algorithm is the preceding encryption output, and full blocks are used.</p></td>
+<td><ul class="simple">
+<li><p>Stream-oriented transmission over noisy channel (e.g., satellite communication)</p></li>
+</ul>
+</td>
+</tr>
+<tr><td><p>Counter (CTR)</p></td>
+<td><p>Each block of plaintext is XORed with an encrypted counter. The counter is incremented for each subsequent block.</p></td>
+<td><ul class="simple">
+<li><p>General-purpose block-oriented transmission</p></li>
+<li><p>Useful for high-speed requirements</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="electronic-codebook">
+<h2>Electronic Codebook</h2>
+<img alt="6-ecb_encryption.svg" class="align-center" src="6-ecb_encryption.svg" style="width: 1200px;" />
+<img alt="6-ecb_decryption.svg" class="align-center" src="6-ecb_decryption.svg" style="width: 1200px;" />
+<div class="small docutils container">
+<p>Author: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
 </div>
-<div class="column docutils container">
-<p><strong>Exercise</strong></p>
-<ol class="arabic simple">
-<li><p><a class="reference external" href="1-introduction_to_number_theory-exercise.rst.html">Introduction to Number Theory</a></p></li>
-<li><p><a class="reference external" href="2-classical_encryption_techniques-exercise.rst.html">Classical Encryption Techniques</a></p></li>
-<li><p><a class="reference external" href="3-block_ciphers-exercise.rst.html">Block Ciphers and the Data Encryption Standard</a></p></li>
-<li><p><a class="reference external" href="4-finite_fields-exercise.rst.html">Finite Fields</a></p></li>
-<li><p><a class="reference external" href="5-aes-exercise.rst.html">Advanced Encryption Standard (AES)</a></p></li>
-<li><p><a class="reference external" href="6-block_cipher_operations-exercise.rst.html">Block Cipher Operations</a></p></li>
-<li><p><a class="reference external" href="7-stream_ciphers-exercise.rst.html">Random Bit Generation and Stream Ciphers</a></p></li>
-<li><p><a class="reference external" href="8-public_key_cryptography-exercise.rst.html">Public-Key Cryptography and RSA</a></p></li>
-<li><p><a class="reference external" href="9-hash_functions-exercise.rst.html">Cryptographic Hash Functions</a></p></li>
-</ol>
+</div><div class="ld-slide" id="problems-when-using-ecb-mode-encryption">
+<h2>Problems when using ECB Mode Encryption</h2>
+<p><em>ECB-Tux</em> - the linux pinguin encrypted using ECB mode.</p>
+<img alt="6-tux.ecb.from_robert_david_graham.png" src="6-tux.ecb.from_robert_david_graham.png" />
+<div class="small docutils container">
+<p>Source: <a class="reference external" href="https://github.com/robertdavidgraham/ecb-penguin">https://github.com/robertdavidgraham/ecb-penguin</a></p>
 </div>
+<p>Criteria and properties for evaluating and constructing block cipher modes of operation that are superior to ECB.</p>
+<ul class="simple">
+<li><p>Overhead</p></li>
+<li><p>Error recovery</p></li>
+<li><p>Error propagation</p></li>
+<li><p>Diffusion</p></li>
+<li><p>Security</p></li>
+</ul>
+</div><div class="ld-slide" id="cipher-block-chaining">
+<h2>Cipher Block Chaining</h2>
+<img alt="6-cbc_encryption.svg" class="align-center" src="6-cbc_encryption.svg" style="width: 1200px;" />
+<div class="incremental docutils container">
+<img alt="6-cbc_decryption.svg" class="align-center" src="6-cbc_decryption.svg" style="width: 1200px;" />
+<div class="small docutils container">
+<p>Author: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
+</div>
+</div>
+</div><div class="ld-slide" id="converting-block-ciphers-into-stream-ciphers">
+<h2>Converting Block Ciphers into Stream Ciphers</h2>
+<aside class="admonition smaller note">
+<p class="admonition-title">Note</p>
+<p>There are three modes that make it possible to convert a block cipher into a character-oriented stream cipher:</p>
+<ul class="simple">
+<li><p>Cipher Feedback Mode (CFB)</p></li>
+<li><p>Output Feedback Mode (OFB)</p></li>
+<li><p>Counter Mode (CTR)</p></li>
+</ul>
+<p>I.e., no padding is required when the message is not a multiple of the block size.</p>
+</aside>
+<p>For AES, DES, or any block cipher, encryption is performed on a block of b bits:</p>
+<ul class="simple">
+<li><p>In the case of (3)DES <span class="math">\(b=64\)</span></p></li>
+<li><p>In the case of AES <span class="math">\(b=128\)</span></p></li>
+</ul>
+</div><div class="ld-slide" id="cipher-feedback-mode">
+<h2>Cipher Feedback Mode</h2>
+<img alt="6-cfb_encryption.svg" class="align-center" src="6-cfb_encryption.svg" style="width: 1200px;" />
+<div class="incremental docutils container">
+<img alt="6-cfb_decryption.svg" class="align-center" src="6-cfb_decryption.svg" style="width: 1200px;" />
+<div class="small docutils container">
+<p>Author: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
+</div>
+</div>
+</div><div class="ld-slide" id="cipher-feedback-mode-used-as-a-stream-cipher">
+<h2>Cipher Feedback Mode used as a Stream Cipher</h2>
+<img alt="6-cfb_s_bits.svg" class="align-center" src="6-cfb_s_bits.svg" style="width: 1200px;" />
+</div><div class="ld-slide" id="output-feedback-mode">
+<h2>Output Feedback Mode</h2>
+<img alt="6-ofb_encryption.svg" class="align-center" src="6-ofb_encryption.svg" style="width: 1200px;" />
+<div class="incremental docutils container">
+<img alt="6-ofb_decryption.svg" class="align-center" src="6-ofb_decryption.svg" style="width: 1200px;" />
+<div class="small docutils container">
+<p>Author: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
+</div>
+</div>
+<!-- When used as a Stream Cipher we can simply discard the last bytes of the encrypted block cipher. -->
+</div><div class="ld-slide" id="counter-mode">
+<h2>Counter Mode</h2>
+<img alt="6-ctr_encryption.svg" class="align-center" src="6-ctr_encryption.svg" style="width: 1200px;" />
+<div class="incremental docutils container">
+<img alt="6-ctr_decryption.svg" class="align-center" src="6-ctr_decryption.svg" style="width: 1200px;" />
+<div class="small docutils container">
+<p>Author: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
+</div>
+</div>
+</div><div class="ld-slide" id="counter-mode-advantages">
+<h2>Counter Mode - Advantages</h2>
+<dl class="field-list simple">
+<dt>Hardware efficiency<span class="colon">:</span></dt>
+<dd><p>can make use of hardware parallelization.</p>
+</dd>
+<dt>Software efficiency<span class="colon">:</span></dt>
+<dd><p>easily parallelizable in software.</p>
+</dd>
+<dt>Preprocessing<span class="colon">:</span></dt>
+<dd><p>the  encryption of the counters</p>
+</dd>
+<dt>Random access<span class="colon">:</span></dt>
+<dd><p>The i-th block of plaintext of ciphertext can be processed in random-access fashion.</p>
+</dd>
+<dt>Provable security<span class="colon">:</span></dt>
+<dd><p>as secure as the other modes</p>
+</dd>
+<dt>Simplicity<span class="colon">:</span></dt>
+<dd><p>only the encryption algorithm is required.</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="feedback-characteristics-of-modes-of-operation">
+<h2>Feedback Characteristics of Modes of Operation</h2>
+<img alt="6-feedback_characteristics.svg" class="align-center" src="6-feedback_characteristics.svg" style="width: 1750px;" />
+</div><div class="ld-slide" id="xts-aes-mode-for-block-oriented-storage-devices">
+<h2>XTS-AES Mode for Block-Oriented Storage Devices</h2>
+<p>Approved as an additional block cipher mode of operation by NIST in 2010 Mode is also an IEEE Standard, IEEE Std 1619-2007</p>
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Which potential threats are relevant?</p>
+<!-- many similar blocks -->
+<!-- data is freely accessible -->
+</aside>
+<ul class="simple">
+<li><p>Standard describes a method of encryption for data stored in sector- based devices where the threat model includes possible access to stored data by the adversary.</p></li>
+<li><p>Has received widespread industry support</p></li>
+</ul>
+</div><div class="ld-slide" id="tweakable-block-ciphers">
+<h2>Tweakable Block Ciphers</h2>
+<ul>
+<li><p>XTS-AES mode is based on the concept of a tweakable block cipher</p></li>
+<li><p>General structure:</p>
+<p>To compute the ciphertext a:</p>
+<ul class="simple">
+<li><p><strong>Plaintext</strong></p></li>
+<li><p><strong>Symmetric key</strong></p></li>
+<li><p><strong>Tweak</strong></p></li>
+</ul>
+<p>is required.</p>
+</li>
+<li><p>Tweak need not be kept secret; purpose is to provide variability.</p></li>
+</ul>
+</div><div class="ld-slide" id="tweakable-block-ciphers-1">
+<h2>Tweakable Block Ciphers</h2>
+<img alt="6-tweakable_block_cipher.svg" class="align-center" src="6-tweakable_block_cipher.svg" style="width: 1750px;" />
+</div><div class="ld-slide" id="storage-encryption-requirements">
+<h2>Storage Encryption Requirements</h2>
+<p>The requirements for encrypting stored data, also referred to as “data at rest”, differ somewhat from those for transmitted data.</p>
+<p>The P1619 standard was designed to have the following characteristics:</p>
+<ul class="incremental simple">
+<li><p>The ciphertext is freely available for an attacker.</p></li>
+<li><p>The data layout is not changed on the storage medium and in transit.</p></li>
+<li><p>Data are accessed in fixed sized blocks, independently from each other.</p></li>
+<li><p>Encryption is performed in 16-byte blocks, independently from each other.</p></li>
+<li><p>There are no other metadata used, except the location of the data blocks within the whole data set.</p></li>
+<li><p>The same plaintext is encrypted to different ciphertexts at different locations, but always to the same ciphertext when written to the same location again.</p></li>
+<li><p>A standard conformant device can be constructed for decryption of data encrypted by another standard conformant device.</p></li>
+</ul>
+</div><div class="ld-slide" id="xts-aes-operation-on-a-single-block">
+<h2>XTS-AES Operation on a Single Block</h2>
+<img alt="6-xts_aes.svg" class="align-center" src="6-xts_aes.svg" style="width: 1750px;" />
+<div class="small two-columns docutils container">
+<ul class="simple">
+<li><p>Key: The key where: <span class="math">\(Key = Key_1\, ||\, Key_2\)</span></p></li>
+<li><p><span class="math">\(P_j\)</span>: The jth block of plaintext. All blocks have length 128 bits. A plaintext data unit, typically a disk sector, consists of a sequence of plaintext blocks.</p></li>
+<li><p><span class="math">\(C_j\)</span>: The jth block of ciphertext.</p></li>
+<li><p><span class="math">\(j\)</span>: The sequential number of the 128bit block inside the data unit.</p></li>
+<li><p><span class="math">\(i\)</span>: The value of the 128bit tweak.</p></li>
+<li><p><span class="math">\(\alpha\)</span>: A primitive element of GF(2^{128}) that corresponds to the polynomial <span class="math">\(x\)</span> (i.e., 0000...0010)</p></li>
+<li><p><span class="math">\(\alpha^j\)</span>: <span class="math">\(\alpha\)</span> multiplied by itself <span class="math">\(j\)</span> times in <span class="math">\(GF(2^{128})\)</span></p></li>
+<li><p><span class="math">\(\oplus\)</span> Bitwise XOR</p></li>
+<li><p><span class="math">\(\otimes\)</span> Modular multiplication with binary coefficients modulo <span class="math">\(x^{128}+x^7+x^2+x+1\)</span>.</p></li>
+</ul>
 </div>
 </div>
 </body>

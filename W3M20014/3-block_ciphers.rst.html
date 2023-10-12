@@ -11,6 +11,7 @@
 <meta content="2023_10-W3M20014-block_ciphers" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <title>Block Ciphers and the Data Encryption Standard</title>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js?config=TeX-AMS_CHTML"></script>
 <link rel="stylesheet" href="ld/normalize.css" type="text/css" />
 <style type="text/css">
 
@@ -622,12 +623,633 @@ a { text-decoration: none; }
 <dd class="lecturer"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2023-10-04</dd>
+<dd class="version">2023-10-10</dd>
+<dt class="based-on">Based on<span class="colon">:</span></dt>
+<dd class="based-on"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
+</dd>
 </dl>
 <img alt="DHBW CAS Logo" class="logo" src="logo.svg" />
 </div>
-<div class="ld-slide" id="todotododo">
-<h2>TODOTODODO</h2>
+<div class="ld-slide" id="stream-cipher">
+<h2>Stream Cipher</h2>
+<ul>
+<li><p>Encrypts a digital data stream one bit or one byte at a time.</p>
+<p>Examples: Autokeyed Vigenère cipher and  Vernam cipher</p>
+</li>
+<li><p>In the ideal case, a one-time pad version of the Vernam cipher would be used, in which the keystream is as long as the plaintext bit stream.</p>
+<blockquote>
+<ul class="smaller simple">
+<li><p>If the cryptographic keystream is random, then this cipher is unbreakable by any means other than acquiring the keystream</p></li>
+</ul>
+<blockquote class="smaller">
+<ul class="simple">
+<li><p>Keystream must be provided to both users in advance via some independent and secure channel</p></li>
+<li><p>This introduces insurmountable logistical problems if the intended data traffic is very large</p></li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+</div><div class="ld-slide" id="stream-cipher-1">
+<h2>Stream Cipher</h2>
+<ul class="simple">
+<li><p>For practical reasons the bit-stream generator must be implemented as an algorithmic procedure so that the cryptographic bit stream can be produced by both users.</p>
+<ul>
+<li><p>It must be computationally impractical to predict future portions of the bit stream based on previous portions of the bit stream.</p></li>
+<li><p>The two users need only share the generating key and each can produce the keystream.</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="block-cipher">
+<h2>Block Cipher</h2>
+<ul class="simple">
+<li><p>A block of plaintext is treated as a whole and used to produce a ciphertext block of equal length.</p></li>
+<li><p>Typically a block size of 64 or 128 bits is used.</p></li>
+<li><p>As with a stream cipher, the two users share a symmetric encryption key.</p></li>
+<li><p>The majority of network-based symmetric cryptographic applications make use of block ciphers.</p></li>
+</ul>
+</div><div class="ld-slide" id="stream-cipher-vs-block-cipher">
+<h2>Stream Cipher vs. Block Cipher</h2>
+<img alt="3-stream_cipher.svg" class="align-left" src="3-stream_cipher.svg" />
+<img alt="3-block_cipher.svg" class="incremental align-right" src="3-block_cipher.svg" />
+</div><div class="ld-slide" id="general-n-bit-n-bit-block-substitution-n-4">
+<h2>General n-bit-n-bit Block Substitution (n = 4)</h2>
+<img alt="3-4_bit_block_substitution.svg" class="align-center" src="3-4_bit_block_substitution.svg" style="width: 1400px;" />
+</div><div class="ld-slide" id="encryption-and-decryption-tables-for-substitution-cipher">
+<h2>Encryption and Decryption Tables for Substitution Cipher</h2>
+<p><strong>Encryption Table</strong></p>
+<table class="align-center small">
+<tbody>
+<tr><td><p>Plaintext</p></td>
+<td><p>0000</p></td>
+<td><p>0001</p></td>
+<td><p>0010</p></td>
+<td><p>0011</p></td>
+<td><p>0100</p></td>
+<td><p>0101</p></td>
+<td><p>0110</p></td>
+<td><p>0111</p></td>
+<td><p>1000</p></td>
+<td><p>1001</p></td>
+<td><p>1010</p></td>
+<td><p>1011</p></td>
+<td><p>1100</p></td>
+<td><p>1101</p></td>
+<td><p>1110</p></td>
+<td><p>1111</p></td>
+</tr>
+<tr><td><p>Ciphertext</p></td>
+<td><p>1110</p></td>
+<td><p>0100</p></td>
+<td><p>1101</p></td>
+<td><p>0001</p></td>
+<td><p>0010</p></td>
+<td><p>1111</p></td>
+<td><p>1011</p></td>
+<td><p>1000</p></td>
+<td><p>0011</p></td>
+<td><p>1010</p></td>
+<td><p>0110</p></td>
+<td><p>1100</p></td>
+<td><p>0101</p></td>
+<td><p>1001</p></td>
+<td><p>0000</p></td>
+<td><p>0111</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decryption Table</strong></p>
+<table class="align-center small incremental">
+<tbody>
+<tr><td><p>Ciphertext</p></td>
+<td><p>0000</p></td>
+<td><p>0001</p></td>
+<td><p>0010</p></td>
+<td><p>0011</p></td>
+<td><p>0100</p></td>
+<td><p>0101</p></td>
+<td><p>0110</p></td>
+<td><p>0111</p></td>
+<td><p>1000</p></td>
+<td><p>1001</p></td>
+<td><p>1010</p></td>
+<td><p>1011</p></td>
+<td><p>1100</p></td>
+<td><p>1101</p></td>
+<td><p>1110</p></td>
+<td><p>1111</p></td>
+</tr>
+<tr><td><p>Plaintext</p></td>
+<td><p>1110</p></td>
+<td><p>0011</p></td>
+<td><p>0100</p></td>
+<td><p>1000</p></td>
+<td><p>0001</p></td>
+<td><p>1100</p></td>
+<td><p>1010</p></td>
+<td><p>1111</p></td>
+<td><p>0111</p></td>
+<td><p>1101</p></td>
+<td><p>1001</p></td>
+<td><p>0110</p></td>
+<td><p>1011</p></td>
+<td><p>0010</p></td>
+<td><p>0000</p></td>
+<td><p>0101</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="feistel-cipher">
+<h2>Feistel Cipher</h2>
+<p>Feistel proposed the use of a cipher that alternates substitutions and permutations.</p>
+<aside class="admonition incremental">
+<p class="admonition-title">Substitutions</p>
+<p>Each plaintext element or group of elements is uniquely replaced by a corresponding ciphertext element or group of elements</p>
+</aside>
+<aside class="admonition incremental">
+<p class="admonition-title">Permutation</p>
+<p>No elements are added or deleted or replaced in the sequence, rather the order in which the elements appear in the sequence is changed</p>
+</aside>
+</div><div class="ld-slide" id="feistel-cipher-background">
+<h2>Feistel Cipher - Background</h2>
+<ul>
+<li><p>This is a practical application of a proposal by Claude Shannon to develop a product cipher that alternates confusion and diffusion functions.</p></li>
+<li><p>It is the structure used by many significant symmetric block ciphers currently in use.</p>
+<blockquote>
+<div class="incremental docutils container">
+<p><em>Diffusion and Confusion</em></p>
+<ul class="simple">
+<li><p>Terms introduced by Claude Shannon to capture the two basic building blocks for any cryptographic system.</p></li>
+<li><p>Shannon’s concern was to thwart cryptanalysis based on statistical analysis.</p></li>
+</ul>
+</div>
+</blockquote>
+</li>
+</ul>
+</div><div class="ld-slide" id="diffusion-and-confusion">
+<h2><strong>Diffusion</strong> and Confusion</h2>
+<aside class="admonition admonition-diffusion">
+<p class="admonition-title">Diffusion</p>
+<ul class="simple">
+<li><p>The statistical structure of the plaintext is dissipated into long-range statistics of the ciphertext; i.e., makes the statistical relationship between the plaintext and ciphertext as complex as possible.</p></li>
+<li><p>This is achieved by having each plaintext digit affect the value of many ciphertext digits.</p></li>
+<li><p>Diffusion can be achieved, e.g., by <em>permutations</em>.</p></li>
+</ul>
+</aside>
+</div><div class="ld-slide" id="diffusion-and-confusion-1">
+<h2>Diffusion and <strong>Confusion</strong></h2>
+<aside class="admonition admonition-confusion">
+<p class="admonition-title">Confusion</p>
+<ul class="simple">
+<li><p>Seeks to make the relationship between the statistics of the ciphertext and the value of the encryption key as complex as possible; i.e., a single change to the encrption key should affect many bits of the ciphertext.</p></li>
+<li><p>Even if the attacker can get some handle on the statistics of the ciphertext, the way in which the key was used to produce that ciphertext is so complex as to make it difficult to deduce the key</p></li>
+<li><p>Confusion can be realized, e.g., by <em>substitutions</em>.</p></li>
+</ul>
+</aside>
+</div><div class="ld-slide" id="entropie">
+<h2>Entropie</h2>
+<p>TODO</p>
+</div><div class="ld-slide" id="feistel-cipher-encryption-and-decryption">
+<h2>Feistel Cipher - Encryption and Decryption</h2>
+<img alt="3-feistel.svg" class="align-center" src="3-feistel.svg" style="width: 920px;" />
+</div><div class="ld-slide" id="feistel-cipher-example">
+<h2>Feistel Cipher - Example</h2>
+<img alt="3-feistel-example.svg" class="align-center" src="3-feistel-example.svg" style="width: 1680px;" />
+</div><div class="ld-slide" id="feistel-cipher-design-features">
+<h2>Feistel Cipher - Design Features</h2>
+<dl class="two-columns small incremental field-list simple">
+<dt><strong>Round function F</strong><span class="colon">:</span></dt>
+<dd><p>Greater complexity generally means greater resistance to cryptanalysis</p>
+</dd>
+<dt><strong>Fast software encryption/decryption</strong><span class="colon">:</span></dt>
+<dd><p>In many cases, encrypting is embedded in applications or utility functions in such a way as to preclude a hardware implementation; accordingly, the speed of execution of the algorithm becomes a concern</p>
+</dd>
+<dt><strong>Ease of analysis</strong><span class="colon">:</span></dt>
+<dd><p>If the algorithm can be concisely and clearly explained, it is easier to analyze that algorithm for cryptanalytic vulnerabilities and therefore develop a higher level of assurance as to its strength</p>
+</dd>
+<dt><strong>Block size</strong><span class="colon">:</span></dt>
+<dd><p>Larger block sizes mean greater security but reduced encryption/decryption speed for a given algorithm</p>
+</dd>
+<dt><strong>Key size</strong><span class="colon">:</span></dt>
+<dd><p>Larger key size means greater security but may decrease encryption/decryption speeds</p>
+</dd>
+<dt><strong>Number of rounds</strong><span class="colon">:</span></dt>
+<dd><p>The essence of the Feistel cipher is that a single round offers inadequate security but that multiple rounds offer increasing security</p>
+</dd>
+<dt><strong>Subkey generation algorithm</strong><span class="colon">:</span></dt>
+<dd><p>Greater complexity in this algorithm should lead to greater difficulty of cryptanalysis</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="data-encryption-standard-des">
+<h2>Data Encryption Standard (DES)</h2>
+<ul>
+<li><p>Issued in 1977 by the National Bureau of Standards (now NIST) as Federal Information Processing Standard 46</p></li>
+<li><p>Was the most widely used encryption scheme until the introduction of the Advanced Encryption Standard (AES) in 2001</p></li>
+<li><p>Algorithm itself is referred to as the Data Encryption Algorithm (DEA):</p>
+<blockquote>
+<ul class="simple">
+<li><p>Data is encrypted in 64-bit blocks using a 56-bit key</p></li>
+<li><p>The algorithm transforms 64-bit input in a series of steps into a 64-bit output</p></li>
+<li><p>The same steps, with the same key, are used to reverse the encryption</p></li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</div><div class="ld-slide" id="des-general-design">
+<h2>DES General Design</h2>
+<img alt="3-des-design.svg" class="align-center" src="3-des-design.svg" style="width: 1200px;" />
+</div><div class="ld-slide" id="des-round-function">
+<h2>DES Round Function</h2>
+<aside class="admonition small note">
+<p class="admonition-title">Note</p>
+<p>R is the right half of the message.</p>
+<p>E is an expansion function.</p>
+<p>S are substitution boxes.</p>
+<p>P is a permutation.</p>
+</aside>
+<img alt="3-des-design-round_function.svg" class="align-left" src="3-des-design-round_function.svg" style="width: 840px;" />
+</div><div class="ld-slide" id="des-example">
+<h2>DES Example</h2>
+<table class="align-center small hexdump">
+<tbody>
+<tr><td><p>Round</p></td>
+<td><p>Ki</p></td>
+<td><p>Li</p></td>
+<td><p>Ri</p></td>
+</tr>
+<tr><td><p>IP</p></td>
+<td></td>
+<td><p>5a005a00</p></td>
+<td><p>3cf03c0f</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>1e030f03080d2930</p></td>
+<td><p>3cf03c0f</p></td>
+<td><p>bad22845</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>0a31293432242318</p></td>
+<td><p>bad22845</p></td>
+<td><p>99e9b723</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>23072318201d0c1d</p></td>
+<td><p>99e9b723</p></td>
+<td><p>Obae3b9e</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>05261d3824311a20</p></td>
+<td><p>Obae3b9e</p></td>
+<td><p>42415649</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>3325340136002025</p></td>
+<td><p>42415649</p></td>
+<td><p>18b3fa41</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>123a2d0d04262a1c</p></td>
+<td><p>18b3fa41</p></td>
+<td><p>9616fe23</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>021f120b1c130611</p></td>
+<td><p>9616fe23</p></td>
+<td><p>67117cf2</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>1c10372a2832002b</p></td>
+<td><p>67117c12</p></td>
+<td><p>c11bfc09</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>04292a380c341103</p></td>
+<td><p>c11bfc09</p></td>
+<td><p>887fbe6c</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>2703212607280403</p></td>
+<td><p>887fbc6c</p></td>
+<td><p>60017e8b</p></td>
+</tr>
+<tr><td><p>11</p></td>
+<td><p>2826390c31261504</p></td>
+<td><p>60017e8b</p></td>
+<td><p>f596506e</p></td>
+</tr>
+<tr><td><p>12</p></td>
+<td><p>12071c241a0a0108</p></td>
+<td><p>f596506e</p></td>
+<td><p>738538b8</p></td>
+</tr>
+<tr><td><p>13</p></td>
+<td><p>300935393c0d100b</p></td>
+<td><p>73853868</p></td>
+<td><p>с6а62с4е</p></td>
+</tr>
+<tr><td><p>14</p></td>
+<td><p>311e09231321182a</p></td>
+<td><p>с6а62с4е</p></td>
+<td><p>56b0bd75</p></td>
+</tr>
+<tr><td><p>15</p></td>
+<td><p>283d3e0227072528</p></td>
+<td><p>56b0bd75</p></td>
+<td><p>75e8fd8f</p></td>
+</tr>
+<tr><td><p>16</p></td>
+<td><p>2921080b13143025</p></td>
+<td><p>75e8fd8f</p></td>
+<td><p>25896490</p></td>
+</tr>
+<tr><td><p>IP-1</p></td>
+<td></td>
+<td><p>da02ce3a</p></td>
+<td><p>89ecac3b</p></td>
+</tr>
+</tbody>
+</table>
+<p class="small">DES subkeys are shown as eight 6-bit values in hex format (max value for <span class="math">\(k_i\)</span> is   <span class="math">\(2^6-1=63=0x3F\)</span>)</p>
+</div><div class="ld-slide" id="des-example-avalanche-effect-in-des">
+<h2>DES Example - Avalanche Effect in DES</h2>
+<p><strong>Small change in plaintext</strong>:</p>
+<table class="align-center small hexdump" style="width: 800px;">
+<tbody>
+<tr><td><p>Round</p></td>
+<td></td>
+<td><p>δ</p></td>
+<td><p>Round</p></td>
+<td></td>
+<td><p>δ</p></td>
+</tr>
+<tr><td></td>
+<td><p>02468aceeca86420
+12468aceeca86420</p></td>
+<td><p>1</p></td>
+<td><p>9</p></td>
+<td><p>c11bfc09887fbc6c
+996911532eed7d94</p></td>
+<td><p>32</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>3cf03c0fbad22845
+3cf03c0fbad32845</p></td>
+<td><p>1</p></td>
+<td><p>10</p></td>
+<td><p>887fbc6c60017e8b
+2eed7d94d0f23094</p></td>
+<td><p>34</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>bad2284599e9b723
+bad3284539a9b7a3</p></td>
+<td><p>5</p></td>
+<td><p>11</p></td>
+<td><p>600f7e8bf596506e
+0f23094455da9c4</p></td>
+<td><p>37</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>99e9b7230bae3b9e
+39a9b7a3171cb8b3</p></td>
+<td><p>18</p></td>
+<td><p>12</p></td>
+<td><p>1596506e738538b8
+455da9c47f6e3cf3</p></td>
+<td><p>31</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>Obae3b9e42415649
+171cb8b3ccaca55e</p></td>
+<td><p>34</p></td>
+<td><p>13</p></td>
+<td><p>738538b8c6a62c4e
+7f6e3cf34bc1a8d9</p></td>
+<td><p>29</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>4241564918b3fa41
+ccaca55ed16c3653</p></td>
+<td><p>37</p></td>
+<td><p>14</p></td>
+<td><p>с6а62с4е56b0bd75
+4bc1a8d91e07d409</p></td>
+<td><p>33</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>18b3fa419616fe23
+d16c3653cf402c68</p></td>
+<td><p>33</p></td>
+<td><p>15</p></td>
+<td><p>56b0bd7575e8fd81
+1e07d4091ce2e6dc</p></td>
+<td><p>31</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>9616fe2367117cf2
+cf402c682b2cefbc</p></td>
+<td><p>32</p></td>
+<td><p>16</p></td>
+<td><p>75e8fd8625896490
+1ce2e6dc365e5f59</p></td>
+<td><p>32</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>67117cf2c11bfc09
+2b2cefbc99191153</p></td>
+<td><p>33</p></td>
+<td><p>IP-1</p></td>
+<td><p>da02ce3a89ecac3b
+057cde97d7683f2a</p></td>
+<td><p>32</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="des-example-avalanche-effect-in-des-1">
+<h2>DES Example - Avalanche Effect in DES</h2>
+<p><strong>Small change in key</strong> (<cite>0f1571c947d9e859</cite> <span class="math">\(\rightarrow\)</span> <cite>1f1571c947d9e859</cite>):</p>
+<table class="align-center small hexdump" style="width: 800px;">
+<tbody>
+<tr><td><p>Round</p></td>
+<td></td>
+<td><p>δ</p></td>
+<td><p>Round</p></td>
+<td></td>
+<td><p>δ</p></td>
+</tr>
+<tr><td></td>
+<td><p>02468aceeca86420
+02468aceeca86420</p></td>
+<td><p>0</p></td>
+<td><p>9</p></td>
+<td><p>c11bfe09887fbe6c
+548f1de471f64dfd</p></td>
+<td><p>34</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>3c103c0fbad22845
+3ef03c019ad628e5</p></td>
+<td><p>3</p></td>
+<td><p>10</p></td>
+<td><p>8876be6c60067e8b
+71664dfd4279876c</p></td>
+<td><p>36</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>bad2284599e9b723
+9ad628c59939136b</p></td>
+<td><p>11</p></td>
+<td><p>11</p></td>
+<td><p>60017e8bf596506e
+4279876c399fdc0d</p></td>
+<td><p>32</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>99e9b7230bae3b9e
+9939136676806767</p></td>
+<td><p>25</p></td>
+<td><p>12</p></td>
+<td><p>f596506e738538b8
+399fde0d6d208dbb</p></td>
+<td><p>28</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>Obae3b9e42415649
+768067b75a8807c5</p></td>
+<td><p>29</p></td>
+<td><p>13</p></td>
+<td><p>738538b8c6a62c4e
+6d208dbbb9bdeeaa</p></td>
+<td><p>33</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>4241564918b3fa41
+5a8807c5488bde94</p></td>
+<td><p>26</p></td>
+<td><p>14</p></td>
+<td><p>c6a62c4e56b0bd75
+b9bdeeaad2c3a56f</p></td>
+<td><p>30</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>18b3fa419616fe23
+488dbe94aba7fe53</p></td>
+<td><p>26</p></td>
+<td><p>15</p></td>
+<td><p>56b0bd7575e8fd8f
+d2c3a5612765c1fb</p></td>
+<td><p>33</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>9616fe2367117cf2
+aba7fe53177d21e4</p></td>
+<td><p>27</p></td>
+<td><p>16</p></td>
+<td><p>75e8fd8f25896490
+2765c1fb01263dc4</p></td>
+<td><p>30</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>67117cf2c11bfc09
+177d21e4548f1de4</p></td>
+<td><p>32</p></td>
+<td><p>IP-1</p></td>
+<td><p>da02ce3a89ecac3b
+ee92b50606b6260b</p></td>
+<td><p>30</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="average-time-for-exhaustive-key-search">
+<h2>Average Time for Exhaustive Key Search</h2>
+<table class="align-center smaller">
+<tbody>
+<tr><td><p>Key size (bits)</p></td>
+<td><p>Cipher</p></td>
+<td><p>Number of Alternative
+Keys</p></td>
+<td><p>Time Required at <span class="math">\(10^9\)</span>
+decryptions/s</p></td>
+<td><p>Time Required at <span class="math">\(10^{13}\)</span>
+decryptions/s</p></td>
+</tr>
+<tr><td><p>56</p></td>
+<td><p>DES</p></td>
+<td><p><span class="math">\(2^{56}\)</span> ≈ 7.2 x <span class="math">\(10^{16}\)</span></p></td>
+<td><p>1.125 years</p></td>
+<td><p>1 hour</p></td>
+</tr>
+<tr><td><p>128</p></td>
+<td><p>AES</p></td>
+<td><p><span class="math">\(2^{128}\)</span> ≈ 3.4 x <span class="math">\(10^{38}\)</span></p></td>
+<td><p>5.3 x <span class="math">\(10^{21}\)</span> years</p></td>
+<td><p>5.3 x <span class="math">\(10^{17}\)</span> years</p></td>
+</tr>
+<tr><td><p>168</p></td>
+<td><p>Triple DES</p></td>
+<td><p><span class="math">\(2^{168}\)</span> ≈ 3.7 x <span class="math">\(10^{50}\)</span></p></td>
+<td><p>5.8 x <span class="math">\(10^{33}\)</span> years</p></td>
+<td><p>5.8 × <span class="math">\(10^{29}\)</span> years</p></td>
+</tr>
+<tr><td><p>192</p></td>
+<td><p>AES</p></td>
+<td><p><span class="math">\(2^{192}\)</span> ≈ 6.3 x <span class="math">\(10^{57}\)</span></p></td>
+<td><p><span class="math">\(2^{191}\)</span> ns = 9.8 x <span class="math">\(10^{40}\)</span> years</p></td>
+<td><p>9.8 × <span class="math">\(10^{36}\)</span> years</p></td>
+</tr>
+<tr><td><p>256</p></td>
+<td><p>AES</p></td>
+<td><p><span class="math">\(2^{256}\)</span> ≈ 1.2 x <span class="math">\(10^{77}\)</span></p></td>
+<td><p><span class="math">\(2^{255}\)</span> ns = 1.8 x <span class="math">\(10^{60}\)</span> years</p></td>
+<td><p>1.8 x <span class="math">\(10^{56}\)</span> years</p></td>
+</tr>
+<tr><td><p>26 characters (permutation)</p></td>
+<td><p>Monoalphabetic</p></td>
+<td><p>26! = 4 x <span class="math">\(10^{26}\)</span></p></td>
+<td><p>6.3 x <span class="math">\(10^9\)</span> years</p></td>
+<td><p>6.3 × <span class="math">\(10^6\)</span> years</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="strength-of-des-timing-attacks">
+<h2>Strength of DES - Timing Attacks</h2>
+<ul class="incremental simple">
+<li><p>One in which information about the key or the plaintext is obtained by observing how long it takes a given implementation to perform decryptions on various ciphertexts.</p></li>
+<li><p>Exploits the fact that an encryption or decryption algorithm often takes slightly different amounts of time on different inputs.</p></li>
+<li><p>So far it appears unlikely that this technique will ever be successful against DES or more powerful symmetric ciphers such as triple DES and AES.</p></li>
+</ul>
+</div><div class="ld-slide" id="block-cipher-design-principles-number-of-rounds">
+<h2>Block Cipher Design Principles - Number of Rounds</h2>
+<ul class="incremental simple">
+<li><p>The greater the number of rounds, the more difficult it is to perform cryptanalysis.</p></li>
+<li><p>In general, the criterion should be that the number of rounds is chosen so that known cryptanalytic efforts require greater effort than a simple brute-force key search attack.</p></li>
+<li><p>If DES had 15 or fewer rounds, differential cryptanalysis would require less effort than a brute-force key search.</p></li>
+</ul>
+</div><div class="ld-slide" id="block-cipher-design-principles-function-f">
+<h2>Block Cipher Design Principles - Function F</h2>
+<ul class="incremental simple">
+<li><p>The heart of a Feistel block cipher is the function F.</p></li>
+<li><p>The more nonlinear F, the more difficult any type of cryptanalysis will be.</p></li>
+<li><p>The algorithm should have good avalanche properties.</p></li>
+</ul>
+<aside class="admonition incremental smaller">
+<p class="admonition-title">Strict Avalanche Criterion (SAC)</p>
+<p>States that any output bit j of an S-box should change with probability 1/2 when any single input bit i is inverted for all i, j</p>
+</aside>
+<aside class="admonition incremental smaller">
+<p class="admonition-title">Bit Independence Criterion (BIC)</p>
+<p>States that output bits j and k should change independently when any single input bit i is inverted for all i, j, and k</p>
+</aside>
+<ul class="incremental simple">
+<li><p>The SAC and BIC criteria appear to strengthen the effectiveness of the confusion function</p></li>
+</ul>
+</div><div class="ld-slide" id="block-cipher-design-principles-key-schedule-algorithm">
+<h2>Block Cipher Design Principles - Key Schedule Algorithm</h2>
+<ul class="incremental simple">
+<li><p>With any Feistel block cipher, the key is used to generate one subkey for each round</p></li>
+<li><p>In general, we would like to select subkeys to maximize the difficulty of deducing individual subkeys and the difficulty of working back to the main key.</p></li>
+<li><p>It is suggested that, at a minimum, the key schedule should guarantee key/ciphertext <strong>Strict Avalanche Criterion</strong> and <strong>Bit Independence Criterion</strong></p></li>
+</ul>
 </div>
 </body>
 </html>
