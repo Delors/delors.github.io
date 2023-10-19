@@ -11,7 +11,7 @@
 <meta content="2023_10-W3M20014-public_key_cryptography" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <title>Public-Key Cryptography and RSA</title>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js?config=TeX-AMS_CHTML"></script>
+<script type="text/javascript" src="ld/ext/mathjax/es5/tex-chtml.js?config=TeX-AMS_CHTML"></script>
 <link rel="stylesheet" href="ld/normalize.css" type="text/css" />
 <style type="text/css">
 
@@ -623,7 +623,7 @@ a { text-decoration: none; }
 <dd class="lecturer"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2023-10-12</dd>
+<dd class="version">2023-10-19</dd>
 <dt class="based-on">Based on<span class="colon">:</span></dt>
 <dd class="based-on"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
@@ -799,7 +799,7 @@ a { text-decoration: none; }
 <p>A one-way function is one that maps a domain into a range such that every function value has a unique inverse, with the condition that the <em>calculation of the function is easy</em>, whereas the <em>calculation of the inverse is infeasible</em></p>
 <ul class="simple">
 <li><p><span class="math">\(Y = f(X)\)</span> easy</p></li>
-<li><p><span class="math">\(X = f–1(Y)\)</span> infeasible</p></li>
+<li><p><span class="math">\(X = f^{–1}(Y)\)</span> infeasible</p></li>
 </ul>
 </li>
 <li><p>A trap-door one-way function is a family of invertible functions <span class="math">\(f_k\)</span>, such that</p>
@@ -924,6 +924,9 @@ a { text-decoration: none; }
 </div><div class="ld-slide" id="example-of-rsa-algorithm">
 <h2>Example of RSA Algorithm</h2>
 <dl class="field-list">
+<dt>p and q<span class="colon">:</span></dt>
+<dd><p><span class="math">\(p = 11; q = 17; n = 187\)</span></p>
+</dd>
 <dt>Plaintext<span class="colon">:</span></dt>
 <dd><p>88</p>
 </dd>
@@ -932,7 +935,7 @@ a { text-decoration: none; }
 <p><span class="math">\(88^7\;mod\; 187 = 11 = C\)</span></p>
 </dd>
 <dt>Decryption<span class="colon">:</span></dt>
-<dd><p><span class="math">\(PR =\lbrace d= 23, 187 \rbrace\)</span>:</p>
+<dd><p><span class="math">\(PR =\lbrace d= 23, n = 187 \rbrace\)</span>:</p>
 <p><span class="math">\(11^{23}\; mod\; 187 = 88 = P\)</span></p>
 </dd>
 </dl>
@@ -1027,7 +1030,7 @@ a { text-decoration: none; }
 <h2>Efficient Operation Using the Public Key</h2>
 <ul class="simple">
 <li><p>To speed up the operation of the RSA algorithm using the public key, a specific choice of e is usually made</p></li>
-<li><p>The most common choice is 65537 (216 + 1)</p></li>
+<li><p>The most common choice is 65537 (<span class="math">\(2^{16} + 1\)</span>)</p></li>
 <li><p>Two other popular choices are <span class="math">\(e=3\)</span> and <span class="math">\(e=17\)</span></p></li>
 <li><p>Each of these choices has only two 1 bits, so the number of multiplications required to perform exponentiation is minimized</p></li>
 <li><p>With a very small public key, such as <span class="math">\(e = 3\)</span>, RSA becomes vulnerable to a simple attack</p></li>
@@ -1038,7 +1041,7 @@ a { text-decoration: none; }
 <li><p>Decryption uses exponentiation to power <span class="math">\(d\)</span></p></li>
 <li><p>A small value of d is vulnerable to a brute-force attack and to other forms of cryptanalysis</p></li>
 <li><p>Can use the Chinese Remainder Theorem (CRT) to speed up computation:</p>
-<p>The quantities <span class="math">\(d\; mod\; (p – 1)\)</span> and <span class="math">\(d\; mod\; (q – 1)\)</span> can be precalculated.</p>
+<p>The quantities <span class="math">\(d\; mod\; (p - 1)\)</span> and <span class="math">\(d\; mod\; (q - 1)\)</span> can be precalculated.</p>
 <p>End result is that the calculation is approximately four times as fast as evaluating <span class="math">\(M = C^d\; mod\; n\)</span> directly.</p>
 </li>
 </ul>
@@ -1074,9 +1077,9 @@ a { text-decoration: none; }
 <h2>Factoring Problem</h2>
 <p>We can identify three approaches to attacking RSA mathematically:</p>
 <ol class="arabic simple">
-<li><p>Factor <span class="math">\(n\)</span> into its two prime factors. This enables calculation of <span class="math">\(\phi(n) = (p - 1) \times (q - 1)\)</span>, which in turn enables determination of <span class="math">\(d = e^{-1} (mod ø(n))\)</span></p></li>
-<li><p>Determine <span class="math">\(\phi(n)\)</span> directly without first determining p and q. Again this enables determination of <span class="math">\(d = e^{-1} (mod\; \phi(n))\)</span></p></li>
-<li><p>Determine <span class="math">\(d\)</span> directly without first determining ø(n)</p></li>
+<li><p>Factor <span class="math">\(n\)</span> into its two prime factors. This enables calculation of <span class="math">\(\phi(n) = (p - 1) \times (q - 1)\)</span>, which in turn enables determination of <span class="math">\(d = e^{-1} (mod\; ø(n))\)</span>.</p></li>
+<li><p>Determine <span class="math">\(\phi(n)\)</span> directly without first determining <span class="math">\(p\)</span> and <span class="math">\(q\)</span>. Again, this enables determination of <span class="math">\(d = e^{-1} (mod\; \phi(n))\)</span>.</p></li>
+<li><p>Determine <span class="math">\(d\)</span> directly without first determining <span class="math">\(\phi(n)\)</span>.</p></li>
 </ol>
 </div><div class="ld-slide" id="timing-attacks">
 <h2>Timing Attacks</h2>

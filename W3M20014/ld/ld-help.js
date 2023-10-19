@@ -19,7 +19,7 @@ function getHelpElement() {
             <strong>Keyboard Bindings</strong><br>
             <table>
                 <tr><th>Key</th><th>Action</th></tr>
-                <tr><td>p</td><td>toggle print preview</td></tr>
+                <tr><td>c</td><td>toggle continuous view</td></tr>
                 <tr></tr>
                 <tr><td>h</td><td>toggle help</td></tr>
                 <tr></tr>

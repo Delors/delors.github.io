@@ -55,10 +55,10 @@ A Lecture Doc document is basically a plain HTML5 document, which has a very sim
 
 As seen in the above example, two stylesheets related to the rendering of the controls need to be imported and two JavaScript files which enable the base functionality. Support for math equations and syntax highlighting of code needs additional imports. See the advanced example for that.
 
-The body of the HTML document should have only slides as child elemments. The slides are div elements with the class `ld-slide`. When LectureDoc is initialized further divs will automatically be created for the control elements.
+The body of the HTML document should have only slides as child elements. The slides are div elements with the class ``ld-slide``. When LectureDoc is initialized further ``div``s will automatically be created for the control elements.
 
 
-Advanded features
+Advanced features
 -----------------
 
 Controlling the initial appearance
@@ -70,7 +70,7 @@ ___________________________________
 
         <meta name="ld-show-light-table" content="true">
 
-- To start the presenation with a differnt slide than the first one, use the following meta tag.
+- To start the presentation with a different slide than the first one, use the following meta tag.
 
     .. code:: html
 
@@ -79,7 +79,7 @@ ___________________________________
 
     - if content is an int then the corresponding slide will be shown. (The first slide has the value 1).
     - if content is "`last`" the last slide will be shown.
-    - if content is "`last-viewed`" the last viewed slide will be shown. Uses the browser's local storage for storing the slide number; may not work in all situations. Requires that the document has a unique id. The id can be set using: :code: <meta name="id" content="(unique id)">`.
+    - if content is "`last-viewed`" the last viewed slide will be shown. Uses the browser's local storage for storing the slide number; may not work in all situations. Requires that the document has a unique id. The id can be set using: :code:`<meta name="id" content="(unique id)">`.
 
 .. note:: 
 
@@ -95,7 +95,7 @@ Example when using rst2ld::
 
     Directly shown.
 
-    .. class:: incremtal
+    .. class:: incremental
     
         Step 1
     
@@ -108,7 +108,7 @@ Example when using rst2ld::
 
         This note will be shown after step 1 and step 2.
 
-In case of lists (`ol` or `ul`) it is sufficient to specifcy `incremental` in the class attribute of `ol` or `ul`; it is possible, but not necessary to specify the class attribute of every `li`` element.
+In case of lists (`ol` or `ul`) it is sufficient to specify `incremental` in the class attribute of `ol` or `ul`; it is possible, but not necessary to specify the class attribute of every `li`` element.
 
 
 Slide Design
@@ -131,4 +131,4 @@ Non-Goals
 Broad compatibility
 ___________________
 
-Lecture Doc does not strive for maximum compatibility with all browsers. I.e., it is only regulary tested on the most modern versions of Chrome, Safari and Firefox as of 2023.  In general, LectureDoc will not use features not fully supported by one of these browsers. Hence, in practice only mature features are going to be used. However, feel free to open a pull-request if something can be improved without introducing strong dependencies on specific browsers.
+Lecture Doc does not strive for maximum compatibility with all (past) browsers. I.e., it is only regularly tested on the most modern versions of Chrome, Safari and Firefox as of 2023.  In general, LectureDoc will not use features not fully supported by one of these browsers. Hence, in practice only mature features are going to be used. However, feel free to open a pull-request if something can be improved without introducing strong dependencies on specific browsers.

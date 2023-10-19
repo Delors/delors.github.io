@@ -382,7 +382,7 @@ window.addEventListener("load", (event) => {
     });
 });
 
-function togglePrintPreview() {
+function toggleContinuousView() {
     const ld_handout_pane = document.getElementById("ld-handout-pane");
     const ld_main_pane = document.getElementById("ld-main-pane")
     if (getComputedStyle(ld_main_pane).display == "flex") {
@@ -399,34 +399,39 @@ function togglePrintPreview() {
 */
 document.addEventListener("keydown", (event) => {
     // TODO use 2023 style event handling...
-    switch (event.keyCode) {
-        /* handle navigation */
-        case 48: /*0*/
-        case 49: /*1*/
-        case 50: /*2*/
-        case 51: /*3*/
-        case 52: /*4*/
-        case 53: /*5*/
-        case 54: /*6*/
-        case 55: /*7*/
-        case 56: /*8*/
-        case 57: /*9*/              updateJumpTarget(event.key); break;
-        case 27: /* escape */       clearJumpTarget(); break;
-        case 8: /* backspace */     cutDownJumpTarget(); break;
-        case 13: /* return */       jumpToSlide(); break;
-        case 37: /* arrow left */   moveToPreviousSlide(); break;
-        case 39: /* arrow right */
-        case 32: /* space */        advancePresentation(); break;
-        case 82: /* r */            resetSlideProgress(document.getElementById("ld-slide-no-" + currentSlideNo)); break;
+    if (event.altKey || event.ctrlKey || event.shiftKey || event.metaKey) {
+        console.log("modifier pressed: " + event.key);
+        return;
+    }
 
-        case 76: /* l*/             toggleLightTable(); break;
+    switch (event.key) {
+        // handle navigation 
+        case "0": 
+        case "1": 
+        case "2": 
+        case "3": 
+        case "4": 
+        case "5": 
+        case "6": 
+        case "7": 
+        case "8": 
+        case "9":           updateJumpTarget(event.key); break;
+        case "Escape":      clearJumpTarget(); break;
+        case "Backspace":   cutDownJumpTarget(); break;
+        case "Enter":       jumpToSlide(); break;
+        case "ArrowLeft":   moveToPreviousSlide(); break;
+        case "ArrowRight": 
+        case "Space":       advancePresentation(); break;
+        case "r":           resetSlideProgress(document.getElementById("ld-slide-no-" + currentSlideNo)); break;
 
-        case 72: /* h */            toggleHelp(); break;
+        case "l":           toggleLightTable(); break;
 
-        case 80: /* p */            togglePrintPreview(); break;
+        case "h":           toggleHelp(); break;
 
-        /* for development purposes */
+        case "c":           toggleContinuousView(); break;
+
+        // for development purposes:
         default:
-            console.log("unhandled keydown: " + event.key + " - " + event.keyCode);
+            console.log("unhandled keydown: " + event.key);
     }
 });
