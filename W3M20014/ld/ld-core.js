@@ -5,10 +5,6 @@
        -   LectureDoc (i.e., the slide set) must be 
            usable without a Server(!); hence, no JavaScript modules :-(...
 
-       -   The code related to a specific functionality is highly localized.
-           E.g., the code to show the help pane registers its own event listener to initialize
-           the help pane. However, the code necessary for the light table also registers a(nother) listener for the same event.
-
        -   We store most state information in the DOM to make it possible to
            start the presentation in a specific state (e.g., on a specific slide,
            directly showing the light-table etc.)
@@ -19,6 +15,8 @@
 
 */
 "use strict";
+
+lectureDoc2 = function() {
 
 // TODO read these values from the DOM if possible.
 const slideWidth = 1920;
@@ -435,3 +433,5 @@ document.addEventListener("keydown", (event) => {
             console.log("unhandled keydown: " + event.key);
     }
 });
+
+}();
