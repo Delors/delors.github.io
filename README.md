@@ -1,1 +1,1 @@
-Teaching material related to lectures given by Prof. Dr. Michael Eichberg.
+Links to open-source projects and teaching material of Prof. Dr. Michael Eichberg.
