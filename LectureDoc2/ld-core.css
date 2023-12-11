@@ -1,0 +1,331 @@
+/* 
+    This is LectureDoc's core CSS file. It primarily defines css properties 
+    directly related to the core functionality of LectureDoc. I.e., how slides 
+    are rendered in the different modes. The CSS classes defined in this file 
+    are (often) used by LectureDoc. Hence, any changes here, may require code
+    changes in other CSS and/or JavaScript files.
+    
+    All styling information related to LectureDoc's widgets is found in 
+    ld-theme.css.
+
+    Styling related to slides is defined in user defined css file.
+
+    ____________________________________________________________________________
+
+    _______       Any changes here, will likely break LectureDoc!        _______
+
+    ____________________________________________________________________________
+*/
+
+
+:root {
+    /*  Specifies the width and height of slides in pixels. This has proven
+        to be very helpful when adding pictures and drawings as it enables a
+        common reference frame. Besides that only the ratio is relevant.
+
+        These value are always set by the JavaScript when the document is
+        loaded; either to the default values defined in JavaScript or to the 
+        values specified in the document. 
+        */
+    --ld-slide-width: 1920px;   /* cf. lectureDoc2.presentation.slide.width */
+    --ld-slide-height: 1200px;  /* cf. lectureDoc2.presentation.slide.height */
+
+    /*  The default zoom levels. 
+        */
+    --ld-light-table-zoom-level: 0.2;   /* may be overridden from within LectureDoc */ 
+    --ld-continuous-view-zoom-level: 0.5; /* hard coded - cannot be changed by the user  */
+}
+
+/* Additional basic normalization. */
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+div {
+    /* Foreground, Background */
+    scrollbar-color: #999 #333;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/*  We need a fixed size for the main pane to make the content as a whole 
+    scalable using the scale property. The scale property is updated on viewport 
+    changes using Javascript. 
+
+    Conceptually, we would like to have some CSS like:
+    
+        scale: min(calc(100vh/1080px),calc(100vw/1920px)); 
+    
+    But such computations are (not yet?) supported.
+
+    The actual (fixed) size, however, doesn't really matter, because the content
+    is scaled anyway. Nevertheless, when external content is embededd (in 
+    particular images) it makes sense to have a size that resembles a "natural"
+    screen resolution to avoid having the user to scale everything up or down
+    when adding media content. 
+    Nevertheless, in the end all that matters is the aspect ratio.
+*/
+.ld-slide {
+    width: var(--ld-slide-width);
+    height: var(--ld-slide-height);
+    overflow: hidden;
+}
+
+/*  Programmatically, we set the display property of the template slides to none __after___ 
+    copying.
+
+    body > div.ld-slide {
+        display: none;
+    }
+*/
+
+/*  ----------------------------------------------------------------------------
+
+    Core styles for the main pane which is used to render the slide.
+*/
+
+#ld-main-pane {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /*  In general, we don't want accidental interaction with the slides, such 
+        as selecting texts/elements when giving a presentation.
+        
+        However, in the Javascript code we reenable interaction with selected 
+        elements such as links as this enable inter-slide navigations.
+        */
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+#ld-main-pane .ld-slide {
+    position: absolute;
+    /*  To only show one slide, we simply scale all other slides to a size of 0.
+        This makes them effectively invisible without removing them from the DOM
+        as it would be the case when we would set display to none.
+
+        Compared to using the display property (i.e., none <-> block) this has 
+        a number of advantages: 
+         - counters, e.g., for section titles work as expected.
+         - the scale property can be easily animated and enables "cool" 
+           animations.
+        */
+    scale: 0; 
+}
+
+/*  ----------------------------------------------------------------------------
+
+    Core styles for the light table view
+*/
+
+#ld-light-table-dialog {
+    opacity: 0;
+    transition: opacity 500ms;
+}
+
+#ld-light-table-dialog-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#ld-light-table-header {
+    flex-grow: 0;
+}
+
+#ld-light-table-footer {
+    flex-grow: 0;
+}
+
+#ld-light-table-slides {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: flex-start;
+    scroll-snap-type: y mandatory; /* facilitates saving the scroll-position */
+}
+
+.ld-light-table-slide-overlay {
+    width: calc(var(--ld-slide-width) * var(--ld-light-table-zoom-level));
+    height: calc(var(--ld-slide-height) * var(--ld-light-table-zoom-level));
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.ld-light-table-slide-pane {
+    width: calc(var(--ld-slide-width) * var(--ld-light-table-zoom-level));
+    height: calc(var(--ld-slide-height) * var(--ld-light-table-zoom-level));
+    position: relative;
+    margin: 3px; 
+    overflow: hidden;
+    scroll-snap-align: start;
+}
+
+.ld-light-table-slide-pane.ld-light-table-slide-pane-hide{
+    width: 0;
+    margin: 0;
+    scale: 0;
+    transition: width 0ms 750ms, scale 750ms ease-out; 
+    
+}
+
+
+.ld-light-table-slide-scaler {
+    position: absolute;
+    scale: var(--ld-light-table-zoom-level);
+}
+
+#ld-light-table-slides .ld-slide {
+    position: absolute;
+}
+
+/*  ----------------------------------------------------------------------------
+
+    Core styles for the help dialog
+*/
+
+#ld-help-dialog {
+    /*  We want to have a very subtle fade-out effect. 
+        
+        The value 500ms is also used in the JavaScript code to toggle the 
+        display property between none and block. This is necessary to make 
+        the link in the help ineffective, when the help is not shown!
+    */
+    opacity: 0;
+    transition: opacity 500ms;
+}
+
+#ld-help {
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
+/*  ----------------------------------------------------------------------------
+
+    Core styles for the continuous view 
+*/
+
+#ld-continuous-view-pane {
+    width: calc(
+        var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
+    max-width: calc(
+        var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
+    margin: auto;
+    display: none; 
+    /*
+    ATTENTION:  When the continuous view pane becomes the "scroll container", 
+                printing the slide set/generating a PDF slide set becomes 
+                virtually impossible. (Most?) Browsers can only handle the
+                situation where the whole document directly belongs to the
+                main body element.
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;    
+    */
+}
+
+.ld-continuous-view-slide-pane {
+    box-sizing: border-box;
+    width: calc(
+        var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
+    max-width: calc(
+        var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
+    height: calc(
+        var(--ld-slide-height) * var(--ld-continuous-view-zoom-level));
+    max-height: calc(
+        var(--ld-slide-height) * var(--ld-continuous-view-zoom-level));
+    position: relative;
+    /*
+        ATTENTION:  SEE ABOVE!
+        scroll-snap-align: start;
+    */
+}
+
+#ld-continuous-view-pane .ld-slide {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.ld-continuous-view-scaler {
+    position: absolute;
+    scale: var(--ld-continuous-view-zoom-level);
+}
+
+.ld-continuous-view-slide-number {
+    position: absolute;
+}
+
+@media print { /* at least Safari seems to honor this setting...*/
+    .ld-continuous-view-slide-pane {
+        page-break-before: always;
+    }
+}
+
+
+/*  ----------------------------------------------------------------------------
+
+    Styling related to the slide number.
+*/
+
+#ld-slide-number-pane {
+    display: none;
+}
+
+
+/*  ----------------------------------------------------------------------------
+
+    Styling related to standard elements to make them work in the context of 
+    LectureDoc.
+*/
+
+a {
+    user-select: initial;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*  ----------------------------------------------------------------------------
+
+    Classes with special meaning for LectureDoc. 
+*/
+
+/*  
+
+.code.copy-to-clipboard div.copy-it 
+___________________________________
+
+LectureDoc has special support for enabling copy to clipboard. If a code block (i.e., a DIV or PRE element with the class code and also copy-to-clipboard) is found, LectureDoc will add a copy "button" to the code block by means of a div with the class copy-it.
+
+Example:
+<div class="code copy-to-clipboard">
+    <div class="copy-it">Copy</div> <!-- added by LectureDoc -->
+    <pre><code>...</code></pre>
+</div>
+
+or
+
+<pre class="code copy-to-clipboard">
+    <div class="copy-it">Copy</div> <!-- added by LectureDoc -->
+    <code>...</code>
+</pre>
+
+.code.copy-to-clipboard div.copy-it 
+*/
