@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="AES" name="keywords" />
+<meta content="Advanced Encryption Standard (AES)" lang="en" name="description" xml:lang="en" />
+<meta content="Advanced Encryption Standard (AES)" lang="de" name="description" xml:lang="de" />
+<meta content="2023_10-W3M20014-aes" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Advanced Encryption Standard (AES)</title>
+<script type="text/javascript" src="ld/ext/mathjax/es5/tex-chtml.js?config=TeX-AMS_CHTML"></script>
+<link rel="stylesheet" href="ld/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="ld/ld-help.js" type="text/javascript"></script>
+    <script src="ld/ld-core.js" type="text/javascript"></script>    
+    <link rel="stylesheet" href="ld/ld.css" type="text/css" />
+    <link rel="stylesheet" href="ld/default.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Advanced Encryption Standard (AES)</h1>
+<dl class="docinfo simple">
+<dt class="lecturer">Lecturer<span class="colon">:</span></dt>
+<dd class="lecturer"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2023-10-19</dd>
+<dt class="based-on">Based on<span class="colon">:</span></dt>
+<dd class="based-on"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
+</dd>
+</dl>
+<img alt="DHBW CAS Logo" class="logo" src="logo.svg" />
+</div>
+<div class="ld-slide" id="finite-field-arithmetic-recap">
+<h2>Finite Field Arithmetic (Recap)</h2>
+<ul class="incremental simple">
+<li><p>A field is a set in which we can do addition, subtraction, multiplication, and division without leaving the set.</p></li>
+<li><p>Division is defined with the following rule:  <span class="math">\(a/b = a(b^{-1})\)</span>.</p></li>
+<li><p>An example of a finite field (one with a finite number of elements) is the set <span class="math">\(Z_p\)</span> consisting of all the integers <span class="math">\(\lbrace 0,1,....,p-1 \rbrace\)</span>, where p is a prime number and in which arithmetic is carried out modulo <span class="math">\(p\)</span>.</p></li>
+</ul>
+</div><div class="ld-slide" id="finite-field-arithmetic-recap-1">
+<h2>Finite Field Arithmetic (Recap)</h2>
+<ul class="incremental simple">
+<li><p>For convenience and for implementation efficiency, we would like to work with integers that fit exactly into a given number of bits with no wasted bit patterns.</p>
+<ul>
+<li><p>Integers in the range 0 through <span class="math">\(2^n – 1\)</span>, which fit into an n-bit word.</p></li>
+</ul>
+</li>
+<li><p>If one of the operations used in the algorithm is division, then we need to work in arithmetic defined over a field.</p>
+<ul>
+<li><p>Division requires that each nonzero element has a multiplicative inverse.</p></li>
+</ul>
+</li>
+<li><p>The set of such integers, <span class="math">\(Z_{2^n}\)</span>, using modular arithmetic, is not a field!</p>
+<ul>
+<li><p>For example, the integer 2 has no multiplicative inverse in <span class="math">\(Z_{2^n}\)</span>, that is, there is no integer b, such that <span class="math">\(2b\; mod\; 2^n = 1\)</span></p></li>
+</ul>
+</li>
+<li><p>A finite field containing <span class="math">\(2^n\)</span> elements is referred to as <span class="math">\(GF(2^n)\)</span>.</p></li>
+</ul>
+<div class="hint incremental docutils container">
+<p>Every polynomial in <span class="math">\(GF(2^n)\)</span> can be represented by an n-bit number.</p>
+</div>
+</div><div class="ld-slide" id="finite-field-arithmetic-for-aes">
+<h2>Finite Field Arithmetic for AES</h2>
+<ul>
+<li><p>In the Advanced Encryption Standard (AES) all operations are performed on 8-bit bytes</p></li>
+<li><p>The arithmetic operations of addition, multiplication, and division are performed over the finite field <span class="math">\(GF(2^8)\)</span></p>
+<p>AES uses the irreducible polynomial <span class="math">\(m(x) = x^8 + x^4 + x^3 +x +1\)</span></p>
+</li>
+</ul>
+</div><div class="ld-slide" id="aes-key-elements">
+<h2>AES Key Elements</h2>
+<ul>
+<li><p>AES uses a fixed block size of 128 bits.</p></li>
+<li><p>AES operates on a 4x4 column-major order array of 16 bytes/128 bits: <span class="math">\(b_0,b_1,\dots,b_{15}\)</span> termed the state:</p>
+<div class="math">
+\begin{equation*}
+\begin{bmatrix}b_{0}&amp;b_{4}&amp;b_{8}&amp;b_{12}\\b_{1}&amp;b_{5}&amp;b_{9}&amp;b_{13}\\b_{2}&amp;b_{6}&amp;b_{10}&amp;b_{14}\\b_{3}&amp;b_{7}&amp;b_{11}&amp;b_{15}\end{bmatrix}
+\end{equation*}
+</div>
+</li>
+</ul>
+</div><div class="ld-slide" id="aes-encryption-process">
+<h2>AES Encryption Process</h2>
+<img alt="AES Encryption Process" class="align-center" src="5-aes_encryption_process.svg" style="width: 1700px;" />
+</div><div class="ld-slide" id="aes-parameters">
+<h2>AES Parameters</h2>
+<table class="align-center" style="width: 1650px;">
+<tbody>
+<tr><td><p>Key Size (words/bytes/bits)</p></td>
+<td><p>4/16/128</p></td>
+<td><p>6/24/192</p></td>
+<td><p>8/32/256</p></td>
+</tr>
+<tr><td><p>Plaintext Block Size (words/bytes/bits)</p></td>
+<td><p>4/16/128</p></td>
+<td><p>4/16/128</p></td>
+<td><p>4/16/128</p></td>
+</tr>
+<tr><td><p>Number of Rounds</p></td>
+<td><p>10</p></td>
+<td><p>12</p></td>
+<td><p>14</p></td>
+</tr>
+<tr><td><p>Round Key Size (words/bytes/bits)</p></td>
+<td><p>4/16/128</p></td>
+<td><p>4/16/128</p></td>
+<td><p>4/16/128</p></td>
+</tr>
+<tr><td><p>Expanded Key Size (words/bytes)</p></td>
+<td><p>44/176</p></td>
+<td><p>52/208</p></td>
+<td><p>60/240</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="aes-encryption-and-decryption-process">
+<h2>AES Encryption and Decryption Process</h2>
+<div class="small docutils container">
+<p>(Key Size 128bits)</p>
+</div>
+<img alt="AES Encryption and Decryption Process" class="align-center" src="5-aes_encryption_and_decryption.svg" style="width: 1250px;" />
+</div><div class="ld-slide" id="aes-detailed-structure">
+<h2>AES Detailed Structure</h2>
+<ul class="simple">
+<li><p>Processes the entire data block as a single matrix during each round using substitutions and permutation.</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>The key that is provided as input is expanded into an array of forty-four 32-bit words, <span class="math">\(w[i]\)</span> if 128 bits are used for the keysize.</p></li>
+<li><p>The cipher begins and ends with an AddRoundKey stage.</p></li>
+<li><p>Can view the cipher as alternating operations of XOR encryption (AddRoundKey) of a block, followed by scrambling of the block (the other three stages), followed by XOR encryption, and so on.</p></li>
+<li><p>Each stage is easily reversible.</p></li>
+<li><p>The decryption algorithm makes use of the expanded key in reverse order, however the decryption algorithm is not identical to the encryption algorithm.</p></li>
+<li><p>State is the same for both encryption and decryption.</p></li>
+<li><p>Final round of both encryption and decryption consists of only three stages.</p></li>
+</ul>
+</div><div class="ld-slide" id="aes-uses-four-different-stages">
+<h2>AES Uses Four Different Stages</h2>
+<dl class="field-list simple">
+<dt>Substitute bytes<span class="colon">:</span></dt>
+<dd><p>uses an S-box to perform a byte-by-byte substitution of the block</p>
+</dd>
+<dt>ShiftRows<span class="colon">:</span></dt>
+<dd><p>is a simple permutation.</p>
+</dd>
+<dt>MixColumns<span class="colon">:</span></dt>
+<dd><p>is a substitution that makes use of arithmetic over <span class="math">\(GF(2^8)\)</span>.</p>
+</dd>
+<dt>AddRoundKey<span class="colon">:</span></dt>
+<dd><p>is a simple bitwise XOR of the current block with a portion of the expanded key.</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="aes-substitute-byte-transformation">
+<h2>AES Substitute byte transformation</h2>
+<img alt="AES substitute byte tansformation" class="align-center" src="5-aes_substitute_byte_transformation.svg" style="width: 1400px;" />
+</div><div class="ld-slide" id="aes-s-box">
+<h2>AES S-box</h2>
+<table class="align-center small hexdump" id="s-box">
+<tbody>
+<tr><td><p><span class="math">\(_x\\^y\)</span></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+<td><p>8</p></td>
+<td><p>9</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+</tr>
+<tr><td><p>0</p></td>
+<td><p>63</p></td>
+<td><p>7C</p></td>
+<td><p>77</p></td>
+<td><p>7B</p></td>
+<td><p>F2</p></td>
+<td><p>6B</p></td>
+<td><p>6F</p></td>
+<td><p>C5</p></td>
+<td><p>30</p></td>
+<td><p>01</p></td>
+<td><p>67</p></td>
+<td><p>2B</p></td>
+<td><p>FE</p></td>
+<td><p>D7</p></td>
+<td><p>AB</p></td>
+<td><p>76</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>CA</p></td>
+<td><p>82</p></td>
+<td><p>C9</p></td>
+<td><p>7D</p></td>
+<td><p>FA</p></td>
+<td><p>59</p></td>
+<td><p>47</p></td>
+<td><p>FO</p></td>
+<td><p>AD</p></td>
+<td><p>D4</p></td>
+<td><p>A2</p></td>
+<td><p>AF</p></td>
+<td><p>9C</p></td>
+<td><p>A4</p></td>
+<td><p>72</p></td>
+<td><p>CO</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>B7</p></td>
+<td><p>FD</p></td>
+<td><p>93</p></td>
+<td><p>26</p></td>
+<td><p>36</p></td>
+<td><p>3F</p></td>
+<td><p>F7</p></td>
+<td><p>CC</p></td>
+<td><p>34</p></td>
+<td><p>A5</p></td>
+<td><p>E5</p></td>
+<td><p>F1</p></td>
+<td><p>71</p></td>
+<td><p>D8</p></td>
+<td><p>31</p></td>
+<td><p>15</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>04</p></td>
+<td><p>C7</p></td>
+<td><p>23</p></td>
+<td><p>С3</p></td>
+<td><p>18</p></td>
+<td><p>96</p></td>
+<td><p>05</p></td>
+<td><p>9A</p></td>
+<td><p>07</p></td>
+<td><p>12</p></td>
+<td><p>80</p></td>
+<td><p>E2</p></td>
+<td><p>EB</p></td>
+<td><p>27</p></td>
+<td><p>B2</p></td>
+<td><p>75</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>09</p></td>
+<td><p>83</p></td>
+<td><p>2C</p></td>
+<td><p>1A</p></td>
+<td><p>1B</p></td>
+<td><p>6E</p></td>
+<td><p>5A</p></td>
+<td><p>A0</p></td>
+<td><p>52</p></td>
+<td><p>3B</p></td>
+<td><p>D6</p></td>
+<td><p>B3</p></td>
+<td><p>29</p></td>
+<td><p>E3</p></td>
+<td><p>2F</p></td>
+<td><p>84</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>53</p></td>
+<td><p>D1</p></td>
+<td><p>00</p></td>
+<td><p>ED</p></td>
+<td><p>20</p></td>
+<td><p>FC</p></td>
+<td><p>B1</p></td>
+<td><p>5B</p></td>
+<td><p>6A</p></td>
+<td><p>СВ</p></td>
+<td><p>BE</p></td>
+<td><p>39</p></td>
+<td><p>4A</p></td>
+<td><p>4C</p></td>
+<td><p>58</p></td>
+<td><p>CF</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>DO</p></td>
+<td><p>EF</p></td>
+<td><p>AA</p></td>
+<td><p>FB</p></td>
+<td><p>43</p></td>
+<td><p>4D</p></td>
+<td><p>33</p></td>
+<td><p>85</p></td>
+<td><p>45</p></td>
+<td><p>F9</p></td>
+<td><p>02</p></td>
+<td><p>7F</p></td>
+<td><p>50</p></td>
+<td><p>3C</p></td>
+<td><p>9F</p></td>
+<td><p>A8</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>51</p></td>
+<td><p>A3</p></td>
+<td><p>40</p></td>
+<td><p>8F</p></td>
+<td><p>92</p></td>
+<td><p>9D</p></td>
+<td><p>38</p></td>
+<td><p>F5</p></td>
+<td><p>BC</p></td>
+<td><p>B6</p></td>
+<td><p>DA</p></td>
+<td><p>21</p></td>
+<td><p>10</p></td>
+<td><p>FF</p></td>
+<td><p>F3</p></td>
+<td><p>D2</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>CD</p></td>
+<td><p>0C</p></td>
+<td><p>13</p></td>
+<td><p>EC</p></td>
+<td><p>5F</p></td>
+<td><p>97</p></td>
+<td><p>44</p></td>
+<td><p>17</p></td>
+<td><p>C4</p></td>
+<td><p>A7</p></td>
+<td><p>7E</p></td>
+<td><p>3D</p></td>
+<td><p>64</p></td>
+<td><p>5D</p></td>
+<td><p>19</p></td>
+<td><p>73</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>60</p></td>
+<td><p>81</p></td>
+<td><p>4F</p></td>
+<td><p>DC</p></td>
+<td><p>22</p></td>
+<td><p>2A</p></td>
+<td><p>90</p></td>
+<td><p>88</p></td>
+<td><p>46</p></td>
+<td><p>EE</p></td>
+<td><p>B8</p></td>
+<td><p>14</p></td>
+<td><p>DE</p></td>
+<td><p>5E</p></td>
+<td><p>0B</p></td>
+<td><p>DB</p></td>
+</tr>
+<tr><td><p>A</p></td>
+<td><p>E0</p></td>
+<td><p>32</p></td>
+<td><p>ЗА</p></td>
+<td><p>0A</p></td>
+<td><p>49</p></td>
+<td><p>06</p></td>
+<td><p>24</p></td>
+<td><p>5C</p></td>
+<td><p>C2</p></td>
+<td><p>D3</p></td>
+<td><p>AC</p></td>
+<td><p>62</p></td>
+<td><p>91</p></td>
+<td><p>95</p></td>
+<td><p>E4</p></td>
+<td><p>79</p></td>
+</tr>
+<tr><td><p>B</p></td>
+<td><p>E7</p></td>
+<td><p>C8</p></td>
+<td><p>37</p></td>
+<td><p>6D</p></td>
+<td><p>8D</p></td>
+<td><p>D5</p></td>
+<td><p>4E</p></td>
+<td><p>A9</p></td>
+<td><p>6C</p></td>
+<td><p>56</p></td>
+<td><p>F4</p></td>
+<td><p>EA</p></td>
+<td><p>65</p></td>
+<td><p>7A</p></td>
+<td><p>AE</p></td>
+<td><p>08</p></td>
+</tr>
+<tr><td><p>C</p></td>
+<td><p>BA</p></td>
+<td><p>78</p></td>
+<td><p>25</p></td>
+<td><p>2E</p></td>
+<td><p>1C</p></td>
+<td><p>A6</p></td>
+<td><p>B4</p></td>
+<td><p>С6</p></td>
+<td><p>E8</p></td>
+<td><p>DD</p></td>
+<td><p>74</p></td>
+<td><p>1F</p></td>
+<td><p>4B</p></td>
+<td><p>BD</p></td>
+<td><p>8B</p></td>
+<td><p>8A</p></td>
+</tr>
+<tr><td><p>D</p></td>
+<td><p>70</p></td>
+<td><p>3E</p></td>
+<td><p>B5</p></td>
+<td><p>66</p></td>
+<td><p>48</p></td>
+<td><p>03</p></td>
+<td><p>F6</p></td>
+<td><p>0E</p></td>
+<td><p>61</p></td>
+<td><p>35</p></td>
+<td><p>57</p></td>
+<td><p>B9</p></td>
+<td><p>86</p></td>
+<td><p>C1</p></td>
+<td><p>1D</p></td>
+<td><p>9E</p></td>
+</tr>
+<tr><td><p>E</p></td>
+<td><p>E1</p></td>
+<td><p>F8</p></td>
+<td><p>98</p></td>
+<td><p>11</p></td>
+<td><p>69</p></td>
+<td><p>D9</p></td>
+<td><p>8E</p></td>
+<td><p>94</p></td>
+<td><p>9B</p></td>
+<td><p>1E</p></td>
+<td><p>87</p></td>
+<td><p>E9</p></td>
+<td><p>CE</p></td>
+<td><p>55</p></td>
+<td><p>28</p></td>
+<td><p>DF</p></td>
+</tr>
+<tr><td><p>F</p></td>
+<td><p>8C</p></td>
+<td><p>A1</p></td>
+<td><p>89</p></td>
+<td><p>OD</p></td>
+<td><p>BF</p></td>
+<td><p>E6</p></td>
+<td><p>42</p></td>
+<td><p>68</p></td>
+<td><p>41</p></td>
+<td><p>99</p></td>
+<td><p>2D</p></td>
+<td><p>OF</p></td>
+<td><p>BO</p></td>
+<td><p>54</p></td>
+<td><p>BB</p></td>
+<td><p>16</p></td>
+</tr>
+</tbody>
+</table>
+<p class="smaller incremental">Each individual byte of State is mapped into a new byte in the following way: The leftmost 4 bits of the byte are used as a row value and the rightmost 4 bits are used as a column vlaue. These two values serve as indexes into the S-box.</p>
+</div><div class="ld-slide" id="aes-inverse-s-box">
+<h2>AES Inverse S-box</h2>
+<table class="align-center small hexdump" id="inverse-s-box">
+<tbody>
+<tr><td><p><span class="math">\(_x\\^y\)</span></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+<td><p>8</p></td>
+<td><p>9</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+</tr>
+<tr><td><p>0</p></td>
+<td><p>52</p></td>
+<td><p>09</p></td>
+<td><p>6A</p></td>
+<td><p>D5</p></td>
+<td><p>30</p></td>
+<td><p>36</p></td>
+<td><p>A5</p></td>
+<td><p>38</p></td>
+<td><p>BF</p></td>
+<td><p>40</p></td>
+<td><p>A3</p></td>
+<td><p>9E</p></td>
+<td><p>81</p></td>
+<td><p>F3</p></td>
+<td><p>D7</p></td>
+<td><p>FB</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>7C</p></td>
+<td><p>E3</p></td>
+<td><p>39</p></td>
+<td><p>82</p></td>
+<td><p>9B</p></td>
+<td><p>2F</p></td>
+<td><p>FF</p></td>
+<td><p>87</p></td>
+<td><p>34</p></td>
+<td><p>8E</p></td>
+<td><p>43</p></td>
+<td><p>44</p></td>
+<td><p>C4</p></td>
+<td><p>DE</p></td>
+<td><p>E9</p></td>
+<td><p>СВ</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>54</p></td>
+<td><p>7B</p></td>
+<td><p>94</p></td>
+<td><p>32</p></td>
+<td><p>A6</p></td>
+<td><p>C2</p></td>
+<td><p>23</p></td>
+<td><p>3D</p></td>
+<td><p>EE</p></td>
+<td><p>4C</p></td>
+<td><p>95</p></td>
+<td><p>0B</p></td>
+<td><p>42</p></td>
+<td><p>FA</p></td>
+<td><p>С3</p></td>
+<td><p>4E</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>08</p></td>
+<td><p>2E</p></td>
+<td><p>A1</p></td>
+<td><p>66</p></td>
+<td><p>28</p></td>
+<td><p>D9</p></td>
+<td><p>24</p></td>
+<td><p>B2</p></td>
+<td><p>76</p></td>
+<td><p>5B</p></td>
+<td><p>A2</p></td>
+<td><p>49</p></td>
+<td><p>6D</p></td>
+<td><p>8B</p></td>
+<td><p>D1</p></td>
+<td><p>25</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>72</p></td>
+<td><p>F8</p></td>
+<td><p>F6</p></td>
+<td><p>64</p></td>
+<td><p>86</p></td>
+<td><p>68</p></td>
+<td><p>98</p></td>
+<td><p>16</p></td>
+<td><p>D4</p></td>
+<td><p>A4</p></td>
+<td><p>5C</p></td>
+<td><p>CC</p></td>
+<td><p>5D</p></td>
+<td><p>65</p></td>
+<td><p>B6</p></td>
+<td><p>92</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>6C</p></td>
+<td><p>70</p></td>
+<td><p>48</p></td>
+<td><p>50</p></td>
+<td><p>FD</p></td>
+<td><p>ED</p></td>
+<td><p>B9</p></td>
+<td><p>DA</p></td>
+<td><p>5E</p></td>
+<td><p>15</p></td>
+<td><p>46</p></td>
+<td><p>57</p></td>
+<td><p>A7</p></td>
+<td><p>8D</p></td>
+<td><p>9D</p></td>
+<td><p>84</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>90</p></td>
+<td><p>D8</p></td>
+<td><p>AB</p></td>
+<td><p>00</p></td>
+<td><p>8C</p></td>
+<td><p>ВС</p></td>
+<td><p>D3</p></td>
+<td><p>0A</p></td>
+<td><p>F7</p></td>
+<td><p>E4</p></td>
+<td><p>58</p></td>
+<td><p>05</p></td>
+<td><p>B8</p></td>
+<td><p>B3</p></td>
+<td><p>45</p></td>
+<td><p>06</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>DO</p></td>
+<td><p>2C</p></td>
+<td><p>1E</p></td>
+<td><p>8F</p></td>
+<td><p>CA</p></td>
+<td><p>3F</p></td>
+<td><p>OF</p></td>
+<td><p>02</p></td>
+<td><p>C1</p></td>
+<td><p>AF</p></td>
+<td><p>BD</p></td>
+<td><p>03</p></td>
+<td><p>01</p></td>
+<td><p>13</p></td>
+<td><p>8A</p></td>
+<td><p>6B</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>ЗА</p></td>
+<td><p>91</p></td>
+<td><p>11</p></td>
+<td><p>41</p></td>
+<td><p>4F</p></td>
+<td><p>67</p></td>
+<td><p>DC</p></td>
+<td><p>EA</p></td>
+<td><p>97</p></td>
+<td><p>F2</p></td>
+<td><p>CF</p></td>
+<td><p>CE</p></td>
+<td><p>FO</p></td>
+<td><p>B4</p></td>
+<td><p>E6</p></td>
+<td><p>73</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>96</p></td>
+<td><p>AC</p></td>
+<td><p>74</p></td>
+<td><p>22</p></td>
+<td><p>E7</p></td>
+<td><p>AD</p></td>
+<td><p>35</p></td>
+<td><p>85</p></td>
+<td><p>E2</p></td>
+<td><p>F9</p></td>
+<td><p>37</p></td>
+<td><p>E8</p></td>
+<td><p>1C</p></td>
+<td><p>75</p></td>
+<td><p>DF</p></td>
+<td><p>6E</p></td>
+</tr>
+<tr><td><p>A</p></td>
+<td><p>47</p></td>
+<td><p>FI</p></td>
+<td><p>1A</p></td>
+<td><p>71</p></td>
+<td><p>1D</p></td>
+<td><p>29</p></td>
+<td><p>C5</p></td>
+<td><p>89</p></td>
+<td><p>6F</p></td>
+<td><p>B7</p></td>
+<td><p>62</p></td>
+<td><p>0E</p></td>
+<td><p>AA</p></td>
+<td><p>18</p></td>
+<td><p>BE</p></td>
+<td><p>1B</p></td>
+</tr>
+<tr><td><p>B</p></td>
+<td><p>FC</p></td>
+<td><p>56</p></td>
+<td><p>3E</p></td>
+<td><p>4B</p></td>
+<td><p>С6</p></td>
+<td><p>D2</p></td>
+<td><p>79</p></td>
+<td><p>20</p></td>
+<td><p>9A</p></td>
+<td><p>DB</p></td>
+<td><p>CO</p></td>
+<td><p>FE</p></td>
+<td><p>78</p></td>
+<td><p>CD</p></td>
+<td><p>5A</p></td>
+<td><p>F4</p></td>
+</tr>
+<tr><td><p>C</p></td>
+<td><p>1F</p></td>
+<td><p>DD</p></td>
+<td><p>A8</p></td>
+<td><p>33</p></td>
+<td><p>88</p></td>
+<td><p>07</p></td>
+<td><p>C7</p></td>
+<td><p>31</p></td>
+<td><p>B1</p></td>
+<td><p>12</p></td>
+<td><p>10</p></td>
+<td><p>59</p></td>
+<td><p>27</p></td>
+<td><p>80</p></td>
+<td><p>EC</p></td>
+<td><p>5F</p></td>
+</tr>
+<tr><td><p>D</p></td>
+<td><p>60</p></td>
+<td><p>51</p></td>
+<td><p>7F</p></td>
+<td><p>A9</p></td>
+<td><p>19</p></td>
+<td><p>B5</p></td>
+<td><p>4A</p></td>
+<td><p>OD</p></td>
+<td><p>2D</p></td>
+<td><p>E5</p></td>
+<td><p>7A</p></td>
+<td><p>9F</p></td>
+<td><p>93</p></td>
+<td><p>С9</p></td>
+<td><p>9C</p></td>
+<td><p>EF</p></td>
+</tr>
+<tr><td><p>E</p></td>
+<td><p>A0</p></td>
+<td><p>E0</p></td>
+<td><p>3B</p></td>
+<td><p>4D</p></td>
+<td><p>AE</p></td>
+<td><p>2A</p></td>
+<td><p>F5</p></td>
+<td><p>BO</p></td>
+<td><p>C8</p></td>
+<td><p>EB</p></td>
+<td><p>BB</p></td>
+<td><p>3С</p></td>
+<td><p>83</p></td>
+<td><p>53</p></td>
+<td><p>99</p></td>
+<td><p>61</p></td>
+</tr>
+<tr><td><p>F</p></td>
+<td><p>17</p></td>
+<td><p>2B</p></td>
+<td><p>04</p></td>
+<td><p>7E</p></td>
+<td><p>BA</p></td>
+<td><p>77</p></td>
+<td><p>D6</p></td>
+<td><p>26</p></td>
+<td><p>E1</p></td>
+<td><p>69</p></td>
+<td><p>14</p></td>
+<td><p>63</p></td>
+<td><p>55</p></td>
+<td><p>21</p></td>
+<td><p>0C</p></td>
+<td><p>7D</p></td>
+</tr>
+</tbody>
+</table>
+<p class="smaller incremental"><em>Example</em>: The (hex)value 0xA3 (x=A and y=3) is mapped by the S-box to the (hex)value 0x0A. <strong>The inverse S-box maps the value 0x0A (x=0 and y=A) back to the original value</strong>.</p>
+</div><div class="ld-slide" id="s-box-rationale">
+<h2>S-Box Rationale</h2>
+<ul class="simple">
+<li><p>The S-box is designed to be resistant to known cryptanalytic attacks.</p></li>
+<li><p>The Rijndael developers sought a design that has a low correlation between input bits and output bits and the property that the output is not a linear mathematical function of the input.</p></li>
+<li><p>The nonlinearity is due to the use of the multiplicative inverse in the construction of the S-box.</p></li>
+</ul>
+</div><div class="ld-slide" id="shift-row-transformation">
+<h2>Shift Row Transformation</h2>
+<img alt="Shift row transformation" class="align-center" src="5-aes_shift_row_transformation.svg" style="width: 1600px;" />
+</div><div class="ld-slide" id="shift-row-transformation-rationale">
+<h2>Shift Row Transformation - Rationale</h2>
+<ul class="simple">
+<li><p>More substantial than it may first appear!</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>The State, as well as the cipher input and output, is treated as an array of four 4-byte columns.</p></li>
+<li><p>On encryption, the first 4 bytes of the plaintext are copied to the first column of State, and so on.</p></li>
+<li><p>The round key is applied to State column by column.</p></li>
+<li><p>Thus, a row shift moves an individual byte from one column to another, which is a linear distance of a multiple of 4 bytes.</p></li>
+<li><p>Transformation ensures that the 4 bytes of one column are spread out to four different columns.</p></li>
+</ul>
+</div><div class="ld-slide" id="mix-column-transformation">
+<h2>Mix Column Transformation</h2>
+<img alt="Mix column transformation" class="align-center" src="5-aes_mix_column_transformation.svg" style="width: 1500px;" />
+</div><div class="ld-slide" id="inverse-mix-column-transformation">
+<h2>Inverse Mix Column Transformation</h2>
+<img alt="Mix column transformation" class="align-center" src="5-aes_inv_mix_column_transformation.svg" style="width: 1500px;" />
+</div><div class="ld-slide" id="mix-colum-transformation-example">
+<h2>Mix Colum Transformation - Example</h2>
+<div class="two-columns smaller docutils container">
+<table class="hexdump small">
+<caption>Given</caption>
+<tbody>
+<tr><td><p>87</p></td>
+<td><p>F2</p></td>
+<td><p>4D</p></td>
+<td><p>97</p></td>
+</tr>
+<tr><td><p>6E</p></td>
+<td><p>4C</p></td>
+<td><p>90</p></td>
+<td><p>EC</p></td>
+</tr>
+<tr><td><p>46</p></td>
+<td><p>E7</p></td>
+<td><p>4A</p></td>
+<td><p>C3</p></td>
+</tr>
+<tr><td><p>A6</p></td>
+<td><p>8C</p></td>
+<td><p>D8</p></td>
+<td><p>95</p></td>
+</tr>
+</tbody>
+</table>
+<table class="hexdump small">
+<caption>Result</caption>
+<tbody>
+<tr><td><p>47</p></td>
+<td><p>40</p></td>
+<td><p>A3</p></td>
+<td><p>4C</p></td>
+</tr>
+<tr><td><p>37</p></td>
+<td><p>D4</p></td>
+<td><p>70</p></td>
+<td><p>9F</p></td>
+</tr>
+<tr><td><p>94</p></td>
+<td><p>E4</p></td>
+<td><p>3A</p></td>
+<td><p>42</p></td>
+</tr>
+<tr><td><p>ED</p></td>
+<td><p>A5</p></td>
+<td><p>A6</p></td>
+<td><p>BC</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="smaller docutils container">
+<p>Example computation of <span class="math">\(S'_{0,0}\)</span>:</p>
+<div class="math">
+\begin{equation*}
+(02 \times 87) \oplus (03 \times 6E) \oplus (46) \oplus (A6) = 47.
+\end{equation*}
+</div>
+</div>
+<aside class="admonition smaller">
+<p class="admonition-title">Hints</p>
+<div class="math">
+\begin{equation*}
+\begin{matrix}
+(02 \times 87) = (0000\,1110) \oplus (0001\,1011) = &amp; (0001\,0101) \\
+(03 \times 6E) = 6E \oplus (02 \times 6E) = (0110\,1110) \oplus (1101\, 1100)  = &amp; (1011\,0010) \\
+46 = &amp; (0100\,0110) \\
+A6 = &amp; (1010\,0110) \\
+&amp; \overline{  (0100\, 0111) }
+\end{matrix}
+\end{equation*}
+</div>
+</aside>
+</div><div class="ld-slide" id="mix-column-transformation-rationale">
+<h2>Mix Column Transformation - Rationale</h2>
+<ul class="simple">
+<li><p>Coefficients of a matrix based on a linear code with maximal distance between code words ensures a good mixing among the bytes of each column.</p></li>
+<li><p>The mix column transformation combined with the shift row transformation ensures that after a few rounds all output bits depend on all input bits.</p></li>
+</ul>
+</div><div class="ld-slide" id="addroundkey-transformation">
+<h2>AddRoundKey Transformation</h2>
+<ul class="simple">
+<li><p>The 128 bits of State are bitwise XORed with the 128 bits of the round key.</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>Operation is viewed as a columnwise operation between the 4 bytes of a State column and one word of the round key.</p></li>
+<li><p><em>Can also be viewed as a byte-level operation</em>.</p></li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Rationale</p>
+<ul class="simple">
+<li><p>It is as simple as possible and affects every bit of State.</p></li>
+<li><p>The complexity of the round key expansion plus the complexity of the other stages of AES ensure security!</p></li>
+</ul>
+</aside>
+</div><div class="ld-slide" id="input-for-a-single-aes-encryption-round">
+<h2>Input for a Single AES Encryption Round</h2>
+<img alt="Input for a single round." class="align-center" src="5-aes_input_for_a_single_round.svg" style="width: 1150px;" />
+</div><div class="ld-slide" id="aes-key-expansion">
+<h2>AES Key Expansion</h2>
+<ul class="simple">
+<li><p>Takes as input a four-word (16 byte) key and produces a linear array of 44 words (176) bytes.</p></li>
+<li><p>This is sufficient to provide a four-word round key for the initial <cite>AddRoundKey</cite> stage and each of the 10 rounds of the cipher.</p></li>
+<li><p>Key is copied into the first four words of the expanded key.</p></li>
+<li><p>The remainder of the expanded key is filled in four words at a time.</p></li>
+<li><p>Each added word <span class="math">\(w[i]\)</span> depends on the immediately preceding word, <span class="math">\(w[i – 1]\)</span>, and the word four positions back, <span class="math">\(w[i – 4]\)</span></p></li>
+<li><p>In three out of four cases a simple XOR is used.</p></li>
+<li><p>For a word whose position in the w array is a multiple of 4, a more complex function <span class="math">\(g\)</span> is used.</p></li>
+</ul>
+</div><div class="ld-slide" id="aes-key-expansion-visualized">
+<h2>AES Key Expansion - Visualized</h2>
+<img alt="AES Key Expansion" class="align-center" src="5-aes_key_expansion.svg" style="width: 1200px;" />
+</div><div class="ld-slide" id="aes-round-key-computation">
+<h2>AES Round Key Computation</h2>
+<div class="math">
+\begin{equation*}
+r_i = (r_{c_i},00,00,00)
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+r_{c_1} = 01
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+r_{c_{i+1}} = xtime(r_{c_i})
+\end{equation*}
+</div>
+<aside class="admonition incremental smaller">
+<p class="admonition-title"><span class="math">\(xtime\)</span> Function</p>
+<div class="math">
+\begin{equation*}
+y_7y_6y_5y_5y_4y_3y_2y_1y_0 = xtime(x_7x_6x_5x_5x_4x_3x_2x_1x_0) \qquad (x_i,y_i \in \lbrace 0,1 \rbrace)
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+y_7y_6y_5y_5y_4y_3y_2y_1y_0 =
+\begin{cases}
+x_6x_5x_5x_4x_3x_2x_1x_00, &amp; if x_7 = 0\\
+x_6x_5x_5x_4x_3x_2x_1x_00 \oplus 0001 1011,&amp; if x_7 = 1\\
+\end{cases}
+\end{equation*}
+</div>
+</aside>
+<aside class="admonition incremental smaller">
+<p class="admonition-title">The (Fixed) Round Key Values:</p>
+<p><span class="math">\(r_{c_{1}}=01, r_{c_{2}}=02,r_{c_{3}}=04,r_{c_{4}}=08,r_{c_{5}}=10,r_{c_{6}}=20,r_{c_{7}}=40,r_{c_{8}}=80,r_{c_{9}}=1B = 0001 1011, r_{c_{10}}=36\)</span></p>
+</aside>
+</div><div class="ld-slide" id="aes-key-expansion-example-round-1">
+<h2>AES Key Expansion - Example (Round 1)</h2>
+<p>Let's assume: <span class="math">\(w[3] = (67,20,46,75)\)</span>:</p>
+<ul class="simple">
+<li><p><span class="math">\(g(w[3])\)</span>:</p>
+<ul>
+<li><p>circular byte left shift of <span class="math">\(w[3]\)</span>: <span class="math">\((20,46,75,67)\)</span></p></li>
+<li><p>byte substitution using s-box: <span class="math">\((B7,5A,9D,85)\)</span></p></li>
+<li><p>adding round constant <span class="math">\((01,00,00,00)\)</span> gives: <span class="math">\(g(w[3]) = (B6,5A,9D,85)\)</span></p></li>
+</ul>
+</li>
+<li><p><span class="math">\(w[4] = w[0] \oplus g(w[3]) = (E2,32,FC,F1)\)</span></p></li>
+<li><p><span class="math">\(w[5] = w[4] \oplus w[1] = (91,12,91,88)\)</span></p></li>
+<li><p><span class="math">\(w[6] = w[5] \oplus w[2] = (B1,59,E4,E6)\)</span></p></li>
+<li><p><span class="math">\(w[7] = w[6] \oplus w[3] = (D6,79,A2,93)\)</span></p></li>
+<li><p>First roundkey is: <span class="math">\(w[4] || w[5] || w[6] || w[7]\)</span></p></li>
+</ul>
+</div><div class="ld-slide" id="aes-key-expansion-rationale">
+<h2>AES Key Expansion - Rationale</h2>
+<aside class="admonition incremental small note">
+<p class="admonition-title">Note</p>
+<p>The specific criteria that were used are:</p>
+<ul class="simple">
+<li><p>Knowledge of a part of the cipher key or round key does not enable calculation of many other round-key bits</p></li>
+<li><p>An invertible transformation</p></li>
+<li><p>Speed on a wide range of processors</p></li>
+<li><p>Usage of round constants to eliminate symmetries</p></li>
+<li><p>Diffusion of cipher key differences into the round keys</p></li>
+<li><p>Enough nonlinearity to prohibit the full determination of round key differences from cipher key differences only</p></li>
+<li><p>Simplicity of description</p></li>
+</ul>
+</aside>
+<ul class="simple">
+<li><p>The Rijndael developers designed the expansion key algorithm to be resistant to known cryptanalytic attacks</p></li>
+<li><p>Inclusion of a round-dependent round constant eliminates the symmetry between the ways in which round keys are generated in different rounds</p></li>
+</ul>
+</div><div class="ld-slide" id="avalanche-effect-in-aes-change-in-plaintext">
+<h2>Avalanche Effect in AES: Change in Plaintext</h2>
+<table class="align-center tiny hexdump" style="width: 1000px;">
+<tbody>
+<tr><td><p>Round</p></td>
+<td></td>
+<td><p>Number of Bits
+that Differ</p></td>
+</tr>
+<tr><td></td>
+<td><p>0123456789abcdeffedcba9876543210
+0023456789abcdeffedcba9876543210</p></td>
+<td><p>1</p></td>
+</tr>
+<tr><td><p>0</p></td>
+<td><p>0e3634aece7225b6f26b174ed92b5588
+0f3634aece7225b6f26b174ed92b5588</p></td>
+<td><p>1</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>657470750fc7ff3fc0e8e8ca4dd02a9c
+c4a9ad090fc7ff3fc0e8e8ca4dd02a9c</p></td>
+<td><p>20</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>5c7bb49a6b72349b05a2317ff46d1294
+fe2ae569f7ee8bb8c1f5a2bb37ef53d5</p></td>
+<td><p>58</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>7115262448dc747e5cdac7227da9bd9c
+ec093dfb7c45343d6890175070485e62</p></td>
+<td><p>59</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>f867aee8b437a5210c24c1974cffeabc
+43efdb697244df808e8d9364ee0ae6f5</p></td>
+<td><p>61</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>721eb200ba06206dcbd4bce704fa654e
+7b28a5d5ed643287e006c099bb375302</p></td>
+<td><p>68</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>0ad9d85689f9f77bc1c5f71185e5fb14
+3bc2d8b6798d8ac4fe36ald891ac181a</p></td>
+<td><p>64</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>db18a8ffa16d30d5f88b08d777ba4eaa
+9fb8b5452023c70280e5c4bb9e555a4b</p></td>
+<td><p>67</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>f91b4fbfe934c9bf8f2f85812b084989
+20264e1126b219aef7feb3f9b2d6de40</p></td>
+<td><p>65</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>cca104a13e678500f£59025f3bafaa34
+b56a0341b2290ba7dfdfbddcd8578205</p></td>
+<td><p>61</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>ff0b844a0853bf7c6934ab4364148fb9
+612b89398d0600cde116227ce72433f0</p></td>
+<td><p>58</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="avalanche-effect-in-aes-change-in-key">
+<h2>Avalanche Effect in AES: Change in Key</h2>
+<table class="align-center tiny hexdump" style="width: 1000px;">
+<tbody>
+<tr><td><p>Round</p></td>
+<td></td>
+<td><p>Number of Bits that Differ</p></td>
+</tr>
+<tr><td></td>
+<td><p>0123456789abcdeffedcba9876543210
+0123456789abcdeffedcba9876543210</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><td><p>0</p></td>
+<td><p>0e3634aece7225b6f26b174ed92b5588
+0f3634aece7225b6f26b174ed92b5588</p></td>
+<td><p>1</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>657470750fc7ff3fc0e8e8ca4dd02a9c
+c5a9ad090ec7ff3fcle8e8ca4cd02a9c</p></td>
+<td><p>22</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>5c7bb49a6b72349b05a2317ff46d1294
+90905fa9563356d15f3760f3b8259985</p></td>
+<td><p>58</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>7115262448dc747e5cdac7227da9bd9c
+18aeb7aa794b3b66629448d575c7cebf</p></td>
+<td><p>67</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>f867aee8b437a5210c24c1974cffeabc
+f81015f993c978a876ae017cb49e7eec</p></td>
+<td><p>63</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>721eb200ba06206dcbd4bce704fa654e
+5955c91b4e769f3cb4a94768e98d5267</p></td>
+<td><p>81</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>0ad9d85689f9f77bc1c5f71185e5fb14
+dc60a24d137662181e45b8d3726b2920</p></td>
+<td><p>70</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>db18a8ffa16d30d5f88b08d777ba4eaa
+fe8343b8f88bef66cab7e977d005a03c</p></td>
+<td><p>74</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>f91b4fbfe934c9bf8f2f85812b084989
+da7dad581d1725c5b72fa0f9d9d1366a</p></td>
+<td><p>67</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>cca104a13e678500ff59025f3bafaa34
+Occb4c66bbfd912f4b511d72996345e0</p></td>
+<td><p>59</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>ff0b844a0853bf7c6934ab4364148fb9
+fc8923ee501a7d207ab670686839996b</p></td>
+<td><p>53</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="equivalent-inverse-cipher">
+<h2>Equivalent Inverse Cipher</h2>
+<p>AES decryption cipher is not identical to the encryption cipher.</p>
+<ul class="simple">
+<li><p>The sequence of transformations differs although the form of the key schedules is the same.</p></li>
+<li><p>Has the disadvantage that two separate software or firmware modules are needed for applications that require both encryption and decryption.</p></li>
+</ul>
+<p class="incremental">Two separate changes are needed to bring the decryption structure in line with the encryption structure:</p>
+<ol class="arabic simple incremental">
+<li><p>The first two stages of the decryption round need to be interchanged.</p></li>
+<li><p>The second two stages of the decryption round need to be interchanged.</p></li>
+</ol>
+</div><div class="ld-slide" id="interchanging-invshiftrows-and-invsubbytes">
+<h2>Interchanging <cite>InvShiftRows</cite> and <cite>InvSubBytes</cite></h2>
+<ul class="simple">
+<li><p><cite>InvShiftRows</cite> <span class="red">affects the sequence</span> of bytes in State but does not alter byte contents and does not depend on byte contents to perform its transformation</p></li>
+<li><p><cite>InvSubBytes</cite> <span class="blue">affects the contents</span> of bytes in State but does not alter byte sequence and does not depend on byte sequence to perform its transformation</p></li>
+</ul>
+<aside class="admonition admonition-important">
+<p class="admonition-title">Important</p>
+<p>Thus, these two operations commute and can be interchanged.</p>
+</aside>
+</div><div class="ld-slide" id="interchanging-addroundkey-and-invmixcolumns">
+<h2>Interchanging <cite>AddRoundKey</cite> and <cite>InvMixColumns</cite></h2>
+<ul>
+<li><p>The transformations <cite>AddRoundKey</cite> and <cite>InvMixColumns</cite> do not alter the sequence of bytes in State.</p></li>
+<li><p>If we view the key as a sequence of words, then both AddRoundKey and InvMixColumns operate on State one column at a time.</p></li>
+<li><p>These two operations are linear with respect to the column input.</p>
+<p>That is, for a given State <span class="math">\(S_i\)</span> and a given round key <span class="math">\(w_j\)</span>:</p>
+<div class="math">
+\begin{equation*}
+InvMixColumns(S_i \oplus w_j) = InvMixColumns(S_i) \oplus InvMixColumns(w_j)
+\end{equation*}
+</div>
+</li>
+</ul>
+</div><div class="ld-slide" id="equivalent-inverse-cipher-1">
+<h2>Equivalent Inverse Cipher</h2>
+<img alt="5-aes_equivalent_inverse_cipher.svg" class="align-center" src="5-aes_equivalent_inverse_cipher.svg" style="width: 1230px;" />
+</div><div class="ld-slide" id="implementation-aspects">
+<h2>Implementation Aspects</h2>
+<p>AES can be implemented very efficiently on an 8-bit processor:</p>
+<dl class="field-list simple">
+<dt>AddRoundKey<span class="colon">:</span></dt>
+<dd><p>is a bytewise XOR operation.</p>
+</dd>
+<dt>ShiftRows<span class="colon">:</span></dt>
+<dd><p>is a simple byte-shifting operation.</p>
+</dd>
+<dt>SubBytes<span class="colon">:</span></dt>
+<dd><p>operates at the byte level and only requires a table of 256 bytes.</p>
+</dd>
+<dt>MixColumns<span class="colon">:</span></dt>
+<dd><p>requires matrix multiplication in the field <span class="math">\(GF(2^8)\)</span>, which means that all operations are carried out on bytes.</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="implementation-aspects-1">
+<h2>Implementation Aspects</h2>
+<p>Can be efficiently implemented on a 32-bit processor:</p>
+<ul class="simple">
+<li><p>Redefine steps to use 32-bit words</p></li>
+<li><p>Can precompute 4 tables of 256-words</p></li>
+<li><p>Then each column in each round can be computed using 4 table lookups + 4 XORs</p></li>
+<li><p>At a cost of 4Kb to store tables</p></li>
+<li><p>Designers believe this very efficient implementation was a key factor in its selection as the AES cipher</p></li>
+</ul>
+</div>
+</body>
+</html>

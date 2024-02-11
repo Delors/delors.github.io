@@ -1,0 +1,2365 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="Encryption" name="keywords" />
+<meta content="Classical Encryption Techniques" lang="en" name="description" xml:lang="en" />
+<meta content="Klassische Verschlüsselungsmethoden" lang="de" name="description" xml:lang="de" />
+<meta content="2023_10-W3M20014-classical_encryption" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Classical Encryption Techniques</title>
+<script type="text/javascript" src="ld/ext/mathjax/es5/tex-chtml.js?config=TeX-AMS_CHTML"></script>
+<link rel="stylesheet" href="ld/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="ld/ld-help.js" type="text/javascript"></script>
+    <script src="ld/ld-core.js" type="text/javascript"></script>    
+    <link rel="stylesheet" href="ld/ld.css" type="text/css" />
+    <link rel="stylesheet" href="ld/default.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Classical Encryption Techniques</h1>
+<dl class="docinfo simple">
+<dt class="lecturer">Lecturer<span class="colon">:</span></dt>
+<dd class="lecturer"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2023-10-19</dd>
+<dt class="based-on">Based on<span class="colon">:</span></dt>
+<dd class="based-on"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
+</dd>
+</dl>
+<img alt="DHBW CAS Logo" class="logo" src="logo.svg" />
+</div>
+<div class="ld-slide" id="definitions">
+<h2>Definitions</h2>
+<dl class="field-list">
+<dt>Plaintext<span class="colon">:</span></dt>
+<dd><p><span class="ger">Klartext</span></p>
+<p>An original message.</p>
+</dd>
+<dt>Ciphertext<span class="colon">:</span></dt>
+<dd><p><span class="ger">Geheimtext oder Chiffretext oder Krytogramm</span></p>
+<p>The coded (encrypted) message.</p>
+</dd>
+<dt>Encryption(Enciphering)<span class="colon">:</span></dt>
+<dd><p>The process of converting from plaintext to ciphertext.</p>
+</dd>
+<dt>Decryption(Deciphering)<span class="colon">:</span></dt>
+<dd><p>Restoring the plaintext from ciphertext.</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="definitions-1">
+<h2>Definitions</h2>
+<dl class="field-list simple">
+<dt>Cryptography<span class="colon">:</span></dt>
+<dd><p>The area of study of the schemes used for encryption.</p>
+</dd>
+<dt>Cryptographic system/Cipher<span class="colon">:</span></dt>
+<dd><p>A scheme.</p>
+</dd>
+<dt>Cryptanalysis<span class="colon">:</span></dt>
+<dd><p>Techniques used for deciphering a message without any knowledge of the enciphering details</p>
+</dd>
+<dt>Cryptology<span class="colon">:</span></dt>
+<dd><p>The areas of cryptography and cryptanalysis.</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="simplified-model-of-symmetric-encryption">
+<h2>Simplified Model of Symmetric Encryption</h2>
+<img alt="Simplified model of symmetric encryption" class="align-center" src="2-simplified_model_of_symmetric_encryption.svg" />
+</div><div class="ld-slide" id="symmetric-cipher-model">
+<h2>Symmetric Cipher Model</h2>
+<p>There are two requirements for secure use of conventional encryption:</p>
+<ol class="arabic simple">
+<li><p>A strong encryption algorithm</p></li>
+<li><p>Sender and receiver must have obtained copies of the secret key in a secure fashion and must keep the key secure</p></li>
+</ol>
+</div><div class="ld-slide" id="model-of-symmetric-cryptosystem">
+<h2>Model of Symmetric Cryptosystem</h2>
+<img alt="Model of symmetric cryptosystem" class="align-center" src="2-model_of_symmetric_cryptosystem.svg" />
+</div><div class="ld-slide" id="cryptographic-systems-can-be-characterized-along-three-independent-dimensions">
+<h2>Cryptographic Systems can be Characterized along three independent dimensions.</h2>
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A permutation is a sequence of transpositions.</p>
+</aside>
+<ol class="arabic simple incremental">
+<li><p>The type of operations used for transforming plaintext to ciphertext.</p>
+<ul class="simple">
+<li><p>Substitution</p></li>
+<li><p>Transposition</p></li>
+</ul>
+</li>
+<li><p>The number of keys used.</p>
+<dl class="field-list simple">
+<dt>Symmetric<span class="colon">:</span></dt>
+<dd><p>single-key, secret-key, conventional encryption</p>
+</dd>
+<dt>Asymmetric<span class="colon">:</span></dt>
+<dd><p>two-key or public-key encryption</p>
+</dd>
+</dl>
+</li>
+<li><p>The way in which the plaintext is processed.</p>
+<ul class="simple">
+<li><p>Block Cipher</p></li>
+<li><p>Stream Cipher</p></li>
+</ul>
+</li>
+</ol>
+</div><div class="ld-slide" id="cryptanalysis-and-brute-force-attack">
+<h2>Cryptanalysis and Brute-Force Attack</h2>
+<p class="incremental"><strong>Cryptanalysis</strong></p>
+<ul class="incremental simple">
+<li><p>Attack relies on the nature of the algorithm plus some knowledge of the general characteristics of the plaintext</p></li>
+<li><p>Attack exploits the characteristics of the algorithm to attempt to deduce a specific plaintext or to deduce the key being used</p></li>
+</ul>
+<p class="incremental"><strong>Brute-force attack</strong></p>
+<ul class="incremental simple">
+<li><p>Attacker tries every possible key on a piece of ciphertext until an intelligible translation into plaintext is obtained</p></li>
+<li><p>On average, half of all possible keys must be tried to achieve success</p></li>
+</ul>
+</div><div class="ld-slide" id="classification-of-attacks">
+<h2>Classification of Attacks</h2>
+<dl class="field-list simple">
+<dt><em>Type of Attack</em><span class="colon">:</span></dt>
+<dd><p><em>&lt;Known to Cryptanalyst&gt;</em></p>
+</dd>
+</dl>
+<div class="incremental docutils container">
+<dl class="field-list simple">
+<dt>Ciphertext Only<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>encryption algorithm</p></li>
+<li><p>ciphertext</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="incremental docutils container">
+<dl class="field-list simple">
+<dt>Known Plaintext<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>encryption algorithm</p></li>
+<li><p>ciphertext</p></li>
+<li><p>one or more plaintext-ciphertext pairs formed with the secret key</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="incremental docutils container">
+<dl class="field-list simple">
+<dt>Chosen Plaintext<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>encryption algorithm</p></li>
+<li><p>ciphertext</p></li>
+<li><p>plaintext message chosen by cryptanalyst, together with its ciphertext generated with the secret key</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div><div class="ld-slide" id="classification-of-attacks-1">
+<h2>Classification of Attacks</h2>
+<div class="incremental docutils container">
+<dl class="field-list simple">
+<dt>Chosen Chiphertext<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>encryption algorithm</p></li>
+<li><p>ciphertext</p></li>
+<li><p>ciphertext chosen by cryptanalyst, together with its corresponding decrypted plaintext generated with the secret key</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="incremental docutils container">
+<dl class="field-list simple">
+<dt>Chosen Text<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>encryption algorithm</p></li>
+<li><p>ciphertext</p></li>
+<li><p>plaintext message chosen by cryptanalyst, together with its corresponding ciphertext generated with the secret key</p></li>
+<li><p>ciphertext chosen by cryptanalyst, together with its corresponding decrypted plaintext generated with the secret key</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div><div class="ld-slide" id="encryption-scheme-security">
+<h2>Encryption Scheme Security</h2>
+<p><em>Unconditionally secure</em></p>
+<ul class="simple">
+<li><p>No matter how much time an opponent has, it is impossible for him or her to decrypt the ciphertext simply because the required information is not there</p></li>
+</ul>
+<p class="incremental"><em>Computationally secure</em></p>
+<ul class="incremental simple">
+<li><p>The cost of breaking the cipher exceeds the value of the encrypted information</p></li>
+<li><p>The time required to break the cipher exceeds the useful lifetime of the information</p></li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Question</p>
+<p>How long could the usefulness of some information be?</p>
+</aside>
+</div><div class="ld-slide" id="brute-force-attack">
+<h2>Brute-Force Attack</h2>
+<ul class="incremental simple">
+<li><p>Involves trying every possible key until an intelligible translation of the ciphertext into plaintext is obtained.</p></li>
+<li><p>On average, half of all possible keys must be tried to achieve success.</p></li>
+<li><p>To supplement the brute-force approach, some degree of knowledge about the expected plaintext is needed, and some means of automatically distinguishing plaintext from garble is also needed.</p></li>
+</ul>
+</div><div class="ld-slide" id="substitution-technique">
+<h2>Substitution Technique</h2>
+<ul class="simple">
+<li><p>Is one in which the letters of plaintext are replaced by other letters or by numbers or symbols.</p></li>
+<li><p>If the plaintext is viewed as a sequence of bits, then substitution involves replacing plaintext bit patterns with ciphertext bit patterns.</p></li>
+</ul>
+</div><div class="ld-slide" id="caesar-cipher">
+<h2>Caesar Cipher</h2>
+<ul>
+<li><p>Simplest and earliest known use of a substitution cipher; used by Julius Caesar.</p></li>
+<li><p>Involves replacing each letter of the alphabet with the letter standing three places further down the alphabet.</p></li>
+<li><p>Alphabet is wrapped around so that the letter following Z is A.</p>
+<blockquote>
+<pre class="literal-block">plain:    meet me after the toga party</pre>
+<pre class="incremental literal-block">cipher:   PHHW PH DIWHU WKH WRJD SDUWB</pre>
+</blockquote>
+</li>
+</ul>
+</div><div class="ld-slide" id="caesar-cipher-algorithm">
+<h2>Caesar Cipher Algorithm</h2>
+<p>Can define transformation as:</p>
+<table class="small">
+<tbody>
+<tr><td><p>a</p></td>
+<td><p>b</p></td>
+<td><p>c</p></td>
+<td><p>d</p></td>
+<td><p>e</p></td>
+<td><p>f</p></td>
+<td><p>g</p></td>
+<td><p>h</p></td>
+<td><p>i</p></td>
+<td><p>j</p></td>
+<td><p>k</p></td>
+<td><p>l</p></td>
+<td><p>m</p></td>
+<td><p>n</p></td>
+<td><p>o</p></td>
+<td><p>p</p></td>
+<td><p>q</p></td>
+<td><p>r</p></td>
+<td><p>s</p></td>
+<td><p>t</p></td>
+<td><p>u</p></td>
+<td><p>v</p></td>
+<td><p>w</p></td>
+<td><p>x</p></td>
+<td><p>y</p></td>
+<td><p>z</p></td>
+</tr>
+<tr><td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+</tr>
+</tbody>
+</table>
+<p>Mathematically give each letter a number:</p>
+<table class="small">
+<tbody>
+<tr><td><p>a</p></td>
+<td><p>b</p></td>
+<td><p>c</p></td>
+<td><p>d</p></td>
+<td><p>e</p></td>
+<td><p>f</p></td>
+<td><p>g</p></td>
+<td><p>h</p></td>
+<td><p>i</p></td>
+<td><p>j</p></td>
+<td><p>k</p></td>
+<td><p>l</p></td>
+<td><p>m</p></td>
+<td><p>n</p></td>
+<td><p>o</p></td>
+<td><p>p</p></td>
+<td><p>q</p></td>
+<td><p>r</p></td>
+<td><p>s</p></td>
+<td><p>t</p></td>
+<td><p>u</p></td>
+<td><p>v</p></td>
+<td><p>w</p></td>
+<td><p>x</p></td>
+<td><p>y</p></td>
+<td><p>z</p></td>
+</tr>
+<tr><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+<td><p>8</p></td>
+<td><p>9</p></td>
+<td><p>10</p></td>
+<td><p>11</p></td>
+<td><p>12</p></td>
+<td><p>13</p></td>
+<td><p>14</p></td>
+<td><p>15</p></td>
+<td><p>16</p></td>
+<td><p>17</p></td>
+<td><p>18</p></td>
+<td><p>19</p></td>
+<td><p>20</p></td>
+<td><p>21</p></td>
+<td><p>22</p></td>
+<td><p>23</p></td>
+<td><p>24</p></td>
+<td><p>25</p></td>
+</tr>
+</tbody>
+</table>
+<p>Algorithm can be expressed as:</p>
+<div class="math">
+\begin{equation*}
+C = E(3, p) = (p + 3)\; mod\; 26
+\end{equation*}
+</div>
+</div><div class="ld-slide" id="caesar-cipher-algorithm-1">
+<h2>Caesar Cipher Algorithm</h2>
+<p>A shift may be of any amount, so that the general Caesar algorithm is:</p>
+<div class="math">
+\begin{equation*}
+C = E(k, p)= (p + k)\; mod\; 26
+\end{equation*}
+</div>
+<p>Where k takes on a value in the range 1 to 25; the decryption algorithm is simply:</p>
+<div class="math">
+\begin{equation*}
+p = D(k,C) = (C - k)\; mod\; 26
+\end{equation*}
+</div>
+</div><div class="ld-slide" id="brute-force-cryptanalysis-of-caesar-cipher">
+<h2>Brute-Force Cryptanalysis of Caesar Cipher</h2>
+<table class="small">
+<thead>
+<tr><th class="head"><p>Key</p></th>
+<th class="head"><p>PHHW</p></th>
+<th class="head"><p>PH</p></th>
+<th class="head"><p>DIWHU</p></th>
+<th class="head"><p>WKH</p></th>
+<th class="head"><p>WRJD</p></th>
+<th class="head"><p>SDUWB</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>1</p></td>
+<td><p>OGGV</p></td>
+<td><p>OG</p></td>
+<td><p>CHVGT</p></td>
+<td><p>VJG</p></td>
+<td><p>VQIC</p></td>
+<td><p>RCTVA</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>NFFU</p></td>
+<td><p>NF</p></td>
+<td><p>BGUFS</p></td>
+<td><p>UIF</p></td>
+<td><p>UPHB</p></td>
+<td><p>QBSUZ</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>MEET</p></td>
+<td><p>ME</p></td>
+<td><p>AFTER</p></td>
+<td><p>THE</p></td>
+<td><p>TOGA</p></td>
+<td><p>PARTY</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>LDDS</p></td>
+<td><p>LD</p></td>
+<td><p>ZESDQ</p></td>
+<td><p>SGD</p></td>
+<td><p>SNFZ</p></td>
+<td><p>OZQSX</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>KCCR</p></td>
+<td><p>KC</p></td>
+<td><p>YDRCP</p></td>
+<td><p>RFC</p></td>
+<td><p>RMEY</p></td>
+<td><p>NYPRW</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>JBBQ</p></td>
+<td><p>JB</p></td>
+<td><p>XCQBO</p></td>
+<td><p>QEB</p></td>
+<td><p>QLDX</p></td>
+<td><p>MXOQV</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>IAAP</p></td>
+<td><p>IA</p></td>
+<td><p>WBPAN</p></td>
+<td><p>PDA</p></td>
+<td><p>PKCW</p></td>
+<td><p>LWNPU</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>HZZO</p></td>
+<td><p>HZ</p></td>
+<td><p>VAOZM</p></td>
+<td><p>OCZ</p></td>
+<td><p>OJBV</p></td>
+<td><p>KVMOT</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>GYYN</p></td>
+<td><p>GY</p></td>
+<td><p>UZNYL</p></td>
+<td><p>NBY</p></td>
+<td><p>NIAU</p></td>
+<td><p>JULNS</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>FXXM</p></td>
+<td><p>FX</p></td>
+<td><p>TYMXK</p></td>
+<td><p>MAX</p></td>
+<td><p>MHZT</p></td>
+<td><p>ITKMR</p></td>
+</tr>
+<tr><td><p>11</p></td>
+<td><p>EWWL</p></td>
+<td><p>EW</p></td>
+<td><p>SXLWJ</p></td>
+<td><p>LZW</p></td>
+<td><p>LGYS</p></td>
+<td><p>HSJLQ</p></td>
+</tr>
+<tr><td><p>12</p></td>
+<td><p>DVVK</p></td>
+<td><p>DV</p></td>
+<td><p>RWKVI</p></td>
+<td><p>KYV</p></td>
+<td><p>KFXR</p></td>
+<td><p>GRIKP</p></td>
+</tr>
+<tr><td><p>13</p></td>
+<td><p>CUUJ</p></td>
+<td><p>CU</p></td>
+<td><p>QVJUH</p></td>
+<td><p>JXU</p></td>
+<td><p>JEWQ</p></td>
+<td><p>FQHJO</p></td>
+</tr>
+<tr><td><p>14</p></td>
+<td><p>BTTI</p></td>
+<td><p>BT</p></td>
+<td><p>PUITG</p></td>
+<td><p>IWT</p></td>
+<td><p>IDVP</p></td>
+<td><p>EPGIN</p></td>
+</tr>
+<tr><td><p>15</p></td>
+<td><p>ASSH</p></td>
+<td><p>AS</p></td>
+<td><p>OTHSF</p></td>
+<td><p>HVS</p></td>
+<td><p>HCUO</p></td>
+<td><p>DOFHM</p></td>
+</tr>
+<tr><td><p>16</p></td>
+<td><p>ZRRG</p></td>
+<td><p>ZR</p></td>
+<td><p>NSGRE</p></td>
+<td><p>GUR</p></td>
+<td><p>GBTN</p></td>
+<td><p>CNEGL</p></td>
+</tr>
+<tr><td><p>...</p></td>
+<td><p>...</p></td>
+<td><p>...</p></td>
+<td><p>...</p></td>
+<td><p>...</p></td>
+<td><p>...</p></td>
+<td><p>...</p></td>
+</tr>
+<tr><td><p>25</p></td>
+<td><p>QIIX</p></td>
+<td><p>QI</p></td>
+<td><p>EJXIV</p></td>
+<td><p>XLI</p></td>
+<td><p>XSKE</p></td>
+<td><p>TEVXC</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="brute-force-cryptanalysis-of-caesar-cipher-1">
+<h2>Brute-Force Cryptanalysis (of Caesar Cipher)</h2>
+<p>Decryption is more complicated when the plaintext is already garble. E.g., as in case of a compressed file as seen below.</p>
+<table class="small hexdump">
+<tbody>
+<tr><td><p>00000000:</p></td>
+<td><p>504b</p></td>
+<td><p>0304</p></td>
+<td><p>1400</p></td>
+<td><p>0800</p></td>
+<td><p>0800</p></td>
+<td><p>afb1</p></td>
+<td><p>4257</p></td>
+<td><p>0000</p></td>
+<td><p>PK..........BW..</p></td>
+</tr>
+<tr><td><p>00000010:</p></td>
+<td><p>0000</p></td>
+<td><p>0000</p></td>
+<td><p>0000</p></td>
+<td><p>4f04</p></td>
+<td><p>0000</p></td>
+<td><p>0a00</p></td>
+<td><p>2000</p></td>
+<td><p>322d</p></td>
+<td><p>......O....._.2-</p></td>
+</tr>
+<tr><td><p>00000020:</p></td>
+<td><p>4465</p></td>
+<td><p>6d6f</p></td>
+<td><p>2e74</p></td>
+<td><p>7874</p></td>
+<td><p>5554</p></td>
+<td><p>0d00</p></td>
+<td><p>076a</p></td>
+<td><p>241b</p></td>
+<td><p>Demo.txtUT...j$.</p></td>
+</tr>
+<tr><td><p>00000030:</p></td>
+<td><p>656a</p></td>
+<td><p>241b</p></td>
+<td><p>656a</p></td>
+<td><p>241b</p></td>
+<td><p>6575</p></td>
+<td><p>780b</p></td>
+<td><p>0001</p></td>
+<td><p>04f8</p></td>
+<td><p>ej$.ej$.eux.....</p></td>
+</tr>
+<tr><td><p>00000040:</p></td>
+<td><p>0100</p></td>
+<td><p>0004</p></td>
+<td><p>1400</p></td>
+<td><p>0000</p></td>
+<td><p>edcc</p></td>
+<td><p>db09</p></td>
+<td><p>8030</p></td>
+<td><p>0c05</p></td>
+<td><p>.............0..</p></td>
+</tr>
+<tr><td><p>00000050:</p></td>
+<td><p>d07f</p></td>
+<td><p>a7c8</p></td>
+<td><p>049d</p></td>
+<td><p>a28b</p></td>
+<td><p>c4f6</p></td>
+<td><p>6203</p></td>
+<td><p>e983</p></td>
+<td><p>18d0</p></td>
+<td><p>..........b.....</p></td>
+</tr>
+<tr><td><p>00000060:</p></td>
+<td><p>6e2f</p></td>
+<td><p>ee91</p></td>
+<td><p>ffc3</p></td>
+<td><p>c928</p></td>
+<td><p>b697</p></td>
+<td><p>cb1c</p></td>
+<td><p>2437</p></td>
+<td><p>f569</p></td>
+<td><p>n/.....(....$7.i</p></td>
+</tr>
+<tr><td><p>00000070:</p></td>
+<td><p>a032</p></td>
+<td><p>fb52</p></td>
+<td><p>29ec</p></td>
+<td><p>a8f4</p></td>
+<td><p>340c</p></td>
+<td><p>f206</p></td>
+<td><p>5aca</p></td>
+<td><p>321c</p></td>
+<td><p>.2.R)...4...Z.2.</p></td>
+</tr>
+<tr><td><p>00000080:</p></td>
+<td><p>afff</p></td>
+<td><p>8cd5</p></td>
+<td><p>c075</p></td>
+<td><p>d3c5</p></td>
+<td><p>762a</p></td>
+<td><p>d291</p></td>
+<td><p>2389</p></td>
+<td><p>2492</p></td>
+<td><p>.....u..v*..#.$.</p></td>
+</tr>
+<tr><td><p>00000090:</p></td>
+<td><p>48d2</p></td>
+<td><p>0750</p></td>
+<td><p>4b07</p></td>
+<td><p>081d</p></td>
+<td><p>a9b0</p></td>
+<td><p>b94b</p></td>
+<td><p>0000</p></td>
+<td><p>004f</p></td>
+<td><p>H..PK......K...O</p></td>
+</tr>
+<tr><td><p>000000a0:</p></td>
+<td><p>0400</p></td>
+<td><p>0050</p></td>
+<td><p>4b01</p></td>
+<td><p>0214</p></td>
+<td><p>0314</p></td>
+<td><p>0008</p></td>
+<td><p>0008</p></td>
+<td><p>00af</p></td>
+<td><p>...PK...........</p></td>
+</tr>
+<tr><td><p>000000b0:</p></td>
+<td><p>b142</p></td>
+<td><p>571d</p></td>
+<td><p>a9b0</p></td>
+<td><p>b94b</p></td>
+<td><p>0000</p></td>
+<td><p>004f</p></td>
+<td><p>0400</p></td>
+<td><p>000a</p></td>
+<td><p>.BW....K...O....</p></td>
+</tr>
+<tr><td><p>000000c0:</p></td>
+<td><p>0020</p></td>
+<td><p>0000</p></td>
+<td><p>0000</p></td>
+<td><p>0000</p></td>
+<td><p>0000</p></td>
+<td><p>00a4</p></td>
+<td><p>8100</p></td>
+<td><p>0000</p></td>
+<td><p>._..............</p></td>
+</tr>
+<tr><td><p>000000d0:</p></td>
+<td><p>0032</p></td>
+<td><p>2d44</p></td>
+<td><p>656d</p></td>
+<td><p>6f2e</p></td>
+<td><p>7478</p></td>
+<td><p>7455</p></td>
+<td><p>540d</p></td>
+<td><p>0007</p></td>
+<td><p>.2-Demo.txtUT...</p></td>
+</tr>
+<tr><td><p>000000e0:</p></td>
+<td><p>6a24</p></td>
+<td><p>1b65</p></td>
+<td><p>6a24</p></td>
+<td><p>1b65</p></td>
+<td><p>6a24</p></td>
+<td><p>1b65</p></td>
+<td><p>7578</p></td>
+<td><p>0b00</p></td>
+<td><p>j$.ej$.ej$.eux..</p></td>
+</tr>
+<tr><td><p>000000f0:</p></td>
+<td><p>0104</p></td>
+<td><p>f801</p></td>
+<td><p>0000</p></td>
+<td><p>0414</p></td>
+<td><p>0000</p></td>
+<td><p>0050</p></td>
+<td><p>4b05</p></td>
+<td><p>0600</p></td>
+<td><p>...........PK...</p></td>
+</tr>
+<tr><td><p>00000100:</p></td>
+<td><p>0000</p></td>
+<td><p>0001</p></td>
+<td><p>0001</p></td>
+<td><p>0058</p></td>
+<td><p>0000</p></td>
+<td><p>00a3</p></td>
+<td><p>0000</p></td>
+<td><p>0000</p></td>
+<td><p>.......X........</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="monoalphabetic-cipher">
+<h2>Monoalphabetic Cipher</h2>
+<ul class="simple">
+<li><p>Permutation of a finite set of elements S is an ordered sequence of all the elements of S, with each element appearing exactly once.</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>If the “cipher” line can be any permutation of the 26 alphabetic characters, then there are 26! or greater than <span class="math">\(4 \times 10^{26}\)</span> possible keys.</p>
+<ul>
+<li><p>This is 10 orders of magnitude greater than the key space for DES</p></li>
+<li><p>Approach is referred to as a monoalphabetic substitution cipher because a single cipher alphabet is used per message.</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="english-letter-frequency">
+<h2>English Letter Frequency</h2>
+<img alt="English letter frequency (alphabetic)" class="align-center" src="2-english_letter_frequency.svg" style="width: 1200px;" />
+</div><div class="ld-slide" id="monoalphabetic-ciphers">
+<h2>Monoalphabetic Ciphers</h2>
+<p>Easy to break because they reflect the frequency data of the original alphabet.</p>
+<p>Countermeasure is to provide multiple substitutes (homophones) for a single letter.</p>
+</div><div class="ld-slide" id="playfair-cipher">
+<h2>Playfair Cipher</h2>
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Digram</em></p>
+<ul class="simple">
+<li><p>Two-letter combination</p></li>
+<li><p>Most common is &quot;<em>th</em>&quot;&quot;</p></li>
+</ul>
+<p><em>Trigram</em></p>
+<ul class="simple">
+<li><p>Three-letter combination</p></li>
+<li><p>Most frequent is &quot;<em>the</em>&quot;</p></li>
+</ul>
+</aside>
+<ul class="simple">
+<li><p>Best-known multiple-letter encryption cipher</p></li>
+<li><p>Treats digrams in the plaintext as single units and translates these units into ciphertext digrams</p></li>
+<li><p>Based on the use of a 5 x 5 matrix of letters constructed using a keyword Invented by British scientist Sir Charles Wheatstone in 1854</p></li>
+<li><p>Used as the standard field system by the British Army in World War I and the U.S. Army and other Allied forces during World War II</p></li>
+</ul>
+</div><div class="ld-slide" id="playfair-key-matrix">
+<h2>Playfair Key Matrix</h2>
+<p>Fill in letters of keyword (minus duplicates) from left to right and from top to bottom, then fill in the remainder of the matrix with the remaining letters in alphabetic order. The letters I and J count as one letter.</p>
+<p>Using the keyword MONARCHY:</p>
+<table>
+<tbody>
+<tr><td><p><em>M</em></p></td>
+<td><p><em>O</em></p></td>
+<td><p><em>N</em></p></td>
+<td><p><em>A</em></p></td>
+<td><p><em>R</em></p></td>
+</tr>
+<tr><td><p><em>C</em></p></td>
+<td><p><em>H</em></p></td>
+<td><p><em>Y</em></p></td>
+<td><p>B</p></td>
+<td><p>D</p></td>
+</tr>
+<tr><td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>I/J</p></td>
+<td><p>K</p></td>
+</tr>
+<tr><td><p>L</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+</tr>
+<tr><td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Z</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="playfair-encryption">
+<h2>Playfair Encryption</h2>
+<p>Enryption is done on each pair of letters of the plaintext.</p>
+<aside class="admonition smaller note">
+<p class="admonition-title">Note</p>
+<table>
+<tbody>
+<tr><td><p>M</p></td>
+<td><p>O</p></td>
+<td><p>N</p></td>
+<td><p>A</p></td>
+<td><p>R</p></td>
+</tr>
+<tr><td><p>C</p></td>
+<td><p>H</p></td>
+<td><p>Y</p></td>
+<td><p>B</p></td>
+<td><p>D</p></td>
+</tr>
+<tr><td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>I/J</p></td>
+<td><p>K</p></td>
+</tr>
+<tr><td><p>L</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+</tr>
+<tr><td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Z</p></td>
+</tr>
+</tbody>
+</table>
+</aside>
+<ol class="arabic simple smaller">
+<li><p>If both letters are the same (or only one letter is left), add an &quot;X&quot; after the first letter. Encrypt the new pair and continue. (e.g., <cite>ballon</cite> would be encryped as <cite>ba lx lo on</cite>)</p></li>
+<li><p>If the letters appear on the same row, replace them with the letters to their immediate right respectively (wrap around if necessary). (e.g., <cite>ar</cite> is encrypted as <cite>RM</cite>)</p></li>
+<li><p>If the letters appear on the same column, replace them with the letters immediately below respectively (wrap around if necessary). (e.g., <cite>mu</cite> is encrypted as <cite>CM</cite>)</p></li>
+<li><p>If the letters are not on the same row or column, replace them with the letters on the same row respectively but at the other pair of corners of the rectangle defined by the original pair. (e.g., <cite>hs</cite> is encrypted as <cite>BP</cite> and <cite>ea</cite> as <cite>IM</cite>)</p></li>
+</ol>
+</div><div class="ld-slide" id="hill-cipher">
+<h2>Hill Cipher</h2>
+<ul class="simple">
+<li><p>Developed by the mathematician Lester Hill in 1929.</p></li>
+<li><p>Strength is that it completely hides single-letter frequencies.</p>
+<ul>
+<li><p>The use of a larger matrix hides more frequency information.</p></li>
+<li><p>A 3 x 3 Hill cipher hides not only single-letter but also two-letter frequency information.</p></li>
+</ul>
+</li>
+<li><p>Strong against a ciphertext-only attack but easily broken with a known plaintext attack</p></li>
+</ul>
+</div><div class="ld-slide" id="polyalphabetic-ciphers">
+<h2>Polyalphabetic Ciphers</h2>
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>All these techniques have the following features in common:</strong></p>
+<ul class="simple">
+<li><p>A set of related monoalphabetic substitution rules is used</p></li>
+<li><p>A key determines which particular rule is chosen for a given transformation</p></li>
+</ul>
+</aside>
+<p>Polyalphabetic substitution ciphers improve on the simple monoalphabetic technique by using different monoalphabetic substitutions as one proceeds through the plaintext message.</p>
+</div><div class="ld-slide" id="vigenere-cipher">
+<h2>Vigenère Cipher</h2>
+<ul class="simple">
+<li><p>Best known and one of the simplest polyalphabetic substitution ciphers</p></li>
+<li><p>In this scheme the set of related monoalphabetic substitution rules consists of the 26 Caesar ciphers with shifts of 0 through 25</p></li>
+<li><p>Each cipher is denoted by a key letter which is the ciphertext letter that substitutes for the plaintext letter</p></li>
+</ul>
+</div><div class="ld-slide" id="vigenere-tableau">
+<h2>Vigenère-Tableau</h2>
+<aside class="admonition smaller note">
+<p class="admonition-title">Note</p>
+<dl class="field-list simple">
+<dt>header<span class="colon">:</span></dt>
+<dd><p>plaintext letter</p>
+</dd>
+<dt>1. column<span class="colon">:</span></dt>
+<dd><p>key letter</p>
+</dd>
+<dt>tableau<span class="colon">:</span></dt>
+<dd><p>ciphertext letter</p>
+</dd>
+</dl>
+</aside>
+<table class="align-center small compact">
+<tbody>
+<tr><td><p>/</p></td>
+<td><p><strong>a</strong></p></td>
+<td><p><strong>b</strong></p></td>
+<td><p><strong>c</strong></p></td>
+<td><p><strong>d</strong></p></td>
+<td><p><strong>e</strong></p></td>
+<td><p><strong>f</strong></p></td>
+<td><p><strong>g</strong></p></td>
+<td><p><strong>h</strong></p></td>
+<td><p><strong>i</strong></p></td>
+<td><p><strong>j</strong></p></td>
+<td><p><strong>k</strong></p></td>
+<td><p><strong>l</strong></p></td>
+<td><p><strong>m</strong></p></td>
+<td><p><strong>n</strong></p></td>
+<td><p><strong>o</strong></p></td>
+<td><p><strong>p</strong></p></td>
+<td><p><strong>q</strong></p></td>
+<td><p><strong>r</strong></p></td>
+<td><p><strong>s</strong></p></td>
+<td><p><strong>t</strong></p></td>
+<td><p><strong>u</strong></p></td>
+<td><p><strong>v</strong></p></td>
+<td><p><strong>w</strong></p></td>
+<td><p><strong>x</strong></p></td>
+<td><p><strong>y</strong></p></td>
+<td><p><strong>z</strong></p></td>
+</tr>
+<tr><td><p><strong>A</strong></p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+</tr>
+<tr><td><p><strong>B</strong></p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+</tr>
+<tr><td><p><strong>C</strong></p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+</tr>
+<tr><td><p><strong>D</strong></p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+</tr>
+<tr><td><p><strong>E</strong></p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+</tr>
+<tr><td><p><strong>F</strong></p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+</tr>
+<tr><td><p><strong>G</strong></p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+</tr>
+<tr><td><p><strong>H</strong></p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+</tr>
+<tr><td><p><strong>I</strong></p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+</tr>
+<tr><td><p><strong>J</strong></p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+</tr>
+<tr><td><p><strong>K</strong></p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+</tr>
+<tr><td><p><strong>L</strong></p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+</tr>
+<tr><td><p><strong>M</strong></p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+</tr>
+<tr><td><p><strong>N</strong></p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+</tr>
+<tr><td><p><strong>O</strong></p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+</tr>
+<tr><td><p><strong>P</strong></p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+</tr>
+<tr><td><p><strong>Q</strong></p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+</tr>
+<tr><td><p><strong>R</strong></p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+</tr>
+<tr><td><p><strong>S</strong></p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+</tr>
+<tr><td><p><strong>T</strong></p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+</tr>
+<tr><td><p><strong>U</strong></p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+</tr>
+<tr><td><p><strong>V</strong></p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+</tr>
+<tr><td><p><strong>W</strong></p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+</tr>
+<tr><td><p><strong>X</strong></p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+</tr>
+<tr><td><p><strong>Y</strong></p></td>
+<td><p>Y</p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+</tr>
+<tr><td><p><strong>Z</strong></p></td>
+<td><p>Z</p></td>
+<td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D</p></td>
+<td><p>E</p></td>
+<td><p>F</p></td>
+<td><p>G</p></td>
+<td><p>H</p></td>
+<td><p>I</p></td>
+<td><p>J</p></td>
+<td><p>K</p></td>
+<td><p>L</p></td>
+<td><p>M</p></td>
+<td><p>N</p></td>
+<td><p>O</p></td>
+<td><p>P</p></td>
+<td><p>Q</p></td>
+<td><p>R</p></td>
+<td><p>S</p></td>
+<td><p>T</p></td>
+<td><p>U</p></td>
+<td><p>V</p></td>
+<td><p>W</p></td>
+<td><p>X</p></td>
+<td><p>Y</p></td>
+</tr>
+</tbody>
+</table>
+<p>Let's assume the key is <cite>D</cite>, the plaintext character is <cite>b</cite> then the ciphertext letter is <cite>E</cite>.</p>
+</div><div class="ld-slide" id="example-of-vigenere-cipher">
+<h2>Example of Vigenère Cipher</h2>
+<ul class="simple">
+<li><p>To encrypt a message, a key is needed that is as long as the message.</p></li>
+<li><p>Usually, the key is a repeating keyword.</p></li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Example</p>
+<p>If the keyword is deceptive, the message “we are discovered save yourself” is encrypted as:</p>
+<pre class="literal-block">key:        deceptivedeceptivedeceptive
+plaintext:  wearediscoveredsaveyourself
+ciphertext: ZICVTWQNGRZGVTWAVZHCQYGLMGJ</pre>
+</aside>
+</div><div class="ld-slide" id="vigenere-autokey-system">
+<h2>Vigenère Autokey System</h2>
+<ul class="simple">
+<li><p>A keyword is concatenated with the plaintext itself to provide a running key.</p></li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Example</p>
+<pre class="literal-block">key:        deceptivewearediscoveredsav
+plaintext:  wearediscoveredsaveyourself
+ciphertext: ZICVTWQNGKZEIIGASXSTSLVVWLA</pre>
+</aside>
+<p class="incremental">Even this scheme is vulnerable to cryptanalysis, because the key and the plaintext share the same frequency distribution of letters, a statistical technique can be applied.</p>
+</div><div class="ld-slide" id="vernam-cipher">
+<h2>Vernam Cipher</h2>
+<img alt="Vernam Cipher" class="align-center" src="2-vernam_cipher.svg" />
+</div><div class="ld-slide" id="one-time-pad">
+<h2>One-Time Pad</h2>
+<ul class="incremental simple">
+<li><p>Improvement to Vernam cipher proposed by an Army Signal Corp officer, Joseph Mauborgne</p></li>
+<li><p>Use a random key that is as long as the message so that the key need not be repeated</p></li>
+<li><p>Key is used to encrypt and decrypt a single message and then is discarded</p></li>
+<li><p>Each new message requires a new key of the same length as the new message</p></li>
+<li><p>Scheme is unbreakable</p>
+<ul>
+<li><p>Produces random output that bears no statistical relationship to the plaintext</p></li>
+<li><p>Because the ciphertext contains no information whatsoever about the plaintext, there is simply no way to break the code</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="difficulties-when-using-a-one-time-pad">
+<h2>Difficulties when using a One-Time Pad</h2>
+<ul class="incremental simple">
+<li><p>The one-time pad offers complete security but, in practice, has two fundamental difficulties:</p>
+<ol class="arabic simple incremental">
+<li><p>There is the practical problem of making large quantities of random keys
+Any heavily used system might require millions of random characters on a regular basis</p></li>
+<li><p>Mammoth key distribution problem.
+For every message to be sent, a key of equal length is needed by both sender and receiver</p></li>
+</ol>
+</li>
+<li><p>Because of these difficulties, the one-time pad is of limited utility; useful primarily for low-bandwidth channels requiring very high security</p></li>
+<li><p>The one-time pad is the only cryptosystem that exhibits perfect secrecy</p></li>
+</ul>
+</div><div class="ld-slide" id="rail-fence-cipher">
+<h2>Rail Fence Cipher</h2>
+<ul class="simple">
+<li><p>Simplest transposition <span class="ger">Vertauschung</span> cipher.</p></li>
+<li><p>Plaintext is written down as a sequence of diagonals and then read off as a sequence of rows.</p></li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Example</p>
+<p>To encipher the message “meet me after the toga party” with a rail fence of depth 2 (key), we would write:</p>
+<pre class="literal-block">m e m a t r h t g p r y
+ e t e f e t e o a a t</pre>
+<p>Encrypted message is: MEMATRHTGPRYETEFETEOAAT</p>
+</aside>
+</div><div class="ld-slide" id="row-transposition-cipher">
+<h2>Row Transposition Cipher</h2>
+<ul class="simple">
+<li><p>Is a more complex transposition.</p></li>
+<li><p>Write the message in a rectangle, row by row, and read the message off, column by column, but permute the order of the columns.</p></li>
+<li><p>The order of the columns then becomes the key to the algorithm.</p></li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Example</p>
+<pre class="literal-block">Key:        4312567
+Plaintext:  attackp
+            ostpone
+            duntilt
+            woamxyz</pre>
+<p>Ciphertext: TTNAAPTMTSUOAODWCOIXKNLYPETZ</p>
+</aside>
+</div><div class="ld-slide" id="steganography">
+<h2>Steganography</h2>
+<p class="smaller enable-copy-to-clipboard">Dear Friend ; We know you are interested in receiving cutting-edge announcement . If you are not interested in our publications and wish to be removed from our lists, simply do NOT respond and ignore this mail . This mail is being sent in compliance with Senate bill 1626 ; Title 4 , Section 305 . This is a ligitimate business proposal ! Why work for somebody else when you can become rich in 96 months . Have you ever noticed nobody is getting any younger &amp; nobody is getting any younger . Well, now is your chance to capitalize on  this ! We will help you decrease perceived waiting time by 170% and use credit cards on your website ! You are guaranteed to succeed because we take all the risk ! But don't believe us . Mrs Anderson of Indiana tried us and says &quot;I was skeptical but it worked for me&quot; . We assure you that we operate within all applicable laws . You will blame yourself forever if you don't order now . Sign up a friend and you'll get a discount of 10% ! Thank-you for your serious consideration of our offer !</p>
+<p>Use Spammimic <a class="reference external" href="https://www.spammimic.com/">https://www.spammimic.com/</a> to unhide the message.</p>
+<!-- The encoded message is: "Success!" -->
+</div><div class="ld-slide" id="other-steganography-techniques">
+<h2>Other Steganography Techniques</h2>
+<p><strong>Character marking</strong></p>
+<p>Selected letters of printed or typewritten text are over-written in pencil. The marks are not visible unless the paper is held at an angle to bright light.</p>
+<p><strong>Invisible ink</strong></p>
+<p>A number of substances can be used for writing but leave no visible trace until heat or some chemical is applied to the paper.</p>
+<p><strong>Pin punctures</strong></p>
+<p>Small pin punctures on selected letters are ordinarily not visible unless the paper is held up in front of a light.</p>
+<p>...</p>
+</div><div class="ld-slide" id="steganography-vs-encryption">
+<h2>Steganography vs. Encryption</h2>
+<p>Steganography has a number of <em>drawbacks</em> when compared to encryption:</p>
+<ul class="simple">
+<li><p>It requires a lot of overhead to hide a relatively few bits of information</p></li>
+<li><p>Once the system is discovered, it becomes virtually worthless</p></li>
+</ul>
+<p>The <em>advantage</em> of steganography:</p>
+<ul class="simple">
+<li><p>It can be employed by parties who have something to lose should the fact of their secret communication (not necessarily the content) be discovered.</p></li>
+<li><p>Encryption flags traffic as important or secret or may identify the sender or receiver as someone with something to hide.</p></li>
+</ul>
+</div>
+</body>
+</html>
