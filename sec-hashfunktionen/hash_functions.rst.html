@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="hash functions" name="keywords" />
+<meta content="Cryptographic Hash Functions" lang="en" name="description" xml:lang="en" />
+<meta content="Kryptografische Hashfunktionen" lang="de" name="description" xml:lang="de" />
+<meta content="2023_10-W3M20014-hash_functions" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Cryptographic Hash Functions</title>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml.js?config=TeX-AMS_CHTML"></script>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Cryptographic Hash Functions</h1>
+<dl class="docinfo simple">
+<dt class="lecturer">Lecturer<span class="colon">:</span></dt>
+<dd class="lecturer"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2024-02-03</dd>
+<dt class="based-on">Based on<span class="colon">:</span></dt>
+<dd class="based-on"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
+</dd>
+</dl>
+</div>
+<div class="ld-slide" id="hashfunktionen">
+<h2>Hashfunktionen</h2>
+<ul class="incremental simple">
+<li><p>Eine Hashfunktion <span class="math">\(H\)</span> akzeptiert eine beliebig lange Nachricht <span class="math">\(M\)</span> als Eingabe und gibt einen Wert fixer Größe zurück: <span class="math">\(h = H(M)\)</span>.</p></li>
+<li><p>Wird oft zur Gewährleistung der Datenintegrität verwendet. Eine Änderung eines beliebigen Bits in <span class="math">\(M\)</span> sollte mit hoher Wahrscheinlichkeit zu einer Änderung des Hashwerts <span class="math">\(h\)</span> führen.</p></li>
+<li><p>Kryptographische Hashfunktionen werden für Sicherheitsanwendungen benötigt. Mögliche Anwendungen:</p>
+<ul>
+<li><p>Authentifizierung von Nachrichten</p></li>
+<li><p>Digitale Signaturen</p></li>
+<li><p>Speicherung von Passwörtern</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="beispiel-berechnung-von-hashwerten-mittels-md5">
+<h2>Beispiel: Berechnung von Hashwerten mittels MD5</h2>
+<pre class="monospaced literal-block">md5(&quot;Hello&quot;) = 8b1a9953c4611296a827abf8c47804d7
+md5(&quot;hello&quot;) = 5d41402abc4b2a76b9719d911017c592
+md5(&quot;Dieses Passwort ist wirklich total sicher
+      und falls Du es mir nicht glaubst, dann
+      tippe es zweimal hintereinander blind
+      fehlerfrei ein.&quot;)
+             = 8fcf22b1f8327e3a005f0cba48dd44c8</pre>
+<aside class="admonition warning incremental margin-top-2em">
+<p class="admonition-title">Warnung</p>
+<p>Die Verwendung von MD5 dient hier lediglich der Illustration. In realen Anwendung sollte MD5 nicht mehr verwendet werden.</p>
+</aside>
+</div><div class="ld-slide" id="sicherheitsanforderungen-an-kryptografische-hashfunktion-i">
+<h2>Sicherheitsanforderungen an kryptografische Hashfunktion I</h2>
+<dl class="field-list simple">
+<dt>Variable Eingabegröße<span class="colon">:</span></dt>
+<dd><p>H kann auf einen Block beliebiger Größe angewendet werden.</p>
+</dd>
+<dt>Pseudozufälligkeit<span class="colon">:</span></dt>
+<dd><p>Die Ausgabe von <span class="math">\(H\)</span> erfüllt die Standardtests für Pseudozufälligkeit.</p>
+</dd>
+</dl>
+<dl class="incremental field-list">
+<dt>Einweg Eigenschaft<span class="colon">:</span></dt>
+<dd><p>Es ist rechnerisch/praktisch nicht machbar für einen gegeben Hashwert <span class="math">\(h\)</span> ein <span class="math">\(N\)</span> zu finden so dass gilt: <span class="math">\(H(N) = h\)</span></p>
+<p>(<span class="eng">Preimage resistant; one-way property</span>)</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="sicherheitsanforderungen-an-kryptografische-hashfunktion-ii">
+<h2>Sicherheitsanforderungen an kryptografische Hashfunktion II</h2>
+<dl class="field-list">
+<dt>Schwache Kollisionsresistenz<span class="colon">:</span></dt>
+<dd><p>Es ist rechnerisch nicht machbar für eine gegebene Nachricht M eine Nachricht N zu finden so dass gilt: <span class="math">\(M \neq N\)</span> mit <span class="math">\(H(M) = H(N)\)</span></p>
+<p>(<span class="eng">Second preimage resistant; weak collision resistant</span>)</p>
+</dd>
+</dl>
+<dl class="incremental field-list">
+<dt>Starke Kollisionsresistenz<span class="colon">:</span></dt>
+<dd><p>Es ist rechnerisch unmöglich ein paar <span class="math">\((N,M)\)</span> zu finden so dass gilt: <span class="math">\(H(M) = H(N)\)</span>.</p>
+<p>(<span class="eng">Collision resistant; strong collision resistant</span>)</p>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<p><strong>Hintergrund</strong></p>
+<p>Im Deutschen wird auch von Urbild-Angriffen gesprochen. In dem Fall ist <em>preimage resistance</em> (d.h. die Einweg Eigenschaft) gleichbedeutend damit, dass man nicht effektiv einen <span class="ger-quote">Erstes-Urbild-Angriff</span> durchführen kann. Hierbei ist das Urbild die ursprüngliche Nachricht <span class="math">\(M\)</span>, die <em>gehasht</em> wurde.</p>
+<p><em>Second preimage resistance</em> ist dann gleichbedeutend damit, dass man nicht effektiv einen <span class="ger-quote">Zweites-Urbild-Angriff</span> durchführen kann. Es ist nicht möglich zu einer Nachricht M eine zweite Nachricht N (d.h. ein zweites Urbild) zu finden, die für eine gegebene Hashfunktion den gleich Hash aufweist.</p>
+</div>
+</div><div class="ld-slide" id="beziehung-zwischen-den-sicherheitsanforderungen-an-hashfunktionen">
+<h2>Beziehung zwischen den Sicherheitsanforderungen an Hashfunktionen</h2>
+<img alt="Beziehung zwischen den Eigenschaften von Hashfunktionen" class="align-center" src="drawings/hash_functions/properties.svg" style="width: 1200px;" />
+</div><div class="ld-slide" id="anforderungen-an-die-resistenz-von-hashfunktionen">
+<h2>Anforderungen an die Resistenz von Hashfunktionen</h2>
+<table class="smaller highlight-line-on-hover incremental">
+<thead>
+<tr><th class="head"></th>
+<th class="head"><p>Preimage Resistant</p></th>
+<th class="head"><p>Second Preimage Resistant</p></th>
+<th class="head"><p>Collision Resistant</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Hash + Digitale Signaturen</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr><td><p>Einbruchserkennung und Viruserkennung</p></td>
+<td></td>
+<td><p>✓</p></td>
+<td></td>
+</tr>
+<tr><td><p>Hash + Symmetrische Verschlüsselung</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>Passwortspeicherung</p></td>
+<td><p>✓</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>MAC</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+</tr>
+</tbody>
+</table>
+<div class="supplemental docutils container">
+<p><strong>Hintergrund</strong></p>
+<p>Ein Kollisionsangriff erfordert weniger Aufwand als ein <em>preimage</em> oder ein <em>second preimage</em> Angriff.</p>
+<p>Dies wird durch das Geburtstagsparadoxon erklärt. Wählt man Zufallsvariablen aus einer Gleichverteilung im Bereich von <span class="math">\(0\)</span> bis <span class="math">\(N-1\)</span>, so übersteigt die Wahrscheinlichkeit, dass ein sich wiederholendes Element gefunden wird, nach <span class="math">\(\sqrt{N}\)</span> Auswahlen <span class="math">\(0,5\)</span>. Wenn wir also für einen m-Bit-Hashwert Datenblöcke zufällig auswählen, können wir erwarten, zwei Datenblöcke innerhalb von <span class="math">\(\sqrt{2^m} = 2^{m/2}\)</span> Versuchen zu finden.</p>
+<aside class="admonition smaller">
+<p class="admonition-title">Beispiel</p>
+<p>Es ist relativ einfach, ähnliche Meldungen zu erstellen. Wenn ein Text 8 Stellen hat, an denen ein Wort mit einem anderen ausgetauscht werden kann, dann hat man bereits <span class="math">\(2^{8}\)</span> verschiedene Texte.</p>
+<p>Es ist relativ trivial(1), vergleichbare(2) Nachrichten(3) zu schreiben(4). Wenn ein Text 8 Stellen hat, an denen ein Ausdruck(5) mit einem vergleichbaren (6) ausgetauscht werden kann, dann erhält(7) man bereits <span class="math">\(2^{8}\)</span> verschiedene Dokumente(8).</p>
+</aside>
+</div>
+</div><div class="ld-slide" id="effizienzanforderungen-an-kryptografische-hashfunktionen">
+<h2>Effizienzanforderungen an kryptografische Hashfunktionen</h2>
+<dl class="field-list simple">
+<dt>Effizienz bei der Verwendung für Signaturen und zur Authentifizierung<span class="colon">:</span></dt>
+<dd><p>Bei der Verwendung zur Nachrichtenauthentifizierung und für digitale Signaturen ist <span class="math">\(H(N)\)</span> für jedes beliebige <span class="math">\(N\)</span> relativ einfach zu berechnen. Dies soll sowohl Hardware- als auch Softwareimplementierungen ermöglichen.</p>
+</dd>
+</dl>
+<div class="incremental docutils container">
+<div class="text-align-center bold huge docutils container">
+<p>vs.</p>
+</div>
+<dl class="field-list simple">
+<dt>Brute-Force-Angriffe auf Passwörter erschweren<span class="colon">:</span></dt>
+<dd><p>Bei der Verwendung für das Hashing von Passwörtern soll es schwierig sein den Hash effizient zu berechnen, selbst auf spezialisierter Hardware (GPUs, ASICs).</p>
+</dd>
+</dl>
+</div>
+</div><div class="ld-slide" id="struktur-eines-sicheren-hash-codes">
+<h2>Struktur eines sicheren Hash-Codes</h2>
+<img alt="drawings/hash_functions/structure_of_secure_hash_codes.svg" class="align-center" src="drawings/hash_functions/structure_of_secure_hash_codes.svg" style="width: 1400px;" />
+<div class="two-columns smaller docutils container">
+<p><span class="math">\(IV\)</span> = Initial Value (algorithm dependent)</p>
+<p><span class="math">\(CV_i\)</span> = Chaining variable</p>
+<p><span class="math">\(Y_i\)</span> = ith input block</p>
+<p><span class="math">\(f\)</span> = compression function</p>
+<p><span class="math">\(n\)</span> = Length of block</p>
+<p><span class="math">\(L\)</span> = Number of input blocks</p>
+<p><span class="math">\(b\)</span> = Length of input block</p>
+</div>
+</div><div class="ld-slide" id="hmac-hash-based-message-authentication-code">
+<h2>HMAC (Hash-based Message Authentication Code)</h2>
+<div class="small docutils container">
+<p>Auch als <em>keyed-hash message authentication code</em> bezeichnet.</p>
+<div class="math">
+\begin{align*}
+\begin{array}{rcl}
+HMAC(K,m) &amp; = &amp; H( (K' \oplus opad) || H( ( K' \oplus ipad) || m) ) \\
+K' &amp; = &amp;\begin{cases}
+        H(K) &amp; \text{falls K größer als die Blockgröße ist}\\
+        K &amp; \text{andernfalls}
+        \end{cases}
+\end{array}
+\end{align*}
+</div>
+<p><span class="math">\(H\)</span> is eine kryptografische Hashfunktion.</p>
+<p><span class="math">\(m\)</span> ist die Nachricht.</p>
+<p><span class="math">\(K\)</span> ist der geheime Schlüssel (<em>Secret Key</em>).</p>
+<p><span class="math">\(K'\)</span> ist vom Schlüssel K abgeleiteter Schlüssel mit Blockgröße (ggf. <em>padded</em> oder <em>gehasht</em>).</p>
+<p><span class="math">\(||\)</span> ist die Konkatenation.</p>
+<p><span class="math">\(\oplus\)</span> ist die XOR Operation.</p>
+<p><span class="math">\(opad\)</span> ist das äußere Padding bestehend aus Wiederholungen von 0x5c in Blockgröße.</p>
+<p><span class="math">\(ipad\)</span> ist das innere Padding bestehend aus Wiederholungen von 0x36 in Blockgröße.</p>
+</div>
+</div><div class="ld-slide" id="section-1">
+<h2></h2>
+<img alt="Schlüsselableitung für den inneren und äußeren Schlüssel K'" class="align-left" src="drawings/hmac/hmac_i_o_key_derivation.svg" style="width: 1400px;" />
+<img alt="Schlüsselableitung für den inneren und äußeren Schlüssel K'" class="incremental margin-top-1em padding-top-1em align-right" src="drawings/hmac/hmac_message_hashing.svg" style="width: 1300px;" />
+<div class="supplemental docutils container">
+<p><strong>Padding und Hashing</strong></p>
+<p>Im Rahmen der Speicherung von Passwörtern und <em>Secret Keys</em> ist die Verwendung von Padding Operationen bzw. das Hashing von Passwörtern, um Eingaben in einer wohl-definierten Länge zu bekommen, üblich. Neben dem hier gesehenen Padding, bei dem 0x00 Werte angefügt werden, ist zum Beispiel auch das einfache Wiederholen des ursprünglichen Wertes, bis man auf die notwendige Länge kommt, ein Ansatz.</p>
+<p>Diese Art Padding darf jedoch nicht verwechselt werden mit dem Padding, dass ggf. im Rahmen der Verschlüsselung von Nachrichten notwendig ist, um diese ggf. auf eine bestimmte Blockgröße zu bringen (zum Beispiel bei ECB bzw. CBC Block Mode Operations.)</p>
+</div>
+</div><div class="ld-slide" id="hmac-computation-in-python">
+<h2>HMAC Computation in Python</h2>
+<p><strong>Implementierung</strong></p>
+<pre class="code python small literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">hashlib</span><span class="whitespace">
+</span><span class="name">pwd</span> <span class="operator">=</span> <span class="literal string affix">b</span><span class="literal string double">&quot;MyPassword&quot;</span><span class="whitespace">
+</span><span class="name">stretched_pwd</span> <span class="operator">=</span> <span class="name">pwd</span> <span class="operator">+</span> <span class="punctuation">(</span><span class="literal number integer">64</span><span class="operator">-</span><span class="name builtin">len</span><span class="punctuation">(</span><span class="name">pwd</span><span class="punctuation">))</span> <span class="operator">*</span> <span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00</span><span class="literal string double">&quot;</span><span class="whitespace">
+</span><span class="name">ikeypad</span> <span class="operator">=</span> <span class="name builtin">bytes</span><span class="punctuation">(</span><span class="name builtin">map</span><span class="punctuation">(</span><span class="keyword">lambda</span> <span class="name">x</span> <span class="punctuation">:</span> <span class="name">x</span> <span class="operator">^</span> <span class="literal number hex">0x36</span> <span class="punctuation">,</span> <span class="name">stretched_pwd</span><span class="punctuation">))</span> <span class="comment single"># xor with ipad</span><span class="whitespace">
+</span><span class="name">okeypad</span> <span class="operator">=</span> <span class="name builtin">bytes</span><span class="punctuation">(</span><span class="name builtin">map</span><span class="punctuation">(</span><span class="keyword">lambda</span> <span class="name">x</span> <span class="punctuation">:</span> <span class="name">x</span> <span class="operator">^</span> <span class="literal number hex">0x5c</span> <span class="punctuation">,</span> <span class="name">stretched_pwd</span><span class="punctuation">))</span> <span class="comment single"># xor with opad</span><span class="whitespace">
+</span><span class="name">hash1</span> <span class="operator">=</span> <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">(</span><span class="name">ikeypad</span><span class="operator">+</span><span class="literal string affix">b</span><span class="literal string double">&quot;JustASalt&quot;</span><span class="operator">+</span><span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00\x00\x00\x01</span><span class="literal string double">&quot;</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span><span class="whitespace">
+</span><span class="name">hmac</span>  <span class="operator">=</span> <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">(</span><span class="name">okeypad</span><span class="operator">+</span><span class="name">hash1</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span></code></pre>
+<div class="incremental small docutils container">
+<p><strong>Ausführung</strong></p>
+<pre class="code python literal-block"><code><span class="name">hmac</span> <span class="operator">=</span><span class="whitespace">
+</span><span class="literal string affix">b</span><span class="literal string single">'h</span><span class="literal string escape">\x88\xc2\xb6</span><span class="literal string single">X</span><span class="literal string escape">\xb7\xcb\x9c\x90\xc2</span><span class="literal string single">R...</span><span class="whitespace">
+</span>  \<span class="name">x16</span>\<span class="name">x87</span>\<span class="name">x87</span>\<span class="name">x0e</span>\<span class="name">xad</span>\<span class="name">xa1</span>\<span class="name">xe1</span><span class="punctuation">:</span><span class="literal number integer">9</span>\<span class="name">xca</span><span class="literal string single">'</span></code></pre>
+</div>
+<div class="supplemental docutils container">
+<p>HMAC ist auch direkt als Bibliotheksfunktion verfügbar.</p>
+<pre class="code python black literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">hashlib</span><span class="whitespace">
+</span><span class="keyword namespace">import</span> <span class="name namespace">hmac</span><span class="whitespace">
+
+</span><span class="name">hash_hmac</span> <span class="operator">=</span> <span class="name">hmac</span><span class="operator">.</span><span class="name">new</span><span class="punctuation">(</span><span class="whitespace">
+</span>    <span class="literal string affix">b</span><span class="literal string double">&quot;MyPassword&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span>    <span class="literal string affix">b</span><span class="literal string double">&quot;JustASalt&quot;</span><span class="operator">+</span><span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00\x00\x00\x01</span><span class="literal string double">&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span>    <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span><span class="whitespace">
+
+</span><span class="name">hash_hmac</span> <span class="operator">=</span><span class="whitespace">
+</span>    <span class="literal string affix">b</span><span class="literal string single">'h</span><span class="literal string escape">\x88\xc2\xb6</span><span class="literal string single">X</span><span class="literal string escape">\xb7\xcb\x9c\x90\xc2</span><span class="literal string single">R...</span><span class="whitespace">
+</span>      \<span class="name">x16</span>\<span class="name">x87</span>\<span class="name">x87</span>\<span class="name">x0e</span>\<span class="name">xad</span>\<span class="name">xa1</span>\<span class="name">xe1</span><span class="punctuation">:</span><span class="literal number integer">9</span>\<span class="name">xca</span><span class="literal string single">'</span></code></pre>
+</div>
+</div><div class="integrated-exercise ld-slide" id="ubung">
+<h2>Übung</h2>
+<ol class="arabic simple">
+<li><p>Warum ist eine einfache Hash-Funktion, die einen 256-Bit-Hash-Wert berechnet, indem sie ein XOR über alle Blöcke einer Nachricht durchführt, im Allgemeinen ungeeignet?</p></li>
+</ol>
+<blockquote>
+<div class="protected-exercise-solution">
+<p class="rubric">XOR als Hashfunktion</p>
+<p>Je nach Beschaffenheit der zugrunde liegenden Daten können wir die ursprüngliche Nachricht wiederherstellen. Stellen Sie sich z. B. vor, dass nur der erste Block sinnvolle Daten enthält und alle anderen Blöcke einfach &quot;0&quot; sind; außerdem können wir nicht alle Bits verwenden.</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>Warum sind Second-Preimage-Resistenz und Kollisionssicherheit nicht relevant, wenn der Hash-Algorithmus zum Hashing von Passwörtern verwendet wird?</p></li>
+</ol>
+<blockquote>
+<div class="protected-exercise-solution">
+<p class="rubric">Irrelevanz von Second-Preimage-Resistenz und Kollisionssicherheit</p>
+<p>Wir haben keinen Block der Nachricht, mit dem wir arbeiten können, und wir haben keinen Vorteil davon, zwei verschiedene Nachrichten zu finden, die denselben Hash haben.</p>
+</div></blockquote>
+</div>
+</body>
+</html>

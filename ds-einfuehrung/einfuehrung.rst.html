@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Verteilte Systeme&quot;" name="keywords" />
+<meta content="Verteilte Systeme" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-ds-einfuehrung" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Einführung in verteilte Systeme</title>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml.js?config=TeX-AMS_CHTML"></script>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Einführung in verteilte Systeme</h1>
+
+<p>Ein weitgefasster Überblick über verteilte Systeme.</p>
+<div class="smaller line-above docutils container">
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><strong>Prof. Dr. Michael Eichberg</strong></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>2024-02-02</p>
+</dd>
+</dl>
+</div>
+<div class="tiny line-above incremental docutils container">
+<dl class="field-list simple">
+<dt>seit Okt. 2023<span class="colon">:</span></dt>
+<dd><p>Professor an der DHBW Mannheim</p>
+</dd>
+<dt>4 Jahre<span class="colon">:</span></dt>
+<dd><p>Bundeskriminalamt</p>
+</dd>
+<dt>12 Jahre<span class="colon">:</span></dt>
+<dd><p>Postdoc am Fachgebiet Softwaretechnik der TU Darmstadt</p>
+</dd>
+<dt>2007<span class="colon">:</span></dt>
+<dd><p>Promotion zum Dr. Ing. am Fachgebiet Softwaretechnik der TU Darmstadt</p>
+</dd>
+</dl>
+</div>
+<div class="footer-left tiny incremental docutils container">
+<p>Dieser Foliensatz basiert auf Folien von:</p>
+<ol class="loweralpha simple">
+<li><p>Maarten van Steen (Veröffentlicht zum Buch <em>Distributed Systems</em>)</p></li>
+<li><p>Henning Pagnia (basierend auf seiner Vorlesung <em>Verteilte Systeme</em>).</p></li>
+</ol>
+<p>Alle Fehler sind meine eigenen.</p>
+</div>
+</div>
+<div class="ld-slide" id="verteilte-systeme-w3wi-110-2">
+<h2>Verteilte Systeme - W3WI_110.2</h2>
+<dl class="field-list simple">
+<dt>Modul<span class="colon">:</span></dt>
+<dd><p>Entwicklung verteilter Systeme (W3WI_110)</p>
+</dd>
+<dt>Umfang<span class="colon">:</span></dt>
+<dd><p>22 Vorlesungsstunden und 38 Stunden Selbststudium</p>
+</dd>
+<dt>Prüfungsleistung<span class="colon">:</span></dt>
+<dd><p>Portfolio</p>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<p class="rubric">Kerninhalte gem. MHB</p>
+<ul class="simple">
+<li><p>Terminologie, Konzepte, Architekturen, Anforderungsprofile und Architekturmodelle für verteilte Systeme</p></li>
+<li><p>Entwurfs- und Implementierungsansätze</p></li>
+<li><p>Vergleich unterschiedlicher Middleware-Konzepte</p></li>
+<li><p>Synchrone und asynchrone Kommunikation, entfernter Methodenaufruf</p></li>
+<li><p>Asynchrone Kommunikation und Messaging-Systeme</p></li>
+<li><p>Sicherheitsaspekte in verteilten Systemen</p></li>
+</ul>
+</div>
+</div><div class="padding-none no-title transition-scale ld-slide" id="terminologie-verteilter-systeme">
+<h2>Terminologie verteilter Systeme</h2>
+<img alt="images/modern_software_architecture-tag_cloud.png" class="align-center" src="images/modern_software_architecture-tag_cloud.png" style="width: 100%;" />
+</div><div class="ld-slide" id="empfohlene-literatur">
+<h2>Empfohlene Literatur</h2>
+<img alt="screenshots/distributed-systems.net.png" class="align-center" src="screenshots/distributed-systems.net.png" style="height: 800px;" />
+<div class="supplemental docutils container">
+<p>Ergänzend bzw. für interessierte Studierende:</p>
+<img alt="screenshots/microservices.jpg" class="box-shadow align-center" src="screenshots/microservices.jpg" style="height: 800px;" />
+</div>
+</div><div class="ld-slide" id="verteilt-vs-dezentralisiert-distributed-vs-decentralized">
+<h2>Verteilt vs. Dezentralisiert (<span class="eng">Distributed vs Decentralized</span>)</h2>
+<img alt="images/distributed-vs-decentralized.svg" class="margin-bottom-1em align-center" src="images/distributed-vs-decentralized.svg" style="width: 100%;" />
+<div class="question docutils container">
+<p>Wann wird ein dezentralisiertes System zu einem verteilten System?</p>
+</div>
+</div><div class="ld-slide" id="verteilte-systeme">
+<h2>Verteilte Systeme</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Zwei Ansichten zur Realisierung verteilter Systeme</p>
+<ul class="simple">
+<li><p><strong>Integrative Sichtweise</strong>: Verbindung bestehender vernetzter Computersysteme zu einem größeren System.</p></li>
+<li><p><strong>Expansive Sichtweise</strong>: ein bestehendes vernetztes Computersystem wird um zusätzliche Computer erweitert</p></li>
+</ul>
+</aside>
+<aside class="admonition definition in">
+<p class="admonition-title">Zwei Definitionen</p>
+<ul class="simple">
+<li><p>Ein dezentrales System ist ein vernetztes Computersystem, in dem Prozesse und Ressourcen <em>notwendigerweise</em> über mehrere Computer verteilt sind.</p></li>
+<li><p>Ein verteiltes System ist ein vernetztes Computersystem, bei dem Prozesse und Ressourcen <em>ausreichend</em> über mehrere Computer verteilt sind.</p></li>
+</ul>
+</aside>
+</div><div class="ld-slide" id="haufige-missverstandnisse-bzgl-zentralisierter-systeme">
+<h2>Häufige Missverständnisse bzgl. zentralisierter Systeme</h2>
+<ol class="arabic incremental">
+<li><p><strong>Zentralisierte Lösungen lassen sich nicht skalieren</strong></p>
+<p>Es gilt zwischen logischer und physischer Zentralisierung zu unterscheiden. Zum Beispiel ist das Domain Name Systems:</p>
+<ul class="simple">
+<li><p>logisch zentralisiert</p></li>
+<li><p>physisch (massiv) verteilt</p></li>
+<li><p>dezentralisiert über mehrere Organisationen</p></li>
+</ul>
+</li>
+<li><p><strong>Zentralisierte Lösungen haben einen Single Point of Failure</strong></p>
+<p>Im Allgemeinen nicht zutreffend (z.B. DNS).</p>
+<p>Ein einzelner Fehlerpunkt ist weiterhin oft:</p>
+<ul class="simple">
+<li><p>leichter zu verwalten</p></li>
+<li><p>einfacher robuster zu machen</p></li>
+</ul>
+</li>
+</ol>
+<div class="supplemental docutils container">
+<aside class="admonition warning">
+<p class="admonition-title">Warnung</p>
+<p>Es gibt viele, schlecht begründete Missverständnisse in Bezug auf, z.B. Skalierbarkeit, Fehlertoleranz oder Sicherheit. Wir müssen Fähigkeiten entwickeln, mit denen verteilte Systeme leicht verstanden werden können, um solche Missverständnisse zu vermeiden.</p>
+</aside>
+</div>
+</div><div class="ld-slide" id="sichtweisen-auf-verteilte-systeme">
+<h2>Sichtweisen auf verteilte Systeme</h2>
+<p><strong>Verteilte Systeme sind komplex.</strong></p>
+<ul class="incremental simple">
+<li><p>Welche Architekturen und Architekturellen Stile (<span class="eng">architectural styles</span>) gibt es?</p></li>
+<li><p>Prozesse: Welche Art von Prozessen gibt es und wie sind deren Beziehungen?</p></li>
+<li><p>Kommunikation: Welche Möglichkeiten zum Austausch von Daten gibt es?</p></li>
+<li><p>Koordinierung: Wie erfolgt die Koordinierung der beteiligten Systeme?</p></li>
+<li><p>Benennung: Wie identifiziert man Ressourcen?</p></li>
+<li><p>Konsistenz und Replikation: Welcher Tradeoffs müssen in Hinblick auf die Konsistenz der Daten, der Replikation der Selbigen und der Performance getroffen werden?</p></li>
+<li><p>Fehlertoleranz: Wie kann eine Aufrechterhaltung des Betriebs auch bei Teilausfällen gewährleistet werden?</p></li>
+<li><p>Sicherheit: Wie kann der autorisierte Zugriff auf Ressourcen gewährleistet werden?</p></li>
+</ul>
+</div><div class="ld-slide" id="entwurfsziele-verteilter-systeme">
+<h2>Entwurfsziele verteilter Systeme</h2>
+<ul class="incremental simple">
+<li><p>Unterstützung der gemeinsamen Nutzung von Ressourcen</p></li>
+<li><p>Verteilungstransparenz (<span class="eng">Distribution Transparency</span>)</p></li>
+<li><p>Offenheit</p></li>
+<li><p>Skalierbarkeit</p></li>
+</ul>
+</div><div class="ld-slide" id="gemeinsame-nutzung-von-ressourcen">
+<h2>Gemeinsame Nutzung von Ressourcen</h2>
+<p>Kanonische Beispiele:</p>
+<ul class="simple">
+<li><p>Cloud-basierter gemeinsamer Speicher und Dateien</p></li>
+<li><p>Peer-to-Peer-unterstütztes Multimedia-Streaming</p></li>
+<li><p>Gemeinsame E-Mail-Dienste (z. B. ausgelagerte E-Mail-Systeme)</p></li>
+<li><p>Gemeinsames Webhosting (z.B. <em>Content Distribution Networks</em>)</p></li>
+</ul>
+</div><div class="ld-slide" id="verteilungstransparenz-distribution-transparency">
+<h2>Verteilungstransparenz (<span class="eng">Distribution Transparency</span>)</h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Transparenz beschreibt die Eigenschaft, dass ein verteiltes System versucht, die Tatsache zu verbergen, dass seine Prozesse und Ressourcen physisch auf mehrere Computer verteilt sind, die möglicherweise durch große Entfernungen voneinander getrennt sind.</p>
+</aside>
+<div class="incremental docutils container">
+<p>Die Verteilungstransparenz wird durch viele verschiedene Techniken von der so genannten Middleware realisiert - einer Schicht zwischen Anwendungen und Betriebssystemen.</p>
+</div>
+</div><div class="ld-slide" id="aspekte-der-verteilungstransparenz-distribution-transparency">
+<h2>Aspekte der Verteilungstransparenz (<span class="eng">Distribution Transparency</span>)</h2>
+<table class="highlight-line-on-hover smaller">
+<tbody>
+<tr><td><p>Datenzugriff</p></td>
+<td><p>Verbergen von Unterschieden in der Datendarstellung und der Art des Zugriffs auf ein lokales bzw. entferntes Objekt</p></td>
+</tr>
+<tr><td><p>Ort der Datenhaltung</p></td>
+<td><p>Verbergen, wo sich ein Objekt befindet</p></td>
+</tr>
+<tr><td><p>Verschieben</p></td>
+<td><p>Verbergen, dass ein Objekt während der Verwendung an einen anderen Ort verschoben werden kann</p></td>
+</tr>
+<tr><td><p>Migration</p></td>
+<td><p>Verbergen, dass ein Objekt an einen anderen Ort verschoben werden kann</p></td>
+</tr>
+<tr><td><p>Replikation</p></td>
+<td><p>Verbergen, dass ein Objekt repliziert wird</p></td>
+</tr>
+<tr><td><p>Nebenläufigkeit</p></td>
+<td><p>Verbergen, dass ein Objekt von mehreren unabhängigen Benutzern gemeinsam genutzt werden kann</p></td>
+</tr>
+<tr><td><p>Fehlertransparenz</p></td>
+<td><p>Verbergen des Ausfalls und der Wiederherstellung eines Objekts.</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="grad-der-erreichbaren-verteilungstransparenz">
+<h2>Grad der erreichbaren Verteilungstransparenz</h2>
+<div class="assessment docutils container">
+<p>Eine vollständigen Verteilungstransparenz ist nicht erreichbar.</p>
+</div>
+<p>Jedoch kann auch eine sehr hohe Verteilungstransparenz bereits hohe Kosten nach sich ziehen.</p>
+<ul class="incremental smaller simple">
+<li><p>Es gibt Kommunikationslatenzen, die nicht verborgen werden können.</p></li>
+<li><p>Es ist (theoretisch und praktisch) unmöglich, Ausfälle von Netzen und Knoten vollständig zu verbergen.</p></li>
+<li><p>Man kann einen langsamen Computer nicht von einem ausgefallenen Computer unterscheiden.</p></li>
+<li><p>Man kann nie sicher sein, dass ein Server tatsächlich eine Operation durchgeführt hat bevor er abgestürzt ist.</p></li>
+<li><p>Vollständige Transparenz kostet Performance und legt die Verteilung des Systems offen.</p>
+<ul>
+<li><p>Die Replikate exakt auf dem Stand des Masters zu halten, kostet Zeit</p></li>
+<li><p>Schreibvorgänge werden zur Fehlertoleranz sofort auf die Festplatte übertragen</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="die-verteilung-offen-zu-legen-kann-vorteile-bringen">
+<h2>Die Verteilung offen zu legen kann Vorteile bringen</h2>
+<ul class="simple">
+<li><p>Nutzung von standortbezogenen Diensten (Auffinden von Freunden in der Nähe)</p></li>
+<li><p>Beim Umgang mit Benutzern in verschiedenen Zeitzonen</p></li>
+<li><p>Wenn es für einen Benutzer einfacher ist, zu verstehen, was vor sich geht (wenn z. B. ein Server lange Zeit nicht antwortet kann er als ausgefallen gemeldet werden).</p></li>
+</ul>
+<div class="assessment docutils container">
+<p>Verteilungstransparenz (<span class="eng">Distribution Transparency</span>) ist ein heres Ziel, aber oft schwer zu erreichen, und häufig auch nicht erstrebenswert.</p>
+</div>
+</div><div class="ld-slide" id="offene-verteilte-systeme">
+<h2>Offene verteilte Systeme</h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Ein offenes verteiltes System bietet Komponenten an, die leicht von anderen Systemen verwendet oder in andere Systeme integriert werden können. Ein offenes verteiltes System besteht selbst oft aus Komponenten, die von anderswoher stammen.</p>
+</aside>
+<div class="incremental docutils container">
+<p>Offene verteilte Systeme müssen in der Lage sein, mit Diensten anderer (offener) Systeme zu interagieren, unabhängig von der zugrunde liegenden Umgebung:</p>
+<ul class="simple">
+<li><p>Systeme sollten wohl-definierte Schnittstellen korrekt realisieren</p></li>
+<li><p>Systeme sollten leicht mit anderen Systemen interagieren können</p></li>
+<li><p>Systeme sollten die Portabilität von Anwendungen unterstützen</p></li>
+<li><p>Systeme sollten leicht erweiterbar sein</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="vorgaben-richtlinien-vs-umsetzungen-policies-vs-mechanisms">
+<h2>Vorgaben/Richtlinien vs. Umsetzungen (<span class="eng">Policies vs. Mechanisms</span>)</h2>
+<p class="rubric">Richtlinien für die Umsetzung von Offenheit</p>
+<ul class="simple">
+<li><p>Welchen Grad an Konsistenz benötigen wir für Daten im Client-Cache?</p></li>
+<li><p>Welche Operationen erlauben wir heruntergeladenem Code?</p></li>
+<li><p>Welche QoS-Anforderungen passen wir angesichts schwankender Bandbreiten an?</p></li>
+<li><p>Welchen Grad an Geheimhaltung benötigen wir für die Kommunikation?</p></li>
+</ul>
+<p class="rubric">Mechanismen bgzl. der Umsetzung von Offenheit</p>
+<ul class="simple">
+<li><p>Ermöglichung der (dynamischen) Einstellung von Caching-Richtlinien</p></li>
+<li><p>Unterstützung verschiedener Vertrauensstufen für mobilen Code</p></li>
+<li><p>Bereitstellung einstellbarer QoS-Parameter pro Datenstrom</p></li>
+<li><p>Angebot verschiedener Verschlüsselungsalgorithmen</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Die harte Kodierung von Richtlinien vereinfacht oft die Verwaltung und reduziert die Komplexität des Systems. Hat jedoch den Preis geringerer Flexibilität.</p>
+</div>
+</div><div class="ld-slide" id="verlasslichkeit-verteilter-systeme-dependability">
+<h2>Verlässlichkeit verteilter Systeme (<span class="eng">Dependability</span>)</h2>
+<aside class="admonition foundations">
+<p class="admonition-title">Abhängigkeiten</p>
+<p>Eine <strong>Komponente</strong><a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> stellt seinen <strong>Clients</strong> <strong>Dienste</strong> zur Verfügung. Dafür kann die Komponente jedoch wiederum Dienste von anderen Komponenten benötigen und somit ist eine Komponente  von einer anderen Komponente abhängig (<span class="eng">depend</span>).</p>
+<p>Eine Komponente C hängt von C<sup>
+*</sup> ab, wenn die Korrektheit des Verhaltens von C von der Korrektheit des Verhaltens von C<sup>
+*</sup> abhängt.</p>
+</aside>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Komponenten sein Prozesse oder Kanäle.</p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="anforderungen-an-die-verlasslichkeit-verteilter-systeme">
+<h2>Anforderungen an die Verlässlichkeit verteilter Systeme</h2>
+<table class="highlight-line-on-hover">
+<thead>
+<tr><th class="head"><p>Anforderung</p></th>
+<th class="head"><p>Beschreibung</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Verfügbarkeit</p></td>
+<td><p>Das System ist nutzbar.</p></td>
+</tr>
+<tr><td><p>Zuverlässigkeit</p></td>
+<td><p>Kontinuität der korrekten Leistungserbringung</p></td>
+</tr>
+<tr><td><p>Sicherheit (<span class="eng">Safety</span><a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>)</p></td>
+<td><p>Niedrige Wahrscheinlichkeit für ein katastrophales Ereignis</p></td>
+</tr>
+<tr><td><p>Wartbarkeit</p></td>
+<td><p>Wie leicht kann ein fehlgeschlagenes System wiederhergestellt werden?</p></td>
+</tr>
+</tbody>
+</table>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p><span class="eng">Safety</span> und <span class="eng">Security</span> werden beide im Deutschen gleich mit Sicherheit übersetzt und sind daher leicht zu verwechseln. <span class="eng">Safety</span> bezieht sich auf die Sicherheit von Personen und Sachen, während <span class="eng">Security</span> sich auf die Sicherheit von Daten und Informationen bezieht.</p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="zuverlassigkeit-reliability-vs-verfugbarkeit-availability-in-verteilten-systemen">
+<h2>Zuverlässigkeit (<span class="eng">Reliability</span>) vs. Verfügbarkeit (<span class="eng">Availability</span>) in verteilten Systemen</h2>
+<p class="rubric">Verlässlichkeit <span class="math">\(R(t)\)</span> der Komponente <span class="math">\(C\)</span></p>
+<p>Bedingte Wahrscheinlichkeit, dass <span class="math">\(C\)</span> während <span class="math">\([0,t)\)</span> korrekt funktioniert hat, wenn <span class="math">\(C\)</span> zum Zeitpunkt <span class="math">\(T = 0\)</span> korrekt funktionierte.</p>
+<p class="rubric">Traditionelle Metriken</p>
+<ul class="simple">
+<li><p>Mittlere Zeit bis zum Versagen (<span class="eng">Mean Time to Failure</span> ((MTTF)): Die durchschnittliche Zeit bis zum Ausfall einer Komponente.</p></li>
+<li><p>Mittlere Zeit bis zur Reparatur (<span class="eng">Mean Time to Repair</span> (MTTR)): Die durchschnittliche Zeit, die für die Reparatur einer Komponente benötigt wird.</p></li>
+<li><p>Mittlere Zeit zwischen Ausfällen (<span class="eng">Mean Time Between Failures</span> (MTBF)): MTTF + MTTR.</p></li>
+</ul>
+<div class="supplemental docutils container">
+<ul class="simple">
+<li><p>Zuverlässigkeit: Wie wahrscheinlich ist es, dass ein System korrekt arbeitet?</p></li>
+<li><p>Verfügbarkeit: Wie wahrscheinlich ist es, dass ein System zu einem bestimmten Zeitpunkt verfügbar ist?</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="sicherheit-in-verteilten-systemen">
+<h2>Sicherheit in verteilten Systemen</h2>
+<div class="assessment docutils container">
+<p>Ein verteiltes System, das nicht sicher ist, ist nicht verlässlich.</p>
+</div>
+<p>Grundlegende Schutzziele:</p>
+<dl class="field-list simple">
+<dt>Vertraulichkeit<span class="colon">:</span></dt>
+<dd><p>Informationen werden nur an autorisierte Parteien weitergegeben.</p>
+</dd>
+<dt>Integrität<span class="colon">:</span></dt>
+<dd><p>Änderungen an den Werten eines Systems dürfen nur auf autorisierte Weise vorgenommen werden können.</p>
+</dd>
+</dl>
+<div class="smaller margin-top-2em incremental docutils container">
+<p class="rubric">Autorisierung, Authentifizierung, Vertrauen</p>
+<ul class="incremental simple">
+<li><p>Authentifizierung (<span class="eng">Authentication</span>): Überprüfung der Korrektheit einer behaupteten Identität</p></li>
+<li><p>Autorisierung (<span class="eng">Authorization</span>): Verfügt eine identifizierte Einheit über die richtigen Zugriffsrechte?</p></li>
+<li><p>Vertrauen (<span class="eng">Trust</span>): Eine Komponente kann sich sicher sein, dass eine andere Komponente bestimmte Handlungen gemäß den Erwartungen ausführt.</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="sicherheit-verschlusselung-und-signaturen">
+<h2>Sicherheit - Verschlüsselung und Signaturen</h2>
+<p>Es geht im Wesentlichen um das Ver- und Entschlüsseln von Daten (<span class="math">\(X\)</span>) mit Hilfe von Schlüsseln.</p>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<p><span class="math">\(E(K,X)\)</span> bedeutet, dass wir die Nachricht X mit dem Schlüssel <span class="math">\(K\)</span>  verschlüsseln (<span class="eng">encryption</span>).</p>
+<p><span class="math">\(D(K,X)\)</span> bezeichnet die Umkehrfunktion, die die Daten wieder entschlüsselt (<span class="eng">decryption</span>).</p>
+</div>
+<div class="layer incremental docutils container">
+<p class="rubric">Symmetrische Verschlüsselung</p>
+<p>Der Schlüssel zur Verschlüsselung ist identisch mit dem Schlüssel zur Entschlüsselung (<span class="eng">decryption</span> (<span class="math">\(D\)</span>)).</p>
+<div class="math">
+\begin{equation*}
+X = D(K,E(K,X))
+\end{equation*}
+</div>
+</div>
+<div class="layer incremental docutils container">
+<p class="rubric">Asymmetrische Verschlüsselung</p>
+<p>Wir unterscheiden zwischen einem privaten (<span class="math">\(PR\)</span>) und einem öffentlichen Schlüssel (<span class="math">\(PU\)</span>) (<span class="math">\(PU \neq PR\)</span>). Der private Schlüssel ist immer geheim zu halten.</p>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<p><strong>Symmetrische Verschlüsselung von Nachrichten</strong></p>
+<p>Alice sendet eine Nachricht an Bob und nutzt dazu den öffentlichen Schlüssel von Bob.</p>
+<div class="math">
+\begin{align*}
+Y = E(PU_{Bob},X) \\
+X = D(PR_{Bob},Y)
+\end{align*}
+</div>
+</div>
+<div class="layer incremental docutils container">
+<p><strong>Asymmetrische Verschlüsselung von Nachrichten</strong></p>
+<p>Alice signiert (<span class="math">\(S\)</span>) eine Nachricht mit ihrem privaten Schlüssel.</p>
+<div class="math">
+\begin{align*}
+Y = E(PR_{Alice},X) \\
+X = D(PU_{Alice},Y)
+\end{align*}
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="ld-slide" id="sicherheit-sicheres-hashing-secure-hashing">
+<h2>Sicherheit - Sicheres Hashing (<span class="eng">Secure Hashing</span>)</h2>
+<p>Eine sichere Hash-Funktionen: <span class="math">\(Digest(X)\)</span> gibt eine Zeichenkette fester Länge zurück (<span class="math">\(H\)</span>).
+- Jede Änderung - noch so klein - der Eingabedaten führt zu einer völlig anderen Zeichenkette.
+- Bei einem Hash-Wert ist es rechnerisch unmöglich die ursprüngliche Nachricht X basierend auf <span class="math">\(Digest(X)\)</span> zu finden.</p>
+<p><strong>Signieren von Nachrichten</strong></p>
+<p>Alice signiert eine Nachricht mit ihrem privaten Schlüssel.</p>
+<div class="math">
+\begin{align*}
+Alice: [E(PR_{Alice},H=Digest(X)),X] \\
+\end{align*}
+</div>
+<p>Bob prüft die Nachricht X auf Authentizität:</p>
+<div class="math">
+\begin{equation*}
+Bob: D(PU_{Alice},H) \stackrel{?}{=} Digest(X)
+\end{equation*}
+</div>
+</div><div class="ld-slide" id="skalierbarkeit-in-verteilten-systemen">
+<h2>Skalierbarkeit in verteilten Systemen</h2>
+<p>Wir können mind. drei Arten von Skalierbarkeit unterscheiden:</p>
+<ul class="simple">
+<li><p>Anzahl der Benutzer oder Prozesse (Skalierbarkeit der Größe)</p></li>
+<li><p>Maximale Entfernung zwischen den Knoten (geografische Skalierbarkeit)</p></li>
+<li><p>Anzahl der administrativen Domänen (administrative Skalierbarkeit)</p></li>
+</ul>
+</div><div class="ld-slide" id="ursachen-fur-skalierbarkeitsprobleme-bei-zentralisierten-losungen">
+<h2>Ursachen für Skalierbarkeitsprobleme bei zentralisierten Lösungen:</h2>
+<ul class="simple">
+<li><p>Die Rechenkapazität, da diese begrenzt ist durch die CPUs</p></li>
+<li><p>Die Speicherkapazität, einschließlich der Übertragungsrate zwischen CPUs und Festplatten</p></li>
+<li><p>Das Netzwerk zwischen dem Benutzer und dem zentralisierten Dienst</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Die Skalierbarkeit bzgl. der der Größe kann oft durch den Einsatz von mehr und leistungsstärkeren Servern, die parallel betrieben werden, erreicht werden.</p>
+<p>Die geografische und administrative Skalierbarkeit ist häufig eine größere Herausforderung.</p>
+</div>
+</div><div class="smaller ld-slide" id="formale-analyse-der-skalierbarkeit-zentralisierter-systeme">
+<h2>Formale Analyse der Skalierbarkeit zentralisierter Systeme</h2>
+<p>Ein zentralisierter Dienst kann als einfaches Warteschlangensystem modelliert werden:</p>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<img alt="images/queuing-system.svg" class="align-center" src="images/queuing-system.svg" style="width: 75%;" />
+<p>Annahmen:</p>
+<p>Die Warteschlange hat eine unendliche Kapazität; d.h. die Ankunftsrate der Anfragen wird nicht durch die aktuelle Länge der Warteschlange oder durch das, was gerade bearbeitet wird, beeinflusst.</p>
+</div>
+<div class="layer incremental docutils container">
+<div class="two-columns no-default-width docutils container">
+<div class="column docutils container">
+<ul class="simple">
+<li><p>Ankunftsrate der Anfragen: λ</p></li>
+<li><p>Verarbeitungskapazität des Services: μ Anfragen pro Sekunde</p></li>
+</ul>
+<p>Anteil der Zeit mit <span class="math">\(x\)</span> Anfragen im System:</p>
+<div class="math">
+\begin{equation*}
+p_x  = \bigl(1 - \frac{\lambda}{\mu}\bigr)\bigl(\frac{\lambda}{\mu}\bigr)^x
+\end{equation*}
+</div>
+</div>
+<div class="column docutils container">
+<img alt="images/number_of_requests_in_system.svg" src="images/number_of_requests_in_system.svg" style="width: 1300px;" />
+</div>
+</div>
+</div>
+<div class="layer incremental docutils container">
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="math">
+\begin{equation*}
+p_x  = \bigl(1 - \frac{\lambda}{\mu}\bigr)\bigl(\frac{\lambda}{\mu}\bigr)^x
+\end{equation*}
+</div>
+</aside>
+<p><span class="math">\(U\)</span> ist der Anteil der Zeit, in der ein Dienst ausgelastet ist:</p>
+<div class="math">
+\begin{equation*}
+U = \sum_{x &gt; 0} p_x = 1 - p_0 = \frac{\lambda}{\mu} \Rightarrow p_x = (1-U) U^x
+\end{equation*}
+</div>
+<p>Durchschnittliche Anzahl der Anfragen:</p>
+<div class="math">
+\begin{equation*}
+\bar{N} = \sum_{x\geq 0} x \cdot p_x
+= \sum_{x \geq 0} x \cdot (1-U)U^x
+= (1-U)\sum_{x\geq 0} x\cdot U^x
+= \frac{(1-U)U}{(1-U)^2} = \frac{U}{1-U}
+\end{equation*}
+</div>
+<p>Durchschnittlicher Durchsatz:</p>
+<div class="math">
+\begin{equation*}
+X = \underbrace{U \cdot \mu}_{\mbox{ausgelastet}} + \underbrace{(1-U) \cdot 0}_{\mbox{ungenutzt}} = \frac{\lambda}{\mu} \cdot \mu = \lambda
+\end{equation*}
+</div>
+</div>
+<div class="layer incremental docutils container">
+<div class="two-columns no-default-width docutils container">
+<div class="column docutils container">
+<p>Die Antwortszeit (<span class="eng">response time</span>) ist die Gesamtzeit für die Bearbeitung einer Anfrage</p>
+<div class="math">
+\begin{equation*}
+R = \frac{\bar{N}}{X} = \frac{S}{1-U} \Rightarrow \frac{R}{S} = \frac{1}{1-U}
+\end{equation*}
+</div>
+<p>mit <span class="math">\(S = \frac{1}{\mu}\)</span> für die durchschnittliche Servicezeit.</p>
+</div>
+<div class="column docutils container">
+<img alt="images/response_time.svg" src="images/response_time.svg" style="width: 1100px;" />
+</div>
+</div>
+<ul class="simple">
+<li><p>Wenn <span class="math">\(U\)</span> klein ist, liegt die Antwortzeit nahe bei 1; d.h. eine Anfrage wird sofort bearbeitet.</p></li>
+<li><p>Wenn <span class="math">\(U\)</span> auf 1 ansteigt, kommt das System zum Stillstand.</p></li>
+</ul>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Für eine <a class="reference external" href="https://de.wikipedia.org/wiki/Geometrische_Reihe#Konvergenz_und_Wert_der_geometrischen_Reihe">unendliche geometrische Reihe</a> mit dem Quotienten <span class="math">\(U\)</span> gilt:</p>
+<div class="math">
+\begin{equation*}
+\sum_{k\geq 0} k\cdot U^k  = \frac{U}{(1-U)^2}
+\end{equation*}
+</div>
+<p>Visualisierung der durchschnittlichen Anzahl der Anfragen im System in Abhängigkeit von der Auslastung <span class="math">\(U\)</span>:</p>
+<img alt="images/average_number_of_requests_in_system.svg" class="align-center" src="images/average_number_of_requests_in_system.svg" style="width: 1100px;" />
+</div>
+</div><div class="ld-slide" id="probleme-der-geografischen-skalierbarkeit">
+<h2>Probleme der geografischen Skalierbarkeit</h2>
+<ul class="simple">
+<li><p>Viele verteilte Systeme gehen von synchronen Client-Server-Interaktionen aus und dies verhindert einen Übergang vom LAN zum WAN. Die Latenzzeiten können prohibitiv sein, wenn der Client auf eine Anfrage lange auf die Antwort warten muss.</p></li>
+<li><p>WAN-Verbindungen sind oft von Natur aus unzuverlässig.</p></li>
+</ul>
+</div><div class="ld-slide" id="probleme-der-administrativen-skalierbarkeit">
+<h2>Probleme der administrativen Skalierbarkeit</h2>
+<div class="assessment docutils container">
+<p>Widersprüchliche Richtlinien in Bezug auf Nutzung (und damit Bezahlung), Verwaltung und Sicherheit</p>
+</div>
+<div class="footnotesize docutils container">
+<p class="rubric">Beispiele</p>
+<ul class="simple">
+<li><p>Gridcomputing: gemeinsame Nutzung teurer Ressourcen über verschiedene Domänen hinweg.</p></li>
+<li><p>Gemeinsam genutzte Geräte: Wie kontrolliert, verwaltet und nutzt man ein gemeinsam genutztes Radioteleskop, das als groß angelegtes gemeinsames Sensornetz konstruiert wurde?</p></li>
+</ul>
+<p class="rubric">Ausnahme</p>
+<p>Verschiedene Peer-to-Peer-Netze <a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> bei denen Endnutzer zusammenarbeiten und nicht Verwaltungseinheiten:</p>
+<ul class="simple">
+<li><p>File-Sharing-Systeme (z. B. auf der Grundlage von BitTorrent)</p></li>
+<li><p>Peer-to-Peer-Telefonie (frühe Versionen von Skype)</p></li>
+</ul>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
+<p><span class="eng">Peer</span> ist im hier im Sinne von <span class="ger-quote">Gleichgestellter</span> zu verstehen. D.h. wir haben ein Netz von gleichgestellten Rechnern.</p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="ansatze-um-skalierung-zu-erreichen">
+<h2>Ansätze, um Skalierung zu erreichen</h2>
+<div class="docutils container">
+<p><strong>Verbergen von Kommunikationslatenzen</strong> durch:
+- Nutzung asynchroner Kommunikation
+- Verwendung separater <em>Handler</em> für eingehende Antworten</p>
+<div class="assessment docutils container">
+<p>Dieses Modell ist jedoch nicht immer anwendbar.</p>
+</div>
+</div>
+<div class="line-above margin-top-2em padding-top-1em docutils container">
+<p><strong>Partitionierung von Daten und Berechnungen über mehrere Rechner.</strong></p>
+<ul class="simple">
+<li><p>Verlagerung von Berechnungen auf Clients</p></li>
+<li><p>Dezentrale Namensgebungsdienste (DNS)</p></li>
+<li><p>Dezentralisierte Informationssysteme (WWW)</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="verlagerung-von-berechnungen-auf-clients">
+<h2>Verlagerung von Berechnungen auf Clients</h2>
+<img alt="images/moving-computations.svg" class="align-center" src="images/moving-computations.svg" style="height: 900px;" />
+</div><div class="ld-slide" id="ansatze-um-skalierung-zu-erreichen-1">
+<h2>Ansätze, um Skalierung zu erreichen</h2>
+<p><strong>Einsatz von Replikation und Caching, um Kopien von Daten auf verschiedenen Rechnern verfügbar zu machen.</strong></p>
+<ul class="simple">
+<li><p>Replizierte Dateiserver und Datenbanken</p></li>
+<li><p>gespiegelte Websites</p></li>
+<li><p>Web-Caches (in Browsern und Proxies)</p></li>
+<li><p>Datei-Caching (auf Server und Client)</p></li>
+</ul>
+</div><div class="ld-slide" id="herausforderungen-bei-der-replikation">
+<h2>Herausforderungen bei der Replikation</h2>
+<ul class="incremental simple">
+<li><p>Mehrere Kopien (zwischengespeichert (<span class="eng">cached</span>) oder repliziert) führen zwangsläufig zu Inkonsistenzen. Die Änderung einer Kopie führt dazu, dass sich diese Kopie von den anderen unterscheidet.</p></li>
+<li><p>Zur Erreichung von Konsistenz ist bei jeder Änderung eine globale Synchronisierung erforderlich.</p></li>
+<li><p>Die globale Synchronisierung schließt Lösungen im großen Maßstab aus.</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Inwieweit Inkonsistenzen toleriert werden können ist anwendungsspezifisch. Können diese jedoch toleriert werden, dann kann der Bedarf an globaler Synchronisation verringert werden.</p>
+</div>
+</div><div class="ld-slide" id="paralleles-rechnen-parallel-computing">
+<h2>Paralleles Rechnen (<span class="eng">Parallel Computing</span>)</h2>
+<div class="two-columns docutils container">
+<div class="column docutils container">
+<p>Multiprozessor</p>
+<img alt="images/multiprocessor-vs-multicomputer/multiprocessor.svg" class="align-center" src="images/multiprocessor-vs-multicomputer/multiprocessor.svg" style="width: 85%;" />
+</div>
+<div class="column docutils container">
+<p>Multicomputer</p>
+<img alt="images/multiprocessor-vs-multicomputer/multicomputer.svg" class="align-center" src="images/multiprocessor-vs-multicomputer/multicomputer.svg" style="width: 85%;" />
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Das verteilte Hochleistungsrechnen begann mit dem parallelen Rechnen</p>
+<p><strong>Verteilte Systeme mit gemeinsamem Speicher</strong> (<span class="eng">Multicomputer with shared memory</span>) als alternative Architektur haben die Erwartungen nicht erfüllt und sind daher nicht mehr relevant.</p>
+</div>
+</div><div class="smaller ld-slide" id="cluster-computing">
+<h2>Cluster Computing</h2>
+<p>Eine Gruppe von <span class="ger-quote">High-End-Systemen</span>, die über ein LAN verbunden sind.</p>
+<img alt="images/cluster-computing.svg" class="align-center" src="images/cluster-computing.svg" style="width: 60%;" />
+<div class="supplemental docutils container">
+<p>Die einzelnen Rechner/Compute Nodes sind oft identisch (Hardware und Software) und werden von einem Verwaltungsknotenpunkt (<span class="eng">management node</span>) verwaltet.</p>
+</div>
+<p class="rubric">Grid Computing</p>
+<p>Weiterführung des Cluster Computing. Viele heterogene, weit und über mehrere Organisationen verstreute Knotenpunkte. Die Knotenpunkte sind über das WAN verbunden. Die Zusammenarbeit erfolgt im Rahmen einer virtuellen Organisation.</p>
+</div><div class="ld-slide" id="grundlegende-architektur-fur-grid-computing">
+<h2>Grundlegende Architektur für Grid-Computing</h2>
+<div class="two-columns no-default-width docutils container">
+<div class="column center-child-elements docutils container">
+<img alt="images/architecture-for-grid-computing.svg" class="align-center" src="images/architecture-for-grid-computing.svg" style="width: 600px;" />
+</div>
+<div class="column footnotesize docutils container">
+<dl class="field-list simple">
+<dt>Fabric Layer<span class="colon">:</span></dt>
+<dd><p>Bietet Schnittstellen zu lokalen Ressourcen (zur Abfrage von Status und Fähigkeiten, Sperren usw.)</p>
+</dd>
+<dt>Konnektivitätsschicht<span class="colon">:</span></dt>
+<dd><p>Kommunikations- / Transaktions- /Authentifizierungsprotokolle, z. B. für die Übertragung von Daten zwischen Ressourcen.</p>
+</dd>
+<dt>Ressourcenschicht<span class="colon">:</span></dt>
+<dd><p>Verwaltet eine einzelne Ressource, z. B. das Erstellen von Prozessen oder das Lesen von Daten.</p>
+</dd>
+<dt>Collective Layer<span class="colon">:</span></dt>
+<dd><p>Verwaltet den Zugriff auf mehrere Ressourcen: Auffindung (<span class="eng">Discovery</span>), Einplanung (<span class="eng">Scheduling</span>) und Replikation.</p>
+</dd>
+<dt>Anwendungen<span class="colon">:</span></dt>
+<dd><p>Enthält tatsächliche Grid-Anwendungen in einer einzelnen Organisation.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div><div class="ld-slide" id="peer-to-peer-systeme">
+<h2>Peer-to-Peer-Systeme</h2>
+<dl class="field-list">
+<dt>Vision<span class="colon">:</span></dt>
+<dd><p><span class="ger-quote">Das Netzwerk ist der Computer.</span> Es gibt einen Datenbestand, der immer weltweit erreichbar ist.</p>
+</dd>
+<dt>Idee<span class="colon">:</span></dt>
+<dd><p>Keine dedizierten Clients und Server, jeder Teilnehmer (Peer) ist gleichzeitig Anbieter und Kunde.</p>
+<p>Selbstorganisierend, ohne zentrale Infrastruktur (Koordinator, Datenbestand, Teilnehmerverzeichnis).</p>
+<p>Jeder Peer ist autonom und kann jederzeit off-line sein, Netzwerkadressen können sich beliebig ändern.</p>
+</dd>
+<dt>Hauptanwendung<span class="colon">:</span></dt>
+<dd><p>File-Sharing-Systeme (insbesondere BitTorrent)</p>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<p>Die große Zeit der klassischen Peer-to-Peer-Systeme war in den 2000er Jahren.</p>
+<p>Vorteile von P2P Systemen: billig, fehlertolerant, dynamisch, selbstkonfigurierend, immens hohe Speicherkapazität, hohe Datenzugriffsgeschwindigkeit</p>
+<p>Probleme von P2P Systemen: Start-Up, schlecht angebundene, leistungsschwache Peers; <em>Free-Riders</em>; Copyright-Probleme</p>
+</div>
+</div><div class="ld-slide" id="cloud-computing">
+<h2>Cloud-Computing</h2>
+<div class="definition docutils container">
+<p>Weiterentwicklung des Grid-Computing. Ziel ist die Bereitstellung von Rechenleistung, Speicher und Anwendungen als Dienstleistung.</p>
+</div>
+<dl class="field-list simple">
+<dt>Varianten<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>Public Cloud ( ⇒ Amazon EC2, Google Apps, Microsoft Azure, ...)</p></li>
+<li><p>Private Cloud</p></li>
+<li><p>Hybrid Cloud (Private Cloud wird bei Bedarf durch Public Cloud ergänzt)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<p>Vorteile des Clous-Computings: Kosten, Aktualit ̈at von Daten und Diensten, keine eigene Infrastruktur notwendig, Unterstützung von mobilen Teilnehmern</p>
+<p>Probleme des Clous-Computings: Sicherheit und Vertrauen, Verlust von eigenem Know-How, Umgang mit klassifizierten Daten</p>
+</div>
+</div><div class="ld-slide" id="integration-von-anwendungen">
+<h2>Integration von Anwendungen</h2>
+<div class="assessment docutils container">
+<p>Die Standardanwendungen in Unternehmen sind vernetzte Anwendungen und die Herstellung der Interoperabilität zwischen diesen Anwendungen ist eine große Herausforderung.</p>
+</div>
+<div class="incremental margin-top-1em docutils container">
+<p class="rubric">Grundlegender Ansatz</p>
+<p><em>Clients</em> kombinieren Anfragen für (verschiedene) Anwendungen, senden diese, sammeln die Antworten und präsentieren dem Benutzer ein kohärentes Ergebnis.</p>
+</div>
+<div class="incremental margin-top-1em docutils container">
+<p class="rubric">Weiterentwicklung</p>
+<p>Die direkte Kommunikation zwischen den Anwendung führt zur Integration von Unternehmensanwendungen (<span class="eng">Enterprise Application Integration (EAI)</span>).</p>
+</div>
+<div class="supplemental docutils container">
+<p>Eine vernetzte Anwendung ist eine Anwendung, die auf einem Server läuft und ihre Dienste für entfernte Clients verfügbar macht.</p>
+</div>
+</div><div class="ld-slide" id="transaktionen">
+<h2>Transaktionen</h2>
+<div class="two-columns docutils container">
+<div class="column center-child-elements docutils container">
+<img alt="images/transactions/transaction.svg" class="align-center" src="images/transactions/transaction.svg" style="width: 850px;" />
+<div class="bold margin-top-2em line-above docutils container">
+<p><span class="ger-quote">Alles oder nichts.</span></p>
+</div>
+</div>
+<div class="column footnotesize docutils container">
+<div class="stack docutils container">
+<div class="layer docutils container">
+<table style="width: 900px;">
+<thead>
+<tr><th class="head"><p>Primitiv</p></th>
+<th class="head"><p>Beschreibung</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>BEGINN DER TRANSAKTION</p></td>
+<td><p>Zeigt den Beginn einer Transaktion an.</p></td>
+</tr>
+<tr><td><p>ENDE DER TRANSAKTION</p></td>
+<td><p>Beendigung der Transaktion mit dem Versuch eines COMMIT.</p></td>
+</tr>
+<tr><td><p>ABBRUCH DER TRANSAKTION</p></td>
+<td><p>Beenden der Transaktion und Wiederherstellung des alten Zustands.</p></td>
+</tr>
+<tr><td><p>LESEN</p></td>
+<td><p>Lesen von Daten aus (z.B.) einer Datei oder einer Tabelle.</p></td>
+</tr>
+<tr><td><p>SCHREIBEN</p></td>
+<td><p>Schreiben von Daten (z.B.) in eine Datei oder eine Tabelle.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layer incremental docutils container">
+<dl class="field-list simple">
+<dt>Atomar <span class="eng">Atomic</span><span class="colon">:</span></dt>
+<dd><p>geschieht untrennbar (scheinbar)</p>
+</dd>
+<dt>Konsistent <span class="eng">Consistent</span><span class="colon">:</span></dt>
+<dd><p>keine Verletzung von Systeminvarianten</p>
+</dd>
+<dt>Isoliert <span class="eng">Isolated</span><span class="colon">:</span></dt>
+<dd><p>keine gegenseitige Beeinflussung</p>
+</dd>
+<dt>Dauerhaft <span class="eng">Durable</span><span class="colon">:</span></dt>
+<dd><p>Nach einem Commit sind die Änderungen dauerhaft</p>
+</dd>
+</dl>
+<p>≙ <span class="eng">ACID</span>-Eigenschaften</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="smaller ld-slide" id="transaction-processing-monitor-tpm">
+<h2><em>Transaction Processing Monitor (TPM)</em></h2>
+<div class="assessment docutils container">
+<p>Daten, die im Rahmen einer Transaktion benötigt werden, sind of verteilt über mehrere Server.</p>
+</div>
+<img alt="images/transactions/tpm.svg" class="incremental align-center" src="images/transactions/tpm.svg" style="width: 65%;" />
+<div class="incremental docutils container">
+<p>Ein TPM ist für die Koordination der Ausführung einer Transaktion verantwortlich.</p>
+</div>
+</div><div class="ld-slide" id="middleware-und-enterprise-application-integration-eai">
+<h2><em>Middleware</em> und <em>Enterprise Application Integration (EAI)</em></h2>
+<p>Middleware ermöglicht Kommunikation zwischen den Anwendungen.</p>
+<img alt="images/middleware.svg" class="incremental align-center" src="images/middleware.svg" style="height: 800px;" />
+<div class="supplemental docutils container">
+<dl class="field-list simple">
+<dt>Remote Procedure Call (RPC)<span class="colon">:</span></dt>
+<dd><p>Anfragen werden über einen lokalen Prozeduraufruf gesendet, als Nachricht verpackt, verarbeitet, von einer Nachricht beantwortet und das Ergebnis ist dann der Rückgabewert des Prozeduraufrufs.</p>
+</dd>
+<dt>Nachrichtenorientierte Middleware <span class="eng">Message Oriented Middleware (MOM)</span><span class="colon">:</span></dt>
+<dd><p>Nachrichten werden an einen logischen Kontaktpunkt gesendet (d.h. veröffentlicht) und Anwendungen weitergeleitet, die diese Nachrichten abonnieren.</p>
+</dd>
+</dl>
+</div>
+</div><div class="smaller ld-slide" id="wie-kann-die-anwendungsintegration-erreicht-werden">
+<h2>Wie kann die Anwendungsintegration erreicht werden?</h2>
+<dl class="incremental field-list simple">
+<dt>Dateiübertragung<span class="colon">:</span></dt>
+<dd><p>Technisch einfach, aber nicht flexibel:</p>
+<ul class="simple">
+<li><p>Dateiformat und Layout herausfinden</p></li>
+<li><p>Dateiverwaltung regeln</p></li>
+<li><p>Weitergabe von Aktualisierungen und Aktualisierungsbenachrichtigungen.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Gemeinsame Datenbank<span class="colon">:</span></dt>
+<dd><p>Sehr viel flexibler, erfordert aber immer noch ein gemeinsames Datenschema neben dem Risiko eines Engpasses.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Entfernter Prozeduraufruf <span class="eng">Remote Procedure Call (RPC)</span><span class="colon">:</span></dt>
+<dd><p>Wirksam, wenn die Ausführung einer Reihe von Aktionen erforderlich ist.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Nachrichtenübermittlung <span class="eng">Messaging</span><span class="colon">:</span></dt>
+<dd><p>Ermöglicht eine zeitliche und räumliche Entkopplung im Vergleich zu RPCs.</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="distributed-pervasive-ubiquitous-systems-verteilte-allgegenwartige-durchdringende-systeme">
+<h2>Distributed Pervasive/Ubiquitous Systems (<span class="ger">verteilte, allgegenwärtige/durchdringende Systeme</span>)</h2>
+<div class="assessment docutils container">
+<p>Moderne verteilte Systeme zeichnen sich dadurch aus, dass die Knoten klein, mobil und oft in ein größeres System eingebettet sind. Das System bettet sich auf natürliche Weise in die Umgebung des Benutzers ein. Die Vernetzung ist drahtlos.</p>
+</div>
+<div class="incremental footnotesize docutils container">
+<p>Drei (sich überschneidende) Untertypen</p>
+<dl class="field-list simple">
+<dt>Ubiquitous Computing<span class="colon">:</span></dt>
+<dd><p><em>allgegenwärtig und ständig präsent</em>, d. h., es besteht eine ständige Interaktion zwischen System und Benutzer.</p>
+</dd>
+<dt>Mobile Computing<span class="colon">:</span></dt>
+<dd><p><em>allgegenwärtig</em>; der Schwerpunkt liegt auf der Tatsache, dass Geräte von Natur aus mobil sind.</p>
+</dd>
+<dt>Sensor-/Actuator Networks<span class="colon">:</span></dt>
+<dd><p><em>allgegenwärtig</em>; Schwerpunkt liegt auf der tatsächlichen (kollaborativen) Erfassung (<span class="eng">sensing</span>) und Betätigung (<span class="eng">actuation</span>).</p>
+</dd>
+</dl>
+</div>
+</div><div class="ld-slide" id="ubiquitous-systems-kernbestandteile">
+<h2>Ubiquitous Systems - Kernbestandteile</h2>
+<ol class="arabic simple incremental">
+<li><p><span class="eng">Distribution</span>: Die Geräte sind vernetzt, verteilt und ohne Hürde zugänglich.</p></li>
+<li><p><span class="eng">Interaction</span>: Die Interaktion zwischen Benutzern und Geräten ist in hohem Maße unaufdringlich</p></li>
+<li><p><span class="eng">Context Awareness</span>: Das System kennt den Kontext eines Benutzers, um die Interaktion zu optimieren.</p></li>
+<li><p><span class="eng">Autonomy</span>: Die Geräte arbeiten autonom, ohne menschliches Eingreifen, und verwalten sich in hohem Maße selber.</p></li>
+<li><p><span class="eng">Intelligece</span>: Das System als Ganzes kann ein breites Spektrum dynamischer Aktionen und Interaktionen bewältigen.</p></li>
+</ol>
+</div><div class="ld-slide" id="mobile-computing-auszeichnende-merkmale">
+<h2>Mobile Computing - Auszeichnende Merkmale</h2>
+<ul class="incremental smaller simple">
+<li><p>Eine Vielzahl unterschiedlicher mobiler Geräte (Smartphones, Tablets, GPS-Geräte, Fernbedienungen, aktive Ausweise).</p></li>
+<li><p>Mobil bedeutet, dass sich der Standort eines Geräts im Laufe der Zeit ändern kann mit Auswirkung, z.B., auf die lokalen Dienste oder die Erreichbarkeit.</p></li>
+<li><p>Die Aufrechterhaltung einer stabilen Kommunikation kann zu ernsthaften Problemen führen.</p></li>
+</ul>
+<div class="stack incremental docutils container">
+<div class="layer docutils container">
+<div class="assessment docutils container">
+<p>Aktueller stand ist, dass mobile Geräte Verbindungen zu stationären Servern herstellen, wodurch diese im Prinzip <em>Clients</em> von Cloud-basierten Diensten sind.</p>
+</div>
+</div>
+<div class="layer incremental docutils container">
+<img alt="images/mobile_computing/mobile_cloud_computing.svg" class="align-center" src="images/mobile_computing/mobile_cloud_computing.svg" style="width: 1350px;" />
+</div>
+<div class="layer incremental docutils container">
+<img alt="images/mobile_computing/mobile_edge_computing.svg" class="align-center" src="images/mobile_computing/mobile_edge_computing.svg" style="width: 1350px;" />
+</div>
+</div>
+</div><div class="ld-slide" id="sensor-networks-als-verteilte-datenbanken">
+<h2>Sensor Networks als verteilte Datenbanken</h2>
+<p>Die Knoten, an denen Sensoren angebracht sind:</p>
+<ul class="simple">
+<li><p><span class="ger-quote">Viele</span></p></li>
+<li><p>Einfach (geringe Speicher- / Rechen- / Kommunikationskapazität)</p></li>
+<li><p>oft batteriebetrieben (oder sogar batterielos)</p></li>
+</ul>
+<div class="stack incremental docutils container">
+<div class="layer docutils container">
+<img alt="images/sensor_networks/operator_stores_and_processes_data.svg" class="align-center" src="images/sensor_networks/operator_stores_and_processes_data.svg" style="width: 1625px;" />
+</div>
+<div class="layer incremental docutils container">
+<img alt="images/sensor_networks/nodes_store_and_process_data.svg" class="align-center" src="images/sensor_networks/nodes_store_and_process_data.svg" style="width: 1625px;" />
+</div>
+</div>
+</div><div class="ld-slide" id="das-cloud-edge-continuum">
+<h2>Das <em>Cloud-Edge Continuum</em></h2>
+<img alt="images/cloud_edge_continuum.svg" class="align-center" src="images/cloud_edge_continuum.svg" style="width: 1750px;" />
+</div><div class="ld-slide" id="fallstricke-bei-der-entwicklung-verteilter-systeme">
+<h2>Fallstricke bei der Entwicklung verteilter Systeme</h2>
+<div class="assessment docutils container">
+<p>Viele verteilte Systeme sind unnötig komplex aufgrund fehlerhafter Annahmen sowie von Architektur- und Design Fehlern, die später nachgebessert werden müssen.</p>
+</div>
+<div class="incremental docutils container">
+<p class="rubric">Falsche (und oft versteckte) Annahmen</p>
+<ul class="incremental simple">
+<li><p>Das Netzwerk ist zuverlässig</p></li>
+<li><p>Das Netzwerk ist sicher</p></li>
+<li><p>Das Netz ist homogen</p></li>
+<li><p>Die Topologie ändert sich nicht</p></li>
+<li><p>Die Latenz ist gleich Null</p></li>
+<li><p>Die Bandbreite ist unendlich</p></li>
+<li><p>Die Transportkosten sind gleich Null</p></li>
+<li><p>Es gibt nur einen Administrator</p></li>
+</ul>
+</div>
+</div><div class="integrated-exercise ld-slide" id="ubung-mtbf">
+<h2>Übung: MTBF</h2>
+<p>Wenn die MTTF einer Komponente 100 Stunden beträgt und die MTTR 10 Stunden beträgt, wie hoch ist dann die MTBF?</p>
+<div class="protected-exercise-solution">
+<p class="rubric">Berechnung des MTBF</p>
+<blockquote>
+<div class="math">
+\begin{equation*}
+MTBF = MTTF + MTTR = 100 + 10 = 110
+\end{equation*}
+</div>
+</blockquote>
+</div></div>
+</body>
+</html>

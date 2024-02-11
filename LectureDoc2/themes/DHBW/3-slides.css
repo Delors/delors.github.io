@@ -1,0 +1,436 @@
+
+
+/*
+    Generic styling for per-slide footer elements.
+*/
+.footer-left {
+    position: absolute;
+    bottom: 36px;
+}
+
+.footer-right {
+    position: absolute;
+    bottom: 36px;
+    right: 36px;
+}
+
+
+/* 
+    Styling related to __the__ title slide
+*/
+
+div.ld-slide:has(h1)::before {
+    content: var(--dhbw-logo);
+    position: absolute;
+    right: 48px;
+    bottom: 32px;
+}
+
+
+/* 
+    Styling related to a normal title slide
+*/
+
+div.ld-slide.no-title h2:first-child {
+    display: none;
+}
+
+
+/*
+    Styling of slides which act as section headers.
+
+    <code>div class="ld-slide new-section"...</code>
+
+    We add a counter to the first (and only) h2 element on the slide.
+*/
+
+div.ld-slide.new-section>h2 {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    background-color: var(--dhbw-gray);
+    color: white;
+    font-size: 2rem;
+    font-variant: small-caps;
+    text-align: center;
+    border-radius: 0.5em;
+    box-shadow: 4px 4px 8px black;
+}
+
+div.ld-slide.new-section>h2::after {
+    content: var(--author);
+    margin-top: 2.25rem;
+    margin-left: 1rem;
+    display: block;
+    position: absolute;
+    color: var(--dhbw-gray);
+    font-size: 0.75rem;
+    font-variant: normal;
+    font-weight: 200;
+}
+
+div.ld-slide.new-section::after {
+    content: var(--dhbw-logo);
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    scale: 0.50;
+    translate: 60px -25px;
+}
+
+#ld-main-pane,
+#ld-continuous-view-pane,
+#ld-light-table-dialog {
+    counter-reset: ld-section 0;
+}
+
+.ld-slide.new-section {
+    counter-increment: ld-section;
+}
+
+/*
+    Counters accross multiple slides cannot be used in the slide mode because,
+    we have to use "display: none" to hide slides due to an issue in Safari
+    and this makes it impossible to use counters.
+*/
+:is(#ld-continuous-view-pane, #ld-light-table-dialog) .ld-slide.new-section h2::before {
+    content: counter(ld-section)".";
+    padding-right: 0.5em;
+}
+
+
+
+/*
+    Styling of slides which act as sub section headers.
+
+    <code>div class="ld-slide new-subsection"...</code>
+*/
+
+div.ld-slide.new-subsection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration-color: var(--dhbw-gray);
+}
+
+div.ld-slide.new-subsection::after {
+    content: var(--dhbw-logo);
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    scale: 0.50;
+    translate: 60px -25px;
+}
+
+div.ld-slide.new-subsection > h2 {
+    width: 90%;
+    padding: 2rem 0.5rem 2rem 0.5rem;
+    border: 1px solid var(--dhbw-gray);
+    border-radius: 0.5em;
+    margin: 0;
+    background-color: whitesmoke;
+    color: var(--dhbw-gray);
+    font-size: 1.666rem;
+    text-align: center;
+    box-shadow: var(--br-shadow);
+}
+
+
+/*
+    Styling of slides which represent lecture-integrated exercise.
+*/
+
+.integrated-exercise {
+    background-color: var(--dhbw-gray);
+    color: whitesmoke;
+}
+
+.integrated-exercise h2:first-child {
+    margin: -0.5rem -0.75rem 0.5rem -0.75rem;
+    padding: 0.5rem 4.75rem 0.25rem 0.75rem;
+    background-color: whitesmoke;
+    color: var(--dhbw-red);
+}
+
+.integrated-exercise::before {
+    content: var(--dhbw-logo);
+    display: block;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    transform: translateX(30%) translateY(-35%) scale(0.4); 
+}
+
+.integrated-exercise .conditions {
+    font-size: smaller;
+}
+
+.integrated-exercise .task {
+    margin: 0.4em 0 0.4em 0;
+    padding: 0.4em;
+    border-radius: 0.4em;
+    background-color: var(--dhbw-red);
+    color: white;
+    font-size: smaller;
+    box-shadow: none;
+}
+
+.integrated-exercise .exercise-solution {
+    color: black;
+}
+
+.integrated-exercise .code {
+    color: black;
+}
+
+/* The solution will not be shown when browsing the lecture slides. TODO Handling for encrypting it and making it available later on needs to be developed! */
+.protected-exercise-solution{
+    display: none;
+}
+
+
+/*
+    "Styling" of Animations
+
+    The following style can generally be composed with the previous styles which
+    affect the layout of the slide. 
+
+    Recall that LectureDoc's mechanism to switch slides is to scale a slide 
+    to 0 and to scale the next slide to 1 (normally both happens instanteously). 
+    Hence, it is often necessary to "reset" the scale level to make animations 
+    work.
+
+    Currently, we support three slide animations:
+    transition-*
+    - fade
+    - scale
+    - move-left
+*/
+
+@keyframes scale-to-zero {
+    100% {
+        scale: 0;
+    }
+}
+
+#ld-main-pane .ld-current-slide.transition-move-left {
+    animation: 3s slide-move-left-in ;
+}
+
+#ld-main-pane .ld-previous-slide:has(+.ld-slide.transition-move-left.ld-current-slide) {
+    animation: 3s slide-move-left-out, 0s 3s scale-to-zero;
+}
+
+
+@keyframes slide-move-left-in {
+    0.1% { /* it works beautifully with 0.1% and awfully with 0%...*/
+        translate: 100%;
+        opacity: 0;
+    }
+
+    70% {
+        opacity: 100%;
+    }
+
+    100% {
+        translate: 0%;
+    }
+}
+
+@keyframes slide-move-left-out {
+    0% {
+        scale: 1; /* reset the scale level to make the slide visible (again) */
+        translate: 0%;
+    }
+
+    30% {
+        opacity: 100%;
+    }
+
+    100% {
+        opacity: 0%;
+        scale: 1;
+        translate: -100%;
+    }
+}
+
+
+
+#ld-main-pane .ld-current-slide.transition-scale {
+    animation: 3s slide-scale-in;
+}
+
+#ld-main-pane .ld-previous-slide:has(+.ld-slide.transition-scale.ld-current-slide) {
+    animation: 3s slide-scale-out;
+}
+
+@keyframes slide-scale-in {
+    0.1% {
+        opacity: 0;
+        scale: 1.5;
+    }
+
+    100% {
+        opacity: 100%;
+        scale: 1;
+    }
+}
+
+@keyframes slide-scale-out {
+    0% {
+        scale: 1; /* reset the scale level to make the slide visible (again) */
+        opacity: 100%;
+    }
+
+    100% {
+        opacity: 0%;
+        scale: 0.5;
+    }
+}
+
+
+
+#ld-main-pane .ld-current-slide.transition-fade {
+    animation: 2s slide-fade-in;
+}
+
+#ld-main-pane .ld-previous-slide:has(+.ld-slide.transition-fade.ld-current-slide) {
+    animation: 2s slide-fade-out, 0s 2s scale-to-zero;
+}
+
+@keyframes slide-fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100;
+    }
+}
+
+@keyframes slide-fade-out {
+    0% {
+        opacity: 1;
+        scale: 1; /* reset the scale level to make a fading effect possible */
+    }
+
+    100% {
+        opacity: 0;
+        scale: 1;
+    }
+}
+
+
+
+
+#ld-main-pane .ld-current-slide.transition-move-to-top {
+    animation: 3s slide-move-old-to-top ;
+}
+
+#ld-main-pane .ld-previous-slide:has(+.ld-slide.transition-move-to-top.ld-current-slide) {
+    animation: 3s slide-move-bottom-to-center, 0s 3s scale-to-zero;
+}
+
+
+@keyframes slide-move-old-to-top {
+    0.1% { /* it works beautifully with 0.1% and awfully with 0%...*/
+        translate: 0 100%;
+        opacity: 0;
+    }
+
+    70% {
+        opacity: 100%;
+    }
+
+    100% {
+        translate: 0 0%;
+    }
+}
+
+@keyframes slide-move-bottom-to-center {
+    0% {
+        scale: 1; /* reset the scale level to make the slide visible (again) */
+        translate: 0% 0;
+    }
+
+    30% {
+        opacity: 100%;
+    }
+
+    100% {
+        opacity: 0%;
+        scale: 1;
+        translate: 0 -100%;
+    }
+}
+
+
+/*
+
+    Styling of Cheat Sheets
+
+*/
+
+.cheat-sheet-8-columns {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap; 
+    justify-content: space-between;
+    align-content: space-between;
+    align-items: flex-start;
+    gap: 1em 1em;
+    font-size: 12pt;
+    background-color: black;
+}
+
+.cheat-sheet-8-columns.ld-slide::before { /* to clear the default logo */
+    content: " ";
+}
+
+.cheat-sheet-8-columns :is(div.cheat-sheet-block,h1) {
+    width: calc(var(--ld-slide-width) / 8 - 1em);
+    padding: 5px;
+    border-radius: 8px;   
+   overflow: hidden;
+   background-color: white;
+}
+
+.cheat-sheet-8-columns h1.title {
+    margin: 0;
+    padding: 12px;
+    /* We have a different font-size and hence have to update the width! */
+    width: calc(var(--ld-slide-width) / 8 - 0.5em); 
+    background-color: var(--dhbw-light-gray);
+    font-size: 2em;
+    color: var(--dhbw-red);
+    text-shadow: 1px 1px 2px var(--dhbw-gray);
+}
+
+.cheat-sheet-8-columns div.cheat-sheet-block > .rubric:first-child {
+    background-color: var(--dhbw-red);
+    position: relative;
+    top: -5px;
+    left: -5px;
+    color: whitesmoke;
+    width: calc(100% + 10px);
+    border-radius: 8px 8px 0 0;
+    font-size: larger;
+    padding: 0.3em 0em 0.3em 0.25em;
+    margin-bottom: 0;
+}
+
+.cheat-sheet-8-columns div.cheat-sheet-block > .rubric:not(:first-child) {
+    background-color: var(--dhbw-gray);
+    position: relative;
+    top: -5px;
+    left: -5px;
+    color: whitesmoke;
+    width: calc(100% + 10px);
+    padding: 0.15em 0em 0.15em 0.25em;
+    margin-bottom: 0;
+}
+
+.cheat-sheet-8-columns p.rubric + p {
+    margin-top: 0;
+}

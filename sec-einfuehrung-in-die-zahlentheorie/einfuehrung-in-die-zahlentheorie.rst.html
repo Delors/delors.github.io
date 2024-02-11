@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="Zahlentheorie, Primzahlen, Teilbarkeit, Totientenfunktion, Euklidischer Algorithmus" name="keywords" />
+<meta content="Introduction to Number Theory" lang="en" name="description" xml:lang="en" />
+<meta content="Einführung in die Zahlentheorie" lang="de" name="description" xml:lang="de" />
+<meta content="sec-einfuehrung-in-die-zahlentheorie" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Einführung in die Zahlentheorie</title>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml.js?config=TeX-AMS_CHTML"></script>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Einführung in die Zahlentheorie</h1>
+<dl class="docinfo simple">
+<dt class="dozent">Dozent<span class="colon">:</span></dt>
+<dd class="dozent"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2024-02-09</dd>
+<dt class="quelle">Quelle<span class="colon">:</span></dt>
+<dd class="quelle"><p>Im Wesentlichen <em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
+</dd>
+</dl>
+</div>
+<div class="new-section transition-scale ld-slide" id="teilbarkeit">
+<h2>Teilbarkeit</h2>
+</div><div class="ld-slide" id="teilbarkeit-1">
+<h2>Teilbarkeit</h2>
+<ul class="incremental simple">
+<li><p>Ein <span class="math">\(b\)</span> ungleich Null teilt <span class="math">\(a\)</span> wenn <span class="math">\(a = mb\)</span> für ein beliebiges <span class="math">\(m\)</span> und <span class="math">\(a\)</span>, <span class="math">\(b\)</span> und <span class="math">\(m\)</span> ganze Zahlen sind.</p></li>
+<li><p><span class="math">\(b\)</span> teilt <span class="math">\(a\)</span> wenn es keinen Rest bei der Division gibt.</p></li>
+<li><p>Die Notation <span class="math">\(b|a\)</span> bedeutet, dass <span class="math">\(b\)</span>  <span class="math">\(a\)</span> teilt.</p></li>
+<li><p>Wenn <span class="math">\(b|a\)</span> gilt, dann sagen wir auch, dass <span class="math">\(b\)</span> ein Teiler von <span class="math">\(a\)</span> ist.</p></li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Beispiel</p>
+<p>Die positiven Teiler von: <span class="math">\(24\)</span></p>
+<p>sind: <span class="math">\(1\)</span>, <span class="math">\(2\)</span>, <span class="math">\(3\)</span>, <span class="math">\(4\)</span>, <span class="math">\(6\)</span>, <span class="math">\(8\)</span>, <span class="math">\(12\)</span> and <span class="math">\(24\)</span></p>
+<p><span class="math">\(13 | 182\)</span>; <span class="math">\(-5 | 30\)</span>; <span class="math">\(17 | 289\)</span>; <span class="math">\(-3 | 33\)</span>; <span class="math">\(17 | 0\)</span>.</p>
+</aside>
+</div><div class="ld-slide" id="eigenschaften-der-teilbarkeit">
+<h2>Eigenschaften der Teilbarkeit</h2>
+<ul class="incremental simple">
+<li><p>Wenn <span class="math">\(a|1\)</span>, dann gilt <span class="math">\(a = \pm 1\)</span>.</p></li>
+<li><p>Wenn <span class="math">\(a | b\)</span> und <span class="math">\(b|a\)</span>, dann gilt <span class="math">\(a = \pm b\)</span>.</p></li>
+<li><p>Jedes <span class="math">\(b \neq 0\)</span> teilt <span class="math">\(0\)</span>.</p></li>
+<li><p>Wenn <span class="math">\(a | b\)</span> und <span class="math">\(b|c\)</span>, dann <span class="math">\(a|c\)</span>.</p></li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Beispiel</p>
+<p><span class="math">\(11|66, 66|198 \Rightarrow 11|198\)</span></p>
+</aside>
+</div><div class="ld-slide" id="eigenschaften-der-teilbarkeit-1">
+<h2>Eigenschaften der Teilbarkeit</h2>
+<p>Wenn <span class="math">\(b | g\)</span> und <span class="math">\(b|h\)</span>, dann <span class="math">\(b|(mg+nh)\)</span> für beliebige ganze Zahlen <span class="math">\(m\)</span> und <span class="math">\(n\)</span>.</p>
+<aside class="admonition incremental">
+<p class="admonition-title">Beispiel</p>
+<p><span class="math">\(3 | 27\)</span> und <span class="math">\(3|33 \Rightarrow 3|(m \times 27 + n \times 33)\)</span></p>
+</aside>
+<aside class="admonition incremental">
+<p class="admonition-title">Erklärung</p>
+<p>Wenn <span class="math">\(b | g\)</span> dann gilt für <span class="math">\(g\)</span>, dass <span class="math">\(g = b \times g_1\)</span> ist für eine beliebige ganze Zahl <span class="math">\(g_1\)</span>.</p>
+<p>Wenn <span class="math">\(b | h\)</span> dann gilt für <span class="math">\(h\)</span>, dass <span class="math">\(h = b \times h_1\)</span> ist für eine beliebige ganze Zahl <span class="math">\(h_1\)</span>.</p>
+<p>Somit gilt: <span class="math">\(mg+nh = mb g_1 + n b h_1 = b \times (mg_1+nh_1)\)</span> und deshalb wird <span class="math">\(mg+mh\)</span> von teilt <span class="math">\(b\)</span> geteilt.</p>
+</aside>
+</div><div class="ld-slide" id="teilungsalgorithmus">
+<h2>Teilungsalgorithmus</h2>
+<p>Sei gegeben eine beliebige positive ganze Zahl <span class="math">\(n\)</span> und eine beliebige nichtnegative ganze Zahl <span class="math">\(a\)</span>, so erhält man bei der Division von <span class="math">\(a\)</span> durch <span class="math">\(n\)</span> einen ganzzahligen Quotienten <span class="math">\(q\)</span> und einen nicht negativen, ganzzahligen Rest <span class="math">\(r\)</span>, die der folgenden Beziehung gehorchen:</p>
+<div class="math">
+\begin{equation*}
+a = qn + r \qquad 0 \leq r &lt; n; q = \left \lfloor{a/n} \right \rfloor
+\end{equation*}
+</div>
+<img alt="Die Beziehung a=qn+r" class="incremental align-center" src="drawings/division_algorithm/division_algorithm.svg" style="width: 1600px;" />
+</div><div class="ld-slide" id="teilungsalgorithmus-fur-negative-a">
+<h2>Teilungsalgorithmus für negative <span class="math">\(a\)</span></h2>
+<img alt="The relationship a=qn+r for negative a" class="align-center" src="drawings/division_algorithm/division_algorithm_for_negative_a.svg" style="width: 1600px;" />
+<aside class="admonition incremental">
+<p class="admonition-title">Beispiel</p>
+<div class="math">
+\begin{equation*}
+a = -11; n = 7; -11 = (-2)\times 7 + 3; \quad r = 3 \quad q = -2
+\end{equation*}
+</div>
+</aside>
+</div><div class="ld-slide" id="euklidischer-algorithmus">
+<h2>Euklidischer Algorithmus</h2>
+<p>Eine der grundlegenden Techniken der Zahlentheorie.</p>
+<p>Verfahren zur Bestimmung des größten gemeinsamen Teilers (GGT) von zwei positiven ganzen Zahlen.</p>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Zwei ganze Zahlen sind <strong>relativ prim</strong> (<span class="eng">relatively prime</span>), wenn ihr einziger gemeinsamer positiver ganzzahliger Faktor 1 ist (z.B. 7 und 9, aber auch 3 und 8).</p>
+</aside>
+</div><div class="ld-slide" id="groszter-gemeinsamer-teiler-ggt">
+<h2>Größter Gemeinsamer Teiler (<abbr>GGT</abbr>)</h2>
+<p>(<span class="eng">Greatest Common Divisor (GGT)</span>)</p>
+<ul class="incremental simple">
+<li><p>Der größte gemeinsame Teiler von zwei ganzen Zahlen <span class="math">\(a\)</span> und <span class="math">\(b\)</span> ist die größte ganze Zahl, die sowohl <span class="math">\(a\)</span> als auch <span class="math">\(b\)</span> teilt.</p></li>
+<li><p>Wir verwenden die Schreibweise <span class="math">\(ggt(a,b)\)</span> für den GGT von <span class="math">\(a\)</span> und <span class="math">\(b\)</span>.</p></li>
+<li><p>Wir definieren <span class="math">\(ggt(0,0) = 0\)</span>.</p></li>
+<li><p>Die <strong>positive</strong> ganze Zahl <span class="math">\(c\)</span> wird als GGT von <span class="math">\(a\)</span> und <span class="math">\(b\)</span> bezeichnet, wenn:</p>
+<ul>
+<li><p><span class="math">\(c\)</span> ein Teiler von <span class="math">\(a\)</span> und <span class="math">\(b\)</span> ist</p></li>
+<li><p>jeder Teiler von <span class="math">\(a\)</span> und <span class="math">\(b\)</span> ein Teiler von <span class="math">\(c\)</span> ist</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="alternative-definition-des-ggt">
+<h2>Alternative Definition des <abbr>GGT</abbr></h2>
+<div class="math">
+\begin{equation*}
+ggt(a,b) = max[k, so\;dass k|a \; und \; k|b]
+\end{equation*}
+</div>
+<aside class="admonition admonition-beispiel">
+<p class="admonition-title">Beispiel</p>
+<p class="incremental"><span class="math">\(ggt(60,24) =\)</span></p>
+<p class="incremental"><span class="math">\(ggt(60, -24) =\)</span></p>
+<p class="incremental"><span class="math">\(12\)</span></p>
+</aside>
+</div><div class="ld-slide" id="ggt-und-relativ-prim">
+<h2><abbr>GGT</abbr> und <span class="ger-quote">relativ prim</span></h2>
+<p>Wir stellten fest:</p>
+<blockquote>
+<p>Zwei ganze Zahlen <span class="math">\(a\)</span> und <span class="math">\(b\)</span> sind relativ prim, wenn ihr einziger gemeinsamer positiver ganzzahliger Faktor 1 ist.</p>
+</blockquote>
+<p><span class="math">\(\Leftrightarrow\)</span> <span class="math">\(a\)</span> und <span class="math">\(b\)</span> sind relativ prim wenn <span class="math">\(ggt(a,b)=1\)</span></p>
+</div><div class="small ld-slide" id="berechnung-des-ggt-mit-hilfe-des-euklidischen-algorithmus">
+<h2>Berechnung des GGT mit Hilfe des euklidischen Algorithmus</h2>
+<img alt="drawings/euclidean_algorithm/algorithm.svg" src="drawings/euclidean_algorithm/algorithm.svg" style="width: 1600px;" />
+</div><div class="tiny ld-slide" id="beispiel-fur-die-berechnung-des-ggt-mit-hilfe-des-euklidischen-algorithmus">
+<h2>Beispiel für die Berechnung des GGT mit Hilfe des euklidischen Algorithmus</h2>
+<img alt="drawings/euclidean_algorithm/example.svg" src="drawings/euclidean_algorithm/example.svg" style="width: 600px;" />
+</div><div class="ld-slide" id="euklidischer-algorithmus-1">
+<h2>Euklidischer Algorithmus</h2>
+<table style="width: 100%;">
+<thead>
+<tr><th class="head"><p>Schritt</p></th>
+<th class="head"><p>Dividend</p></th>
+<th class="head"><p>Divisor</p></th>
+<th class="head"><p>Quotient</p></th>
+<th class="head"><p>Rest</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>1</p></td>
+<td><p>1160718174</p></td>
+<td><p>316258250</p></td>
+<td><p>3</p></td>
+<td><p>211943424</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>316258250</p></td>
+<td><p>211943424</p></td>
+<td><p>1</p></td>
+<td><p>104314826</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>211943424</p></td>
+<td><p>104314826</p></td>
+<td><p>2</p></td>
+<td><p>3313772</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>104314826</p></td>
+<td><p>3313772</p></td>
+<td><p>31</p></td>
+<td><p>1587894</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>3313772</p></td>
+<td><p>1587894</p></td>
+<td><p>2</p></td>
+<td><p>137984</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>1587894</p></td>
+<td><p>137984</p></td>
+<td><p>11</p></td>
+<td><p>70070</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>137984</p></td>
+<td><p>70070</p></td>
+<td><p>1</p></td>
+<td><p>67914</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>70070</p></td>
+<td><p>67914</p></td>
+<td><p>1</p></td>
+<td><p>2156</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>67914</p></td>
+<td><p>2156</p></td>
+<td><p>31</p></td>
+<td><p>1078</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>2156</p></td>
+<td><p><strong>1078</strong></p></td>
+<td><p>2</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="new-section transition-fade ld-slide" id="modulare-arithmetik">
+<h2>Modulare Arithmetik</h2>
+</div><div class="ld-slide" id="der-modulus">
+<h2>Der Modulus</h2>
+<p>Wenn <span class="math">\(a\)</span> eine ganze Zahl und <span class="math">\(n\)</span> eine positive ganze Zahl ist, dann definieren wir <span class="math">\(a\; mod\; n\)</span> als  Rest der Division von <span class="math">\(a\)</span> durch <span class="math">\(n\)</span>. Die ganze Zahl <span class="math">\(n\)</span> wird als Modulus bezeichnet.</p>
+<p>Somit gilt für jede ganze Zahl <span class="math">\(a\)</span>:</p>
+<div class="math">
+\begin{equation*}
+a = qn + r \quad 0 \leq r &lt; n; q = \left\lfloor a / n \right\rfloor
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+a =  \left\lfloor a / n \right\rfloor \times n + (a\; mod\;  n)
+\end{equation*}
+</div>
+<aside class="admonition incremental">
+<p class="admonition-title">Beispiel</p>
+<div class="math">
+\begin{equation*}
+11\;  mod\;  7 = 4; \qquad -11\;  mod\;  7 = 3
+\end{equation*}
+</div>
+</aside>
+</div><div class="ld-slide" id="modulare-arithmetik-kongruent-modulo-n">
+<h2>Modulare Arithmetik (<em>kongruent modulo</em> <span class="math">\(n\)</span>)</h2>
+<ul class="simple">
+<li><p>Zwei ganze Zahlen <span class="math">\(a\)</span> und <span class="math">\(b\)</span> werden als <em>kongruent modulo</em> <span class="math">\(n\)</span> bezeichnet, wenn <span class="math">\((a\; mod\; n) = (b\; mod\; n)\)</span></p></li>
+<li><p>Wir verwenden die Schreibweise <span class="math">\(a \equiv b(mod\; n)\)</span>.</p></li>
+<li><p>Beachten Sie, dass, wenn <span class="math">\(a \equiv 0 (mod\; n)\)</span> ist, dann gilt <span class="math">\(n|a\)</span>.</p></li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Beispiel</p>
+<div class="math">
+\begin{equation*}
+73 \equiv 4 (mod\; 23); \qquad 21 \equiv -9 (mod\; 10); \qquad 81 \equiv 0 (mod\; 27)
+\end{equation*}
+</div>
+</aside>
+<aside class="admonition incremental">
+<p class="admonition-title">Hinweis</p>
+<p>Der Operator <span class="math">\(mod\)</span> wird (a) als binärer Operator verwendet, der einen Rest erzeugt, und (b) als Kongruenzrelation, die die Gleichwertigkeit zweier ganzer Zahlen anzeigt.</p>
+</aside>
+</div><div class="ld-slide" id="eigenschaften-der-kongruenz">
+<h2>Eigenschaften der Kongruenz</h2>
+<ol class="arabic simple incremental">
+<li><p><span class="math">\(a \equiv b (mod\; n)\)</span> wenn <span class="math">\(n|(a-b)\)</span></p></li>
+<li><p><span class="math">\(a \equiv b (mod\; n) \Rightarrow b \equiv a (mod\; n)\)</span></p></li>
+<li><p><span class="math">\(a \equiv b (mod\; n)\)</span> und <span class="math">\(b \equiv c (mod\; n) \Rightarrow a \equiv c (mod\; n)\)</span></p></li>
+</ol>
+</div><div class="ld-slide" id="a-equiv-b-mod-n-wenn-n-a-b-erklart">
+<h2><span class="math">\(a \equiv b (mod\; n)\)</span> wenn <span class="math">\(n|(a-b)\)</span> — Erklärt</h2>
+<p>Wenn <span class="math">\(n|(a - b)\)</span>, dann gilt <span class="math">\((a - b) = kn\)</span> für ein <span class="math">\(k\)</span></p>
+<ul>
+<li><p>Wir können also schreiben <span class="math">\(a=b+kn\)</span>.</p></li>
+<li><p>Deshalb gilt <span class="math">\((a\; mod\; n)\)</span> =</p>
+<p>(Rest wenn <span class="math">\(b + kn\)</span> geteilt wird durch <span class="math">\(n\)</span>) =</p>
+<p>(Rest wenn <span class="math">\(b\)</span> geteilt wird durch <span class="math">\(n\)</span>) =</p>
+<p><span class="math">\((b\; mod\; n)\)</span></p>
+</li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Beispiel</p>
+<p><span class="math">\(23 = 8(mod\; 5)\)</span>, da <span class="math">\(23 - 8 = 15 = 5 \times 3\)</span></p>
+<p><span class="math">\(-11 = 5(mod\; 8)\)</span>, da <span class="math">\(-11 - 5 = -16 = 8 \times (-2)\)</span></p>
+<p><span class="math">\(81 = 0(mod\; 27)\)</span>, da <span class="math">\(81 - 0 = 81 = 27 \times 3\)</span></p>
+</aside>
+<div class="supplemental docutils container">
+<p>Im zweiten Schritt haben wir <span class="math">\(mod\; n\)</span> auf beide Seiten angewendet.</p>
+<p>D.h. <span class="math">\((b + kn) mod\; n\)</span> <span class="math">\(\hat{=}\)</span> (Rest wenn <span class="math">\(b + kn\)</span> geteilt wird durch <span class="math">\(n\)</span>).</p>
+</div>
+</div><div class="ld-slide" id="eigenschaften-der-modularen-arithmetik">
+<h2>Eigenschaften der modularen Arithmetik</h2>
+<ol class="arabic simple">
+<li><p><span class="math">\([(a\; mod\; n) + (b\; mod\; n)]\; mod\; n = (a + b)\; mod\; n\)</span></p></li>
+<li><p><span class="math">\([(a\; mod\; n) - (b\; mod\; n)]\; mod\; n = (a - b)\; mod\; n\)</span></p></li>
+<li><p><span class="math">\([(a\; mod\; n) \times (b\; mod\; n)]\; mod\; n = (a \times b)\; mod\; n\)</span></p></li>
+</ol>
+</div><div class="ld-slide" id="a-mod-n-b-mod-n-mod-n-a-b-mod-n-erklart">
+<h2><span class="math">\([(a\; mod\; n) + (b\; mod\; n)]\; mod\; n = (a + b)\; mod\; n\)</span> — Erklärt</h2>
+<p>Definiere <span class="math">\((a\; mod\; n) = r_a\)</span> und <span class="math">\((b\; mod\; n) = r_b\)</span>.</p>
+<p>Dann können wir:</p>
+<ul class="simple">
+<li><p><span class="math">\(a = r_a + jn\)</span> für eine ganze Zahl <span class="math">\(j\)</span> und</p></li>
+<li><p><span class="math">\(b = r_b + kn\)</span> für eine ganze Zahl <span class="math">\(k\)</span> schreiben.</p></li>
+</ul>
+<p>Dann gilt:</p>
+<div class="math">
+\begin{equation*}
+(a + b)\; mod\; n = (r_a + jn + r_b + kn)\; mod\; n
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+= (r_a + r_b + (k + j)n)\; mod\; n
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+= (r_a + r_b)\; mod\; n
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+= [(a\; mod\; n) + (b\; mod\; n)]\; mod\; n
+\end{equation*}
+</div>
+<div class="supplemental docutils container">
+<p>Im vorletzten Schritt setzen wir die Definition vom Anfang ein und erhalten das Ergebnis.</p>
+</div>
+</div><div class="ld-slide" id="modulare-arithmetik-beispiele-fur-eigenschaften">
+<h2>Modulare Arithmetik (Beispiele für Eigenschaften)</h2>
+<aside class="admonition admonition-beispiele">
+<p class="admonition-title">Beispiele</p>
+<div class="math">
+\begin{equation*}
+11\; mod\; 8 = 3;\qquad 15\; mod\; 8 = 7
+\end{equation*}
+</div>
+<div class="incremental math">
+\begin{equation*}
+[(11\; mod\; 8) + (15\; mod\; 8)]\; mod\; 8 = 10\; mod\; 8 = 2
+\end{equation*}
+</div>
+<div class="incremental math">
+\begin{equation*}
+(11 + 15)\; mod\; 8 = 26\; mod\; 8 = 2
+\end{equation*}
+</div>
+<div class="incremental math">
+\begin{equation*}
+[(11\; mod\; 8) - (15\; mod\; 8)]\; mod\; 8 = - 4\; mod\; 8 = 4
+\end{equation*}
+</div>
+<div class="incremental math">
+\begin{equation*}
+(11 - 15)\; mod\; 8 = -4\; mod\; 8 = 4
+\end{equation*}
+</div>
+<div class="incremental math">
+\begin{equation*}
+[(11\; mod\; 8) \times (15\; mod\; 8)]\; mod\; 8= 21\; mod\; 8 = 5
+\end{equation*}
+</div>
+<div class="incremental math">
+\begin{equation*}
+(11 \times 15)\; mod\; 8 = 165\; mod\; 8 = 5
+\end{equation*}
+</div>
+</aside>
+</div><div class="ld-slide" id="addition-modulo-8">
+<h2>Addition Modulo 8</h2>
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
+<table class="highlight-on-hover fake-header-column fake-header-row">
+<tbody>
+<tr><td><p><span class="math">\(+\)</span></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+</tr>
+<tr><td><p>0</p></td>
+<td><p><em>0</em></p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+<td><p><em>0</em></p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+<td><p><em>0</em></p></td>
+<td><p>1</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+<td><p><em>0</em></p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+<td><p><em>0</em></p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+<td><p><em>0</em></p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+<td><p><em>0</em></p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>7</p></td>
+<td><p><em>0</em></p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="column incremental docutils container">
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<div class="math">
+\begin{equation*}
+Z_n = {0,1,...,(n-1)}
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+Z_8 = {0,1,2,3,4,5,6,7}
+\end{equation*}
+</div>
+</aside>
+</div>
+</div>
+</div><div class="ld-slide" id="multiplikation-modulo-8">
+<h2>Multiplikation Modulo 8</h2>
+<table class="highlight-on-hover fake-header-column fake-header-row">
+<tbody>
+<tr><td><p><span class="math">\(\times\)</span></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+</tr>
+<tr><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p><em>1</em></p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>4</p></td>
+<td><p>6</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>4</p></td>
+<td><p>6</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+<td><p>6</p></td>
+<td><p><em>1</em></p></td>
+<td><p>4</p></td>
+<td><p>7</p></td>
+<td><p>2</p></td>
+<td><p>5</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>0</p></td>
+<td><p>4</p></td>
+<td><p>0</p></td>
+<td><p>4</p></td>
+<td><p>0</p></td>
+<td><p>4</p></td>
+<td><p>0</p></td>
+<td><p>4</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+<td><p>2</p></td>
+<td><p>7</p></td>
+<td><p>4</p></td>
+<td><p><em>1</em></p></td>
+<td><p>6</p></td>
+<td><p>3</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>0</p></td>
+<td><p>6</p></td>
+<td><p>4</p></td>
+<td><p>2</p></td>
+<td><p>0</p></td>
+<td><p>6</p></td>
+<td><p>4</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>0</p></td>
+<td><p>7</p></td>
+<td><p>6</p></td>
+<td><p>5</p></td>
+<td><p>4</p></td>
+<td><p>3</p></td>
+<td><p>2</p></td>
+<td><p><em>1</em></p></td>
+</tr>
+</tbody>
+</table>
+<div class="supplemental docutils container">
+<p>Generator in Python:</p>
+<pre class="code Python literal-block"><code><span class="keyword">for</span> <span class="name">i</span> <span class="operator word">in</span> <span class="name builtin">range</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="literal number integer">8</span><span class="punctuation">):</span><span class="whitespace">
+</span>    <span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">str</span><span class="punctuation">(</span><span class="name">i</span><span class="punctuation">)</span><span class="operator">+</span><span class="literal string double">&quot;, &quot;</span><span class="punctuation">,</span><span class="name">end</span><span class="operator">=</span><span class="literal string double">&quot;&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="keyword">for</span> <span class="name">j</span> <span class="operator word">in</span> <span class="name builtin">range</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="literal number integer">8</span><span class="punctuation">):</span><span class="whitespace">
+</span>    <span class="name">v</span> <span class="operator">=</span> <span class="punctuation">(</span><span class="name">i</span><span class="operator">*</span><span class="name">j</span><span class="punctuation">)</span> <span class="operator">%</span> <span class="literal number integer">8</span><span class="whitespace">
+</span>    <span class="keyword">if</span> <span class="name">v</span> <span class="operator">==</span> <span class="literal number integer">1</span><span class="punctuation">:</span><span class="whitespace">
+</span>        <span class="name">v</span> <span class="operator">=</span> <span class="literal string double">&quot;*&quot;</span><span class="operator">+</span><span class="name builtin">str</span><span class="punctuation">(</span><span class="name">v</span><span class="punctuation">)</span><span class="operator">+</span><span class="literal string double">&quot;*&quot;</span><span class="whitespace">
+</span>    <span class="keyword">else</span><span class="punctuation">:</span><span class="whitespace">
+</span>        <span class="name">v</span> <span class="operator">=</span> <span class="name builtin">str</span><span class="punctuation">(</span><span class="name">v</span><span class="punctuation">)</span><span class="whitespace">
+</span>    <span class="name builtin">print</span><span class="punctuation">(</span><span class="name">v</span><span class="operator">+</span><span class="literal string double">&quot;,&quot;</span><span class="punctuation">,</span><span class="name">end</span><span class="operator">=</span><span class="literal string double">&quot;&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name builtin">print</span><span class="punctuation">()</span></code></pre>
+</div>
+</div><div class="ld-slide" id="additive-und-multiplikative-inverse-modulo-8">
+<h2>Additive und Multiplikative Inverse Modulo 8</h2>
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Die <strong>negative/additive Inverse</strong> einer ganzen Zahl <span class="math">\(x\)</span> ist die ganze Zahl <span class="math">\(y\)</span>, für die gilt: <span class="math">\((x + y)\; mod\; 8 = 0\)</span>.</p>
+<p>Die <strong>muliplikative Inverse</strong> einer ganzen Zahl <span class="math">\(x\)</span> ist die ganze Zahl <span class="math">\(y\)</span>, für die gilt: <span class="math">\((x \times y)\; mod\; 8 = 1\)</span>.</p>
+</aside>
+</div>
+<div class="column incremental docutils container">
+<table class="align-center highlight-line-on-hover">
+<thead>
+<tr><th class="head"><p><span class="math">\(w\)</span></p></th>
+<th class="head"><p><span class="math">\(-w\)</span></p></th>
+<th class="head"><p><span class="math">\(w^{-1}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p><span class="math">\(-\)</span></p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>7</p></td>
+<td><p>1</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>6</p></td>
+<td><p><span class="math">\(-\)</span></p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>5</p></td>
+<td><p>3</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>4</p></td>
+<td><p><span class="math">\(-\)</span></p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>3</p></td>
+<td><p>5</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>2</p></td>
+<td><p><span class="math">\(-\)</span></p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>1</p></td>
+<td><p>7</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div><div class="smaller-slide-title ld-slide" id="eigenschaften-der-modularen-arithmetik-fur-ganze-zahlen-in-z-n">
+<h2>Eigenschaften der modularen Arithmetik für ganze Zahlen in <span class="math">\(Z_n\)</span></h2>
+<dl class="field-list">
+<dt>Kommutativgesetz<span class="colon">:</span></dt>
+<dd><p><span class="math">\((w + x)\; mod\; n = (x + w)\; mod\; n\)</span></p>
+<p><span class="math">\((w \times x)\; mod\; n = (x \times w)\; mod\; n\)</span></p>
+</dd>
+</dl>
+<dl class="incremental field-list">
+<dt>Assoziativgesetz<span class="colon">:</span></dt>
+<dd><p><span class="math">\([(w + x) + y]\; mod\; n = [w + (x + y)]\; mod\; n\)</span></p>
+<p><span class="math">\([(w \times x) \times y]\; mod\; n = [w \times (x \times y)]\; mod\; n\)</span></p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Distributivgesetz<span class="colon">:</span></dt>
+<dd><p><span class="math">\([w \times (x + y)]\; mod\; n = [(w \times x) + (w \times y)]\; mod\; n\)</span></p>
+</dd>
+</dl>
+<dl class="incremental field-list">
+<dt>Identitäten<span class="colon">:</span></dt>
+<dd><p><span class="math">\((0 + w)\; mod\; n = w\; mod\; n\)</span></p>
+<p><span class="math">\((1 \times w)\; mod\; n = w\; mod\; n\)</span></p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Additive Inverse (-w)<span class="colon">:</span></dt>
+<dd><p>Für jedes <span class="math">\(w \in Z_n\)</span> gibt es ein <span class="math">\(z\)</span>, so dass <span class="math">\(w + z \equiv 0\; mod\; n\)</span></p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="euklidischer-algorithmus-neu-betrachtet">
+<h2>Euklidischer Algorithmus - neu betrachtet</h2>
+<aside class="admonition admonition-theorem">
+<p class="admonition-title">Theorem</p>
+<p>Für beliebige ganze Zahlen <span class="math">\(a\)</span> und <span class="math">\(b\)</span> mit <span class="math">\(a \geq b \geq 0\)</span>,</p>
+<div class="math">
+\begin{equation*}
+ggt(a,b) = ggt(b, a\; mod\; b)
+\end{equation*}
+</div>
+</aside>
+<div class="two-columns smaller docutils container">
+<div class="column no-separator docutils container">
+<p><strong>Algorithmus</strong></p>
+<pre class="code pseudocode incremental literal-block"><code><span class="name variable">def</span> <span class="name variable">Euclid</span><span class="punctuation">(</span><span class="name variable">a</span><span class="punctuation">,</span><span class="name variable">b</span><span class="punctuation">):</span>
+    <span class="name variable">if</span> <span class="punctuation">(</span><span class="name variable">b</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">)</span> <span class="name variable">then</span>
+        <span class="name variable">return</span> <span class="name variable">a</span><span class="punctuation">;</span>
+    <span class="name variable">else</span>
+        <span class="name variable">return</span> <span class="name variable">Euclid</span><span class="punctuation">(</span><span class="name variable">b</span><span class="punctuation">,</span> <span class="name variable">a</span> <span class="operator">mod</span> <span class="name variable">b</span><span class="punctuation">);</span></code></pre>
+</div>
+<div class="incremental docutils container">
+<p><strong>Beispiel</strong></p>
+<pre class="code pseudocode literal-block"><code><span class="name variable">ggt</span><span class="punctuation">(</span><span class="literal number integer">10</span><span class="punctuation">,</span><span class="literal number integer">6</span><span class="punctuation">)</span>
+    <span class="error">↳</span> <span class="name variable">ggt</span><span class="punctuation">(</span><span class="literal number integer">6</span><span class="punctuation">,</span><span class="literal number integer">4</span><span class="punctuation">)</span>
+        <span class="error">↳</span> <span class="name variable">ggt</span><span class="punctuation">(</span><span class="literal number integer">4</span><span class="punctuation">,</span><span class="literal number integer">2</span><span class="punctuation">)</span>
+            <span class="error">↳</span> <span class="name variable">ggt</span><span class="punctuation">(</span><span class="literal number integer">2</span><span class="punctuation">,</span><span class="literal number integer">0</span><span class="punctuation">)</span>
+<span class="literal number integer">2</span>              <span class="error">↩︎</span></code></pre>
+</div>
+</div>
+<div class="incremental docutils container">
+<p>Um welche Art von rekursivem Algorithmus handelt es sich hierbei?</p>
+</div>
+<div class="supplemental docutils container">
+<p>In der gegebenen Formulierung ist der Algorithmus endrekursiv (<span class="eng">tail recursive</span>).</p>
+</div>
+</div><div class="ld-slide" id="erweiterter-euklidischer-algorithmus">
+<h2>Erweiterter Euklidischer Algorithmus</h2>
+<ul class="simple">
+<li><p>Erforderlich für Berechnungen im Bereich der endlichen Körper und Verschlüsselungsalgorithmen wie RSA.</p></li>
+<li><p>Für zwei ganze Zahlen <span class="math">\(a\)</span> und <span class="math">\(b\)</span> berechnet der erweiterte euklidische Algorithmus den GGT <span class="math">\(d\)</span>, aber auch zwei zusätzliche ganze Zahlen <span class="math">\(x\)</span> und <span class="math">\(y\)</span>, die die folgende Gleichung erfüllen:</p></li>
+</ul>
+<div class="math">
+\begin{equation*}
+x \times a + y \times b = d = ggt(a,b)
+\end{equation*}
+</div>
+<div class="supplemental docutils container">
+<p>Notwendigerweise haben <span class="math">\(x\)</span> und <span class="math">\(y\)</span> gegensätzliche Vorzeichen, da sonst <span class="math">\((x \times a + y \times b) &gt; a\; ( &gt; b )\)</span> gelten würde und somit nicht den GGT darstellen könnte.</p>
+<p>Der erweiterte euklidische Algorithmus kann auf jeden Ring angewandt werden, in welchem eine Division mit kleinstem Rest durchgeführt werden kann. Ein Beispiel ist der Polynomring in einer Variablen mit rationalen oder reellen Koeffizienten wie sie bei der Verschlüsselung angewandt werden.</p>
+<p>Der erweiterte Algo. dient insbesondere der Berechnung der inversen Elemente in ganzzahligen Restklassenringen. <span class="minor">(Beides werden wir später in der Vorlesung betrachten).</span></p>
+</div>
+</div><div class="smaller-slide-title ld-slide" id="ggt-a-42-b-30-mit-erweitertem-euklidischen-algorithmus">
+<h2><span class="math">\(ggt(a=42,b=30)\)</span> mit Erweitertem Euklidischen Algorithmus</h2>
+<p>Werfen wir einen Blick auf <span class="math">\(x \times a + y \times b\)</span> für einige <span class="math">\(x\)</span> und <span class="math">\(y\)</span>:</p>
+<table class="align-center monospaced fake-header-column fake-header-row highlight-on-hover" style="width: 1500px;">
+<tbody>
+<tr><td><p><span class="math">\(_у \\ ^x\)</span></p></td>
+<td><p>-3</p></td>
+<td><p>-2</p></td>
+<td><p>-1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+</tr>
+<tr><td><p>-3</p></td>
+<td><p>-216</p></td>
+<td><p>-174</p></td>
+<td><p>-132</p></td>
+<td><p>-90</p></td>
+<td><p>-48</p></td>
+<td><p>-6</p></td>
+<td><p>36</p></td>
+</tr>
+<tr><td><p>-2</p></td>
+<td><p>-186</p></td>
+<td><p>-144</p></td>
+<td><p>-102</p></td>
+<td><p>-60</p></td>
+<td><p>-18</p></td>
+<td><p>24</p></td>
+<td><p>66</p></td>
+</tr>
+<tr><td><p>-1</p></td>
+<td><p>-156</p></td>
+<td><p>-114</p></td>
+<td><p>-72</p></td>
+<td><p>-30</p></td>
+<td><p>12</p></td>
+<td><p>54</p></td>
+<td><p>96</p></td>
+</tr>
+<tr><td><p>0</p></td>
+<td><p>-126</p></td>
+<td><p>-84</p></td>
+<td><p>-42</p></td>
+<td><p>0</p></td>
+<td><p>42</p></td>
+<td><p>84</p></td>
+<td><p>126</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>-96</p></td>
+<td><p>-54</p></td>
+<td><p>-12</p></td>
+<td><p>30</p></td>
+<td><p>72</p></td>
+<td><p>114</p></td>
+<td><p>156</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>-66</p></td>
+<td><p>-24</p></td>
+<td><p>18</p></td>
+<td><p>60</p></td>
+<td><p>102</p></td>
+<td><p>144</p></td>
+<td><p>186</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>-36</p></td>
+<td><p>6</p></td>
+<td><p>48</p></td>
+<td><p>90</p></td>
+<td><p>132</p></td>
+<td><p>174</p></td>
+<td><p>216</p></td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition incremental small">
+<p class="admonition-title">Hinweis</p>
+<p>Der GGT <span class="math">\(6\)</span> erscheint in der Tabelle (<span class="math">\(x = -2\)</span> und <span class="math">\(y = 3\)</span>).</p>
+</aside>
+</div><div class="ld-slide" id="erweiterter-euklidischer-algorithmus-br-systematische-berechnung">
+<h2>Erweiterter Euklidischer Algorithmus <span class="raw-html"><br></span> <span class="scriptsize">systematische Berechnung</span></h2>
+<div class="two-columns docutils container">
+<div class="column docutils container">
+<img alt="drawings/euclidean_algorithm/example.svg" src="drawings/euclidean_algorithm/example.svg" style="width: 800px;" />
+</div>
+<div class="column docutils container">
+<p>Umgestellt:</p>
+<img alt="drawings/euclidean_algorithm/example-umgestellt.svg" src="drawings/euclidean_algorithm/example-umgestellt.svg" style="width: 850px;" />
+</div>
+</div>
+</div><div class="ld-slide" id="erweiterter-euklidischer-algorithmus-systematische-berechnung">
+<h2>Erweiterter Euklidischer Algorithmus - systematische Berechnung</h2>
+<img alt="drawings/euclidean_algorithm/example-ausgerechnet.svg" class="align-center" src="drawings/euclidean_algorithm/example-ausgerechnet.svg" style="width: 100%;" />
+<p><span class="math">\(x = 7\)</span> und <span class="math">\(y = -16\)</span></p>
+</div><div class="ld-slide" id="erweiterter-euklidischer-algorithmus-formeln">
+<h2>Erweiterter Euklidischer Algorithmus - Formeln</h2>
+<p>Wir nehmen an, dass wir bei jedem Schritt <span class="math">\(i\)</span> die ganzen Zahlen <span class="math">\(x_i\)</span> und <span class="math">\(y_i\)</span> finden können, die folgende Bedingung erfüllen: <span class="math">\(r_i = ax_i + by_i\)</span>.</p>
+<div class="math">
+\begin{equation*}
+\begin{matrix}
+Original &amp; Erweiterung \\
+a = q_1b + r_1 &amp; r_1 = ax_1 + by_1 \\
+b = q_2r_1 + r_2 &amp; r_2 = ax_2 + by_2 \\
+r_1 = q_3r_2 + r_3 &amp; r_3 = ax_3 + by_3 \\
+\vdots &amp; \vdots \\
+r_{n-2} = q_nr_{n-1}+r_n &amp; r_n=ax_n + by_n \\
+r_{n-1} = q_{n+1}r_n +0 &amp; \\
+d = ggt(a,b) = r_n &amp;
+\end{matrix}
+\end{equation*}
+</div>
+</div><div class="ld-slide" id="erweiterter-euklidischer-algorithmus-1">
+<h2>Erweiterter Euklidischer Algorithmus</h2>
+<table class="align-left footnotesize highlight-line-on-hover" style="width: 1850px;">
+<thead>
+<tr><th class="head"><p>Berechne</p></th>
+<th class="head"><p>Was erfüllt</p></th>
+<th class="head"><p>Berechne</p></th>
+<th class="head"><p>Was erfüllt</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p><span class="math">\(r_{-1} = a\)</span></p></td>
+<td></td>
+<td><p><span class="math">\(x_{-1}=1; y_{-1}=0\)</span></p></td>
+<td><p><span class="math">\(a = ax_{-1} + by_{-1}\)</span></p></td>
+</tr>
+<tr><td><p><span class="math">\(r_{0} = b\)</span></p></td>
+<td></td>
+<td><p><span class="math">\(x_0=0;y_{0}=0\)</span></p></td>
+<td><p><span class="math">\(b = ax_{0} + by_{0}\)</span></p></td>
+</tr>
+<tr><td><p><span class="math">\(r_{1} = a\;mod\;b\)</span>; <span class="math">\(q_1= \lfloor a/b \rfloor\)</span></p></td>
+<td><p><span class="math">\(a=q_1b+r_1\)</span></p></td>
+<td><p><span class="math">\(x_1=x_{-1} -q_1x_0 = 1\)</span>; <span class="math">\(y_1=y_{-1} -q_1y_0 = -q_1\)</span></p></td>
+<td><p><span class="math">\(r_1 = ax_{1} + by_{1}\)</span></p></td>
+</tr>
+<tr><td><p><span class="math">\(r_{2} = b\;mod\;r_1\)</span>; <span class="math">\(q_2= \lfloor b/r_1 \rfloor\)</span></p></td>
+<td><p><span class="math">\(b=q_2r_1+r_2\)</span></p></td>
+<td><p><span class="math">\(x_2=x_{0} -q_2x_1; y_2=y_{0} -q_2y_1\)</span></p></td>
+<td><p><span class="math">\(r_2 = ax_{2} + by_{2}\)</span></p></td>
+</tr>
+<tr><td><p><span class="math">\(r_{3} = r_1\;mod\;r_2\)</span>; <span class="math">\(q_3= \lfloor r_1/r_2 \rfloor\)</span></p></td>
+<td><p><span class="math">\(r_1=q_3r_2+r_3\)</span></p></td>
+<td><p><span class="math">\(x_3=x_{1} -q_3x_2; y_3=y_{1} -q_3y_2\)</span></p></td>
+<td><p><span class="math">\(r_3 = ax_{3} + by_{3}\)</span></p></td>
+</tr>
+<tr><td><p><span class="math">\(\vdots\)</span></p></td>
+<td><p><span class="math">\(\vdots\)</span></p></td>
+<td><p><span class="math">\(\vdots\)</span></p></td>
+<td><p><span class="math">\(\vdots\)</span></p></td>
+</tr>
+<tr><td><p><span class="math">\(r_{n} = r_{n-2}\;mod\;r_{n-1}\)</span>; <span class="math">\(q_n= \lfloor r_{n-2}/r_{n-1} \rfloor\)</span></p></td>
+<td><p><span class="math">\(r_{n-2}=q_nr_{n-1}+r_n\)</span></p></td>
+<td><p><span class="math">\(x_n=x_{n-2} -q_nx_{n-1}\)</span>; <span class="math">\(y_n=y_{n-2} -q_ny_{n-1}\)</span></p></td>
+<td><p><span class="math">\(r_n = ax_{n} + by_{n}\)</span></p></td>
+</tr>
+<tr><td><p><span class="math">\(r_{n+1} = r_{n-1}\;mod\;r_{n} = 0\)</span>; <span class="math">\(q_{n+1}= \lfloor r_{n-1}/r_{n} \rfloor\)</span></p></td>
+<td><p><span class="math">\(r_{n-1}=q_{n+1}r_{n}+0\)</span></p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="small incremental docutils container">
+<p><strong>Lösung</strong></p>
+<p><span class="math">\(d = ggt(a,b) = r_n; x = x_n; y = y_n\)</span></p>
+</div>
+</div><div class="smaller-slide-title ld-slide" id="erweiterter-euklidischer-algorithmus-beispiel-ggt-1759-550">
+<h2>Erweiterter Euklidischer Algorithmus - Beispiel <span class="math">\(ggt(1759,550)\)</span></h2>
+<table class="align-center monospaced highlight-line-on-hover" style="width: 1200px;">
+<thead>
+<tr><th class="head"><p><span class="math">\(i\)</span></p></th>
+<th class="head"><p><span class="math">\(r_i\)</span></p></th>
+<th class="head"><p><span class="math">\(q_i\)</span></p></th>
+<th class="head"><p><span class="math">\(x_i\)</span></p></th>
+<th class="head"><p><span class="math">\(y_i\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>-1</p></td>
+<td><p>1759</p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><td><p>0</p></td>
+<td><p>550</p></td>
+<td></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>109</p></td>
+<td><p>3</p></td>
+<td><p>1</p></td>
+<td><p>-3</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>5</p></td>
+<td><p>5</p></td>
+<td><p>-5</p></td>
+<td><p>16</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>21</p></td>
+<td><p>106</p></td>
+<td><p>-339</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>-111</p></td>
+<td><p>355</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>0</p></td>
+<td><p>4</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Resultat: <span class="math">\(d=1; x= -111; y = 355\)</span></p>
+</div><div class="new-section transition-move-left ld-slide" id="primzahlen-und-primzahlenbestimmung">
+<h2>Primzahlen und Primzahlenbestimmung</h2>
+</div><div class="ld-slide" id="primzahlen">
+<h2>Primzahlen</h2>
+<ul class="incremental">
+<li><p>Primzahlen haben als Teiler nur 1 und sich selbst.</p></li>
+<li><p>Sie können nicht als Produkt von anderen Zahlen geschrieben werden.</p></li>
+<li><p>Jede ganze Zahl <span class="math">\(a &gt; 1\)</span> kann auf eindeutige Weise faktorisiert werden als: <span class="math">\(a=p_1^{a_1} \times p_2^{a_2} \times p_t^{a_1}\)</span> wobei <span class="math">\(p_1 &lt; p_2 &lt; . . . &lt; p_t\)</span> Primzahlen sind und wobei jedes <span class="math">\(a_i\)</span> eine positive ganze Zahl ist.</p>
+<p><span class="math">\(a = \displaystyle \prod_{p \in P} p^{a_p}\qquad wenn\; a_p \geq 0\)</span></p>
+</li>
+<li><p>Dies ist als Fundamentalsatz der Arithmetik bekannt.</p></li>
+</ul>
+<aside class="admonition incremental smaller">
+<p class="admonition-title">Beispiel</p>
+<div class="math">
+\begin{equation*}
+50 = 2^1 \times 5^2
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+60 = 2^2 \times 3^1 \times 5^1
+\end{equation*}
+</div>
+</aside>
+<div class="supplemental docutils container">
+<p>Primzahlen spielen in der Zahlentheorie eine zentrale Rolle. Wir betrachten sie hier aber nur insoweit es für das Verständnis der Kryptographie notwendig ist.</p>
+</div>
+</div><div class="ld-slide" id="fermats-kleines-theorem">
+<h2>Fermats (kleines) Theorem</h2>
+<div class="note docutils container">
+<p>Wichtig in der Public-Key-Kryptographie.</p>
+</div>
+<p>Besagt folgendes:</p>
+<ul class="simple">
+<li><p>Wenn <span class="math">\(p\)</span> eine Primzahl und <span class="math">\(a\)</span> eine positive ganze Zahl ist, die nicht durch <span class="math">\(p\)</span> teilbar ist, dann <span class="math">\(a^{p-1} \equiv 1 (mod\;p)\)</span></p></li>
+</ul>
+<p class="incremental">Alternative form:</p>
+<ul class="incremental simple">
+<li><p>Wenn <span class="math">\(p\)</span> eine Primzahl und <span class="math">\(a\)</span> eine positive ganze Zahl ist, dann ist <span class="math">\(a^p \equiv a(mod\; p)\)</span></p></li>
+</ul>
+<aside class="admonition admonition-beispiel">
+<p class="admonition-title">Beispiel</p>
+<div class="math">
+\begin{equation*}
+Sei\; p=7\; und\; a=2:
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+(2^6 = 64) \equiv 1 (mod\; 7),\qquad da\; 64/7 = 9\; Rest\; 1
+\end{equation*}
+</div>
+</aside>
+</div><div class="smaller ld-slide" id="die-eulersche-totientenfunktion-phi-n">
+<h2>Die Eulersche Totientenfunktion <span class="math">\(\phi(n)\)</span></h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Die Eulersche Totientenfunktion (<span class="math">\(\phi(n)\)</span>) gibt die Anzahl der positiven ganzen Zahlen, die kleiner als <span class="math">\(n\)</span> und relativ prim zu <span class="math">\(n\)</span> sind an. Per Konvention ist <span class="math">\(\phi(1) = 1\)</span>.</p>
+</aside>
+<div class="three-columns incremental no-default-width smaller docutils container">
+<div class="column no-separator docutils container">
+<p>Einige Werte von <span class="math">\(\phi(n)\)</span>:</p>
+</div>
+<div class="column no-separator docutils container">
+<table class="highlight-on-hover fake-header-column fake-header-row">
+<tbody>
+<tr><td><p>𝜑(n)</p></td>
+<td><p>+0</p></td>
+<td><p>+1</p></td>
+<td><p>+2</p></td>
+<td><p>+3</p></td>
+<td><p>+4</p></td>
+<td><p>+5</p></td>
+<td><p>+6</p></td>
+<td><p>+7</p></td>
+<td><p>+8</p></td>
+<td><p>+9</p></td>
+</tr>
+<tr><td><p>0+</p></td>
+<td><p>/</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>4</p></td>
+<td><p>2</p></td>
+<td><p>6</p></td>
+<td><p>4</p></td>
+<td><p>6</p></td>
+</tr>
+<tr><td><p>10+</p></td>
+<td><p>4</p></td>
+<td><p>10</p></td>
+<td><p>4</p></td>
+<td><p>12</p></td>
+<td><p>6</p></td>
+<td><p>8</p></td>
+<td><p>8</p></td>
+<td><p>16</p></td>
+<td><p>6</p></td>
+<td><p>18</p></td>
+</tr>
+<tr><td><p>20+</p></td>
+<td><p>8</p></td>
+<td><p>12</p></td>
+<td><p>10</p></td>
+<td><p>22</p></td>
+<td><p>8</p></td>
+<td><p>20</p></td>
+<td><p>12</p></td>
+<td><p>18</p></td>
+<td><p>12</p></td>
+<td><p>28</p></td>
+</tr>
+<tr><td><p>30+</p></td>
+<td><p>8</p></td>
+<td><p>30</p></td>
+<td><p>16</p></td>
+<td><p>20</p></td>
+<td><p>16</p></td>
+<td><p>24</p></td>
+<td><p>12</p></td>
+<td><p>36</p></td>
+<td><p>18</p></td>
+<td><p>24</p></td>
+</tr>
+<tr><td><p>40+</p></td>
+<td><p>16</p></td>
+<td><p>40</p></td>
+<td><p>12</p></td>
+<td><p>42</p></td>
+<td><p>20</p></td>
+<td><p>24</p></td>
+<td><p>22</p></td>
+<td><p>46</p></td>
+<td><p>16</p></td>
+<td><p>42</p></td>
+</tr>
+<tr><td><p>50+</p></td>
+<td><p>20</p></td>
+<td><p>32</p></td>
+<td><p>24</p></td>
+<td><p>52</p></td>
+<td><p>18</p></td>
+<td><p>40</p></td>
+<td><p>24</p></td>
+<td><p>36</p></td>
+<td><p>28</p></td>
+<td><p>58</p></td>
+</tr>
+<tr><td><p>60+</p></td>
+<td><p>16</p></td>
+<td><p>60</p></td>
+<td><p>30</p></td>
+<td><p>36</p></td>
+<td><p>32</p></td>
+<td><p>48</p></td>
+<td><p>20</p></td>
+<td><p>66</p></td>
+<td><p>32</p></td>
+<td><p>44</p></td>
+</tr>
+<tr><td><p>70+</p></td>
+<td><p>24</p></td>
+<td><p>70</p></td>
+<td><p>24</p></td>
+<td><p>72</p></td>
+<td><p>36</p></td>
+<td><p>40</p></td>
+<td><p>36</p></td>
+<td><p>60</p></td>
+<td><p>24</p></td>
+<td><p>78</p></td>
+</tr>
+<tr><td><p>80+</p></td>
+<td><p>32</p></td>
+<td><p>54</p></td>
+<td><p>40</p></td>
+<td><p>82</p></td>
+<td><p>24</p></td>
+<td><p>64</p></td>
+<td><p>42</p></td>
+<td><p>56</p></td>
+<td><p>40</p></td>
+<td><p>88</p></td>
+</tr>
+<tr><td><p>90+</p></td>
+<td><p>24</p></td>
+<td><p>72</p></td>
+<td><p>44</p></td>
+<td><p>60</p></td>
+<td><p>46</p></td>
+<td><p>72</p></td>
+<td><p>32</p></td>
+<td><p>96</p></td>
+<td><p>42</p></td>
+<td><p>60</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="column incremental smaller docutils container">
+<aside class="admonition admonition-beispiel">
+<p class="admonition-title">Beispiel</p>
+<div class="math">
+\begin{equation*}
+\phi(6) = 2 = |\{1,5\}|
+\end{equation*}
+</div>
+<p>Test:</p>
+<div class="math">
+\begin{equation*}
+ggt(1,6) = 1 \checkmark
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+ggt(2,6) = 2 ❌
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+ggt(3,6) = 3 ❌
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+ggt(4,6) = 2 ❌
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+ggt(5,6) = 1 \checkmark
+\end{equation*}
+</div>
+</aside>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Vgl. <a class="reference external" href="https://de.wikipedia.org/wiki/Eulersche_Phi-Funktion">https://de.wikipedia.org/wiki/Eulersche_Phi-Funktion</a></p>
+</div>
+</div><div class="ld-slide" id="eulers-theorem">
+<h2>Eulers Theorem</h2>
+<p>besagt, dass für jedes <span class="math">\(a\)</span> und <span class="math">\(n\)</span>, die relativ prim sind:</p>
+<div class="math">
+\begin{equation*}
+a^{\phi(n)} \equiv 1(mod\; n)
+\end{equation*}
+</div>
+<p>Eine alternative Form ist:</p>
+<div class="math">
+\begin{equation*}
+a^{\phi(n)+1} \equiv a (mod\; n)
+\end{equation*}
+</div>
+</div><div class="ld-slide" id="miller-rabin-primzahltest">
+<h2>Miller-Rabin-Primzahltest</h2>
+<ul>
+<li><p>Viele kryptografische Algorithmen erfordern eine oder mehrere sehr große Primzahlen nach dem Zufallsprinzip.</p></li>
+<li><p>Der Miller-Rabin-Primzahltest ist ein probabilistischer Primzahltest, der schnell und einfach ist.</p></li>
+<li><p>Hintergrund: Jede positive ungerade ganze Zahl <span class="math">\(n \geq 3\)</span> kann ausgedrückt werden als:</p>
+<p><span class="math">\(n-1 = 2^kq \qquad mit\; k &gt; 0, q\; ungerade\)</span></p>
+</li>
+</ul>
+</div><div class="ld-slide" id="miller-rabin-algorithmus">
+<h2>Miller-Rabin Algorithmus</h2>
+<pre class="code pseudocode literal-block"><code><span class="name variable">TEST</span><span class="punctuation">(</span><span class="name variable">n</span><span class="punctuation">,</span> <span class="name variable">k</span><span class="punctuation">)</span> <span class="comment"># n &gt; 2, an odd integer to be tested for primality
+</span>           <span class="comment"># k, the number of rounds of testing to perform
+</span>
+<span class="name variable">let</span> <span class="name variable">s</span> <span class="operator">&gt;</span> <span class="literal number integer">0</span> <span class="name variable">and</span> <span class="name variable">d</span> <span class="name variable">odd</span> <span class="operator">&gt;</span> <span class="literal number integer">0</span> <span class="name variable">such</span> <span class="name variable">that</span> <span class="name variable">n</span><span class="error">−</span><span class="literal number integer">1</span> <span class="operator">=</span> <span class="name builtin">pow</span><span class="punctuation">(</span><span class="literal number integer">2</span><span class="punctuation">,</span><span class="name variable">s</span><span class="punctuation">)</span><span class="operator">*</span><span class="name variable">d</span>
+<span class="name variable">repeat</span> <span class="name variable">k</span> <span class="name variable">times</span><span class="punctuation">:</span>
+    <span class="name variable">a</span> <span class="operator">←</span> <span class="name variable">random</span><span class="punctuation">(</span><span class="literal number integer">2</span><span class="punctuation">,</span> <span class="name variable">n</span><span class="error">−</span><span class="literal number integer">2</span><span class="punctuation">)</span>
+    <span class="name variable">x</span> <span class="operator">←</span> <span class="name builtin">pow</span><span class="punctuation">(</span><span class="name variable">a</span><span class="punctuation">,</span><span class="name variable">d</span><span class="punctuation">)</span> <span class="operator">mod</span> <span class="name variable">n</span>
+    <span class="name variable">repeat</span> <span class="name variable">s</span> <span class="name variable">times</span><span class="punctuation">:</span>
+        <span class="name variable">y</span> <span class="operator">←</span> <span class="name variable">sqr</span><span class="punctuation">(</span><span class="name variable">x</span><span class="punctuation">)</span> <span class="operator">mod</span> <span class="name variable">n</span>
+        <span class="name variable">if</span> <span class="name variable">y</span> <span class="operator">=</span> <span class="literal number integer">1</span> <span class="name variable">and</span> <span class="name variable">x</span> <span class="operator">≠</span> <span class="literal number integer">1</span> <span class="name variable">and</span> <span class="name variable">x</span> <span class="operator">≠</span> <span class="name variable">n</span><span class="error">−</span><span class="literal number integer">1</span> <span class="name variable">then</span> <span class="name variable">return</span> <span class="error">“</span><span class="name variable">composite</span><span class="error">”</span>
+        <span class="name variable">x</span> <span class="operator">←</span> <span class="name variable">y</span>
+    <span class="name variable">if</span> <span class="name variable">y</span> <span class="operator">≠</span> <span class="literal number integer">1</span> <span class="name variable">then</span> <span class="name variable">return</span> <span class="error">“</span><span class="name variable">composite</span><span class="error">”</span>
+<span class="name variable">return</span> <span class="error">“</span><span class="name variable">probably</span> <span class="name variable">prime</span><span class="error">”</span></code></pre>
+</div><div class="ld-slide" id="deterministische-primzahltests">
+<h2>Deterministische Primzahltests</h2>
+<ul class="incremental simple">
+<li><p>Vor 2002 gab es keine bekannte Methode, um für sehr große Zahlen effizient zu beweisen, dass diese Primzahlen sind.</p></li>
+<li><p>Alle verwendeten Algorithmen lieferten ein probabilistisches Ergebnis.</p></li>
+<li><p>Im Jahr 2002 entwickelten Agrawal, Kayal und Saxena einen Algorithmus, der <span class="ger-quote">effizient</span> bestimmt, ob eine gegebene große Zahl eine Primzahl ist:</p>
+<ul>
+<li><p>Auch bekannt als AKS-Algorithmus.</p></li>
+<li><p>Er scheint nicht so effizient zu sein wie der Miller-Rabin-Algorithmus.</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="chinesischer-restsatz-chinese-remainder-theorem-crt">
+<h2>Chinesischer Restsatz <span class="eng">Chinese Remainder Theorem (CRT)</span></h2>
+<div class="note scriptsize docutils container">
+<p>Bietet eine Möglichkeit, (potenziell sehr große) Zahlen <span class="math">\(mod M\)</span> in Form von Tupeln kleinerer Zahlen zu manipulieren.</p>
+<ul class="simple">
+<li><p>Dies kann nützlich sein, wenn <span class="math">\(M\)</span> 150 Ziffern oder mehr hat.</p></li>
+<li><p>Es ist jedoch notwendig, die Faktorisierung von <span class="math">\(M\)</span> im Voraus zu kennen.</p></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p>Wurde vermutlich von dem chinesischen Mathematiker Sun-Tsu um 100 n. Chr. entdeckt <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p></li>
+<li><p>Eines der nützlichsten Ergebnisse der Zahlentheorie.</p></li>
+<li><p>Es besagt, dass es möglich ist, ganze Zahlen in einem bestimmten Bereich aus ihren Residuen modulo einer Menge von paarweise relativ primen Moduli zu rekonstruieren.</p></li>
+<li><p>Kann auf verschiedene Weise formuliert werden.</p></li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Die Quellenlage bgzl. des genauen Datums ist unsicher und variiert teilweise um bis zu ca. 200 Jahre.</p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="chinesischer-restsatz-beispiel-in-z-10">
+<h2>Chinesischer Restsatz - Beispiel in <span class="math">\(Z_{10}\)</span></h2>
+<p>Nehmen wir an, die (relativ prim/koprimalen) Faktoren einer Zahl <span class="math">\(x\)</span> sind <span class="math">\(2\)</span> und <span class="math">\(5\)</span> und</p>
+<p class="incremental">dass die bekannten Reste der Dezimalzahl <span class="math">\(x\)</span> <span class="math">\(r_2 = 0\)</span> und <span class="math">\(r_5 = 3\)</span> sind.</p>
+<p class="incremental">Daher ist <span class="math">\(x\; mod \;2 = 0\)</span>; d.h. <span class="math">\(x\)</span> muss eine gerade Zahl sein; außerdem ist <span class="math">\(x\; mod\; 5 = 3\)</span>.</p>
+<p class="incremental">Die eindeutige Lösung ist: <span class="math">\(8\)</span> (<span class="math">\(3\)</span> ist keine Lösung, da 3 ungerade ist!)</p>
+<aside class="admonition incremental">
+<p class="admonition-title">Zusammenfassung</p>
+<p>Der chinesische Restsatz wird häufig für Berechnungen mit großen ganzen Zahlen verwendet, da er es ermöglicht, eine Berechnung, für die man eine Grenze für die Größe des Ergebnisses kennt, durch mehrere ähnliche Berechnungen mit kleinen ganzen Zahlen zu ersetzen.</p>
+<p>Das CRT findet in der Public-Key-Kryptographie Einsatz.</p>
+</aside>
+</div><div class="integrated-exercise ld-slide" id="ubung">
+<h2>Übung</h2>
+<ol class="arabic">
+<li><p>Berechne <span class="math">\(5^9\, mod\, 7\)</span> ohne die Zuhilfenahme eines Taschenrechners.</p>
+<div class="protected-exercise-solution">
+<p class="rubric">:math:`5^9\, mod\, 7`</p>
+<p><span class="math">\((5^9)\, mod\, 7 = (5^2 \times 5^2 \times 5^2 \times 5^2 \times 5) \, mod\, 7\)</span></p>
+<p><span class="math">\(= (5^2 \times 5^2 \times 5^2 \times 5^2 \times 5) \, mod\, 7 = (((5^2) \, mod\, 7)^4 \times (5\, mod\, 7))\, mod\, 7\)</span></p>
+<p><span class="math">\(= ((25 \, mod\, 7)^4 \times (5))\, mod \, 7\)</span></p>
+<p><span class="math">\(= (4^4 \times 5)\, mod \, 7\)</span></p>
+<p><span class="math">\(= (4^2 \times 4^2 \times 5)\, mod \, 7\)</span></p>
+<p><span class="math">\(= (2 \times 2 \times 5)\, mod \, 7\)</span></p>
+<p><span class="math">\(= (20)\, mod \, 7\)</span></p>
+<p><span class="math">\(= 6\)</span></p>
+</div></li>
+<li><p>Welche Zahlen sind relativ prim zu <span class="math">\(21\)</span>?</p>
+<div class="protected-exercise-solution">
+<p class="rubric">Relativ Prim zu 21</p>
+<p><span class="math">\(|\lbrace 1,2,4,5,8,10,11,13,16,17,19,20 \rbrace| = 12\)</span></p>
+<p>(Erinnere: <span class="math">\(ggt(6,21)\)</span> ist 3 und deshalb sind 6 und 21 nicht relativ prim!)</p>
+</div></li>
+<li><p>Berechne <span class="math">\(ggt(1037,768)\)</span> mit Hilfe des Euklidischen Algorithmus.</p>
+<div class="protected-exercise-solution">
+<p class="rubric">:math:`ggt(1037,768)`</p>
+<table>
+<thead>
+<tr><th class="head"><p>step</p></th>
+<th class="head"><p>a</p></th>
+<th class="head"><p>b</p></th>
+<th class="head"><p>q</p></th>
+<th class="head"><p>r</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>1</p></td>
+<td><p>1037</p></td>
+<td><p>768</p></td>
+<td><p>1</p></td>
+<td><p>269</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>768</p></td>
+<td><p>269</p></td>
+<td><p>2</p></td>
+<td><p>230</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>269</p></td>
+<td><p>230</p></td>
+<td><p>1</p></td>
+<td><p>39</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>230</p></td>
+<td><p>39</p></td>
+<td><p>5</p></td>
+<td><p>35</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>39</p></td>
+<td><p>35</p></td>
+<td><p>1</p></td>
+<td><p>4</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>35</p></td>
+<td><p>4</p></td>
+<td><p>8</p></td>
+<td><p>3</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>4</p></td>
+<td><p>3</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>3</p></td>
+<td><p>1</p></td>
+<td><p>3</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div></li>
+<li><p>Bestimme das Ergebnis von Euler's Totient Funktion <span class="math">\(\phi\)</span> für den Wert <span class="math">\(37\)</span> ohne das Ergebnis nachzuschlagen.</p>
+<div class="protected-exercise-solution">
+<p class="rubric">:math:`\phi(37)`</p>
+<p>Das Ergebnis ist 36, da 37 eine Primzahl ist und deswegen alle Zahlen von 2 bis 36 relativ prim zu 37 sind.</p>
+</div></li>
+<li><p>Überzeugen Sie sich davon, dass der (kleine) Satz von Fermat gilt. Zum Beispiel für die Zahlen: <span class="math">\(a = 9, p = 7\)</span>.</p>
+<div class="protected-exercise-solution">
+<p class="rubric">Fermats Kleines Theorem</p>
+<p><span class="math">\(9^6\, mod\, 7 = 531441\, mod\, 7 = 1\)</span></p>
+</div></li>
+<li><p>Überzeugen Sie sich davon, dass der Satz von Euler gilt. Zum Beispiel für die Werte <span class="math">\(a=7\)</span> und <span class="math">\(n=9\)</span>.</p>
+<div class="protected-exercise-solution">
+<p class="rubric">Satz von Euler</p>
+<p><span class="math">\(\phi(9) = 6 = |\lbrace 1,2,4,5,7,8 \rbrace|\)</span></p>
+<p><span class="math">\(7^6\, mod\, 9 = 1\)</span></p>
+</div></li>
+<li><p>Führen Sie den Miller-Rabin Algorithmus für <span class="math">\(n = 37\)</span> aus.</p>
+<div class="protected-exercise-solution">
+<p class="rubric">Miller-Rabin Algorithmus für :math:`n = 37`</p>
+<pre class="literal-block">Primzahltest für  37:
+
+k      s      a      x      y
+Runde 0:
+0      0     27     36      1
+0      1     27      1      1
+Runde 1:
+1      0     19      6     36
+1      1     19     36      1
+Runde 2:
+2      0     18     31     36
+2      1     18     36      1
+_____________________________
+Wahrscheinlich prim</pre>
+<p><a class="reference external" href="https://github.com/Delors/Course_W3M20014/blob/main/1-miller-rabin-algorithm.ipynb">Miller-Rabin Algorithm:</a></p>
+</div></li>
+</ol>
+</div>
+</body>
+</html>

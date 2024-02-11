@@ -14,11 +14,13 @@
 const lectureDoc2Animations = function () {
 
     /* -------------------------------------------------------------------------
-        Private methods.
+
+        Private methods of the module.
+
     */
 
     /**
-     * Handles the rendering of a stack layout in the continuous view.
+     * Handles the rendering of a "stacked layout" in the continuous view.
      */
     function adaptHeightOfSlideToStack(stack) {
 
@@ -50,7 +52,6 @@ const lectureDoc2Animations = function () {
                 }
                 layer.style.top = topOffset + "px";
             });
-            console.log("overallHeight: " + overallHeight);
         }
 
         stack.querySelectorAll(":scope >.layer").forEach((layer, i) => {
@@ -60,6 +61,7 @@ const lectureDoc2Animations = function () {
 
             if (!layer.classList.contains("overlay")) {
                 processLastGroupedLayers();
+                // reset groupdLayers to store the next group of layers:
                 groupedLayers = [layer]; // a non-overlay layer and all its overlay layers
                 maxGroupedLayersOuterHeight = layerOuterHeight;
             } else {
@@ -70,7 +72,7 @@ const lectureDoc2Animations = function () {
                 // or any of the stacked overlay layers.
                 maxGroupedLayersOuterHeight = Math.max(maxGroupedLayersOuterHeight, layerOuterHeight);
             }
-            console.log("layerOuterHeight: " + layerOuterHeight + " maxGrouped: "+ maxGroupedLayersOuterHeight+" maxOuterHeight: " + maxOuterHeight);
+            // console.log("layerOuterHeight: " + layerOuterHeight + " maxGrouped: "+ maxGroupedLayersOuterHeight+" maxOuterHeight: " + maxOuterHeight);
         });
         processLastGroupedLayers();
 
@@ -143,12 +145,6 @@ const lectureDoc2Animations = function () {
      */
     function beforeLDDOMManipulations() {
         /* empty for now */
-        document.querySelectorAll(".code.copy-to-clipboard").forEach((code) => {
-            
-            const copyItDiv = document.createElement("div");
-            copyItDiv.classList.add("copy-it");
-            code.insertBefore(copyItDiv, code.firstChild);
-        });
     }
 
 
@@ -194,18 +190,18 @@ const lectureDoc2Animations = function () {
         });
 
 
-        
-
         /**
          * The following highlights the current element and the element in 
-         * the first row with the same column and in the first column with the same
-         * row.
+         * the first row with the same column and in the first column with the 
+         * same row.
          * 
          * Note that, highlighting the row is trivially done in CSS, highlighting 
          * a column is not yet easily possible and requires either a too ugly css
          * solution or some JavaScript as shown here.
          * 
-         * Currently, we only support most basic table without cells which span multiple columns or rows. Also tables which have a header row are not yet supported.
+         * Currently, we only support most basic table without cells which span 
+         * multiple columns or rows. Also tables which have a header row are not
+         * yet supported.
          */
         // TODO add support to handle colspan and rowspan...
         // TODO add support to handle header rows (and header columns?)
@@ -236,6 +232,35 @@ const lectureDoc2Animations = function () {
                     });
                 });
             });
+        });
+
+
+        document.querySelectorAll("table.highlight-identical-cells").forEach((table) => {
+            const tbody = table.querySelector(":scope tbody")
+            function eq(nl1,nl2){
+                return nl1.length === nl2.length && Array.from(nl1).every((v,i)=>v.isEqualNode(nl2[i]));
+            }
+            function highlightValue(baseTD) {
+                tbody.querySelectorAll(":scope td").forEach((td) => {
+                    if (eq(baseTD.childNodes, td.childNodes)){
+                        td.classList.add("highlight-identical-cell");
+                    } 
+                })
+            };
+            function dehighlightValue(baseTD) {
+                tbody.querySelectorAll(":scope td").forEach((td) => {
+                    if (eq(baseTD.childNodes, td.childNodes)){
+                        td.classList.remove("highlight-identical-cell");
+                    } 
+                })
+            };
+
+
+            tbody.querySelectorAll(":scope td").forEach((td) => {
+                td.addEventListener("mouseover", () => { highlightValue(td) });
+                td.addEventListener("mouseleave", () => { dehighlightValue(td) });
+            });
+
         });
     }
 

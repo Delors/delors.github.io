@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;IT Sicherheit&quot;, Passwortwiederherstellung" name="keywords" />
+<meta content="Fortgeschrittene Angewandte IT Sicherheit" lang="de" name="description" xml:lang="de" />
+<meta content="2023_11-w3wi_se403_passwort_wiederherstellung-shell" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Die Linux Shell - kurz Wiederholung</title>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Die Linux Shell - kurz Wiederholung</h1>
+<dl class="docinfo simple">
+<dt class="dozent">Dozent<span class="colon">:</span></dt>
+<dd class="dozent"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
+</dd>
+<dt class="kontakt">Kontakt<span class="colon">:</span></dt>
+<dd class="kontakt"><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2024-01-29</dd>
+</dl>
+</div>
+<div class="ld-slide" id="die-grundlegenden-datenstrome">
+<h2>Die grundlegenden Datenströme</h2>
+<p>Jedes Programm hat immer Zugriff auf die drei Standarddatenströme:</p>
+<ul class="simple">
+<li><p><span class="docutils literal">stdin</span> - Eingabedatenstrom.</p></li>
+<li><p><span class="docutils literal">stdout</span> - Ausgabedatenstrom für <span class="ger-quote">normale</span> Nachrichten.</p></li>
+<li><p><span class="docutils literal">stderr</span> - Ausgabedatenstrom für Fehlernachrichten.</p></li>
+</ul>
+<div class="incremental docutils container">
+<p>Diese Datenströme sind (auch nur) Dateien, mit einem festgelegten Dateideskriptor (<span class="eng">file descriptor</span>):</p>
+<dl class="field-list simple">
+<dt>0<span class="colon">:</span></dt>
+<dd><p><span class="docutils literal">stdin</span></p>
+</dd>
+<dt>1<span class="colon">:</span></dt>
+<dd><p><span class="docutils literal">stdout</span></p>
+</dd>
+<dt>2<span class="colon">:</span></dt>
+<dd><p><span class="docutils literal">stderr</span></p>
+</dd>
+</dl>
+</div>
+</div><div class="ld-slide" id="umleitung-von-stdin-in-dateien">
+<h2>Umleitung von <span class="docutils literal">stdin</span> in Dateien</h2>
+<div class="incremental docutils container">
+<p><span class="docutils literal">&gt;</span> leitet die Ausgabe eines Programmes/Kommandos in eine Datei um; löscht bzw. legt die Zieldatei bei Bedarf an.</p>
+</div>
+<div class="incremental docutils container">
+<p><span class="docutils literal">&gt;&gt;</span> leitet die Ausgabe eines Programmes/Kommandos in eine Datei um; hängt die Ausgabe an das Ende einer bestehenden Datei an bzw. legt die Zieldatei bei Bedarf an.</p>
+</div>
+<div class="incremental small line-above margin-top-1em padding-top-1em docutils container">
+<p>Beispiel: Erzeugen einer Datei <span class="docutils literal">tmp/0s.txt</span>, die 1024 mal den Wert 0 in Base64 Kodierung enthält.</p>
+<pre class="code zsh copy-to-clipboard literal-block"><code>dd<span class="whitespace"> </span><span class="keyword">if</span><span class="operator">=</span>/dev/zero<span class="whitespace"> </span><span class="name variable">bs</span><span class="operator">=</span><span class="literal number">1</span><span class="whitespace"> </span><span class="name variable">count</span><span class="operator">=</span><span class="literal number">1024</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>base64<span class="whitespace"> </span><span class="literal string escape">\ </span><span class="comment single"># 1024 * &quot;0&quot; in base64
+</span>&gt;<span class="whitespace">                                        </span><span class="literal string escape">\ </span><span class="comment single"># Umleitung der Ausgabe
+</span>/tmp/0s.txt<span class="whitespace">                                </span><span class="comment single"># in /tmp/0s.txt</span></code></pre>
+</div>
+</div><div class="ld-slide" id="umleiten-von-bestimmten-ausgaben-an-dateien">
+<h2>Umleiten von bestimmten Ausgaben an Dateien</h2>
+<p>Beim Umleiten von Ausgaben an eine Datei, kann der Dateideskriptor angegeben werden: <span class="docutils literal"><span class="pre">[FD]&gt;&lt;Ziel&gt;</span></span></p>
+<div class="incremental docutils container">
+<p><span class="docutils literal">2&gt;</span> leitet z.B. die Fehlerausgaben (<span class="eng">stderr</span>) eines Programmes/Kommandos in eine Datei um; löscht bzw. legt die Zieldatei bei Bedarf an.</p>
+</div>
+<div class="incremental small line-above margin-top-1em padding-top-1em docutils container">
+<p>Beispiel: Finden von bestimmten Dateien; aber Fehlerausgaben während des Suchprozesses ignorieren.</p>
+<pre class="code bash copy-to-clipboard literal-block"><code>find<span class="whitespace"> </span>/<span class="whitespace"> </span>-iname<span class="whitespace"> </span><span class="literal string double">&quot;*txt*&quot;</span><span class="whitespace"> </span>-type<span class="whitespace"> </span>f<span class="whitespace"> </span><span class="literal string escape">\
+</span><span class="literal number">2</span>&gt;/dev/null<span class="whitespace">           </span><span class="comment single"># Umleitung aller Fehler nach /dev/null</span></code></pre>
+</div>
+</div><div class="ld-slide" id="grundlegende-prinzipien-lesen-aus-einer-datei">
+<h2>Grundlegende Prinzipien: Lesen aus einer Datei</h2>
+<div class="incremental docutils container">
+<p><span class="docutils literal">&lt;</span> liest den Inhalt einer Datei und leitet diesen an das Programm/Kommando weiter; d.h. stellt den Inhalt über stdin zur Verfügung.</p>
+</div>
+<div class="incremental small line-above margin-top-1em padding-top-1em docutils container">
+<p>Beispiel: Finden aller Städte, die mit &quot;B&quot; beginnen.[#]_</p>
+<pre class="code zsh copy-to-clipboard literal-block"><code>grep<span class="whitespace"> </span>B<span class="whitespace"> </span><span class="literal string escape">\ </span><span class="whitespace">         </span><span class="comment single"># filtert alle Zeilen, die ein &quot;B&quot; enthalten
+</span>&lt;<span class="whitespace"> </span>Big<span class="literal string escape">\ </span>Cities.txt<span class="whitespace"> </span><span class="comment single"># der Inhalt von Big Cities.txt wird über stdin zur
+</span><span class="whitespace">                  </span><span class="comment single"># Verfügung gestellt</span></code></pre>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>In diesem Fall könnte die Datei (<span class="docutils literal">Big Cities.txt</span>) auch direkt als Parameter an <span class="docutils literal">grep</span> übergeben werden. In anderen Fällen ist dies aber nicht möglich.</p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="linux-shell-grundlegendes-design-pattern-pipes-and-filters">
+<h2>Linux Shell - Grundlegendes Design-Pattern: <strong>Pipes and Filters</strong></h2>
+<ul class="simple">
+<li><p>Grundlegendes Konzept bzw. Entwurfsmuster (<span class="eng">Design-Pattern</span>) in Unix-basierten Betriebssystemen.</p></li>
+<li><p>Ermöglicht die effiziente Verkettung von Befehlen. Die <span class="ger-quote">Pipes-and-Filter</span> Architektur erlaubt es komplexe Verarbeitungsoperationen mit Hilfe von einfachen Befehlen durchzuführen.</p></li>
+</ul>
+<div class="incremental docutils container">
+<p><span class="docutils literal">|</span>: Verbindet den Ausgabestrom (<span class="docutils literal">stdout</span>) des vorhergehenden Befehls mit dem Eingabestrom (<span class="docutils literal">stdin</span>) des nachfolgenden Befehls.</p>
+</div>
+<div class="incremental scriptsize line-above margin-top-1em padding-top-1em docutils container">
+<p>Beispiel: Konvertierung des Wortes <span class="docutils literal">Test</span> in Base64 Kodierung.</p>
+<pre class="code bash copy-to-clipboard literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;Test&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
+</span><span class="punctuation">|</span><span class="whitespace">              </span><span class="literal string escape">\ </span><span class="comment single"># Weiterleitung der Ausgabe von echo an base64.
+</span>base64</code></pre>
+</div>
+<div class="supplemental docutils container">
+<p><span class="ger-quote">Filter</span>: Kommandos/Programme, die von <span class="docutils literal">stdin</span> lesen und nach <span class="docutils literal">stdout</span> schreiben.</p>
+</div>
+</div><div class="ld-slide" id="wichtige-linux-kommandozeilenwerkzeuge-fur-die-verarbeitung-von-passwortkandidaten">
+<h2>Wichtige Linux Kommandozeilenwerkzeuge für die Verarbeitung von Passwortkandidaten</h2>
+<div class="tiny docutils container">
+<dl class="field-list simple">
+<dt>cat<span class="colon">:</span></dt>
+<dd><p>Dateien verketten.</p>
+</dd>
+<dt>sed<span class="colon">:</span></dt>
+<dd><p>Strom Editor.</p>
+</dd>
+<dt>grep<span class="colon">:</span></dt>
+<dd><p>Mustersuche auf Dateien.</p>
+</dd>
+<dt>tr<span class="colon">:</span></dt>
+<dd><p>Ersetzung und Löschung von Zeichen.</p>
+</dd>
+<dt>uniq<span class="colon">:</span></dt>
+<dd><p>Filtert wiederholte aufeinanderfolgende Zeilen in einer Datei.</p>
+</dd>
+<dt>sort<span class="colon">:</span></dt>
+<dd><p>Sortiert Dateien.</p>
+</dd>
+<dt>echo<span class="colon">:</span></dt>
+<dd><p>Schreibt Argumente auf <em>Standard Out</em> (<span class="docutils literal">stdout</span>).</p>
+</dd>
+<dt>wc<span class="colon">:</span></dt>
+<dd><p>Zählt die Zeichen, Wörter, Zeilen einer Datei.</p>
+</dd>
+<dt>comm<span class="colon">:</span></dt>
+<dd><p>Vergleicht sortierte Listen und filtert entsprechend.</p>
+</dd>
+<dt>find<span class="colon">:</span></dt>
+<dd><p>Auswertung eines Ausdrucks für jede Datei während eines rekusiven Abstiegs über den Verzeichnisbaum.</p>
+</dd>
+<dt>awk<span class="colon">:</span></dt>
+<dd><p>Muster-orientierte Verarbeitung der Zeilen einer Eingabedatei.</p>
+</dd>
+<dt>base64<span class="colon">:</span></dt>
+<dd><p>(De-)Kodierung von Daten in Base64 Kodierung.</p>
+</dd>
+<dt>rev<span class="colon">:</span></dt>
+<dd><p>Dreht die Reihenfolge der Zeichen einer Zeile um.</p>
+</dd>
+<dt>head<span class="colon">:</span></dt>
+<dd><p>Zeigt die ersten (<span class="docutils literal"><span class="pre">-n</span></span>) Zeilen einer Datei an.</p>
+</dd>
+<dt>tail<span class="colon">:</span></dt>
+<dd><p>Zeigt die letzten (<span class="docutils literal"><span class="pre">-n</span></span>) Zeilen einer Datei an. <span class="raw-html"><br></span>
+(<span class="docutils literal"><span class="pre">-f</span></span> folgt der Datei, d.h. wartet auf weitere Daten, die der Datei hinzugefügt werden.)</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental docutils container">
+<p><strong>Anwendungsfälle</strong></p>
+<p>Typischerweise werden diese Werkzeuge bei der Verarbeitung von Leaks/Aufbereitung von Wörterbüchern im Vorfeld gebraucht - vor dem eigentlichen Versuch das Passwort wiederherzustellen.</p>
+</div>
+</div><div class="small ld-slide" id="echo">
+<h2>echo</h2>
+<ul class="simple">
+<li><p>Universell eingesetzt, um Inhalte in Dateien zu schreiben bzw. anzuhängen.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-n</span></span> um das automatische Anhängen von Zeilenumbrüchen zu unterdrücken.
+<span class="minor">(Besonders dann wichtig, wenn man Hashes für Testdaten generieren will.)</span></p></li>
+<li><p>Entweder ein explizites Programm oder ein in die Shell eingebautes Kommando.</p></li>
+</ul>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<aside class="admonition note">
+<p class="admonition-title">Hinweis</p>
+<p>Der hier zu sehende Befehl <span class="docutils literal">shasum <span class="pre">-a</span> 256</span> ist unter einigen Linuxdistributionen einfach <span class="docutils literal">sha256sum</span>.</p>
+</aside>
+<p><strong>Anwendungsfall</strong>: Programmatisch Daten nach <span class="docutils literal">stdout</span> schreiben.</p>
+<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;TestPasswort&quot;</span><span class="whitespace">
+  </span><span class="punctuation">|</span><span class="whitespace"> </span>shasum<span class="whitespace"> </span>-a<span class="whitespace"> </span><span class="literal number">256</span><span class="whitespace">
+  </span><span class="punctuation">|</span><span class="whitespace"> </span>sed<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string single">'s/  -$//'</span><span class="whitespace">
+</span>2214db3d6fca761041242b9fc41fdcca<span class="whitespace">
+</span>f0b2c7f556b80c0a91cfe6994437d807</code></pre>
+</div>
+</div><div class="small ld-slide" id="cat">
+<h2>cat</h2>
+<ul>
+<li><p>Liest alle Dateien sequentiell ein und schreibt diese auf <span class="docutils literal">Standard Out</span> (stdout).</p></li>
+<li><p>&quot;<span class="docutils literal">-</span>&quot; repräsentiert <span class="docutils literal">Standard In</span> (stdin); dies ermöglicht die Verwendung von cat mitten in einer Verarbeitungskette.</p></li>
+<li><p>Liest (ggf.) von <span class="docutils literal">stdin</span> bis zur EOF <span class="eng">End-of-File</span> Markierung.</p>
+<p>(Das Einlesen von der Kommandozeile kann mit <span class="docutils literal">CTR+D</span> beendet werden.)</p>
+</li>
+</ul>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<p><strong>Anwendungsfall</strong>: Mehrere Teilwörterbücher sollen zusammengefügt werden.</p>
+<p>Inhalt von Test1.txt: <span class="docutils literal">Test1</span></p>
+<p>Inhalt von Test2.txt: <span class="docutils literal">Test2</span></p>
+<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Test3&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>cat<span class="whitespace"> </span>Test1.txt<span class="whitespace"> </span>Test2.txt<span class="whitespace"> </span>-<span class="whitespace">
+</span>Test1<span class="whitespace">
+</span>Test2<span class="whitespace">
+</span>Test3</code></pre>
+</div>
+</div><div class="small ld-slide" id="tr">
+<h2>tr</h2>
+<ul class="simple">
+<li><p>Kopiert die Eingabe von <span class="docutils literal">stdin</span> nach <span class="docutils literal">stdout</span> und führt dabei Substitutionen und Löschungen durch.</p></li>
+</ul>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<p><strong>Anwendungsfall</strong>: bestimmte Buchstaben - zum Beispiel Sonderzeichen - sollen gelöscht werden.</p>
+<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string single">'ab.cd_12!'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>tr<span class="whitespace"> </span>-dc<span class="whitespace"> </span><span class="literal string single">'[:alnum:]'</span><span class="whitespace">  </span><span class="comment single"># -dc = delete complement
+</span>abcd12</code></pre>
+</div>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<p><strong>Anwendungsfall</strong>: Groß- in Kleinbuchstaben verwandeln.</p>
+<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string single">'STARK'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>tr<span class="whitespace"> </span><span class="literal string single">'[:upper:]'</span><span class="whitespace"> </span><span class="literal string single">'[:lower:]'</span><span class="whitespace">
+</span>stark</code></pre>
+</div>
+</div><div class="small ld-slide" id="uniq">
+<h2>uniq</h2>
+<ul class="simple">
+<li><p>vergleicht nebeneinanderliegende Zeilen und schreibt jede einzigartige Zeile einmal nach <span class="docutils literal">stdout</span>. Nicht-nebeneinanderliegende Wiederholungen werden nicht erkannt.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-c</span></span> erlaubt es die Anzahl der Wiederholungen zu zählen.</p></li>
+</ul>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<p><strong>Anwendungsfall</strong>: Wir möchten eine alphabetisch sortierte Liste nach der Häufigkeit des Vorkommens eines Wortes sortieren.</p>
+<p>Mittels <span class="docutils literal">uniq</span> kann die Häufigkeit gezählt werden.</p>
+<p><span class="minor">Die Sortierung - zum Beispiel angefangen mit den am häufigsten vorkommenden Einträgen - kann danach im Nachgang erfolgen</span>.</p>
+<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Test\nTest\nSchlaraffenland\nTest&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>uniq<span class="whitespace"> </span>-c<span class="whitespace">
+</span><span class="literal number">2</span><span class="whitespace"> </span>Test<span class="whitespace">
+</span><span class="literal number">1</span><span class="whitespace"> </span>Schlaraffenland<span class="whitespace">
+</span><span class="literal number">1</span><span class="whitespace"> </span>Test</code></pre>
+</div>
+</div><div class="small ld-slide" id="awk">
+<h2>awk</h2>
+<ul>
+<li><p>Muster-orientierte Verarbeitung der Zeilen einer Eingabedatei.</p></li>
+<li><p>Jede Zeile wird segmentiert (Standardmäßig basierend auf Leerzeichen), die einzelnen Segmente werden mit <span class="docutils literal">$1</span>, <span class="docutils literal">$2</span>, ... bezeichnet. <span class="docutils literal">$0</span> steht für die ganze Zeile.</p></li>
+<li><p>Die Verarbeitung erfolgt durch Muster-Handlungsanweisungen der Form:</p>
+<pre class="code awk literal-block"><code><span class="name other">pattern</span> <span class="punctuation">{</span> <span class="name other">action</span> <span class="punctuation">}</span></code></pre>
+<p>ist das Muster (<span class="eng">pattern</span>) leer, dann wird die Zeile immer verarbeitet; ist keine Handlungsanweisung (<span class="eng">action</span>) angegeben, dann wird die Zeile ausgegeben.</p>
+</li>
+</ul>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<p><strong>Anwendungsfall</strong>: Die Einträge einer Datei sollen nach länge sortiert werden. In diesem Fall, kann mit Hilfe von awk jede Zeile mit der Länge ausgegeben werden. <span class="minor">Danach kann die Liste entsprechend sortiert werden.</span></p>
+<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Test\nSchlaraffenland&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace">  </span>awk<span class="whitespace"> </span><span class="literal string single">'{print length &quot; &quot; $1}'</span><span class="whitespace">
+</span><span class="literal number">4</span><span class="whitespace"> </span>Test<span class="whitespace">
+</span><span class="literal number">15</span><span class="whitespace"> </span>Schlaraffenland</code></pre>
+</div>
+</div><div class="small ld-slide" id="sort">
+<h2>sort</h2>
+<ul class="simple">
+<li><p>Sortiert eine Liste gemäß der entsprechenden Felder.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-r</span></span> sortiert in absteigender Reihenfolge.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-n</span></span> der Wert des ersten Feldes wird als numerischer Wert interpretiert.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-k</span></span> spezifiziert das Feld, nach dem sortiert werden soll. (z.B. -k 3)</p></li>
+<li><p><span class="docutils literal"><span class="pre">-t</span></span> spezifiziert das Trennzeichen, das die Felder trennt. (z.B. -t ',')</p></li>
+</ul>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<p><strong>Anwendungsfall</strong>: Sortiere eine Liste nach Häufigkeit des Vorkommens eines Wortes.</p>
+<pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc\nxyz\nuvw\nxyz&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
+</span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>sort<span class="whitespace"> </span><span class="literal string escape">\ </span><span class="whitespace">                 </span><span class="comment single"># alphabetische Sortierung
+</span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>uniq<span class="whitespace"> </span>-c<span class="whitespace"> </span><span class="literal string escape">\ </span><span class="whitespace">              </span><span class="comment single"># zähle Häuigkeit des Vorkommens einer Zeile
+</span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>sort<span class="whitespace"> </span>-nr<span class="whitespace"> </span><span class="literal string escape">\ </span><span class="whitespace">             </span><span class="comment single"># absteigende Sortierung
+</span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>sed<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string single">'s/ *[0-9]+ *//'</span><span class="whitespace"> </span><span class="comment single"># entferne den Zähler
+</span>xyz<span class="whitespace">
+</span>uvw<span class="whitespace">
+</span>abc</code></pre>
+</div>
+<div class="supplemental docutils container">
+<p><strong>Komplexes Beispiel</strong></p>
+<p>Sortierung einer Liste von Worten in absteigender Reihenfolge bzgl. (1) der Häufigkeit und (2) Länge.</p>
+<pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">printf</span><span class="whitespace"> </span><span class="literal string single">'%s'</span><span class="whitespace"> </span><span class="literal string double">&quot;abc\nuvw\nxyz\nlmnop\nxyz\nuvw&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
+</span><span class="whitespace">       </span><span class="literal string double">&quot;\nlmnop\nlmnop\nxyz\ncd\ncd\ncd&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
+</span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>awk<span class="whitespace"> </span><span class="literal string single">'{print length &quot; &quot; $1}'</span><span class="whitespace">
+  </span><span class="punctuation">|</span><span class="whitespace"> </span>sort<span class="whitespace">
+  </span><span class="punctuation">|</span><span class="whitespace"> </span>uniq<span class="whitespace"> </span>-c<span class="whitespace">
+  </span><span class="punctuation">|</span><span class="whitespace"> </span>sort<span class="whitespace"> </span>-nr<span class="whitespace"> </span>-k<span class="whitespace"> </span><span class="literal number">1</span><span class="whitespace"> </span>-k<span class="whitespace"> </span><span class="literal number">2</span><span class="whitespace">
+</span><span class="literal number">3</span><span class="whitespace"> </span><span class="literal number">5</span><span class="whitespace"> </span>lmnop<span class="whitespace">
+</span><span class="literal number">3</span><span class="whitespace"> </span><span class="literal number">3</span><span class="whitespace"> </span>xyz<span class="whitespace">
+</span><span class="literal number">3</span><span class="whitespace"> </span><span class="literal number">2</span><span class="whitespace"> </span><span class="name builtin">cd</span><span class="whitespace">
+</span><span class="literal number">2</span><span class="whitespace"> </span><span class="literal number">3</span><span class="whitespace"> </span>uvw<span class="whitespace">
+</span><span class="literal number">1</span><span class="whitespace"> </span><span class="literal number">3</span><span class="whitespace"> </span>abc</code></pre>
+<p>Sortierung einer Liste von Worten in absteigender Reihenfolge bzgl. (1) der Häufigkeit und (2) aufsteigend bzgl. der Länge.</p>
+<pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;uvw\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;xyz\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;lmnop\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;xyz\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;uvw\n&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
+</span><span class="whitespace">       </span><span class="literal string double">&quot;lmnop\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;lmnop\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;xyz\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;cd\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;cd\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;cd&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
+</span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>awk<span class="whitespace"> </span><span class="literal string single">'{print length &quot; &quot; $1}'</span><span class="whitespace"> </span><span class="literal string escape">\
+</span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>sort<span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>uniq<span class="whitespace"> </span>-c<span class="whitespace"> </span><span class="literal string escape">\
+</span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>sort<span class="whitespace">  </span>-k1nr<span class="whitespace"> </span>-k2n<span class="whitespace">
+</span><span class="literal number">3</span><span class="whitespace"> </span><span class="literal number">3</span><span class="whitespace"> </span><span class="name builtin">cd</span><span class="whitespace">
+</span><span class="literal number">3</span><span class="whitespace"> </span><span class="literal number">4</span><span class="whitespace"> </span>xyz<span class="whitespace">
+</span><span class="literal number">3</span><span class="whitespace"> </span><span class="literal number">6</span><span class="whitespace"> </span>lmnop<span class="whitespace">
+</span><span class="literal number">2</span><span class="whitespace"> </span><span class="literal number">4</span><span class="whitespace"> </span>uvw<span class="whitespace">
+</span><span class="literal number">1</span><span class="whitespace"> </span><span class="literal number">3</span><span class="whitespace"> </span>abc</code></pre>
+</div>
+</div><div class="small ld-slide" id="base64">
+<h2>base64</h2>
+<p>Base64 kodierte Werte bestehen nur noch aus gültigen ASCII Zeichen und können als &quot;Text&quot; gespeichet/übermittelt werden kann.</p>
+<aside class="admonition note smaller">
+<p class="admonition-title">Hinweis</p>
+<p>Je nach Betriebssystem/Konfiguration ist der Befehl unter Umständen etwas anders benannt. Grundlegend gibt es den Befehl auf allen Unixoiden.</p>
+</aside>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<p><strong>Anwendungsfall</strong>: In vielen Fällen können gehashte Passworte nicht roh (d.h. als Binärdaten) gespeichert werden sondern müssen <a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc4648#section-4">Base64</a> (oder vergleichbar) kodiert werden.</p>
+<pre class="code bash smaller literal-block"><code><span class="comment single"># Codierung
+</span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Dies_ist_ein_test&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>base64<span class="whitespace">
+</span>RGllc19pc3RfZWluX3Rlc3QK<span class="whitespace">
+</span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string single">'Dies_ist_ein_test!'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>base64<span class="whitespace">
+</span><span class="name variable">RGllc19pc3RfZWluX3Rlc3QhCg</span><span class="operator">==</span><span class="whitespace">
+
+</span><span class="comment single"># Dekodierung
+</span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="name variable">REhCVyBNYW5uaGVpbQ</span><span class="operator">==</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>base64<span class="whitespace"> </span>--decode<span class="whitespace">
+</span>DHBW<span class="whitespace"> </span>Mannheim</code></pre>
+</div>
+</div><div class="small ld-slide" id="grep">
+<h2>grep</h2>
+<ul class="simple">
+<li><p>Selektiert Zeilen, die einem gegebenen Muster entsprechen.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-o</span></span> gibt nur den Teil einer Zeile aus, der dem Muster entspricht.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-v</span></span> selektiert Zeilen für die kein Teil der Zeile dem Muster entspricht.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-E</span></span> erlaubt die Spezifikation von Mustern mit Hilfe von regulären Ausdrücken.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-i</span></span> ignoriert Groß-/Kleinschreibung (in Verbindung mit -E mgl. verwirrend).</p></li>
+<li><p><span class="docutils literal"><span class="pre">-P</span></span> Perl kompatible Ausdrücke</p></li>
+</ul>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<p><strong>Anwendungsfall</strong>: Alle Textfragmente in einem Leak finden<span class="minor">, um danach mit Regeln neue Passwortkandidaten zu bilden</span>.</p>
+<pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Test123\nmichael&#64;dhbw.de\n345test&#64;dhbw.de\nEnde__&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
+</span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-zA-Z]{3,}&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>sort<span class="whitespace"> </span>-u<span class="whitespace">
+</span>Ende<span class="whitespace">
+</span>Test<span class="whitespace">
+</span>dhbw<span class="whitespace">
+</span>michael<span class="whitespace">
+</span><span class="name builtin">test</span></code></pre>
+</div>
+</div><div class="small ld-slide" id="sed-stromeditor">
+<h2>sed - Stromeditor</h2>
+<ul class="simple">
+<li><p>modifiziert die Eingabe gemäß der spezifizierten Kommandos in der angegebenen Reihenfolge.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-E</span></span> zur Verwendung moderner regulärer Ausdrücke</p></li>
+<li><p>Standardform: <span class="docutils literal">Funktion[Agrumente]</span></p></li>
+<li><p>Substitutionen: <span class="docutils literal">s/Regulärer <span class="pre">Ausdruck/Ersatz/[Kennzeichen]</span></span>; das Kennzeichen &quot;<span class="docutils literal">g</span>&quot; z.B. bewirkt, dass jedes Vorkommen ersetzt wird; sonst nur das erste Vorkommen.</p></li>
+</ul>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<p><strong>Anwendungsfall</strong>: Löschen des ersten Sonderzeichens in einer Zeile.</p>
+<pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string single">'ab_cd!_ef?'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>sed<span class="whitespace"> </span>-E<span class="whitespace">  </span><span class="literal string single">'s/[^a-zA-Z0-9]//'</span><span class="whitespace">
+</span>abcd!_ef?</code></pre>
+</div>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<p><strong>Anwendungsfall</strong>: Analyse der Struktur eines Leaks durch das Abbilden <strong>aller</strong> Buchstaben auf die Repräsentanten: <span class="docutils literal">l</span>(lower) <span class="docutils literal">u</span>(upper) <span class="docutils literal">d</span>(digits) <span class="docutils literal">s</span>(special).</p>
+<pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string single">'aB_c1d!_ef?'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace">
+  </span>sed<span class="whitespace"> </span>-E<span class="whitespace"> </span>-e<span class="literal string single">'s/[a-z]/l/g'</span><span class="whitespace"> </span>-e<span class="literal string single">'s/[A-Z]/u/g'</span><span class="whitespace"> </span>-e<span class="literal string single">'s/[0-9]/d/g'</span><span class="whitespace"> </span>-e<span class="whitespace"> </span><span class="literal string single">'s/[^lud]/s/g'</span><span class="whitespace">
+</span>lusldlsslls</code></pre>
+</div>
+<div class="supplemental docutils container">
+<p><strong>Hinweis</strong></p>
+<p><span class="docutils literal">sed</span> auf dem Mac (BSD) und <span class="docutils literal">sed</span> unter Linux (GNU) unterscheiden sich teilweise deutlich.</p>
+</div>
+</div><div class="small ld-slide" id="find">
+<h2>find</h2>
+<ul class="simple">
+<li><p>durchläuft den Dateibaum ab einer angegebenen Stelle und evaluiert dabei Ausdrücke.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-iname</span></span> Testet ob der Verzeichniseintrag - unabhängig von der Groß- und Kleinschreibung - dem gegebenen Muster entspricht.</p></li>
+<li><p><span class="docutils literal"><span class="pre">-exec</span> ... {} ... \;</span> ermöglicht es für jede gefilterte Datei <span class="docutils literal">{}</span> einen Befehl auszuführen.</p></li>
+</ul>
+<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<p><strong>Anwendungsfall</strong>: Feststellen wie lange die Hashes sind.</p>
+<pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span>find<span class="whitespace"> </span>.<span class="whitespace"> </span>-iname<span class="whitespace"> </span><span class="literal string double">&quot;*hash*&quot;</span><span class="whitespace"> </span>-exec<span class="whitespace"> </span>wc<span class="whitespace"> </span>-c<span class="whitespace"> </span><span class="operator">{}</span><span class="whitespace"> </span><span class="literal string escape">\;</span><span class="whitespace">
+</span><span class="literal number">33</span><span class="whitespace"> </span>./saltedmd5/hash.md5<span class="whitespace">
+</span><span class="literal number">38</span><span class="whitespace"> </span>./saltedmd5/saltedhash.md5<span class="whitespace">
+</span><span class="literal number">129</span><span class="whitespace"> </span>./scenario5/hash.sha125<span class="whitespace">
+</span><span class="literal number">65</span><span class="whitespace"> </span>./scenario6/hash.sha256<span class="whitespace">
+</span><span class="literal number">65</span><span class="whitespace"> </span>./scenario7/hash.sha256<span class="whitespace">
+</span><span class="literal number">65</span><span class="whitespace"> </span>./scenario9/hash.sha256</code></pre>
+</div>
+</div><div class="small ld-slide" id="software-nachinstallieren">
+<h2>Software nachinstallieren</h2>
+<ul>
+<li><p>Auf allen Linux und BSD Distributionen können Softwarepakete durch den Paketmanager des Betriebssystems nachinstalliert werden, z.B.:</p>
+<ul class="simple">
+<li><p><span class="docutils literal">apt</span> (Debian, Ubuntu, Kali Linux, ...)</p></li>
+</ul>
+<ul class="minor simple">
+<li><p><span class="docutils literal">yum</span> (RedHat, CentOS, ...)</p></li>
+<li><p><span class="docutils literal">pacman</span> (Arch Linux, ...)</p></li>
+<li><p><span class="docutils literal">brew</span> oder <span class="docutils literal">macports</span> (MacOS) <a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p></li>
+</ul>
+</li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">*</a><span class="fn-bracket">]</span></span>
+<p>Beide sind in diesem Fall nicht Teil des Betriebssystems, sondern müssen erst nachinstalliert werden, bevor damit weitere Software nachinstalliert werden kann.</p>
+</aside>
+</aside>
+<div class="incremental line-above margin-top-1em padding-top-1em copy-to-clipboard docutils container">
+<p><strong>Anwendungsfall</strong>: Installieren von <span class="docutils literal">ent</span> (ein Programm, das die Entropie von Dateien berechnet):</p>
+<pre class="code bash smaller copy-to-clipboard literal-block"><code>sudo<span class="whitespace"> </span>apt<span class="whitespace"> </span>install<span class="whitespace"> </span>ent</code></pre>
+</div>
+</div><div class="small ld-slide" id="shellprogrammierung">
+<h2>Shellprogrammierung</h2>
+<ul class="simple">
+<li><p>Jede Shell (insbesondere: <span class="docutils literal">zsh</span> (auf Mac und Kali Linux) und <span class="docutils literal">bash</span> (Debian, Ubuntu, ...)) erlaubt es prozedurale Programme zu schreiben.</p></li>
+</ul>
+<div class="incremental line-above margin-top-1em padding-top-1em copy-to-clipboard docutils container">
+<p><strong>Anwendungsfall</strong>: Berechnung der Entropie für jede Datei in einer Liste.</p>
+<pre class="code zsh smaller literal-block"><code><span class="comment hashbang">#!/usr/bin/zsh                    # Shebang
+</span><span class="name variable">IFS</span><span class="operator">=</span><span class="literal string single">$'\n'</span><span class="whitespace">                         </span><span class="comment single"># IFS = Internal Field Separator
+</span><span class="whitespace">                                  </span><span class="comment single"># (Nur Zeilenumbrüche sind Trennzeichen)
+</span>rm<span class="whitespace"> </span>Files.list.assessed<span class="whitespace">            </span><span class="comment single"># Lösche die Ausgabedatei
+</span><span class="keyword">for</span><span class="whitespace"> </span>i<span class="whitespace"> </span><span class="keyword">in</span><span class="whitespace"> </span><span class="keyword">$(</span>cat<span class="whitespace"> </span>Files.list<span class="keyword">)</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="keyword">do</span><span class="whitespace">    </span><span class="comment single"># Iteriere über die Zeilen in Files.list
+</span><span class="whitespace">    </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Processing: &quot;&quot;</span><span class="name variable">$i</span><span class="literal string double">&quot;</span><span class="whitespace">
+    </span>ent<span class="whitespace"> </span>-t<span class="whitespace"> </span><span class="literal string double">&quot;</span><span class="name variable">$i</span><span class="literal string double">&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span><span class="literal string escape">\ </span><span class="whitespace">              </span><span class="comment single"># Berechne die Entropie
+</span><span class="whitespace">    </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;^1&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span><span class="literal string escape">\ </span><span class="whitespace">             </span><span class="comment single"># Selektiere die Zeile mit der Entropie
+</span><span class="whitespace">    </span>tr<span class="whitespace"> </span>-d<span class="whitespace"> </span><span class="literal string single">'\n'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span><span class="literal string escape">\ </span><span class="whitespace">               </span><span class="comment single"># Lösche den Zeilenumbruch
+</span><span class="whitespace">    </span>cat<span class="whitespace"> </span>-<span class="whitespace"> </span>&lt;<span class="operator">(</span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;,&quot;&quot;</span><span class="name variable">$i</span><span class="literal string double">&quot;</span><span class="operator">)</span><span class="whitespace"> </span><span class="literal string escape">\ </span><span class="whitespace">      </span><span class="comment single"># Füge den Dateinamen hinzu
+</span><span class="whitespace">        </span>&gt;&gt;<span class="whitespace"> </span>Files.list.assessed<span class="whitespace"> </span><span class="punctuation">;</span><span class="whitespace">  </span><span class="comment single"># Schreibe das Ergebnis
+</span><span class="keyword">done</span><span class="punctuation">;</span></code></pre>
+</div>
+</div><div class="transition-scale integrated-exercise ld-slide" id="fingerubungen">
+<h2>Fingerübungen</h2>
+<ol class="arabic">
+<li><p>Starten Sie die Kali Linux VM, loggen Sie sich ein und starten Sie einen Terminal.</p></li>
+<li><p>Finden Sie die Datei, die die Standardpassworte von Postgres Datenbanken enthält.</p>
+<p>Tip der Dateiname enthält sowohl <span class="docutils literal">postgres</span> als auch <span class="docutils literal">pass</span>.</p>
+</li>
+</ol>
+<!-- find /  -iname "*postgres*pass*" -type f 2>/dev/null -->
+<ol class="arabic simple" start="3">
+<li><p>Konkatenieren sie die Zeichenkette &quot;MySalt&quot; (ohne Zeilenumbruch!) mit dem Inhalt von rockyou.txt und berechnen Sie davon den md5 Hash. Verwenden Sie keine expliziten Zwischenergebnisse.</p></li>
+</ol>
+<!-- $ echo -n "MySalt" | cat - /usr/share/wordlists/rockyou.txt | md5sum
+4e50fd427d675821b68c61a4c6099ea0  - -->
+<ol class="arabic simple" start="4">
+<li><p>Erzeugen Sie für eine Datei (z.B. <span class="docutils literal">/usr/bin/wc</span>) einen MD5 hash und stellen Sie diesen  der Datei selber voran bevor sie alles nach Base64 konvertieren.</p></li>
+</ol>
+<!-- md5sum /usr/bin/wc | cat - /usr/bin/wc | base64 -->
+</div>
+</body>
+</html>

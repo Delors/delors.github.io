@@ -73,6 +73,12 @@ const lectureDoc2 = function () {
          */
         showLightTable: false,
         /**
+         * If true (default), the continuous view mode will be shown when this
+         * presentation is shown for the first time. If false it will not be 
+         * shown.
+         */
+        showContinuousView: true,        
+        /**
          * If true the help dialog will be shown when this presentation is
          * shown for the first time.
          * 
@@ -96,12 +102,12 @@ const lectureDoc2 = function () {
         showHelp: false,
         
         // Light table related state
-        showLightTable: false,
+        showLightTable: false, // "actually" set by document or by default in presentation
         lightTableZoomLevel: 0.2,
-        lightTableViewScrollY: 0, // we should use a different method... this one depends on the size of viewport 
+        lightTableViewScrollY: 0, // FIXME use different approach this one depends on the size of viewport ...
         
         // Continuous view related state
-        showContinuousView: false,
+        showContinuousView: true, // "actually" set by document or by default in presentation
         continuousViewScrollY: 0,
 
         showMainSlideNumber: false,
@@ -110,8 +116,8 @@ const lectureDoc2 = function () {
 
     let ephermal = { 
         // The following information is only short lived and does not need
-        // to be preserved durch reloads. It is in particular information related
-        // to animations.
+        // to be preserved during reloads. It is in particular information 
+        // related to animations.
         previousSlide: undefined,
     }
 
@@ -249,6 +255,18 @@ const lectureDoc2 = function () {
             join("")
     }
 
+
+    function initCopyIt() {
+        /* To make the "copy-it" functionality work in all views, 
+           we simply add it to the DOM before the slides are copied. */
+        document.querySelectorAll(".code.copy-to-clipboard").forEach((code) => {
+            const copyItDiv = document.createElement("div");
+            copyItDiv.classList.add("copy-it");
+            code.insertBefore(copyItDiv, code.firstChild);
+        });
+    }
+
+
     /**
      * The number of the last slide.
      */
@@ -333,6 +351,23 @@ const lectureDoc2 = function () {
             presentation.showLightTable = 
                 showLightTable.content.trim().toLowerCase();
             state.showLightTable = (presentation.showLightTable === "true")
+        } else {
+            state.showLightTable = presentation.showLightTable;
+        }
+    }
+
+    function initShowContinuousView() {
+        // recall that the default for presentations which are opened for
+        // the first time is true
+        const showContinuousView = 
+            document.querySelector('meta[name="ld-show-continuous-view"]');
+        if (showContinuousView) {
+            presentation.showContinuousView = 
+                showContinuousView.content.trim().toLowerCase();
+            state.showContinuousView = 
+                (presentation.showContinuousView === "true");
+        } else {
+            state.showContinuousView = presentation.showContinuousView;
         }
     }
 
@@ -465,11 +500,14 @@ const lectureDoc2 = function () {
         */
         document.querySelectorAll("body > .ld-slide").forEach((slideTemplate, i) => {
             const slide = slideTemplate.cloneNode(true);
+            const orig_slide_id = slide.id;
             slide.id = "ld-slide-no-" + i;
             slide.dataset.ldSlideNo = i;
+            slide.dataset.id = orig_slide_id;
             // Let's hide all elements that should be shown incrementally;
             // this is down to get all (new) slides to a well-defined state.
             setupSlideProgress(slide);
+            slide.style.display = "none";
             mainPane.appendChild(slide);
         })
 
@@ -493,6 +531,7 @@ const lectureDoc2 = function () {
                 <span class="ld-continuous-view-slide-number">${i+1}</span>
             `;
             slide_pane.className = "ld-continuous-view-slide-pane"
+            slide_pane.id = "ld-continuous-view-slide-no-" + i;
             slide_pane.prepend(slide_scaler);
 
             continuousViewPane.appendChild(slide_pane);
@@ -507,6 +546,66 @@ const lectureDoc2 = function () {
 
         document.getElementsByTagName("BODY")[0].prepend(continuousViewPane);
     }
+
+
+    function setupMenu() {
+        const menuPane = document.createElement("DIV");
+        menuPane.id = "ld-menu";
+        menuPane.innerHTML = `
+            <div id="ld-menu-buttons">
+                <!-- The icons are set using css. Using img overhere
+                    would not work when the slides are opened locally
+                    (due to the same-origin-policy) -->
+                <div id="ld-slides-button"></div>
+                <div id="ld-slides-with-nr-button"></div>
+                <div class="empty"></div>
+                <div id="ld-help-button"></div>
+
+                <div id="ld-continuous-view-button"></div>
+                <div id="ld-continuous-view-with-nr-button"></div>
+                <div class="empty"></div>
+                <div class="empty"></div>
+                    
+                <div id="ld-light-table-button"></div>
+                <div class="empty"></div>
+                <div class="empty"></div>
+                <div class="empty"></div>
+            </div>
+        `
+        document.getElementsByTagName("BODY")[0].prepend(menuPane);
+    }
+
+    /**
+     * Fixes issues related to the copying of the slide templates.
+     */
+    function applyDOMfixes(){
+        /*  Due to the copying of the slide templates, the ids in inline SVGs 
+            (e.g. for defining and referencing markers) are no longer unique, 
+            which is a violation of the spec and causes troubles in Chrome and 
+            Firefox . We have to fix this!
+            */
+        let counter = 1;
+        document.querySelectorAll("svg").forEach((svg) => {
+            const svgIds = new Map(); // maps old url(#id) to new url(#id)
+            svg.querySelectorAll("[id]").forEach((element) => {
+                const oldId = element.id;
+                const newId = element.id + "-" + (counter++);
+                element.id = newId;
+                svgIds.set("url(#" + oldId + ")", "url(#" + newId + ")");
+            });
+            svgIds.forEach((newId, oldId) => {
+                const refs =`.//@*[.="${oldId}"]`;
+                const it = document.evaluate(refs,svg,null,XPathResult.ANY_TYPE,null);
+                let attr, attrs = []
+                while (attr = it.iterateNext())
+                attrs.push(attr);
+                attrs.forEach((ref) => {
+                    ref.textContent = newId;
+                });
+            });
+        });
+    }
+
 
     function setupMessageBox() {
         const message = document.createElement("DIALOG");
@@ -554,6 +653,8 @@ const lectureDoc2 = function () {
 
         const slideId = "ld-slide-no-" + slideNo;
         const ldSlide = document.getElementById(slideId)
+        /* We now want to use the style based display property again: */
+        ldSlide.style.removeProperty("display"); 
         ldSlide.style.scale = 1;
         if (setNewMarker)
             ldSlide.classList.add("ld-current-slide");
@@ -565,8 +666,13 @@ const lectureDoc2 = function () {
     function hideSlide(slideNo, setOldMarker = false) {
         if (ephermal.previousSlide) {
             ephermal.previousSlide.classList.remove("ld-previous-slide");
+            /* When we simply "keep" all slides in the DOM, we have a significant
+               memory issue in Safari. A small set with ~40 slide can 
+               suddenly require 1.5 to 2GB of memory!
+             */
+            ephermal.previousSlide.style.display = "none"; 
         }
-        const ldSlide = document.getElementById("ld-slide-no-" + slideNo)
+        const ldSlide = document.getElementById("ld-slide-no-" + slideNo);
         if (ldSlide) {
             ephermal.previousSlide = ldSlide;
             ldSlide.style.scale = 0;
@@ -715,9 +821,15 @@ const lectureDoc2 = function () {
         ld_goto_number.innerText = "";
         document.getElementById("ld-jump-target-dialog").close();
         if (slideNo >= 0) {
-            hideSlide(state.currentSlideNo);
-            state.currentSlideNo = slideNo > lastSlideNo() ? lastSlideNo() : slideNo;
-            showSlide(state.currentSlideNo);
+            const targetSlideNo = slideNo > lastSlideNo() ? lastSlideNo() : slideNo;
+
+            if (state.showContinuousView) {
+                window.scrollTo(0,document.getElementById("ld-continuous-view-slide-no-" + targetSlideNo).offsetTop);
+            } else {
+                hideSlide(state.currentSlideNo);
+                state.currentSlideNo = targetSlideNo
+                showSlide(state.currentSlideNo);
+            }
         }
     }
 
@@ -797,11 +909,11 @@ const lectureDoc2 = function () {
 
         if (show && state.showContinuousView) {
             document.querySelectorAll(".ld-continuous-view-slide-number").forEach((e) => {
-                e.style.display = "none";
+                e.style.display = "block";
             });
         } else {
             document.querySelectorAll(".ld-continuous-view-slide-number").forEach((e) => {
-                e.style.display = "block";
+                e.style.display = "none";
             });
         }
     }
@@ -845,7 +957,7 @@ const lectureDoc2 = function () {
      */
     function registerKeyboardEventListener() {
         /** 
-         * Stores the number of times the user has to press the reset key
+         * Stores the number of times the user has to press the reset key ('r')
          * before LectureDoc will be reset.
          */
         const resetCount = { 'v': 8 }
@@ -964,7 +1076,8 @@ const lectureDoc2 = function () {
             hideSlide(state.currentSlideNo);
             showSlide(targetSlideNo);
         } else {
-            console.warn("invalid jump target: "+target);
+            console.warn("invalid jump target: "+id);
+            return;
         }
 
         // ensure that all elements up to the target element are visible.
@@ -972,9 +1085,35 @@ const lectureDoc2 = function () {
         while (getComputedStyle(target).visibility == "hidden") {
             advancePresentation();
         }
-  }
+    }
+
+    /**
+     * @param str id The original id saved in the data-id attribute of the slide!
+     */
+    function jumpToSlideWithElementWithDataId(id) {
+        const slide = document.querySelector(`#ld-main-pane .ld-slide[data-id="${id}"]`);
+        if (slide) {
+            const targetSlideNo = slide.dataset.ldSlideNo;
+            hideSlide(state.currentSlideNo);
+            showSlide(targetSlideNo);
+        } else {
+            console.warn("invalid jump target: " + id);
+            return;
+        }
+    }
 
     function registerSlideInternalLinkClickedListener() {
+        /*
+            Handle links to other slides.
+        */
+        document.
+            querySelectorAll("#ld-main-pane a.reference.internal").
+            forEach((a) => { a.addEventListener("click",(event) => {
+                event.stopPropagation();
+                const target = a.getAttribute("href");
+                jumpToSlideWithElementWithDataId(target.substring(1));
+            })  });
+
         /*
         Handle links related to the bibliography.
         */
@@ -1072,6 +1211,62 @@ const lectureDoc2 = function () {
         })
     }
 
+    function registerMenuClickListener() {
+        
+        document.
+            querySelector("#ld-slides-button").
+            addEventListener("click", () => { 
+                if(state.showContinuousView) {
+                    toggleContinuousView();
+                }
+                showMainSlideNumber(false);
+            });
+        document.
+            querySelector("#ld-slides-with-nr-button").
+            addEventListener("click", () => {
+                if(state.showContinuousView) {
+                    toggleContinuousView();
+                }
+                showMainSlideNumber(true); 
+            });
+        
+
+        document.
+            querySelector("#ld-continuous-view-button").
+            addEventListener("click", () => { 
+                if(!state.showContinuousView) {
+                    toggleContinuousView();
+                }
+                showContinuousViewSlideNumber(false);
+            });
+
+        document.
+            querySelector("#ld-continuous-view-with-nr-button").
+            addEventListener("click", () => { 
+                if(!state.showContinuousView) {
+                    toggleContinuousView();
+                }
+                showContinuousViewSlideNumber(true);
+             });
+
+        document.
+            querySelector("#ld-help-button").
+            addEventListener("click", () => { toggleDialog("help"); });
+
+        document.
+            querySelector("#ld-light-table-button").
+            addEventListener("click", () => { toggleLightTable(); });
+    }
+
+    /**
+     * Load the advanced animations package if available.
+     * 
+     * The animations package is expected to be an object with the following
+     * keys and values:
+     *   "beforeLDDOMManipulations": <function beforeLDDOMManipulations()>,
+     *   "afterLDDOMManipulations": <function afterLDDOMManipulations()>,
+     *   "afterLDListenerRegistrations": <function afterLDListenerRegistrations()>
+     */
     var animations = undefined;
     try {
         animations = lectureDoc2Animations;
@@ -1088,12 +1283,13 @@ const lectureDoc2 = function () {
         if(animations) {
             animations.beforeLDDOMManipulations();
         }
-
+        initCopyIt();
         initDocumentId();
         initSlideDimensions();
         initSlideCount();
         initCurrentSlide();
         initShowLightTable();
+        initShowContinuousView();
         initShowHelp();
 
         /**
@@ -1107,9 +1303,9 @@ const lectureDoc2 = function () {
         /*
         Setup base structure.
 
-        Given a LectureDoc HTML document - which is basically an HTML document that
-        has to follow some well-defined restrictions - we first extend the DOM with
-        the elements that realize LectureDoc's core functionality.
+        Given a LectureDoc document - which is basically an HTML document that
+        has to follow some well-defined restrictions - we first extend the DOM 
+        with the elements that realize LectureDoc's core functionality.
         */
         setupMessageBox();
         setupLightTable();
@@ -1118,11 +1314,16 @@ const lectureDoc2 = function () {
         setupJumpTargetDialog();
         setupContinuousView();
         setupMainPane();
+        setupMenu();
 
         /*
         Update rendering related information.
         */
         setPaneScale(); // done to improve the initial rendering behavior
+
+        /*  Due to the copying of the slide templates, some things (e.g.,
+            no longer unique ids), need to be fixed. */
+        applyDOMfixes(); 
 
         if(animations) {
             animations.afterLDDOMManipulations();
@@ -1135,14 +1336,16 @@ const lectureDoc2 = function () {
      */
     window.addEventListener("load", () => {
 
-        // we finally make the slide templates (i.e., the original slides)
-        // invisible
+        // we finally remove the the slide templates (i.e., the original slides)
+        // from the DOM 
         document.querySelectorAll("body > div.ld-slide").forEach((slide) => {
             slide.style.display= "none";
         });
 
         // Whatever the state is/was - let's apply it before we make state changes
         // possible by the user.
+        // console.debug("presentation: "+JSON.stringify(presentation));
+        // console.debug("state:        "+JSON.stringify(state));
         applyState();
 
         document.addEventListener("visibilitychange", storeStateOnVisibilityHidden);
@@ -1158,6 +1361,7 @@ const lectureDoc2 = function () {
         registerLightTableSlideSelectionListener();
         registerLightTableSlideSearchListener();
         registerLightTableCloseListener();
+        registerMenuClickListener();
 
         if(animations) {
             animations.afterLDListenerRegistrations();

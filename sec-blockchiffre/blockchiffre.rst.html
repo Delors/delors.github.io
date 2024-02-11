@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="Blockverschlüsselung, DES, Feistel" name="keywords" />
+<meta content="Block Ciphers" lang="en" name="description" xml:lang="en" />
+<meta content="Blockverschlüsselung" lang="de" name="description" xml:lang="de" />
+<meta content="sec-blockchiffre" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Block Chiffre und der Data Encryption Standard (DES)</title>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml.js?config=TeX-AMS_CHTML"></script>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Block Chiffre und der <em>Data Encryption Standard (DES)</em></h1>
+<dl class="docinfo simple">
+<dt class="dozent">Dozent<span class="colon">:</span></dt>
+<dd class="dozent"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2024-02-06</dd>
+<dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
+<dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
+</dd>
+</dl>
+</div>
+<div class="ld-slide" id="stromchiffre">
+<h2>Stromchiffre</h2>
+<ul>
+<li><p>Verschlüsselt einen digitalen Datenstrom ein Bit oder ein Byte nach dem anderen.</p>
+<p>Beispiele: Autokeyed Vigenère-Chiffre und Vernam-Chiffre</p>
+</li>
+<li><p>Im Idealfall wird eine One-Time-Pad-Version der Vernam-Chiffre verwendet, bei der der Schlüsselstrom genauso lang ist wie der Bitstrom des Klartextes.</p>
+<blockquote>
+<ul class="smaller simple">
+<li><p>Wenn der kryptografische Schlüsselstrom zufällig ist, kann diese Chiffre auf keine andere Weise als durch die Beschaffung des Schlüsselstroms geknackt werden</p>
+<ul class="smaller">
+<li><p>Der Schlüsselstrom muss beiden Nutzern im Voraus über einen unabhängigen und sicheren Kanal zur Verfügung gestellt werden.</p></li>
+<li><p>Dies führt zu unüberwindbaren logistischen Problemen, wenn der vorgesehene Datenverkehr sehr groß ist.</p></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</div><div class="ld-slide" id="stromchiffre-1">
+<h2>Stromchiffre</h2>
+<ul class="simple">
+<li><p>Aus praktischen Gründen muss der Bitstromgenerator als algorithmisches Verfahren implementiert werden, damit der kryptografische Bitstrom von beiden Benutzern erzeugt werden kann.</p>
+<ul>
+<li><p>Es muss rechnerisch praktisch unmöglich sein, zukünftige Teile des Bitstroms auf der Grundlage früherer Teile des Bitstroms vorherzusagen.</p></li>
+<li><p>Die beiden Benutzer müssen nur den erzeugenden Schlüssel sicher miteinander teilen damit jeder den Schlüsselstrom erzeugen kann.</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="blockchiffre">
+<h2>Blockchiffre</h2>
+<ul class="simple">
+<li><p>Ein Klartextblock wird als Ganzes behandelt und verwendet, um einen gleich langen Chiffretextblock zu erzeugen.</p></li>
+<li><p>In der Regel wird eine Blockgröße von 64 oder 128 Bit verwendet.</p></li>
+<li><p>Wie bei einer Stromchiffre teilen sich die beiden Benutzer einen symmetrischen Chiffrierschlüssel.</p></li>
+<li><p>Die meisten netzbasierten symmetrischen kryptografischen Anwendungen verwenden Blockchiffren.</p></li>
+</ul>
+</div><div class="ld-slide" id="stromchiffre-vs-blockchiffre">
+<h2>Stromchiffre vs. Blockchiffre</h2>
+<img alt="drawings/chiffren/stromchiffre.svg" class="align-left" src="drawings/chiffren/stromchiffre.svg" style="height: 500px;" />
+<img alt="drawings/chiffren/blockchiffre.svg" class="incremental align-right" src="drawings/chiffren/blockchiffre.svg" style="height: 500px;" />
+</div><div class="ld-slide" id="allgemeine-n-bit-n-bit-blocksubstitution-n-4">
+<h2>Allgemeine n-Bit-n-Bit-Blocksubstitution (n = 4)</h2>
+<img alt="drawings/chiffren/4-bit_block_substitution.svg" class="align-center" src="drawings/chiffren/4-bit_block_substitution.svg" style="width: 1400px;" />
+</div><div class="tiny ld-slide" id="verschlusselungs-und-entschlusselungstabelle-fur-eine-substitutions-chiffre">
+<h2>Verschlüsselungs- und Entschlüsselungstabelle für eine Substitutions-Chiffre</h2>
+<p><strong>Verschlüsselungstabelle</strong></p>
+<table class="align-center smaller">
+<tbody>
+<tr><td><p>Klartext</p></td>
+<td><p>0000</p></td>
+<td><p>0001</p></td>
+<td><p>0010</p></td>
+<td><p>0011</p></td>
+<td><p>0100</p></td>
+<td><p>0101</p></td>
+<td><p>0110</p></td>
+<td><p>0111</p></td>
+<td><p>1000</p></td>
+<td><p>1001</p></td>
+<td><p>1010</p></td>
+<td><p>1011</p></td>
+<td><p>1100</p></td>
+<td><p>1101</p></td>
+<td><p>1110</p></td>
+<td><p>1111</p></td>
+</tr>
+<tr><td><p>Geheimtext</p></td>
+<td><p>1110</p></td>
+<td><p>0100</p></td>
+<td><p>1101</p></td>
+<td><p>0001</p></td>
+<td><p>0010</p></td>
+<td><p>1111</p></td>
+<td><p>1011</p></td>
+<td><p>1000</p></td>
+<td><p>0011</p></td>
+<td><p>1010</p></td>
+<td><p>0110</p></td>
+<td><p>1100</p></td>
+<td><p>0101</p></td>
+<td><p>1001</p></td>
+<td><p>0000</p></td>
+<td><p>0111</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Entschlüsselungstabelle</strong></p>
+<table class="align-center smaller incremental">
+<tbody>
+<tr><td><p>Geheimtext</p></td>
+<td><p>0000</p></td>
+<td><p>0001</p></td>
+<td><p>0010</p></td>
+<td><p>0011</p></td>
+<td><p>0100</p></td>
+<td><p>0101</p></td>
+<td><p>0110</p></td>
+<td><p>0111</p></td>
+<td><p>1000</p></td>
+<td><p>1001</p></td>
+<td><p>1010</p></td>
+<td><p>1011</p></td>
+<td><p>1100</p></td>
+<td><p>1101</p></td>
+<td><p>1110</p></td>
+<td><p>1111</p></td>
+</tr>
+<tr><td><p>Klartext</p></td>
+<td><p>1110</p></td>
+<td><p>0011</p></td>
+<td><p>0100</p></td>
+<td><p>1000</p></td>
+<td><p>0001</p></td>
+<td><p>1100</p></td>
+<td><p>1010</p></td>
+<td><p>1111</p></td>
+<td><p>0111</p></td>
+<td><p>1101</p></td>
+<td><p>1001</p></td>
+<td><p>0110</p></td>
+<td><p>1011</p></td>
+<td><p>0010</p></td>
+<td><p>0000</p></td>
+<td><p>0101</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="feistel-chiffre">
+<h2>Feistel-Chiffre</h2>
+<p>Feistel schlug die Verwendung einer Chiffre vor, bei der sich Substitutionen und Permutationen abwechseln.</p>
+<aside class="admonition definition incremental">
+<p class="admonition-title">Substitutionen</p>
+<p>Jedes Klartextelement oder jede Gruppe von Elementen wird eindeutig durch ein entsprechendes Chiffretextelement oder eine entsprechende Gruppe von Elementen ersetzt.</p>
+</aside>
+<aside class="admonition definition incremental">
+<p class="admonition-title">Permutation</p>
+<p>Bei einer Permutation werden keine Elemente hinzugefügt, gelöscht oder ersetzt, sondern die Reihenfolge, in der die Elemente in einer Folge erscheinen, wird geändert.</p>
+</aside>
+</div><div class="ld-slide" id="feistel-chiffre-hintergrund">
+<h2>Feistel-Chiffre - Hintergrund</h2>
+<ul class="simple">
+<li><p>Hierbei handelt es sich um eine praktische Anwendung eines Vorschlags von Claude Shannon zur Entwicklung einer Chiffre, bei der sich <em>Konfusions- und Diffusionsfunktionen</em> abwechseln.</p></li>
+<li><p>Dieser Aufbau wird von vielen bedeutenden symmetrischen Blockchiffren verwendet, die derzeit im Einsatz sind.</p></li>
+</ul>
+<div class="incremental margin-top-2em docutils container">
+<p><strong>Diffusion und Konfusion</strong></p>
+<ul class="simple">
+<li><p>Begriffe, die von Claude Shannon eingeführt wurden, um die beiden grundlegenden Bausteine für jedes kryptografische System zu erfassen.</p></li>
+<li><p>Shannons Anliegen war es, die auf statistischer Analyse beruhende Kryptoanalyse zu vereiteln.</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="diffusion">
+<h2>Diffusion</h2>
+<ul class="simple">
+<li><p>Die statistische Struktur des Klartextes wird in weitreichende Statistiken des Chiffretextes überführt, d. h. die statistische Beziehung zwischen Klartext und Chiffretext wird so komplex wie möglich.</p></li>
+<li><p><span class="bold">Dies wird dadurch erreicht, dass jede Klartextziffer den Wert *vieler* Chiffretextziffern beeinflusst.</span> (<span class="ger-quote">Lawineneffekt</span>)</p></li>
+<li><p>Die Diffusion kann z. B. durch <em>Permutationen</em> erreicht werden.</p></li>
+</ul>
+</div><div class="ld-slide" id="konfusion">
+<h2>Konfusion</h2>
+<ul class="simple">
+<li><p>Versucht, die Beziehung zwischen den Statistiken des Chiffriertextes und dem Wert des Chiffrierschlüssels so komplex wie möglich zu gestalten, d.h. <span class="bold">eine einzige Änderung des Chiffrierschlüssels sollte viele Bits des Chiffriertextes beeinflussen.</span></p></li>
+<li><p>Selbst wenn der Angreifer die Statistik des Chiffretextes einigermaßen in den Griff bekommt, ist die Art und Weise, wie der Schlüssel verwendet wurde, um diesen Chiffretext zu erzeugen, so komplex, dass es schwierig ist, den Schlüssel abzuleiten.</p></li>
+<li><p>Die Verwirrung kann z. B. durch <em>Substitutionen</em> realisiert werden.</p></li>
+</ul>
+</div><div class="no-title ld-slide" id="feistel-chiffre-verschlusselung-und-entschlusselung">
+<h2>Feistel-Chiffre - Verschlüsselung und Entschlüsselung</h2>
+<div class="two-columns no-default-width docutils container">
+<div class="column no-separator docutils container">
+<p><span class="bold">Feistel-Chiffre</span></p>
+<p><span class="smaller">Verschlüsselung und Entschlüsselung</span></p>
+</div>
+<div class="width-100 docutils container">
+<img alt="drawings/feistel/design.svg" class="align-center" src="drawings/feistel/design.svg" style="height: 1150px;" />
+</div>
+</div>
+</div><div class="ld-slide" id="feistel-chiffre-beispiel">
+<h2>Feistel Chiffre - Beispiel</h2>
+<img alt="drawings/feistel/example.svg" class="align-center" src="drawings/feistel/example.svg" style="width: 100%;" />
+</div><div class="ld-slide" id="feistel-chiffre-eigenschaften">
+<h2>Feistel Chiffre - Eigenschaften</h2>
+<div class="stack small docutils container">
+<div class="layer docutils container">
+<dl class="field-list simple">
+<dt><strong>Rundenfunktion F</strong><span class="colon">:</span></dt>
+<dd><p>Größere Komplexität bedeutet in der Regel größere Resistenz gegen Kryptoanalyse.</p>
+</dd>
+<dt><strong>Schnelle Ver-/Entschlüsselung in Software</strong><span class="colon">:</span></dt>
+<dd><p>Häufig ist die Verschlüsselung so in Anwendungen oder Dienstprogramme eingebettet, dass eine Hardwareimplementierung nicht möglich ist; dementsprechend ist die Geschwindigkeit des Algorithmus relevant.</p>
+</dd>
+<dt><strong>Einfachheit der Analyse</strong><span class="colon">:</span></dt>
+<dd><p>Wenn der Algorithmus kurz und klar erklärt werden kann, ist es einfacher den Algorithmus auf kryptoanalytische Schwachstellen hin zu analysieren und somit ein höheres Maß an Sicherheit in Bezug auf seine Stärke zu entwickeln.</p>
+</dd>
+<dt><strong>Algorithmus für die Ableitung der (Unter-)Schlüssel</strong><span class="colon">:</span></dt>
+<dd><p>Eine höhere Komplexität dieses Algorithmus sollte zu einer größeren Schwierigkeit der Kryptoanalyse führen.</p>
+</dd>
+</dl>
+</div>
+<div class="layer incremental docutils container">
+<dl class="field-list simple">
+<dt><strong>Blockgröße</strong><span class="colon">:</span></dt>
+<dd><p>Größere Blockgrößen bedeuten mehr Sicherheit, aber eine geringere Verschlüsselungs-/Entschlüsselungsgeschwindigkeit für einen bestimmten Algorithmus</p>
+</dd>
+<dt><strong>Schlüsselgröße</strong><span class="colon">:</span></dt>
+<dd><p>Ein größerer Schlüssel bedeutet mehr Sicherheit, kann aber die Verschlüsselungs-/Entschlüsselungsgeschwindigkeit verringern.</p>
+</dd>
+<dt><strong>Anzahl der Runden</strong><span class="colon">:</span></dt>
+<dd><p>Das Wesen der Feistel-Chiffre besteht darin, dass eine einzige Runde unzureichende Sicherheit bietet, während mehrere Runden zunehmende Sicherheit bieten.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div><div class="ld-slide" id="data-encryption-standard-des">
+<h2>Data Encryption Standard (DES)</h2>
+<ul>
+<li><p>Wurde 1977 vom National Bureau of Standards (heute NIST) als Federal Information Processing Standard 46 herausgegeben.</p></li>
+<li><p>War das am häufigsten verwendete Verschlüsselungsverfahren bis zur Einführung des Advanced Encryption Standard (AES) im Jahr 2001</p></li>
+<li><p>Der Algorithmus selbst wird als Data Encryption Algorithm (DEA) bezeichnet:</p>
+<blockquote>
+<ul class="simple">
+<li><p>Die Daten werden in 64-Bit-Blöcken mit einem 56-Bit-Schlüssel verschlüsselt.</p></li>
+<li><p>Der Algorithmus wandelt die 64-Bit-Eingabe in einer Reihe von Schritten in eine 64-Bit-Ausgabe um.</p></li>
+<li><p>Dieselben Schritte werden mit demselben Schlüssel verwendet, um die Verschlüsselung rückgängig zu machen.</p></li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</div><div class="ld-slide" id="des-design">
+<h2>DES - Design</h2>
+<img alt="drawings/des/design.svg" class="align-center" src="drawings/des/design.svg" style="width: 1200px;" />
+</div><div class="ld-slide" id="des-rundenfunktion">
+<h2>DES Rundenfunktion</h2>
+<div class="note small width-40 docutils container">
+<p><strong>Legende</strong></p>
+<p>R ist die rechte Hälfte der Nachricht.</p>
+<p>E ist eine Expansionsfunktion.</p>
+<p>S sind Substitutionsboxen.</p>
+<p>P ist eine Permutation.</p>
+</div>
+<img alt="drawings/des/round_function.svg" class="align-left" src="drawings/des/round_function.svg" style="width: 840px;" />
+</div><div class="vertical-title ld-slide" id="des-beispiel">
+<h2>DES Beispiel</h2>
+<div class="width-100 docutils container">
+<table class="align-center footnotesize monospaced">
+<tbody>
+<tr><td><p>Round</p></td>
+<td><p>Ki</p></td>
+<td><p>Li</p></td>
+<td><p>Ri</p></td>
+</tr>
+<tr><td><p>IP</p></td>
+<td></td>
+<td><p>5a005a00</p></td>
+<td><p>3cf03c0f</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>1e030f03080d2930</p></td>
+<td><p>3cf03c0f</p></td>
+<td><p>bad22845</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>0a31293432242318</p></td>
+<td><p>bad22845</p></td>
+<td><p>99e9b723</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>23072318201d0c1d</p></td>
+<td><p>99e9b723</p></td>
+<td><p>Obae3b9e</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>05261d3824311a20</p></td>
+<td><p>Obae3b9e</p></td>
+<td><p>42415649</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>3325340136002025</p></td>
+<td><p>42415649</p></td>
+<td><p>18b3fa41</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>123a2d0d04262a1c</p></td>
+<td><p>18b3fa41</p></td>
+<td><p>9616fe23</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>021f120b1c130611</p></td>
+<td><p>9616fe23</p></td>
+<td><p>67117cf2</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>1c10372a2832002b</p></td>
+<td><p>67117c12</p></td>
+<td><p>c11bfc09</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>04292a380c341103</p></td>
+<td><p>c11bfc09</p></td>
+<td><p>887fbe6c</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>2703212607280403</p></td>
+<td><p>887fbc6c</p></td>
+<td><p>60017e8b</p></td>
+</tr>
+<tr><td><p>11</p></td>
+<td><p>2826390c31261504</p></td>
+<td><p>60017e8b</p></td>
+<td><p>f596506e</p></td>
+</tr>
+<tr><td><p>12</p></td>
+<td><p>12071c241a0a0108</p></td>
+<td><p>f596506e</p></td>
+<td><p>738538b8</p></td>
+</tr>
+<tr><td><p>13</p></td>
+<td><p>300935393c0d100b</p></td>
+<td><p>73853868</p></td>
+<td><p>c6a62c4e</p></td>
+</tr>
+<tr><td><p>14</p></td>
+<td><p>311e09231321182a</p></td>
+<td><p>c6a62c4e</p></td>
+<td><p>56b0bd75</p></td>
+</tr>
+<tr><td><p>15</p></td>
+<td><p>283d3e0227072528</p></td>
+<td><p>56b0bd75</p></td>
+<td><p>75e8fd8f</p></td>
+</tr>
+<tr><td><p>16</p></td>
+<td><p>2921080b13143025</p></td>
+<td><p>75e8fd8f</p></td>
+<td><p>25896490</p></td>
+</tr>
+<tr><td><p>IP-1</p></td>
+<td></td>
+<td><p>da02ce3a</p></td>
+<td><p>89ecac3b</p></td>
+</tr>
+</tbody>
+</table>
+<p class="small">DES subkeys are shown as eight 6-bit values in hex format (max value for <span class="math">\(k_i\)</span> is   <span class="math">\(2^6-1=63=0x3F\)</span>)</p>
+</div>
+</div><div class="vertical-title smaller ld-slide" id="lawineneffekt-in-des">
+<h2>Lawineneffekt in DES</h2>
+<div class="width-100 docutils container">
+<div class="smaller text-align-center docutils container">
+<p>Kleine Änderung im Klartext</p>
+</div>
+<table class="align-center scriptsize monospaced highlight-line-on-hover" style="width: 800px;">
+<thead>
+<tr><th class="head"><p>Round</p></th>
+<th class="head"></th>
+<th class="head"><p>δ</p></th>
+<th class="head"><p>Round</p></th>
+<th class="head"></th>
+<th class="head"><p>δ</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td></td>
+<td><p>02468aceeca86420
+12468aceeca86420</p></td>
+<td><p>1</p></td>
+<td><p>9</p></td>
+<td><p>c11bfc09887fbc6c
+996911532eed7d94</p></td>
+<td><p>32</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>3cf03c0fbad22845
+3cf03c0fbad32845</p></td>
+<td><p>1</p></td>
+<td><p>10</p></td>
+<td><p>887fbc6c60017e8b
+2eed7d94d0f23094</p></td>
+<td><p>34</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>bad2284599e9b723
+bad3284539a9b7a3</p></td>
+<td><p>5</p></td>
+<td><p>11</p></td>
+<td><p>600f7e8bf596506e
+d0f23094455da9c4</p></td>
+<td><p>37</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>99e9b7230bae3b9e
+39a9b7a3171cb8b3</p></td>
+<td><p>18</p></td>
+<td><p>12</p></td>
+<td><p>1596506e738538b8
+455da9c47f6e3cf3</p></td>
+<td><p>31</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>Obae3b9e42415649
+171cb8b3ccaca55e</p></td>
+<td><p>34</p></td>
+<td><p>13</p></td>
+<td><p>738538b8c6a62c4e
+7f6e3cf34bc1a8d9</p></td>
+<td><p>29</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>4241564918b3fa41
+ccaca55ed16c3653</p></td>
+<td><p>37</p></td>
+<td><p>14</p></td>
+<td><p>c6a62c4e56b0bd75
+4bc1a8d91e07d409</p></td>
+<td><p>33</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>18b3fa419616fe23
+d16c3653cf402c68</p></td>
+<td><p>33</p></td>
+<td><p>15</p></td>
+<td><p>56b0bd7575e8fd81
+1e07d4091ce2e6dc</p></td>
+<td><p>31</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>9616fe2367117cf2
+cf402c682b2cefbc</p></td>
+<td><p>32</p></td>
+<td><p>16</p></td>
+<td><p>75e8fd8625896490
+1ce2e6dc365e5f59</p></td>
+<td><p>32</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>67117cf2c11bfc09
+2b2cefbc99191153</p></td>
+<td><p>33</p></td>
+<td><p>IP-1</p></td>
+<td><p>da02ce3a89ecac3b
+057cde97d7683f2a</p></td>
+<td><p>32</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div><div class="vertical-title smaller ld-slide" id="lawineneffekt-in-des-1">
+<h2>Lawineneffekt in DES</h2>
+<div class="width-100 docutils container">
+<div class="smaller text-align-center docutils container">
+<p>Kleine Änderung des Schlüssels: 0f1571c947d9e859 ➟ 1f1571c947d9e859</p>
+</div>
+<table class="align-center scriptsize monospaced highlight-line-on-hover" style="width: 800px;">
+<thead>
+<tr><th class="head"><p>Round</p></th>
+<th class="head"></th>
+<th class="head"><p>δ</p></th>
+<th class="head"><p>Round</p></th>
+<th class="head"></th>
+<th class="head"><p>δ</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td></td>
+<td><p>02468aceeca86420
+02468aceeca86420</p></td>
+<td><p>0</p></td>
+<td><p>9</p></td>
+<td><p>c11bfe09887fbe6c
+548f1de471f64dfd</p></td>
+<td><p>34</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>3cf03c0fbad22845
+3cf03c0f9ad628c5</p></td>
+<td><p>3</p></td>
+<td><p>10</p></td>
+<td><p>8876be6c60067e8b
+71664dfd4279876c</p></td>
+<td><p>36</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>bad2284599e9b723
+9ad628c59939136b</p></td>
+<td><p>11</p></td>
+<td><p>11</p></td>
+<td><p>60017e8bf596506e
+4279876c399fdc0d</p></td>
+<td><p>32</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>99e9b7230bae3b9e
+9939136676806767</p></td>
+<td><p>25</p></td>
+<td><p>12</p></td>
+<td><p>f596506e738538b8
+399fde0d6d208dbb</p></td>
+<td><p>28</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>Obae3b9e42415649
+768067b75a8807c5</p></td>
+<td><p>29</p></td>
+<td><p>13</p></td>
+<td><p>738538b8c6a62c4e
+6d208dbbb9bdeeaa</p></td>
+<td><p>33</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>4241564918b3fa41
+5a8807c5488bde94</p></td>
+<td><p>26</p></td>
+<td><p>14</p></td>
+<td><p>c6a62c4e56b0bd75
+b9bdeeaad2c3a56f</p></td>
+<td><p>30</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>18b3fa419616fe23
+488dbe94aba7fe53</p></td>
+<td><p>26</p></td>
+<td><p>15</p></td>
+<td><p>56b0bd7575e8fd8f
+d2c3a5612765c1fb</p></td>
+<td><p>33</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>9616fe2367117cf2
+aba7fe53177d21e4</p></td>
+<td><p>27</p></td>
+<td><p>16</p></td>
+<td><p>75e8fd8f25896490
+2765c1fb01263dc4</p></td>
+<td><p>30</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>67117cf2c11bfc09
+177d21e4548f1de4</p></td>
+<td><p>32</p></td>
+<td><p>IP-1</p></td>
+<td><p>da02ce3a89ecac3b
+ee92b50606b6260b</p></td>
+<td><p>30</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div><div class="smaller-slide-title ld-slide" id="durchschnittliche-zeit-fur-erschopfende-schlusselsuche">
+<h2>Durchschnittliche Zeit für erschöpfende Schlüsselsuche</h2>
+<table class="align-center footnotesize highlight-line-on-hover">
+<tbody>
+<tr><td><p>Schlüsselgröße (bits)</p></td>
+<td><p>Chiffre</p></td>
+<td><p>Anzahl der alternativen
+Schlüssel</p></td>
+<td><p>Zeit benötigt bei <span class="math">\(10^9\)</span>
+Entschlüsselungen/s</p></td>
+<td><p>Zeit benötigt bei <span class="math">\(10^{13}\)</span>
+Entschlüsselungen/s</p></td>
+</tr>
+<tr><td><p>56</p></td>
+<td><p>DES</p></td>
+<td><p><span class="math">\(2^{56}\)</span> ≈ 7.2 x <span class="math">\(10^{16}\)</span></p></td>
+<td><p>1.125 Jahre</p></td>
+<td><p>1 Stunde</p></td>
+</tr>
+<tr><td><p>128</p></td>
+<td><p>AES</p></td>
+<td><p><span class="math">\(2^{128}\)</span> ≈ 3.4 x <span class="math">\(10^{38}\)</span></p></td>
+<td><p>5.3 x <span class="math">\(10^{21}\)</span> Jahre</p></td>
+<td><p>5.3 x <span class="math">\(10^{17}\)</span> Jahre</p></td>
+</tr>
+<tr><td><p>168</p></td>
+<td><p>Triple DES</p></td>
+<td><p><span class="math">\(2^{168}\)</span> ≈ 3.7 x <span class="math">\(10^{50}\)</span></p></td>
+<td><p>5.8 x <span class="math">\(10^{33}\)</span> Jahre</p></td>
+<td><p>5.8 × <span class="math">\(10^{29}\)</span> Jahre</p></td>
+</tr>
+<tr><td><p>192</p></td>
+<td><p>AES</p></td>
+<td><p><span class="math">\(2^{192}\)</span> ≈ 6.3 x <span class="math">\(10^{57}\)</span></p></td>
+<td><p><span class="math">\(2^{191}\)</span> ns = 9.8 x <span class="math">\(10^{40}\)</span> Jahre</p></td>
+<td><p>9.8 × <span class="math">\(10^{36}\)</span> Jahre</p></td>
+</tr>
+<tr><td><p>256</p></td>
+<td><p>AES</p></td>
+<td><p><span class="math">\(2^{256}\)</span> ≈ 1.2 x <span class="math">\(10^{77}\)</span></p></td>
+<td><p><span class="math">\(2^{255}\)</span> ns = 1.8 x <span class="math">\(10^{60}\)</span> Jahre</p></td>
+<td><p>1.8 x <span class="math">\(10^{56}\)</span> Jahre</p></td>
+</tr>
+<tr><td><p>26 Zeichen (Permutation)</p></td>
+<td><p>Monoalphabetisch</p></td>
+<td><p>26! = 4 x <span class="math">\(10^{26}\)</span></p></td>
+<td><p>6.3 x <span class="math">\(10^9\)</span> Jahre</p></td>
+<td><p>6.3 × <span class="math">\(10^6\)</span> Jahre</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="starke-von-des-timing-angriffe">
+<h2>Stärke von DES - Timing-Angriffe</h2>
+<ul class="incremental simple">
+<li><p>Ein Verfahren, bei dem Informationen über den Schlüssel oder den Klartext gewonnen werden, indem beobachtet wird, wie lange eine bestimmte Implementierung für die Entschlüsselung verschiedener Chiffretexte benötigt.</p></li>
+<li><p>Dabei wird die Tatsache ausgenutzt, dass ein Verschlüsselungs- oder Entschlüsselungsalgorithmus für verschiedene Eingaben oft leicht unterschiedliche Zeit benötigt.</p></li>
+<li><p>Bislang scheint es unwahrscheinlich, dass diese Technik jemals gegen DES oder leistungsfähigere symmetrische Chiffren wie Triple DES und AES erfolgreich sein wird.</p></li>
+</ul>
+</div><div class="ld-slide" id="entwurfsprinzipien-fur-blockchiffre-anzahl-der-runden">
+<h2>Entwurfsprinzipien für Blockchiffre - Anzahl der Runden</h2>
+<ul class="incremental simple">
+<li><p>Je größer die Anzahl der Runden ist, desto schwieriger ist es, eine Kryptoanalyse durchzuführen.</p></li>
+<li><p>Im Allgemeinen sollte das Kriterium sein, dass die Anzahl der Runden so gewählt wird, dass bekannte kryptoanalytische Bemühungen mehr Aufwand erfordern als ein einfacher Brute-Force-Schlüsselsuchangriff.</p></li>
+<li><p>Hätte DES 15 oder weniger Runden, würde die differentielle Kryptoanalyse weniger Aufwand erfordern als eine Brute-Force-Schlüsselsuche.</p></li>
+</ul>
+</div><div class="ld-slide" id="entwurfsprinzipien-fur-blockchiffre-funktion-f">
+<h2>Entwurfsprinzipien für Blockchiffre - Funktion F</h2>
+<ul class="incremental simple">
+<li><p>Das Herzstück einer Feistel-Blockchiffre ist die Funktion F.</p></li>
+<li><p>Je nichtlinearer F ist, desto schwieriger wird jede Art von Kryptoanalyse sein.</p></li>
+<li><p>Der Algorithmus sollte einen großen Lawineneffekt (<span class="eng">Avalanche-Property</span>) haben.</p></li>
+</ul>
+<aside class="admonition incremental smaller">
+<p class="admonition-title">Strict Avalanche Criterion (SAC)</p>
+<p>Besagt, dass sich jedes Ausgangsbit j einer S-Box mit der Wahrscheinlichkeit 1/2 ändern sollte, wenn ein einzelnes Eingangsbit i invertiert wird und dies für alle Paare i,j gelten muss.</p>
+</aside>
+<aside class="admonition incremental smaller">
+<p class="admonition-title">Bit Independence Criterion (BIC)</p>
+<p>Besagt, dass sich die Ausgangsbits j und k unabhängig voneinander ändern sollten, wenn ein einzelnes Eingangsbit i invertiert wird und dies für alle i, j und k gelten muss.</p>
+</aside>
+<ul class="incremental simple">
+<li><p>Das Einhalten der SAC- und BIC-Kriterien scheint die Wirksamkeit der Verwirrungsfunktion zu stärken.</p></li>
+</ul>
+</div><div class="ld-slide" id="entwurfsprinzipien-fur-blockchiffre-schlusselableitung">
+<h2>Entwurfsprinzipien für Blockchiffre - Schlüsselableitung</h2>
+<ul class="incremental simple">
+<li><p>Bei jeder Feistel-Blockchiffre wird der Hauptschlüssel verwendet, um einen Unterschlüssel für jede Runde zu erzeugen.</p></li>
+<li><p>Im Allgemeinen möchten wir die Unterschlüssel so wählen, dass die Schwierigkeit, einzelne Unterschlüssel abzuleiten, und die Schwierigkeit, den Hauptschlüssel wieder zurück zu erhalten, maximiert werden.</p></li>
+<li><p>Es wird vorgeschlagen, dass die Schlüsselableitungsfunktion für die Unterschlüssel (<span class="eng">Key Schedule</span>) zumindest das <strong>Strenge Lawinenkriterium</strong> und das <strong>Bit-Unabhängigkeitskriterium</strong> für Schlüssel/Ciphertext garantieren sollte.</p></li>
+</ul>
+</div><div class="integrated-exercise transition-scale ld-slide" id="ubung-feistelchiffre-implementieren">
+<h2>Übung - Feistelchiffre Implementieren</h2>
+<p>Implementieren Sie eine Feistel Chiffre in einer Programmiersprache Ihrer Wahl (z.B. Java, Scala, Python, C, JavaScript ...), die es Ihnen ermöglicht:</p>
+<ul class="simple">
+<li><p>Nachrichten zu ver- und entschlüsseln</p></li>
+<li><p>Blöcke von 128 Bit zu verschlüsseln</p></li>
+<li><p>die Funktion <span class="math">\(f\)</span> einfach auszutauschen, um die Wirkung von <span class="math">\(f\)</span> zu testen (je nach Sprache Ihrer Wahl können Sie z. B. native Funktionen höherer Ordnung oder einen Funktionszeiger verwenden)</p></li>
+<li><p>Für die Ableitung der Rundenschlüssel können Sie eine Funktion verwenden, die ein einfaches Verschieben des Schlüssels durchführt</p></li>
+</ul>
+<div class="tiny docutils container">
+<p><strong>Hinweis</strong></p>
+<p>Kümmern Sie sich nicht um Nachrichten, die größer oder kleiner als die Blockgröße sind. Dies ist nicht notwendig, um die Auswirkungen von &quot;f&quot; oder der Verwendung eines runden Schlüssels zu verstehen. Kümmern Sie sich nicht um einen Schlüssel, der nicht die richtige Größe hat. D.h. verwenden Sie eine Nachricht und einen Schlüssel mit der entsprechenden Größe.</p>
+</div>
+</div><div class="integrated-exercise ld-slide" id="ubung-feistelchiffre-evaluieren">
+<h2>Übung - Feistelchiffre Evaluieren</h2>
+<ol class="arabic simple">
+<li><p>Was passiert, wenn f nur 0x00-Werte zurückgibt (unabhängig vom Rundenschlüssel)?</p></li>
+<li><p>Was passiert, wenn f nur 0x01-Werte zurückgibt (unabhängig vom Rundenschlüssel)?</p></li>
+<li><p>Was passiert, wenn f einfach die entsprechende Hälfte mit dem Ergebnis der Verschiebung des Schlüssels xor?</p></li>
+<li><p>Teste, was passiert, wenn du deine Nachricht änderst. Testen Sie insbesondere, was passiert wenn die Nachricht nur aus 0x00 besteht (und Sie eine <span class="ger-quote">vernünftigere</span> f-Funktion verwenden.)</p></li>
+<li><p>Teste, was passiert, wenn du deinen Schlüssel änderst. Was passiert in extremen Fällen (z.B. wenn das Passwort nur aus &quot;0 &quot;s besteht?</p></li>
+</ol>
+<div class="protected-exercise-solution">
+<p class="rubric">Feistelchiffre</p>
+<p>Eine naive Python-Implementierung des Algorithmus ist hier zu finden:</p>
+<p><a class="reference external" href="https://github.com/Delors/Lectures/blob/main/sec-blockchiffre/resources/feistel.ipynb">Jupyter Notebook</a></p>
+<p>Wenn man die obige Implementierung anpasst und testet, wird sofort deutlich, dass die Verwendung einer ungeeigneten &quot;f&quot;-Funktion zu keinerlei Sicherheit führt und dass der Entwurf einer solchen Funktion wirklich harte Arbeit ist. Außerdem ist es notwendig, alle möglichen Szenarien zu berücksichtigen.</p>
+</div></div>
+</body>
+</html>

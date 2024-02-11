@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;TCP&quot;" name="keywords" />
+<meta content="Verteilte Systeme" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-tcp" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>CWE/OWASP</title>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">CWE/OWASP</h1>
+<dl class="docinfo simple">
+<dt class="dozent">Dozent<span class="colon">:</span></dt>
+<dd class="dozent"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
+</dd>
+<dt class="kontakt">Kontakt<span class="colon">:</span></dt>
+<dd class="kontakt"><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2024-01-31</dd>
+</dl>
+</div>
+<div class="new-section transition-fade ld-slide" id="relevante-schwachstellen-cwes">
+<h2>Relevante Schwachstellen (<a class="reference external" href="https://cwe.mitre.org">CWEs</a>)</h2>
+<!-- No 1 in CWE Top 2023 -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-787-out-of-bounds-write-memory-corruption">
+<h2>CWE-787: Out-of-bounds Write (Memory Corruption)</h2>
+</div><div class="ld-slide" id="cwe-787-out-of-bounds-write">
+<h2>CWE-787: Out-of-bounds Write</h2>
+<dl class="field-list simple">
+<dt>Beschreibung<span class="colon">:</span></dt>
+<dd><p>Es werden Daten hinter oder vor den Bereich des Puffers geschrieben.</p>
+</dd>
+<dt>Programmiersprachen<span class="colon">:</span></dt>
+<dd><p>C /C++</p>
+</dd>
+<dt>Wahrscheinlichkeit des Missbrauchs<span class="colon">:</span></dt>
+<dd><p>Hoch</p>
+</dd>
+<dt>Technische Auswirkungen<span class="colon">:</span></dt>
+<dd><p>Speichermodifikation; DoS: Crash, Beendigung oder Neustart; Ausführen von nicht autorisiertem Code oder Befehlen</p>
+</dd>
+</dl>
+</div><div class="scriptsize ld-slide" id="cwe-787-out-of-bounds-write-beispiel-1">
+<h2>CWE-787: Out-of-bounds Write - Beispiel 1</h2>
+<pre class="code c literal-block"><code><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">id_sequence</span><span class="punctuation">[</span><span class="literal number integer">3</span><span class="punctuation">];</span><span class="whitespace">
+
+</span><span class="comment multiline">/* Populate the id array. */</span><span class="whitespace">
+
+</span><span class="name">id_sequence</span><span class="punctuation">[</span><span class="literal number integer">0</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">123</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="name">id_sequence</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">234</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="name">id_sequence</span><span class="punctuation">[</span><span class="literal number integer">2</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">345</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="name">id_sequence</span><span class="punctuation">[</span><span class="literal number integer">3</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">456</span><span class="punctuation">;</span></code></pre>
+</div><div class="scriptsize ld-slide" id="cwe-787-out-of-bounds-write-beispiel-2">
+<h2>CWE-787: Out-of-bounds Write - Beispiel 2</h2>
+<pre class="code C literal-block"><code><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">returnChunkSize</span><span class="punctuation">(</span><span class="keyword type">void</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+
+    </span><span class="comment multiline">/* if chunk info is valid, return the size of usable memory,
+
+    * else, return -1 to indicate an error
+
+    */</span><span class="whitespace">
+    </span><span class="punctuation">...</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace">
+
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="punctuation">...</span><span class="whitespace">
+    </span><span class="name">memcpy</span><span class="punctuation">(</span><span class="name">destBuf</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">srcBuf</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">returnChunkSize</span><span class="punctuation">(</span><span class="name">destBuf</span><span class="punctuation">)</span><span class="literal number integer">-1</span><span class="punctuation">));</span><span class="whitespace">
+    </span><span class="punctuation">...</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<p><cite>memcpy</cite> erwartet als dritten Parameter einen <code>unsigned int</code>. Wenn <code>returnChunkSize -1 zurückgibt, dann wird :code:`MAX_INT-1</code> verwendet.</p>
+</div></div><div class="scriptsize ld-slide" id="cwe-787-out-of-bounds-write-beispiel-3">
+<h2>CWE-787: Out-of-bounds Write - Beispiel 3</h2>
+<pre class="code C literal-block"><code><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">host_lookup</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">user_supplied_addr</span><span class="punctuation">){</span><span class="whitespace">
+    </span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">hostent</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">hp</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">in_addr_t</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">addr</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="name">hostname</span><span class="punctuation">[</span><span class="literal number integer">64</span><span class="punctuation">];</span><span class="whitespace">
+    </span><span class="name">in_addr_t</span><span class="whitespace"> </span><span class="name">inet_addr</span><span class="punctuation">(</span><span class="keyword">const</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">cp</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// function prototype
+</span><span class="whitespace">
+    </span><span class="comment multiline">/* routine that ensures user_supplied_addr is in the right format for
+       conversion */</span><span class="whitespace">
+
+    </span><span class="name">validate_addr_form</span><span class="punctuation">(</span><span class="name">user_supplied_addr</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="name">addr</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">inet_addr</span><span class="punctuation">(</span><span class="name">user_supplied_addr</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="name">hp</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">gethostbyaddr</span><span class="punctuation">(</span><span class="whitespace"> </span><span class="name">addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">in_addr</span><span class="punctuation">),</span><span class="whitespace"> </span><span class="name">AF_INET</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="name">strcpy</span><span class="punctuation">(</span><span class="name">hostname</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">hp</span><span class="operator">-&gt;</span><span class="name">h_name</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem 1: hostname hat nur 64 Bytes, aber der Name des Hosts kann länger sein.</p></li>
+<li><p>Problem 2: <cite>gethostbyaddr</cite> kann NULL zurückgeben, wenn der Host nicht gefunden werden kann. (Null pointer dereference)</p></li>
+</ul>
+</div></div><div class="scriptsize ld-slide" id="cwe-787-out-of-bounds-write-beispiel-4">
+<h2>CWE-787: Out-of-bounds Write - Beispiel 4</h2>
+<pre class="code C literal-block"><code><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name function">copy_input</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">user_supplied_string</span><span class="punctuation">){</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">i</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">dst_index</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">dst_buf</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">char</span><span class="operator">*</span><span class="punctuation">)</span><span class="name">malloc</span><span class="punctuation">(</span><span class="literal number integer">4</span><span class="operator">*</span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">MAX_SIZE</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="whitespace"> </span><span class="name">MAX_SIZE</span><span class="whitespace"> </span><span class="operator">&lt;=</span><span class="whitespace"> </span><span class="name">strlen</span><span class="punctuation">(</span><span class="name">user_supplied_string</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">die</span><span class="punctuation">(</span><span class="literal string">&quot;string too long&quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">dst_index</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="name">strlen</span><span class="punctuation">(</span><span class="name">user_supplied_string</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="name">i</span><span class="operator">++</span><span class="whitespace"> </span><span class="punctuation">){</span><span class="whitespace">
+    </span><span class="keyword">if</span><span class="punctuation">(</span><span class="whitespace"> </span><span class="literal string char">'&amp;'</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">user_supplied_string</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="punctuation">){</span><span class="whitespace">
+      </span><span class="name">dst_buf</span><span class="punctuation">[</span><span class="name">dst_index</span><span class="operator">++</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string char">'&amp;'</span><span class="punctuation">;</span><span class="whitespace">
+      </span><span class="name">dst_buf</span><span class="punctuation">[</span><span class="name">dst_index</span><span class="operator">++</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string char">'a'</span><span class="punctuation">;</span><span class="whitespace">
+      </span><span class="name">dst_buf</span><span class="punctuation">[</span><span class="name">dst_index</span><span class="operator">++</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string char">'m'</span><span class="punctuation">;</span><span class="whitespace">
+      </span><span class="name">dst_buf</span><span class="punctuation">[</span><span class="name">dst_index</span><span class="operator">++</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string char">'p'</span><span class="punctuation">;</span><span class="whitespace">
+      </span><span class="name">dst_buf</span><span class="punctuation">[</span><span class="name">dst_index</span><span class="operator">++</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string char">';'</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace">
+    </span><span class="keyword">else</span><span class="whitespace"> </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="whitespace"> </span><span class="literal string char">'&lt;'</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">user_supplied_string</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="punctuation">){</span><span class="whitespace"> </span><span class="comment multiline">/* encode to &amp;lt; */</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+    </span><span class="keyword">else</span><span class="whitespace"> </span><span class="name">dst_buf</span><span class="punctuation">[</span><span class="name">dst_index</span><span class="operator">++</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">user_supplied_string</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">];</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+  </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">dst_buf</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: <code>dst_buf</code> hat nur <code>4*sizeof(char) * MAX_SIZE`</code> Bytes. Wenn der Nutzer einen sehr langen String mit (fast) nur <cite>&amp;</cite> übermittelt, dann wird der Puffer überlaufen, da das Encoding 5 Zeichen benötigt.</p></li>
+</ul>
+</div></div><div class="scriptsize ld-slide" id="cwe-787-out-of-bounds-write-beispiel-5">
+<h2>CWE-787: Out-of-bounds Write - Beispiel 5</h2>
+<pre class="code C literal-block"><code><span class="keyword type">char</span><span class="operator">*</span><span class="whitespace"> </span><span class="name function">trimTrailingWhitespace</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">strMessage</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">length</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">retMessage</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="name">message</span><span class="punctuation">[</span><span class="name">length</span><span class="operator">+</span><span class="literal number integer">1</span><span class="punctuation">];</span><span class="whitespace">                    </span><span class="comment single">// copy input string to a
+</span><span class="whitespace">  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">index</span><span class="punctuation">;</span><span class="whitespace">                                 </span><span class="comment single">//      temporary string
+</span><span class="whitespace">  </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">index</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">index</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="name">length</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">index</span><span class="operator">++</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="comment single">//
+</span><span class="whitespace">    </span><span class="name">message</span><span class="punctuation">[</span><span class="name">index</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">strMessage</span><span class="punctuation">[</span><span class="name">index</span><span class="punctuation">];</span><span class="whitespace">      </span><span class="comment single">//
+</span><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace">                                          </span><span class="comment single">//
+</span><span class="whitespace">  </span><span class="name">message</span><span class="punctuation">[</span><span class="name">index</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string char">'\0'</span><span class="punctuation">;</span><span class="whitespace">                     </span><span class="comment single">//
+</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">len</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">index</span><span class="literal number integer">-1</span><span class="punctuation">;</span><span class="whitespace">                         </span><span class="comment single">// trim trailing whitespace
+</span><span class="whitespace">  </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">isspace</span><span class="punctuation">(</span><span class="name">message</span><span class="punctuation">[</span><span class="name">len</span><span class="punctuation">]))</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">            </span><span class="comment single">//
+</span><span class="whitespace">    </span><span class="name">message</span><span class="punctuation">[</span><span class="name">len</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string char">'\0'</span><span class="punctuation">;</span><span class="whitespace">                     </span><span class="comment single">//
+</span><span class="whitespace">    </span><span class="name">len</span><span class="operator">--</span><span class="punctuation">;</span><span class="whitespace">                                   </span><span class="comment single">//
+</span><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace">                                          </span><span class="comment single">//
+</span><span class="whitespace">
+  </span><span class="name">retMessage</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">message</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">retMessage</span><span class="punctuation">;</span><span class="whitespace">                         </span><span class="comment single">// return trimmed string
+</span><span class="punctuation">}</span></code></pre>
+<div class="supplemental docutils container">
+<dl class="field-list simple">
+<dt>isspace<span class="colon">:</span></dt>
+<dd><p>If an argument (character) passed to the isspace() function is a white-space character, it returns non-zero integer. If not, it returns 0.</p>
+</dd>
+</dl>
+</div>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: Zeichenketten, die nur aus Whitespace bestehen, werden nicht korrekt behandelt. In diesem Fall kommt es zu einem Buffer-Underflow (d.h. es wird auf den Speicherbereich vor dem Puffer zugegriffen).</p></li>
+</ul>
+</div></div><div class="scriptsize ld-slide" id="cwe-787-out-of-bounds-write-beispiel-6">
+<h2>CWE-787: Out-of-bounds Write - Beispiel 6</h2>
+<pre class="code C literal-block"><code><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">i</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword type">unsigned</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">numWidgets</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="name">Widget</span><span class="whitespace"> </span><span class="operator">**</span><span class="name">WidgetList</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="name">numWidgets</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">GetUntrustedSizeValue</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">((</span><span class="name">numWidgets</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">||</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">numWidgets</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">MAX_NUM_WIDGETS</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="name">ExitError</span><span class="punctuation">(</span><span class="literal string">&quot;Incorrect number of widgets requested!&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="name">WidgetList</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">Widget</span><span class="whitespace"> </span><span class="operator">**</span><span class="punctuation">)</span><span class="name">malloc</span><span class="punctuation">(</span><span class="name">numWidgets</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">Widget</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">));</span><span class="whitespace">
+</span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;WidgetList ptr=%p</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">WidgetList</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="keyword">for</span><span class="punctuation">(</span><span class="name">i</span><span class="operator">=</span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="operator">&lt;</span><span class="name">numWidgets</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="operator">++</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="name">WidgetList</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">InitializeWidget</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="name">WidgetList</span><span class="punctuation">[</span><span class="name">numWidgets</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name builtin">NULL</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="name">showWidgets</span><span class="punctuation">(</span><span class="name">WidgetList</span><span class="punctuation">);</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem 1: Der Rückgabewert von <code>malloc</code> wird nicht überprüft.</p></li>
+<li><p>Problem 2: <code>WidgetList[numWidgets] = NULL;</code> schreibt außerhalb des Puffers. (Buffer-Overflow)</p></li>
+</ul>
+</div></div><div class="ld-slide" id="cwe-787-out-of-bounds-write-mogliche-abhilfemasznahmen">
+<h2>CWE-787: Out-of-bounds Write - Mögliche Abhilfemaßnahmen</h2>
+<ul class="incremental">
+<li><p>Verwendung einer sicheren Programmiersprache (Java, ...)</p></li>
+<li><p>Verwendung von Bibliotheken, die sicherer sind (z.B. <code>strncpy</code> statt <code>strcpy</code>)</p></li>
+<li><p>Kompilierung mit entsprechenden Flags, die entsprechende Prüfung aktivieren (z.B. <code>-D_FORTIFY_SOURCE=2</code>)</p></li>
+<li><p>Kompilierung als Position-Independent-Code</p>
+<p><span class="minor">Dies löst nicht das Problem, aber es macht es schwerer eine Schwachstelle auszunutzen.</span></p>
+</li>
+<li><p>Statische Analyse Werkzeuge</p></li>
+<li><p>Dynamische Analyse Werkzeuge (z.B. <em>Fuzzing</em>, <em>Fault Injection</em>, ...)</p></li>
+</ul>
+<!-- No 2 in CWE Top 2023 -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-79-improper-neutralization-of-input-during-web-page-generation-cross-site-scripting-or-xss">
+<h2>CWE-79: Improper Neutralization of Input During Web Page Generation (<em>Cross-site Scripting</em> or <em>XSS</em>)</h2>
+</div><div class="ld-slide" id="cwe-79-improper-neutralization-of-input-during-web-page-generation">
+<h2>CWE-79: Improper Neutralization of Input During Web Page Generation</h2>
+<dl class="field-list simple">
+<dt>Kurzbeschreibung<span class="colon">:</span></dt>
+<dd><p>Nutzereingaben werden nicht oder falsch bereinigt, bevor sie in die Ausgabe eingefügt werden, die als Webseite für andere Benutzer verwendet wird.</p>
+</dd>
+</dl>
+<!-- The product does not neutralize or incorrectly neutralizes user-controllable input before it is placed in output that is used as a web page that is served to other users. -->
+<dl class="field-list simple">
+<dt>Wahrscheinlichkeit des Missbrauchs<span class="colon">:</span></dt>
+<dd><p>Hoch</p>
+</dd>
+<dt>Technische Auswirkungen<span class="colon">:</span></dt>
+<dd><p>Speichermodifikation; DoS: Crash, Beendigung oder Neustart; Ausführen von nicht autorisiertem Code oder Befehlen</p>
+</dd>
+<dt>Betrifft<span class="colon">:</span></dt>
+<dd><p>Zugriffskontrolle, Vertraulichkeit</p>
+</dd>
+<dt>Typen<span class="colon">:</span></dt>
+<dd><p>Stored XSS (Typ 2), Reflected XSS (Typ 1), DOM-based XSS (Typ 0)</p>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<p>Durch eine XSS Lücke werden häufig Informationen abgegriffen (z.B. Session Cookies). Allerdings ist es ggf. auch möglich, dass der Angreifer die Session des Nutzers übernimmt und sich als dieser ausgibt.</p>
+</div>
+</div><div class="ld-slide" id="stored-xss-typ-2">
+<h2>Stored XSS (Typ 2)</h2>
+<img alt="Stored XSS" class="align-center" src="images/xss/stored-xss.svg" style="width: 1700px;" />
+</div><div class="ld-slide" id="reflected-xss-typ-1">
+<h2>Reflected XSS (Typ 1)</h2>
+<img alt="Reflected XSS" class="align-center" src="images/xss/reflected-xss.svg" style="width: 1650px;" />
+<div class="supplemental docutils container">
+<p>Reflected XSS ist häufig schwerer auszunutzen, da der Angreifer den Nutzer dazu bringen muss, einen Link zu klicken, der den Angriffsvektor enthält. Bei Stored XSS ist dies nicht notwendig, da der Angriffsvektor bereits auf dem Server gespeichert ist.</p>
+</div>
+</div><div class="ld-slide" id="dom-based-xss-typ-0">
+<h2>Dom-based XSS (Typ 0)</h2>
+<img alt="Dom-based XSS" class="align-center" src="images/xss/dom-based-xss.svg" style="width: 1500px;" />
+<div class="supplemental docutils container">
+<p>Dom-based XSS ist am schwersten Auszunutzen, da der Angreifer den Nutzer dazu bringen muss den Schadcode in die Informationen einzubringen, die von dem Script verarbeitet werden (z.B. durch das Eingeben in ein Formular).</p>
+</div>
+</div><div class="scriptsize ld-slide" id="cwe-79-xss-beispiel-1-xss-typ-1-php">
+<h2>CWE-79: XSS - Beispiel 1 - XSS Typ 1 (Php)</h2>
+<pre class="code php literal-block"><code><span class="other"># Rückgabe einer Willkommensnachricht basierend auf dem
+# HTTP Get username Parameter
+$username = $_GET['username'];
+echo '&lt;div class=&quot;header&quot;&gt; Welcome, ' . $username . '&lt;/div&gt;';</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: der Nutzername kann &quot;beliebig lange&quot; sein und insbesondere beliebigen JavaScript Code enthalten. Beispiel <code>http://trustedSite.example.com/welcome.php?username=&lt;Script Language=&quot;Javascript&quot;&gt;alert(&quot;You've been attacked!&quot;);&lt;/Script&gt;</code>. Komplexerer Code könnte zum Beispiel ein Fakelogin nachbauen und so die Zugangsdaten des Nutzers abgreifen. Entsprechende Links könnten mit Hilfe von Werkzeugen so verschleiert werden, dass der Nutzer nicht bemerkt, dass er auf einen Link mit Schadfunktion klickt.</p></li>
+</ul>
+</div></div><div class="scriptsize ld-slide" id="cwe-79-xss-beispiel-2-xss-typ-2-jsp">
+<h2>CWE-79: XSS - Beispiel 2 - XSS Typ 2 (JSP)</h2>
+<pre class="code jsp literal-block"><code><span class="keyword">&lt;%</span><span class="whitespace">  </span><span class="name">String</span><span class="whitespace"> </span><span class="name">eid</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">request</span><span class="punctuation">.</span><span class="name attribute">getParameter</span><span class="punctuation">(</span><span class="literal string">&quot;eid&quot;</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="name">Statement</span><span class="whitespace"> </span><span class="name">stmt</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">conn</span><span class="punctuation">.</span><span class="name attribute">createStatement</span><span class="punctuation">();</span><span class="whitespace">
+    </span><span class="name">ResultSet</span><span class="whitespace"> </span><span class="name">rs</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">stmt</span><span class="punctuation">.</span><span class="name attribute">executeQuery</span><span class="punctuation">(</span><span class="literal string">&quot;select * from emp where id=&quot;</span><span class="operator">+</span><span class="name">eid</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">rs</span><span class="whitespace"> </span><span class="operator">!=</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="name">rs</span><span class="punctuation">.</span><span class="name attribute">next</span><span class="punctuation">();</span><span class="whitespace">
+      </span><span class="name">String</span><span class="whitespace"> </span><span class="name">name</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">rs</span><span class="punctuation">.</span><span class="name attribute">getString</span><span class="punctuation">(</span><span class="literal string">&quot;name&quot;</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="keyword">%&gt;</span><span class="whitespace">
+
+</span>Employee<span class="whitespace"> </span>Name:<span class="whitespace"> </span><span class="keyword">&lt;%=</span><span class="whitespace"> </span><span class="name">name</span><span class="whitespace"> </span><span class="keyword">%&gt;</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: Falls der Nutzer in der Lage war seinen Namen selber zu wählen und beim Anlegen keine ausreichenden Prüfungen stattgefunden haben, ist ggf. ein XSS Angriff möglich.</p></li>
+<li><p>Weiteres Problem : In dem Beispiel wird der Parameter <code>eid</code> nicht validiert. Der Angreifer kann beliebige SQL-Statements ausführen.</p></li>
+</ul>
+</div></div><div class="scriptsize ld-slide" id="cwe-79-xss-beispiel-3-xss-typ-2-php">
+<h2>CWE-79: XSS - Beispiel 3 - XSS Typ 2 (PHP)</h2>
+<pre class="code php literal-block"><code><span class="other">$username = mysql_real_escape_string($username);
+$fullName = mysql_real_escape_string($fullName);
+$query = sprintf('Insert Into users (uname,pwd,fname) Values (&quot;%s&quot;,&quot;%s&quot;,&quot;%s&quot;)',
+                 $username,
+                 crypt($password),
+                 $fullName) ;
+mysql_query($query);
+...</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: Hier wird zwar die Eingabe validiert (mysql_real_escape_string) aber <em>nur</em> in Hinblick auf SQL Injections! Der Angreifer kann so einen Nutzer anlegen, der HTML code enthält.</p></li>
+</ul>
+</div></div><div class="ld-slide" id="cwe-79-improper-neutralization-of-input-during-web-page-generation-abhilfemasznahmen-und-erkennung">
+<h2>CWE-79: Improper Neutralization of Input During Web Page Generation - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="incremental simple">
+<li><p>Verwendung von geprüften/sicheren APIs</p></li>
+<li><p>Verringerung der Angriffsfläche mit dem Ziel möglichst wenig Daten in Cookies etc. zu speichern.</p></li>
+<li><p>Prüfung dass alle Client-seitigen Prüfungen auch Server-seitig vorgenommen werden.</p></li>
+<li><p>Prüfe jeden Input.</p></li>
+<li><p>Verwendung von HttpOnly Cookies (d.h. Cookies, die nicht über JavaScript ausgelesen werden können)</p></li>
+<li><p>Statische Analyse Werkzeuge</p></li>
+<li><p>Beherzigen von Best Practices (<a class="reference external" href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS Prevention Cheat Sheet</a>)</p></li>
+</ul>
+<!-- No 3 in CWE Top 2023 -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-89-improper-neutralization-of-special-elements-used-in-an-sql-command-sql-injection">
+<h2>CWE-89: Improper Neutralization of Special Elements used in an SQL Command (<em>SQL Injection</em>)</h2>
+</div><div class="ld-slide" id="cwe-89-improper-neutralization-of-special-elements-used-in-an-sql-command">
+<h2>CWE-89: Improper Neutralization of Special Elements used in an SQL Command</h2>
+<dl class="field-list simple">
+<dt>Kurzbeschreibung<span class="colon">:</span></dt>
+<dd><p>Ein SQL-Befehl wird ganz oder teilweise unter Verwendung extern beeinflusster Eingaben von einer vorgelagerten Komponente erzeugt, bereinigt aber spezielle Elemente nicht oder falsch, die den beabsichtigten SQL-Befehl verändern könnten, wenn er an eine nachgelagerte Komponente gesendet wird.</p>
+</dd>
+<dt>Wahrscheinlichkeit des Missbrauchs<span class="colon">:</span></dt>
+<dd><p>Hoch</p>
+</dd>
+<dt>Technologie<span class="colon">:</span></dt>
+<dd><p>Datenbanken</p>
+</dd>
+<dt>Betrifft<span class="colon">:</span></dt>
+<dd><p>Zugriffskontrolle, Vertraulichkeit, Integrität</p>
+</dd>
+</dl>
+</div><div class="scriptsize ld-slide" id="cwe-89-sql-injection-beispiel-1-ms-sql">
+<h2>CWE-89: SQL Injection - Beispiel 1 (MS SQl)</h2>
+<pre class="code sql literal-block"><code><span class="keyword">SELECT</span><span class="whitespace"> </span><span class="name">ITEM</span><span class="punctuation">,</span><span class="name">PRICE</span><span class="whitespace"> </span><span class="keyword">FROM</span><span class="whitespace"> </span><span class="name">PRODUCT</span><span class="whitespace"> </span><span class="keyword">WHERE</span><span class="whitespace"> </span><span class="name">ITEM_CATEGORY</span><span class="operator">=</span><span class="literal string single">'$user_input'</span><span class="whitespace"> </span><span class="keyword">ORDER</span><span class="whitespace"> </span><span class="keyword">BY</span><span class="whitespace"> </span><span class="name">PRICE</span></code></pre>
+<aside class="admonition margin-top-2em">
+<p class="admonition-title">Hintergrund</p>
+<p>MS SQL hat eine eingebaute Funktion, die es erlaubt Shell Befehle auszuführen. Diese Funktion kann auch in einem SQL Statement verwendet werden.</p>
+</aside>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: Sollte der Nutzername <code>'; exec master..xp_cmdshell 'dir' --</code> sein, dann wird das entsprechende Kommando ausgeführt.</p></li>
+</ul>
+</div></div><div class="scriptsize ld-slide" id="cwe-89-sql-injection-beispiel-2-php">
+<h2>CWE-89: SQL Injection - Beispiel 2 (PHP)</h2>
+<pre class="code php literal-block"><code><span class="other">$id = $_COOKIE[&quot;mid&quot;];
+mysql_query(&quot;SELECT MessageID, Subject FROM messages WHERE MessageID = '$id'&quot;);</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: Der Wert von <code>$id</code>, welcher aus einem Cookie ausgelesen wird, wird nicht validiert. Auch wenn Cookies nicht trivial von einem Nutzer bzw. Angreifer manipuliert werden können, so ist es dennoch möglich. Der Angreifer kann so beliebige SQL Statements ausführen. Deswegen gilt: <em>Alle</em> Eingaben müssen validiert werden.</p></li>
+<li></li>
+</ul>
+</div></div><div class="ld-slide" id="cwe-89-improper-neutralization-of-special-elements-used-in-an-sql-command-abhilfemasznahmen-und-erkennung">
+<h2>CWE-89: Improper Neutralization of Special Elements used in an SQL Command - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="incremental simple">
+<li><p>Verwendung von geprüften/sicheren APIs.</p></li>
+<li><p>Verwendung von <em>Prepared Statements</em>.</p></li>
+<li><p>Datenbank nur mit den notwendigen Rechten betreiben (<em>Principle of Least Privilege</em>)</p></li>
+<li><p>Sollte es notwendig sein einen dynamischen SQL Befehl zu erstellen, dann sollten geprüfte Escapefunktionen verwendet werden.</p></li>
+<li><p>Statische Analyse Werkzeuge</p></li>
+<li><p>ggf. Application-level Firewall einsetzen</p></li>
+</ul>
+<!-- No 4 in CWE Top 2023 -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-416-use-after-free-uaf">
+<h2>CWE-416: Use After Free (UAF)</h2>
+</div><div class="ld-slide" id="cwe-416-use-after-free">
+<h2>CWE-416: Use After Free</h2>
+<dl class="field-list simple">
+<dt>Kurzbeschreibung<span class="colon">:</span></dt>
+<dd><p>Referenzierung von Speicher nach der Freigabe kann dazu führen, dass ein Programm abstürzt, unerwartete Werte verwendet oder Code ausführt.</p>
+</dd>
+<dt>Wahrscheinlichkeit des Missbrauchs<span class="colon">:</span></dt>
+<dd><p>Hoch</p>
+</dd>
+<dt>Programmiersprachen<span class="colon">:</span></dt>
+<dd><p>C, C++</p>
+</dd>
+<dt>Betrifft<span class="colon">:</span></dt>
+<dd><p>Verfügbarkeit, Vertraulichkeit, Integrität</p>
+</dd>
+</dl>
+</div><div class="scriptsize ld-slide" id="cwe-416-use-after-free-triviales-beispiel">
+<h2>CWE-416: Use After Free - Triviales Beispiel</h2>
+<pre class="code C literal-block"><code><span class="keyword type">char</span><span class="operator">*</span><span class="whitespace"> </span><span class="name">ptr</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">char</span><span class="operator">*</span><span class="punctuation">)</span><span class="name">malloc</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">SIZE</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">err</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="name">abrt</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">free</span><span class="punctuation">(</span><span class="name">ptr</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">...</span><span class="whitespace">
+</span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">abrt</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="name">logError</span><span class="punctuation">(</span><span class="literal string">&quot;operation aborted before commit&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">ptr</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// Use of ptr after free
+</span><span class="punctuation">}</span></code></pre>
+<aside class="admonition margin-top-2em">
+<p class="admonition-title">Hinweis</p>
+<p>Ziel ist es im Allgemeinen eine Referenz auf einen interessanten Speicherbereich zu erhalten, der bereits freigegeben wurde und dann den Inhalt dieses Speicherbereichs auszulesen bzw. zu manipulieren, um die nächste Verwendung zu kontrollieren.</p>
+</aside>
+</div><div class="scriptsize ld-slide" id="cwe-416-use-after-free-beispiel">
+<h2>CWE-416: Use After Free - Beispiel</h2>
+<div class="two-columns docutils container">
+<div class="column docutils container">
+<pre class="code C literal-block"><code><span class="comment preproc">#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;stdlib.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;stdio.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;string.h&gt;</span><span class="comment preproc">
+#define BUFSIZER1 512
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">argc</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">**</span><span class="name">argv</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">buf1R1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">buf2R1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">buf2R2</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">buf1R1</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">malloc</span><span class="punctuation">(</span><span class="name">BUFSIZER1</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">buf2R1</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">malloc</span><span class="punctuation">(</span><span class="name">BUFSIZER1</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;buf2R1 -&gt; %p</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="name">buf2R1</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">free</span><span class="punctuation">(</span><span class="name">buf2R1</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">buf2R2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">malloc</span><span class="punctuation">(</span><span class="name">BUFSIZER1</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">strncpy</span><span class="punctuation">(</span><span class="name">buf2R1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">],</span><span class="whitespace"> </span><span class="name">BUFSIZER1</span><span class="literal number integer">-1</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;[FREED]   %p</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="name">buf2R1</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;buf2R2 -&gt; %p</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="name">buf2R2</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;buf2R2  = %s</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="name">buf2R2</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">free</span><span class="punctuation">(</span><span class="name">buf1R1</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">free</span><span class="punctuation">(</span><span class="name">buf2R2</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div>
+<div class="column docutils container">
+<p><strong>Fragen</strong>:</p>
+<p>Wird dieses Program bis zum Ende laufen oder abstürzen?</p>
+<p>Welche Ausgabe erzeugt das Programm?</p>
+<p>Ist die Ausgabe bei jedem Lauf gleich?</p>
+</div>
+</div>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<p>Das Programm wird (immer) bis zum Ende laufen!</p>
+<p>Ausgabe - 1. Lauf:</p>
+<pre class="code text literal-block"><code>buf2R1 -&gt; 0xaaaabc1fc4b0
+[FREED]   0xaaaabc1fc4b0
+buf2R2 -&gt; 0xaaaabc1fc4b0
+buf2R2  = Test</code></pre>
+<p>Ausgabe - 2. Lauf:</p>
+<pre class="code text literal-block"><code>buf2R1 -&gt; 0xaaaad5de54b0
+[FREED]   0xaaaad5de54b0
+buf2R2 -&gt; 0xaaaad5de54b0
+buf2R2  = Test</code></pre>
+<p>Der Inhalt von <code>buf2R2</code> ist <code>Test</code>, obwohl dort nie explizit etwas hinkopiert wurde. Die Ausgabe ist bei jedem Lauf anders, da wir Position-Independent-Code haben und der Kernel ASLR verwendet.</p>
+<p>Die Ausgabe wird bei jedem Lauf gleich, wenn man beides explizit unterbindet.</p>
+<pre class="code bash literal-block"><code>gcc<span class="whitespace"> </span>uaf.c<span class="whitespace"> </span>-fno-stack-protector<span class="whitespace"> </span>-D_FORTIFY_SOURCE<span class="operator">=</span><span class="literal number">0</span><span class="whitespace"> </span>-no-pie<span class="whitespace"> </span>-fno-pic<span class="whitespace">
+</span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal number">0</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>sudo<span class="whitespace"> </span>tee<span class="whitespace"> </span>/proc/sys/kernel/randomize_va_space<span class="whitespace">
+
+</span>$<span class="whitespace"> </span>./a.out<span class="whitespace"> </span>Test<span class="whitespace">
+</span>buf2R1<span class="whitespace"> </span>-&gt;<span class="whitespace"> </span>0x4214b0<span class="whitespace">
+</span><span class="operator">[</span>FREED<span class="operator">]</span><span class="whitespace">   </span>0x4214b0<span class="whitespace">
+</span>buf2R2<span class="whitespace"> </span>-&gt;<span class="whitespace"> </span>0x4214b0<span class="whitespace">
+</span><span class="name variable">buf2R2</span><span class="whitespace">  </span><span class="operator">=</span><span class="whitespace"> </span>Test<span class="whitespace">
+</span>$<span class="whitespace"> </span>./a.out<span class="whitespace"> </span>Test<span class="whitespace">
+</span>buf2R1<span class="whitespace"> </span>-&gt;<span class="whitespace"> </span>0x4214b0<span class="whitespace">
+</span><span class="operator">[</span>FREED<span class="operator">]</span><span class="whitespace">   </span>0x4214b0<span class="whitespace">
+</span>buf2R2<span class="whitespace"> </span>-&gt;<span class="whitespace"> </span>0x4214b0<span class="whitespace">
+</span><span class="name variable">buf2R2</span><span class="whitespace">  </span><span class="operator">=</span><span class="whitespace"> </span>Test</code></pre>
+</div></div><div class="scriptsize ld-slide" id="cwe-416-cve-2006-4997-ip-over-atm-clip-mkip-dereference-freed-pointer-linux-kernel">
+<h2>CWE-416: CVE-2006-4997 IP over ATM clip_mkip dereference freed pointer (Linux Kernel)</h2>
+<pre class="code c literal-block"><code><span class="comment single">// clip_mkip (clip.c):
+</span><span class="whitespace">   </span><span class="literal number integer">198</span><span class="whitespace"> </span><span class="keyword">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name">clip_push</span><span class="punctuation">(</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">atm_vcc</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">vcc</span><span class="punctuation">,</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sk_buff</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">skb</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+   </span><span class="punctuation">...</span><span class="whitespace">
+   </span><span class="literal number integer">234</span><span class="whitespace">         </span><span class="name">memset</span><span class="punctuation">(</span><span class="name">ATM_SKB</span><span class="punctuation">(</span><span class="name">skb</span><span class="punctuation">),</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">atm_skb_data</span><span class="punctuation">));</span><span class="whitespace">
+   </span><span class="literal number integer">235</span><span class="whitespace">         </span><span class="name">netif_rx</span><span class="punctuation">(</span><span class="name">skb</span><span class="punctuation">);</span><span class="whitespace">
+   </span><span class="literal number integer">236</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+   </span><span class="punctuation">...</span><span class="whitespace">
+   </span><span class="literal number integer">510</span><span class="whitespace">         </span><span class="name">clip_push</span><span class="punctuation">(</span><span class="name">vcc</span><span class="punctuation">,</span><span class="name">skb</span><span class="punctuation">);</span><span class="whitespace">
+   </span><span class="literal number integer">511</span><span class="whitespace">         </span><span class="name">PRIV</span><span class="punctuation">(</span><span class="name">skb</span><span class="operator">-&gt;</span><span class="name">dev</span><span class="punctuation">)</span><span class="operator">-&gt;</span><span class="name">stats</span><span class="punctuation">.</span><span class="name">rx_packets</span><span class="operator">--</span><span class="punctuation">;</span><span class="whitespace">
+   </span><span class="literal number integer">512</span><span class="whitespace">         </span><span class="name">PRIV</span><span class="punctuation">(</span><span class="name">skb</span><span class="operator">-&gt;</span><span class="name">dev</span><span class="punctuation">)</span><span class="operator">-&gt;</span><span class="name">stats</span><span class="punctuation">.</span><span class="name">rx_bytes</span><span class="whitespace"> </span><span class="operator">-=</span><span class="whitespace"> </span><span class="name">len</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="comment single">// netif_rx (dev.c):
+</span><span class="whitespace">   </span><span class="literal number integer">1392</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">netif_rx</span><span class="punctuation">(</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sk_buff</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">skb</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+   </span><span class="punctuation">...</span><span class="whitespace">
+   </span><span class="literal number integer">1428</span><span class="whitespace">        </span><span class="name">kfree_skb</span><span class="punctuation">(</span><span class="name">skb</span><span class="punctuation">);</span><span class="whitespace">       </span><span class="comment single">//drop skb
+</span><span class="whitespace">   </span><span class="literal number integer">1429</span><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">NET_RX_DROP</span><span class="punctuation">;</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: In Zeile 511 wird auf den Speicherbereich von <code>skb-&gt;dev</code> zugegriffen, obwohl dieser bereits freigegeben wurde in <span class="docutils literal">netif_rx</span> in Zeile 1428.</p></li>
+</ul>
+</div></div><div class="ld-slide" id="cwe-416-use-after-free-abhilfemasznahmen-und-erkennung">
+<h2>CWE-416: Use After Free - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="incremental simple">
+<li><p>Wahl einer sicheren Programmiersprache (z.B. RUST)</p></li>
+<li><p>explizites <code>NULL</code> setzen, nachdem der Speicherbereich freigegeben wurde</p></li>
+<li><p>Fuzzing</p></li>
+<li><p>Statische Analyse Werkzeuge</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Empfohlene Lektüre: <a class="reference external" href="https://github.blog/2021-03-24-real-world-exploit-chains-explained/">One day short of a full chain: Real world exploit chains explained</a> (In Teil 1 wird eine UAF Schwachstelle genutzt.)</p>
+</div>
+<!-- No 5 in CWE Top 2023 -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-78-improper-neutralization-of-special-elements-used-in-an-os-command-os-command-injection">
+<h2>CWE-78: Improper Neutralization of Special Elements used in an OS Command (<em>OS Command Injection</em>)</h2>
+</div><div class="ld-slide" id="cwe-78-improper-neutralization-of-special-elements-used-in-an-os-command">
+<h2>CWE-78: Improper Neutralization of Special Elements used in an OS Command</h2>
+<dl class="field-list simple">
+<dt>Kurzbeschreibung<span class="colon">:</span></dt>
+<dd><p>Alles oder zumindest ein Teil eines Betriebssystembefehls hängt von extern beeinflussten Eingaben ab. Es erfolgt jedoch keine Bereinigung spezieller Elemente, die den beabsichtigten Betriebssystembefehl verändern könnten.</p>
+</dd>
+</dl>
+<!-- The product constructs all or part of an OS command using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the intended OS command when it is sent to a downstream component. -->
+<dl class="field-list simple">
+<dt>Wahrscheinlichkeit des Missbrauchs<span class="colon">:</span></dt>
+<dd><p>Hoch</p>
+</dd>
+<dt>Betrifft<span class="colon">:</span></dt>
+<dd><p>Verfügbarkeit, Vertraulichkeit, Integrität</p>
+</dd>
+<dt>Arten<span class="colon">:</span></dt>
+<dd><ol class="arabic simple">
+<li><p>Ein bestimmtes Program wird ausgeführt und die Nutzerdaten werden als Parameter übergeben.</p></li>
+<li><p>Die Anwendung bestimmt basierend auf den Nutzerdaten welches Program mit welchen Parametern ausgeführt wird.</p></li>
+</ol>
+</dd>
+</dl>
+</div><div class="scriptsize ld-slide" id="cwe-78-improper-neutralization-of-special-elements-used-in-an-os-command-beispiel-java">
+<h2>CWE-78: Improper Neutralization of Special Elements used in an OS Command - Beispiel (Java)</h2>
+<pre class="code java literal-block"><code><span class="punctuation">...</span><span class="whitespace">
+</span><span class="name">String</span><span class="whitespace"> </span><span class="name">btype</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">request</span><span class="punctuation">.</span><span class="name attribute">getParameter</span><span class="punctuation">(</span><span class="literal string">&quot;backuptype&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">String</span><span class="whitespace"> </span><span class="name">cmd</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">String</span><span class="punctuation">(</span><span class="literal string">&quot;cmd.exe /K \&quot;
+c:\\util\\rmanDB.bat &quot;</span><span class="whitespace">
+</span><span class="operator">+</span><span class="name">btype</span><span class="operator">+</span><span class="whitespace">
+</span><span class="literal string">&quot;&amp;&amp;c:\\utl\\cleanup.bat\&quot;&quot;</span><span class="punctuation">)</span><span class="whitespace">
+
+</span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">Runtime</span><span class="punctuation">.</span><span class="name attribute">getRuntime</span><span class="punctuation">().</span><span class="name attribute">exec</span><span class="punctuation">(</span><span class="name">cmd</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="punctuation">...</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: Der Wert von <code>btype</code> wird nicht validiert und dewegen kann der Angreifer  beliebige Befehle ausführen, da die Shell (<code>cmd.exe`</code>) mehrere Befehle, die mit <code>&amp;&amp;</code> verknüpft sind hintereinander ausführt.</p></li>
+</ul>
+</div></div><div class="ld-slide" id="cwe-78-improper-neutralization-of-special-elements-used-in-an-os-command-abhilfemasznahmen-und-erkennung">
+<h2>CWE-78: Improper Neutralization of Special Elements used in an OS Command - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="incremental simple">
+<li><p>Verwendung von geprüften/sicheren APIs.</p></li>
+<li><p>Anwendung bzw. Befehl nur mit den notwendigen Rechten betreiben (<em>Principle of Least Privilege</em>) bzw. in einer Sandbox ausführen.</p></li>
+<li><p>Statische Analyse Werkzeuge</p></li>
+<li><p>Dynammische Analyse in Kombination mit Fuzzing</p></li>
+<li><p>Manuelle Code Reviews/Statische Analyse</p></li>
+<li><p>ggf. Application-level Firewall einsetzen</p></li>
+</ul>
+<!-- No 6 in CWE Top 2023 -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-20-improper-input-validation">
+<h2>CWE-20: Improper Input Validation</h2>
+</div><div class="ld-slide" id="cwe-20-improper-input-validation-1">
+<h2>CWE-20: Improper Input Validation</h2>
+<dl class="field-list simple">
+<dt>Kurzbeschreibung<span class="colon">:</span></dt>
+<dd><p>Empfangene Eingaben oder Daten werden nicht nicht oder falsch validiert in Hinblick darauf, dass die Eingaben die Eigenschaften haben, die für eine sichere und korrekte Verarbeitung der Daten erforderlich sind.</p>
+</dd>
+</dl>
+<!-- The product receives input or data, but it does not validate or incorrectly validates that the input has the properties that are required to process the data safely and correctly. -->
+<dl class="field-list simple">
+<dt>Wahrscheinlichkeit des Missbrauchs<span class="colon">:</span></dt>
+<dd><p>Hoch</p>
+</dd>
+<dt>Betrifft<span class="colon">:</span></dt>
+<dd><p>Verfügbarkeit, Vertraulichkeit, Integrität</p>
+</dd>
+<dt>Anwendungsbereiche<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>Rohdaten - Strings, Zahlen, Parameter, Dateiinhalte, etc.</p></li>
+<li><p>Metadaten - Information über die Rohdaten, wie zum Beispiel <em>Header</em> oder Größe</p></li>
+</ul>
+</dd>
+</dl>
+</div><div class="ld-slide" id="cwe-20-improper-input-validation-zu-verifizierende-werte-und-eigenschaften">
+<h2>CWE-20: Improper Input Validation - zu verifizierende Werte und Eigenschaften</h2>
+<ul class="incremental smaller simple">
+<li><p><strong>Größen</strong> wie Größe, Länge, Häufigkeit, Preis, Rate, Anzahl der Vorgänge, Zeit usw.</p></li>
+<li><p><strong>implizite oder abgeleitete Größen</strong>, wie z. B. die tatsächliche Größe einer Datei anstelle einer angegebenen Größe</p></li>
+<li><p><strong>Indizes</strong>, Offsets oder Positionen in komplexeren Datenstrukturen</p></li>
+<li><p><strong>Schlüssel</strong> von Hashtabellen, assoziativen Feldern usw.</p></li>
+<li><p><strong>syntaktische Korrektheit</strong> - Übereinstimmung mit der erwarteten Syntax</p></li>
+<li><p>Bestimmung des <strong>tatsächlichen Typs der Eingabe</strong> (oder das, was die Eingabe zu sein scheint)</p></li>
+<li><p><strong>Konsistenz</strong> zwischen den Rohdaten und Metadaten, zwischen Referenzen usw.</p></li>
+<li><p><strong>semantische Korrektheit</strong> bzw. Konformität mit domänenspezifischen Regeln, z. B. Geschäftslogik</p></li>
+<li><p><strong>Authentizität</strong> von z. B. kryptografischen Signaturen</p></li>
+</ul>
+</div><div class="center-child-elements ld-slide" id="section-1">
+<h2></h2>
+<aside class="admonition admonition-improper-input-validation-vs-injection">
+<p class="admonition-title">Improper Input Validation vs. Injection</p>
+<p>Ein Name wie <span class="docutils literal">O'Reily</span> stellt ein Problem dar, wenn er in ein SQL Statement eingefügt wird, sollte jedoch von der Anwendung verarbeitet werden können und die Eingabevalidierung passieren.</p>
+<p>Die Validierung muss immer in Hinblick auf den Kontext erfolgen.</p>
+</aside>
+</div><div class="scriptsize ld-slide" id="cwe-20-improper-input-validation-beispiel-partielle-validierung">
+<h2>CWE-20: Improper Input Validation - Beispiel partielle Validierung</h2>
+<p>C:</p>
+<pre class="code c literal-block"><code><span class="comment preproc">#define MAX_DIM 100
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">m</span><span class="punctuation">,</span><span class="name">n</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="comment multiline">/* m,n = board dimensions */</span><span class="whitespace">
+</span><span class="name">board_square_t</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">board</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Please specify the board height: </span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">error</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">scanf</span><span class="punctuation">(</span><span class="literal string">&quot;%d&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">m</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="whitespace"> </span><span class="name">EOF</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">error</span><span class="whitespace"> </span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">die</span><span class="punctuation">(</span><span class="literal string">&quot;No integer passed!</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Please specify the board width: </span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">error</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">scanf</span><span class="punctuation">(</span><span class="literal string">&quot;%d&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">n</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="whitespace"> </span><span class="name">EOF</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">error</span><span class="whitespace"> </span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">die</span><span class="punctuation">(</span><span class="literal string">&quot;No integer passed!</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="whitespace"> </span><span class="name">m</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">MAX_DIM</span><span class="whitespace"> </span><span class="operator">||</span><span class="whitespace"> </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">MAX_DIM</span><span class="whitespace"> </span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">die</span><span class="punctuation">(</span><span class="literal string">&quot;Value too large!</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+</span><span class="name">board</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">board_square_t</span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">malloc</span><span class="punctuation">(</span><span class="whitespace"> </span><span class="name">m</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">board_square_t</span><span class="punctuation">));</span><span class="whitespace">
+</span><span class="punctuation">...</span></code></pre>
+<aside class="admonition incremental margin-top-1em">
+<p class="admonition-title">Warnung</p>
+<p>Ein vergleichbares Problem ist auch in sicheren Programmiersprachen möglich.</p>
+</aside>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: n und m werden nicht vollständig validiert. Sind die Werte negativ, dann wird ggf. sehr viel Speicher alloziiert oder das Programm stürzt ab.</p></li>
+</ul>
+</div></div><div class="ld-slide" id="cwe-20-improper-input-validation-abhilfemasznahmen-und-erkennung">
+<h2>CWE-20: Improper Input Validation - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="incremental simple">
+<li><p>(begrenzt) Statische Analyse Werkzeuge</p></li>
+<li><p>Manuelle statische Analyse insbesondere in Hinblick auf die zugrundeliegende Semantik</p></li>
+<li><p>Dynamische Analyse mit Fuzzing</p></li>
+</ul>
+<!-- No 7 in CWE Top 2023 -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-125-out-of-bounds-read">
+<h2>CWE-125: Out-of-bounds Read</h2>
+</div><div class="ld-slide" id="cwe-125-out-of-bounds-read-1">
+<h2>CWE-125: Out-of-bounds Read</h2>
+<dl class="field-list simple">
+<dt>Kurzbeschreibung<span class="colon">:</span></dt>
+<dd><p>Daten vor oder nach einem Puffer werden gelesen.</p>
+</dd>
+</dl>
+<!-- The product reads data past the end, or before the beginning, of the intended buffer. -->
+<dl class="field-list simple">
+<dt>Wahrscheinlichkeit des Missbrauchs<span class="colon">:</span></dt>
+<dd><p>Hoch</p>
+</dd>
+<dt>Programmiersprachen<span class="colon">:</span></dt>
+<dd><p>C, C++</p>
+</dd>
+<dt>Betrifft<span class="colon">:</span></dt>
+<dd><p>Vertraulichkeit</p>
+</dd>
+<dt>Auswirkungen<span class="colon">:</span></dt>
+<dd><p>Umgehung von Schutzmaßnahmen; Lesen von Speicher</p>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<p>Die Ausnutzung dieser Schwachstelle ist häufig schwierig, da nicht immer bekannt ist welche und wieviele Daten gelesen werden können. Es kann allerdings möglich sein Speicheradressen auszulesen. Dies kann ggf. genutzt werden, um Mechanismen wie ASLR zu umgehen.</p>
+</div>
+</div><div class="scriptsize ld-slide" id="cwe-125-out-of-bounds-read-beispiel-partielle-validierung">
+<h2>CWE-125: Out-of-bounds Read - Beispiel: partielle Validierung</h2>
+<p>C:</p>
+<pre class="code C literal-block"><code><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">getValueFromArray</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">array</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">len</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">index</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">value</span><span class="punctuation">;</span><span class="whitespace">
+
+  </span><span class="comment single">// check that the array index is less than the maximum length of the array
+</span><span class="whitespace">  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">index</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="name">len</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="comment single">// get the value at the specified index of the array
+</span><span class="whitespace">    </span><span class="name">value</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">array</span><span class="punctuation">[</span><span class="name">index</span><span class="punctuation">];</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+  </span><span class="comment single">// if array index is invalid then output error message
+</span><span class="whitespace">  </span><span class="comment single">// and return value indicating error
+</span><span class="whitespace">  </span><span class="keyword">else</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Value is: %d</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">array</span><span class="punctuation">[</span><span class="name">index</span><span class="punctuation">]);</span><span class="whitespace">
+    </span><span class="name">value</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">-1</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+  </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">value</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: Der Wert von <code>index</code> wird nicht gegen zu kleine Werte validiert. Der Angreifer kann so beliebige Speicherbereiche auslesen.</p></li>
+</ul>
+</div></div><div class="ld-slide" id="cwe-125-out-of-bounds-read-abhilfemasznahmen-und-erkennung">
+<h2>CWE-125: Out-of-bounds Read - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="incremental simple">
+<li><p>eine sichere Programmiersprache verwenden</p></li>
+<li><p>Fuzzing</p></li>
+<li><p>Statische Analyse Werkzeuge welche Kontroll- und Datenflussanalyse durchführen</p></li>
+</ul>
+<!-- No 8 in CWE Top 2023 -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-22-improper-limitation-of-a-pathname-to-a-restricted-directory-path-traversal">
+<h2>CWE-22: Improper Limitation of a Pathname to a Restricted Directory (<em>Path Traversal</em>)</h2>
+</div><div class="ld-slide" id="cwe-22-improper-limitation-of-a-pathname-to-a-restricted-directory">
+<h2>CWE-22: Improper Limitation of a Pathname to a Restricted Directory</h2>
+<dl class="field-list simple">
+<dt>Kurzbeschreibung<span class="colon">:</span></dt>
+<dd><p>Externe Eingaben werden für die Konstruktion eines Pfadnamens verwendet, der eine Datei oder ein Verzeichnis identifizieren soll, das sich unterhalb eines eingeschränkten übergeordneten Verzeichnisses befindet. Eine Bereinigung spezieller Elemente innerhalb des Pfadnamens erfolgt jedoch nicht ordnungsgemäß, was dazu führen kann, dass der Pfadname zu einem Ort außerhalb des eingeschränkten Verzeichnisses aufgelöst wird.</p>
+</dd>
+</dl>
+<!-- The product uses external input to construct a pathname that is intended to identify a file or directory that is located underneath a restricted parent directory, but the product does not properly neutralize special elements within the pathname that can cause the pathname to resolve to a location that is outside of the restricted directory. -->
+<dl class="field-list simple">
+<dt>Wahrscheinlichkeit des Missbrauchs<span class="colon">:</span></dt>
+<dd><p>Hoch</p>
+</dd>
+<dt>Betrifft<span class="colon">:</span></dt>
+<dd><p>Vertraulichkeit, Integrität, Verfügbarkeit</p>
+</dd>
+</dl>
+</div><div class="scriptsize ld-slide" id="cwe-22-path-traversal-beispiel-fehlende-validierung">
+<h2>CWE-22: Path Traversal - Beispiel: fehlende Validierung</h2>
+<p>PHP:</p>
+<pre class="code php literal-block"><code><span class="comment preproc">&lt;?php</span>
+<span class="name variable">$file</span> <span class="operator">=</span> <span class="name variable">$_GET</span><span class="punctuation">[</span><span class="literal string single">'file'</span><span class="punctuation">];</span>
+<span class="keyword">include</span><span class="punctuation">(</span><span class="literal string double">&quot;/home/www-data/</span><span class="literal string interpol">$file</span><span class="literal string double">&quot;</span><span class="punctuation">);</span>
+<span class="comment preproc">?&gt;</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem: Der Wert von <code>file</code> wird nicht validiert. Der Angreifer kann so beliebige Dateien auslesen.</p></li>
+</ul>
+</div></div><div class="scriptsize ld-slide" id="cwe-22-path-traversal-beispiel-partielle-validierung">
+<h2>CWE-22: Path Traversal - Beispiel: partielle Validierung</h2>
+<p>Perl:</p>
+<pre class="code Perl literal-block"><code><span class="keyword">my</span><span class="whitespace"> </span><span class="name variable">$Username</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">GetUntrustedInput</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="name variable">$Username</span><span class="whitespace"> </span><span class="operator">=~</span><span class="whitespace"> </span><span class="literal string regex">s/\.\.\///</span><span class="punctuation">;</span><span class="whitespace">                </span><span class="comment single"># Remove ../</span><span class="whitespace">
+</span><span class="keyword">my</span><span class="whitespace"> </span><span class="name variable">$filename</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string">&quot;/home/user/&quot;</span><span class="whitespace"> </span><span class="operator">.</span><span class="whitespace"> </span><span class="name variable">$Username</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="name">ReadAndSendFile</span><span class="punctuation">(</span><span class="name variable">$filename</span><span class="punctuation">);</span></code></pre>
+<div class="incremental margin-top-2em docutils container">
+<p>Java:</p>
+<pre class="code Java literal-block"><code><span class="name">String</span><span class="whitespace"> </span><span class="name">path</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">getInputPath</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">path</span><span class="punctuation">.</span><span class="name attribute">startsWith</span><span class="punctuation">(</span><span class="literal string">&quot;/safe_dir/&quot;</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="name">File</span><span class="whitespace"> </span><span class="name">f</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">File</span><span class="punctuation">(</span><span class="name">path</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">f</span><span class="punctuation">.</span><span class="name attribute">delete</span><span class="punctuation">()</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<ul class="simple">
+<li><p>Problem im Perl Beispiel: <code>Username</code> wird nur bzgl. ../ am Anfang der Zeichenkette gesäubert. Beginnt der Nutzername mit <code>../../</code> dann kann der Angreifer dennoch zum darüber liegenden Verzeichnis wechseln. Es fehlt im Wesentlichen das <code>g</code> Flag (vgl. Reguläre Ausdrücke in <span class="docutils literal">sed</span>)</p></li>
+<li><p>Problem im Java Beispiel: Auch in diesem Falle wird zwar der Anfang geprüft, d.h. ob der Pfad mit <code>/safe_dir/</code> beginnt, aber dies verhindert nicht, dass der Pfad im Weiteren <code>../</code> verwendet und der Angreifer darüber zu einem höherliegenden Verzeichnis wechseln kann.</p></li>
+</ul>
+</div></div><div class="scriptsize ld-slide" id="cwe-22-path-traversal-beispiel-verwirrende-api">
+<h2>CWE-22: Path Traversal - Beispiel: verwirrende API</h2>
+<div class="two-columns docutils container">
+<div class="column docutils container">
+<p>Python:</p>
+<pre class="code Python literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">os</span><span class="whitespace">
+</span><span class="keyword namespace">import</span> <span class="name namespace">sys</span><span class="whitespace">
+</span><span class="keyword">def</span> <span class="name function">main</span><span class="punctuation">():</span><span class="whitespace">
+</span><span class="name">filename</span> <span class="operator">=</span> <span class="name">sys</span><span class="operator">.</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]</span><span class="whitespace">
+</span><span class="name">path</span> <span class="operator">=</span> <span class="name">os</span><span class="operator">.</span><span class="name">path</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">(</span><span class="name">os</span><span class="operator">.</span><span class="name">getcwd</span><span class="punctuation">(),</span><span class="whitespace">
+</span>                    <span class="name">filename</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="keyword">try</span><span class="punctuation">:</span><span class="whitespace">
+</span>    <span class="keyword">with</span> <span class="name builtin">open</span><span class="punctuation">(</span><span class="name">path</span><span class="punctuation">,</span> <span class="literal string single">'r'</span><span class="punctuation">)</span> <span class="keyword">as</span> <span class="name">f</span><span class="punctuation">:</span><span class="whitespace">
+</span>    <span class="name">file_data</span> <span class="operator">=</span> <span class="name">f</span><span class="operator">.</span><span class="name">read</span><span class="punctuation">()</span><span class="whitespace">
+</span><span class="keyword">except</span> <span class="name exception">FileNotFoundError</span> <span class="keyword">as</span> <span class="name">e</span><span class="punctuation">:</span><span class="whitespace">
+</span>    <span class="name builtin">print</span><span class="punctuation">(</span><span class="literal string double">&quot;Error - file not found&quot;</span><span class="punctuation">)</span><span class="whitespace">
+
+</span><span class="comment single"># do something with file_data</span></code></pre>
+</div>
+<div class="column docutils container">
+<p>Dokumentation <span class="docutils literal">os.path.join</span>:</p>
+<blockquote class="epigraph">
+<p>Join one or more path components intelligently. The return value is the concatenation of path and any members of *paths with exactly one directory separator following each non-empty part except the last, meaning that the result will only end in a separator if the last part is empty.</p>
+<p>If a component is an absolute path [...], all previous components are thrown away and joining continues from the absolute path component.</p>
+<p class="attribution">—<a class="reference external" href="https://docs.python.org/3.11/library/os.path.html#os.path.join">Python 3.11.7</a></p>
+</blockquote>
+</div>
+</div>
+</div><div class="ld-slide" id="cwe-22-path-traversal-abhilfemasznahmen-und-erkennung">
+<h2>CWE-22: Path Traversal - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="incremental simple">
+<li><p>Eingabe vollständig validieren; zum Beispiel über kanonische Pfade</p></li>
+<li><p>Sandboxen</p></li>
+<li><p>Umgebung härten</p></li>
+<li><p>Bei Fehlerausgaben darauf achten, dass keine Informationen über das Dateisystem preisgegeben werden</p></li>
+<li><p>den Code mit minimalen Rechten ausführen</p></li>
+</ul>
+<!-- No 9 in CWE Top 2023 -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-352-cross-site-request-forgery-csrf">
+<h2>CWE-352: Cross-Site Request Forgery (<em>CSRF</em>)</h2>
+</div><div class="ld-slide" id="cwe-352-cross-site-request-forgery-csrf-1">
+<h2>CWE-352: Cross-Site Request Forgery (CSRF)</h2>
+<dl class="field-list">
+<dt>Kurze Beschreibung<span class="colon">:</span></dt>
+<dd><p>Die Webanwendung prüft nicht bzw. kann nicht prüfen, ob eine Anfrage absichtlich von dem Benutzer gestellt wurde, von dessen Browser sie übermittelt wurde.</p>
+<p>D.h. eine CSRF Schwachstelle nutzt das Vertrauen aus, das eine Webseite in den Browser eines Nutzers hat. Bei einem CSRF-Angriff wird ein legitimer Nutzer von einem Angreifer dazu gebracht, ohne sein Wissen eine Anfrage zu übermitteln, die er nicht beabsichtigt hat und auch nicht bemerkt.</p>
+</dd>
+<dt>Missbrauchswahrscheinlichkeit<span class="colon">:</span></dt>
+<dd><p>Mittel</p>
+</dd>
+<dt>Auswirkung<span class="colon">:</span></dt>
+<dd><p>Hängt von den Nutzerrechten ab</p>
+</dd>
+<dt>Ausmaß<span class="colon">:</span></dt>
+<dd><p>Vertraulichkeit, Integrität, Verfügbarkeit</p>
+</dd>
+</dl>
+</div><div class="scriptsize ld-slide" id="cwe-352-cross-site-request-forgery-csrf-ursprungliche-form">
+<h2>CWE-352: Cross-Site Request Forgery (CSRF) - ursprüngliche Form</h2>
+<img alt="Cross-Site Request Forgery (CSRF) - ursprüngliche Form" src="images/csrf.svg" style="height: 1050px;" />
+</div><div class="ld-slide" id="cwe-352-cross-site-request-forgery-csrf-in-2023">
+<h2>CWE-352: Cross-Site Request Forgery (CSRF) in 2023</h2>
+<blockquote class="epigraph">
+<p>Fiber ist ein von Express inspiriertes Web-Framework, das in Go geschrieben wurde. In der Anwendung wurde eine Cross-Site Request Forgery (CSRF)-Schwachstelle entdeckt, die es einem Angreifer ermöglicht, beliebige Werte zu injizieren und bösartige Anfragen im Namen eines Benutzers zu fälschen. Diese Schwachstelle kann es einem Angreifer ermöglichen, beliebige Werte ohne Authentifizierung einzuschleusen oder verschiedene böswillige Aktionen im Namen eines authentifizierten Benutzers durchzuführen, wodurch die Sicherheit und Integrität der Anwendung gefährdet werden kann. Die Schwachstelle wird durch eine unsachgemäße Validierung und Durchsetzung von CSRF-Tokens innerhalb der Anwendung verursacht.</p>
+<p class="attribution">—<a class="reference external" href="https://nvd.nist.gov/vuln/detail/CVE-2023-45128">CVE-2023-45128</a> (übersetzt mit DeepL)</p>
+</blockquote>
+<div class="small margin-top-1em docutils container">
+<p>Identifizierte Schwachstellen: <em>CWE-20</em> Improper Input Validation, <em>CWE-807</em> Reliance on Untrusted Inputs in a Security Decision, <em>CWE-565</em> Reliance on Cookies without Validation and Integrity Checking, <strong>CWE-352</strong> Cross-Site Request Forgery</p>
+</div>
+</div><div class="ld-slide" id="cwe-352-cross-site-request-forgery-csrf-in-2023-1">
+<h2>CWE-352: Cross-Site Request Forgery (CSRF) in 2023</h2>
+<p>Standardtechniken, die CSRF verhindern <em>sollen</em>:</p>
+<ul class="incremental simple">
+<li><p>Same-site Cookies (für Authentifizierung)</p></li>
+<li><p>CSRF-Tokens, wenn diese die folgenden Eigenschaften haben:</p>
+<ul>
+<li><p>Einmalig pro Nutzersession</p></li>
+<li><p>Geheim</p></li>
+<li><p>nicht vorhersagbar (z.B. eine sehr große, sicher erzeugte Zufallszahl)</p></li>
+</ul>
+</li>
+<li><p>Validierung des Referer-Header</p></li>
+<li><p>Custom Request Header, da diese nur vom JavaScript Code gesetzt werden können, der den gleichen Ursprung hat (siehe <em>Same Origin Policy</em> (SOP)).</p></li>
+</ul>
+<div class="incremental small foundations docutils container">
+<p>Auch diese Techniken lassen sich ggf. (alle zusammen) aushebeln, <a class="reference external" href="https://portswigger.net/web-security/csrf">wenn die Anwendung weitere Schwachstellen aufweist</a>. So gibt/gab es Anwendungen, die Anfragen, die nur über ein POST request gestellt werden sollten, auch bei einem GET akzeptiert haben.</p>
+</div>
+<div class="supplemental docutils container">
+<p>In allen Browsern wird in der Zwischenzeit für Cookies die Same-site Policy angewandt mit dem Wert <code>Lax</code>. Dieser Wert hat zur Folge, dass Cookies nur dann gesendet werden, wenn der Nutzer explizit auf einen Link klickt oder sich innerhalb der selben Seite befindet.</p>
+</div>
+<!-- No 10 in CWE Top 2023 -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-434-unrestricted-upload-of-file-with-dangerous-type">
+<h2>CWE-434: Unrestricted Upload of File with Dangerous Type</h2>
+</div><div class="ld-slide" id="cwe-434-unrestricted-upload-of-file-with-dangerous-type-1">
+<h2>CWE-434: Unrestricted Upload of File with Dangerous Type</h2>
+<dl class="field-list simple">
+<dt>Kurze Beschreibung<span class="colon">:</span></dt>
+<dd><p>Es ist möglich potentiell gefährliche Dateien hochzuladen bzw. zu transferieren, die von der Anwendung automatisch im Kontext der Anwendung verarbeitet werden.</p>
+</dd>
+<dt>Missbrauchswahrscheinlichkeit<span class="colon">:</span></dt>
+<dd><p>Mittel</p>
+</dd>
+<dt>Auswirkung<span class="colon">:</span></dt>
+<dd><p>Bis hin zur Ausführung von beliebigen Befehlen</p>
+</dd>
+<dt>Ausmaß<span class="colon">:</span></dt>
+<dd><p>Vertraulichkeit, Integrität, Verfügbarkeit</p>
+</dd>
+</dl>
+</div><div class="scriptsize ld-slide" id="cwe-434-unrestricted-upload-of-file-with-dangerous-type-beispiel">
+<h2>CWE-434: Unrestricted Upload of File with Dangerous Type - Beispiel</h2>
+<p>HTML:</p>
+<pre class="code HTML literal-block"><code><span class="punctuation">&lt;</span><span class="name tag">form</span> <span class="name attribute">action</span><span class="operator">=</span><span class="literal string">&quot;upload_picture.php&quot;</span> <span class="name attribute">method</span><span class="operator">=</span><span class="literal string">&quot;post&quot;</span> <span class="name attribute">enctype</span><span class="operator">=</span><span class="literal string">&quot;multipart/form-data&quot;</span><span class="punctuation">&gt;</span>
+    Choose a file to upload:
+    <span class="punctuation">&lt;</span><span class="name tag">input</span> <span class="name attribute">type</span><span class="operator">=</span><span class="literal string">&quot;file&quot;</span> <span class="name attribute">name</span><span class="operator">=</span><span class="literal string">&quot;filename&quot;</span><span class="punctuation">/&gt;</span>
+    <span class="punctuation">&lt;</span><span class="name tag">br</span><span class="punctuation">/&gt;</span>
+    <span class="punctuation">&lt;</span><span class="name tag">input</span> <span class="name attribute">type</span><span class="operator">=</span><span class="literal string">&quot;submit&quot;</span> <span class="name attribute">name</span><span class="operator">=</span><span class="literal string">&quot;submit&quot;</span> <span class="name attribute">value</span><span class="operator">=</span><span class="literal string">&quot;Submit&quot;</span><span class="punctuation">/&gt;</span>
+<span class="punctuation">&lt;/</span><span class="name tag">form</span><span class="punctuation">&gt;</span></code></pre>
+<p>PHP:</p>
+<pre class="code PHP literal-block"><code><span class="other">// Define the target location where the picture being
+// uploaded is going to be saved.
+$target = &quot;pictures/&quot; . basename($_FILES['uploadedfile']['name']);
+
+// Move the uploaded file to the new location.
+move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target)</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<p>Problem: Die Datei <code>$_FILES['uploadedfile']['name']</code> wird nicht validiert. Sollte der Nutzer statt einem Bild eine PHP Datei hochladen, dann wird diese beim einem späteren Aufruf im Kontext der Anwendung ausgeführt.</p>
+<p>Eine einfache Möglichkeit die Schwachstelle auszunutzen wäre die Datei:</p>
+<blockquote>
+<pre class="code PHP literal-block"><code><span class="other">// malicious.php
+
+</span><span class="comment preproc">&lt;?php</span>
+<span class="name builtin">system</span><span class="punctuation">(</span><span class="name variable">$_GET</span><span class="punctuation">[</span><span class="literal string single">'cmd'</span><span class="punctuation">]);</span>
+<span class="comment preproc">?&gt;</span></code></pre>
+<p>Mit einer Anfrage wie:</p>
+<blockquote>
+<p><span class="docutils literal"><span class="pre">...malicious.php?cmd=ls%20-l</span></span></p>
+</blockquote>
+</blockquote>
+</div></div><div class="ld-slide" id="cwe-434-unrestricted-upload-of-file-with-dangerous-type-abhilfemasznahmen-und-erkennung">
+<h2>CWE-434: Unrestricted Upload of File with Dangerous Type - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="simple">
+<li><p>Beim Speichern von Dateien niemals den ursprünglichen Dateinamen verwenden sondern einen vom Server generierten.</p></li>
+<li><p>Speicher die Daten nicht im Kontext der Webanwendung sondern außerhalb des Webroots.</p></li>
+<li><p>Prüfe die Dateiendung. Prüfe den Inhalt der Datei gegen die Erwartung.</p></li>
+<li><p>Ausführen der Webanwendung mit minimalen Rechten.</p></li>
+<li><p>Sandbox.</p></li>
+</ul>
+<!-- No 2 in 2023 CWE Top 10 KEV Weaknesses -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-122-heap-based-buffer-overflow">
+<h2>CWE-122: Heap-based Buffer Overflow</h2>
+</div><div class="ld-slide" id="cwe-122-heap-based-buffer-overflow-1">
+<h2>CWE-122: Heap-based Buffer Overflow</h2>
+<dl class="field-list simple">
+<dt>Kurze Beschreibung<span class="colon">:</span></dt>
+<dd><p>Ein Pufferüberlauf, bei dem der Puffer, der überschrieben wird, auf dem Heap alloziiert wurde, was im Allgemeinen bedeutet, dass der Puffer mit einer Routine wie malloc() allloziiert wurde.</p>
+</dd>
+<dt>Missbrauchswahrscheinlichkeit<span class="colon">:</span></dt>
+<dd><p>Hoch</p>
+</dd>
+<dt>Sprachen<span class="colon">:</span></dt>
+<dd><p>C/C++</p>
+</dd>
+<dt>Auswirkung<span class="colon">:</span></dt>
+<dd><p>Bis hin zur Ausführung von beliebigen Befehlen</p>
+</dd>
+<dt>Ausmaß<span class="colon">:</span></dt>
+<dd><p>Vertraulichkeit, Integrität, Verfügbarkeit, Zugriffskontrolle</p>
+</dd>
+</dl>
+</div><div class="scriptsize ld-slide" id="cwe-122-heap-based-buffer-overflow-2">
+<h2>CWE-122: Heap-based Buffer Overflow</h2>
+<p><span class="ger-quote">Basisbeispiel</span> in C:</p>
+<pre class="code C literal-block"><code><span class="comment preproc">#define BUFSIZE 256
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">argc</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">**</span><span class="name">argv</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">buf</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">buf</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="name">malloc</span><span class="punctuation">(</span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="punctuation">)</span><span class="operator">*</span><span class="name">BUFSIZE</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="name">strcpy</span><span class="punctuation">(</span><span class="name">buf</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]);</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<p>Problem: Die Größe von buf ist unabhängig von der Größe von <code>argv[1]</code>.</p>
+</div></div><div class="ld-slide" id="cwe-122-heap-based-buffer-overflow-abhilfemasznahmen-und-erkennung">
+<h2>CWE-122: Heap-based Buffer Overflow - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="simple">
+<li><p>Verwendung einer sicheren Programmiersprache</p></li>
+<li><p>Verwendung von sicheren APIs</p></li>
+<li><p>Kompilierung unter Verwendung entsprechender Schutzmechanismen (Position-Independent Executables (PIE), Canaries, ...)</p></li>
+<li><p>Härtung der Umgebung (z.B. ASLR)</p></li>
+<li><p>Statische Analyse Werkzeuge</p></li>
+<li><p>Fuzzing</p></li>
+</ul>
+<!-- No 6 in 2023 CWE Top 10 KEV Weaknesses https://cwe.mitre.org/top25/archive/2023/2023_kev_list.html -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-502-deserialization-of-untrusted-data">
+<h2>CWE-502: Deserialization of Untrusted Data</h2>
+</div><div class="ld-slide" id="cwe-502-deserialization-of-untrusted-data-1">
+<h2>CWE-502: Deserialization of Untrusted Data</h2>
+<dl class="field-list simple">
+<dt>Kurze Beschreibung<span class="colon">:</span></dt>
+<dd><p>Nicht vertrauenswürdige Daten werden deserialisiert ohne - <em>je nach Bibliothek notwendige vorhergehende</em> - Prüfung, dass die Daten die erwarteten Eigenschaften haben.</p>
+</dd>
+<dt>Missbrauchswahrscheinlichkeit<span class="colon">:</span></dt>
+<dd><p>Mittel</p>
+</dd>
+<dt>Sprachen<span class="colon">:</span></dt>
+<dd><p>Java, Ruby, Python, PHP, JavaScript, ...</p>
+</dd>
+<dt>Ausmaß<span class="colon">:</span></dt>
+<dd><p>Insbesondere: Integrität und Verfügbarkeit (DoS); weitere Effekte sind vom Kontext abhängig.</p>
+</dd>
+<dt>Alternative Begriffe<span class="colon">:</span></dt>
+<dd><p>(Un-)Marshalling, (Un-)Pickling</p>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<p>Bei der Serialisierung werden programminterne Objekte so verpackt, dass die Daten extern gespeichert und/oder übertragen werden können. Die Deserialisierung kehrt diesen Prozess um.</p>
+</div>
+</div><div class="scriptsize ld-slide" id="cwe-502-deserialization-of-untrusted-data-beispiel">
+<h2>CWE-502: Deserialization of Untrusted Data - Beispiel</h2>
+<p>Java</p>
+<pre class="code Java literal-block"><code><span class="name">File</span><span class="whitespace"> </span><span class="name">file</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">File</span><span class="punctuation">(</span><span class="literal string">&quot;object.obj&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="whitespace"> </span><span class="name">FileInputStream</span><span class="whitespace"> </span><span class="name">fin</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">FileInputStream</span><span class="punctuation">(</span><span class="name">file</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="name">ObjectInputStream</span><span class="whitespace"> </span><span class="name">oin</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">ObjectInputStream</span><span class="punctuation">(</span><span class="name">fin</span><span class="punctuation">)</span><span class="whitespace">
+    </span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">javax</span><span class="punctuation">.</span><span class="name attribute">swing</span><span class="punctuation">.</span><span class="name attribute">JButton</span><span class="whitespace"> </span><span class="name">button</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">javax</span><span class="punctuation">.</span><span class="name attribute">swing</span><span class="punctuation">.</span><span class="name attribute">JButton</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">oin</span><span class="punctuation">.</span><span class="name attribute">readObject</span><span class="punctuation">();</span><span class="whitespace">
+    </span><span class="punctuation">...</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+<div class="supplemental docutils container">
+<p>In diesem Beispiel wird ein Objekt aus einer Datei gelesen und in eine Variable vom Typ <code>javax.swing.JButton</code> geschrieben. Der Typ des Objekts wird nicht geprüft. Es ist möglich, dass die Datei ein Objekt enthält, welches vom Typ <code>javax.swing.JButton</code> ist, aber nicht die Eigenschaften hat, die ein Button haben sollte. In diesem Fall wird keine Exception geworfen, aber das Objekt kann nicht wie erwartet verwendet werden bzw. es kommt zur Ausführung von beliebigem Code.</p>
+</div>
+</div><div class="scriptsize ld-slide" id="cwe-502-deserialization-of-untrusted-data-beispiel-1">
+<h2>CWE-502: Deserialization of Untrusted Data - Beispiel</h2>
+<p>Python</p>
+<pre class="code Python literal-block"><code><span class="keyword">class</span> <span class="name class">ExampleProtocol</span><span class="punctuation">(</span><span class="name">protocol</span><span class="operator">.</span><span class="name">Protocol</span><span class="punctuation">):</span><span class="whitespace">
+
+</span>    <span class="keyword">def</span> <span class="name function">dataReceived</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">data</span><span class="punctuation">):</span><span class="whitespace">
+</span>        <span class="comment single"># ... parse the incoming data and</span><span class="whitespace">
+</span>        <span class="comment single"># after receiving headers, call confirmAuth() to authenticate</span><span class="whitespace">
+
+</span>    <span class="keyword">def</span> <span class="name function">confirmAuth</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">headers</span><span class="punctuation">):</span><span class="whitespace">
+</span>        <span class="keyword">try</span><span class="punctuation">:</span><span class="whitespace">
+</span>            <span class="name">token</span> <span class="operator">=</span> <span class="name">cPickle</span><span class="operator">.</span><span class="name">loads</span><span class="punctuation">(</span><span class="name">base64</span><span class="operator">.</span><span class="name">b64decode</span><span class="punctuation">(</span><span class="name">headers</span><span class="punctuation">[</span><span class="literal string single">'AuthToken'</span><span class="punctuation">]))</span><span class="whitespace">
+</span>            <span class="keyword">if</span> <span class="operator word">not</span> <span class="name">check_hmac</span><span class="punctuation">(</span><span class="name">token</span><span class="punctuation">[</span><span class="literal string single">'signature'</span><span class="punctuation">],</span> <span class="name">token</span><span class="punctuation">[</span><span class="literal string single">'data'</span><span class="punctuation">],</span> <span class="name">getSecretKey</span><span class="punctuation">()):</span><span class="whitespace">
+</span>                <span class="keyword">raise</span> <span class="name">AuthFail</span><span class="whitespace">
+</span>            <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">secure_data</span> <span class="operator">=</span> <span class="name">token</span><span class="punctuation">[</span><span class="literal string single">'data'</span><span class="punctuation">]</span><span class="whitespace">
+</span>        <span class="keyword">except</span><span class="punctuation">:</span><span class="whitespace">
+</span>            <span class="keyword">raise</span> <span class="name">AuthFail</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<p>In diesem Fall könnte man der Funktion ein Objekt unterschieben, dass bei der Deserialisierung beliebigen Code ausführt (zum Beispiel um einen weitere Prozess zu starten.).</p>
+<p>Dieses Problem wird in der Dokumentation  auch explizit erwähnt:</p>
+<blockquote class="epigraph">
+<p>Warning The pickle module is not secure. Only unpickle data you trust.
+It is possible to construct malicious pickle data which will execute arbitrary code during unpickling. Never unpickle data that could have come from an untrusted source, or that could have been tampered with.</p>
+<p class="attribution">—<a class="reference external" href="https://docs.python.org/3/library/pickle.html">Python 3.12</a></p>
+</blockquote>
+</div></div><div class="ld-slide" id="cwe-502-deserialization-of-untrusted-data-abhilfemasznahmen-und-erkennung">
+<h2>CWE-502: Deserialization of Untrusted Data - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="simple">
+<li><p>ggf. Einsatz von Signaturen, um sicherzustellen, dass der serialisierte Code nicht manipuliert wurde</p></li>
+<li><p>Serialisiere nur Daten, die auch wirklich serialisiert werden müssen</p></li>
+<li><p>Verwendung von sicheren Formaten (z.B. JSON)</p></li>
+<li><p>statische Analyse</p></li>
+</ul>
+<p class="supplemental">Empfohlene Lektüre: <a class="reference external" href="https://portswigger.net/web-security/deserialization">Deserialization Vulnerabilities</a></p>
+<!-- No 7 in 2023 CWE Top 10 KEV Weaknesses https://cwe.mitre.org/top25/archive/2023/2023_kev_list.html -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-918-server-side-request-forgery-ssrf">
+<h2>CWE-918: Server-Side Request Forgery (SSRF)</h2>
+</div><div class="ld-slide" id="cwe-918-server-side-request-forgery">
+<h2>CWE-918: Server-Side Request Forgery</h2>
+<dl class="field-list simple">
+<dt>Kurze Beschreibung<span class="colon">:</span></dt>
+<dd><p>Der Webserver erhält eine URL oder eine ähnliche Anfrage und ruft den Inhalt dieser URL ab, stellt aber nicht sicher, dass die Anfrage an das erwartete Ziel gesendet wird.</p>
+</dd>
+<dt>Technologien<span class="colon">:</span></dt>
+<dd><p>Webserver</p>
+</dd>
+<dt>Ausmaß<span class="colon">:</span></dt>
+<dd><p>Vetraulichkeit, Integrität</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="cwe-918-server-side-request-forgery-1">
+<h2>CWE-918: Server-Side Request Forgery</h2>
+<img alt="Server-Side Request Forgery (SSRF)" src="images/ssrf.svg" style="width: 1800px;" />
+</div><div class="scriptsize ld-slide" id="cwe-918-server-side-request-forgery-beispiel-cve-2002-1484">
+<h2>CWE-918: Server-Side Request Forgery - Beispiel: CVE-2002-1484</h2>
+<dl class="field-list simple">
+<dt>Beschreibung<span class="colon">:</span></dt>
+<dd><p>Wenn der DB4Web-Server so konfiguriert ist, dass er ausführliche Debug-Meldungen verwendet, können entfernte Angreifer DB4Web als Proxy verwenden und über eine Anfrage an eine URL, die die Ziel-IP-Adresse und den Port angibt, TCP-Verbindungen zu anderen Systemen (Port-Scan) versuchen, was einen Verbindungsstatus in der resultierenden Fehlermeldung erzeugt.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>PoC<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="http://127.0.0.1/DB4Web/172.31.93.30:22/foo">http://127.0.0.1/DB4Web/172.31.93.30:22/foo</a></p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Workaround<span class="colon">:</span></dt>
+<dd><p>Der Hersteller betrachtet die Funktionalität nicht als Fehler, sondern als nützliches Feature für Entwickler. Um die Ausnutzung dieses Features zu verhindern, muss die Standardfehlerseite durch eine benutzerdefinierte Fehlerseite ersetzt werden.</p>
+</dd>
+</dl>
+</div><div class="scriptsize ld-slide" id="cwe-918-server-side-request-forgery-beispiel-nodejs-unicode-handling-fehler">
+<h2>CWE-918: Server-Side Request Forgery - Beispiel: NodeJS Unicode Handling Fehler <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<p>JavaScript:</p>
+<pre class="code JavaScript literal-block"><code><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name other">base</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string double">&quot;http://orange.tw/sandbox/&quot;</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name other">path</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name other">req</span><span class="punctuation">.</span><span class="name other">query</span><span class="punctuation">.</span><span class="name other">path</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name other">path</span><span class="punctuation">.</span><span class="name other">indexOf</span><span class="punctuation">(</span><span class="literal string double">&quot;..&quot;</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="operator">-</span><span class="literal number float">1</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="comment single">// check for no directory traversal</span><span class="whitespace">
+    </span><span class="name other">http</span><span class="punctuation">.</span><span class="name other">get</span><span class="punctuation">(</span><span class="name other">base</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name other">path</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name other">callback</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+<div class="incremental docutils container">
+<p>Beispiel URL (<em>U+FF2E Full width Latin capital letter N</em>):</p>
+<pre class="code restructuredtext incremental literal-block"><code>  http://orange.tw/sandbox/ＮＮ/passwd</code></pre>
+<pre class="code restructuredtext incremental literal-block"><code>≙ http://orange.tw/sandbox/\xFF\x2E\xFF\x2E/passwd</code></pre>
+<pre class="code restructuredtext incremental literal-block"><code>≙ http://orange.tw/sandbox/\x2E\x2E/passwd</code></pre>
+<pre class="code restructuredtext incremental literal-block"><code>≙ http://orange.tw/sandbox/../passwd</code></pre>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.blackhat.com/docs/us-17/thursday/us-17-Tsai-A-New-Era-Of-SSRF-Exploiting-URL-Parser-In-Trending-Programming-Languages.pdf">Exploiting URL Parsers</a></p>
+</aside>
+</aside>
+</div><div class="scriptsize ld-slide" id="cwe-918-server-side-request-forgery-beispiel-url-parser-vs-abfrage-der-url">
+<h2>CWE-918: Server-Side Request Forgery - Beispiel: URL Parser vs. Abfrage der URL</h2>
+<p>PHP (&gt; 7.0.13):</p>
+<pre class="code php literal-block"><code><span class="other">$url = 'http://foo&#64;127.0.0.1⬜&#64;google.com:11211/'; // ⬜ is &quot;just&quot; a space
+$parsed = parse_url($url);
+var_dump($parsed[host]); // string(10) &quot;google.com&quot;
+var_dump($parsed[port]); // int(11211)
+curl($url);</span></code></pre>
+<p>Ergebnis:</p>
+<div class="incremental docutils container">
+<p><span class="docutils literal">curl</span> fragt die URL <span class="docutils literal">127.0.0.1:11211</span> abfragen.</p>
+</div>
+</div><div class="ld-slide" id="cwe-918-server-side-request-forgery-variante-blind-ssrf">
+<h2>CWE-918: Server-Side Request Forgery - Variante: Blind SSRF</h2>
+<p>Bei <em>Blind SSRF</em>-Schwachstellen werden auch Back-End-HTTP-Anfragen an eine bereitgestellte URL gestellt, die Antwort der Back-End-Anfrage jedoch nicht an die Front-End-Antwort der Anwendung zurückgegeben.</p>
+<div class="supplemental docutils container">
+<p>Empfohlene Lektüre: <a class="reference external" href="https://portswigger.net/web-security/ssrf/blind">Blind Server-Side Request Forgery (SSRF)</a></p>
+</div>
+</div><div class="ld-slide" id="cwe-918-server-side-request-forgery-abhilfemasznahmen-und-erkennung">
+<h2>CWE-918: Server-Side Request Forgery - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="simple">
+<li><p>keine (Wieder-)Verwendung der Eingabe URL</p></li>
+<li><p>sichere APIs</p></li>
+<li><p>statische Analyse (insbesondere Datenflußanalysen)</p></li>
+<li><p>Behandlung von Zugriffen von lokalen Maschinen sollte mit der gleichen sorgfalt überprüft werden wie Zugriffe von externen Maschinen; andernfalls können kritische SSRF Angriffe durchgeführt werden</p></li>
+<li><p>Firewall/Network Policy um Zugriff auf interne Systeme zu verhindern</p></li>
+</ul>
+<!-- No 8 in 2023 CWE Top 10 KEV Weaknesses https://cwe.mitre.org/top25/archive/2023/2023_kev_list.html -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-843-access-of-resource-using-incompatible-type-type-confusion">
+<h2>CWE-843: Access of Resource Using Incompatible Type (Type Confusion)</h2>
+</div><div class="ld-slide" id="cwe-843-access-of-resource-using-incompatible-type-type-confusion-1">
+<h2>CWE-843: Access of Resource Using Incompatible Type (Type Confusion)</h2>
+<dl class="field-list simple">
+<dt>Beschreibung<span class="colon">:</span></dt>
+<dd><p>Eine Anwendung initialisiert eine Ressource mit einem bestimmten Typ (z.B. Zeiger (<span class="eng">Pointer</span>), Objekt, etc.). Später wird auf die Ressource (Variable) dann mit einem anderen Typ zugegriffen.</p>
+</dd>
+<dt>Sprachen<span class="colon">:</span></dt>
+<dd><p>insbesondere (aber nicht ausschließlich) C/C++; im Prinzip in jeder Sprache, die automatische Typkonvertierungen durchführt.</p>
+</dd>
+<dt>Ausmaß<span class="colon">:</span></dt>
+<dd><p>Integrität, Verfügbarkeit, Vertraulichkeit</p>
+</dd>
+</dl>
+</div><div class="scriptsize ld-slide" id="cwe-843-access-of-resource-using-incompatible-type-beispiel-in-c">
+<h2>CWE-843: Access of Resource Using Incompatible Type - Beispiel in C</h2>
+<pre class="code c literal-block"><code><span class="comment preproc">#define NAME_TYPE 1
+#define ID_TYPE 2
+</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">MessageBuffer</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">msgType</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="keyword">union</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">name</span><span class="punctuation">;</span><span class="whitespace">
+        </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">nameID</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">};</span><span class="whitespace">  </span><span class="punctuation">};</span><span class="whitespace">
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">main</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">argc</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">**</span><span class="name">argv</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">MessageBuffer</span><span class="whitespace"> </span><span class="name">buf</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">defaultMessage</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string">&quot;Hello World&quot;</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">buf</span><span class="punctuation">.</span><span class="name">msgType</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">NAME_TYPE</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">buf</span><span class="punctuation">.</span><span class="name">name</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">defaultMessage</span><span class="punctuation">;</span><span class="whitespace">              </span><span class="comment single">// printf(&quot;*buf.name %p&quot;, buf.name);
+</span><span class="whitespace">    </span><span class="name">buf</span><span class="punctuation">.</span><span class="name">nameID</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">int</span><span class="punctuation">)(</span><span class="name">defaultMessage</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// printf(&quot;*buf.name %p&quot;, buf.name);
+</span><span class="whitespace">    </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">buf</span><span class="punctuation">.</span><span class="name">msgType</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">NAME_TYPE</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;%s</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">buf</span><span class="punctuation">.</span><span class="name">name</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="keyword">else</span><span class="whitespace">                          </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;ID %d</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">buf</span><span class="punctuation">.</span><span class="name">nameID</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<p>Der Zugriff auf <span class="docutils literal">buf.nameId</span> manipuliert den Zeiger auf <span class="docutils literal">buf.name</span>. Dieser zeigt nun auf die Speicherstelle <span class="docutils literal">defaultMessage +1</span> weswegen der nachfolgende Zugriff <span class="docutils literal">buf.name</span> <span class="ger-quote">nur</span> noch <span class="docutils literal">ello World</span> ausgibt und nicht mehr <span class="docutils literal">Hello World</span>.</p>
+</div></div><div class="scriptsize ld-slide" id="cwe-843-access-of-resource-using-incompatible-type-beispiel-in-perl">
+<h2>CWE-843: Access of Resource Using Incompatible Type - Beispiel in Perl</h2>
+<pre class="code perl literal-block"><code><span class="keyword">my</span><span class="whitespace"> </span><span class="name variable">$UserPrivilegeArray</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">[</span><span class="literal string">&quot;user&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;user&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;admin&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;user&quot;</span><span class="punctuation">];</span><span class="whitespace">
+</span><span class="keyword">my</span><span class="whitespace"> </span><span class="name variable">$userID</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">get_current_user_ID</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name variable">$UserPrivilegeArray</span><span class="whitespace"> </span><span class="operator word">eq</span><span class="whitespace"> </span><span class="literal string">&quot;user&quot;</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword">print</span><span class="whitespace"> </span><span class="literal string">&quot;Regular user!\n&quot;</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="keyword">else</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword">print</span><span class="whitespace"> </span><span class="literal string">&quot;Admin!\n&quot;</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace">
+
+</span><span class="keyword">print</span><span class="whitespace"> </span><span class="literal string">&quot;\$UserPrivilegeArray = $UserPrivilegeArray\n&quot;</span><span class="punctuation">;</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<p>In der Zeile: <code>if ($UserPrivilegeArray eq &quot;user&quot;)</code> wurde vergesen die Indizierung (<code>$userID</code>) zu verwenden (<code>$UserPrivilegeArray-&gt;{$userID}</code>). Es wird also das Array als Ganzes mit dem String <span class="docutils literal">user</span> verglichen und der Vergleich ist immer <span class="docutils literal">falsch <span class="pre">(:eng:`false`)</span></span>.</p>
+</div><!-- No 10 in 2023 CWE Top 10 KEV Weaknesses https://cwe.mitre.org/top25/archive/2023/2023_kev_list.html -->
+</div><div class="new-subsection transition-move-to-top ld-slide" id="cwe-306-missing-authentication-for-critical-function">
+<h2>CWE-306: Missing Authentication for Critical Function</h2>
+</div><div class="ld-slide" id="cwe-306-missing-authentication-for-critical-function-1">
+<h2>CWE-306: Missing Authentication for Critical Function</h2>
+<dl class="field-list simple">
+<dt>Beschreibung<span class="colon">:</span></dt>
+<dd><p>Eine Anwendung führt eine kritische Funktion aus, ohne die Identität des Nutzers zu überprüfen. Kritischer Funktionen sind solche, die entweder signifikante Ressourcen verbrauchen oder nur von privilegierten Nutzern ausgeführt werden sollten.</p>
+</dd>
+<dt>Sprachen<span class="colon">:</span></dt>
+<dd><p>&quot;alle&quot;</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="cwe-306-missing-authentication-for-critical-function-abhilfemasznahmen-und-erkennung">
+<h2>CWE-306: Missing Authentication for Critical Function - Abhilfemaßnahmen und Erkennung</h2>
+<ul class="incremental simple">
+<li><p>manuelle Code Reviews</p></li>
+<li><p>statische Analyse (Binärcode und/oder Quellcode)</p></li>
+<li></li>
+</ul>
+</div><div class="new-section ld-slide" id="open-worldwide-application-security-project-owasp">
+<h2>Open Worldwide Application Security Project (OWASP)</h2>
+</div><div class="ld-slide" id="owasp">
+<h2>OWASP</h2>
+<ul class="incremental simple">
+<li><p>gemeinnützige Stiftung, die sich für die Verbesserung der Sicherheit von Software einsetzt</p></li>
+<li><p>2001 gegründet</p></li>
+<li><p>weltweit tätig</p></li>
+<li><p>Stellt insbesondere Foren, Dokumente und Werkzeuge bereit</p></li>
+<li><p>Dokumente, die bei der Entwicklung sicherer Anwendungen unterstützen:</p>
+<ul>
+<li><p><a class="reference external" href="https://owasp.org/www-project-web-security-testing-guide/">OWASP Web Security Testing Guide</a></p></li>
+<li><p><a class="reference external" href="https://owasp.org/www-project-code-review-guide/">OWASP Code Review Guide</a></p></li>
+</ul>
+</li>
+<li><p>Ausgewählte Projekte:</p>
+<ul class="incremental">
+<li><p><a class="reference external" href="https://owasp.org/www-project-top-ten/">OWASP Top 10 (die relevantesten Sicherheitsprobleme bei Webanwendungen)</a></p></li>
+<li><p><a class="reference external" href="https://owasp.org/www-project-cheat-sheets/">Cheat Sheets</a></p></li>
+<li><p><a class="reference external" href="https://owasp.org/www-project-dependency-track/">OWASP Dependency-Track</a></p></li>
+<li><p><a class="reference external" href="https://owasp.org/www-project-web-security-testing-guide/">OWASP Web Security Testing Guide</a></p></li>
+</ul>
+</li>
+</ul>
+</div><div class="integrated-exercise ld-slide" id="ubung-schwachstelle-n-1">
+<h2>Übung: Schwachstelle(n) (1)</h2>
+<ol class="arabic simple scriptsize">
+<li><p>Benenne die Schwachstelle(n) entsprechend der CWEs (ohne ID).</p></li>
+<li><p>Identifiziere die für die Schwachstelle(n) relevanten Zeilen im Code.</p></li>
+<li><p>Gebe - falls möglich - einen Angriffsvektor an.</p></li>
+<li><p>Skizziere mögliche Auswirkung der Schwachstelle(n) (z.B. Verlust der Vertraulichkeit, Integrität oder Verfügbarkeit; Umgehung der Zugriffskontrolle; beliebige Codeausführung, ...)</p></li>
+</ol>
+<pre class="code C tiny literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment preproc">#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;stdio.h&gt;</span><span class="comment preproc">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="comment preproc">#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;string.h&gt;</span><span class="comment preproc">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="comment preproc"></span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">process</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">str</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">buffer</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">malloc</span><span class="punctuation">(</span><span class="literal number integer">16</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="name">strcpy</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">str</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="punctuation">...</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="comment single">// ... definitively executed in the future: free(buffer);
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="comment single"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">argc</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">argv</span><span class="punctuation">[])</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">argc</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Usage: %s &lt;string&gt;</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">0</span><span class="punctuation">]);</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="name">process</span><span class="punctuation">(</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]);</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<p>Die Länge von <code>str</code> wird nicht validiert. Es kommt somit potentiel zu einem &quot;Out-of-bounds Write&quot; (<code>strcpy(buffer,str)</code>). Ein String wäre jeder String, der länger als 16 Zeichen ist. Ein Angriffsvektor wäre z.B. ein String, der 17 Zeichen lang ist und am Ende ein <code>\0</code> enthält. Die Auswirkung wäre ein Pufferüberlauf, der ggf. zur Ausführung von beliebigem Code führt.</p>
+</div></div><div class="integrated-exercise ld-slide" id="ubung-schwachstelle-n-2">
+<h2>Übung: Schwachstelle(n) (2)</h2>
+<div class="scriptsize docutils container">
+<p>Sie analysieren eine REST API die folgendes Verhalten aufweist, wenn man einem Blog einen Kommentar hinzufügen möchte:</p>
+<pre class="code HTTP tiny literal-block"><code><span class="name function">POST</span> <span class="name namespace">/post/comment</span> <span class="keyword reserved">HTTP</span><span class="operator">/</span><span class="literal number">1.1</span>
+<span class="name attribute">Host</span><span class="operator">:</span> <span class="literal">important-website.com</span>
+<span class="name attribute">Content-Length</span><span class="operator">:</span> <span class="literal">100</span>
+
+postId=3&amp;comment=This+&lt;post&gt;+was+helpful.&amp;name=Karl+Gustav</code></pre>
+<p>Fragt man danach den Webservice nach dem Kommentar, dann erhält man folgendes zurück:</p>
+<pre class="code HTML tiny literal-block"><code><span class="punctuation">&lt;</span><span class="name tag">div</span> <span class="name attribute">class</span><span class="operator">=</span><span class="literal string">&quot;comment&quot;</span><span class="punctuation">&gt;</span>
+    <span class="punctuation">&lt;</span><span class="name tag">div</span> <span class="name attribute">class</span><span class="operator">=</span><span class="literal string">&quot;name&quot;</span><span class="punctuation">&gt;</span>Karl Gustav<span class="punctuation">&lt;/</span><span class="name tag">div</span><span class="punctuation">&gt;</span>
+    <span class="punctuation">&lt;</span><span class="name tag">div</span> <span class="name attribute">class</span><span class="operator">=</span><span class="literal string">&quot;comment&quot;</span><span class="punctuation">&gt;</span>This <span class="punctuation">&lt;</span><span class="name tag">post</span><span class="punctuation">&gt;</span> was helpful.<span class="punctuation">&lt;/</span><span class="name tag">div</span><span class="punctuation">&gt;</span>
+<span class="punctuation">&lt;/</span><span class="name tag">div</span><span class="punctuation">&gt;</span></code></pre>
+<p>Bewerten Sie die Schwachstelle: CWE Name, problematische Codestelle(n), möglicher Angriffsvektor und mögliche Auswirkung.</p>
+</div>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<p>Es handelt sich um eine <em>Reflected Cross-Site Scripting</em> Schwachstelle. Der Angreifer kann beliebigen Code ausführen, wenn er es schafft der angegriffenen Person den richtigen Link unterzuschieben. In diesem Fall wird der Code in der Variable <code>comment</code> ausgeführt. Der Angreifer könnte also z.B. folgende Anfrage stellen:</p>
+<p><code>POST /post/comment HTTP/1.1 Host: important-website.com Content-Length: 100 postId=3&amp;comment=&lt;script&gt;/*+Bad+stuff+here...+*/&lt;/script&gt;&amp;name=Karl+Gustav</code></p>
+</div></div><div class="integrated-exercise ld-slide" id="ubung-schwachstelle-n-3">
+<h2>Übung: Schwachstelle(n) (3)</h2>
+<div class="scriptsize docutils container">
+<p>Java:</p>
+<pre class="code Java tiny literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">String</span><span class="whitespace"> </span><span class="name">query</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="literal string">&quot;SELECT account_balance FROM user_data WHERE user_name = &quot;</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">        </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">request</span><span class="punctuation">.</span><span class="name attribute">getParameter</span><span class="punctuation">(</span><span class="literal string">&quot;customerName&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace">    </span><span class="name">Statement</span><span class="whitespace"> </span><span class="name">statement</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">connection</span><span class="punctuation">.</span><span class="name attribute">createStatement</span><span class="punctuation">(</span><span class="whitespace"> </span><span class="punctuation">...</span><span class="whitespace"> </span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace">    </span><span class="name">ResultSet</span><span class="whitespace"> </span><span class="name">results</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">statement</span><span class="punctuation">.</span><span class="name attribute">executeQuery</span><span class="punctuation">(</span><span class="whitespace"> </span><span class="name">query</span><span class="whitespace"> </span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">7 </small><code data-lineno="7 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<p>Bewerten Sie die Schwachstelle: CWE Name, problematische Codestelle(n), möglicher Angriffsvektor und mögliche Auswirkung.</p>
+</div>
+</div><div class="integrated-exercise ld-slide" id="ubung-schwachstelle-n-4">
+<h2>Übung: Schwachstelle(n) (4)</h2>
+<aside class="admonition tiny the-blue-background note">
+<p class="admonition-title">Note</p>
+<p><strong>URL Encoding</strong></p>
+<dl class="field-list simple">
+<dt>%20<span class="colon">:</span></dt>
+<dd><p>Leerzeichen</p>
+</dd>
+<dt>%22<span class="colon">:</span></dt>
+<dd><p>&quot;</p>
+</dd>
+<dt>%3C<span class="colon">:</span></dt>
+<dd><p>&lt;</p>
+</dd>
+<dt>%3E<span class="colon">:</span></dt>
+<dd><p>&gt;</p>
+</dd>
+<dt>%2F<span class="colon">:</span></dt>
+<dd><p>/</p>
+</dd>
+</dl>
+</aside>
+<div class="scriptsize docutils container">
+<p>Sie beobachten folgendes Verhalten einer Webseite:</p>
+<p><strong>Anfrage</strong></p>
+<pre class="code http literal-block"><code><span class="error">https://my-website.com/search?</span><span class="whitespace">
+</span><span class="error">      term=This%20is%20a%20%3C%22%3Egift%3C%2F%22%3E</span></code></pre>
+<p><strong>Antwort</strong></p>
+<pre class="code HTML literal-block"><code><span class="punctuation">&lt;</span><span class="name tag">div</span> <span class="name attribute">class</span><span class="operator">=</span><span class="literal string">&quot;search-result&quot;</span><span class="punctuation">&gt;</span>
+    <span class="punctuation">&lt;</span><span class="name tag">div</span> <span class="name attribute">class</span><span class="operator">=</span><span class="literal string">&quot;title&quot;</span><span class="punctuation">&gt;</span>This is a <span class="error">&lt;</span>&quot;&gt;gift<span class="error">&lt;</span>/&quot;&gt;<span class="punctuation">&lt;/</span><span class="name tag">div</span><span class="punctuation">&gt;</span>
+<span class="punctuation">&lt;/</span><span class="name tag">div</span><span class="punctuation">&gt;</span></code></pre>
+<p>Bewerten Sie die Schwachstelle: CWE Name, problematische Codestelle(n), möglicher Angriffsvektor und mögliche Auswirkung.</p>
+</div>
+<div class="protected-exercise-solution">
+<p class="rubric">Solution</p>
+<p>Es handelt sich um eine <em>Reflected Cross-Site Scripting</em> Schwachstelle. Der Angreifer kann beliebigen Code ausführen, wenn er es schafft der angegriffenen Person den richtigen Link unterzuschieben. In diesem Fall wird der Code in der Variable <code>term</code> ausgeführt. Der Angreifer könnte also z.B. folgende Anfrage stellen:</p>
+<p><code>https://my-website.com/search?term=&lt;script&gt;/*+Bad+stuff+here...+*/&lt;/script&gt;`</code></p>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,674 @@
+/*
+    A layout with two or three columns based on DIVs.
+
+    When we want to have a layout with just two or three columns, using (rst) 
+    tables causes a lot of syntactic overhead and also makes it hard to achieve
+    a pleasant styling. Therefore, we opted for using flex layout, because using
+    the css column property has proven to be vey brittle. Sometime the elements
+    in each column are moved between the columns when it is opened/shown 
+    a second time and in particular when the user wants to print the slides 
+    using the css column property for styling slides leads to totally unexpected
+    results.
+*/
+.three-columns,
+.two-columns {
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.two-columns>.column {
+    width: 50%;
+}
+
+.three-columns>.column {
+    width: calc(100% / 3);
+}
+
+.three-columns.no-default-width>.column,
+.two-columns.no-default-width>.column {
+    width: unset;
+}
+
+.column {
+    box-sizing: border-box;
+    margin: 0px;
+    padding-left: 6px;
+    padding-right: 6px;
+    flex-grow: 1;
+}
+
+.column:not(:last-child):not(.no-separator) {
+    border-right: 2px solid gray;
+}
+
+
+/*
+    Styling of standard links ("a" elements).
+*/
+
+a:link,
+a:visited {
+    color: var(--dhbw-red);
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/*
+    Styling of standard rst footnotes.
+*/
+
+.footnote-list {
+    position: absolute;
+    bottom: 10px;
+    font-size: smaller;
+    border-left: none;
+    padding-left: none;
+}
+
+/*
+    Styling of list where each list item has multiple paragraphs, but all - except of the first one - should be rendered in a smaller font and in gray.
+*/
+
+.list-with-explanations li p:not(:first-child) {
+    color: gray;
+    font-size: smaller;
+}
+
+/*  ----------------------------------------------------------------------------
+    Adds the styling for the functionality to copy code to the clipboard.
+
+    This base functionality is implemented in LectureDoc.
+*/
+.code.copy-to-clipboard {
+    position: relative;
+}
+
+/*  The DIV element with the class ".copy-it" is added by LectureDoc; i.e.,
+    the copy-to-clipboard class has explicit support in LectureDoc's core */
+.code.copy-to-clipboard div.copy-it {
+    content: url(copy_to_clipboard.svg);
+    opacity: 0;
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    width: 27px;
+    height: 27px;
+    scale: 1.5;
+    transition: 500ms;
+}
+
+.code.copy-to-clipboard:hover div.copy-it {
+    opacity: 1;
+    transition: 750ms;
+}
+
+/*  ----------------------------------------------------------------------------
+    Adds a semi-transparent white layer on top of an element.
+*/
+
+.faded-to-white {
+    position: relative;
+}
+
+.faded-to-white::after {
+    position: absolute;
+    content: " ";
+    /* necessary to make the element visible */
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* TODO move the following style definitions in them in the right place*/
+
+
+.center-child-elements {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+span.ger-quote::before {
+    content: '„';
+}
+
+span.ger-quote::after {
+    content: '”';
+}
+
+.ger {
+    color: var(--dhbw-gray);
+    font-style: italic;
+}
+
+.ger::before {
+    content: "🇩🇪 ";
+    mix-blend-mode: luminosity;
+}
+
+.eng {
+    color: var(--dhbw-gray);
+    font-style: italic;
+}
+
+.eng::before {
+    content: "🇺🇸 ";
+    mix-blend-mode: luminosity;
+}
+
+
+/*
+  Makes the title of a slide smaller.
+*/
+.ld-slide.smaller-slide-title > h2{
+    font-size: 1.25rem; /* the default size is 1.5rem */
+}
+
+
+.admonition {
+    padding: 0.55em;
+    border: 0;
+    border-radius: 0.5em;
+    margin: 0.5em 0em;
+    background-color: var(--dhbw-red);
+    color: white;
+    box-shadow: var(--br-shadow);
+}
+
+/* Important! This fixes a MathJax rendering issue! */
+p.admonition-title {
+    margin: 0;
+    padding-bottom: 0.2em;
+}
+
+.admonition .note {
+    float: right;
+    background-color: var(--the-blue);
+    color: whitesmoke;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0.75em;
+    max-width: 40%;
+}
+
+.admonition-definition {
+    background-color: var(--the-blue);
+}
+
+aside.admonition-definition p.admonition-title {
+    border-bottom: 2px solid white;
+}
+
+
+blockquote {
+    padding: 0.5em;
+    border-radius: 0.4em;
+    background-color: rgba(55, 55, 55, 0.075);
+}
+
+.epigraph {
+    font-family: var(--slide-serif-font-family);
+    font-style: italic;
+    font-variant-ligatures: additional-ligatures;
+}
+
+.complement {
+    font-size: smaller;
+    background-color: rgb(240, 240, 240);
+    color: var(--dhbw-gray);
+    padding-left: 0.6em;
+    padding-right: 0.6em;
+    padding-top: 0.35em;
+    padding-bottom: 0.35em;
+    margin-top: -0.5em;
+    border-radius: 0.5em;
+}
+
+.topic-title {
+    text-align: center;
+    padding-top: 0.5em;
+}
+
+
+pre.code {
+    margin: 0;
+}
+
+
+ul {
+    list-style-position: outside;
+    padding-left: 1.1em;
+}
+
+ol {
+    list-style-position: outside;
+    padding-left: 1.1em;
+}
+
+li {
+    padding-left: 0.5em;
+}
+
+ul.negative-list,
+ul > li.negative-list {
+    list-style-type: "❗️";
+}
+
+ul.positive-list,
+ul > li.positive-list {
+    list-style-type: "✓";
+}
+
+
+/*
+    Styling of warning asides. 
+
+    These asides should be used very sparingly because a subtle animation 
+    is used to make this warning really effective.
+*/
+
+aside.warning {
+    background-color: var(--dhbw-red);
+}
+
+/* We only want the animation in the slide view! */
+#ld-main-pane aside.warning[style*="visibility: visible;"] {
+    animation:
+        red-to-orange-and-back 10s infinite,
+        scale-in 1s;
+}
+
+aside.warning p.admonition-title {
+    color: white;
+    text-align: center;
+    font-size: larger;
+}
+
+@keyframes red-to-orange-and-back {
+    0% {
+        background-color: var(--dhbw-red);
+    }
+
+    50% {
+        background-color: rgb(253, 108, 41);
+    }
+
+    100% {
+        background-color: var(--dhbw-red);
+    }
+}
+
+@keyframes scale-in {
+    0% {
+        scale: 0.95;
+    }
+
+    100% {
+        scale: 1;
+    }
+}
+
+
+
+
+/*
+
+Styling of impressive lists (whatever "impressive" means in this case).
+
+*/
+ol.impressive {
+    list-style-position: outside;
+    margin-left: 1em;
+    padding-left: 0;
+}
+
+ol.impressive li::marker {
+    color: black;
+}
+
+ol.impressive li {
+    color: black;
+    background-color: white;
+    margin-top: 1em;
+    box-shadow: 4px 4px 8px black;
+    border-radius: 0.33em;
+    align-items: center;
+    min-height: 4em;
+    padding: 0.75em;
+}
+
+ul.impressive {
+    list-style-type: none;
+    font-weight: bolder;
+    margin-left: 0;
+    padding-left: 0;
+    display: grid;
+    grid-auto-rows: 1fr;
+}
+
+ul.impressive li {
+    text-align: center;
+    background-color: var(--dhbw-light-gray);
+    border-radius: 0.5em;
+    margin-top: 0.5em;
+    padding: 0.5em;
+}
+
+/*
+
+    Styling of index cards
+
+*/
+
+.index-card {
+    font-family: bradley hand, cursive;
+    background-color: rgb(255, 255, 165);
+    color: rgb(76, 76, 255);
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    width: 1200px;
+    margin: auto;
+    box-shadow: 4px 4px 6px gray;
+    border-radius: 0.25em;
+}
+
+.index-card>p {
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    border-bottom: 1px solid gray;
+}
+
+.index-card p:first-of-type {
+    border-bottom: 3px solid black;
+    text-align: right;
+    padding-right: 0.5em;
+    margin: 0;
+}
+
+
+
+/*
+
+    The class "annotated-text" can be used in combination with tables to make
+    them look like as if we have a text document with some paragraphs with some 
+    comments to the side.
+
+*/
+
+table.annotated-text {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 0px;
+    border-right: 0px;
+    box-shadow: none;
+    background-color: transparent;
+    border-collapse: separate;
+}
+
+table.annotated-text :is(tr, td, th) {
+    border: 0;
+}
+
+table.annotated-text tr {
+    margin: 2px;
+}
+
+/* style the "comment" column */
+table.annotated-text :is(td, th):first-of-type:not(:empty) {
+    background-color: var(--dhbw-gray);
+    color: whitesmoke;
+    vertical-align: text-top;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    text-align: right;
+    border-bottom: 0.75em solid white;
+    border-radius: 1em 0em 0em 0em;
+    font-size: smaller;
+    font-weight: 300;
+    max-width: 25%;
+}
+
+/* the intermediate columns */
+table.annotated-text :is(td, th):not(:first-of-type):not(:empty) {
+    text-align: left;
+    padding-bottom: 0.5em;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* the last column */
+table.annotated-text :is(td, th):last-child:not(:empty) {
+    text-align: justify;
+}
+
+
+/*
+
+    The following provides an option to rotate the title by 90 degrees.
+
+*/
+
+.ld-slide.vertical-title {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.ld-slide.vertical-title h2 {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+}
+
+
+div:not(.admonition).note {
+    margin: 0.5em 0em;
+    box-shadow: 4px 4px 6px gray;
+    border: 0;
+    border-radius: 0.5em;
+    padding: 0.66em;
+}
+
+div:not(.admonition).note {
+    float: right;
+    background-color: var(--the-blue);
+    color: whitesmoke;
+    max-width: 60%;
+}
+
+
+/*
+highlight-line-on-hover
+    2) highlight-on-hover 
+    3) compact
+    4) no-table-borders
+    5) no-inner-borders
+    6) no-column-borders
+*/
+table {
+    border: 1.5px solid black;
+    box-shadow: 4px 4px 8px gray;
+}
+
+th,
+td {
+    border: 1.5px solid black;
+}
+
+/*
+If the content of the entire cell has a red background, we lift it 
+up to the cell level.
+*/
+td:has(p>span.red) {
+    background-color: var(--light-red);
+    font-weight: bold;
+}
+
+table.highlight-line-on-hover tr:hover {
+    background-color: var(--dhbw-light-gray);
+}
+
+table.highlight-line-on-hover tbody td:hover {
+    background-color: var(--the-blue);
+    color: white;
+}
+
+table.highlight-identical-cells tbody td.highlight-identical-cell {
+    opacity: 0.4;
+    background: repeating-linear-gradient( 0deg, #9da1fc, #9da1fc 3px, #e5e5f7 3px, #e5e5f7 25px );    
+}
+
+/*
+Used to markup the first column or the first row of a table as a header row/column.
+*/
+table.fake-header-column tr td:first-child  {
+    border-right: 8px solid var(--dhbw-light-gray);
+}
+table.fake-header-2nd-column tr td:nth-child(2)  {
+    border-right: 8px solid var(--dhbw-light-gray);
+    background-color: whitesmoke;
+}
+
+table.fake-header-row tr:first-child  {
+    border-bottom: 8px solid var(--dhbw-light-gray);
+}
+
+table.fake-header-2nd-row tr:nth-child(2)  {
+    border-bottom: 8px solid var(--dhbw-light-gray);
+    background-color: whitesmoke;
+}
+
+/* 
+The following property is associated with cells when the table has the 
+highlight-on-hover class and the ld-animation package is loaded.
+*/
+td.highlight {
+    background-color: rgb(171, 224, 253);
+}
+
+table.compact {
+    margin: 0;
+}
+
+table.compact td,
+table.compact th {
+    padding: 0.1em;
+}
+
+table.compact-cells td,
+table.compact-cells th {
+    padding: 0;
+    line-height: 1.1;
+}
+
+/* fix for an rst2ld issue related to the csv tables */
+table.align-center tr {
+    text-align: center;
+}
+
+table.no-table-borders {
+    border: 2px solid white;
+    box-shadow: none;
+}
+
+table.no-inner-borders :is(td, th) {
+    border: 0;
+}
+
+table.header-column td:first-child {
+    font-weight: bold;
+}
+
+table.no-column-borders :is(td, th) {
+    border-left: 0;
+    border-right: 0;
+}
+
+.compact-ps>p {
+    margin-top: 0em;
+    margin-bottom: 0em;
+}
+
+/* 
+
+    Adding "wobble" to the class list of a table makes the last row larger when it is shown.
+    This is a nice effect to draw the attention of the audience to the last revealed line in a table. It is best to combine this with fixed-width columns.
+
+    Only works in combination with the class "incremental"!
+*/
+#ld-main-pane table.incremental.wobble > tbody > tr:has(+ [style*="visibility: visible;"]) {
+    font-size: 0.75em;
+    transition: all 0.5s;
+    color: var(--dhbw-gray);
+}
+
+#ld-main-pane table.incremental.wobble > tbody > :is(tr:has(+ [style*="visibility: hidden;"]), tr:last-child) {
+    font-size: 1.3em;
+    transition: all 0.5s;
+}
+
+
+
+
+.admonition.note {
+    float: right;
+    background-color: var(--the-blue);
+    color: whitesmoke;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0.75em;
+    max-width: 40%;
+}
+
+/* .important is replaced by .foundations + center(if required) */
+.foundations {
+    background-color: var(--dhbw-red);
+    color: whitesmoke;
+    padding: 1em;
+    margin: 0.5em 0 0.5em 0;
+    border-radius: 0.5em;
+    box-shadow: 4px 4px 8px black;
+}
+
+.foundations a {
+    /* necessary to make links visible! */
+    color: var(--the-yellow);
+}
+
+.question {
+    background-color: var(--the-blue);
+    color: whitesmoke;
+    padding: 1em;
+    border-radius: var(--slide-border-radius);
+    box-shadow: var(--br-shadow);
+}
+
+
+.assessment {
+    background-color: var(--the-yellow);
+    padding: 0.5em;
+    margin: 0.5em 0 0.5em 0;
+    border-radius: 0.5em;
+    box-shadow: var(--br-shadow)
+}
+
+:is(ul, ol).li-margin-top-0-75em>li {
+    margin-top: calc(var(--li-margin-top-0-5em) * 1.5);
+}

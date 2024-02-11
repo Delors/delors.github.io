@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Projekt&quot;" name="keywords" />
+<meta content="Projektkonzeption und Projektrealisierung" lang="de" name="description" xml:lang="de" />
+<meta content="2023_11-w3wi_106_107-einfuehrung" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Aspekte der Projektdurchführung</title>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Aspekte der Projektdurchführung</h1>
+
+<div class="line-above larger bold padding-top-1em docutils container">
+<p>Prof. Dr. Michael Eichberg</p>
+</div>
+<div class="tiny docutils container">
+<p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
+</div>
+<div class="footer-left dhbw-gray docutils container">
+<p>2024-02-11</p>
+</div>
+</div>
+<div class="ld-slide" id="ubersicht">
+<h2>Übersicht</h2>
+<p>Aspekte, die im Rahmen der Durchführung des Lehrprojektes von besonderer Bedeutung sind:</p>
+<ul class="impressive simple">
+<li><p><a class="reference internal" href="#risikomanagement">Risikomanagement</a></p></li>
+<li><p><a class="reference internal" href="#architektur">Architektur</a></p></li>
+<li><p><a class="reference internal" href="#qualitatssicherung">Qualitätssicherung</a></p></li>
+<li><p><a class="reference internal" href="#build-prozess">Build-Prozess</a></p></li>
+</ul>
+</div><div class="new-section transition-move-left ld-slide" id="risikomanagement">
+<h2>Risikomanagement</h2>
+</div><div class="ld-slide" id="kategorien-von-risiken-hier">
+<h2>Kategorien von Risiken (hier)</h2>
+<dl class="field-list">
+<dt>Projektrisiken<span class="colon">:</span></dt>
+<dd><p>Risiken, die den Projektfortschritt/-plan betreffen.</p>
+<div class="small docutils container">
+<p>Beispiele:</p>
+<ul class="simple">
+<li><p>Ausfall von Personal</p></li>
+<li><p>Ausfall der Server(-infrastruktur)/des GIT Server</p></li>
+<li><p>...</p></li>
+</ul>
+</div>
+</dd>
+<dt>Produktrisiken<span class="colon">:</span></dt>
+<dd><p>Risiken, die die Qualität/Performance des Produktes betreffen.</p>
+<div class="small docutils container">
+<p>Beispiele:</p>
+<ul class="simple">
+<li><p>Anforderungen sind unvollständig, nicht-richtig erfasst oder ändern sich</p></li>
+<li><p>Spezifikation verzögert</p></li>
+<li><p>Eingesetzte Bibliotheken, Frameworks, etc. entsprechen nicht den Erwartungen</p></li>
+<li><p>...</p></li>
+</ul>
+</div>
+</dd>
+</dl>
+</div><div class="ld-slide" id="risikomanagementplan">
+<h2>Risikomanagementplan</h2>
+<p>Erstellen Sie für Ihr Projekt ein Risikomanagementplan.
+D.h. betrachten Sie nur solche, die im Rahmen Ihres Projekts tatsächlich auftreten können.</p>
+<ul class="simple">
+<li><p>Identifizieren und bewerten Sie mögliche Risiken</p></li>
+<li><p>Beschreiben Sie für Risiken, die eine hohe Eintrittswahrscheinlichkeit haben, wie sie diesen Risiken begegnen; d.h. wie Ihre Strategie aussieht.</p></li>
+</ul>
+</div><div class="new-section transition-move-left ld-slide" id="architektur">
+<h2>Architektur</h2>
+</div><div class="ld-slide" id="architektur-und-nicht-funktionale-anforderungen">
+<h2>Architektur und nicht-funktionale Anforderungen</h2>
+<ul class="incremental simple">
+<li><p>Dokumentieren Sie die grundlegende Architektur Ihrer Anwendung.</p></li>
+<li><p>Bedenken Sie auch die nicht-funktionalen Eigenschaften, die von der Architektur mit- bzw. maßgeblich beeinflusst werden:</p>
+<ul class="smaller">
+<li><p>Reaktionsgeschwindigkeit <span class="eng">responsiveness</span> (Gibt es die Resultate in der erwarteten Zeit?)</p></li>
+<li><p>Zuverlässigkeit <span class="eng">reliability</span> (Verhält es sich wie erwartet?)</p></li>
+<li><p>Verfügbarkeit <span class="eng">availability</span> (Ist das System verfügbar, wenn es gebraucht wird?)</p></li>
+<li><p>Sicherheit <span class="eng">security</span> (Wie werden Nutzer identifiziert? Wo werden welche Daten wie gespeichert?)</p></li>
+<li><p>Benutzerfreundlichkeit <span class="eng">usability</span></p></li>
+<li><p>Wartbarkeit <span class="eng">maintainability</span> (Beheben von Fehlern/welche (Arten von) Erweiterungen sind vorgesehen?)</p></li>
+<li><p>Resilienz <span class="eng">resilience</span> (Verhalten bei Teilausfall?)</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="beispielhafte-fragestellungen-die-eine-anwendung-als-solches-betreffen">
+<h2>Beispielhafte Fragestellungen, die eine Anwendung als solches Betreffen</h2>
+<p class="rubric">Nicht-funktionale Anforderungen</p>
+<ul class="incremental smaller simple">
+<li><p>Sicherheitskonzept (Welche Angriffe sind möglich? Welche Sicherheit (vor wem) wollen wir garantieren? ...)</p></li>
+<li><p>Datenkonzept (Länge von Nachrichten? Bilder? Videos? ... Eventual Consistency?)</p></li>
+<li><p>Datenschutzkonzept (Wo werden die Nachrichten gespeichert? Wer darf die Nachrichten einsehen? Umgang mit illegalen Inhalten?)</p></li>
+<li><p>...</p></li>
+</ul>
+<div class="incremental complement docutils container">
+<p>Einige Fragen können rein rechtlicher Natur sein. Andere haben jedoch konkrete Auswirkungen auf die Entwicklung oder den Betrieb.</p>
+</div>
+</div><div class="new-section transition-move-left ld-slide" id="qualitatssicherung">
+<h2>Qualitätssicherung</h2>
+</div><div class="ld-slide" id="durchzufuhrende-qualitatssicherung">
+<h2>Durchzuführende Qualitätssicherung</h2>
+<ul>
+<li><p>Auswahl von Qualitätszielen</p>
+<div class="complement docutils container">
+<p>Es ist Ihre Aufgabe die/das wirklich Wichtigste QM Ziel zu identifizieren, und für dieses eine entsprechende Planung durchzuführen, die es Ihnen ermöglicht das Ziel im Rahmen des Projektes aus zu erreichen. Bedenken Sie die Projektdauer und Ihre Möglichkeiten.</p>
+</div>
+</li>
+<li><p>Qualitätsmaßnahmen leben (und dokumentieren)</p></li>
+<li><p>Beleg und Präsentation der durchgeführten Qualitätsmaßnahmen</p></li>
+</ul>
+</div><div class="ld-slide" id="beschreibung-eines-qualitatsziels">
+<h2>Beschreibung eines Qualitätsziels</h2>
+<table class="annotated-text scriptsize">
+<thead>
+<tr><th class="head"></th>
+<th class="head"><p>Qualitätsziel: Sichere Webanwendung</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Projektspezifische Motivation</p></td>
+<td><p>Im Rahmen des Projektes … wird eine Webanwendung entwickelt, auf die über das Internet zugegriffen wird. Da diese Anwendung … personenbezogene Daten verarbeitet und potentiellen Angriffen ausgesetzt ist, ist ein wesentliches Qualitätsziel, dass die Anwendung keine Sicherheitslücken aufweist über die Angreifer Daten anderer Benutzer abgreifen können.</p></td>
+</tr>
+<tr><td><p>Umfang <span class="eng">Scope</span></p></td>
+<td><p>Im Rahmen dieses Projektes können wir jedoch nur gewährleisten, dass die Webanwendung keine „Standardlücken“ wie zum Beispiel SQL Injection aufweist. Um dieses Ziel zu erreichen, setzen wir die folgenden Tools: … ein.</p></td>
+</tr>
+<tr><td><p>Durch wen/wann?</p></td>
+<td><p>Darüber hinaus wurde ein Entwickler benannt, der sich maßgeblich um das Thema „Sicherheit in Webanwendungen“ kümmert und …</p></td>
+</tr>
+<tr><td><p>Wie wird reagiert?</p></td>
+<td><p>Die automatisierte Analyse des Codes der Webanwendung erfolgt im Rahmen des  regelmäßigen „Nightly Builds“. Sollte ein Problem gefunden werden, so geht eine Mail an alle Entwickler und im Rahmen des nächsten (gruppeninternen) Meetings wird dann ein Entwickler bestimmt, der den Fehler beseitigt.</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="qualitatssicherungsdokumentation-am-projektende">
+<h2>Qualitätssicherungsdokumentation am Projektende</h2>
+<ul class="incremental simple">
+<li><p>Die Abgabe muss belegen, dass die beschriebenen Qualitätsmaßnahmen und Prozesse auch durchgeführt wurden.</p></li>
+<li><p>Es ist darauf zu achten, dass</p>
+<ol class="arabic simple">
+<li><p>erkenntlich ist, dass der Prozess eingehalten wurde (d.h. wann und wie häufig etwas getan wurde) und auch, dass</p></li>
+<li><p>die Maßnahmen im beschriebenen Umfang durchgeführt wurden.</p></li>
+</ol>
+</li>
+</ul>
+</div><div class="ld-slide" id="exemplarisch-qualitatssicherungsdokumentation-automatisierte-tests">
+<h2>(exemplarisch) Qualitätssicherungsdokumentation  - Automatisierte Tests</h2>
+<p>Wurde als QS Maßnahme automatisierte Tests geplant, so ist die vollständige Liste der Tests abzugeben und es ist zu belegen welche Teile des Codes getestet wurden. Weiterhin ist die Relation der Tests zu den User Stories zu zeigen.</p>
+<p>Dies kann insbesondere dadurch geschehen, dass ein Auszug eines Codeabdeckungstools gezeigt wird; z.B. aggregiert auf Klassen-/Dateiebene.</p>
+<p>Bitte halten Sie die Möglichkeit vor die Testsuite im Rahmen der Abschlusspräsentation zu zeigen.</p>
+</div><div class="ld-slide" id="exemplarisch-qualitatssicherungsdokumentation-benutzerstudie">
+<h2>(exemplarisch) Qualitätssicherungsdokumentation  - Benutzerstudie</h2>
+<p>Die Abgabe soll zeigen wann diese Studie(n) von wem und mit welchen Probanden durchgeführt wurde und wie der genaue Ablauf war.</p>
+<p>Wurden den Probanden Aufgaben geben und diese danach gebeten einen Fragebogen auszufüllen? Fand ein (geschlossenes/offenes) Interview statt? Wurden die Probanden nur beobachtet?</p>
+<p>Insbesondere ist kurz zu präsentieren, welche Ergebnisse aus der Benutzerstudie abgeleitet wurden und welche Konsequenzen gezogen wurden.</p>
+</div><div class="ld-slide" id="exemplarisch-qualitatssicherungsdokumentation-dokumentation-des-quellcodes">
+<h2>(exemplarisch) Qualitätssicherungsdokumentation  - Dokumentation des Quellcodes</h2>
+<p>Ist eine Maßnahme, die versprochen wurde, dass der Code dokumentiert wurde, so ist hier ein Auszug des Codes zu zeigen.</p>
+<p>Die gezeigten Dateien sollten repräsentativ für das Projekt sein. Die gewählten Dateien müssen weiterhin von herausgehobener Bedeutung für das Projekt sein.</p>
+<p>Der restliche Code sollte vorgehalten werden, falls im Rahmen der Präsentation Rückfragen kommen.</p>
+</div><div class="ld-slide" id="exemplarisch-qualitatssicherungsdokumentation-code-reviews">
+<h2>(exemplarisch) Qualitätssicherungsdokumentation  - Code Reviews</h2>
+<p>Falls die geplante Maßnahme systematische Code Reviews waren, dann ist diesbezüglich die Checkliste zu zeigen, auf die die Reviewer zu achten hatten.</p>
+<p>Weiterhin ist exemplarisch ein Stück Code zu zeigen, der den Prozess durchlaufen hat.</p>
+<p>Der weitere Code ist vorzuhalten, um ggf. im Rahmen der Präsentation die Effektivität der Maßnahme zu belegen. Sollten nicht alle Teile einem Review unterzogen worden sein, so ist dies im Vorfeld - ohne Aufforderung - im Rahmen der Präsentation zu erklären.</p>
+</div><div class="new-section transition-move-left ld-slide" id="build-prozess">
+<h2>Build-Prozess</h2>
+</div><div class="ld-slide" id="automation-des-build-prozess">
+<h2>Automation des Build-Prozess</h2>
+<div class="foundations center docutils container">
+<p>Stabile Builds</p>
+</div>
+<p>Um stabile Builds zu erhalten ist es notwendig, dass ...</p>
+<ul class="simple">
+<li><p>die Laufzeitumgebung(en) fest definiert ist</p></li>
+<li><p>alle Einstellungen festgelegt sind (insbesondere die Compiler-Einstellungen)</p></li>
+<li><p>alle Abhängigkeiten wohl definiert (inkl. Versionsnummer) sind:</p>
+<ul>
+<li><p>Abhängigkeiten zum Build-System</p></li>
+<li><p>Abhängigkeiten zu den verwendeten Bibliotheken</p></li>
+<li><p>Abhängigkeiten zu den verwendeten Tools</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="grundlegend-zu-automatisierende-tatigkeiten">
+<h2>Grundlegend zu automatisierende Tätigkeiten</h2>
+<ul class="simple">
+<li><p>Codeabdeckung</p></li>
+<li><p>Quellcode Formatierung</p></li>
+<li><p>Überprüfung des Stils</p></li>
+<li><p>(Lightweight) bug detection</p></li>
+<li><p>Dokumentationsgenerierung</p></li>
+<li><p>Packaging</p></li>
+</ul>
+</div><div class="ld-slide" id="automatisierbare-tatigkeiten">
+<h2>Automatisierbare Tätigkeiten</h2>
+<ul class="simple">
+<li><p>Überprüfung auf veraltete Bibliotheken und Werkzeuge</p></li>
+<li><p>Generierung der Webseite</p></li>
+<li><p>Veröffentlichung (zum Beispiel in einem Repository, auf einem Webserver, ...) und/oder Deployment</p></li>
+</ul>
+</div>
+</body>
+</html>
