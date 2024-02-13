@@ -628,7 +628,7 @@ a { text-decoration: none; }
 <dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>2024-02-11</p>
+<dd><p>2024-02-13</p>
 </dd>
 </dl>
 </div>
@@ -712,6 +712,7 @@ a { text-decoration: none; }
 <img alt="The Interface Segregation Principle applied to a class diagram" class="align-center" src="images/coupling/applied-isp.svg" style="width: 100%;" />
 <div class="supplemental docutils container">
 <p>Keine Kopplung ist (auch) nicht wünschenswert, da dies zu Entitäten führt, die alle Arbeit durchführen; weiterhin führt dies auch dazu, dass sich ggf. die Arbeit sehr viel schlechter aufteilen lässt und dann eine agile Entwicklung mit einem kleinen Team nicht mehr möglich ist.</p>
+<p>Relevante Frage: Wer ist/sollte der Eigentümer der Schnittstellen sein? D.h. aus welcher Perspektive sollte die Schnittstelle entworfen werden?</p>
 </div>
 </div><div class="vertical-title much-smaller ld-slide" id="niedrige-vs-hohe-dynamische-kopplung">
 <h2>Niedrige vs. hohe dynamische Kopplung</h2>
@@ -830,10 +831,10 @@ Sie sind:</p>
 <img alt="An application of the Common Closure Principle and the Single Responsibility Principle." src="images/ccp-and-srp.svg" style="width: 1750px;" />
 <div class="supplemental docutils container">
 <dl class="field-list simple">
-<dt>Single Responsibility Principle<span class="colon">:</span></dt>
+<dt>Single Responsibility Principle (SRP)<span class="colon">:</span></dt>
 <dd><p>Ein Modul sollte nur einem einzigen Akteur gegenüber verantwortlich sein. D.h. es sollte nur eine wohldefinierte Gruppe von Personen geben, die eine Veränderung veranlassen/verlangen können. Code, von dem verschiedene Akteure abhängen, sollte aufgeteilt werden.</p>
 </dd>
-<dt>Common Closure Principle<span class="colon">:</span></dt>
+<dt>Common Closure Principle (CCP)<span class="colon">:</span></dt>
 <dd><p>Fasse in Komponenten solche Klassen zusammen, die sich aus dem gleichen Grund und zur gleichen Zeit ändern. Z.B. weil sie die gleichen Stakeholder haben oder die gleichen rechtlichen Grundlagen haben.</p>
 </dd>
 </dl>
@@ -842,7 +843,44 @@ Sie sind:</p>
 </div><div class="center-child-elements ld-slide" id="section-4">
 <h2></h2>
 <div class="dhbw-red huge docutils container">
-<p>Open-closed Principle</p>
+<p>Dependency Inversion Principle (DIP)</p>
+</div>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<blockquote class="epigraph">
+<p>…all well-structured [object-oriented] architectures have clearly defined layers, with each layer providing some coherent set of services through a well-defined and controlled interface…</p>
+<p class="attribution">—Grady Booch</p>
+</blockquote>
+</div>
+<div class="layer incremental docutils container">
+<blockquote class="epigraph">
+<p>High-Level-Module sollten nicht von Low-Level-Modulen abhängen. Beide sollten von Abstraktionen abhängen.</p>
+<p>Abstraktionen sollten nicht von Details abhängen. Details sollten von Abstraktionen abhängen.</p>
+<p class="attribution">—Agile Software Development; Robert C. Martin; Prentice Hall, 2003</p>
+</blockquote>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p><strong>Mögliche Interpretation</strong></p>
+<p>Je höher das Modul in einer Schichtenarchitektur positioniert ist, desto allgemeiner ist die Funktion, die es implementiert.</p>
+<p>Je niedriger das Modul, desto detaillierter ist die Funktion, die es implementiert.</p>
+<p><strong>Mögliches Fehldesign (Verletzt das DIP)</strong></p>
+<img alt="images/dip-layers/traditionelle-schichtenabhaengigkeit.svg" class="align-center" src="images/dip-layers/traditionelle-schichtenabhaengigkeit.svg" style="width: 60%;" />
+<p><strong>Die Einhaltung des DIP sollte auf allen Ebenen der Architektur sichergestellt werden.</strong></p>
+</div>
+</div><div class="ld-slide" id="dependency-inversion-principle">
+<h2>Dependency Inversion Principle</h2>
+<img alt="images/dip-layers/dip-konforme-schichtenabhaengigkeit.svg" class="align-center" src="images/dip-layers/dip-konforme-schichtenabhaengigkeit.svg" style="height: 1000px;" />
+<div class="supplemental docutils container">
+<p class="rubric">Begründung</p>
+<p>Gute Softwarekonzepte sind in Module gegliedert.</p>
+<p>High-Level-Module enthalten die wichtigen politischen Entscheidungen und Geschäftsmodelle einer Anwendung - Die Identität der Anwendung.</p>
+<p>Low-Level-Module enthalten detaillierte Implementierungen einzelner Mechanismen, die zur Umsetzung der Richtlinie benötigt werden.</p>
+</div>
+</div><div class="center-child-elements ld-slide" id="section-5">
+<h2></h2>
+<div class="dhbw-red huge docutils container">
+<p>Open-closed Principle (OCP)</p>
 </div>
 <blockquote class="epigraph">
 <p>Ein Softwareartefakt sollte offen für Erweiterungen, aber abgeschlossen gegenüber Veränderungen sein.</p>
@@ -895,10 +933,10 @@ Sie sind:</p>
 <p>Domain-driven Design behandelt Beziehungen zwischen Bounded Contexts im Strategic Design.</p>
 <p><a class="reference external" href="https://www.heise.de/hintergrund/Domain-driven-Design-und-Bounded-Context-Eigentlich-ganz-einfach-oder-4634258.html?seite=all">https://www.heise.de/hintergrund/Domain-driven-Design-und-Bounded-Context-Eigentlich-ganz-einfach-oder-4634258.html?seite=all</a></p>
 </div>
-</div><div class="center-child-elements ld-slide" id="section-5">
+</div><div class="center-child-elements ld-slide" id="section-6">
 <h2></h2>
 <div class="dhbw-red huge docutils container">
-<p>Liskov Substitution Principle</p>
+<p>Liskov Substitution Principle (LSP)</p>
 </div>
 <div class="stack docutils container">
 <div class="layer docutils container">
@@ -938,7 +976,7 @@ Sie sind:</p>
 <div class="supplemental docutils container">
 <p>Segregation (<span class="ger">Abtrennung</span>) bezeichnet hier die Aufspaltung eines bestehenden Interfaces bei dem die Teile abgespalten werden, die logisch zu einer anderen Funktionalität gehören. D.h. die von der Schnittstelle zur Verfügung gestellte Funktionalität ist nicht homogen und wird deswegen in verschiedene Teile aufgeteilt.</p>
 </div>
-</div><div class="center-child-elements ld-slide" id="section-6">
+</div><div class="center-child-elements ld-slide" id="section-7">
 <h2></h2>
 <div class="dhbw-red huge docutils container">
 <p>Command-Query Separation (CQS)</p>
@@ -984,7 +1022,7 @@ Sie sind:</p>
 <div class="supplemental docutils container">
 <p>Darstellung einer Anwendung mit traditioneller Architektur.</p>
 </div>
-</div><div class="center-child-elements ld-slide" id="section-7">
+</div><div class="center-child-elements ld-slide" id="section-8">
 <h2></h2>
 <div class="dhbw-red huge docutils container">
 <p>Command-Query Responsibility Segregation Principle</p>
@@ -1029,7 +1067,7 @@ Sie sind:</p>
 </ul>
 </div><div class="new-section ld-slide" id="moderne-architekturprinzipien-fur-verteilte-anwendungen">
 <h2>Moderne Architekturprinzipien für verteilte Anwendungen</h2>
-</div><div class="center-child-elements ld-slide" id="section-8">
+</div><div class="center-child-elements ld-slide" id="section-9">
 <h2></h2>
 <div class="foundations docutils container">
 <p>Die (technischen) Ziele einer guten Anwendungsarchitektur <span class="incremental">sollten der Minimierung des Aufwands dienen, der notwendig ist, um das System zu entwickeln und zu warten bzw. weiterzuentwickeln.</span></p>
@@ -1057,7 +1095,7 @@ Sie sind:</p>
 <div class="footer-left tiny docutils container">
 <p>Beispiel von <a class="reference external" href="http://spring.io">http://spring.io</a>.</p>
 </div>
-</div><div class="center-child-elements ld-slide" id="section-9">
+</div><div class="center-child-elements ld-slide" id="section-10">
 <h2></h2>
 <div class="foundations faded-to-white docutils container">
 <p>Die (technischen) Ziele einer guten Anwendungsarchitektur dienen der Minimierung des Aufwands, der notwendig ist, um das System zu entwickeln und zu warten bzw. weiterzuentwickeln.</p>

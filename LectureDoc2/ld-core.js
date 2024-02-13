@@ -458,6 +458,13 @@ const lectureDoc2 = function () {
         help_dialog.id = "ld-help-dialog"
         help_dialog.className = "ld-dialog"
         try {
+            help_dialog.innerHTML = `
+                <div id="ld-help-header">
+                    <span id="ld-help-title">Help</span>
+                    <div id="ld-help-close">
+                        <button id="ld-help-close-button" type="button">×</button>
+                    </div>
+                </div>`
             help_dialog.appendChild(lectureDoc2Help());
         } catch (error) {
             help_dialog.innerText = 'Help not found. "ld-help.js" probably not loaded.'
@@ -725,7 +732,7 @@ const lectureDoc2 = function () {
         if (!state.slideProgress) {
             state.slideProgress = {};
         }
-        state.slideProgress[slide.id] = i + 1;
+        state.slideProgress[slide.id] = i;
     }
 
     function getElementsToAnimate(slide) {
@@ -751,12 +758,23 @@ const lectureDoc2 = function () {
         for (let i = 0; i < elementsCount; i++) {
             if (elements[i].style.visibility == "hidden") {
                 elements[i].style.visibility = "visible";
-                setSlideProgress(slide, i)
+                setSlideProgress(slide, i+1)
                 return;
             }
         }
         // When we reach this point all elements are (already) visible.
         moveToNextSlide();
+    }
+    function retrogressPresentation() {
+        const slide = getCurrentSlide();
+        const i = getSlideProgress(slide);
+        if (i > 0) {
+            getElementsToAnimate(slide)[i-1].style.visibility = "hidden";
+            setSlideProgress(slide, i - 1)
+        } else {
+            // When we reach this point all elements are hidden (again).
+            moveToPreviousSlide();
+        }
     }
     function setupSlideProgress(slide) {
         getElementsToAnimate(slide).forEach((e) => e.style.visibility = "hidden");
@@ -952,6 +970,24 @@ const lectureDoc2 = function () {
         showMainSlideNumber(state.showMainSlideNumber);
     }
 
+    /**
+     * Optimizes the view for printing.
+     *
+     * 1. close help dialog
+     * 2. close light table
+     * 3. hide "go to" dialog
+     * 1. use continuous view  
+     * 5. show slide numbers
+     */
+    function optimizeViewForPrinting() {
+        if (state.showHelp) toggleDialog("help");
+        if (state.showLightTable) toggleLightTable();
+        clearJumpTarget();
+
+        if (!state.showContinuousView) toggleContinuousView();
+        if (!state.showContinuousViewSlideNumber) showContinuousViewSlideNumber(true);   
+    }
+
     /** 
      * Central keyboard event handler.
      */
@@ -964,69 +1000,85 @@ const lectureDoc2 = function () {
 
         document.addEventListener("keydown", (event) => {
             // let's check if the user is using an input field to type something in
-            if(document.activeElement.nodeName == "INPUT") {            
+            if (document.activeElement.nodeName == "INPUT") {
                 return;
             }
 
-            // we don't want to stop the user from interacting with the browser/OS
-            if (event.altKey || event.ctrlKey || event.shiftKey || event.metaKey) {
-                return;
+            // let's check if the user is using a modifier key not used by LectureDoc
+            if (event.altKey || event.ctrlKey || event.metaKey) {
+                return ;
             }
+            
+            if (!event.shiftKey) {            
+                // When the user presses the "r" key eight times in a row, LectureDoc
+                // will be reset.
+                if (event.key == "r") {
+                    resetCount.v--
+                    if (resetCount.v == 0) {
+                        resetLectureDoc();
+                    } else if (resetCount.v == 4) {
+                        showMessage('When you press "r" again all animation progress will be reset.')
+                        return;
+                    } else if (resetCount.v == 3) {
+                        resetAllAnimations();
+                        return;
+                    } else if (resetCount.v < 3) {
+                        console.info(`press "r" ${resetCount.v} more times to reset LectureDoc`);
+                        return;
+                    } else if (resetCount.v < 7) {
+                        console.info(`press "r" ${resetCount.v - 3} more times to reset all animations.`);
+                        return;
+                    }
+                } else {
+                    resetCount.v = 8;
+                }
 
-            // When the user presses the "r" key eight times in a row, LectureDoc
-            // will be reset.
-            if (event.key == "r") {
-                resetCount.v--
-                if (resetCount.v == 0) {
-                    resetLectureDoc();
-                } else if (resetCount.v == 4) {
-                    showMessage('When you press "r" again all animation progress will be reset.')
-                    return;
-                } else if (resetCount.v == 3) {
-                    resetAllAnimations();
-                    return;
-                } else if (resetCount.v < 3) {
-                    console.info(`press "r" ${resetCount.v} more times to reset LectureDoc`);
-                    return;
-                } else if (resetCount.v < 7) {
-                    console.info(`press "r" ${resetCount.v-3} more times to reset all animations.`);
-                    return;
+                switch (event.key) {
+                    case "0":
+                    case "1":
+                    case "2":
+                    case "3":
+                    case "4":
+                    case "5":
+                    case "6":
+                    case "7":
+                    case "8":
+                    case "9": updateJumpTarget(event.key); break;
+                    case "Escape": clearJumpTarget(); break;
+                    case "Backspace": cutDownJumpTarget(); break;
+                    case "Enter": jumpToSlide(); break;
+                    case "ArrowLeft": retrogressPresentation(); break;
+                    case "ArrowRight":
+                    case " ":
+                    case "Space": advancePresentation(); break;
+                    case "r": resetSlideProgress(getCurrentSlide()); break;
+
+                    case "l": toggleLightTable(); break;
+
+                    case "h": toggleDialog("help"); break;
+
+                    case "s": toggleSlideNumber(); break;
+
+                    case "c": toggleContinuousView(); break;
+
+                    case "p": optimizeViewForPrinting(); break;
+
+                    // for development purposes:
+                    default:
+                        console.debug("unhandled: " + event.key);
                 }
             } else {
-                resetCount.v = 8;
-            }
+                console.log(event+ " "+event.key);
+                switch (event.key) {
+                    case 37:
+                    case "ArrowLeft": moveToPreviousSlide(); break;
+                    case 39:
+                    case "ArrowRight": moveToNextSlide(); break;
 
-            switch (event.key) {
-                case "0":
-                case "1":
-                case "2":
-                case "3":
-                case "4":
-                case "5":
-                case "6":
-                case "7":
-                case "8":
-                case "9": updateJumpTarget(event.key); break;
-                case "Escape": clearJumpTarget(); break;
-                case "Backspace": cutDownJumpTarget(); break;
-                case "Enter": jumpToSlide(); break;
-                case "ArrowLeft": moveToPreviousSlide(); break;
-                case "ArrowRight":
-                case " ":
-                case "Space": advancePresentation(); break;
-                case "r": resetSlideProgress(getCurrentSlide()); break;
-
-                case "l": toggleLightTable(); break;
-
-                case "h": toggleDialog("help"); break;
-
-                case "s": toggleSlideNumber(); break;
-
-                case "c": toggleContinuousView(); break;
-
-                // for development purposes:
-                default:
-                    console.debug("unhandled: " + event.key);
+                    // for development purposes:
+                    default:
+                        console.debug("unhandled: ctrl + " + event.key);
+                }
             }
         });
     }
@@ -1202,6 +1254,12 @@ const lectureDoc2 = function () {
             addEventListener("click", () => { toggleLightTable(); });
     }
 
+    function registerHelpCloseListener() {
+        document.
+            querySelector("#ld-help-close-button").
+            addEventListener("click", () => { toggleDialog("help"); });
+    }
+
     function registerContinuousViewScrollYListener() {
         document.addEventListener("scroll", () => {
             if (state.showContinuousView) {
@@ -1257,6 +1315,45 @@ const lectureDoc2 = function () {
             querySelector("#ld-light-table-button").
             addEventListener("click", () => { toggleLightTable(); });
     }
+
+    
+    /**
+     * Some initial support for swipe gestures.
+     */
+    function registerSwipeListener() {
+        let xDown = null;
+        let yDown = null;
+
+        document.addEventListener('touchstart', function(evt) {
+            xDown = evt.changedTouches[0].clientX;
+            yDown = evt.changedTouches[0].clientY;
+        }, false);
+
+        document.addEventListener('touchend', function(evt) {
+            let xUp = evt.changedTouches[0].clientX;
+            let yUp = evt.changedTouches[0].clientY;
+
+            let xDiff = xDown - xUp;
+            let yDiff = yDown - yUp;
+            console.log("touch event (x,y): ",xDiff, yDiff);
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                if (xDiff < -10) {
+                    retrogressPresentation();
+                } else if (xDiff > 10){
+                    advancePresentation();
+                }
+            } else {
+                if (yDiff < -10) {
+                    retrogressPresentation();
+                } else if (yDiff > 10){
+                    advancePresentation();
+                }
+            }
+            xDown = null;
+            yDown = null;
+        }, false);
+    }
+
 
     /**
      * Load the advanced animations package if available.
@@ -1330,6 +1427,7 @@ const lectureDoc2 = function () {
         }
     });
 
+
     /**
      * Registers the state (e.g., navigation) related listeners. I.e., we only
      * enable state changes after everything is fully loaded.
@@ -1361,7 +1459,9 @@ const lectureDoc2 = function () {
         registerLightTableSlideSelectionListener();
         registerLightTableSlideSearchListener();
         registerLightTableCloseListener();
+        registerHelpCloseListener();
         registerMenuClickListener();
+        registerSwipeListener();
 
         if(animations) {
             animations.afterLDListenerRegistrations();
