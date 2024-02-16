@@ -14,6 +14,10 @@
 #				Feb. 2024
 #				Michael Eichberg
 #
+# Further Ideas/TODOs:
+#				- Ensure that a Generic Printer is selected to get colored PDFs
+#				- Ensure that "Print Backgrounds" is enabled to get colored Boxes!
+#
 # Dependencies:
 # 				Safari 17.3
 on run argv
@@ -36,15 +40,16 @@ on run argv
 	tell application "Safari" to activate
 	tell application "Safari"
 		open thePath & filename
+
+		set theScript to "lectureDoc2.preparePrinting();"
+		set slidesCount to (do JavaScript theScript in document 1)
+		delay slidesCount * 0.15 -- required to wait until all slides are rendered
+ 
 	end tell
+	
 	tell application "System Events" to tell application process "Safari"
 		set frontmost to true
-		
-		# The following makes sure that LectureDoc uses the printing optimized
-		# view.
-		keystroke "p"
-		delay 0.1
-		
+
 		# window 1
 		tell window 1
 			
@@ -53,7 +58,7 @@ on run argv
 			
 			# check for PRINT sheet
 			repeat until exists sheet 1
-				delay 3 -- for complex slide sets safari needs some time to render the slides
+				delay 0.2
 			end repeat
 			
 			# PRINT sheet
@@ -61,7 +66,7 @@ on run argv
 				perform action "AXShowMenu" of menu button 1 of group 2 of splitter group 1 -- pdf menu button
 				delay 0.2
 				# set uiElems to entire contents -- uncomment to facilitate debugging in / development with Script Editor
-				perform action "AXPress" of menu item "Save as PDFâ€¦" of menu 1 of menu button 1 of group 2 of splitter group 1 -- save as pdf...
+				perform action "AXPress" of menu item "Save as PDFÉ" of menu 1 of menu button 1 of group 2 of splitter group 1 -- save as pdf...
 				
 				
 				# check for "Save as PDF" sheet
@@ -113,5 +118,6 @@ on run argv
 	tell application "Safari"
 		close the current tab of window 1
 	end tell
+
 end run
 

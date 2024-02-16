@@ -978,6 +978,10 @@ const lectureDoc2 = function () {
      * 3. hide "go to" dialog
      * 1. use continuous view  
      * 5. show slide numbers
+     * 6. "MOST IMPORTANT" - scroll over the whole document to ensure that
+     *    all slides are rendered properly; in particular those with 
+     *    stack-based layouts which are only rendered when they are first 
+     *    shown.
      */
     function optimizeViewForPrinting() {
         if (state.showHelp) toggleDialog("help");
@@ -986,6 +990,22 @@ const lectureDoc2 = function () {
 
         if (!state.showContinuousView) toggleContinuousView();
         if (!state.showContinuousViewSlideNumber) showContinuousViewSlideNumber(true);   
+
+        const slideList = document.querySelectorAll("#ld-continuous-view-pane div.ld-slide")
+        const slideCount = slideList.length;
+        const slidesIterator = slideList.values()
+        let slidesIteratorResult = slidesIterator.next();
+
+        function scrollToNextSlide() {
+            if (!slidesIteratorResult.done) {
+                const slide = slidesIteratorResult.value;
+                slide.scrollIntoView({behavior: "smooth"});
+                slidesIteratorResult = slidesIterator.next();
+                setTimeout(scrollToNextSlide, 100);
+            }
+        }
+        scrollToNextSlide();
+        return slideCount;
     }
 
     /** 
@@ -1470,6 +1490,7 @@ const lectureDoc2 = function () {
 
     return {
         'presentation': presentation,
-        'getState': function () { return state; } // the state object as a whole may change
+        'getState': function () { return state; }, // the state object as a whole may change
+        'preparePrinting': optimizeViewForPrinting,
     };
 }();
