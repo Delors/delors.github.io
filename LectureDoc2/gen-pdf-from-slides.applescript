@@ -53,7 +53,7 @@ on run argv
 			
 			# check for PRINT sheet
 			repeat until exists sheet 1
-				delay 0.2
+				delay 3 -- for complex slide sets safari needs some time to render the slides
 			end repeat
 			
 			# PRINT sheet
