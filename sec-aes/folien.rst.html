@@ -624,9 +624,12 @@ a { text-decoration: none; }
 <dd class="dozent"><p><strong>Prof. Dr. Michael Eichberg</strong></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2024-02-13</dd>
+<dd class="version">2024-02-19</dd>
 <dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
+</dd>
+<dt class="quellen">Quellen<span class="colon">:</span></dt>
+<dd class="quellen"><p><a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197.pdf">NIST FIPS PUB 197, &quot;Advanced Encryption Standard (AES)&quot;</a></p>
 </dd>
 </dl>
 </div>
@@ -636,46 +639,48 @@ a { text-decoration: none; }
 <li><p>Ein Körper ist eine Menge, in der wir Addition, Subtraktion, Multiplikation und Division durchführen können, ohne die Menge zu verlassen.</p></li>
 <li><p>Die Division ist mit der folgenden Regel definiert: <span class="math">\(a/b = a(b^{-1})\)</span>.</p></li>
 </ul>
-<aside class="admonition example margin-top-2em">
+<aside class="admonition example margin-top-2em incremental">
 <p class="admonition-title">Beispiel</p>
-<p>Ein endlicher Körper (mit einer endlichen Anzahl von Elementen) ist die Menge <span class="math">\(Z_p\)</span>, die aus allen ganzen Zahlen <span class="math">\(\lbrace 0,1,....,p-1 \rbrace\)</span> besteht, wobei p eine Primzahl ist und in der modulo <span class="math">\(p\)</span> gerechnet wird.</p>
+<p>Ein endlicher Körper (mit einer endlichen Anzahl von Elementen) ist die Menge <span class="math">\(Z_p\)</span>, die aus allen ganzen Zahlen <span class="math">\(\lbrace 0,1,....,p-1 \rbrace\)</span> besteht, wobei p eine Primzahl ist und in dem modulo <span class="math">\(p\)</span> gerechnet wird.</p>
 </aside>
 </div><div class="ld-slide" id="arithmetik-endlicher-korper-rekapitulation-1">
 <h2>Arithmetik endlicher Körper (Rekapitulation)</h2>
-<ul class="incremental simple">
-<li><p>For convenience and for implementation efficiency, we would like to work with integers that fit exactly into a given number of bits with no wasted bit patterns.</p>
-<ul>
-<li><p>Integers in the range 0 through <span class="math">\(2^n – 1\)</span>, which fit into an n-bit word.</p></li>
-</ul>
+<ul class="incremental list-with-explanations">
+<li><p>Der Einfachheit halber und aus Gründen der Implementierungseffizienz möchten wir mit ganzen Zahlen arbeiten, die genau in eine bestimmte Anzahl von Bits passen, ohne dass Bitmuster verschwendet werden.</p>
+<p>Ganze Zahlen im Bereich 0 bis <span class="math">\(2^n - 1\)</span>, die in ein n-Bit-Wort passen.</p>
 </li>
-<li><p>If one of the operations used in the algorithm is division, then we need to work in arithmetic defined over a field.</p>
-<ul>
-<li><p>Division requires that each nonzero element has a multiplicative inverse.</p></li>
-</ul>
+<li><p>Wenn eine Operationen des verwendeten Algorithmus die Division ist, dann müssen wir Arithmetik anwenden, die über einem (ggf. endlichen) Körper definiert ist.</p>
+<p>Division erfordert, dass jedes nichtnull-Element ein multiplikatives Inverses hat.</p>
 </li>
-<li><p>The set of such integers, <span class="math">\(Z_{2^n}\)</span>, using modular arithmetic, is not a field!</p>
-<ul>
-<li><p>For example, the integer 2 has no multiplicative inverse in <span class="math">\(Z_{2^n}\)</span>, that is, there is no integer b, such that <span class="math">\(2b\; mod\; 2^n = 1\)</span></p></li>
-</ul>
+<li><p>Wenn wir modulare Arithmetik auf die Menge der ganzen Zahlen <span class="math">\(Z_{2^n}\)</span> (mit <span class="math">\(n &gt; 1\)</span>) anwenden, dann erhalten wir keinen Körper!</p>
+<p>Zum Beispiel hat die ganze Zahl <span class="math">\(2\)</span> keine multiplikative Inverse in <span class="math">\(Z_{2^n}\)</span> (mit <span class="math">\(n &gt; 1\)</span>), d.h. es gibt keine ganze Zahl <span class="math">\(b\)</span>, so dass <span class="math">\(2b\; mod\; 2^n = 1\)</span></p>
 </li>
-<li><p>A finite field containing <span class="math">\(2^n\)</span> elements is referred to as <span class="math">\(GF(2^n)\)</span>.</p></li>
-</ul>
-<div class="hint incremental docutils container">
-<p>Every polynomial in <span class="math">\(GF(2^n)\)</span> can be represented by an n-bit number.</p>
+<li><p>Ein endlicher Körper der <span class="math">\(2^n\)</span> Elemente enthält, wird als <span class="math">\(GF(2^n)\)</span> bezeichnet.</p>
+<div class="hint docutils container">
+<p>Jedes Polynom in <span class="math">\(GF(2^n)\)</span> kann durch eine n-Bit-Zahl dargestellt werden.</p>
 </div>
-</div><div class="ld-slide" id="finite-field-arithmetic-for-aes">
-<h2>Finite Field Arithmetic for AES</h2>
-<ul>
-<li><p>In the Advanced Encryption Standard (AES) all operations are performed on 8-bit bytes</p></li>
-<li><p>The arithmetic operations of addition, multiplication, and division are performed over the finite field <span class="math">\(GF(2^8)\)</span></p>
-<p>AES uses the irreducible polynomial <span class="math">\(m(x) = x^8 + x^4 + x^3 +x +1\)</span></p>
 </li>
 </ul>
-</div><div class="ld-slide" id="aes-key-elements">
-<h2>AES Key Elements</h2>
+</div><div class="ld-slide" id="arithmetik-endlicher-korper-in-hinblick-auf-aes">
+<h2>Arithmetik endlicher Körper in Hinblick auf AES</h2>
+<ul class="simple">
+<li><p>Beim <em>Advanced Encryption Standard</em> (AES) werden alle Operationen mit 8-Bit-Bytes durchgeführt</p></li>
+<li><p>Die arithmetischen Operationen: Addition, Multiplikation und Division werden über den endlichen Körper <span class="math">\(GF(2^8)\)</span> durchgeführt.</p></li>
+</ul>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>AES verwendet das irreduzible Polynom:</p>
+<div class="math">
+\begin{equation*}
+m(x) = x^8 + x^4 + x^3 +x +1
+\end{equation*}
+</div>
+</aside>
+</div><div class="ld-slide" id="aes-schlusseleigenschaften">
+<h2>AES Schlüsseleigenschaften</h2>
 <ul>
-<li><p>AES uses a fixed block size of 128 bits.</p></li>
-<li><p>AES operates on a 4x4 column-major order array of 16 bytes/128 bits: <span class="math">\(b_0,b_1,\dots,b_{15}\)</span> termed the state:</p>
+<li><p>AES verwendet eine feste Blockgröße von 128 Bit.</p></li>
+<li><p>AES arbeitet mit einem 4x4-Array von 16 Bytes/128 Bits in Spaltenhauptordnung (<span class="eng">column-major order</span>): <span class="math">\(b_0,b_1,\dots,b_{15}\)</span> genannt <em>State</em> (<span class="ger">Zustand</span>):</p>
 <div class="math">
 \begin{equation*}
 \begin{bmatrix}b_{0}&amp;b_{4}&amp;b_{8}&amp;b_{12}\\b_{1}&amp;b_{5}&amp;b_{9}&amp;b_{13}\\b_{2}&amp;b_{6}&amp;b_{10}&amp;b_{14}\\b_{3}&amp;b_{7}&amp;b_{11}&amp;b_{15}\end{bmatrix}
@@ -683,75 +688,73 @@ a { text-decoration: none; }
 </div>
 </li>
 </ul>
-</div><div class="ld-slide" id="aes-encryption-process">
-<h2>AES Encryption Process</h2>
-<img alt="AES Encryption Process" class="align-center" src="drawings/aes/encryption_process.svg" style="width: 1700px;" />
-</div><div class="ld-slide" id="aes-parameters">
-<h2>AES Parameters</h2>
-<table class="align-center highlight-line-on-hover" style="width: 1650px;">
+</div><div class="ld-slide" id="aes-verschlusselungsprozess">
+<h2>AES Verschlüsselungsprozess</h2>
+<img alt="AES Verschlüsselungsprozess" class="align-center" src="drawings/aes/encryption_process.svg" style="width: 1700px;" />
+</div><div class="ld-slide" id="aes-parameter">
+<h2>AES Parameter</h2>
+<table class="highlight-line-on-hover" style="width: 100%;">
 <tbody>
-<tr><td><p>Key Size (words/bytes/bits)</p></td>
+<tr><td><p>Schlüsselgröße (words/bytes/bits)</p></td>
 <td><p>4/16/128</p></td>
 <td><p>6/24/192</p></td>
 <td><p>8/32/256</p></td>
 </tr>
-<tr><td><p>Plaintext Block Size (words/bytes/bits)</p></td>
+<tr><td><p>Blockgröße (<em>Block Size</em>) (words/bytes/bits)</p></td>
 <td><p>4/16/128</p></td>
 <td><p>4/16/128</p></td>
 <td><p>4/16/128</p></td>
 </tr>
-<tr><td><p>Number of Rounds</p></td>
+<tr><td><p>Anzahl der Runden</p></td>
 <td><p>10</p></td>
 <td><p>12</p></td>
 <td><p>14</p></td>
 </tr>
-<tr><td><p>Round Key Size (words/bytes/bits)</p></td>
+<tr><td><p>Größe des Rundenschlüssels (<em>RoundKeys</em>) (words/bytes/bits)</p></td>
 <td><p>4/16/128</p></td>
 <td><p>4/16/128</p></td>
 <td><p>4/16/128</p></td>
 </tr>
-<tr><td><p>Expanded Key Size (words/bytes)</p></td>
+<tr><td><p>Expandierte Schlüsselgröße (words/bytes)</p></td>
 <td><p>44/176</p></td>
 <td><p>52/208</p></td>
 <td><p>60/240</p></td>
 </tr>
 </tbody>
 </table>
-</div><div class="vertical-title smaller-slide-title ld-slide" id="aes-ver-und-entschlusselungsprozess-br-key-size-128bits">
-<h2>AES - Ver- und Entschlüsselungsprozess <span class="raw-html"><br></span> <span class="much-smaller">(Key Size 128bits)</span></h2>
+</div><div class="vertical-title smaller-slide-title ld-slide" id="aes-ver-entschlusselungsprozess-br-key-size-128bits-10-runden">
+<h2>AES - Ver-/Entschlüsselungsprozess <span class="raw-html"><br></span> <span class="much-smaller">(Key Size 128bits ⇒ 10 Runden)</span></h2>
 <img alt="AES Encryption and Decryption Process" class="align-center" src="drawings/aes/encryption_and_decryption_process.svg" style="height: 1150px;" />
-</div><div class="ld-slide" id="aes-detailed-structure">
-<h2>AES Detailed Structure</h2>
-<ul class="simple">
-<li><p>Processes the entire data block as a single matrix during each round using substitutions and permutation.</p></li>
-</ul>
+</div><div class="smaller ld-slide" id="aes-detaillierter-aufbau">
+<h2>AES Detaillierter Aufbau</h2>
 <ul class="incremental simple">
-<li><p>The key that is provided as input is expanded into an array of forty-four 32-bit words, <span class="math">\(w[i]\)</span> if 128 bits are used for the keysize.</p></li>
-<li><p>The cipher begins and ends with an AddRoundKey stage.</p></li>
-<li><p>Can view the cipher as alternating operations of XOR encryption (AddRoundKey) of a block, followed by scrambling of the block (the other three stages), followed by XOR encryption, and so on.</p></li>
-<li><p>Each stage is easily reversible.</p></li>
-<li><p>The decryption algorithm makes use of the expanded key in reverse order, however the decryption algorithm is not identical to the encryption algorithm.</p></li>
-<li><p>State is the same for both encryption and decryption.</p></li>
-<li><p>Final round of both encryption and decryption consists of only three stages.</p></li>
+<li><p>Verarbeitet in jeder Runde den gesamten Datenblock als eine einzige Matrix unter Verwendung von Substitutionen und Permutationen.</p></li>
+<li><p>Der als Eingabe bereitgestellte Schlüssel - bei 128 Bit Schlüsselgröße -  wird in ein Array von vierundvierzig 32-Bit-Wörtern expandiert (<span class="math">\(w[i]\)</span>)</p></li>
+<li><p>Die Chiffre beginnt und endet mit der AddRoundKey-Operation.</p></li>
+<li><p>Man kann sich die Chiffre als abwechselnde Operationen zwischen (a) der XOR-Verschlüsselung (AddRoundKey) eines Blocks vorstellen, gefolgt von (b) der Verwürfelung des Blocks (die anderen drei Stufen), gefolgt von der XOR-Verschlüsselung, und so weiter.</p></li>
+<li><p>Jede Stufe ist leicht umkehrbar.</p></li>
+<li><p>Der Entschlüsselungsalgorithmus verwendet den expandierten Schlüssel in umgekehrter Reihenfolge, wobei der Entschlüsselungsalgorithmus nicht mit dem Verschlüsselungsalgorithmus identisch ist.</p></li>
+<li><p>Der Zustand (<em>State</em>) ist sowohl bei der Verschlüsselung als auch bei der Entschlüsselung derselbe.</p></li>
+<li><p>Die letzte Runde sowohl der Verschlüsselung als auch der Entschlüsselung besteht aus nur drei Stufen.</p></li>
 </ul>
-</div><div class="ld-slide" id="aes-uses-four-different-stages">
-<h2>AES Uses Four Different Stages</h2>
+</div><div class="ld-slide" id="aes-verwendet-vier-verschiedene-stufen">
+<h2>AES verwendet vier verschiedene Stufen</h2>
 <dl class="field-list simple">
-<dt>Substitute bytes<span class="colon">:</span></dt>
-<dd><p>uses an S-box to perform a byte-by-byte substitution of the block</p>
+<dt><em>Substitute Bytes</em><span class="colon">:</span></dt>
+<dd><p>verwendet eine S-Box, um eine byteweise Ersetzung des Blocks vorzunehmen.</p>
 </dd>
-<dt>ShiftRows<span class="colon">:</span></dt>
-<dd><p>is a simple permutation.</p>
+<dt><em>ShiftRows</em><span class="colon">:</span></dt>
+<dd><p>ist eine einfache Permutation.</p>
 </dd>
-<dt>MixColumns<span class="colon">:</span></dt>
-<dd><p>is a substitution that makes use of arithmetic over <span class="math">\(GF(2^8)\)</span>.</p>
+<dt><em>MixColumns</em><span class="colon">:</span></dt>
+<dd><p>ist eine Substitution, mit Hilfe von Polynomarithmetik über <span class="math">\(GF(2^8)\)</span>.</p>
 </dd>
-<dt>AddRoundKey<span class="colon">:</span></dt>
-<dd><p>is a simple bitwise XOR of the current block with a portion of the expanded key.</p>
+<dt><em>AddRoundKey</em><span class="colon">:</span></dt>
+<dd><p>ist ein einfaches bitweises XOR des aktuellen Blocks mit einem Teil des expandierten Schlüssels.</p>
 </dd>
 </dl>
 </div><div class="ld-slide" id="aes-substitute-byte-transformation">
-<h2>AES Substitute byte transformation</h2>
+<h2>AES <em>Substitute Byte</em> Transformation</h2>
 <img alt="AES substitute byte tansformation" class="align-center" src="drawings/aes/substitute_byte_transformation.svg" style="width: 1400px;" />
 </div><div class="ld-slide" id="aes-s-box">
 <h2>AES S-box</h2>
@@ -833,7 +836,7 @@ a { text-decoration: none; }
 <td><p>04</p></td>
 <td><p>C7</p></td>
 <td><p>23</p></td>
-<td><p>С3</p></td>
+<td><p>C3</p></td>
 <td><p>18</p></td>
 <td><p>96</p></td>
 <td><p>05</p></td>
@@ -875,7 +878,7 @@ a { text-decoration: none; }
 <td><p>B1</p></td>
 <td><p>5B</p></td>
 <td><p>6A</p></td>
-<td><p>СВ</p></td>
+<td><p>CB</p></td>
 <td><p>BE</p></td>
 <td><p>39</p></td>
 <td><p>4A</p></td>
@@ -958,7 +961,7 @@ a { text-decoration: none; }
 <tr><td><p>A</p></td>
 <td><p>E0</p></td>
 <td><p>32</p></td>
-<td><p>ЗА</p></td>
+<td><p>3A</p></td>
 <td><p>0A</p></td>
 <td><p>49</p></td>
 <td><p>06</p></td>
@@ -999,7 +1002,7 @@ a { text-decoration: none; }
 <td><p>1C</p></td>
 <td><p>A6</p></td>
 <td><p>B4</p></td>
-<td><p>С6</p></td>
+<td><p>C6</p></td>
 <td><p>E8</p></td>
 <td><p>DD</p></td>
 <td><p>74</p></td>
@@ -1124,7 +1127,7 @@ a { text-decoration: none; }
 <td><p>C4</p></td>
 <td><p>DE</p></td>
 <td><p>E9</p></td>
-<td><p>СВ</p></td>
+<td><p>CB</p></td>
 </tr>
 <tr><td><p>2</p></td>
 <td><p>54</p></td>
@@ -1141,7 +1144,7 @@ a { text-decoration: none; }
 <td><p>0B</p></td>
 <td><p>42</p></td>
 <td><p>FA</p></td>
-<td><p>С3</p></td>
+<td><p>C3</p></td>
 <td><p>4E</p></td>
 </tr>
 <tr><td><p>3</p></td>
@@ -1204,7 +1207,7 @@ a { text-decoration: none; }
 <td><p>AB</p></td>
 <td><p>00</p></td>
 <td><p>8C</p></td>
-<td><p>ВС</p></td>
+<td><p>BC</p></td>
 <td><p>D3</p></td>
 <td><p>0A</p></td>
 <td><p>F7</p></td>
@@ -1235,7 +1238,7 @@ a { text-decoration: none; }
 <td><p>6B</p></td>
 </tr>
 <tr><td><p>8</p></td>
-<td><p>ЗА</p></td>
+<td><p>3A</p></td>
 <td><p>91</p></td>
 <td><p>11</p></td>
 <td><p>41</p></td>
@@ -1293,7 +1296,7 @@ a { text-decoration: none; }
 <td><p>56</p></td>
 <td><p>3E</p></td>
 <td><p>4B</p></td>
-<td><p>С6</p></td>
+<td><p>C6</p></td>
 <td><p>D2</p></td>
 <td><p>79</p></td>
 <td><p>20</p></td>
@@ -1393,10 +1396,10 @@ a { text-decoration: none; }
 <li><p>Die Nichtlinearität ist auf die Verwendung der multiplikativen Inversen bei der Konstruktion der S-Box zurückzuführen.</p></li>
 </ul>
 </div><div class="ld-slide" id="shift-row-transformation">
-<h2>Shift Row Transformation</h2>
+<h2><em>Shift Row</em> Transformation</h2>
 <img alt="Shift Row Transformation" class="align-center" src="drawings/aes/shift_row_transformation.svg" style="width: 1600px;" />
 </div><div class="ld-slide" id="shift-row-transformation-begrundung">
-<h2>Shift Row Transformation - Begründung</h2>
+<h2><em>Shift Row</em> Transformation - Begründung</h2>
 <ul class="simple">
 <li><p>Wesentlicher als es auf den ersten Blick scheint!</p></li>
 </ul>
@@ -1408,13 +1411,13 @@ a { text-decoration: none; }
 <li><p>Die Transformation sorgt dafür, dass die 4 Bytes einer Spalte auf vier verschiedene Spalten verteilt werden.</p></li>
 </ul>
 </div><div class="ld-slide" id="mix-column-transformation">
-<h2>Mix Column Transformation</h2>
+<h2><em>Mix Column</em> Transformation</h2>
 <img alt="Mix Column Transformation" class="align-center" src="drawings/aes/mix_column_transformation.svg" style="width: 1500px;" />
 </div><div class="ld-slide" id="inverse-mix-column-transformation">
-<h2>Inverse Mix Column Transformation</h2>
+<h2><em>Inverse Mix</em> Column Transformation</h2>
 <img alt="Inverse Mix Column Transformation" class="align-center" src="drawings/aes/inv_mix_column_transformation.svg" style="width: 1500px;" />
 </div><div class="ld-slide" id="mix-colum-transformation-beispiel">
-<h2>Mix Colum Transformation - Beispiel</h2>
+<h2><em>Mix Colum</em> Transformation - Beispiel</h2>
 <div class="three-columns smaller margin-top-0em padding-top-0em docutils container">
 <table class="monospaced footnotesize">
 <caption>Gegeben</caption>
@@ -1499,10 +1502,10 @@ A6 &amp; = &amp; &amp; (1010\,0110) \\
 </aside>
 </div>
 </div><div class="ld-slide" id="mix-column-transformation-begrundung">
-<h2>Mix Column Transformation - Begründung</h2>
+<h2><em>Mix Column</em> Transformation - Begründung</h2>
 <ul class="simple">
 <li><p>Die Koeffizienten einer Matrix, die auf einem linearen Code mit maximalem Abstand zwischen den Codewörtern basiert, gewährleisten eine gute Mischung zwischen den Bytes jeder Spalte.</p></li>
-<li><p>Die <em>Mix Column Transformation</em> (<span class="ger">Mischspaltentransformation</span>) kombiniert mit der <em>Shift Row Transformation</em> (<span class="ger">Zeilenverschiebungstransformation</span>) stellt sicher, dass nach einigen Runden alle Ausgangsbits von allen Eingangsbits abhängen.</p></li>
+<li><p>Die <em>Mix Column Transformation</em> (~ <span class="ger">Vermischung der Spalten</span>) - kombiniert mit der <em>Shift Row Transformation</em> (<span class="ger">Zeilenverschiebung</span>) - stellt sicher, dass nach einigen Runden alle Ausgangsbits von allen Eingangsbits abhängen.</p></li>
 </ul>
 </div><div class="ld-slide" id="addroundkey-transformation">
 <h2>AddRoundKey Transformation</h2>
@@ -1526,13 +1529,13 @@ A6 &amp; = &amp; &amp; (1010\,0110) \\
 </div><div class="ld-slide" id="aes-schlusselexpansion">
 <h2>AES Schlüsselexpansion</h2>
 <ul class="simple">
-<li><p>Takes as input a four-word (16 byte) key and produces a linear array of 44 words (176) bytes.</p></li>
-<li><p>This is sufficient to provide a four-word round key for the initial <cite>AddRoundKey</cite> stage and each of the 10 rounds of the cipher.</p></li>
-<li><p>Key is copied into the first four words of the expanded key.</p></li>
-<li><p>The remainder of the expanded key is filled in four words at a time.</p></li>
-<li><p>Each added word <span class="math">\(w[i]\)</span> depends on the immediately preceding word, <span class="math">\(w[i – 1]\)</span>, and the word four positions back, <span class="math">\(w[i – 4]\)</span></p></li>
-<li><p>In three out of four cases a simple XOR is used.</p></li>
-<li><p>For a word whose position in the w array is a multiple of 4, a more complex function <span class="math">\(g\)</span> is used.</p></li>
+<li><p>Nimmt als Eingabe einen (hier: 128-Bit) Schlüssel mit vier Wörtern (16 Byte) und erzeugt ein lineares Array mit 44 Wörtern (176 Byte).</p></li>
+<li><p>Dies liefert einen vier Worte umfassenden Rundenschlüssel für die initiale <em>AddRoundKey</em>-Stufe sowie für jede der folgenden 10 Runden der Chiffre.</p></li>
+<li><p>Der Schlüssel wird in die ersten vier Wörter des erweiterten Schlüssels kopiert.</p></li>
+<li><p>Der Rest des expandierten Schlüssels wird in Blöcken von jeweils vier Wörtern aufgefüllt.</p></li>
+<li><p>Jedes hinzugefügte Wort <span class="math">\(w[i]\)</span> hängt vom unmittelbar vorangehenden Wort <span class="math">\(w[i - 1]\)</span>, und dem vier Positionen zurückliegenden Wort, <span class="math">\(w[i - 4]\)</span>, ab.</p></li>
+<li><p>In drei von vier Fällen wird ein einfaches XOR verwendet.</p></li>
+<li><p>Für ein Wort dessen Position im Array <span class="math">\(w\)</span> ein Vielfaches von 4 ist, wird die komplexere Funktion <span class="math">\(g\)</span> angewandt.</p></li>
 </ul>
 </div><div class="vertical-title smaller-slide-title ld-slide" id="aes-schlusselexpansion-visualisiert">
 <h2>AES Schlüsselexpansion - Visualisiert</h2>
@@ -1559,8 +1562,8 @@ y_7y_6y_5y_5y_4y_3y_2y_1y_0 = xtime(x_7x_6x_5x_5x_4x_3x_2x_1x_0) \qquad (x_i,y_i
 \begin{equation*}
 y_7y_6y_5y_5y_4y_3y_2y_1y_0 =
 \begin{cases}
-x_6x_5x_5x_4x_3x_2x_1x_00, &amp; if x_7 = 0\\
-x_6x_5x_5x_4x_3x_2x_1x_00 \oplus 0001 1011,&amp; if x_7 = 1\\
+x_6x_5x_5x_4x_3x_2x_1x_00, &amp; if\; x_7 = 0\\
+x_6x_5x_5x_4x_3x_2x_1x_00 \oplus 0001 1011,&amp; if\; x_7 = 1\\
 \end{cases}
 \end{equation*}
 </div>
@@ -1570,6 +1573,9 @@ x_6x_5x_5x_4x_3x_2x_1x_00 \oplus 0001 1011,&amp; if x_7 = 1\\
 <p><span class="math">\(r_{c_{1}}=01, r_{c_{2}}=02,r_{c_{3}}=04,r_{c_{4}}=08,r_{c_{5}}=10\)</span></p>
 <p><span class="math">\(r_{c_{6}}=20,r_{c_{7}}=40,r_{c_{8}}=80,r_{c_{9}}=1B = 0001 1011, r_{c_{10}}=36\)</span></p>
 </aside>
+<div class="supplemental docutils container">
+<p>Die <span class="math">\(xtime\)</span> Funktion ist eine Multiplikation im endlichen Körper <span class="math">\(GF(2^8)\)</span> und ist die Polynommultiplikation mit dem Polynom <span class="math">\(x\)</span>.</p>
+</div>
 </div><div class="smaller ld-slide" id="aes-schlusselexpansion-beispiel-runde-1">
 <h2>AES Schlüsselexpansion - Beispiel (Runde 1)</h2>
 <dl class="field-list">
@@ -1601,26 +1607,26 @@ x_6x_5x_5x_4x_3x_2x_1x_00 \oplus 0001 1011,&amp; if x_7 = 1\\
 </div>
 <div class="incremental docutils container">
 <ul class="simple">
-<li><p>First roundkey is: <span class="math">\(w[4] || w[5] || w[6] || w[7]\)</span></p></li>
+<li><p>Der erste Rundenschlüssel ist: <span class="math">\(w[4] || w[5] || w[6] || w[7]\)</span></p></li>
 </ul>
 </div>
-</div><div class="ld-slide" id="aes-key-expansion-rationale">
-<h2>AES Key Expansion - Rationale</h2>
-<div class="width-50 note incremental small docutils container">
-<p>The specific criteria that were used are:</p>
+</div><div class="ld-slide" id="aes-schlusselexpansion-begrundung">
+<h2>AES Schlüsselexpansion - Begründung</h2>
+<div class="width-50 note incremental scriptsize docutils container">
+<p>Designziele:</p>
 <ul class="simple">
-<li><p>Knowledge of a part of the cipher key or round key does not enable calculation of many other round-key bits</p></li>
-<li><p>An invertible transformation</p></li>
-<li><p>Speed on a wide range of processors</p></li>
-<li><p>Usage of round constants to eliminate symmetries</p></li>
-<li><p>Diffusion of cipher key differences into the round keys</p></li>
-<li><p>Enough nonlinearity to prohibit the full determination of round key differences from cipher key differences only</p></li>
-<li><p>Simplicity of description</p></li>
+<li><p>Kenntnis eines Teils des Chiffrierschlüssels oder des Rundenschlüssels ermöglicht nicht die Berechnung vieler anderer Bits des Rundenschlüssels</p></li>
+<li><p>Eine invertierbare Transformation</p></li>
+<li><p>Performance auf einer breiten Palette von CPUs</p></li>
+<li><p>Verwendung von Rundenkonstanten zur Beseitigung von Symmetrien</p></li>
+<li><p>Diffusion der Chiffrierschlüsselunterschiede in die Rundenschlüssel</p></li>
+<li><p>Ausreichende Nichtlinearität, um die vollständige Bestimmung von Rundenschlüsselunterschieden nur aus Chiffrierschlüsselunterschieden zu verhindern</p></li>
+<li><p>Einfachheit der Beschreibung</p></li>
 </ul>
 </div>
 <ul class="simple">
-<li><p>The Rijndael developers designed the expansion key algorithm to be resistant to known cryptanalytic attacks</p></li>
-<li><p>Inclusion of a round-dependent round constant eliminates the symmetry between the ways in which round keys are generated in different rounds</p></li>
+<li><p>Die Rijndael-Entwickler haben den Expansionsschlüssel-Algorithmus so konzipiert, dass er gegen bekannte kryptoanalytische Angriffe resistent ist.</p></li>
+<li><p>Die Einbeziehung einer rundenabhängigen Rundenkonstante beseitigt die Symmetrie, die sonst bei der Erzeugung der Rundenschlüssel in den verschiedenen Runden entstehen würde.</p></li>
 </ul>
 </div><div class="vertical-title smaller smaller-slide-title ld-slide" id="lawineneffekt-in-aes-anderung-im-klartext">
 <h2>Lawineneffekt in AES: Änderung im Klartext</h2>
@@ -1780,35 +1786,40 @@ fc8923ee501a7d207ab670686839996b</p></td>
 </tbody>
 </table>
 </div>
-</div><div class="ld-slide" id="equivalent-inverse-cipher">
-<h2>Equivalent Inverse Cipher</h2>
-<p>AES decryption cipher is not identical to the encryption cipher.</p>
+</div><div class="ld-slide" id="aquivalente-inverse-chiffre">
+<h2>Äquivalente inverse Chiffre</h2>
+<div class="assessment docutils container">
+<p>AES-Entschlüsselung ist nicht identisch mit der Verschlüsselung.</p>
 <ul class="simple">
-<li><p>The sequence of transformations differs although the form of the key schedules is the same.</p></li>
-<li><p>Has the disadvantage that two separate software or firmware modules are needed for applications that require both encryption and decryption.</p></li>
+<li><p>Die Abfolge der Umwandlungen ist unterschiedlich, obwohl die Schlüsselableitung die gleiche ist.</p></li>
+<li><p>Dies hat den Nachteil, dass für Anwendungen, die sowohl Verschlüsselung als auch Entschlüsselung erfordern, zwei separate Software- oder Firmware-Module benötigt werden.</p></li>
 </ul>
-<p class="incremental">Two separate changes are needed to bring the decryption structure in line with the encryption structure:</p>
+</div>
+<p class="incremental">Zwei unabhängige, separate Änderungen sind erforderlich, um die Entschlüsselungsstruktur mit der Verschlüsselungsstruktur in Einklang zu bringen:</p>
 <ol class="arabic simple incremental">
-<li><p>The first two stages of the decryption round need to be interchanged.</p></li>
-<li><p>The second two stages of the decryption round need to be interchanged.</p></li>
+<li><p>Die ersten beiden Stufen der Entschlüsselungsrunde müssen vertauscht werden.</p></li>
+<li><p>Die zweiten beiden Stufen der Entschlüsselungsrunde müssen vertauscht werden.</p></li>
 </ol>
-</div><div class="ld-slide" id="interchanging-invshiftrows-and-invsubbytes">
-<h2>Interchanging <cite>InvShiftRows</cite> and <cite>InvSubBytes</cite></h2>
-<ul class="simple">
-<li><p><cite>InvShiftRows</cite> <span class="red">affects the sequence</span> of bytes in State but does not alter byte contents and does not depend on byte contents to perform its transformation</p></li>
-<li><p><cite>InvSubBytes</cite> <span class="blue">affects the contents</span> of bytes in State but does not alter byte sequence and does not depend on byte sequence to perform its transformation</p></li>
-</ul>
-<aside class="admonition admonition-important">
-<p class="admonition-title">Important</p>
-<p>Thus, these two operations commute and can be interchanged.</p>
-</aside>
-</div><div class="ld-slide" id="interchanging-addroundkey-and-invmixcolumns">
-<h2>Interchanging <cite>AddRoundKey</cite> and <cite>InvMixColumns</cite></h2>
+</div><div class="ld-slide" id="vertausch-von-invshiftrows-und-invsubbytes">
+<h2>Vertausch von <cite>InvShiftRows</cite> und <cite>InvSubBytes</cite></h2>
+<dl class="field-list simple">
+<dt><em>InvShiftRows</em><span class="colon">:</span></dt>
+<dd><p><span class="dhbw-red">beeinflusst die Reihenfolge</span> der Bytes im Zustand (<em>State</em>), ändert aber nicht den Inhalt der Bytes und ist nicht vom Inhalt der Bytes abhängig, um seine Transformation durchzuführen.</p>
+</dd>
+<dt><em>InvSubBytes</em><span class="colon">:</span></dt>
+<dd><p><span class="the-blue">beeinflusst den Inhalt</span> von Bytes im Zutand (<em>State</em>), ändert aber nicht die Byte-Reihenfolge und hängt nicht von der Byte-Reihenfolge ab, um seine Transformation durchzuführen.</p>
+</dd>
+</dl>
+<div class="assessment docutils container">
+<p>Diese beiden Operationen sind kommutativ und soweit vertauschbar.</p>
+</div>
+</div><div class="ld-slide" id="vertausch-von-addroundkey-und-invmixcolumns">
+<h2>Vertausch von <em>AddRoundKey</em> und <em>InvMixColumns</em></h2>
 <ul>
-<li><p>The transformations <cite>AddRoundKey</cite> and <cite>InvMixColumns</cite> do not alter the sequence of bytes in State.</p></li>
-<li><p>If we view the key as a sequence of words, then both AddRoundKey and InvMixColumns operate on State one column at a time.</p></li>
-<li><p>These two operations are linear with respect to the column input.</p>
-<p>That is, for a given State <span class="math">\(S_i\)</span> and a given round key <span class="math">\(w_j\)</span>:</p>
+<li><p>Die Transformationen <em>AddRoundKey</em> und <em>InvMixColumns</em> ändern die Reihenfolge der Bytes im Zustand (<em>State</em>) nicht.</p></li>
+<li><p>Betrachtet man den Schlüssel als eine Folge von Wörtern, so wirken sowohl <em>AddRoundKey</em> als auch <em>InvMixColumns</em> jeweils nur auf eine Spalte des Zustands (<em>State</em>).</p></li>
+<li><p>Diese beiden Operationen sind linear in Bezug auf die gegebene Spalte.</p>
+<p>Das heißt, für einen bestimmten Zustand <span class="math">\(S_i\)</span> und einen bestimmten Rundenschlüssel <span class="math">\(w_j\)</span>:</p>
 <div class="math">
 \begin{equation*}
 InvMixColumns(S_i \oplus w_j) = InvMixColumns(S_i) \oplus InvMixColumns(w_j)
@@ -1816,36 +1827,169 @@ InvMixColumns(S_i \oplus w_j) = InvMixColumns(S_i) \oplus InvMixColumns(w_j)
 </div>
 </li>
 </ul>
-</div><div class="vertical-title ld-slide" id="aquivalente-inverse-chiffre">
+</div><div class="vertical-title ld-slide" id="aquivalente-inverse-chiffre-1">
 <h2>Äquivalente Inverse Chiffre</h2>
 <img alt="drawings/aes/equivalent_inverse_cipher.svg" class="align-center" src="drawings/aes/equivalent_inverse_cipher.svg" style="height: 1170px;" />
-</div><div class="ld-slide" id="implementation-aspects">
-<h2>Implementation Aspects</h2>
-<p>AES can be implemented very efficiently on an 8-bit processor:</p>
+</div><div class="ld-slide" id="aspekte-der-umsetzung-auf-8-bit-prozessoren">
+<h2>Aspekte der Umsetzung auf 8-bit Prozessoren</h2>
+<p>AES kann sehr effizient auf einem 8-Bit-Prozessor implementiert werden:</p>
 <dl class="field-list simple">
 <dt>AddRoundKey<span class="colon">:</span></dt>
-<dd><p>is a bytewise XOR operation.</p>
+<dd><p>ist eine byteweise XOR-Operation.</p>
 </dd>
 <dt>ShiftRows<span class="colon">:</span></dt>
-<dd><p>is a simple byte-shifting operation.</p>
+<dd><p>ist eine einfache Byte-Verschiebeoperation.</p>
 </dd>
 <dt>SubBytes<span class="colon">:</span></dt>
-<dd><p>operates at the byte level and only requires a table of 256 bytes.</p>
+<dd><p>arbeitet auf Byte-Ebene und benötigt nur eine Tabelle von 256 Bytes.</p>
 </dd>
 <dt>MixColumns<span class="colon">:</span></dt>
-<dd><p>requires matrix multiplication in the field <span class="math">\(GF(2^8)\)</span>, which means that all operations are carried out on bytes.</p>
+<dd><p>erfordert eine Matrixmultiplikation im Körper <span class="math">\(GF(2^8)\)</span>, was bedeutet, dass alle Operationen mit Bytes durchgeführt werden.</p>
 </dd>
 </dl>
-</div><div class="ld-slide" id="implementation-aspects-1">
-<h2>Implementation Aspects</h2>
-<p>Can be efficiently implemented on a 32-bit processor:</p>
+</div><div class="ld-slide" id="aspekte-der-umsetzung-auf-32-bit-prozessoren">
+<h2>Aspekte der Umsetzung auf 32-bit Prozessoren</h2>
+<p>AES kann effizient auf einem 32-Bit-Prozessor implementiert werden:</p>
 <ul class="simple">
-<li><p>Redefine steps to use 32-bit words</p></li>
-<li><p>Can precompute 4 tables of 256-words</p></li>
-<li><p>Then each column in each round can be computed using 4 table lookups + 4 XORs</p></li>
-<li><p>At a cost of 4Kb to store tables</p></li>
-<li><p>Designers believe this very efficient implementation was a key factor in its selection as the AES cipher</p></li>
+<li><p>Die einzelnen Schritte können so umdefiniert werden, dass sie 32-Bit-Wörter verwenden.</p></li>
+<li><p>Es ist möglich 4 Tabellen für die <em>MixColumns</em> Transformation mit je 256 Wörtern vorzuberechnen.</p>
+<ul>
+<li><p>Dann kann jede Spalte in jeder Runde mit 4 Tabellen-Lookups + 4 XORs berechnet werden.</p></li>
+<li><p>Die Kosten für die Speicherung der Tabellen belaufen sich auf <span class="ger-quote">4Kb</span>.</p></li>
 </ul>
+</li>
+<li><p>Die Entwickler glauben, dass die Möglichkeit einer effizienten Implementierung ein Schlüsselfaktor für die Wahl der AES-Chiffre zum neuen Standard war.</p></li>
+</ul>
+<div class="supplemental docutils container">
+<img alt="Vorberechnung von MixColumns" class="align-center" src="drawings/vorberechnung-von-mixcolumns.png" style="width: 100%;" />
 </div>
+<div class="presenter-notes docutils container">
+<p>Link auf Diskussion der Tabellen: <a class="reference external" href="https://crypto.stackexchange.com/questions/19175/efficient-aes-use-of-t-tables">https://crypto.stackexchange.com/questions/19175/efficient-aes-use-of-t-tables</a></p>
+</div>
+</div><div class="integrated-exercise ld-slide" id="ubung-aes-128-berechnung-des-roundkey">
+<h2>Übung (AES-128) - Berechnung des <em>RoundKey</em></h2>
+<p>Sei der folgende <em>RoundKey</em> gegeben:</p>
+<p><span class="math">\(rc_1=w[4]\,||\,w[5]\,||\,w[6]\,||\,w[7]\)</span> <span class="math">\(=\)</span></p>
+<p><span class="docutils literal"><span class="pre">-w[4]------</span>   <span class="pre">-w[5]------</span>   <span class="pre">-w[6]------</span>   <span class="pre">-w[7]------</span></span></p>
+<p><span class="docutils literal">E2 32 FC F1   91 12 91 88   B1 59 E4 E6   D6 79 A2 93</span></p>
+<p>Berechne <span class="math">\(rc_2\)</span>; d.h. den Rundschlüssel (<em>Roundkey</em>) für die zweite Runde.</p>
+<ol class="arabic">
+<li><p>Bevor Sie die konkrete Berechnung durchführen, schreiben Sie zunächst die Formeln auf:</p>
+<p><span class="math">\(w[8]\;\; =\; \ldots \oplus ... \quad w[9]\;\; =\; ... \oplus ...  \quad w[10] =\; ... \oplus ... \quad w[11] =\; ... \oplus ...\)</span></p>
+</li>
+<li><p>Berechne <cite>w[8]</cite> und <cite>w[9]</cite>.</p></li>
+</ol>
+<div class="protected-exercise-solution">
+<p class="rubric">Formeln für die Berechnung des *RoundKey*</p>
+<div class="math">
+\begin{equation*}
+w[8] = w[4] \oplus g(w[7])
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+w[9] = w[5] \oplus w[8]
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+w[10] = w[6] \oplus w[9]
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+w[11] = w[7] \oplus w[10]
+\end{equation*}
+</div>
+</div><div class="protected-exercise-solution">
+<p class="rubric">Berechnung von :math:`w[8]` und :math:`w[9]`</p>
+<pre class="literal-block">g(w[7]):
+    1. after left shift of w[7]:              79 A2 93 D6
+    2. after s-box substituion:               B6 3A DC F6
+    3. after add RoundConstant (02 00 00 00):  B4 3A DC F6
+
+w[8] = E2 32 FC F1 xor B4 3A DC F6 = 56 08 20 07
+w[9] = w[8]                      xor 91 12 91 88 = C7 1A B1 8F</pre>
+</div></div><div class="integrated-exercise ld-slide" id="ubung-aes-128">
+<h2>Übung (AES-128)</h2>
+<p>Nehmen wir an, dass der Zustand (<em>State</em>) folgendermaßen sei:</p>
+<pre class="literal-block">00 3C 6E 47
+1F 4E 22 74
+0E 08 1B 31
+54 59 0B 1A</pre>
+<ol class="arabic simple">
+<li><p>Führen Sie den <em>Substitute Bytes</em> Schritt durch (Anwendung der S-box Transformation).</p></li>
+<li><p>Führen Sie die <em>Shift Rows Transformation</em> auf dem Ergebnis des vorherigen Schrittes durch.</p></li>
+</ol>
+<div class="protected-exercise-solution">
+<p class="rubric">Substitute Bytes</p>
+<pre class="literal-block">63 EB 9F A0
+C0 2F 93 92
+AB 30 AF C7
+20 CB 2B A2</pre>
+</div><div class="protected-exercise-solution">
+<p class="rubric">Shift Rows</p>
+<pre class="literal-block">63 EB 9F A0
+2F 93 92 C0
+AF C7 AB 30
+A2 20 CB 2B</pre>
+</div></div><div class="integrated-exercise ld-slide" id="ubung-aes-128-mix-columns-transformation">
+<h2>Übung (AES-128) - <em>Mix Columns Transformation</em></h2>
+<p>Nehmen wir an, dass der Zustand (<em>State</em>) folgendermaßen sei:</p>
+<pre class="literal-block">6A 59 CB BD
+4E 48 12 A0
+98 9E 30 9B
+8B 3D F4 9B</pre>
+<p>Führen Sie die <em>Mix Columns Transformation</em> durch für das fehlende Feld (<span class="math">\(S'_{0,0}\)</span>):</p>
+<pre class="literal-block">?? C9 7F 9D
+CE 4D 4B C2
+89 71 BE 88
+65 47 97 CD</pre>
+<div class="protected-exercise-solution">
+<p class="rubric">Mix Columns Transformation</p>
+<div class="math">
+\begin{equation*}
+0x02 \times 0x6A = (simple\; left\; shift\; of\; 6A): 1101\, 0100_b
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+0x03 \times 0x4E = 0x4E \oplus (0x02 \times 0x4E) = 0100\, 1110_b \oplus 1001\, 1100_b = 1101 0010_b
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+S'_{0,0} = 1101\, 0100_b \oplus 1101\, 0010_b \oplus 0x98 \oplus 0x8B = 0x15
+\end{equation*}
+</div>
+</div></div><div class="integrated-exercise ld-slide" id="ubung-aes-128-roundkey-anwendung">
+<h2>Übung (AES-128) - <em>RoundKey</em> Anwendung</h2>
+<p>Wenden Sie den folgenden <em>RoundKey</em>:</p>
+<p><span class="docutils literal"><span class="pre">-w[x]------</span>   <span class="pre">-w[x+1]----</span>   <span class="pre">-w[x+2]----</span>   <span class="pre">-w[x+3]----</span></span></p>
+<p><span class="docutils literal">D2 60 0D E7   15 7A BC 68   63 39 E9 01   C3 03 1E FB</span></p>
+<p>auf die folgende Zustandsmatrix (<em>State</em>):</p>
+<pre class="literal-block">AA 65 FA 88
+16 0C 05 3A
+3D C1 DE 2A
+B3 4B 5A 0A</pre>
+<div class="protected-exercise-solution">
+<p class="rubric">RoundKey Anwendung</p>
+<p>Denken Sie daran, dass der <em>RoundKey</em> auf die Spalte angewendet wird!</p>
+<pre class="literal-block">78 70 99 4B
+76 76 3C 39
+30 7D 37 34
+54 23 5B F1</pre>
+</div></div><div class="integrated-exercise ld-slide" id="ubung-aes-128-1">
+<h2>Übung (AES-128)</h2>
+<p>Fragen Sie sich, was passiert, wenn Sie einen Block, der nur aus <span class="docutils literal">0x00</span> Werten besteht, mit einem Schlüssel verschlüsseln, der ebenfalls nur aus <span class="docutils literal">0x00</span> Werten besteht?</p>
+<div class="protected-exercise-solution">
+<p class="rubric">0x00 Schlüssel und Daten</p>
+<ul class="simple">
+<li><p>Die erste Substitution wird alle Werte auf denselben Wert abbilden: <span class="math">\(0x63\)</span>'.</p></li>
+<li><p>Die Zeilenverschiebung hat keine Auswirkung.</p></li>
+<li><p>Spalten mischen (weil die Werte nicht mehr <span class="math">\(0x00\)</span> sind, führt dies zu einer gewissen Diffusion <span class="math">\(0x02 \times 0x63\)</span> und <span class="math">\(0x03 \times 0x63\)</span> ist nicht <span class="math">\(0x63\)</span>. )</p></li>
+<li><p><em>AddRoundKey</em> wirkt sich ebenfalls aus und führt (schon in der ersten Runde) zu einiger Konfusion.</p></li>
+</ul>
+</div></div>
 </body>
 </html>
