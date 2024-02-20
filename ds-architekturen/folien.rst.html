@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="version" content="LD2 0.1" />
 <meta content="Michael Eichberg" name="author" />
-<meta content="&quot;Verteilte Anwendungen&quot;, &quot;Modelle&quot;" name="keywords" />
+<meta content="&quot;Verteilte Anwendungen&quot;, &quot;Modelle&quot;, &quot;Architekturen&quot;, &quot;Architekturelle Stile&quot;" name="keywords" />
 <meta content="Architekturen von verteilten Anwendungen" lang="de" name="description" xml:lang="de" />
 <meta content="lecture-ds-architectures-of-distributed-applications" name="id" />
 <meta content="last-viewed" name="first-slide" />
@@ -627,12 +627,237 @@ a { text-decoration: none; }
 <dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>2024-02-16</p>
+<dd><p>2024-02-19</p>
 </dd>
 </dl>
 </div>
 </div>
-<div class="new-section ld-slide" id="microservices-newman2021">
+<div class="new-section transition-fade ld-slide" id="middleware">
+<h2>Middleware</h2>
+</div><div class="center-child-elements ld-slide" id="was-ist-middleware">
+<h2>Was ist Middleware?</h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Middleware ist eine Klasse von Software-Technologien, die dazu dienen,</p>
+<ol class="upperroman simple">
+<li><p>die Komplexität und</p></li>
+<li><p>die Heterogenität verteilter Systeme zu verwalten.</p></li>
+</ol>
+</aside>
+</div><div class="tiny ld-slide" id="ein-einfacher-server-mit-sockets">
+<h2>Ein einfacher Server mit Sockets</h2>
+<div class="stack smaller docutils container">
+<div class="layer docutils container">
+<pre class="code C literal-block"><code><span class="comment multiline">/* A simple TCP based server. The port number is passed as an argument */</span><span class="whitespace">
+</span><span class="comment preproc">#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;stdio.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/types.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/socket.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;netinet/in.h&gt;</span><span class="comment preproc">
+</span><span class="whitespace">
+</span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">error</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">msg</span><span class="punctuation">){</span><span class="name">perror</span><span class="punctuation">(</span><span class="name">msg</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">);}</span><span class="whitespace">
+
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">argc</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">argv</span><span class="punctuation">[]){</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">newsockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">portno</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">clilen</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="name">buffer</span><span class="punctuation">[</span><span class="literal number integer">256</span><span class="punctuation">];</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">n</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr_in</span><span class="whitespace"> </span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">cli_addr</span><span class="punctuation">;</span><span class="whitespace">
+
+  </span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">socket</span><span class="punctuation">(</span><span class="name">AF_INET</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">SOCK_STREAM</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// socket() returns a socket descriptor
+</span><span class="whitespace">  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+  </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR opening socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="name">bzero</span><span class="punctuation">((</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">));</span><span class="whitespace"> </span><span class="comment single">// bzero() sets all values to zero.
+</span><span class="whitespace">  </span><span class="name">portno</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">atoi</span><span class="punctuation">(</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]);</span><span class="whitespace"> </span><span class="comment single">// atoi() converts str into an integer
+</span><span class="whitespace">
+  </span><span class="punctuation">...</span></code></pre>
+</div>
+<div class="layer incremental docutils container">
+<pre class="code C literal-block"><code><span class="whitespace">  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_family</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">AF_INET</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_addr</span><span class="punctuation">.</span><span class="name">s_addr</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">INADDR_ANY</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_port</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">htons</span><span class="punctuation">(</span><span class="name">portno</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bind</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+  </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR on binding&quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">listen</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="literal number integer">5</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// tells the socket to listen for connections
+</span><span class="whitespace">  </span><span class="name">clilen</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">cli_addr</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">newsockfd</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">accept</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">cli_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">clilen</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">newsockfd</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR on accept&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="name">bzero</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">256</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">read</span><span class="punctuation">(</span><span class="name">newsockfd</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">255</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">n</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR reading from socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Here is the message: %s</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">write</span><span class="punctuation">(</span><span class="name">newsockfd</span><span class="punctuation">,</span><span class="literal string">&quot;I got your message&quot;</span><span class="punctuation">,</span><span class="literal number integer">18</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">n</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR writing to socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">return</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div>
+</div>
+<div class="block-footer text-align-center dhbw-gray-background white docutils container">
+<p>Motivation</p>
+</div>
+</div><div class="tiny ld-slide" id="ein-einfacher-client-mit-sockets">
+<h2>Ein einfacher Client mit Sockets</h2>
+<div class="stack smaller">
+<div class="layer">
+<pre class="code c literal-block"><code><span class="comment preproc">#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;stdio.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/types.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/socket.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;netinet/in.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;netdb.h&gt;</span><span class="comment preproc">
+</span><span class="whitespace">
+</span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">error</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">msg</span><span class="punctuation">){</span><span class="whitespace"> </span><span class="name">perror</span><span class="punctuation">(</span><span class="name">msg</span><span class="punctuation">);</span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">);}</span><span class="whitespace">
+
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">argc</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">argv</span><span class="punctuation">[]){</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">portno</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">n</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr_in</span><span class="whitespace"> </span><span class="name">serv_addr</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">hostent</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">server</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="name">buffer</span><span class="punctuation">[</span><span class="literal number integer">256</span><span class="punctuation">];</span><span class="whitespace">
+
+  </span><span class="name">portno</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">atoi</span><span class="punctuation">(</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">2</span><span class="punctuation">]);</span><span class="whitespace">
+
+  </span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">socket</span><span class="punctuation">(</span><span class="name">AF_INET</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">SOCK_STREAM</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+    </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR opening socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="punctuation">...</span></code></pre>
+</div><div class="layer incremental">
+<pre class="code c literal-block"><code><span class="whitespace">  </span><span class="punctuation">...</span><span class="whitespace">
+
+  </span><span class="name">server</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">gethostbyname</span><span class="punctuation">(</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]);</span><span class="whitespace">
+  </span><span class="name">bzero</span><span class="punctuation">((</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">));</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_family</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">AF_INET</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">bcopy</span><span class="punctuation">((</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="name">server</span><span class="operator">-&gt;</span><span class="name">h_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_addr</span><span class="punctuation">.</span><span class="name">s_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">server</span><span class="operator">-&gt;</span><span class="name">h_length</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_port</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">htons</span><span class="punctuation">(</span><span class="name">portno</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">connect</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR connecting&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Please enter the message: &quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">bzero</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">256</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">fgets</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">255</span><span class="punctuation">,</span><span class="name">stdin</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">write</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">,</span><span class="name">strlen</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">));</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">n</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR writing to socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">bzero</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">256</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">read</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">255</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;%s</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">return</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div></div><div class="block-footer text-align-center dhbw-gray-background white docutils container">
+<p>Motivation</p>
+</div>
+</div><div class="ld-slide" id="probleme-bei-der-verwendung-von-sockets">
+<h2>Probleme bei der Verwendung von Sockets</h2>
+<p>Wir müssen uns um …</p>
+<ul class="incremental negative-list simple">
+<li><p>… die Einrichtung eines Kanals und alle Fehler, die während dieses Prozesses auftreten können</p></li>
+<li><p>… die Festlegung eines Protokolls (Wer sendet was, wann, in welcher Reihenfolge und welche Antwort wird erwartet?)</p></li>
+<li><p>… Nachrichtenformate (Umwandlung von Daten der Anwendungsebene in Bytes, die über das Netz übertragen werden können).</p></li>
+</ul>
+<p>kümmern!</p>
+<div class="block-footer text-align-center dhbw-gray-background white docutils container">
+<p>Motivation</p>
+</div>
+</div><div class="ld-slide" id="middleware-als-programmierabstraktion">
+<h2>Middleware als Programmierabstraktion</h2>
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
+<ul class="simple">
+<li><p>Eine Softwareschicht oberhalb des Betriebssystems und unterhalb des Anwendungsprogramms, die eine gemeinsame Programmierabstraktion in einem verteilten System bietet.</p></li>
+<li><p>Ein Baustein auf höherer Ebene als die vom Betriebssystem bereitgestellten APIs (z. B. Sockets)</p></li>
+</ul>
+</div>
+<div class="column docutils container">
+<img alt="images/middleware.svg" class="align-center" src="images/middleware.svg" style="height: 1100px;" />
+</div>
+</div>
+</div><div class="ld-slide" id="middleware-als-programmierabstraktion-1">
+<h2>Middleware als Programmierabstraktion</h2>
+<p>Die von Middleware angebotenen Programmierabstraktionen verbergen einen Teil der Heterogenität und bewältigen einen Teil der Komplexität, mit der Programmierer einer verteilten Anwendung umgehen müssen:</p>
+<ul class="incremental positive-list simple">
+<li><p>Middleware maskiert immer die Heterogenität der zugrundeliegenden Netzwerke und Hardware.</p></li>
+<li><p>Middleware maskiert meistens die Heterogenität von Betriebssystemen und/oder Programmiersprachen.</p></li>
+<li><p><span class="minor">Manche Middleware maskiert sogar die Heterogenität zwischen den Implementierungen des gleichen Middleware-Standards durch verschiedene Hersteller</span>.</p></li>
+</ul>
+<div class="supplemental">
+<p>Alte Middlewarestandards wie zum Beispiel CORBA waren sehr komplex und die Implementierungen verschiedener Hersteller meist nicht vollständig kompatibel.</p>
+</div></div><div class="ld-slide" id="transparenzziele-von-middleware-aus-sicht-der-programmierung">
+<h2>Transparenzziele von Middleware aus Sicht der Programmierung</h2>
+<p>Middleware bietet (beim Programmieren) Transparenz in Bezug auf eine oder mehrere der folgenden Dimensionen:</p>
+<ul class="simple">
+<li><p>Standort</p></li>
+<li><p>Nebenläufigkeit</p></li>
+<li><p>Replikation</p></li>
+<li><p>Ausfälle (bedingt)</p></li>
+</ul>
+<div class="assessment docutils container">
+<p>Middleware ist die Software, die ein verteiltes System (DS) programmierbar macht.</p>
+</div>
+</div><div class="ld-slide" id="middleware-als-infrastruktur">
+<h2>Middleware als Infrastruktur</h2>
+<ul class="incremental simple">
+<li><p>Hinter Programmierabstraktionen steht eine komplexe Infrastruktur, die diese Abstraktionen implementiert (Middleware-Plattformen sind sehr komplexe Softwaresysteme).</p></li>
+<li><p>Da die Programmierabstraktionen immer höhere Ebenen erreichen, muss die zugrunde liegende Infrastruktur, die die Abstraktionen implementiert, entsprechend wachsen</p></li>
+<li><p>Zusätzliche Funktionalität wird fast immer durch zusätzliche Softwareschichten implementiert.</p></li>
+<li><p>Die zusätzlichen Softwareschichten erhöhen den Umfang und die Komplexität der für die Nutzung der neuen Abstraktionen erforderlichen Infrastruktur.</p></li>
+</ul>
+<div class="supplemental">
+<p>Seit Jahrzehnten kann beobachtet werden, dass Middleware immer komplexer wird bzw. wurde bis zu dem Punkt an dem die Komplexität kaum mehr beherrschbar war. Zu diesen Zeitpunkten wurden dann häufig neue Ansätze entwickelt, die die Komplexität reduzierten bis diese wiederum Eingang in neue Middleware fand. Ansätze, wie z. B. REST, haben sich als recht erfolgreich erwiesen stellen aber Entwickler vor neue Herausforderungen.</p>
+</div></div><div class="ld-slide" id="middleware-und-nicht-funktionale-anforderungen">
+<h2>Middleware und nicht-funktionale Anforderungen</h2>
+<p>Die Infrastruktur kümmert sich um nicht-funktionalen Eigenschaften, die normalerweise von Datenmodellen, Programmiermodellen und Programmiersprachen ignoriert werden:</p>
+<ul class="simple">
+<li><p>Leistung</p></li>
+<li><p>Verfügbarkeit</p></li>
+<li><p>Ressourcenmanagement</p></li>
+<li><p>Zuverlässigkeit</p></li>
+<li><p>usw.</p></li>
+</ul>
+</div><div class="ld-slide" id="middleware-als-infrastruktur-1">
+<h2>Middleware als Infrastruktur</h2>
+<p>Middleware unterstützt zusätzliche Funktionen die die Entwicklung, Wartung und Überwachung einfacher und kostengünstiger machen (Auszug):</p>
+<ul class="incremental simple">
+<li><p>Protokollierung (<span class="eng">Logging</span>)</p></li>
+<li><p>Wiederherstellung (<span class="eng">Recovery</span>)</p></li>
+<li><p>Sprachprimitive für transaktionale Abgrenzung,</p></li>
+<li><p><span class="minor">fortgeschrittene Transaktionsmodelle (z.B. transaktionale RPC), transaktionales Dateisystem</span></p></li>
+</ul>
+</div><div class="smaller-slide-title ld-slide" id="konzeptionelle-darstellung-historischer-middleware">
+<h2>Konzeptionelle Darstellung (historischer) Middleware</h2>
+<div class="footer-left x-tiny minor docutils container">
+<p>Darstellung nach: Alonso; Web services: Concepts, Architectures and Applications; Springer, 2004</p>
+</div>
+<img alt="images/historische-middleware-konzeptuell.svg" class="align-center" src="images/historische-middleware-konzeptuell.svg" style="height: 900px;" />
+<div class="supplemental">
+<p>Insbesondere die explizite Erzeugung von Stubs und Skeletons durch einen IDL Compiler erfolgt so in der heutigen Zeit nicht mehr. Die Erzeugung von Stubs und Skeletons - wenn überhaupt erforderlich - erfolgt heute automatisch durch die Middleware.</p>
+</div></div><div class="vertical-title ld-slide" id="historische-entwicklung-von-middleware">
+<h2>Historische Entwicklung von Middleware</h2>
+<img alt="images/historic_middleware_technologies.svg" class="align-center" src="images/historic_middleware_technologies.svg" style="height: 1150px;" />
+</div><div class="ld-slide" id="entwicklung-von-middleware">
+<h2>Entwicklung von Middleware</h2>
+<ul class="simple">
+<li><p>Beabsichtigt, Details der Hardware, der Netze und der Verteilung auf niedriger Ebene zu verbergen.</p></li>
+<li><p>Anhaltender Trend zu immer leistungsfähigeren Primitiven (<em>Events</em>), die zusätzliche Eigenschaften haben oder eine flexiblere Nutzung des Konzepts ermöglichen.</p></li>
+<li><p>Die Entwicklung und das Erscheinungsbild für den Programmierer wird von den Trends in den Programmiersprachen diktiert:</p>
+<ul>
+<li><p>RPC und C</p></li>
+<li><p>CORBA und C++</p></li>
+<li><p>RMI (Corba) und Java</p></li>
+<li><p>&quot;Klassische&quot; Webservices und XML</p></li>
+<li><p>RESTful Webservices und JSON</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="no-title center-child-elements ld-slide" id="middleware-high-level-view">
+<h2>Middleware - High-level View</h2>
+<div class="huge dhbw-red padding-1em dhbw-light-gray-background rounded-corners docutils container">
+<p>Eine Middleware stellt eine umfassende Plattform für die Entwicklung und den Betrieb komplexer verteilter Systeme zur Verfügung.</p>
+</div>
+</div><div class="ld-slide" id="klassische-architekturen">
+<h2>Klassische Architekturen</h2>
+<img alt="images/common_application_architectures/common_architectures.svg" class="align-center" src="images/common_application_architectures/common_architectures.svg" style="height: 800px;" />
+</div><div class="new-section transition-fade ld-slide" id="microservices-newman2021">
 <h2>Microservices <a class="citation-reference" href="#newman2021" id="citation-reference-1" role="doc-biblioref">[Newman2021]</a></h2>
 </div><div class="no-title ld-slide" id="microservice-mit-rest-schnittstelle">
 <h2>Microservice mit REST Schnittstelle</h2>
@@ -648,10 +873,9 @@ a { text-decoration: none; }
 <img alt="images/microservices/basisbeispiel.svg" src="images/microservices/basisbeispiel.svg" style="height: 1160px;" />
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Ein große Herausforderung ist das Design der Schnittstellen. Um wirkliche Unabhängigkeit zu erreichen, müssen die Schnittstellen sehr gut definiert sein. Sind die Schnittstellen nicht klar definiert oder unzureichend, dann kann das zu viel Arbeit und Koordination zwischen den Teams führen, die eigentlich unerwünscht ist!</p>
-</div>
-</div><div class="ld-slide" id="schlusselkonzepte-von-microservices">
+</div></div><div class="ld-slide" id="schlusselkonzepte-von-microservices">
 <h2>Schlüsselkonzepte von Microservices</h2>
 <ul class="incremental list-with-explanations">
 <li><p>können unabhängig bereitgestellt werden (<span class="eng">independently deployable</span>)</p>
@@ -669,7 +893,7 @@ a { text-decoration: none; }
 <li><p>flexibel bzgl. Skalierbarkeit, Robustheit, eingesetzter Technik</p></li>
 <li><p>erlauben das Ausrichten der Architektur an der Organisation (vgl. Conway's Law)</p></li>
 </ul>
-</div><div class="ld-slide" id="microservices-und-conway-s-law">
+</div><div class="smaller ld-slide" id="microservices-und-conway-s-law">
 <h2>Microservices und Conway's Law</h2>
 <div class="two-columns no-default-width docutils container">
 <div class="column no-separator docutils container">
@@ -685,7 +909,16 @@ a { text-decoration: none; }
 <h2>Microservices und Technologieeinsatz</h2>
 <p>Microservices sind flexibel bzgl. des Technologieeinsatzes und ermöglichen den Einsatz <span class="ger-quote">der geeignetsten</span> Technologie.</p>
 <img alt="images/microservices/technologische-flexibilitaet.svg" class="align-center" src="images/microservices/technologische-flexibilitaet.svg" style="height: 700px;" />
-</div><div class="ld-slide" id="microservices-und-skalierbarkeit">
+</div><div class="vertical-title ld-slide" id="aktuelle-standardtechnologien">
+<h2>Aktuelle Standardtechnologien</h2>
+<div class="stack">
+<div class="layer tiny">
+<img alt="screenshots/tiobe_2012-04.png" class="align-center" src="screenshots/tiobe_2012-04.png" style="height: 1050px;" />
+<p>Quelle: TIOBE Programming Community Index - April 2012</p>
+</div><div class="layer incremental tiny">
+<img alt="screenshots/tiobe_2024-02.png" class="align-center" src="screenshots/tiobe_2024-02.png" style="height: 1050px;" />
+<p>Quelle: <a class="reference external" href="https://www.tiobe.com/tiobe-index/">TIOBE Programming Community Index - Feb. 2024</a></p>
+</div></div></div><div class="ld-slide" id="microservices-und-skalierbarkeit">
 <h2>Microservices und Skalierbarkeit</h2>
 <p>Sauber entworfene Microservices können sehr gut skaliert werden.</p>
 <img alt="images/microservices/skalierbarkeit.svg" class="align-center" src="images/microservices/skalierbarkeit.svg" style="height: 899px;" />
@@ -699,10 +932,9 @@ a { text-decoration: none; }
 <img alt="images/sagas/transaktion.svg" src="images/sagas/transaktion.svg" style="height: 1160px;" />
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Die Implementierung von Transaktionen ist eine der größten Herausforderungen bei der Entwicklung von Microservices.</p>
-</div>
-</div><div class="no-title ld-slide" id="transaktionen-mit-hilfe-von-sagas">
+</div></div><div class="no-title ld-slide" id="transaktionen-mit-hilfe-von-sagas">
 <h2>Transaktionen mit Hilfe von Sagas</h2>
 <div class="two-columns no-default-width docutils container">
 <div class="column no-separator docutils container">
@@ -712,10 +944,19 @@ a { text-decoration: none; }
 <img alt="images/sagas/transaktion-mit-saga.svg" src="images/sagas/transaktion-mit-saga.svg" style="height: 1160px;" />
 </div>
 </div>
-</div><div class="ld-slide" id="langlebige-transaktionen-mit-hilfe-orchestrierter-sagas">
-<h2>Langlebige Transaktionen mit Hilfe orchestrierter Sagas</h2>
+<div class="supplemental">
+<p>Eine <em>Saga</em> ist eine Sequenz von Aktionen, die ausgeführt werden, um eine langlebige Transaktion zu implementieren.</p>
+<p>Sagas können keine Atomizität garantieren!. Jedes System für sich kann jedoch ggf. Atomizität garantieren (z. B. durch die Verwendung traditioneller Datenbanktransaktionen).</p>
+<p>Sollte ein Abbruch der Transaktion notwendig sein, dann kann kein traditioneller <em>Rollback</em> erfolgen. Die Saga muss dann entsprechende kompensierende Transaktionen durchführen, die alle bisher erfolgreich durchgeführten Aktionen rückgängig machen.</p>
+</div></div><div class="smaller-slide-title vertical-title ld-slide" id="optimierung-der-abarbeitungsreihenfolge-zwecks-minimierung-von-mgl-rollbacks">
+<h2>Optimierung der Abarbeitungsreihenfolge zwecks Minimierung von mgl. <em>Rollbacks</em></h2>
+<img alt="images/sagas/transaktion-mit-saga-mit-weniger-rollbacks.svg" class="align-center" src="images/sagas/transaktion-mit-saga-mit-weniger-rollbacks.svg" style="height: 1160px;" />
+<div class="supplemental">
+<p>Die Abarbeitungsreihenfolge der Aktionen kann so optimiert werden, dass die Wahrscheinlichkeit von <em>Rollbacks</em> minimiert wird. In diesem Falle ist die Wahrscheinlichkeit, dass es zu einem <em>Rollback</em> während des Schritts <span class="ger-quote">Versand der Bestellung</span> kommt, wesentlich höher als beim Schritt <span class="ger-quote">Kundenbonus gutschreiben</span>.</p>
+</div></div><div class="ld-slide" id="langlebige-transaktionen-mit-orchestrierten-sagas">
+<h2>Langlebige Transaktionen mit orchestrierten Sagas</h2>
 <img alt="images/sagas/orchestrierte-saga.svg" class="align-center" src="images/sagas/orchestrierte-saga.svg" style="height: 760px;" />
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Die orchestrierte Saga ist eine Möglichkeit, um langlebige Transaktionen zu implementieren.</p>
 <ul class="positive-list simple">
 <li><p>Mental einfach</p></li>
@@ -727,16 +968,17 @@ a { text-decoration: none; }
 <li><p>Hoher Grad an <em>Request-Response</em> Interaktionen</p></li>
 <li><p>Gefahr, dass Funktionalität, die besser in den einzelnen Services (oder ggf. neuen Services) unterzubringen wäre, in den Bestellung Service wandert.</p></li>
 </ul>
-</div>
-</div><div class="ld-slide" id="langlebige-transaktionen-mit-hilfe-choreografierter-sagas">
-<h2>Langlebige Transaktionen mit Hilfe choreografierter Sagas</h2>
-<img alt="images/sagas/choreografierte-saga.svg" class="align-center" src="images/sagas/choreografierte-saga.svg" style="height: 920px;" />
-</div><div class="no-title center-child-elements ld-slide" id="die-wahl-der-richtigen-architektur-ist-ein-tradeoff">
+</div></div><div class="ld-slide" id="langlebige-transaktionen-mit-choreografierten-sagas">
+<h2>Langlebige Transaktionen mit choreografierten Sagas</h2>
+<img alt="images/sagas/choreographierte-saga.svg" class="align-center" src="images/sagas/choreographierte-saga.svg" style="height: 975px;" />
+<div class="supplemental">
+<p>Ein großes Problem bei choreografierten Sagas ist es den Überblick über den aktuellen Stand zu behalten. Durch die Verwendung einer &quot;Korrelations-ID&quot; kann diese Problem gemindert werden.</p>
+</div></div><div class="no-title center-child-elements ld-slide" id="die-wahl-der-richtigen-architektur-ist-ein-tradeoff">
 <h2>Die Wahl der richtigen Architektur ist ein Tradeoff!</h2>
 <div class="assessment bold huge dhbw-red text-align-center docutils container">
 <p>Die Wahl der Softwarearchitektur ist immer eine Abwägung von vielen Tradeoffs!</p>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Weitere Aspekte, die berücksichtigt werden können/müssen:</p>
 <ul class="simple">
 <li><p>Cloud (und ggf. Serverless)</p></li>
@@ -746,8 +988,7 @@ a { text-decoration: none; }
 <li><p>Service Meshes</p></li>
 <li><p>...</p></li>
 </ul>
-</div>
-</div><div class="ld-slide" id="literatur">
+</div></div><div class="ld-slide" id="literatur">
 <h2>Literatur</h2>
 <div role="list" class="citation-list">
 <div class="citation" id="newman2021" role="doc-biblioentry">
