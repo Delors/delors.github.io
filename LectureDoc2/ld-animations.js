@@ -23,6 +23,7 @@ const lectureDoc2Animations = function () {
      * Handles the rendering of a "stacked layout" in the continuous view.
      */
     function adaptHeightOfSlideToStack(stack) {
+        const stackWidth = parseInt(window.getComputedStyle(stack).width);
 
         // Given that there is no standard method to get the height of an
         // element including its margin, we have to query the element to get its
@@ -35,7 +36,6 @@ const lectureDoc2Animations = function () {
         // 1. query all layers to compute the necessary heights
         var overallHeight = 0;
         var maxOuterHeight = 0;
-        var topOffset = 0;
 
         var maxGroupedLayersOuterHeight = 0;
         var groupedLayers = [];
@@ -44,13 +44,13 @@ const lectureDoc2Animations = function () {
             overallHeight += maxGroupedLayersOuterHeight  ;
             groupedLayers.forEach((layer, i) => {
                 const marginHeight = getTopAndBottomMargin(layer)
+                layer.style.width = stackWidth + "px";
                 layer.style.height = (maxGroupedLayersOuterHeight - marginHeight) + "px";
-                // Adapt top parameter according to the new height
-                // of the base element.
-                if (i >= 1) {
-                    topOffset -= (maxGroupedLayersOuterHeight);
+                if (i < groupedLayers.length - 1) {
+                    layer.style.position = "absolute";
+                } else {
+                    layer.style.position = "relative";
                 }
-                layer.style.top = topOffset + "px";
             });
         }
 
@@ -161,10 +161,11 @@ const lectureDoc2Animations = function () {
     function afterLDListenerRegistrations() {
 
         /**
-         * Elements which are not visible because 
-         * their parent has a display:none property will not be layed out and 
-         * have no size. Hence, to compute the size of a .stack we have to wait
-         * until it is visible.
+         * Elements which are not visible because their parent has a 
+         * display:none property will not be layed out and have no size. 
+         * 
+         * Hence, to compute the size of a .stack we have to wait until it is 
+         * visible.
          */
         const observer = new IntersectionObserver((events) => {
             events.forEach((event) => {
