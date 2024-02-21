@@ -627,7 +627,7 @@ a { text-decoration: none; }
 <dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>2024-02-19</p>
+<dd><p>2024-02-21</p>
 </dd>
 </dl>
 </div>
@@ -796,17 +796,20 @@ a { text-decoration: none; }
 </div>
 </div><div class="ld-slide" id="middleware-als-infrastruktur">
 <h2>Middleware als Infrastruktur</h2>
-<ul class="incremental simple">
-<li><p>Hinter Programmierabstraktionen steht eine komplexe Infrastruktur, die diese Abstraktionen implementiert (Middleware-Plattformen sind sehr komplexe Softwaresysteme).</p></li>
-<li><p>Da die Programmierabstraktionen immer höhere Ebenen erreichen, muss die zugrunde liegende Infrastruktur, die die Abstraktionen implementiert, entsprechend wachsen</p></li>
+<ul class="incremental list-with-explanations">
+<li><p>Hinter Programmierabstraktionen steht eine komplexe Infrastruktur, die diese Abstraktionen implementiert</p>
+<p>(Middleware-Plattformen können sehr komplexe Softwaresysteme sein).</p>
+</li>
+<li><p>Da die Programmierabstraktionen immer höhere Ebenen erreichen, muss die zugrunde liegende Infrastruktur, die die Abstraktionen implementiert, entsprechend wachsen.</p></li>
 <li><p>Zusätzliche Funktionalität wird fast immer durch zusätzliche Softwareschichten implementiert.</p></li>
 <li><p>Die zusätzlichen Softwareschichten erhöhen den Umfang und die Komplexität der für die Nutzung der neuen Abstraktionen erforderlichen Infrastruktur.</p></li>
 </ul>
 <div class="supplemental">
-<p>Seit Jahrzehnten kann beobachtet werden, dass Middleware immer komplexer wird bzw. wurde bis zu dem Punkt an dem die Komplexität kaum mehr beherrschbar war. Zu diesen Zeitpunkten wurden dann häufig neue Ansätze entwickelt, die die Komplexität reduzierten bis diese wiederum Eingang in neue Middleware fand. Ansätze, wie z. B. REST, haben sich als recht erfolgreich erwiesen stellen aber Entwickler vor neue Herausforderungen.</p>
+<p>Seit Jahrzehnten kann beobachtet werden, dass Middleware immer komplexer wird bzw. wurde bis zu dem Punkt an dem die Komplexität kaum mehr beherrschbar war. Zu diesen Zeitpunkten wurden dann häufig neue Ansätze entwickelt, die die Komplexität reduzierten bis diese wiederum Eingang in komplexere Middleware-Produkten Eingang fand.</p>
+<p>Ansätze, wie z. B. REST, haben sich als recht erfolgreich erwiesen stellen aber Entwickler vor neue Herausforderungen.</p>
 </div></div><div class="ld-slide" id="middleware-und-nicht-funktionale-anforderungen">
 <h2>Middleware und nicht-funktionale Anforderungen</h2>
-<p>Die Infrastruktur kümmert sich um nicht-funktionalen Eigenschaften, die normalerweise von Datenmodellen, Programmiermodellen und Programmiersprachen ignoriert werden:</p>
+<p>Die Infrastruktur kümmert sich um nicht-funktionale Eigenschaften, die normalerweise von Datenmodellen, Programmiermodellen und Programmiersprachen ignoriert werden:</p>
 <ul class="simple">
 <li><p>Leistung</p></li>
 <li><p>Verfügbarkeit</p></li>
@@ -817,11 +820,12 @@ a { text-decoration: none; }
 </div><div class="ld-slide" id="middleware-als-infrastruktur-1">
 <h2>Middleware als Infrastruktur</h2>
 <p>Middleware unterstützt zusätzliche Funktionen die die Entwicklung, Wartung und Überwachung einfacher und kostengünstiger machen (Auszug):</p>
-<ul class="incremental simple">
+<ul class="incremental">
 <li><p>Protokollierung (<span class="eng">Logging</span>)</p></li>
 <li><p>Wiederherstellung (<span class="eng">Recovery</span>)</p></li>
-<li><p>Sprachprimitive für transaktionale Abgrenzung,</p></li>
-<li><p><span class="minor">fortgeschrittene Transaktionsmodelle (z.B. transaktionale RPC), transaktionales Dateisystem</span></p></li>
+<li><p>Sprachprimitive für transaktionale Abgrenzung</p>
+<p><span class="minor">bzw. fortgeschrittene Transaktionsmodelle (z.B. transaktionale RPC), transaktionales Dateisystem</span></p>
+</li>
 </ul>
 </div><div class="smaller-slide-title ld-slide" id="konzeptionelle-darstellung-historischer-middleware">
 <h2>Konzeptionelle Darstellung (historischer) Middleware</h2>
@@ -854,6 +858,260 @@ a { text-decoration: none; }
 <div class="huge dhbw-red padding-1em dhbw-light-gray-background rounded-corners docutils container">
 <p>Eine Middleware stellt eine umfassende Plattform für die Entwicklung und den Betrieb komplexer verteilter Systeme zur Verfügung.</p>
 </div>
+</div><div class="new-subsection transition-fade ld-slide" id="remote-procedure-calls-rpcs">
+<h2>Remote Procedure Calls (RPCs)</h2>
+</div><div class="ld-slide" id="remote-procedure-call-rpc">
+<h2>Remote Procedure Call (RPC)</h2>
+<div class="huge text-align-center docutils container">
+<p>Schwerpunkt: verstecken der Netzkommunikation.</p>
+</div>
+<div class="incremental margin-top-2em docutils container">
+<p>Ein Prozess kann eine Prozedur aufrufen kann, deren Implementierung sich auf einem entfernten Rechner befindet:</p>
+<ul class="simple">
+<li><p>Der Programmierer von verteilten Systemen muss sich nicht mehr um alle Details der Netzwerkprogrammierung kümmern (d.h. keine &quot;expliziten&quot; Sockets mehr)</p></li>
+<li><p>Überbrückung der konzeptionellen Lücke zwischen dem Aufruf lokaler Funktionalität über Prozeduren und dem Aufruf entfernter Funktionalität über Sockets.</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="rpcs-konzeptionell-synchrone-kommunikation">
+<h2>RPCs konzeptionell (synchrone Kommunikation)</h2>
+<div class="two-columns docutils container">
+<div class="docutils container">
+<ul class="simple">
+<li><p>Ein Server ist ein Programm, das bestimmte Dienste implementiert.</p></li>
+<li><p>Cients möchten diese Dienste in Anspruch nehmen:</p>
+<ul class="incremental">
+<li><p>Die Kommunikation erfolgt durch das Senden von Nachrichten (kein gemeinsamer Speicher, keine gemeinsamen Festplatten usw.)</p></li>
+<li><p>Einige minimale Garantien müssen gegeben werden (Behandlung von Fehlern, Aufrufsemantik, usw.)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<img alt="images/rpc_konzeptionell.svg" class="align-center" src="images/rpc_konzeptionell.svg" style="height: 900px;" />
+</div>
+</div><div class="ld-slide" id="rpcs-zentrale-fragestellungen-und-herausforderungen">
+<h2>RPCs - zentrale Fragestellungen und Herausforderungen</h2>
+<div class="stack">
+<div class="layer">
+<p>Sollen entfernte Aufrufe transparent oder nicht transparent für den Entwickler sein?</p>
+<blockquote>
+<p>Ein Fernaufruf ist etwas völlig anderes als ein lokaler Aufruf; sollte sich der Programmierer dessen bewusst sein?</p>
+</blockquote>
+</div><div class="layer incremental">
+<p>Wie können Daten zwischen Maschinen ausgetauscht werden, die möglicherweise unterschiedliche Darstellungen für verschiedene Datentypen verwenden?</p>
+</div><div class="layer incremental">
+<p>Komplexe Datentypen müssen linearisiert werden:</p>
+<ul class="simple">
+<li><p><strong>Marshalling</strong> - der Prozess des Aufbereitens der Daten in eine für die Übermittlung in einer Nachricht geeignete Form</p></li>
+<li><p><strong>Unmarshalling</strong> - der Prozess der Wiederherstellung der Daten bei ihrer Ankunft am Zielort, um eine originalgetreue Repräsentation zu erhalten.</p></li>
+</ul>
+</div><div class="layer incremental">
+<p>Wie findet und bindet man den Dienst, den man tatsächlich will, in einer potenziell großen Sammlung von Diensten und Servern?</p>
+<p>Das Ziel ist, dass der Kunde nicht unbedingt wissen muss, wo sich der Server befindet oder sogar welcher Server den Dienst anbietet (Standorttransparenz).</p>
+</div><div class="layer incremental">
+<p>Wie geht man mehr oder weniger elegant mit Fehlern um:</p>
+<ul class="simple">
+<li><p>Server ist ausgefallen</p></li>
+<li><p>Kommunikation ist gestört</p></li>
+<li><p>Server beschäftigt</p></li>
+<li><p>doppelte Anfragen ...</p></li>
+</ul>
+</div></div><div class="supplemental">
+<p>Je nach System ist die Reihenfolge der Bytes unterschiedlich:</p>
+<ul class="simple">
+<li><p>Intel-CPUs sind Little-Endian.</p></li>
+<li><p>PowerPC ist Big-Endian.</p></li>
+<li><p>ARM kann beides und ist meistens Little-Endian.</p></li>
+</ul>
+</div></div><div class="smaller ld-slide" id="high-level-view-auf-rpc">
+<h2>High-level View auf RPC</h2>
+<div class="assessment docutils container">
+<p>Für Programmierer sieht ein <span class="ger-quote">entfernter</span> Prozeduraufruf fast identisch aus wie ein <span class="ger-quote">lokaler</span> Prozeduraufruf und funktioniert auch so - auf diese Weise wird Transparenz erreicht.</p>
+</div>
+<div class="incremental margin-top-2em docutils container">
+<p>Um Transparenz zu erreichen, führte RPC viele Konzepte von Middleware-Systemen ein:</p>
+<ul class="incremental list-with-explanations">
+<li><p><em>Interface Description Language</em> (IDL)</p></li>
+<li><p>Verzeichnis- und Benennungsdienste</p></li>
+<li><p>Dynamische Bindung</p></li>
+<li><p>Marshalling und Unmarshalling</p></li>
+<li><p><em>Opaque References</em>, um bei verschiedenen Aufrufen auf dieselbe Datenstruktur oder Entität auf dem Server zu verweisen.</p>
+<p>(Der Server ist für die Bereitstellung dieser undurchsichtigen Verweise verantwortlich.)</p>
+</li>
+</ul>
+</div>
+</div><div class="ld-slide" id="rpc-call-semantics">
+<h2>RPC - Call Semantics</h2>
+<p>Nehmen wir an, ein Client stellt eine RPC-Anfrage an einen Dienst eines bestimmten Servers.
+Nachdem die Zeitüberschreitung abgelaufen ist, beschließt der Client die Anfrage erneut zu senden. Das finale Verhalten hängt von der Semantik des Aufrufs (<span class="eng">Call Semantics</span>) ab:</p>
+<div class="stack margin-top-2em">
+<div class="layer">
+<p class="rubric">Maybe (vielleicht; keine Garantie)</p>
+<p>Die Zielmethode kann ausgeführt worden sein und die Antwortnachricht(en) ging(en) verloren oder die Methode wurde gar nicht erst ausgeführt da die Anfrage verloren ging.</p>
+<div class="minor docutils container">
+<p><span class="docutils literal">XMLHTTPRequests</span> in Webbrowsern verwenden diese Semantik.</p>
+</div>
+</div><div class="layer incremental">
+<p class="rubric">At least once (mindestens einmal)</p>
+<p>Die Prozedur wird ausgeführt werden solange der Server nicht endgültig versagt.</p>
+<p>Es ist jedoch möglich, dass sie mehr als einmal ausgeführt wird wenn der Client die Anfrage nach einer Zeitüberschreitung erneut gesendet hatte.</p>
+</div><div class="layer incremental">
+<p class="rubric">At most once (höchstens einmal)</p>
+<p>Die Prozedur wird entweder einmal oder gar nicht ausgeführt. Ein erneutes Senden der Anfrage führt nicht dazu, dass die Prozedur mehrmals ausgeführt wird.</p>
+</div><div class="layer incremental">
+<p class="rubric">Exactly once (genau einmal)</p>
+<p>Das System garantiert die gleiche Semantik wie bei lokalen Aufrufen unter der Annahme, dass ein abgestürzter Server irgendwann wieder startet.</p>
+<p>Verwaiste Aufrufe, d. h. Aufrufe auf abgestürzten Server-Rechnern, werden nachgehalten, damit sie später von einem neuen Server übernommen werden können.</p>
+</div></div></div><div class="ld-slide" id="asynchrones-rpc">
+<h2>Asynchrones RPC</h2>
+<div class="two-columns fade-to-white docutils container">
+<div class="column docutils container">
+<p>Die Verbindung zwischen Client und Server in einem traditionellen RPC. Der Client wird blockiert und wartet.</p>
+</div>
+<div class="column docutils container">
+<img alt="images/rpcs/synchronous_rpc.svg" class="align-center" src="images/rpcs/synchronous_rpc.svg" style="height: 425px;" />
+</div>
+</div>
+<div class="two-columns fade-to-white line-above margin-top-1em padding-top-1em docutils container">
+<div class="column docutils container">
+<p>Die Verbindung zwischen Client und Server bei einem asynchronen RPC. Der Client wird nicht blockiert.</p>
+</div>
+<div class="column docutils container">
+<img alt="images/rpcs/asynchronous_rpc.svg" class="align-center" src="images/rpcs/asynchronous_rpc.svg" style="height: 450px;" />
+</div>
+</div>
+<div class="supplemental">
+<p>Ein normaler Aufruf mittels <span class="docutils literal">XMLHTTPRequest</span> (JavaScript) ist auch immer asynchron.</p>
+</div></div><div class="ld-slide" id="rpc-bewertung">
+<h2>RPC - Bewertung</h2>
+<ul class="incremental positive-list simple">
+<li><p>RPC bot einen Mechanismus, um verteilte Anwendungen auf einfache und effiziente Weise zu implementieren.</p></li>
+<li><p>RPC ermöglichte den modularen und hierarchischen Aufbau großer verteilter Systeme:</p>
+<ul>
+<li><p>Client und Server sind getrennte Einheiten</p></li>
+<li><p>Der Server kapselt und verbirgt die Details der Backend-Systeme (wie z.B. Datenbanken)</p></li>
+</ul>
+</li>
+</ul>
+<ul class="incremental negative-list simple">
+<li><p>RPC ist kein Standard, sondern wurde auf viele verschiedene Arten umgesetzt wurde.</p></li>
+<li><p>RPC ermöglicht Entwicklern den Aufbau verteilter Systeme, löst aber nur ausgewählte Aspekte.</p></li>
+</ul>
+<div class="supplemental">
+<p>Wenn man moderne Ansätze wie RESTful WebServices mit RPC vergleicht, dann fällt auf, dass RPC eine deutlich bessere Tranzparenz bietet.</p>
+</div></div><div class="new-subsection transition-fade ld-slide" id="java-remote-method-invocation-rmi">
+<h2>Java Remote Method Invocation (RMI)</h2>
+</div><div class="ld-slide" id="java-rmi-remote-method-invocation">
+<h2>Java RMI (Remote Method Invocation)</h2>
+<div class="large rounded-corners dhbw-light-gray-background padding-1em docutils container">
+<p>Ermöglicht es einem Objekt, das in einer Java Virtual Machine (VM) läuft, Methoden eines Objekts aufzurufen, das in einer anderen Java VM läuft.</p>
+</div>
+<div class="incremental docutils container">
+<ul class="simple">
+<li><p>Entfernte Objekte können ähnlich wie lokale Objekte behandelt werden.</p></li>
+<li><p>Übernimmt das Marshalling, den Transport und die Garbage Collection der entfernten Objekte.</p></li>
+<li><p>Teil von Java seit JDK 1.1</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="java-rmi-vs-rpc">
+<h2>Java RMI vs. RPC</h2>
+<img alt="images/rpc_vs_rmi.svg" class="align-center" src="images/rpc_vs_rmi.svg" style="height: 1000px;" />
+<div class="supplemental">
+<p>Java RMI ist eine spezielle Form von RPC, die in Java implementiert wurde. Der Unterschied ergibt sich im Prinzip aus dem Unterschied zwischen einem
+Prozeduraufruf und einem Methodenaufruf auf ein Objekt</p>
+</div></div><div class="ld-slide" id="java-rmi-implementiert-ein-distributed-object-model">
+<h2>Java RMI implementiert ein <em>Distributed Object Model</em></h2>
+<img alt="images/java_rmi-distributed-object-model.svg" class="align-center" src="images/java_rmi-distributed-object-model.svg" style="height: 1000px;" />
+<div class="supplemental">
+<ul>
+<li><p>Jeder Prozess enthält sowohl Objekte die entfernte Aufrufe empfangen können als auch solche, die nur lokale Aufrufe empfangen können.</p>
+<p>(Objekte die entfernte Aufrufe empfangen können, werden <em>Remote Objects</em> genannt).</p>
+</li>
+<li><p>Objekte müssen die Remote-Objektreferenz eines Objekts in einem anderen Prozess kennen, um dessen Methoden aufrufen zu können (Remote Method Invocation; Remote Object References)</p></li>
+</ul>
+</div></div><div class="ld-slide" id="anatomie-eine-java-rmi-aufrufs">
+<h2>Anatomie eine Java RMI Aufrufs</h2>
+<img alt="images/rmi_anatomy/rmi_anatomy.svg" class="align-center" src="images/rmi_anatomy/rmi_anatomy.svg" style="height: 1000px;" />
+<div class="supplemental">
+<p>Der Proxy versteckt für den Client, dass es sich um einen entfernten Aufrufe handelt.  Er implementiert die Remote-Schnittstelle und kümmert sich um das Marshalling und Unmarshalling der Parameter und des Ergebnisses.</p>
+<p>Der Skeleton ist für die Entgegennahme der Nachrichten verantwortlich und leitet die Nachricht an das eigentliche Objekt weiter. Er sorgt für die Transparenz auf Serverseite.</p>
+<p>Referenzen auf <em>Remote Objects</em> sind systemweit eindeutig und können frei zwischen Prozessen weitergegeben werden (z.B. als Parameter). Die Implementierung der entfernten Objektreferenzen wird von der Middleware verborgen (<em>Opaque-Referenzen</em>).</p>
+</div></div><div class="ld-slide" id="rmi-protocol-stack">
+<h2>RMI Protocol Stack</h2>
+<img alt="images/rmi_anatomy/rmi_protocol_stack.svg" class="align-center" src="images/rmi_anatomy/rmi_protocol_stack.svg" style="height: 1000px;" />
+<div class="supplemental">
+<ul class="simple">
+<li><p><em>Remote Reference Layer</em>: RMI-spezifische Kommunikation über TCP/IP, Verbindungsinitialisierung, Serverstandort, Verarbeitung serialisierter Daten</p></li>
+<li><p><em>RMI Transport Layer (TCP)</em>: Verbindungsverwaltung, Bereitstellung einer zuverlässigen Datenübertragung zwischen Endpunkten</p></li>
+<li><p>Internetprotokoll in IP-Paketen enthaltene Datenübertragung (unterste Ebene)</p></li>
+</ul>
+</div></div><div class="ld-slide" id="einfacher-rmi-dienst-und-aufruf">
+<h2>Einfacher RMI Dienst und Aufruf</h2>
+<div class="stack scriptsize">
+<div class="layer">
+<p><strong>Schnittstelle des Zeitservers</strong></p>
+<pre class="code Java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.Remote</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.RemoteException</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Date</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">interface</span> <span class="name class">Time</span><span class="whitespace"> </span><span class="keyword declaration">extends</span><span class="whitespace"> </span><span class="name">Remote</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Date</span><span class="whitespace"> </span><span class="name function">getTime</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">RemoteException</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div><div class="layer incremental">
+<p><strong>Implementierung der Schnittelle durch den Zeitserver</strong></p>
+<pre class="code Java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.RemoteException</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.server.UnicastRemoteObject</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Date</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">TimeServer</span><span class="whitespace"> </span><span class="keyword declaration">extends</span><span class="whitespace"> </span><span class="name">UnicastRemoteObject</span><span class="whitespace"> </span><span class="keyword declaration">implements</span><span class="whitespace"> </span><span class="name">Time</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">TimeServer</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">RemoteException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword declaration">super</span><span class="punctuation">();</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Date</span><span class="whitespace"> </span><span class="name function">getTime</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Date</span><span class="punctuation">();</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div><div class="layer incremental">
+<p><strong>Registrierung des Zeitservers</strong></p>
+<pre class="code Java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.Naming</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">TimeRegistrar</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+
+  </span><span class="comment multiline">/** &#64;param args args[0] has to specify the hostname. */</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">Exception</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">String</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">args</span><span class="operator">[</span><span class="literal number integer">0</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">TimeServer</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">TimeServer</span><span class="punctuation">();</span><span class="whitespace">
+    </span><span class="name">Naming</span><span class="punctuation">.</span><span class="name attribute">rebind</span><span class="punctuation">(</span><span class="literal string">&quot;rmi://&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;/ServerTime&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div><div class="layer incremental">
+<p><strong>Client des Zeitservers</strong></p>
+<pre class="code Java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.Naming</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Date</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">TimeClient</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">Exception</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">String</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">args</span><span class="operator">[</span><span class="literal number integer">0</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">Time</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">Time</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">Naming</span><span class="punctuation">.</span><span class="name attribute">lookup</span><span class="punctuation">(</span><span class="literal string">&quot;rmi://&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;/ServerTime&quot;</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Time on &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot; is &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="punctuation">.</span><span class="name attribute">getTime</span><span class="punctuation">());</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div></div></div><div class="ld-slide" id="java-rmi-tidbits">
+<h2>Java RMI - Tidbits</h2>
+<ul class="list-with-explanations">
+<li><p>RMI verwendet einen referenzzählenden Garbage-Collection-Algorithmus. Netzwerkprobleme können dann zu einer verfrühten GC führen was wiederum bei Aufrufen zu Ausnahmen führn kann.</p></li>
+<li><p>Die Aufrufsemantik (<em>Call Semantics</em>) von RMI ist <em>at most once</em>.</p></li>
+<li><p>(Un)Marshalling ist in Java RMI automatisch und verwendet Java Object Serialization.</p>
+<p>Der Overhead kann leicht ~25%-50% der Zeit für einen entfernten Aufruf ausmachen.</p>
+</li>
+</ul>
+<p class="integrated-exercise">Übung:</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">ds-architekturen/folien.rst</span>, line 769)</p>
+<p>Explicit markup ends without a blank line; unexpected unindent.</p>
+</aside>
+</div><div class="new-section transition-fade ld-slide" id="todo">
+<h2>TODO</h2>
 </div><div class="ld-slide" id="klassische-architekturen">
 <h2>Klassische Architekturen</h2>
 <img alt="images/common_application_architectures/common_architectures.svg" class="align-center" src="images/common_application_architectures/common_architectures.svg" style="height: 800px;" />
