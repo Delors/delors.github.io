@@ -129,6 +129,59 @@ const lectureDoc2Animations = function () {
         stack.style.height = maxHeight + "px";
     }
 
+    function adaptHeightOfSlideToScrollable(scrollable) {
+        const root = getComputedStyle(document.querySelector(":root"));
+        const zoomFactor = root.getPropertyValue("--ld-continuous-view-zoom-level");
+
+        const requiredHeight = parseInt(window.getComputedStyle(scrollable).height,10);
+        console.log("requiredHeight: " + requiredHeight);
+        const parentNodeStyle = window.getComputedStyle(scrollable.parentNode)
+        const parentHeight = parseInt(parentNodeStyle.height,10);
+        const paddingBottom = parseInt(parentNodeStyle.paddingBottom,10);
+        const offsetTop = scrollable.offsetTop
+
+        const availableHeight = parentHeight - offsetTop - paddingBottom;
+        const additionalHeight = requiredHeight - availableHeight;
+        console.log("additionalHeight: " + additionalHeight);
+        if (additionalHeight > 0) {
+            const slide = document.evaluate(
+                `*/ancestor::*[contains(@class,'ld-slide')]`,
+                scrollable,
+                null,
+                XPathResult.ANY_TYPE,
+                null).iterateNext()
+            const slideHeight = parseInt(window.getComputedStyle(slide).height,10);
+            slide.style.height = slide.style.maxheight = (slideHeight + additionalHeight) + "px";
+
+            const slidePane = document.evaluate(
+                `*/ancestor::*[contains(@class,'ld-continuous-view-slide-pane')]`,
+                scrollable,
+                null,
+                XPathResult.ANY_TYPE,
+                null).iterateNext().style;
+            
+            slidePane.height = slidePane.maxHeight = (slideHeight + additionalHeight) * zoomFactor + "px";
+            
+            scrollable.style.height = requiredHeight + "px";
+        }
+    }
+
+    /**
+     * Handles the rendering of a ".scrollable" element in the standard slides 
+     * and the light-table view.
+     * 
+     * Currently, we only support ".scrollable" elements that are direct child
+     * elements of elements with a fixed height such as the ".ld-slide" 
+     * elements.
+     */
+    function adaptHeightOfScrollableToRemainingSpace(scrollable) {
+        const parentNodeStyle = window.getComputedStyle(scrollable.parentNode)
+        const parentHeight = parseInt(parentNodeStyle.height,10);
+        const paddingBottom = parseInt(parentNodeStyle.paddingBottom,10);
+        const offsetTop = scrollable.offsetTop
+        scrollable.style.height = (parentHeight- offsetTop - paddingBottom ) + "px";
+    }
+
 
     /* -------------------------------------------------------------------------
 
@@ -167,11 +220,11 @@ const lectureDoc2Animations = function () {
          * Hence, to compute the size of a .stack we have to wait until it is 
          * visible.
          */
-        const observer = new IntersectionObserver((events) => {
+        const stackObserver = new IntersectionObserver((events) => {
             events.forEach((event) => {
                 if (event.isIntersecting) {
                     const stack = event.target;
-                    observer.unobserve(stack);
+                    stackObserver.unobserve(stack);
 
                     if (document.evaluate(
                         `*/ancestor::*[@id='ld-continuous-view-pane']`,
@@ -187,9 +240,32 @@ const lectureDoc2Animations = function () {
             });
         });
         document.querySelectorAll(":is(#ld-main-pane, #ld-light-table-dialog, #ld-continuous-view-pane) .ld-slide .stack").forEach((stack) => {
-            observer.observe(stack);
+            stackObserver.observe(stack);
         });
 
+
+        const scrollableObserver = new IntersectionObserver((events) => {
+            events.forEach((event) => {
+                if (event.isIntersecting) {
+                    const scrollable = event.target;
+                    scrollableObserver.unobserve(scrollable);
+
+                    if (document.evaluate(
+                        `*/ancestor::*[@id='ld-continuous-view-pane']`,
+                        scrollable,
+                        null,
+                        XPathResult.ANY_TYPE,
+                        null).iterateNext()) {
+                        adaptHeightOfSlideToScrollable(scrollable);
+                    } else {
+                        adaptHeightOfScrollableToRemainingSpace(scrollable);
+                    }
+                }
+            });
+        });
+        document.querySelectorAll(":is(#ld-main-pane, #ld-light-table-dialog, #ld-continuous-view-pane) .scrollable").forEach((scrollable) => {
+            scrollableObserver.observe(scrollable);
+        });
 
         /**
          * The following highlights the current element and the element in 
