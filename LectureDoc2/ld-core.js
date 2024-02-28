@@ -582,6 +582,12 @@ const lectureDoc2 = function () {
         document.getElementsByTagName("BODY")[0].prepend(menuPane);
     }
 
+    function setupExerciseSolutionsView() {
+        // Crypto: https://stackblitz.com/edit/webcrypto-encrypt-and-base64?file=index.ts
+        // TODO
+    }
+
+
     /**
      * Fixes issues related to the copying of the slide templates.
      */
@@ -767,14 +773,21 @@ const lectureDoc2 = function () {
     }
     function retrogressPresentation() {
         const slide = getCurrentSlide();
-        const i = getSlideProgress(slide);
-        if (i > 0) {
-            getElementsToAnimate(slide)[i-1].style.visibility = "hidden";
-            setSlideProgress(slide, i - 1)
-        } else {
-            // When we reach this point all elements are hidden (again).
-            moveToPreviousSlide();
+        let i = getSlideProgress(slide);
+        const elementsToAnimate = getElementsToAnimate(slide)
+        if (elementsToAnimate) {
+            if (i > elementsToAnimate.length) {
+                i = elementsToAnimate.length-1;
+            }
+            if (i > 0) {
+                i = i-1;
+                elementsToAnimate[i].style.visibility = "hidden";
+                setSlideProgress(slide, i);
+                return;
+            } 
         }
+        // When we reach this point all elements are hidden (again).
+        moveToPreviousSlide();
     }
     function setupSlideProgress(slide) {
         getElementsToAnimate(slide).forEach((e) => e.style.visibility = "hidden");
@@ -1431,6 +1444,7 @@ const lectureDoc2 = function () {
         setupJumpTargetDialog();
         setupContinuousView();
         setupMainPane();
+        setupExerciseSolutionsView();
         setupMenu();
 
         /*

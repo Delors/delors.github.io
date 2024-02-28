@@ -624,7 +624,7 @@ a { text-decoration: none; }
 <dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2024-02-26</dd>
+<dd class="version">2024-02-28</dd>
 <dt class="quelle">Quelle<span class="colon">:</span></dt>
 <dd class="quelle"><p>Im Wesentlichen <em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
@@ -1320,7 +1320,7 @@ x \times a + y \times b = d = ggt(a,b)
 </div>
 <div class="supplemental docutils container">
 <p>Notwendigerweise haben <span class="math">\(x\)</span> und <span class="math">\(y\)</span> gegensätzliche Vorzeichen, da sonst <span class="math">\((x \times a + y \times b) &gt; a\; ( &gt; b )\)</span> gelten würde und somit nicht den GGT darstellen könnte.</p>
-<p>Der erweiterte euklidische Algorithmus kann auf jeden Ring angewandt werden, in welchem eine Division mit kleinstem Rest durchgeführt werden kann. Ein Beispiel ist der Polynomring in einer Variablen mit rationalen oder reellen Koeffizienten wie sie bei der Verschlüsselung angewandt werden.</p>
+<p>Der erweiterte euklidische Algorithmus kann auf jeden Ring angewandt werden, in welchem eine Division mit kleinstem Rest durchgeführt werden kann. Ein Beispiel ist der Polynomring in einer Variablen mit rationalen oder reellen Koeffizienten wie sie bei der Verschlüsselung angewandt werden. Wir werden dies später wieder aufgreifen.</p>
 <p>Der erweiterte Algo. dient insbesondere der Berechnung der inversen Elemente in ganzzahligen Restklassenringen. <span class="minor">(Beides werden wir später in der Vorlesung betrachten).</span></p>
 </div>
 </div><div class="smaller-slide-title ld-slide" id="ggt-a-42-b-30-mit-erweitertem-euklidischen-algorithmus">
@@ -1847,7 +1847,7 @@ a^{\phi(n)+1} \equiv a (mod\; n)
 </div><div class="ld-slide" id="chinesischer-restsatz-chinese-remainder-theorem-crt">
 <h2>Chinesischer Restsatz <span class="eng">Chinese Remainder Theorem (CRT)</span></h2>
 <div class="note scriptsize docutils container">
-<p>Bietet eine Möglichkeit, (potenziell sehr große) Zahlen <span class="math">\(mod M\)</span> in Form von Tupeln kleinerer Zahlen zu manipulieren.</p>
+<p>Bietet eine Möglichkeit, (potenziell sehr große) Zahlen <span class="math">\(mod\; M\)</span> in Form von Tupeln kleinerer Zahlen zu manipulieren.</p>
 <ul class="simple">
 <li><p>Dies kann nützlich sein, wenn <span class="math">\(M\)</span> 150 Ziffern oder mehr hat.</p></li>
 <li><p>Es ist jedoch notwendig, die Faktorisierung von <span class="math">\(M\)</span> im Voraus zu kennen.</p></li>
@@ -1879,123 +1879,41 @@ a^{\phi(n)+1} \equiv a (mod\; n)
 </div><div class="integrated-exercise ld-slide" id="ubung">
 <h2>Übung</h2>
 <ol class="arabic">
-<li><p>Berechne <span class="math">\(5^9\, mod\, 7\)</span> ohne die Zuhilfenahme eines Taschenrechners.</p>
-<div class="protected-exercise-solution">
-<p class="rubric">:math:`5^9\, mod\, 7`</p>
-<p><span class="math">\((5^9)\, mod\, 7 = (5^2 \times 5^2 \times 5^2 \times 5^2 \times 5) \, mod\, 7\)</span></p>
-<p><span class="math">\(= (5^2 \times 5^2 \times 5^2 \times 5^2 \times 5) \, mod\, 7 = (((5^2) \, mod\, 7)^4 \times (5\, mod\, 7))\, mod\, 7\)</span></p>
-<p><span class="math">\(= ((25 \, mod\, 7)^4 \times (5))\, mod \, 7\)</span></p>
-<p><span class="math">\(= (4^4 \times 5)\, mod \, 7\)</span></p>
-<p><span class="math">\(= (4^2 \times 4^2 \times 5)\, mod \, 7\)</span></p>
-<p><span class="math">\(= (2 \times 2 \times 5)\, mod \, 7\)</span></p>
-<p><span class="math">\(= (20)\, mod \, 7\)</span></p>
-<p><span class="math">\(= 6\)</span></p>
-</div></li>
-<li><p>Welche Zahlen sind relativ prim zu <span class="math">\(21\)</span>?</p>
-<div class="protected-exercise-solution">
-<p class="rubric">Relativ Prim zu 21</p>
-<p><span class="math">\(|\lbrace 1,2,4,5,8,10,11,13,16,17,19,20 \rbrace| = 12\)</span></p>
-<p>(Erinnere: <span class="math">\(ggt(6,21)\)</span> ist 3 und deshalb sind 6 und 21 nicht relativ prim!)</p>
-</div></li>
-<li><p>Berechne <span class="math">\(ggt(1037,768)\)</span> mit Hilfe des Euklidischen Algorithmus.</p>
-<div class="protected-exercise-solution">
-<p class="rubric">:math:`ggt(1037,768)`</p>
-<table>
-<thead>
-<tr><th class="head"><p>step</p></th>
-<th class="head"><p>a</p></th>
-<th class="head"><p>b</p></th>
-<th class="head"><p>q</p></th>
-<th class="head"><p>r</p></th>
-</tr>
-</thead>
-<tbody>
-<tr><td><p>1</p></td>
-<td><p>1037</p></td>
-<td><p>768</p></td>
-<td><p>1</p></td>
-<td><p>269</p></td>
-</tr>
-<tr><td><p>2</p></td>
-<td><p>768</p></td>
-<td><p>269</p></td>
-<td><p>2</p></td>
-<td><p>230</p></td>
-</tr>
-<tr><td><p>3</p></td>
-<td><p>269</p></td>
-<td><p>230</p></td>
-<td><p>1</p></td>
-<td><p>39</p></td>
-</tr>
-<tr><td><p>4</p></td>
-<td><p>230</p></td>
-<td><p>39</p></td>
-<td><p>5</p></td>
-<td><p>35</p></td>
-</tr>
-<tr><td><p>5</p></td>
-<td><p>39</p></td>
-<td><p>35</p></td>
-<td><p>1</p></td>
-<td><p>4</p></td>
-</tr>
-<tr><td><p>6</p></td>
-<td><p>35</p></td>
-<td><p>4</p></td>
-<td><p>8</p></td>
-<td><p>3</p></td>
-</tr>
-<tr><td><p>7</p></td>
-<td><p>4</p></td>
-<td><p>3</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-</tr>
-<tr><td><p>8</p></td>
-<td><p>3</p></td>
-<td><p>1</p></td>
-<td><p>3</p></td>
-<td><p>0</p></td>
-</tr>
-</tbody>
-</table>
-</div></li>
-<li><p>Bestimme das Ergebnis von Euler's Totient Funktion <span class="math">\(\phi\)</span> für den Wert <span class="math">\(37\)</span> ohne das Ergebnis nachzuschlagen.</p>
-<div class="protected-exercise-solution">
-<p class="rubric">:math:`\phi(37)`</p>
-<p>Das Ergebnis ist 36, da 37 eine Primzahl ist und deswegen alle Zahlen von 2 bis 36 relativ prim zu 37 sind.</p>
-</div></li>
-<li><p>Überzeugen Sie sich davon, dass der (kleine) Satz von Fermat gilt. Zum Beispiel für die Zahlen: <span class="math">\(a = 9, p = 7\)</span>.</p>
-<div class="protected-exercise-solution">
-<p class="rubric">Fermats Kleines Theorem</p>
-<p><span class="math">\(9^6\, mod\, 7 = 531441\, mod\, 7 = 1\)</span></p>
-</div></li>
-<li><p>Überzeugen Sie sich davon, dass der Satz von Euler gilt. Zum Beispiel für die Werte <span class="math">\(a=7\)</span> und <span class="math">\(n=9\)</span>.</p>
-<div class="protected-exercise-solution">
-<p class="rubric">Satz von Euler</p>
-<p><span class="math">\(\phi(9) = 6 = |\lbrace 1,2,4,5,7,8 \rbrace|\)</span></p>
-<p><span class="math">\(7^6\, mod\, 9 = 1\)</span></p>
-</div></li>
-<li><p>Führen Sie den Miller-Rabin Algorithmus für <span class="math">\(n = 37\)</span> aus.</p>
-<div class="protected-exercise-solution">
-<p class="rubric">Miller-Rabin Algorithmus für :math:`n = 37`</p>
-<pre class="literal-block">Primzahltest für  37:
-
-k      s      a      x      y
-Runde 0:
-0      0     27     36      1
-0      1     27      1      1
-Runde 1:
-1      0     19      6     36
-1      1     19     36      1
-Runde 2:
-2      0     18     31     36
-2      1     18     36      1
-_____________________________
-Wahrscheinlich prim</pre>
-<p><a class="reference external" href="https://github.com/Delors/Course_W3M20014/blob/main/1-miller-rabin-algorithm.ipynb">Miller-Rabin Algorithm:</a></p>
-</div></li>
+<li><p></p>
+<div class="ld-exercise">
+<p>Berechne <span class="math">\(5^9\, mod\, 7\)</span> ohne die Zuhilfenahme eines Taschenrechners.</p>
+<div class="ld-exercise-solution">
+2fKQUKE8Vexdviyrzd1rjg==:xeOQDl/HZ/aSWMNhOHfabSYtLxFUGKZOVGoZVab8zetKcuTQOa9JQ0nmGm/MztcEhQ8orQHeXYBNgup7kMWE9zrqZOyZ+JTwsk7dC2dKYUssmSndAGtroMfpiZIDaQRWLwp+DoIhUXmUy8mr14Wd6Kej5lizYcOghvZ0HyGir3vaA2NDhl8W/5ryXG3q+Pup4Yd/7j43H/ujPhfix7buUDlCuOBiLiNZy81ig88CZbE17KFuNmb0HM0RXIaNEwvG3b4/Bdmzppm27/wUSwkMjcVVtw0VZWA+TAgtMrPx5usG1p0LB3QLxEKwevJbvwEcU/oGX6QxhxYCcOcOs95cPP72vp+SJHQ23+conwAL380kWsTo4vF1cmJrTRaqQe2BLjxEagWnkPOoLWznIclA7crfu8jJC0iwEaonHz06pDWOllnHLH4Y0aaxQNiFOm4yFAhJfnuyAF45tHml/TBp1gA9LoReak1BmVHgvcwEg6SAPsSi/HyReRApEaXgtjuGDfGSPm4/l/B67lk3JHBsFhZtv+vOnoyVfNFihslweFR5Ym0GqhdKf0wOhTFAwiyeQj8vTpuYU2/4mG6WXWqZJDl+KRm6c/+RtUNaHvLDAGkLdGMAm4cbMK1hXKrJokY2fGvlM9li1Kmme3uFYxNPNmOJ2ZeUscm4osklRNhAXSP/1SaUXO3J0d49OSL+otL1r7RO0hONiebD5eHt3U+QfskENAUVeTordVn2LOKCZ/vFKdi8LXVbPgieFvokqifeg1SEu3cM7jbYgW4Ag3oTHDfimTr31sxas/3JjKPog5sCkQNuTsKpkiZvtc5jrP5iSKlB5xP40dBSkUUY6MoQ7pSLqMH/xxdxIYGf7eInfr4ZzQ==</div></div></li>
+<li><p></p>
+<div class="ld-exercise">
+<p>Welche Zahlen sind relativ prim zu <span class="math">\(21\)</span>?</p>
+<div class="ld-exercise-solution">
+3IEHCrbEtfDX8tSF+1bsjQ==:M5bujq/LyLnm3tsbnwjrIWNb0T2CLjs6Tnx6F5AmZer4jYQ90AyycUkzCE337zxM0boH4DOyhEqM5ezlWo5Nl1APUTO4TAmYHHZ3++8XWw5ufPcCxtRmFjtOQMKLQ+/U98HHsHqZF3yQZ5ZBue68KQcedkViSRDVG5OkLzntIpe0t6Qy1eQeo5Df6W16qImakTndbx8y2C+SJLLGb6Ymuz5O0pgRiTJk/VACqX9Xdq+Ghcy21lJT0mMv1gYBU5kK2CwA86Ih1iJH+w==</div></div></li>
+<li><p></p>
+<div class="ld-exercise">
+<p>Berechne <span class="math">\(ggt(1037,768)\)</span> mit Hilfe des Euklidischen Algorithmus.</p>
+<div class="ld-exercise-solution">
+XZSSZO5tSRhYtafQ7n563Q==:bbXPEK9dmxG7La7x5TsK1lb/sHj7mEUKbRJkTsiJdWiFt/rcrGMIjIcflNW62CSAqbxFfnqtf/mOMX5d+V3zkxnHiCtofiMbFFcI8bBh14qUoqoxQs99NjOixkkOpeQd4BpV9yU8xNMArfPB64qBoPHXxALH6ATCcjulLuOJEn6zWJ4zR/YG8mo/PcIkkTEdg4Ij7jYsQ8BJ3AFEOy9+A0TYtqCGDKYuq33eXVSzZokGtUM9+BYo9DcnVQdKK7C+Envky8cwd90p1wCXLe3wyFY7R7pARM3GQGW+Wb9leMY1Ev31jzjueJMOUxBrt6Y5pz4n6D5445Y02r+DeQQNiMBpQGf4X4YmL5NUvOxa9UypA/tb6OSg39Nu3rdy95KobeDLVTfySewux60EdG0Y5KQN++AJyIQm6vFIfQr7g5/ZUkeQ7p1z6CMFwydUQMf8ffZ2/lzmpPF9VjFvDIbU29rOrlMj9qJtkDcE/zNt3EoG64c/xqWYdIKSXjth7Wd78aN3NrzxUgu/YKZImtdTkKYVfY7N5mEwEpnjkP6fnCYdvyRTOKpfX9BAOGYE2xVOwGpjVSmzFIlU6vyuIJlyJhG1UlDA9mZiD+TB5tNHiljXrNuNRhrv72xNM1lFi9KO+u8w0JvUHvtPmlwRbIqDYUCdtFBCcIVEw3B4GSaCzVhqZspc1Y3azJ8AgSKNGKtrNi2m36Bz3ryyQ43dhpG4d6vOJ70Ex5lfwBzvIb1lOlzQjRGP/umCCbX9ZshUtGU9w8JNIceumZyAr6Xf4iRyHi9lnvqMlt8HjtJbPHYNIMVZh767aFJ/L9rZ4aP/2SZgRlttweLgexOn2Ak3CUVxdYZIG9zJfStlAYPiiOSRVgOVkik1YTkTLsdn/OhDSvbyiZ5nionKfNBvt/ZGwJxJBqQ75MzXRnE6YaDTsHLgh09Y3o2nzUdVuouZmXnRUbip4yQCvFFqjf0bZfCLXbgV91LwRiq4DjIboLAasVchla6OChcxRwDoRNxw0UzYkhN0fNVMtJ4ItJ/ZH2O9TfIBO3HaSII+i4KSxgAdMW0WFTm8/Pw/Bfw8Rl1oqAX8czD7BjaLHWBWVGGuYkHWdkgIUkZFZNybZ5hmYvO+gXY+/d4QbF5YzKFulDjwi34jSZX78y2o1XDHMt/TQi2IQoBibkDsNEsUVzYKCbBYznTa4O7o4tBp6DPQkxkqIaU+/p7Qo7lqaAhIrJ8y5RkFBAUvKX1V7v3sgzS5p5OHYwNG95ApmNXfk+fbEPRgh6vXsQX2XweIl8JAmjuLuhUHLR37ZXFzXN5hvdv22vsHIlRrP3XZ8Y/WJFDGs1Sm5wKIjLSyDPAREGgGN/npGcNliu6dgTUdIOqLvg8iOSUOGNN6OcVClRAP</div></div></li>
+<li><p></p>
+<div class="ld-exercise">
+<p>Bestimme das Ergebnis von Euler's Totient Funktion <span class="math">\(\phi\)</span> für den Wert <span class="math">\(37\)</span> ohne das Ergebnis nachzuschlagen.</p>
+<div class="ld-exercise-solution">
+mLfIkAFQlgRtIovqFf3Tvg==:k9tp7W5mO0YgsiABD1PiRF9d8iodx//AVk2by+hExoVyWK5jJjlhC39RZG0dYgDYp4xizPY3vmoGK6RO3P2coNgHdvQpI0oQ4Qg6T1t4eIHfNAZZcbFPoAPi24twY1MZvoVqjywZKn7d5rXSsQ4+0Q2DOA==</div></div></li>
+<li><p></p>
+<div class="ld-exercise">
+<p>Überzeugen Sie sich davon, dass der (kleine) Satz von Fermat gilt. Zum Beispiel für die Zahlen: <span class="math">\(a = 9\)</span> und <span class="math">\(p = 7\)</span>.</p>
+<div class="ld-exercise-solution">
+g9QIomXqvSCmV+dsVdNlgA==:S9jJqiubEHeIJwILr5ioNPNVs1HRSXIjcdDHM06i9iMl4wf2jdoUeOLK26YneuAWx4S2zS8ZHRyEMzRb1I/wLHZ+8xmmcB0ZKDs=</div></div></li>
+<li><p></p>
+<div class="ld-exercise">
+<p>Überzeugen Sie sich davon, dass der Satz von Euler gilt. Zum Beispiel für die Werte <span class="math">\(a=7\)</span> und <span class="math">\(n=9\)</span>.</p>
+<div class="ld-exercise-solution">
+Apv825ZPwM/wHYut83zK4w==:GzyTf9glyakk7XCE0VkMkO4jJ7rzIOfG75Gq+pyqKrIVGiz5dgFs0lEIMp0OqfoyiWNeUOjJQAipHYtrZJfH8MHFEb6Fnc5a/5bKCXnGWT62aRltlUdZkn0PXYH1n9XF3BIPdQv2NiS9n6b+4CoPyZxyFzuL2ChzOmRgkAZvIr8w13w/aa3gnQ==</div></div></li>
+<li><p></p>
+<div class="ld-exercise">
+<p>Führen Sie den Miller-Rabin Algorithmus für <span class="math">\(n = 37\)</span> aus.</p>
+<div class="ld-exercise-solution">
+6CN1vCKbP1+gezMe4vGgtg==:RTR8vVMwkpFxlSMEPYu6uOplH9FEypGhGlTtjsDlKPRwQiv/hMdIZ2PYe3eSA6W+NOZWcyhzXfuZFRBHiE+a7OGfC5KcQVUml5OggglYql9nV7BINK6LVoAk948TkFxkAkh7RqZQYPUbueCdo/65cvShHHLMXd15hS4XC6z2yJWUSgAzE2ZLmieZVouGSFfFdsY3+2riugxSrALddFbiW52nyiXI4aV6Exqq05TUHaw7PBOtn0eWPv9HhulLeFnN1Yo1S7+IxXQL4xWI869Op6AGfsXukmrwWcwGBHiaN5Lozd2UpG06cWHlYmNZ3muPdhpHRN+e5Mbna4hLpHBI9as5GLLCvVVnAsJKN58plHtnAbBKPmp34X3aBPz93QxcQmMzHER0Glt9uPN7wf0vKTtiRY246tSZH7VMt904v7uYmjSRlGldyxEeFtJpzMkndy83B7lhIo7DJHNbF/4kICKd3DAk9yghIG8j2IVzq5NHdNlugg6zHSiXt0n/aWji45F/6bnuO8NyVPSWSEgSNWheXEV8zi/Flv2sG4T3ZldTONYxEKxgMmvsnjpGHMBRb/BCjEoL0dAc8O2o0KYs+zfPM+TR02oPHqiJiAEigk2dyAQX7V15uCyVYzaLBUf9gBkXp6PVmS8fuA01LMdxIjt+Sg==</div></div></li>
 </ol>
 </div>
 </body>

@@ -630,7 +630,7 @@ a { text-decoration: none; }
 <dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>2024-02-26</p>
+<dd><p>2024-02-28</p>
 </dd>
 </dl>
 <div class="supplemental">
@@ -912,9 +912,10 @@ Varonis security researcher Dolev Taler, who has been credited with discovering 
 <div class="supplemental docutils container">
 <p>In der konkreten Anwendung ist es ggf. möglich das <em>Secret</em> auch zu Salzen und den <em>Salt</em> aus einer anderen Quellen abzuleiten.</p>
 </div>
-</div><div class="transition-move-left integrated-exercise ld-slide" id="nachgehakt">
-<h2>Nachgehakt</h2>
-<div class="conditions docutils container">
+</div><div class="transition-move-left integrated-exercise ld-slide" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise small">
+<p class="rubric">Schwachstellenbewertung</p>
 <p>Ihnen liegt eine externer Festplatte/SSD mit USB Anschluss vor, die die folgenden Eigenschaften hat:</p>
 <ul class="simple">
 <li><p>Die Daten auf der SSD/FP sind hardwareverschlüsselte Festplatte</p></li>
@@ -924,16 +925,9 @@ Varonis security researcher Dolev Taler, who has been credited with discovering 
 <li><p>Das Passwort wird von der Software gehasht und dann als Hash an den Controller der externen FP/SSD übertragen.</p></li>
 <li><p>Im Controller wird der übermittelte Hash direkt zur Autorisierung des Nutzers verwendet. Dazu wird der Hash mit dem im EPROM hinterlegten verglichen.</p></li>
 </ul>
-</div>
-<div class="task docutils container">
 <p>Wie bewerten Sie die Sicherheit des Produkts?</p>
-</div>
-<div class="supplemental exercise-solution docutils container">
-<p><strong>Lösung</strong></p>
-<p>Wie in (A) dargestellt, ist die Sicherheit hier ausschließlich durch den Hardwareschutz gegeben. Sobald der Hash aus dem EPROM ausgelesen werden konnte, ist keine Sicherheit mehr gegeben. In (B) wird der Hash erst auf dem Gerät berechnet. Die gleiche Attacke würde hier nicht mehr funktionieren, da ein Übertagen des Hashes zu einem Hashen des Hashes führen würde und danach der Test fehlschlagen würde.</p>
-<img alt="Unsichere Passwortvalidierung" class="align-center" src="graffles/unsichere_passwort_validierung.svg" style="width: 800px;" />
-</div>
-</div><div class="new-section transition-fade ld-slide" id="passwortwiederherstellung-101">
+<div class="ld-exercise-solution">
+CJ7K2IjJ/zfgUB25SUy9MQ==:xeJG0Ws5ADxZqzzKIVzqfkmwmMN4bWmDOgRCVZrvIgBwYdSrPQstJFYf7WBl9rrdAQQqO1Er/vhAlN5KIxbV+xgJlsa7pkQMtr9D9nvflFYPytsghz1EdvLUslSl4/2yeWiz0lO8SPxE3dVvLP8VpmRjcqau58BaOyKDsBc1m3uCXYLLtuN+sdibpQjv7WFJnk0jUrNVoQ18KVvF3Vcofro1uLrxUEjK8m45PjFNBSajqHk1U5j8ZiMMhHiBvEpCpxvPnUcWzi5BLnNzoxpxcTwuKLR2JHQwvGgNUDpPJ8hmHSXYquKZ261C71dN5XUrBNhDW5J73q/mOooYHaZMXXGDp/P4o8HXGuKjl8AJwyBqYMD5c88cJblKWWZWntiTz294tVX+wgcBDL7SsTqbwX4OEOFzXUWIGQ9YjYWfhFDxPJ81dPHM9tZcusO6sQwOJWouRZx2ME2CoebAPhOhUhlUuWp+5hiAR5iW+7SE6GAex6YStLZ78hgShKFwG23V0oeftKFh8w0pd/5NBpvHJ5z6z7xZbjEchAagsXY1zCiniH4LB6HpinNpnljio2hpg/WGUCh4gs2Yt0xMPMtlXOSSRN2FtbLFhK7qHU8ttQ1VXWwRxHdvORjDDZyh9CuXPt/oaLD5wWvMA9BRedJ5NoPFYSC7ZxKIUn0nf3zZ8nTrvH4FASNPQuM3l5wo8mO97vbsVyCKQY+tmcS50d68vEf6vs/iO9RvqxKL3So6/T05EQ==</div></div></div><div class="new-section transition-fade ld-slide" id="passwortwiederherstellung-101">
 <h2>Passwortwiederherstellung 101</h2>
 </div><div class="ld-slide" id="passwortwiederherstellung-1">
 <h2>Passwortwiederherstellung</h2>
@@ -1154,68 +1148,24 @@ RxAHnNCBsqiouWUz751crHodXxs0iqZfBt9j40l3G0'</span><span class="whitespace"> </sp
 </blockquote>
 </div><div class="transition-move-left integrated-exercise ld-slide" id="gedankenexperiment">
 <h2>Gedankenexperiment</h2>
-<div class="conditions docutils container">
+<div class="ld-exercise">
+<p class="rubric">Kosten und Aufwand für Passwortwiederherstellung</p>
 <p>Sie wollen einen SHA 256 angreifen und sie haben 100 Nvidia 4090 GPUs. Jede GPU hat eine Hash-Rate von ~22GH/s (mit Hashcat 6.2.6) und benötigt ~500 Watt. Der verwendete Zeichensatz besteht aus 84 verschiedenen Zeichen (z. B. a-z, A-Z, 0-9, &lt;einige Sonderzeichen&gt;).</p>
-</div>
-<div class="task docutils container">
-<p>Wie lange dauert es, ein 10-stelliges Passwort zu ermitteln (Worst Case)?</p>
-</div>
-<div class="task docutils container">
-<p>Wie viel Geld wird es Sie kosten, ein 10-stelliges Passwort zu knacken (Worst Case) (1kW ~ 0,25ct)?</p>
-</div>
-<div class="task docutils container">
-<p>Werden Sie im Laufe Ihres Lebens in der Lage sein, ein Passwort mit 12 Zeichen zu ermitteln?</p>
-</div>
-<div class="supplemental exercise-solution docutils container">
-<p>Es dauert ca. 3 Monate (~2200 Stunden), um ein Passwort mit 10 Ziffern zu ermitteln!</p>
-<p>Es wird im schlimmsten Fall 27.000€ Stromkosten verursachen.</p>
-<p>Um ein Passwort mit 11 Ziffern zu finden, brauchen Sie 21 Jahre (worst-case).</p>
-<p>Um ein Passwort mit 12 Ziffern zu finden, brauchen Sie 21*84 Jahre (worst case).</p>
-</div>
-</div><div class="transition-move-left integrated-exercise ld-slide" id="gedankenexperiment-1">
+<ol class="arabic simple">
+<li><p>Wie lange dauert es, ein 10-stelliges Passwort zu ermitteln (Worst Case)?</p></li>
+<li><p>Wie viel Geld wird es Sie kosten, ein 10-stelliges Passwort zu knacken (Worst Case) (1kW ~ 0,25ct)?</p></li>
+<li><p>Werden Sie im Laufe Ihres Lebens in der Lage sein, ein Passwort mit 12 Zeichen zu ermitteln?</p></li>
+</ol>
+<div class="ld-exercise-solution">
+tveKSrOZIrkzzUOB3MvuZg==:Y8PWEhy4zwJMpsnNN15A8v+FPNpajEMCbE5bDZaRgNhiV+lpXcoeRGatyqDNg2vqjOqSrq258W9zicP+4rKTd2ounkfjn4il+/fkl2Q+Y3rgohKDfDRvf4oweoaPS4Xw2Zz3yMGuUz83IY7fz7nwkuCmfc6gNubqQNopzHJ0Ja/heGwjLuiMXIRi9U6YJOt/+8ZrMegKxPzwFH73v8+5XkiFB3ISXXllcDDVLrBbsw17j0yUfG44BsZDe90G5oIXG0qeV9/d76DtuihsDBAJHyKuIuT4CmICzaMxBxpxZJgapBrHNMLAo4oomohyV2jG4yUNQDoVTF32rLBMfvad4BSd+4DybNTl7p0nFPXnDoxAl0x3MdqTkcuVgzJeiJ55TNO2RCbyntxwiOkRVgmPTi8YESRFOK2/xDdAC93kdMD6DIMRZJuedwr8jdzEdas=</div></div></div><div class="transition-move-left integrated-exercise ld-slide" id="gedankenexperiment-1">
 <h2>Gedankenexperiment</h2>
-<div class="transition-move-left conditions docutils container">
+<div class="ld-exercise">
+<p class="rubric">Verstehen des Suchraums</p>
 <p>Sie haben ganz viele Grafikkarten und einen sehr schnellen Hash. Sie kommen auf eine Hashrate von 1 THash/Sekunde (<span class="math">\(1 \times 10^{12}\)</span>). Sie haben einen Monat Zeit für das Knacken des Passworts.
 Gehen Sie davon aus, dass Ihr Zeichensatz 100 Zeichen umfasst.</p>
-</div>
-<div class="task docutils container">
 <p>Berechnen Sie den Anteil des Suchraums, den Sie abgesucht haben, wenn das Passwort 32 Zeichen lang sein sollte. Drücken Sie den Anteil des abgesuchten Raums in Relation zu der Anzahl der Sandkörner der Sahara aus. Gehen Sie davon aus, dass die Sahara ca. 70 Trilliarden (<span class="math">\(70 \times 10^{21}\)</span>) Sandkörner hat.</p>
-</div>
-<aside class="admonition supplemental exercise-solution">
-<p class="admonition-title">Lösung</p>
-<p>Suchraum: <span class="math">\(100^{32} = 10^{64}\)</span></p>
-<p>Passworte in einem Monat:</p>
-<div class="math">
-\begin{equation*}
-(1 \times 10^{12} {H \over s}) \times 60sec \times 60min \times 24h \times 30d = \
-\end{equation*}
-</div>
-<div class="math">
-\begin{equation*}
-2.592.000.000.000.000.000 = \
-\end{equation*}
-</div>
-<div class="math">
-\begin{equation*}
-2,592 \times 10^{18} \
-\end{equation*}
-</div>
-<p>da:</p>
-<div class="math">
-\begin{equation*}
-2.592.000.000.000.000.000 \times (4 \times 10^{45}) \approx 10^{64}
-\end{equation*}
-</div>
-<p>haben wir somit ca.</p>
-<div class="math">
-\begin{equation*}
-1 \over 4 \times 10^{45}
-\end{equation*}
-</div>
-<p>des Suchraums berechnet. Da die Sahara wohl nur ca. <span class="math">\(7 \times 10^{22}\)</span> Sandkörner hat, haben wir somit nicht mal ansatzweise ein Sandkorn berechnet. Sondern lediglich: <span class="math">\(1,75 \times 10^{-23}\)</span>.</p>
-<p>Oder ganz praktisch ausgedrückt: wir sind - je nach Theroie - frühestens <strong>nach dem Ende des Universums</strong> fertig - <a class="reference external" href="https://www.welt.de/kmpkt/article177740494/Weltall-Wie-das-Ende-des-Universums-aussehen-koennte.html#:~:text=Das%20All%20dehnt%20sich%20immer,Gut%20zu%20wissen!">Ende des Universums</a>.</p>
-</aside>
-</div><div class="ld-slide" id="herausforderung-passwortrichtlinien">
+<div class="ld-exercise-solution">
+iZNRHIQcZGQqhb9N9wuV6g==:n/lVX1/7FkN8AVQseGMhyrVQiKQtT+0VaUVDlhsnac9PnUe8YXvBvNEsXqTRe2SmeC4XZwNJ9meRbpz8nd22u/4ShRYFuQDRdXFNf6rwL2Q1orCgeyl0raPbctBVcC4aD40GGgLoUtl8182uAB/dXgygiynzd+H4PHM/H5RcOfid2HeS1YDSd5V8P503160BafDw8SSiRF5o2hcjj0sQIAGGnSDTD4ky5w4FLVIaAUKLtL5FIjPJwbxEkWDm7c/aNkoSjVMnNbzQP1KlOLHB2rzD/q86MJs1aFMRW/EA7mj1zBwpFpvbnmjWl4jVl/rUW/3RZojq14PiIMQX+q82NFbGPgck48WA1BMSp0vEyuWUACpo+22wewSJGXVMjiKBt4rBQEaPSG/RsozYMIdAc90EmIWKtnzGSLgF+DsSKP8ViCjbXlJ9wy16joTW7WBGnMkr/hQGBjuFtLWBTpbLO4mc31QvD0y2/j3cJwQ3JZ3YvFCxr9YpzSWpEpU5F23oIHmYlHn7ibyoSJOLHkY1q6hY0iFPdsPJKd2BGOu+tlnotyIufYCstRVGYNsS3+oMB7M2vMNepMuX39Ffnbk/WB7wAwK1t0ouPvJAKkQ5+jKjiVEIsOigvMw2xM587p/OTUmi/f+OFDYru6SCxuoF4h7VP6QxVwg5UvTp/+E/e+SsDPG/i3Y24BVYshT0iTseoG/VHZ0ZTgxDdzqem0as2yKAgxtopdNoJZBkYbToVjv6lb1K0ou7HQqJA+c+SnKfP7eb51oZ2WTqptBN1F+0nVPgJe0hSOsMl7xkOVPWISK2+mveqpm3l+NKGq3Pd8UXwHxcdN/uVejtycYEgqES8K8FUAsYWGT6PoxtfmmdimTXDPKoJaPSeFpoadFWA7iOKZOZJsN3qWugdiQQzjnGw+vaz3Qe+yKcuoWR0uEVI31En7jxZJRAYv9MWV80j1L23KT63AK4kW89Hw/Wyzp702rBkFveaz0Sel/i7tL/zYzc1hZ/NxhTJCSiBQ1raLGBKLDMG2GpUNgOaFJ/uqANZCQt8hiVZ/blt0rQEdyNyldwsG7c0SLBlOb0MlhE3+BpJq6Ke4C52ail54oMzOsB3nAPsRBpSB77W5c1Vvmi0PTY3z5Qo6xjmjbhH4mirR160cC07ki2l/U3nU7Tqka/0Fb41QSznsNdXoIHjkFLR0oe2BoL5LvPy6u0tjOIm+Cs4RAGkYtXRXK3i7BWzcHkSa0QB37ujSVtPA7wuUC6GleofJDMZsJFKGGGXxm3pEooY7vQiHe/QuAE9s8mmnSt1Ddfk+4qrouK2yBYq3sF7F9HVn+UG5oSMckKoKV8EH+dWy/u1KOAnSQYdb5kwzja5qLp/MEYp799pzn9Y9ssBBUBytvh8oo3LcWKu/CN1u7rzE7dyjQtKkEW7CyfnwM80bOGeaF2Q4tUFQTWT4X2aD6we+eJt1x1rcUvhcBVLPmj7Dp3jkXkWkc7ZdT/IPnFp90cc04YbAbF8mFNvWlg5lgxKviYFkCoOpRIAOnks+vMGiYBrdjGNeUBtXrTompe5P/ZkFyXWxSfVapKzfPpraz41YCBTF147ms2lJSm2a85UEXircmMM1kHi2Ik5wYT3GSiRlHdDJh168cTfpTB3WCD9FHVBBVW2+VPiri2rS8F0qJbvNEuSrRWh9uBJpCegRDLdQv2w6dLM5bH7hoxxP8Y1A==</div></div></div><div class="ld-slide" id="herausforderung-passwortrichtlinien">
 <h2>Herausforderung: Passwortrichtlinien</h2>
 <p>Moderne Passwortrichtlinien (<span class="eng">Password Policies</span>) machen es unmöglich, ältere Leaks <em>direkt</em> zu nutzen.</p>
 <p><em>Beispiele:</em></p>
@@ -2441,29 +2391,22 @@ Sei <span class="docutils literal">base1.txt</span>: &quot;Kuh&quot;, &quot;Schw
 <li><p>Insbesondere wenn es um die semantische Anreicherung von Wörterbüchern geht, dann sind (bisher) keine etablierten Werkzeuge vorhanden.</p></li>
 <li><p>Häufig führen nur Kombinationen von etablierten und eigenen Werkzeugen zum gewünschten Ziel.</p></li>
 </ul>
-</div><div class="integrated-exercise ld-slide" id="ubung">
-<h2>Übung</h2>
-<p>Ihnen liegt folgender MD5 Hash vor, Stellen Sie das Passwort wieder her:</p>
-<ol class="arabic simple">
-<li><p><span class="docutils literal">81dc9bdb52d04dc20036dbd8313ed055</span></p></li>
-</ol>
+</div><div class="integrated-exercise ld-slide" id="ubung-stellen-sie-die-passworter-wieder-her">
+<h2>Übung - Stellen Sie die Passwörter wieder her...</h2>
+<div class="ld-exercise">
+<p class="rubric">MD5 Hash eines trivialen Passworts</p>
 <blockquote>
+<p><span class="docutils literal">81dc9bdb52d04dc20036dbd8313ed055</span></p>
+</blockquote>
 <p>Hinweise: Das Passwort ist kurz, besteht nur aus Ziffern und ist sehr häufig.</p>
-<div class="protected-exercise-solution">
-<p class="rubric">Lösung 1</p>
-<p>1234</p>
-</div></blockquote>
-<ol class="arabic simple" start="2">
-<li><p><span class="docutils literal">7c6a180b36896a0a8c02787eeafb0e4c</span></p></li>
-</ol>
-<blockquote>
+<div class="ld-exercise-solution">
+zlWetJlddnW+B8W82lnkFg==:k3VFmc4OiRiiduHF</div></div><div class="ld-exercise">
+<p class="rubric">MD5 Hash eines einfachen Passworts</p>
+<p><span class="docutils literal">7c6a180b36896a0a8c02787eeafb0e4c</span></p>
 <p>Hinweise: Das Passwort besteht aus Buchstaben gefolgt von Ziffern und ist sehr häufig.</p>
 <p>Sie können Hashcat (<a class="reference external" href="https://hashcat.net/hashcat/">https://hashcat.net/hashcat/</a>) verwenden oder ein Bash-Skript schreiben oder eine kleine Lösung in einer Programmiersprache Ihrer Wahl entwickeln.</p>
-<div class="protected-exercise-solution">
-<p class="rubric">Lösung 2</p>
-<p>password1</p>
-</div></blockquote>
-</div><div class="ld-slide" id="sichere-passworter">
+<div class="ld-exercise-solution">
+aqsCvlmYH/t799m5GOrhPw==:yS0gp1t5epflt94u+J4f8Q4=</div></div></div><div class="ld-slide" id="sichere-passworter">
 <h2>Sichere Passwörter</h2>
 <ul class="simple">
 <li><p>Nehmen Sie kein Passwort, dass 1:1 in einem Wörterbuch oder Verzeichnis vorkommt.</p></li>

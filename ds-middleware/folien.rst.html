@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Middleware&quot;, &quot;RPC&quot;, &quot;RMI&quot;" name="keywords" />
+<meta content="Middleware" lang="de" name="description" xml:lang="de" />
+<meta content="Middleware" lang="en" name="description" xml:lang="en" />
+<meta content="lecture-ds-middleware" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Middleware</title>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Middleware</h1>
+
+<div class="line-above margin-top-1em padding-top-1em docutils container">
+<dl class="field-list">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a>, Raum 149B</p>
+</dd>
+<dt><span class="smaller">Folien</span><span class="colon">:</span></dt>
+<dd><div class="smaller docutils container">
+<p><a class="reference external" href="https://delors.github.io/ds-middleware/folien.rst.html">https://delors.github.io/ds-middleware/folien.rst.html</a> <span class="raw-html"><br></span>
+<a class="reference external" href="https://delors.github.io/ds-middleware/folien.rst.html.pdf">https://delors.github.io/ds-middleware/folien.rst.html.pdf</a></p>
+</div>
+</dd>
+<dt><span class="smaller">Fehler auf Folien melden</span><span class="colon">:</span></dt>
+<dd><div class="smaller docutils container">
+<p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</div>
+</dd>
+<dt><span class="smaller">Version</span><span class="colon">:</span></dt>
+<dd><div class="smaller docutils container">
+<p>2024-02-25</p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="new-section transition-fade ld-slide" id="einfuhrung-in-middleware">
+<h2>Einführung in Middleware</h2>
+</div><div class="center-child-elements ld-slide" id="was-ist-middleware">
+<h2>Was ist Middleware?</h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Middleware ist eine Klasse von Software-Technologien, die dazu dienen,</p>
+<ol class="upperroman simple">
+<li><p>die Komplexität und</p></li>
+<li><p>die Heterogenität verteilter Systeme zu verwalten.</p></li>
+</ol>
+</aside>
+</div><div class="tiny ld-slide" id="ein-einfacher-server-mit-sockets">
+<h2>Ein einfacher Server mit Sockets</h2>
+<div class="stack smaller docutils container">
+<div class="layer docutils container">
+<pre class="code C literal-block"><code><span class="comment multiline">/* A simple TCP based server. The port number is passed as an argument */</span><span class="whitespace">
+</span><span class="comment preproc">#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;stdio.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/types.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/socket.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;netinet/in.h&gt;</span><span class="comment preproc">
+</span><span class="whitespace">
+</span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">error</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">msg</span><span class="punctuation">){</span><span class="name">perror</span><span class="punctuation">(</span><span class="name">msg</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">);}</span><span class="whitespace">
+
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">argc</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">argv</span><span class="punctuation">[]){</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">newsockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">portno</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">clilen</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="name">buffer</span><span class="punctuation">[</span><span class="literal number integer">256</span><span class="punctuation">];</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">n</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr_in</span><span class="whitespace"> </span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">cli_addr</span><span class="punctuation">;</span><span class="whitespace">
+
+  </span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">socket</span><span class="punctuation">(</span><span class="name">AF_INET</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">SOCK_STREAM</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// socket() returns a socket descriptor
+</span><span class="whitespace">  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+  </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR opening socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="name">bzero</span><span class="punctuation">((</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">));</span><span class="whitespace"> </span><span class="comment single">// bzero() sets all values to zero.
+</span><span class="whitespace">  </span><span class="name">portno</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">atoi</span><span class="punctuation">(</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]);</span><span class="whitespace"> </span><span class="comment single">// atoi() converts str into an integer
+</span><span class="whitespace">
+  </span><span class="punctuation">...</span></code></pre>
+</div>
+<div class="layer incremental docutils container">
+<pre class="code C literal-block"><code><span class="whitespace">  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_family</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">AF_INET</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_addr</span><span class="punctuation">.</span><span class="name">s_addr</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">INADDR_ANY</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_port</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">htons</span><span class="punctuation">(</span><span class="name">portno</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bind</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+  </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR on binding&quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">listen</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="literal number integer">5</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// tells the socket to listen for connections
+</span><span class="whitespace">  </span><span class="name">clilen</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">cli_addr</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">newsockfd</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">accept</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">cli_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">clilen</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">newsockfd</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR on accept&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="name">bzero</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">256</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">read</span><span class="punctuation">(</span><span class="name">newsockfd</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">255</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">n</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR reading from socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Here is the message: %s</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">write</span><span class="punctuation">(</span><span class="name">newsockfd</span><span class="punctuation">,</span><span class="literal string">&quot;I got your message&quot;</span><span class="punctuation">,</span><span class="literal number integer">18</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">n</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR writing to socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">return</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div>
+</div>
+<div class="block-footer text-align-center dhbw-gray-background white docutils container">
+<p>Motivation</p>
+</div>
+</div><div class="tiny ld-slide" id="ein-einfacher-client-mit-sockets">
+<h2>Ein einfacher Client mit Sockets</h2>
+<div class="stack smaller">
+<div class="layer">
+<pre class="code c literal-block"><code><span class="comment preproc">#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;stdio.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/types.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/socket.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;netinet/in.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;netdb.h&gt;</span><span class="comment preproc">
+</span><span class="whitespace">
+</span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">error</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">msg</span><span class="punctuation">){</span><span class="whitespace"> </span><span class="name">perror</span><span class="punctuation">(</span><span class="name">msg</span><span class="punctuation">);</span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">);}</span><span class="whitespace">
+
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">argc</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">argv</span><span class="punctuation">[]){</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">portno</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">n</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr_in</span><span class="whitespace"> </span><span class="name">serv_addr</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">hostent</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">server</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="name">buffer</span><span class="punctuation">[</span><span class="literal number integer">256</span><span class="punctuation">];</span><span class="whitespace">
+
+  </span><span class="name">portno</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">atoi</span><span class="punctuation">(</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">2</span><span class="punctuation">]);</span><span class="whitespace">
+
+  </span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">socket</span><span class="punctuation">(</span><span class="name">AF_INET</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">SOCK_STREAM</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+    </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR opening socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="punctuation">...</span></code></pre>
+</div><div class="layer incremental">
+<pre class="code c literal-block"><code><span class="whitespace">  </span><span class="punctuation">...</span><span class="whitespace">
+
+  </span><span class="name">server</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">gethostbyname</span><span class="punctuation">(</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]);</span><span class="whitespace">
+  </span><span class="name">bzero</span><span class="punctuation">((</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">));</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_family</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">AF_INET</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">bcopy</span><span class="punctuation">((</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="name">server</span><span class="operator">-&gt;</span><span class="name">h_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_addr</span><span class="punctuation">.</span><span class="name">s_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">server</span><span class="operator">-&gt;</span><span class="name">h_length</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_port</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">htons</span><span class="punctuation">(</span><span class="name">portno</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">connect</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR connecting&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Please enter the message: &quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">bzero</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">256</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">fgets</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">255</span><span class="punctuation">,</span><span class="name">stdin</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">write</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">,</span><span class="name">strlen</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">));</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">n</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR writing to socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">bzero</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">256</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">read</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">255</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;%s</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">return</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div></div><div class="block-footer text-align-center dhbw-gray-background white docutils container">
+<p>Motivation</p>
+</div>
+</div><div class="ld-slide" id="probleme-bei-der-verwendung-von-sockets">
+<h2>Probleme bei der Verwendung von Sockets</h2>
+<p>Wir müssen uns kümmern um …</p>
+<ul class="incremental negative-list list-with-explanations">
+<li><p>… die Einrichtung eines Kanals und alle Fehler, die während dieses Prozesses auftreten können.</p></li>
+<li><p>… die Festlegung eines Protokolls.</p>
+<p>Wer sendet was, wann, in welcher Reihenfolge und welche Antwort wird erwartet?</p>
+</li>
+<li><p>… Nachrichtenformate</p>
+<p>Umwandlung von Daten der Anwendungsebene in Bytes, die über das Netz übertragen werden können.</p>
+</li>
+</ul>
+<div class="block-footer text-align-center dhbw-gray-background white docutils container">
+<p>Motivation</p>
+</div>
+</div><div class="ld-slide" id="middleware-als-programmierabstraktion">
+<h2>Middleware als Programmierabstraktion</h2>
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
+<ul class="simple">
+<li><p>Eine Softwareschicht oberhalb des Betriebssystems und unterhalb des Anwendungsprogramms, die eine gemeinsame Programmierabstraktion in einem verteilten System bietet.</p></li>
+<li><p>Ein Baustein auf höherer Ebene als die vom Betriebssystem bereitgestellten APIs (z. B. Sockets)</p></li>
+</ul>
+</div>
+<div class="column docutils container">
+<img alt="images/middleware.svg" class="align-center" src="images/middleware.svg" style="height: 1100px;" />
+</div>
+</div>
+</div><div class="ld-slide" id="middleware-als-programmierabstraktion-1">
+<h2>Middleware als Programmierabstraktion</h2>
+<p>Die von Middleware angebotenen Programmierabstraktionen verbergen einen Teil der Heterogenität und bewältigen einen Teil der Komplexität, mit der Programmierer einer verteilten Anwendung umgehen müssen:</p>
+<ul class="incremental positive-list simple">
+<li><p>Middleware maskiert immer die Heterogenität der zugrundeliegenden Netzwerke und Hardware.</p></li>
+<li><p>Middleware maskiert meistens die Heterogenität von Betriebssystemen und/oder Programmiersprachen.</p></li>
+<li><p><span class="minor">Manche Middleware maskiert sogar die Heterogenität zwischen den Implementierungen des gleichen Middleware-Standards durch verschiedene Hersteller</span>.</p></li>
+</ul>
+<div class="supplemental">
+<p>Alte Middlewarestandards – wie zum Beispiel CORBA – waren sehr komplex und die Implementierungen verschiedener Hersteller meist nicht vollständig kompatibel.</p>
+</div></div><div class="ld-slide" id="transparenzziele-von-middleware-aus-sicht-der-programmierung">
+<h2>Transparenzziele von Middleware aus Sicht der Programmierung</h2>
+<p>Middleware bietet (beim Programmieren) Transparenz in Bezug auf eine oder mehrere der folgenden Dimensionen:</p>
+<ul class="simple">
+<li><p>Standort</p></li>
+<li><p>Nebenläufigkeit</p></li>
+<li><p>Replikation</p></li>
+<li><p>Ausfälle (bedingt)</p></li>
+</ul>
+<div class="assessment margin-top-2em docutils container">
+<p>Middleware ist die Software, die ein verteiltes System (DS) programmierbar macht.</p>
+</div>
+</div><div class="ld-slide" id="middleware-als-infrastruktur">
+<h2>Middleware als Infrastruktur</h2>
+<ul class="incremental list-with-explanations">
+<li><p>Hinter Programmierabstraktionen steht eine komplexe Infrastruktur, die diese Abstraktionen implementiert</p>
+<p>Middleware-Plattformen können sehr komplexe Softwaresysteme sein.</p>
+</li>
+<li><p>Da die Programmierabstraktionen immer höhere Ebenen erreichen, muss die zugrunde liegende Infrastruktur, die die Abstraktionen implementiert, entsprechend wachsen.</p></li>
+<li><p>Zusätzliche Funktionalität wird fast immer durch zusätzliche Softwareschichten implementiert.</p></li>
+<li><p>Die zusätzlichen Softwareschichten erhöhen den Umfang und die Komplexität der für die Nutzung der neuen Abstraktionen erforderlichen Infrastruktur.</p></li>
+</ul>
+<div class="supplemental">
+<p>Seit Jahrzehnten kann beobachtet werden, dass Middleware immer komplexer wird bzw. wurde bis zu dem Punkt an dem die Komplexität kaum mehr beherrschbar war. Zu diesen Zeitpunkten wurden dann häufig neue Ansätze entwickelt, die die Komplexität reduzierten bis diese wiederum Eingang in komplexere Middleware-Produkten Eingang fand.</p>
+<p>Ansätze, wie z. B. REST, haben sich als recht erfolgreich erwiesen stellen aber Entwickler vor neue Herausforderungen.</p>
+</div></div><div class="ld-slide" id="middleware-und-nicht-funktionale-anforderungen">
+<h2>Middleware und nicht-funktionale Anforderungen</h2>
+<p>Die Infrastruktur kümmert sich um nicht-funktionale Eigenschaften, die normalerweise von Datenmodellen, Programmiermodellen und Programmiersprachen ignoriert werden:</p>
+<ul class="simple">
+<li><p>Performance</p></li>
+<li><p>Verfügbarkeit</p></li>
+<li><p>Ressourcenmanagement</p></li>
+<li><p>Zuverlässigkeit</p></li>
+<li><p>usw.</p></li>
+</ul>
+</div><div class="ld-slide" id="middleware-als-infrastruktur-1">
+<h2>Middleware als Infrastruktur</h2>
+<p>Middleware unterstützt zusätzliche Funktionen die die Entwicklung, Wartung und Überwachung einfacher und kostengünstiger machen (Auszug):</p>
+<ul class="incremental">
+<li><p>Protokollierung (<span class="eng">Logging</span>)</p></li>
+<li><p>Wiederherstellung (<span class="eng">Recovery</span>)</p></li>
+<li><p>Sprachprimitive für transaktionale Abgrenzung</p>
+<p>(<span class="minor">Bzw. fortgeschrittene Transaktionsmodelle (z.B. transaktionale RPC) oder transaktionale Dateisysteme</span>)</p>
+</li>
+</ul>
+</div><div class="smaller-slide-title ld-slide" id="konzeptionelle-darstellung-historischer-middleware">
+<h2>Konzeptionelle Darstellung (historischer) Middleware</h2>
+<div class="footer-left x-tiny minor docutils container">
+<p>Darstellung nach: Alonso; Web services: Concepts, Architectures and Applications; Springer, 2004</p>
+</div>
+<img alt="images/historische-middleware-konzeptuell.svg" class="align-center" src="images/historische-middleware-konzeptuell.svg" style="height: 900px;" />
+<div class="supplemental">
+<p>Insbesondere die explizite Erzeugung von Stubs und Skeletons durch einen IDL Compiler erfolgt so in der heutigen Zeit nicht mehr. Die Erzeugung von Stubs und Skeletons - wenn überhaupt erforderlich - erfolgt heute automatisch durch die Middleware.</p>
+</div></div><div class="vertical-title ld-slide" id="historische-entwicklung-von-middleware">
+<h2>Historische Entwicklung von Middleware</h2>
+<img alt="images/historic_middleware_technologies.svg" class="align-center" src="images/historic_middleware_technologies.svg" style="height: 1150px;" />
+</div><div class="ld-slide" id="entwicklung-von-middleware">
+<h2>Entwicklung von Middleware</h2>
+<ul class="simple">
+<li><p>Middleware beabsichtigt die Details der Hardware, der Netze und der Verteilung auf niedriger Ebene zu verbergen.</p></li>
+<li><p>Anhaltender Trend zu immer leistungsfähigeren Primitiven (<em>Events</em>), die zusätzliche Eigenschaften haben oder eine flexiblere Nutzung des Konzepts ermöglichen.</p></li>
+<li><p>Die Entwicklung und das Erscheinungsbild für den Programmierer wird von den Trends in den Programmiersprachen diktiert:</p>
+<ul>
+<li><p>RPC und C</p></li>
+<li><p>CORBA und C++</p></li>
+<li><p>RMI (Corba) und Java</p></li>
+<li><p><span class="ger-quote">Klassische</span> Webservices und XML</p></li>
+<li><p>RESTful Webservices und JSON</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="no-title center-child-elements ld-slide" id="middleware-high-level-view">
+<h2>Middleware - High-level View</h2>
+<div class="huge dhbw-red padding-1em dhbw-light-gray-background rounded-corners docutils container">
+<p>Eine Middleware stellt eine umfassende Plattform für die Entwicklung und den Betrieb komplexer verteilter Systeme zur Verfügung.</p>
+</div>
+</div><div class="new-section transition-scale ld-slide" id="middleware-technologien">
+<h2>Middleware-Technologien</h2>
+</div><div class="new-subsection transition-move-left ld-slide" id="remote-procedure-calls-rpcs">
+<h2>Remote Procedure Calls (RPCs)</h2>
+</div><div class="ld-slide" id="remote-procedure-call-rpc">
+<h2>Remote Procedure Call (RPC)</h2>
+<div class="huge text-align-center black-background rounded-corners padding-1em white box-shadow margin-top-1em docutils container">
+<p>Schwerpunkt: verstecken der Netzkommunikation.</p>
+</div>
+<div class="incremental margin-top-2em docutils container">
+<p>Ein Prozess kann eine Prozedur aufrufen deren Implementierung sich auf einem entfernten Rechner befindet:</p>
+<ul class="simple">
+<li><p>Programmierer von verteilten Systemen müssen sich nicht mehr um alle Details der Netzwerkprogrammierung kümmern (d.h. keine <span class="ger-quote">expliziten</span> Sockets mehr).</p></li>
+<li><p>Überbrückung der konzeptionellen Lücke zwischen dem Aufruf lokaler Funktionalität über Prozeduren und dem Aufruf entfernter Funktionalität über Sockets.</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="rpcs-konzeptionell-synchrone-kommunikation">
+<h2>RPCs konzeptionell (synchrone Kommunikation)</h2>
+<div class="two-columns docutils container">
+<div class="docutils container">
+<ul class="simple">
+<li><p>Ein Server ist ein Programm, das bestimmte Dienste implementiert.</p></li>
+<li><p>Cients möchten diese Dienste in Anspruch nehmen:</p>
+<ul class="incremental">
+<li><p>Die Kommunikation erfolgt durch das Senden von Nachrichten (kein gemeinsamer Speicher, keine gemeinsamen Festplatten usw.)</p></li>
+<li><p>Einige minimale Garantien müssen gegeben werden (Behandlung von Fehlern, Aufrufsemantik, usw.)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<img alt="images/rpc_konzeptionell.svg" class="align-center" src="images/rpc_konzeptionell.svg" style="height: 900px;" />
+</div>
+</div><div class="ld-slide" id="rpcs-zentrale-fragestellungen-und-herausforderungen">
+<h2>RPCs - zentrale Fragestellungen und Herausforderungen</h2>
+<div class="stack">
+<div class="layer">
+<p>Sollen entfernte Aufrufe transparent oder nicht transparent für den Entwickler sein?</p>
+<blockquote>
+<p>Ein entfernter Aufruf ist etwas völlig anderes als ein lokaler Aufruf; sollte sich der Programmierer dessen bewusst sein?</p>
+</blockquote>
+</div><div class="layer incremental">
+<p>Wie können Daten zwischen Maschinen ausgetauscht werden, die möglicherweise unterschiedliche Darstellungen für verschiedene Datentypen verwenden?</p>
+</div><div class="layer incremental">
+<p>Komplexe Datentypen müssen linearisiert werden:</p>
+<dl class="field-list simple">
+<dt><strong>Marshalling</strong><span class="colon">:</span></dt>
+<dd><p>der Prozess des Aufbereitens der Daten in eine für die Übermittlung in einer Nachricht geeignete Form.</p>
+</dd>
+<dt><strong>Unmarshalling</strong><span class="colon">:</span></dt>
+<dd><p>der Prozess der Wiederherstellung der Daten bei ihrer Ankunft am Zielort, um eine originalgetreue Repräsentation zu erhalten.</p>
+</dd>
+</dl>
+</div><div class="layer incremental">
+<p>Wie findet und bindet man den Dienst, den man tatsächlich will, in einer potenziell großen Sammlung von Diensten und Servern?</p>
+<p>Das Ziel ist, dass der Kunde nicht unbedingt wissen muss, wo sich der Server befindet oder sogar welcher Server den Dienst anbietet (Standorttransparenz).</p>
+</div><div class="layer incremental">
+<p>Wie geht man mehr oder weniger elegant mit Fehlern um:</p>
+<ul class="simple">
+<li><p>Server ist ausgefallen</p></li>
+<li><p>Kommunikation ist gestört</p></li>
+<li><p>Server beschäftigt</p></li>
+<li><p>doppelte Anfragen ...</p></li>
+</ul>
+</div></div><div class="supplemental">
+<p>Je nach System ist die Reihenfolge der Bytes unterschiedlich:</p>
+<ul class="simple">
+<li><p>Intel-CPUs sind Little-Endian.</p></li>
+<li><p>PowerPC ist Big-Endian.</p></li>
+<li><p>ARM kann beides und ist meistens Little-Endian.</p></li>
+</ul>
+</div></div><div class="smaller ld-slide" id="high-level-view-auf-rpc">
+<h2>High-level View auf RPC</h2>
+<div class="assessment docutils container">
+<p>Für Programmierer sieht ein <span class="ger-quote">entfernter</span> Prozeduraufruf fast identisch aus wie ein <span class="ger-quote">lokaler</span> Prozeduraufruf und funktioniert auch so - auf diese Weise wird Transparenz erreicht.</p>
+</div>
+<div class="incremental margin-top-2em docutils container">
+<p>Um Transparenz zu erreichen, führte RPC viele Konzepte von Middleware-Systemen ein:</p>
+<ul class="incremental list-with-explanations">
+<li><p><em>Interface Description Language</em> (IDL)</p></li>
+<li><p>Verzeichnis- und Benennungsdienste</p></li>
+<li><p>Dynamische Bindung</p></li>
+<li><p>Marshalling und Unmarshalling</p></li>
+<li><p><em>Opaque References</em>, um bei verschiedenen Aufrufen auf dieselbe Datenstruktur oder Entität auf dem Server zu verweisen.</p>
+<p>(Der Server ist für die Bereitstellung dieser undurchsichtigen Referenzen verantwortlich.)</p>
+</li>
+</ul>
+</div>
+</div><div class="ld-slide" id="rpc-call-semantics">
+<h2>RPC - Call Semantics</h2>
+<p>Nehmen wir an, ein Client stellt eine RPC-Anfrage an einen Dienst eines bestimmten Servers.
+Nachdem die Zeitüberschreitung abgelaufen ist, beschließt der Client die Anfrage erneut zu senden. Das finale Verhalten hängt von der Semantik des Aufrufs (<span class="eng">Call Semantics</span>) ab:</p>
+<div class="stack margin-top-2em">
+<div class="layer">
+<p class="rubric">Maybe (vielleicht; keine Garantie)</p>
+<p>Die Zielmethode kann ausgeführt worden sein und die Antwortnachricht(en) ging(en) verloren oder die Methode wurde gar nicht erst ausgeführt da die Anfrage verloren ging.</p>
+<div class="minor docutils container">
+<p><span class="docutils literal">XMLHTTPRequests</span> in Webbrowsern verwenden diese Semantik.</p>
+</div>
+</div><div class="layer incremental">
+<p class="rubric">At least once (mindestens einmal)</p>
+<p>Die Prozedur wird ausgeführt werden solange der Server nicht endgültig versagt.</p>
+<p>Es ist jedoch möglich, dass sie mehr als einmal ausgeführt wird wenn der Client die Anfrage nach einer Zeitüberschreitung erneut gesendet hatte.</p>
+</div><div class="layer incremental">
+<p class="rubric">At most once (höchstens einmal)</p>
+<p>Die Prozedur wird entweder einmal oder gar nicht ausgeführt. Ein erneutes Senden der Anfrage führt nicht dazu, dass die Prozedur mehrmals ausgeführt wird.</p>
+</div><div class="layer incremental">
+<p class="rubric">Exactly once (genau einmal)</p>
+<p>Das System garantiert die gleiche Semantik wie bei lokalen Aufrufen unter der Annahme, dass ein abgestürzter Server irgendwann wieder startet.</p>
+<p>Verwaiste Aufrufe, d. h. Aufrufe auf abgestürzten Server-Rechnern, werden nachgehalten, damit sie später von einem neuen Server übernommen werden können.</p>
+</div></div></div><div class="ld-slide" id="asynchrones-rpc">
+<h2>Asynchrones RPC</h2>
+<div class="two-columns fade-to-white docutils container">
+<div class="column docutils container">
+<p>Die Verbindung zwischen Client und Server in einem traditionellen RPC. Der Client wird blockiert und wartet.</p>
+</div>
+<div class="column docutils container">
+<img alt="images/rpcs/synchronous_rpc.svg" class="align-center" src="images/rpcs/synchronous_rpc.svg" style="height: 425px;" />
+</div>
+</div>
+<div class="two-columns fade-to-white line-above margin-top-1em padding-top-1em docutils container">
+<div class="column docutils container">
+<p>Die Verbindung zwischen Client und Server bei einem asynchronen RPC. Der Client wird nicht blockiert.</p>
+</div>
+<div class="column docutils container">
+<img alt="images/rpcs/asynchronous_rpc.svg" class="align-center" src="images/rpcs/asynchronous_rpc.svg" style="height: 450px;" />
+</div>
+</div>
+<div class="supplemental">
+<p>Ein normaler Aufruf mittels <span class="docutils literal">XMLHTTPRequest</span> (JavaScript) ist auch immer asynchron.</p>
+</div></div><div class="ld-slide" id="rpc-bewertung">
+<h2>RPC - Bewertung</h2>
+<ul class="incremental positive-list simple">
+<li><p>RPC bietet einen Mechanismus, um verteilte Anwendungen auf einfache und effiziente Weise zu implementieren.</p></li>
+<li><p>RPC ermöglicht den modularen und hierarchischen Aufbau großer verteilter Systeme:</p>
+<ul>
+<li><p>Client und Server sind getrennte Einheiten</p></li>
+<li><p>Der Server kapselt und verbirgt die Details der Backend-Systeme (wie z. B. Datenbanken)</p></li>
+</ul>
+</li>
+</ul>
+<ul class="incremental negative-list simple">
+<li><p>RPC ist kein Standard, sondern wurde auf viele verschiedene Arten umgesetzt.</p></li>
+<li><p>RPC ermöglicht Entwicklern den Aufbau verteilter Systeme, löst aber nur ausgewählte Aspekte.</p></li>
+</ul>
+<div class="supplemental">
+<p>Wenn man moderne Ansätze wie RESTful WebServices mit RPC vergleicht, dann fällt auf, dass RPC eine deutlich bessere Tranzparenz bietet.</p>
+</div><div class="incremental docutils container">
+<p>Das Network File System (NFS) und SMB sind bekannte RPC-basierte Anwendungen.</p>
+</div>
+</div><div class="new-subsection transition-fade ld-slide" id="java-remote-method-invocation-rmi">
+<h2>Java Remote Method Invocation (RMI)</h2>
+</div><div class="ld-slide" id="java-rmi-remote-method-invocation">
+<h2>Java RMI (Remote Method Invocation)</h2>
+<div class="large rounded-corners dhbw-light-gray-background padding-1em docutils container">
+<p>Ermöglicht es einem Objekt, das in einer Java Virtual Machine (VM) läuft, Methoden eines Objekts aufzurufen, das in einer anderen Java VM läuft.</p>
+</div>
+<div class="incremental docutils container">
+<ul class="simple">
+<li><p>Entfernte Objekte können ähnlich wie lokale Objekte behandelt werden.</p></li>
+<li><p>Übernimmt das Marshalling, den Transport und die Garbage Collection der entfernten Objekte.</p></li>
+<li><p>Teil von Java seit JDK 1.1</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="java-rmi-vs-rpc">
+<h2>Java RMI vs. RPC</h2>
+<img alt="images/rpc_vs_rmi.svg" class="align-center" src="images/rpc_vs_rmi.svg" style="height: 1000px;" />
+<div class="supplemental">
+<p>Java RMI ist eine spezielle Form von RPC, die in Java implementiert wurde. Der Unterschied ergibt sich im Prinzip aus dem Unterschied zwischen einem
+Prozeduraufruf und einem Methodenaufruf auf ein Objekt</p>
+</div></div><div class="ld-slide" id="java-rmi-implementiert-ein-distributed-object-model">
+<h2>Java RMI implementiert ein <em>Distributed Object Model</em></h2>
+<img alt="images/java_rmi-distributed-object-model.svg" class="align-center" src="images/java_rmi-distributed-object-model.svg" style="height: 1000px;" />
+<div class="supplemental">
+<ul>
+<li><p>Jeder Prozess enthält sowohl Objekte die entfernte Aufrufe empfangen können als auch solche, die nur lokale Aufrufe empfangen können.</p>
+<p>(Objekte die entfernte Aufrufe empfangen können, werden <em>Remote Objects</em> genannt).</p>
+</li>
+<li><p>Objekte müssen die Remote-Objektreferenz eines Objekts in einem anderen Prozess kennen, um dessen Methoden aufrufen zu können (Remote Method Invocation; Remote Object References)</p></li>
+</ul>
+</div></div><div class="ld-slide" id="anatomie-eine-java-rmi-aufrufs">
+<h2>Anatomie eine Java RMI Aufrufs</h2>
+<img alt="images/rmi_anatomy/rmi_anatomy.svg" class="align-center" src="images/rmi_anatomy/rmi_anatomy.svg" style="height: 1000px;" />
+<div class="supplemental">
+<p>Der Proxy versteckt für den Client, dass es sich um einen entfernten Aufrufe handelt.  Er implementiert die Remote-Schnittstelle und kümmert sich um das Marshalling und Unmarshalling der Parameter und des Ergebnisses.</p>
+<p>Der Skeleton ist für die Entgegennahme der Nachrichten verantwortlich und leitet die Nachricht an das eigentliche Objekt weiter. Er sorgt für die Transparenz auf Serverseite.</p>
+<p>Referenzen auf <em>Remote Objects</em> sind systemweit eindeutig und können frei zwischen Prozessen weitergegeben werden (z.B. als Parameter). Die Implementierung der entfernten Objektreferenzen wird von der Middleware verborgen (<em>Opaque-Referenzen</em>).</p>
+</div></div><div class="ld-slide" id="rmi-protocol-stack">
+<h2>RMI Protocol Stack</h2>
+<img alt="images/rmi_anatomy/rmi_protocol_stack.svg" class="align-center" src="images/rmi_anatomy/rmi_protocol_stack.svg" style="height: 1000px;" />
+<div class="supplemental">
+<ul class="simple">
+<li><p><em>Remote Reference Layer</em>: RMI-spezifische Kommunikation über TCP/IP, Verbindungsinitialisierung, Serverstandort, Verarbeitung serialisierter Daten</p></li>
+<li><p><em>RMI Transport Layer (TCP)</em>: Verbindungsverwaltung, Bereitstellung einer zuverlässigen Datenübertragung zwischen Endpunkten</p></li>
+<li><p>Internetprotokoll in IP-Paketen enthaltene Datenübertragung (unterste Ebene)</p></li>
+</ul>
+</div></div><div class="ld-slide" id="einfacher-rmi-dienst-und-aufruf">
+<h2>Einfacher RMI Dienst und Aufruf</h2>
+<div class="stack scriptsize">
+<div class="layer">
+<p><strong>Schnittstelle des Zeitservers</strong></p>
+<pre class="code Java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.Remote</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.RemoteException</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Date</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">interface</span> <span class="name class">Time</span><span class="whitespace"> </span><span class="keyword declaration">extends</span><span class="whitespace"> </span><span class="name">Remote</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Date</span><span class="whitespace"> </span><span class="name function">getTime</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">RemoteException</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div><div class="layer incremental">
+<p><strong>Implementierung der Schnittelle durch den Zeitserver</strong></p>
+<pre class="code Java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.RemoteException</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.server.UnicastRemoteObject</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Date</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">TimeServer</span><span class="whitespace"> </span><span class="keyword declaration">extends</span><span class="whitespace"> </span><span class="name">UnicastRemoteObject</span><span class="whitespace"> </span><span class="keyword declaration">implements</span><span class="whitespace"> </span><span class="name">Time</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">TimeServer</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">RemoteException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword declaration">super</span><span class="punctuation">();</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Date</span><span class="whitespace"> </span><span class="name function">getTime</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Date</span><span class="punctuation">();</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div><div class="layer incremental">
+<p><strong>Registrierung des Zeitservers</strong></p>
+<pre class="code Java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.Naming</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">TimeRegistrar</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+
+  </span><span class="comment multiline">/** &#64;param args args[0] has to specify the hostname. */</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">Exception</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">String</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">args</span><span class="operator">[</span><span class="literal number integer">0</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">TimeServer</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">TimeServer</span><span class="punctuation">();</span><span class="whitespace">
+    </span><span class="name">Naming</span><span class="punctuation">.</span><span class="name attribute">rebind</span><span class="punctuation">(</span><span class="literal string">&quot;rmi://&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;/ServerTime&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div><div class="layer incremental">
+<p><strong>Client des Zeitservers</strong></p>
+<pre class="code Java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.Naming</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Date</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">TimeClient</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">Exception</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">String</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">args</span><span class="operator">[</span><span class="literal number integer">0</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">Time</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">Time</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">Naming</span><span class="punctuation">.</span><span class="name attribute">lookup</span><span class="punctuation">(</span><span class="literal string">&quot;rmi://&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;/ServerTime&quot;</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Time on &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot; is &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="punctuation">.</span><span class="name attribute">getTime</span><span class="punctuation">());</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div></div></div><div class="ld-slide" id="java-rmi-tidbits">
+<h2>Java RMI - Tidbits</h2>
+<ul class="list-with-explanations">
+<li><p>RMI verwendet einen referenzzählenden Garbage-Collection-Algorithmus. Netzwerkprobleme können dann zu einer verfrühten GC führen was wiederum bei Aufrufen zu Ausnahmen führen kann.</p></li>
+<li><p>Die Aufrufsemantik (<em>Call Semantics</em>) von RMI ist <em>at most once</em>.</p></li>
+<li><p>(Un)Marshalling ist in Java RMI automatisch und verwendet Java Object Serialization.</p>
+<p>Der Overhead kann leicht ~25%-50% der Zeit für einen entfernten Aufruf ausmachen.</p>
+</li>
+</ul>
+</div><div class="new-subsection transition-fade ld-slide" id="klassische-web-services-und-soap">
+<h2>Klassische Web Services und SOAP</h2>
+</div><div class="ld-slide" id="integration-von-unternehmensanwendungen">
+<h2>Integration von Unternehmensanwendungen</h2>
+<p>Die Probleme unternehmensübergreifende Punkt-zu-Punkt-Integration zu ermöglichen führten zur Entwicklung der nächsten Generation von Middleware-Technologien.</p>
+<img alt="images/web_services-vs-message_brokers/message-brokers_and_adapters.svg" class="align-center" src="images/web_services-vs-message_brokers/message-brokers_and_adapters.svg" style="height: 700px;" />
+<div class="footer-left tiny docutils container">
+<p>Darstellung nach <em>Web Services - Concepts, Architectures and Applications; Alonso et al.; Springer 2004</em></p>
+</div>
+<div class="supplemental">
+<p>Jedes Unternehmen verwendet(e) seinen eigenen <span class="ger-quote">konkreten`</span> Message-Broker - wenn wir mit mehreren Unternehmen kommunizieren wollen, müssen wir mehrere Adapter/Lösungen implementieren und pflegen.</p>
+</div></div><div class="no-title center-child-elements ld-slide" id="web-services">
+<h2>Web Services</h2>
+<blockquote class="epigraph">
+<p>Webservices are self-contained, modular business applications that have open, internet-oriented, standards-based interfaces.</p>
+<p class="attribution">—UDDI Konsortium</p>
+</blockquote>
+</div><div class="ld-slide" id="web-services-konzeptionell">
+<h2>Web Services - konzeptionell</h2>
+<img alt="images/web_services-vs-message_brokers/webservices_vision.svg" class="align-center" src="images/web_services-vs-message_brokers/webservices_vision.svg" style="height: 1000px;" />
+</div><div class="ld-slide" id="web-services-wesentliche-bestandteile">
+<h2>Web Services - wesentliche Bestandteile</h2>
+<img alt="images/web_services-vs-message_brokers/komponenten.svg" class="align-center" src="images/web_services-vs-message_brokers/komponenten.svg" style="height: 950px;" />
+<div class="supplemental">
+<ul class="simple">
+<li><p><em>Service Provider</em>: Die Einheit, die den Dienst implementiert und anbietet ihn im Namen des Anforderers auszuführen.</p></li>
+<li><p><em>Service Requestor</em>: Der potenzielle Nutzer eines Dienstes.</p></li>
+<li><p><em>Service Registry</em>: Auflistung der verfügbaren Dienste.</p></li>
+</ul>
+</div><div class="block-footer text-align-center dhbw-gray-background white docutils container">
+<p>Konzeptionell hat sich somit im Vergleich zur RPC-Welt nicht viel geändert.</p>
+</div>
+</div><div class="ld-slide" id="web-services-protokoll-stack">
+<h2>Web Services - Protokoll Stack</h2>
+<img alt="images/ws-protocol_stack.svg" class="align-center" src="images/ws-protocol_stack.svg" style="height: 1000px;" />
+</div><div class="ld-slide" id="soap">
+<h2>SOAP</h2>
+<ul class="incremental simple">
+<li><p>SOAP ist das Protokoll klassischer Web Services und ermöglicht die Kommunikation zwischen Anwendungen.</p></li>
+<li><p>SOAP umfasst die folgenden Teile:</p>
+<ul class="smaller dhbw-gray">
+<li><p>Ein Nachrichtenformat, das beschreibt, wie eine Nachricht in ein XML-Dokument verpackt werden kann (Umschläge, Header, Body...)</p></li>
+<li><p>Ein Satz von Kodierungsregeln für Daten</p></li>
+<li><p>Eine Beschreibung wie eine SOAP-Nachricht mit dem zugrundeliegenden Transportprotokoll (HTTP oder SMTP) transportiert werden sollte. Wie eine SOAP-Nachricht in eine HTTP-Anfrage oder in eine E-Mail (SMTP) eingebettet werden kann.</p></li>
+<li><p>Eine Reihe von Regeln, die bei der Verarbeitung einer SOAP-Nachricht zu befolgen sind, und die an dieser Verarbeitung beteiligten Stellen; welche Teile der Nachrichten von wem gelesen werden sollten und welche Maßnahmen diese Stellen ergreifen sollten, wenn sie den Inhalt nicht verstehen.</p></li>
+</ul>
+</li>
+</ul>
+<div class="supplemental">
+<p>SOAP ist eine Weiterentwicklung von XML-RPC und stand ursprünglich für Simple Object Access Protocol.</p>
+<p>SOAP (ab Version 1.2) ist ein Standard des W3C.</p>
+</div></div><div class="ld-slide" id="aufbau-einer-soap-nachricht">
+<h2>Aufbau einer SOAP-Nachricht</h2>
+<div class="two-columns docutils container">
+<img alt="images/soap_message.svg" class="align-center" src="images/soap_message.svg" style="height: 1000px;" />
+<div class="margin-left-1em docutils container">
+<p>Nachrichten sind Umschläge, in die die Nutzdaten der Anwendung eingeschlossen werden.</p>
+<p>Eine Nachricht hat zwei Hauptbestandteile:</p>
+<dl class="field-list simple">
+<dt>Header (optional)<span class="colon">:</span></dt>
+<dd><p>Für infrastrukturelle Daten wie Sicherheit oder Zuverlässigkeit vorgesehen.</p>
+</dd>
+<dt>Body (obligatorisch)<span class="colon">:</span></dt>
+<dd><p>Für Daten auf Anwendungsebene vorgesehen. Jeder Teil kann in Blöcke unterteilt werden.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div><div class="ld-slide" id="beispiel-einer-soap-nachricht">
+<h2>Beispiel einer SOAP-Nachricht</h2>
+<pre class="code xml scriptsize literal-block"><code><span class="whitespace">  </span><span class="name tag">&lt;SOAP-ENV:Envelope</span><span class="whitespace">
+    </span><span class="name attribute">xmlns:SOAP-ENV=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span><span class="whitespace">
+    </span><span class="name attribute">SOAP-ENV:encodingStyle=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;</span><span class="whitespace"> </span><span class="name tag">/&gt;</span><span class="whitespace">
+
+  </span><span class="name tag">&lt;SOAP-ENV:Header&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;t:Transaction</span><span class="whitespace"> </span><span class="name attribute">xmlns:t=</span><span class="literal string">&quot;ws-transactions-URI&quot;</span><span class="whitespace"> </span><span class="name attribute">SOAP-ENV:mustUnderstand=</span><span class="literal string">&quot;1&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+      </span>57539<span class="whitespace">
+    </span><span class="name tag">&lt;/t:Transaction&gt;</span><span class="whitespace">
+  </span><span class="name tag">&lt;/SOAP-ENV:Header&gt;</span><span class="whitespace">
+
+  </span><span class="name tag">&lt;SOAP-ENV:Body&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;m:GetLastTradePrice</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">&quot;Some-URI&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+      </span><span class="name tag">&lt;symbol&gt;</span>DEF<span class="name tag">&lt;/symbol&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;/m:GetLastTradePrice&gt;</span><span class="whitespace">
+  </span><span class="name tag">&lt;/SOAP-ENV:Body&gt;</span><span class="whitespace">
+
+  </span><span class="name tag">&lt;/SOAP-ENV:Envelope&gt;</span></code></pre>
+</div><div class="ld-slide" id="beispiel-eines-soap-aufrufs">
+<h2>Beispiel eines SOAP-Aufrufs</h2>
+<pre class="code http scriptsize literal-block"><code><span class="name function">POST</span> <span class="name namespace">/StockQuote</span> <span class="keyword reserved">HTTP</span><span class="operator">/</span><span class="literal number">1.1</span>
+<span class="name attribute">Host</span><span class="operator">:</span> <span class="literal">www.stockquoteserver.com</span>
+<span class="name attribute">Content-Type</span><span class="operator">:</span> <span class="literal">text/xml; charset=&quot;utf-8&quot;</span>
+<span class="name attribute">Content-Length</span><span class="operator">:</span> <span class="literal">nnnn</span>
+<span class="name attribute">SOAPAction</span><span class="operator">:</span> <span class="literal">&quot;Some-URI&quot;</span>
+
+<span class="name tag">&lt;SOAP-ENV:Envelope</span><span class="whitespace">
+  </span><span class="name attribute">xmlns:SOAP-ENV=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span><span class="whitespace">
+  </span><span class="name attribute">SOAP-ENV:encodingStyle=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+
+  </span><span class="name tag">&lt;SOAP-ENV:Body&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;m:GetLastTradePrice</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">&quot;Some-URI&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+      </span><span class="name tag">&lt;symbol&gt;</span>DIS<span class="name tag">&lt;/symbol&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;/m:GetLastTradePrice&gt;</span><span class="whitespace">
+  </span><span class="name tag">&lt;/SOAP-ENV:Body&gt;</span><span class="whitespace">
+
+</span><span class="name tag">&lt;/SOAP-ENV:Envelope&gt;</span></code></pre>
+</div><div class="ld-slide" id="beispiel-einer-soap-antwort">
+<h2>Beispiel einer SOAP-Antwort</h2>
+<pre class="code html scriptsize literal-block"><code>  HTTP/1.1 200 OK
+  Content-Type: text/xml; charset=&quot;utf-8&quot;
+  Content-Length: nnnn
+
+  <span class="punctuation">&lt;</span><span class="name tag">SOAP-ENV:Envelope</span>
+    <span class="name attribute">xmlns:SOAP-ENV</span><span class="operator">=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span>
+    <span class="name attribute">SOAP-ENV:encodingStyle</span><span class="operator">=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;</span> <span class="punctuation">/&gt;</span>
+
+  <span class="punctuation">&lt;</span><span class="name tag">SOAP-ENV:Body</span><span class="punctuation">&gt;</span>
+    <span class="punctuation">&lt;</span><span class="name tag">m:GetLastTradePriceResponse</span> <span class="name attribute">xmlns:m</span><span class="operator">=</span><span class="literal string">&quot;Some-URI&quot;</span><span class="punctuation">&gt;</span>
+      <span class="punctuation">&lt;</span><span class="name tag">Price</span><span class="punctuation">&gt;</span>34.5<span class="punctuation">&lt;/</span><span class="name tag">Price</span><span class="punctuation">&gt;</span>
+    <span class="punctuation">&lt;/</span><span class="name tag">m:GetLastTradePriceResponse</span><span class="punctuation">&gt;</span>
+  <span class="punctuation">&lt;/</span><span class="name tag">SOAP-ENV:Body</span><span class="punctuation">&gt;</span>
+
+  <span class="punctuation">&lt;/</span><span class="name tag">SOAP-ENV:Envelope</span><span class="punctuation">&gt;</span></code></pre>
+</div><div class="ld-slide" id="web-services-standardisierung">
+<h2>Web Services - Standardisierung</h2>
+<div class="stack">
+<div class="layer">
+<img alt="screenshots/ws_standards.png" class="align-right" src="screenshots/ws_standards.png" style="height: 900px;" />
+</div><div class="layer overlay">
+<img alt="screenshots/ws_standards_w3c.png" class="align-left" src="screenshots/ws_standards_w3c.png" style="height: 900px;" />
+</div></div></div><div class="vertical-title ld-slide" id="uberblick">
+<h2>Überblick</h2>
+<img alt="images/genealogy-of-middleware.svg" class="align-center" src="images/genealogy-of-middleware.svg" style="height: 1140px;" />
+</div>
+</body>
+</html>
