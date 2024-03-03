@@ -25,6 +25,7 @@ const lectureDoc2Help = function () {
                 <tr><td>&lt;shift&gt; + →</td><td>next slide</td></tr>
                 <tr><td>&lt;shift&gt; + ←</td><td>previous slide</td></tr>
                 <tr><td>&lt;digit(s)&gt; + &lt;enter&gt;</td><td>jump to slide</td></tr>
+                <tr><td>b</td><td>toggle black screen</td></tr>
                 <tr><td>r</td><td>reset animation progress for current slide</td></tr>
                 <tr><td>r (5 times in a row)</td><td>reset all animations</td></tr>
                 <tr class="ld-help-keys-category"><td colspan="2">View</td></tr>

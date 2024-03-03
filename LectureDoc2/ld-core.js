@@ -5,10 +5,10 @@
     -   LectureDoc (i.e., the slide set) must be 
         usable without a Server(!); hence, no JavaScript modules :-(...
    
-    -   We store all relevante state information in a state object; this object 
+    -   We store all relevant state information in a state object; this object 
         is then used to re-instantiate a LectureDoc session later on. This object
         is saved in local storage whenever the user leaves the webpage. To make
-        it possible to distinguish document specific state information, a 
+        it possible to distinguish state information with a specific document, a 
         document has to be associated with a unique id. This id has to be 
         set by the user. If no id is configured, no state information will be
         saved.
@@ -20,11 +20,13 @@
 */
 "use strict";
 
+
 /**
  * For `lectureDoc2` we use "modules" that start with lectureDoc2.
  * 
  * lectureDoc2 is an object which contains a reference to the meta-information
  * object (presentation) and a function (getState) to return the current state.
+ * Furthermore, a function to optimize the view for printing is provided.
  */
 const lectureDoc2 = function () {
 
@@ -74,8 +76,8 @@ const lectureDoc2 = function () {
         showLightTable: false,
         /**
          * If true (default), the continuous view mode will be shown when this
-         * presentation is shown for the first time. If false it will not be 
-         * shown.
+         * presentation is shown for the first time. If false the slide view
+         * is used.
          */
         showContinuousView: true,        
         /**
@@ -88,6 +90,7 @@ const lectureDoc2 = function () {
          */
         showHelp: true
     }
+
 
     /**
      * Captures the current state of the presentation.
@@ -114,15 +117,33 @@ const lectureDoc2 = function () {
         showContinuousViewSlideNumber: false,
     }
 
+
+    /* The following information is only short lived and does not need
+     * to be preserved during reloads.
+     */
     let ephermal = { 
-        // The following information is only short lived and does not need
-        // to be preserved during reloads. It is in particular information 
-        // related to animations.
+        // The following information is related to animations.
         previousSlide: undefined,
+        ldPerDocumentChannel: undefined,
     }
 
     /**
-     * Creates a document dependent unique id. 
+     * Small helper function to post messages to all windows showing the
+     * same document. This enables us to use a second browser window 
+     * for presentation purposes on a second screen.
+     * 
+     * This is only supported if the webpage was served by a server and 
+     * the document has an id.
+     */
+    function postMessage(msg, data) {
+        if (ephermal.ldPerDocumentChannel) {
+            ephermal.ldPerDocumentChannel.postMessage([msg, data]);
+
+        }
+    }
+
+    /**
+     * Based on an element id, a document dependent unique id is created.
      * 
      * This enables the storage of document dependent information in local
      * storage, even when all LectureDoc documents have the same origin and 
@@ -135,12 +156,14 @@ const lectureDoc2 = function () {
         if (presentation.id) {
             return "ld-" + presentation.id + "-" + dataId;
         } else {
-            throw new Error("no document id available")
+            throw new Error("no document id available");
         }
     }
 
+
     /**
-     * Stores the state in local storage, iff the presentation has a unique id.
+     * Stores the state object in local storage, iff the presentation has a 
+     * unique id.
      */
     function storeState() {
         if (presentation.id) {
@@ -149,6 +172,7 @@ const lectureDoc2 = function () {
             // console.debug(`${presentation.id} stated saved: ${jsonState}`)
         }
     }
+
 
     /**
      * Stores the current state, when the page/document is hidden.
@@ -164,6 +188,7 @@ const lectureDoc2 = function () {
         }
     }
 
+
     /**
      * Restores the state object of this presentation.
      * 
@@ -171,14 +196,17 @@ const lectureDoc2 = function () {
      */
     function loadState() {
         if (presentation.id) {
-            const jsonState = localStorage.getItem(documentSpecificId("state"))
+            const jsonState = localStorage.getItem(documentSpecificId("state"));
             const newState = JSON.parse(jsonState);
             if (newState) {
                 state = newState;
                 // console.debug(`${presentation.id} state loaded: ${jsonState}`);
+            } else {
+                // console.debug(`${presentation.id} no previous state found`);
             }
         }
     }
+
 
     /**
      * Applies the current state to the presentation. 
@@ -190,9 +218,10 @@ const lectureDoc2 = function () {
     function applyState() {
         reapplySlideProgress();
 
-        if (state.currentSlideNo > lastSlideNo()) {
-            state.currentSlideNo = lastSlideNo();
-            console.info(`slide number: ${lastSlideNo()}`);
+        let slideCount = lastSlideNo();
+        if (state.currentSlideNo > slideCount) {
+            state.currentSlideNo = slideCount;
+            console.info(`slide number: ${slideCount}`);
         }
         showSlide(state.currentSlideNo);
 
@@ -202,15 +231,19 @@ const lectureDoc2 = function () {
         if (state.showHelp) toggleDialog("help");
 
         if (state.showContinuousView) toggleContinuousView();
+        if (state.showContinuousViewSlideNumber) { 
+            showContinuousViewSlideNumber(true); 
+        }
 
-        if (state.showMainSlideNumber) showMainSlideNumber(true);
-        if (state.showContinuousViewSlideNumber) showContinuousViewSlideNumber(true);
+        if (state.showMainSlideNumber) { 
+            showMainSlideNumber(true); 
+        }
     }
 
 
     /**
      * Deletes all permanent state information associated with the current 
-     * document and LectureDoc as a whole.
+     * document as well as global LectureDoc related information.
      */
     function deleteStoredState() {
         localStorage.removeItem("ld-help-was-shown");
@@ -222,10 +255,15 @@ const lectureDoc2 = function () {
 
 
     /**
-     * Deletes all information associated with the current document and 
-     * LectureDoc as such.
+     * Resets LectureDoc for the current document by deleting all associated
+     * state additionally global state associated with LectureDoc is also 
+     * deleted.
      */
     function resetLectureDoc() {
+        postMessage("resetLectureDoc", undefined);
+        localResetLectureDoc();
+    }
+    function localResetLectureDoc() {
         console.log(`LectureDoc reset initiated`);
 
         // We need to remove the visibility listener first to avoid that 
@@ -256,27 +294,30 @@ const lectureDoc2 = function () {
     }
 
 
-    function initCopyIt() {
-        /* To make the "copy-it" functionality work in all views, 
-           we simply add it to the DOM before the slides are copied. */
+    /**
+     * Adds a div (button) to the DOM to allow the user to copy the content of
+     * code blocks.
+     * 
+     * To make "copy-to-clipboard" functionality work in all views, this 
+     * function needs to be called before the slides are duplicated per the
+     * respective view.
+     */
+    function setupCopyToClipboard() {
         document.querySelectorAll(".code.copy-to-clipboard").forEach((code) => {
-            const copyItDiv = document.createElement("div");
-            copyItDiv.classList.add("copy-it");
-            code.insertBefore(copyItDiv, code.firstChild);
+            const copyToClipboardButton = document.createElement("div");
+            copyToClipboardButton.classList.add("ld-copy-to-clipboard-button");
+            code.insertBefore(copyToClipboardButton, code.firstChild);
         });
     }
 
 
     /**
-     * The number of the last slide.
+     * Reads the document from the documents meta information.
      */
-    function lastSlideNo() {
-        return presentation.slideCount - 1;
-    }
-
     function initDocumentId() {
         try {
             presentation.id = document.querySelector('meta[name="id"]').content;
+            ephermal.ldPerDocumentChannel = new BroadcastChannel(presentation.id);
         } catch (error) {
             console.info("no document id found; state will not be preserved");
         }
@@ -309,11 +350,20 @@ const lectureDoc2 = function () {
     
     /**
      * Counts the number of slides in the document and initializes `slideCount`.
+     * 
+     * This method has to be called before the slides are copied.
      */
     function initSlideCount() {
         presentation.slideCount = 
             document.querySelectorAll("body>div.ld-slide").length
     }
+
+    /**
+     * The number of the last slide (0-based).
+     */
+    function lastSlideNo() {
+        return presentation.slideCount - 1;
+    } 
 
     /**
      * Initializes the state information regarding the current slide to show and
@@ -488,9 +538,7 @@ const lectureDoc2 = function () {
     function setupSlideNumberPane() {
         const slideNumberPane = document.createElement("DIV");
         slideNumberPane.id = "ld-slide-number-pane";
-        slideNumberPane.innerHTML = `
-            <span id="ld-slide-number">/</span>
-        `
+        slideNumberPane.innerHTML = `<span id="ld-slide-number">/</span>`
         document.getElementsByTagName("BODY")[0].prepend(slideNumberPane);
     }
 
@@ -499,10 +547,10 @@ const lectureDoc2 = function () {
         mainPane.id = "ld-main-pane";
 
         /* 
-        Copies all slide(-template)s found in the document to the main pane
-        additionally, associate every slide with a unique id based on the
+        Copies all slide(-template)s found in the document to the main pane.
+        Additionally, associate every slide with a unique id based on the
         number of the slide (ld-slide-no-*). 
-        Internally the numbering of slides starts with 0. However, user facing
+        Internally the numbering of slides starts with 0. However, user-facing
         functions assume that the first slide has the id 1.
         */
         document.querySelectorAll("body > .ld-slide").forEach((slideTemplate, i) => {
@@ -513,7 +561,7 @@ const lectureDoc2 = function () {
             slide.dataset.id = orig_slide_id;
             // Let's hide all elements that should be shown incrementally;
             // this is down to get all (new) slides to a well-defined state.
-            setupSlideProgress(slide);
+            hideAllAnimatedElements(slide);
             slide.style.display = "none";
             mainPane.appendChild(slide);
         })
@@ -676,7 +724,7 @@ const lectureDoc2 = function () {
         document.getElementById("ld-slide-number").innerText = slideNo + 1;
     }
 
-    function hideSlide(slideNo, setOldMarker = false) {
+    function hideSlide(slideNo, setOldMarker = false) {        
         if (ephermal.previousSlide) {
             ephermal.previousSlide.classList.remove("ld-previous-slide");
             /* When we simply "keep" all slides in the DOM, we have a significant
@@ -708,6 +756,10 @@ const lectureDoc2 = function () {
      * In general, `advancePresentation` should be called.
      */
     function moveToNextSlide() {
+        postMessage("moveToNextSlide",undefined);
+        localMoveToNextSlide();
+    }
+    function localMoveToNextSlide() {
         if (state.currentSlideNo < lastSlideNo()) {
             hideSlide(state.currentSlideNo,true);
             showSlide(++state.currentSlideNo,true);
@@ -715,6 +767,10 @@ const lectureDoc2 = function () {
     }
 
     function moveToPreviousSlide() {
+        postMessage("moveToPreviousSlide",undefined);
+        localMoveToPreviousSlide();
+    }
+    function localMoveToPreviousSlide() {
         if (state.currentSlideNo > 0) {
             hideSlide(state.currentSlideNo)
             showSlide(--state.currentSlideNo)
@@ -758,6 +814,10 @@ const lectureDoc2 = function () {
      * progress is implicitly covered by the visible and hidden elements.
      */
     function advancePresentation() {
+        postMessage("advancePresentation",undefined);        
+        localAdvancePresentation();
+    }
+    function localAdvancePresentation() {
         const slide = getCurrentSlide();
         const elements = getElementsToAnimate(slide)
         const elementsCount = elements.length;
@@ -769,9 +829,13 @@ const lectureDoc2 = function () {
             }
         }
         // When we reach this point all elements are (already) visible.
-        moveToNextSlide();
+        localMoveToNextSlide();
     }
     function retrogressPresentation() {
+        postMessage("retrogressPresentation",undefined);        
+        localRetrogressPresentation();
+    }
+    function localRetrogressPresentation() {
         const slide = getCurrentSlide();
         let i = getSlideProgress(slide);
         const elementsToAnimate = getElementsToAnimate(slide)
@@ -787,13 +851,21 @@ const lectureDoc2 = function () {
             } 
         }
         // When we reach this point all elements are hidden (again).
-        moveToPreviousSlide();
+        localMoveToPreviousSlide();
     }
-    function setupSlideProgress(slide) {
+    function hideAllAnimatedElements(slide) {
         getElementsToAnimate(slide).forEach((e) => e.style.visibility = "hidden");
     }
-    function resetSlideProgress(slide) {
-        setupSlideProgress(slide);
+
+    function resetCurrentSlideProgress() {
+        postMessage("resetCurrentSlideProgress",undefined);
+        localResetCurrentSlideProgress(); 
+    }
+    function localResetCurrentSlideProgress() {
+        localResetSlideProgress(getCurrentSlide());
+    }
+    function localResetSlideProgress(slide /* : element*/) {    
+        hideAllAnimatedElements(slide);
         if (state.slideProgress) {
             delete state.slideProgress[slide.id];
             // ... when the last slide.id key is removed from the object, the 
@@ -816,13 +888,17 @@ const lectureDoc2 = function () {
             }
         });
     }
+
     function resetAllAnimations(){
+        postMessage("resetAllAnimations",undefined);        
+        localResetAllAnimations();
+    }
+    function localResetAllAnimations(){
         document.querySelectorAll("#ld-main-pane .ld-slide").forEach((slide) => {
-            resetSlideProgress(slide);
+            localResetSlideProgress(slide);
         });
         showMessage("Reset all animation progress.");
     }
-
 
     function clearJumpTarget() {
         document.getElementById("ld-jump-target-current").innerText = "";
@@ -857,13 +933,20 @@ const lectureDoc2 = function () {
             if (state.showContinuousView) {
                 window.scrollTo(0,document.getElementById("ld-continuous-view-slide-no-" + targetSlideNo).offsetTop);
             } else {
-                hideSlide(state.currentSlideNo);
-                state.currentSlideNo = targetSlideNo
-                showSlide(state.currentSlideNo);
+                goToSlide(targetSlideNo);
             }
         }
     }
 
+    function goToSlide(targetSlideNo) {
+        postMessage("goToSlide",targetSlideNo);        
+        localGoToSlide(targetSlideNo);
+    }
+
+    function localGoToSlide(targetSlideNo) {
+        hideSlide(state.currentSlideNo);
+        showSlide(targetSlideNo);
+    }
 
     function updateLightTableZoomLevel(value) {
         // The following statement will not trigger an event but is necessary
@@ -984,7 +1067,8 @@ const lectureDoc2 = function () {
     }
 
     /**
-     * Optimizes the view for printing.
+     * Optimizes the view for printing purposes (i.e., converting the slides to 
+     * PDF).
      *
      * 1. close help dialog
      * 2. close light table
@@ -1021,6 +1105,33 @@ const lectureDoc2 = function () {
         return slideCount;
     }
 
+
+    /**
+     * Just shows a blank, black screen by setting the display property of the
+     * body to "none".
+     */
+    function hideLectureDoc() {
+        postMessage("hideLectureDoc",undefined);
+        localHideLectureDoc();
+    }
+    function localHideLectureDoc() {
+        document.body.style.display = "none";
+    }
+
+    function ensureLectureDocIsVisible() {
+        postMessage("ensureLectureDocIsVisible",undefined);
+        return localEnsureLectureDocIsVisible();
+    }
+    function localEnsureLectureDocIsVisible() {
+        if (document.body.style.display == "none") {
+            document.body.style.display = "initial"; 
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     /** 
      * Central keyboard event handler.
      */
@@ -1039,10 +1150,12 @@ const lectureDoc2 = function () {
 
             // let's check if the user is using a modifier key not used by LectureDoc
             if (event.altKey || event.ctrlKey || event.metaKey) {
-                return ;
+                return;
             }
-            
-            if (!event.shiftKey) {            
+
+            const wasHidden = ensureLectureDocIsVisible();
+
+            if (!event.shiftKey) {
                 // When the user presses the "r" key eight times in a row, LectureDoc
                 // will be reset.
                 if (event.key == "r") {
@@ -1084,7 +1197,7 @@ const lectureDoc2 = function () {
                     case "ArrowRight":
                     case " ":
                     case "Space": advancePresentation(); break;
-                    case "r": resetSlideProgress(getCurrentSlide()); break;
+                    case "r": resetCurrentSlideProgress(); break;
 
                     case "l": toggleLightTable(); break;
 
@@ -1096,12 +1209,27 @@ const lectureDoc2 = function () {
 
                     case "p": optimizeViewForPrinting(); break;
 
+                    case "b": if (!wasHidden) hideLectureDoc(); break;
+
+                    case "w":
+                        if (!presentation.id) {
+                            showMessage("This feature requires that the document has a unique id<br>(Use: &lt;meta name=\"id\" content=\"&lt;unique_id&gt;\"/&gt;.)", 5000);
+                        }
+                        if (window.document.URL.startsWith("file://")) {
+                            showMessage("Presentation mode requires a (local) web server.", 5000);
+                            console.log("Presentation mode requires a (local) web server. (E. g., use 'python3 -m http.server' to start one in the respective root directory.)")
+                            break;
+                        }
+                        storeState();
+                        window.open(window.document.URL, "_blank");
+                        break;
+
                     // for development purposes:
                     default:
                         console.debug("unhandled: " + event.key);
                 }
             } else {
-                console.log(event+ " "+event.key);
+                console.log(event + " " + event.key);
                 switch (event.key) {
                     case 37:
                     case "ArrowLeft": moveToPreviousSlide(); break;
@@ -1110,19 +1238,22 @@ const lectureDoc2 = function () {
 
                     // for development purposes:
                     default:
-                        console.debug("unhandled: ctrl + " + event.key);
+                        console.debug("unhandled: shift + " + event.key);
                 }
             }
         });
     }
 
     function registerViewportResizeListener() {
-        document.defaultView.addEventListener("resize", () => setPaneScale());
+        document.defaultView.addEventListener("resize", () => {
+            ensureLectureDocIsVisible();
+            setPaneScale();
+        });
     }
 
     function registerSlideClickedListener() {
-        // we still want to be able to click links and the "copy-it" icon
-        document.querySelectorAll("#ld-main-pane :is(a,div.copy-it)").forEach((a) => {a.addEventListener(
+        // we still want to be able to click links and the "ld-copy-to-clipboard-button" icon
+        document.querySelectorAll("#ld-main-pane :is(a,div.ld-copy-to-clipboard-button)").forEach((a) => {a.addEventListener(
             "click",
             (event) => {
                 event["link_clicked"] = true;
@@ -1155,11 +1286,13 @@ const lectureDoc2 = function () {
      * @param str id The unique id of the target element on a slide!
      */
     function jumpToSlideWithElementWithId(id) {
+        postMessage("jumpToSlideWithElementWithId",id);
+        localJumpToSlideWithElementWithId(id);
+    }
+    function localJumpToSlideWithElementWithId(id) {
         const slide = document.querySelector(`#ld-main-pane .ld-slide:has(${id})`);
         if (slide) {
-            const targetSlideNo = slide.dataset.ldSlideNo;
-            hideSlide(state.currentSlideNo);
-            showSlide(targetSlideNo);
+            localGoToSlide(slide.dataset.ldSlideNo);
         } else {
             console.warn("invalid jump target: "+id);
             return;
@@ -1168,19 +1301,21 @@ const lectureDoc2 = function () {
         // ensure that all elements up to the target element are visible.
         const target = document.querySelector(`#ld-main-pane .ld-slide ${id}`);
         while (getComputedStyle(target).visibility == "hidden") {
-            advancePresentation();
+            localAdvancePresentation();
         }
     }
 
+    function jumpToSlideWithDataId(id) {
+        postMessage("jumpToSlideWithDataId",id);
+        localJumpToSlideWithDataId(id);
+    }
     /**
      * @param str id The original id saved in the data-id attribute of the slide!
      */
-    function jumpToSlideWithElementWithDataId(id) {
+    function localJumpToSlideWithDataId(id) {
         const slide = document.querySelector(`#ld-main-pane .ld-slide[data-id="${id}"]`);
         if (slide) {
-            const targetSlideNo = slide.dataset.ldSlideNo;
-            hideSlide(state.currentSlideNo);
-            showSlide(targetSlideNo);
+            localGoToSlide(slide.dataset.ldSlideNo);
         } else {
             console.warn("invalid jump target: " + id);
             return;
@@ -1196,7 +1331,7 @@ const lectureDoc2 = function () {
             forEach((a) => { a.addEventListener("click",(event) => {
                 event.stopPropagation();
                 const target = a.getAttribute("href");
-                jumpToSlideWithElementWithDataId(target.substring(1));
+                jumpToSlideWithDataId(target.substring(1));
             })  });
 
         /*
@@ -1218,11 +1353,11 @@ const lectureDoc2 = function () {
             })  });
     }
 
-    function registerCopyItClickedListener() {
-        document.querySelectorAll("div.copy-it").forEach((copyIt) => {
-            copyIt.addEventListener("click", (event) => {
+    function registerCopyToClipboardClickedListener() {
+        document.querySelectorAll("div.ld-copy-to-clipboard-button").forEach((e) => {
+            e.addEventListener("click", (event) => {
                 event.stopPropagation();
-                const textToCopy = copyIt.parentNode.innerText
+                const textToCopy = e.parentNode.innerText
                 navigator.clipboard.writeText(textToCopy).then(() => {
                     showMessage("Copied to clipboard.", 1000);
                 });
@@ -1242,9 +1377,7 @@ const lectureDoc2 = function () {
         document.querySelectorAll(".ld-light-table-slide-overlay").forEach((slideOverlay) => {
             const slideNo = slideOverlay.dataset.ldSlideNo;
             slideOverlay.addEventListener("click", () => {
-                hideSlide(state.currentSlideNo);
-                state.currentSlideNo = slideNo;
-                showSlide(state.currentSlideNo);
+                goToSlide(slideNo);
                 toggleDialog("light-table");
             });
         });
@@ -1320,7 +1453,6 @@ const lectureDoc2 = function () {
                 }
                 showMainSlideNumber(true); 
             });
-        
 
         document.
             querySelector("#ld-continuous-view-button").
@@ -1358,6 +1490,7 @@ const lectureDoc2 = function () {
         let yDown = null;
 
         document.addEventListener('touchstart', function(evt) {
+            ensureLectureDocIsVisible();
             xDown = evt.changedTouches[0].clientX;
             yDown = evt.changedTouches[0].clientY;
         }, false);
@@ -1396,28 +1529,30 @@ const lectureDoc2 = function () {
      *   "beforeLDDOMManipulations": <function beforeLDDOMManipulations()>,
      *   "afterLDDOMManipulations": <function afterLDDOMManipulations()>,
      *   "afterLDListenerRegistrations": <function afterLDListenerRegistrations()>
+     * 
+     * These methods will be called at the appropriate times.
      */
     var animations = undefined;
     try {
         animations = lectureDoc2Animations;
     } catch (error) {
-        console.warn("advanced animations package is not found/not loaded: "+error)
+        console.warn("failed loading advanced animations module: "+error)
     }
 
     /**
-     * Queries and manipulates the DOM to setup lecture doc and bring the 
+     * Queries and manipulates the DOM to setup LectureDoc and bring the 
      * presentation to the last state.
      */
     document.addEventListener("DOMContentLoaded", () => {
 
+        initDocumentId();
+        initSlideDimensions();
+
         if(animations) {
             animations.beforeLDDOMManipulations();
         }
-        initCopyIt();
-        initDocumentId();
-        initSlideDimensions();
-        initSlideCount();
-        initCurrentSlide();
+        initSlideCount();   // We need to do this here, because the animations 
+        initCurrentSlide(); // package may add slides!
         initShowLightTable();
         initShowContinuousView();
         initShowHelp();
@@ -1430,8 +1565,10 @@ const lectureDoc2 = function () {
          */
         loadState();
 
+        setupCopyToClipboard(); // needs to be done before slides are copied!
+
         /*
-        Setup base structure.
+        Setup all components.
 
         Given a LectureDoc document - which is basically an HTML document that
         has to follow some well-defined restrictions - we first extend the DOM 
@@ -1488,7 +1625,7 @@ const lectureDoc2 = function () {
         registerViewportResizeListener();
         registerSlideClickedListener();
         registerSlideInternalLinkClickedListener();
-        registerCopyItClickedListener();
+        registerCopyToClipboardClickedListener();
         registerLightTableZoomListener();
         registerLightTableSlideSelectionListener();
         registerLightTableSlideSearchListener();
@@ -1496,15 +1633,44 @@ const lectureDoc2 = function () {
         registerHelpCloseListener();
         registerMenuClickListener();
         registerSwipeListener();
-
+       
         if(animations) {
             animations.afterLDListenerRegistrations();
+        }
+
+        if (ephermal.ldPerDocumentChannel) {
+            ephermal.ldPerDocumentChannel.addEventListener("message", (event) => {
+                const [msg, data] = event.data;
+                switch (msg) {
+                    case "advancePresentation": localAdvancePresentation(); break;
+                    case "retrogressPresentation": localRetrogressPresentation(); break;
+                    case "moveToPreviousSlide": localMoveToPreviousSlide(); break;
+                    case "moveToNextSlide": localMoveToNextSlide(); break;
+                    case "goToSlide": localGoToSlide(data); break;
+                    case "jumpToSlideWithDataId": localJumpToSlideWithDataId(data); break;
+                    case "jumpToSlideWithElementWithId": localJumpToSlideWithElementWithId(data); break;
+
+                    case "resetCurrentSlideProgress": localResetCurrentSlideProgress(); break;
+                    case "resetAllAnimations": localResetAllAnimations(); break;
+                    case "resetLectureDoc": localResetLectureDoc(); break;
+
+                    case "hideLectureDoc": localHideLectureDoc(); break;
+                    case "ensureLectureDocIsVisible": localEnsureLectureDocIsVisible(); break;
+                    
+
+                    //case "reset": ; break;
+                    default: 
+                        console.warn("unknown message: "+event.data);
+                        console.dir(event);
+                }
+            });
         }
     });
 
     return {
         'presentation': presentation,
         'getState': function () { return state; }, // the state object as a whole may change
+        'getEphermal': function () { return ephermal; }, 
         'preparePrinting': optimizeViewForPrinting,
     };
 }();
