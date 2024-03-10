@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+<meta name="exercise-passwords" content="$MTAwMDAw:Ap8RKzmkwirEfTCQv27B7W+8OsidvHuTxwgNRys4Jz4=:rLDIoEuh1Nk5NxN/:AlRq6/+6jmej+HymhafzHnoiR6LVjXbeGGPEKjfYCqWLp0EeHhVODiseWTqpCy1Ya1G67IBYKCW9Q3p20+SJ69YGi2TdxVT9dEsdQVwqqqTpoYIE1kVyU5FafzAqkIP0L3ATuxBzip4x7paH/AxzVmp0xQBukKqrhTEY9ERc3oBFxmBRDmF2ADrRKAItjqFlSHw3tqHcUhttREwbBkw0Ojw1W0s1C9U+/8PCiDRNSaJDmADpj8lA" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="version" content="LD2 0.1" />
@@ -624,60 +625,78 @@ a { text-decoration: none; }
 <dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2024-02-28</dd>
+<dd class="version">2024-03-10</dd>
 <dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
 </dl>
-</div>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/sec-blockchiffre/folien.rst.html">https://delors.github.io/sec-blockchiffre/folien.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/sec-blockchiffre/folien.rst.html.pdf">https://delors.github.io/sec-blockchiffre/folien.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></div>
 <div class="ld-slide" id="stromchiffre">
 <h2>Stromchiffre</h2>
 <ul>
 <li><p>Verschlüsselt einen digitalen Datenstrom ein Bit oder ein Byte nach dem anderen.</p>
-<p>Beispiele: Autokeyed Vigenère-Chiffre und Vernam-Chiffre</p>
+<p>Beispiele: Autokeyed Vigenère-Chiffre und Vernam-Chiffre.</p>
 </li>
-<li><p>Im Idealfall wird eine One-Time-Pad-Version der Vernam-Chiffre verwendet, bei der der Schlüsselstrom genauso lang ist wie der Bitstrom des Klartextes.</p>
-<blockquote>
+</ul>
+<ul class="incremental">
+<li><p>Im Idealfall wird (würde) ein One-Time-Pad verwendet werden. Der Schlüsselstrom wäre genauso lang wie der Bitstrom des Klartextes.</p>
+<div class="stack incremental">
+<div class="layer">
+<ul class="simple">
+<li><p>Wenn der kryptografische Schlüsselstrom zufällig ist, kann diese Chiffre auf keine andere Weise als durch die Beschaffung des Schlüsselstroms geknackt werden.</p></li>
+</ul>
 <ul class="smaller simple">
-<li><p>Wenn der kryptografische Schlüsselstrom zufällig ist, kann diese Chiffre auf keine andere Weise als durch die Beschaffung des Schlüsselstroms geknackt werden</p>
-<ul class="smaller">
 <li><p>Der Schlüsselstrom muss beiden Nutzern im Voraus über einen unabhängigen und sicheren Kanal zur Verfügung gestellt werden.</p></li>
 <li><p>Dies führt zu unüberwindbaren logistischen Problemen, wenn der vorgesehene Datenverkehr sehr groß ist.</p></li>
 </ul>
-</li>
+</div><div class="layer incremental">
+<p><strong>Beispielimplementierung in Python</strong></p>
+<pre class="code python literal-block"><code><span class="keyword">def</span> <span class="name function">vernam</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">)</span> <span class="operator">-&gt;</span> <span class="name builtin">bytes</span><span class="punctuation">:</span><span class="whitespace">
+</span>    <span class="keyword">return</span> <span class="name builtin">bytes</span><span class="punctuation">([</span><span class="name">p</span> <span class="operator">^</span> <span class="name">k</span> <span class="keyword">for</span> <span class="name">p</span><span class="punctuation">,</span> <span class="name">k</span> <span class="operator word">in</span> <span class="name builtin">zip</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">)])</span></code></pre>
+</div></div></li>
 </ul>
-</blockquote>
-</li>
-</ul>
+<div class="block-footer white dhbw-gray-background text-align-center docutils container">
+<p>Wiederholung</p>
+</div>
 </div><div class="ld-slide" id="stromchiffre-1">
 <h2>Stromchiffre</h2>
 <ul class="simple">
 <li><p>Aus praktischen Gründen muss der Bitstromgenerator als algorithmisches Verfahren implementiert werden, damit der kryptografische Bitstrom von beiden Benutzern erzeugt werden kann.</p>
-<ul>
+<ul class="incremental">
 <li><p>Es muss rechnerisch praktisch unmöglich sein, zukünftige Teile des Bitstroms auf der Grundlage früherer Teile des Bitstroms vorherzusagen.</p></li>
-<li><p>Die beiden Benutzer müssen nur den erzeugenden Schlüssel sicher miteinander teilen damit jeder den Schlüsselstrom erzeugen kann.</p></li>
+<li><p>Die beiden Benutzer müssen nur den erzeugenden Schlüssel sicher miteinander teilen, damit jeder den Schlüsselstrom erzeugen kann.</p></li>
 </ul>
 </li>
 </ul>
 </div><div class="ld-slide" id="blockchiffre">
 <h2>Blockchiffre</h2>
-<ul class="simple">
+<ul class="incremental simple">
 <li><p>Ein Klartextblock wird als Ganzes behandelt und verwendet, um einen gleich langen Chiffretextblock zu erzeugen.</p></li>
 <li><p>In der Regel wird eine Blockgröße von 64 oder 128 Bit verwendet.</p></li>
 <li><p>Wie bei einer Stromchiffre teilen sich die beiden Benutzer einen symmetrischen Chiffrierschlüssel.</p></li>
-<li><p>Die meisten netzbasierten symmetrischen kryptografischen Anwendungen verwenden Blockchiffren.</p></li>
+<li><p>Die meisten netzbasierten Anwendungen, die auf symmetrische Verschlüsselung setzen, verwenden Blockchiffren.</p></li>
 </ul>
 </div><div class="ld-slide" id="stromchiffre-vs-blockchiffre">
 <h2>Stromchiffre vs. Blockchiffre</h2>
-<img alt="drawings/chiffren/stromchiffre.svg" class="align-left" src="drawings/chiffren/stromchiffre.svg" style="height: 500px;" />
-<img alt="drawings/chiffren/blockchiffre.svg" class="incremental align-right" src="drawings/chiffren/blockchiffre.svg" style="height: 500px;" />
+<img alt="drawings/chiffren/stromchiffre.svg" class="margin-none padding-none align-left" src="drawings/chiffren/stromchiffre.svg" style="height: 520px;" />
+<img alt="drawings/chiffren/blockchiffre.svg" class="incremental align-right" src="drawings/chiffren/blockchiffre.svg" style="height: 520px;" />
 </div><div class="ld-slide" id="allgemeine-n-bit-n-bit-blocksubstitution-n-4">
 <h2>Allgemeine n-Bit-n-Bit-Blocksubstitution (n = 4)</h2>
 <img alt="drawings/chiffren/4-bit_block_substitution.svg" class="align-center" src="drawings/chiffren/4-bit_block_substitution.svg" style="width: 1400px;" />
-</div><div class="tiny ld-slide" id="verschlusselungs-und-entschlusselungstabelle-fur-eine-substitutions-chiffre">
+</div><div class="ld-slide" id="verschlusselungs-und-entschlusselungstabelle-fur-eine-substitutions-chiffre">
 <h2>Verschlüsselungs- und Entschlüsselungstabelle für eine Substitutions-Chiffre</h2>
 <p><strong>Verschlüsselungstabelle</strong></p>
-<table class="align-center smaller">
+<table class="align-center smallest">
 <tbody>
 <tr><td><p>Klartext</p></td>
 <td><p>0000</p></td>
@@ -718,7 +737,7 @@ a { text-decoration: none; }
 </tbody>
 </table>
 <p><strong>Entschlüsselungstabelle</strong></p>
-<table class="align-center smaller incremental">
+<table class="align-center smallest incremental">
 <tbody>
 <tr><td><p>Geheimtext</p></td>
 <td><p>0000</p></td>
@@ -773,7 +792,7 @@ a { text-decoration: none; }
 <h2>Feistel-Chiffre - Hintergrund</h2>
 <ul class="simple">
 <li><p>Hierbei handelt es sich um eine praktische Anwendung eines Vorschlags von Claude Shannon zur Entwicklung einer Chiffre, bei der sich <em>Konfusions- und Diffusionsfunktionen</em> abwechseln.</p></li>
-<li><p>Dieser Aufbau wird von vielen bedeutenden symmetrischen Blockchiffren verwendet, die derzeit im Einsatz sind.</p></li>
+<li><p>Dieser Aufbau wird von vielen bedeutenden, im Einsatz befindlichen symmetrischen Blockchiffren verwendet.</p></li>
 </ul>
 <div class="incremental margin-top-2em docutils container">
 <p><strong>Diffusion und Konfusion</strong></p>
@@ -786,13 +805,19 @@ a { text-decoration: none; }
 <h2>Diffusion</h2>
 <ul class="simple">
 <li><p>Die statistische Struktur des Klartextes wird in weitreichende Statistiken des Chiffretextes überführt, d. h. die statistische Beziehung zwischen Klartext und Chiffretext wird so komplex wie möglich.</p></li>
-<li><p><span class="bold">Dies wird dadurch erreicht, dass jede Klartextziffer den Wert *vieler* Chiffretextziffern beeinflusst.</span> (<span class="ger-quote">Lawineneffekt</span>)</p></li>
+</ul>
+<ul class="incremental">
+<li><p>Dies wird dadurch erreicht, dass jede Klartextziffer <em>den Wert</em> <strong>vieler</strong> <em>Chiffretextziffern</em> beeinflusst.`</p>
+<p>(<span class="ger-quote">Lawineneffekt</span>)</p>
+</li>
 <li><p>Die Diffusion kann z. B. durch <em>Permutationen</em> erreicht werden.</p></li>
 </ul>
 </div><div class="ld-slide" id="konfusion">
 <h2>Konfusion</h2>
 <ul class="simple">
-<li><p>Versucht, die Beziehung zwischen den Statistiken des Chiffriertextes und dem Wert des Chiffrierschlüssels so komplex wie möglich zu gestalten, d. h. <span class="bold">eine einzige Änderung des Chiffrierschlüssels sollte viele Bits des Chiffriertextes beeinflussen.</span></p></li>
+<li><p>Versucht, die Beziehung zwischen den Statistiken des Chiffriertextes und dem Wert des Chiffrierschlüssels so komplex wie möglich zu gestalten, d. h. eine einzige Änderung des Chiffrierschlüssels sollte viele Bits des Chiffriertextes beeinflussen.</p></li>
+</ul>
+<ul class="incremental simple">
 <li><p>Selbst wenn der Angreifer die Statistik des Chiffretextes einigermaßen in den Griff bekommt, ist die Art und Weise, wie der Schlüssel verwendet wurde, um diesen Chiffretext zu erzeugen, so komplex, dass es schwierig ist, den Schlüssel abzuleiten.</p></li>
 <li><p>Die Verwirrung kann z. B. durch <em>Substitutionen</em> realisiert werden.</p></li>
 </ul>
@@ -832,7 +857,7 @@ a { text-decoration: none; }
 <div class="layer incremental docutils container">
 <dl class="field-list simple">
 <dt><strong>Blockgröße</strong><span class="colon">:</span></dt>
-<dd><p>Größere Blockgrößen bedeuten mehr Sicherheit, aber eine geringere Verschlüsselungs-/Entschlüsselungsgeschwindigkeit für einen bestimmten Algorithmus</p>
+<dd><p>Größere Blockgrößen bedeuten mehr Sicherheit, aber eine geringere Verschlüsselungs-/Entschlüsselungsgeschwindigkeit für einen bestimmten Algorithmus.</p>
 </dd>
 <dt><strong>Schlüsselgröße</strong><span class="colon">:</span></dt>
 <dd><p>Ein größerer Schlüssel bedeutet mehr Sicherheit, kann aber die Verschlüsselungs-/Entschlüsselungsgeschwindigkeit verringern.</p>
@@ -848,14 +873,15 @@ a { text-decoration: none; }
 <ul>
 <li><p>Wurde 1977 vom National Bureau of Standards (heute NIST) als Federal Information Processing Standard 46 herausgegeben.</p></li>
 <li><p>War das am häufigsten verwendete Verschlüsselungsverfahren bis zur Einführung des Advanced Encryption Standard (AES) im Jahr 2001</p></li>
-<li><p>Der Algorithmus selbst wird als Data Encryption Algorithm (DEA) bezeichnet:</p>
-<blockquote>
-<ul class="simple">
+<li><p>Der Algorithmus selbst wird als Data Encryption Algorithm (DEA) bezeichnet.</p>
+<div class="incremental text-align-center width-100 docutils container">
+<p><strong>Eigenschaften</strong></p>
+</div>
+<ul class="incremental simple">
 <li><p>Die Daten werden in 64-Bit-Blöcken mit einem 56-Bit-Schlüssel verschlüsselt.</p></li>
 <li><p>Der Algorithmus wandelt die 64-Bit-Eingabe in einer Reihe von Schritten in eine 64-Bit-Ausgabe um.</p></li>
 <li><p>Dieselben Schritte werden mit demselben Schlüssel verwendet, um die Verschlüsselung rückgängig zu machen.</p></li>
 </ul>
-</blockquote>
 </li>
 </ul>
 </div><div class="ld-slide" id="des-design">
@@ -874,7 +900,7 @@ a { text-decoration: none; }
 </div><div class="vertical-title ld-slide" id="des-beispiel">
 <h2>DES Beispiel</h2>
 <div class="width-100 docutils container">
-<table class="align-center footnotesize monospaced">
+<table class="align-center footnotesize monospaced highlight-line-on-hover">
 <tbody>
 <tr><td><p>Round</p></td>
 <td><p>Ki</p></td>
@@ -973,13 +999,15 @@ a { text-decoration: none; }
 </tr>
 </tbody>
 </table>
-<p class="small">DES subkeys are shown as eight 6-bit values in hex format (max value for <span class="math">\(k_i\)</span> is   <span class="math">\(2^6-1=63=0x3F\)</span>)</p>
+</div>
+<div class="margin-left-1em docutils container">
+<p>DES-Unterschlüssel werden als acht 6-Bit-Werte im Hexadezimalformat angezeigt (der Höchstwert für <span class="math">\(k_i\)</span> ist <span class="math">\(2^6-1=63=0x3F\)</span>)</p>
 </div>
 </div><div class="vertical-title smaller ld-slide" id="lawineneffekt-in-des">
 <h2>Lawineneffekt in DES</h2>
 <div class="width-100 docutils container">
 <div class="smaller text-align-center docutils container">
-<p>Kleine Änderung im Klartext</p>
+<p>Kleine Änderung im Klartext (erster Wert +1)</p>
 </div>
 <table class="align-center scriptsize monospaced highlight-line-on-hover" style="width: 800px;">
 <thead>
@@ -1264,7 +1292,7 @@ Entschlüsselungen/s</p></td>
 <h2>Entwurfsprinzipien für Blockchiffre - Schlüsselableitung</h2>
 <ul class="incremental simple">
 <li><p>Bei jeder Feistel-Blockchiffre wird der Hauptschlüssel verwendet, um einen Unterschlüssel für jede Runde zu erzeugen.</p></li>
-<li><p>Im Allgemeinen möchten wir die Unterschlüssel so wählen, dass die Schwierigkeit, einzelne Unterschlüssel abzuleiten, und die Schwierigkeit, den Hauptschlüssel wieder zurück zu erhalten, maximiert werden.</p></li>
+<li><p>Im Allgemeinen möchten wir die Unterschlüssel so wählen, dass die Schwierigkeit, einzelne Unterschlüssel abzuleiten, und die Schwierigkeit, den Hauptschlüssel wieder zurückzuerhalten, maximiert werden.</p></li>
 <li><p>Es wird vorgeschlagen, dass die Schlüsselableitungsfunktion für die Unterschlüssel (<span class="eng">Key Schedule</span>) zumindest das <strong>Strenge Lawinenkriterium</strong> und das <strong>Bit-Unabhängigkeitskriterium</strong> für Schlüssel/Ciphertext garantieren sollte.</p></li>
 </ul>
 </div><div class="integrated-exercise transition-scale ld-slide" id="ubung-feistelchiffre-implementieren">
@@ -1282,16 +1310,18 @@ Entschlüsselungen/s</p></td>
 </div>
 </div><div class="integrated-exercise ld-slide" id="ubung">
 <h2>Übung</h2>
-<div class="ld-exercise">
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Feistelchiffre Evaluieren" id="ld-exercise-1">
 <p class="rubric">Feistelchiffre Evaluieren</p>
 <ol class="arabic simple">
 <li><p>Was passiert, wenn f nur 0x00-Werte zurückgibt (unabhängig vom Rundenschlüssel)?</p></li>
 <li><p>Was passiert, wenn f nur 0x01-Werte zurückgibt (unabhängig vom Rundenschlüssel)?</p></li>
 <li><p>Was passiert, wenn f einfach die entsprechende Hälfte mit dem Ergebnis der Verschiebung des Schlüssels xor?</p></li>
-<li><p>Teste, was passiert, wenn du deine Nachricht änderst. Testen Sie insbesondere, was passiert wenn die Nachricht nur aus 0x00 besteht (und Sie eine <span class="ger-quote">vernünftigere</span> f-Funktion verwenden.)</p></li>
-<li><p>Teste, was passiert, wenn du deinen Schlüssel änderst. Was passiert in extremen Fällen (z. B. wenn das Passwort nur aus &quot;0 &quot;s besteht?</p></li>
+<li><p>Was passiert, wenn du deine Nachricht änderst? Testen Sie insbesondere, was passiert wenn die Nachricht nur aus 0x00 besteht (und Sie eine <span class="ger-quote">vernünftigere</span> f-Funktion verwenden.)</p></li>
+<li><p>Was passiert, wenn du deinen Schlüssel änderst? Was passiert in extremen Fällen (z. B. wenn das Passwort nur aus &quot;0 &quot;s besteht?</p></li>
 </ol>
-<div class="ld-exercise-solution">
-BfR+TBCap1h9nUrspjDoSQ==:zY+k0HLO3KbEOcaU11e9upQrRdB4Piu+vHvBjKX+Eq5bxkL3+DkW+8GuaZAa34ULs7ZWH7Df7Phc77q9QWw0Yi5MB8S5xEk5yNSbA44zNe/kw7rfpsj6JZ86APhxDlXtBdsE4TJ0Qm3tBZ2p1swJG8ASnSxI5nNb44fHS5rv8BaAg9i65C6vIbf0M+9AZC5kR6SDFSl56yyreXwcdvedLV75mAFaAHGjM4vsCvZtCg2aE2TwRvuNdTEFPNq+AZ/zAtm0K2jWFcWd7VhH65EIMuajG4bqYR9DMaqvO1N1H4vabzf2wmMoPcHDFplBiKKewHmDmtvUIbbmIXkJe2VtFLFqKcfF53y+FncTt31JqG208kyh/hYVST/1sXoIz3vBQ3LLS72eDRtohCMXT+CsNK3Sc21gEearMhDlk/GjYkZWzxVZwH7WJfMXJ4wijJy5eqJLmklSc58JJRmgapOhjB/buotSUT232LDrXpnlu6TvR2QdSdgqhzvhnAk8PQr9U9mmz7t6Aso6yp+vnhAUD54Fou49jJ1P6Lrr0wo6ottI2JR24cNVEn8rrtn6+x0B6lhyBjjfLx2PvyiXuJ6ioOjjX981P5ldrPhKPN9eVt0Ie5TqheBAuOSkgnvBsF+hzMKnWkjiD8X+0+XoD8JE8O9RobHZvZvd8IGWRjbOLqd755UyG4r33jqCDQ49XF4fCPvuViDo51rng1fgs0rexgixv4JwQL5yl3TUNVpEZaJjCadH</div></div></div>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:Mb34mPDU3+CF0SFKYawZxk/qeDQqixc5BRys0Wg+q2I=:yAWYKqvCKHwiAWW8:XI//gB2pn0yKlfQo/goDIW5Wn1QW/G0DpLuZoVOTgxJMBe80r8pZQSGZylrJSk+Ga1uCPkoOJSrmqZXse+GTdXXptjc3VkXFkIkCcNXjhjH70FltGFajbBKSi56RxsX1VgPgJxoZcs4bYumpJGtXlypySkXfg2E/5hiRM9114Qh5O8fklMd3D5BL5jffAQjpWvbmO9HB1VTztdTUizD2kQOjCIffo1Og2hcTl/Cu53sUv5JWYTzFGjLyQ3kUgA4DTDT8Q+T2EVBmurGPDeo/NATbPFBOcs+JAflcfkqH8viyUN7n2ei/InwCYDxerqfd9mQd1n8eMS4EKGIMjsfG5ZCBYEue2b1GbJMP8+zFf6Ieaf6I1xtSb491Td34Vi34lG9kO+lsMrUm9kg7gaUflA3uC8NEompDYy7hlNrRk1N7tJdWzUsi11fVOqG6nZM82Df/60xWD6fCCMBOegfd21Wtux0Yv1iuP+MleQTCGgzJhefAp6eig+2MfaMjciOtciJeAo94os+cQxy+9b94dzkZQKZbp8e6Jd2cxRvDOXrMdK2KUe1t42diPlIy64Hb+KBMKZ+AdDWVCO3FqOYLu1jUdwSAW+Zr6FYJZcR3hedenPaJKUmo0/rRIRWOZfdpmBrlvXDFNJ+X+ozJwy97pCzOvE+QNjd+/6V/Oxg4dcx1JLaNA4RGg+X3B6wkyhyoJT9WV3r54LLA01Ko3x3SwuYDAMAPe7QcmoEZiWUe</div>
+</div>
+</div>
 </body>
 </html>

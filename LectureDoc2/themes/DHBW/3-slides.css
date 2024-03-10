@@ -1,5 +1,3 @@
-
-
 /*
     Generic styling for per-slide footer elements.
 */
@@ -20,7 +18,6 @@
     right: 36px;
 }
 
-
 .block-footer {
     position: absolute;
     bottom: 0;
@@ -28,20 +25,20 @@
     width: var(--ld-slide-width);
     height: var(--slide-footer-height);
     padding-left: var(--slide-lr-padding);
+    padding-right: var(--slide-lr-padding);
 }
 
 .block-footer::after {
     position: absolute;
-    bottom: -75px;
-    right: -65px;
+    bottom: -45px;
+    right: -35px;
     content: url("dhbw_symbol.png");
-    scale: 0.25
+    scale: 0.5
 }
 
 /* 
-    Styling related to __the__ title slide
+    Styling related to __the__ title slide.
 */
-
 div.ld-slide:has(h1)::before {
     content: var(--dhbw-logo);
     position: absolute;
@@ -51,9 +48,8 @@ div.ld-slide:has(h1)::before {
 
 
 /* 
-    Styling related to a normal title slide
+    Styling related to a normal title slide.
 */
-
 div.ld-slide.no-title h2:first-child {
     display: none;
 }
@@ -68,26 +64,26 @@ div.ld-slide.no-title h2:first-child {
 */
 
 div.ld-slide.new-section>h2 {
-    margin-top: 4rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    margin-top: 350px;
+    padding-top: 150px;
+    padding-bottom: 150px;
+    font-size: 2em;
     background-color: var(--dhbw-gray);
     color: white;
-    font-size: 2rem;
     font-variant: small-caps;
     text-align: center;
-    border-radius: 0.5em;
+    border-radius: 24px;
     box-shadow: 4px 4px 8px black;
 }
 
 div.ld-slide.new-section>h2::after {
     content: var(--author);
-    margin-top: 2.25rem;
-    margin-left: 1rem;
+    margin-top: calc(150px + 1em);
+    margin-left: 0em;
     display: block;
     position: absolute;
     color: var(--dhbw-gray);
-    font-size: 0.75rem;
+    font-size: 24px;
     font-variant: normal;
     font-weight: 200;
 }
@@ -118,7 +114,7 @@ div.ld-slide.new-section::after {
 */
 :is(#ld-continuous-view-pane, #ld-light-table-dialog) .ld-slide.new-section h2::before {
     content: counter(ld-section)".";
-    padding-right: 0.5em;
+    padding-right: 0.25em;
 }
 
 
@@ -146,15 +142,15 @@ div.ld-slide.new-subsection::after {
     translate: 60px -25px;
 }
 
-div.ld-slide.new-subsection > h2 {
+div.ld-slide.new-subsection>h2 {
     width: 90%;
-    padding: 2rem 0.5rem 2rem 0.5rem;
+    padding: var(--slide-padding);
     border: 1px solid var(--dhbw-gray);
-    border-radius: 0.5em;
+    border-radius: calc(var(--slide-border-radius) * 0.5);
     margin: 0;
     background-color: whitesmoke;
     color: var(--dhbw-gray);
-    font-size: 1.666rem;
+    font-size: 1.666em;
     text-align: center;
     box-shadow: var(--br-shadow);
 }
@@ -165,14 +161,15 @@ div.ld-slide.new-subsection > h2 {
 */
 
 .integrated-exercise {
-    background-color: var(--dhbw-gray);
-    color: whitesmoke;
+    background: linear-gradient(180deg, whitesmoke, white 100%);
+    color: var(--dhbw-dark-gray);
 }
 
 .integrated-exercise h2:first-child {
-    margin: -0.5rem -0.75rem 0.5rem -0.75rem;
-    padding: 0.5rem 4.75rem 0.25rem 0.75rem;
-    background-color: whitesmoke;
+    /*margin: -0.5rem -0.75rem 0.5rem -0.75rem;*/
+    margin: calc(var(--slide-tb-padding) * -1) calc(var(--slide-lr-padding) * -1) var(--slide-tb-padding) calc(var(--slide-lr-padding) * -1);
+    padding: var(--slide-padding);
+    background: linear-gradient(270deg, whitesmoke, white 100%);
     color: var(--dhbw-red);
 }
 
@@ -180,23 +177,50 @@ div.ld-slide.new-subsection > h2 {
     content: var(--dhbw-logo);
     display: block;
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    transform: translateX(30%) translateY(-35%) scale(0.4); 
+    top: 28px;
+    right: var(--slide-lr-padding);
+    transform: translateX(30%) translateY(-35%) scale(0.4);
 }
 
 .integrated-exercise .rubric {
-    color: white;
-    text-shadow: 1px 1px 2px black;
-}
-
-.integrated-exercise .code {
-    color: black;
+    color: var(--dhbw-gray);
+    text-shadow: 1px 1px 2px white;
 }
 
 /* The solution will only be shown in the respective pane. */
-:is(#ld-continuous-view-pane, #ld-light-table-dialog, #ld-main-pane) .ld-exercise-solution{
+:is(#ld-light-table-dialog, #ld-main-pane) .ld-exercise-solution {
     display: none;
+}
+
+#ld-continuous-view-pane .ld-exercise-solution[encrypted] {
+    display: none;
+}
+
+.ld-exercise {
+    overflow: hidden;
+}
+
+.ld-extracted-exercise {
+    background-color: white;
+    padding:
+        calc(var(--ld-continuous-view-zoom-level) * var(--slide-tb-padding)) calc(var(--ld-continuous-view-zoom-level) * var(--slide-lr-padding)) calc(var(--ld-continuous-view-zoom-level) * var(--slide-tb-padding)) calc(var(--ld-continuous-view-zoom-level) * var(--slide-lr-padding));
+    border-radius: calc(var(--slide-border-radius) * var(--ld-continuous-view-zoom-level)) calc(var(--slide-border-radius) * var(--ld-continuous-view-zoom-level));
+    margin-bottom: 2px;
+}
+
+@media print {
+    .ld-extracted-exercise {
+        page-break-before: always;
+    }
+}
+
+.ld-extracted-exercise input {
+    width: 100%;
+    font-size: var(--extracted-exercises-font-size);
+    border: 1px solid var(--dhbw-light-gray);
+    padding: 0.5em;
+    box-shadow: var(--br-shadow);
+    border-radius: 0.5em;
 }
 
 
@@ -225,7 +249,7 @@ div.ld-slide.new-subsection > h2 {
 }
 
 #ld-main-pane .ld-current-slide.transition-move-left {
-    animation: 3s slide-move-left-in ;
+    animation: 3s slide-move-left-in;
 }
 
 #ld-main-pane .ld-previous-slide:has(+.ld-slide.transition-move-left.ld-current-slide) {
@@ -234,7 +258,8 @@ div.ld-slide.new-subsection > h2 {
 
 
 @keyframes slide-move-left-in {
-    0.1% { /* it works beautifully with 0.1% and awfully with 0%...*/
+    0.1% {
+        /* it works beautifully with 0.1% and awfully with 0%...*/
         translate: 100%;
         opacity: 0;
     }
@@ -250,7 +275,8 @@ div.ld-slide.new-subsection > h2 {
 
 @keyframes slide-move-left-out {
     0% {
-        scale: 1; /* reset the scale level to make the slide visible (again) */
+        scale: 1;
+        /* reset the scale level to make the slide visible (again) */
         translate: 0%;
     }
 
@@ -264,8 +290,6 @@ div.ld-slide.new-subsection > h2 {
         translate: -100%;
     }
 }
-
-
 
 #ld-main-pane .ld-current-slide.transition-scale {
     animation: 3s slide-scale-in;
@@ -289,7 +313,8 @@ div.ld-slide.new-subsection > h2 {
 
 @keyframes slide-scale-out {
     0% {
-        scale: 1; /* reset the scale level to make the slide visible (again) */
+        scale: 1;
+        /* reset the scale level to make the slide visible (again) */
         opacity: 100%;
     }
 
@@ -322,7 +347,8 @@ div.ld-slide.new-subsection > h2 {
 @keyframes slide-fade-out {
     0% {
         opacity: 1;
-        scale: 1; /* reset the scale level to make a fading effect possible */
+        scale: 1;
+        /* reset the scale level to make a fading effect possible */
     }
 
     100% {
@@ -331,20 +357,17 @@ div.ld-slide.new-subsection > h2 {
     }
 }
 
-
-
-
 #ld-main-pane .ld-current-slide.transition-move-to-top {
-    animation: 3s slide-move-old-to-top ;
+    animation: 3s slide-move-old-to-top;
 }
 
 #ld-main-pane .ld-previous-slide:has(+.ld-slide.transition-move-to-top.ld-current-slide) {
     animation: 3s slide-move-bottom-to-center, 0s 3s scale-to-zero;
 }
 
-
 @keyframes slide-move-old-to-top {
-    0.1% { /* it works beautifully with 0.1% and awfully with 0%...*/
+    0.1% {
+        /* it works beautifully with 0.1% and awfully with 0%...*/
         translate: 0 100%;
         opacity: 0;
     }
@@ -360,7 +383,8 @@ div.ld-slide.new-subsection > h2 {
 
 @keyframes slide-move-bottom-to-center {
     0% {
-        scale: 1; /* reset the scale level to make the slide visible (again) */
+        scale: 1;
+        /* reset the scale level to make the slide visible (again) */
         translate: 0% 0;
     }
 
@@ -385,52 +409,55 @@ div.ld-slide.new-subsection > h2 {
 .cheat-sheet-8-columns {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     justify-content: space-between;
     align-content: space-between;
     align-items: flex-start;
-    gap: 1em 1em;
-    font-size: 12pt;
+    gap: 6px 6px;
+    font-size: 16px;
     background-color: black;
+    padding: 3px;
+    border-radius: 6px;
 }
 
-.cheat-sheet-8-columns.ld-slide::before { /* to clear the default logo */
+.cheat-sheet-8-columns.ld-slide::before {
+    /* to clear the default logo */
     content: " ";
 }
 
-.cheat-sheet-8-columns :is(div.cheat-sheet-block,h1) {
-    width: calc(var(--ld-slide-width) / 8 - 1em);
-    padding: 5px;
-    border-radius: 8px;   
-   overflow: hidden;
-   background-color: white;
+.cheat-sheet-8-columns :is(div.cheat-sheet-block, h1) {
+    width: calc(var(--ld-slide-width) / 8 - 6px);
+    padding: 4px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: white;
 }
 
 .cheat-sheet-8-columns h1.title {
     margin: 0;
-    padding: 12px;
+    padding: 4px;
     /* We have a different font-size and hence have to update the width! */
-    width: calc(var(--ld-slide-width) / 8 - 0.5em); 
+    width: calc(var(--ld-slide-width) / 8 - 6px);
     background-color: var(--dhbw-light-gray);
     font-size: 2em;
     color: var(--dhbw-red);
     text-shadow: 1px 1px 2px var(--dhbw-gray);
 }
 
-.cheat-sheet-8-columns div.cheat-sheet-block > .rubric:first-child {
-    background-color: var(--dhbw-red);
+.cheat-sheet-8-columns div.cheat-sheet-block>.rubric:first-child {
+    width: calc(100% + 10px);
+    margin-bottom: 0;
     position: relative;
     top: -5px;
     left: -5px;
     color: whitesmoke;
-    width: calc(100% + 10px);
     border-radius: 8px 8px 0 0;
     font-size: larger;
     padding: 0.3em 0em 0.3em 0.25em;
-    margin-bottom: 0;
+    background-color: var(--dhbw-red);
 }
 
-.cheat-sheet-8-columns div.cheat-sheet-block > .rubric:not(:first-child) {
+.cheat-sheet-8-columns div.cheat-sheet-block>.rubric:not(:first-child) {
     background-color: var(--dhbw-gray);
     position: relative;
     top: -5px;
@@ -441,6 +468,6 @@ div.ld-slide.new-subsection > h2 {
     margin-bottom: 0;
 }
 
-.cheat-sheet-8-columns p.rubric + p {
+.cheat-sheet-8-columns p.rubric+p {
     margin-top: 0;
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+<meta name="exercise-passwords" content="$MTAwMDAw:6r57AX409HirxYGS6b+Wz+MzGCwhc91kDm8RMqla7EY=:4A7THDR3cRg5Hiwk:ha4oQGu3L1Ix/5f5GUDesJeF2QE0m8uoebFNK72pFoa20qxOjFYcS6G4JrruTOTW19eGbh7itPc4pfHb54/rHw1VnGBReRILuZd8n9rv9efKqAhaVX02+0gBvbkkt5IZIRkqnkR6lTc+kWmabz9YTLBWKAQQQhT0yTRCCDGg3bHxNkdFN0uhn6syK8O0St3potcpB0ci7fBlobrbH1RlpEbJxtumEzLXzdqwJaqJxnJGCLI21BMnZjyulCiZBmNbK1OAXH5wCowmqxiz+wIvmLI7C6yZBREmGBY9uAMNDLr0nCqI95l5JgH9J4yWsnJKmlqTSE1aBuFZY8f68TQmf1V559a+FK0h38ml0Br6KCI2/eM8IhRIGXlQEYCDPHHf0rSMyM3U1/O5eRxGlFdy4A6YerFszlnMcJ1ZIA==" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="version" content="LD2 0.1" />
@@ -624,127 +625,154 @@ a { text-decoration: none; }
 <dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2024-02-26</dd>
+<dd class="version">2024-03-08</dd>
 <dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
 </dl>
-</div>
-<div class="ld-slide" id="double-encryption">
-<h2>Double Encryption</h2>
+<div class="supplemental">
+<dl class="field-list simple">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/sec-blockchiffre-operationsmodi/folien.rst.html">https://delors.github.io/sec-blockchiffre-operationsmodi/folien.rst.html</a> <span class="raw-html"><br></span>
+<a class="reference external" href="https://delors.github.io/sec-blockchiffre-operationsmodi/folien.rst.html.pdf">https://delors.github.io/sec-blockchiffre-operationsmodi/folien.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></div>
+<div class="new-section transition-fade ld-slide" id="einschub-mehrfachverschlusselung">
+<h2>Einschub: Mehrfachverschlüsselung</h2>
+</div><div class="ld-slide" id="doppelte-verschlusselung">
+<h2>Doppelte Verschlüsselung</h2>
 <img alt="drawings/operationsmodi/double_encryption.svg" class="align-center" src="drawings/operationsmodi/double_encryption.svg" style="width: 1200px;" />
-</div><div class="ld-slide" id="meet-in-the-middle-attack">
-<h2>Meet-in-the-Middle Attack</h2>
+</div><div class="ld-slide" id="meet-in-the-middle-angriff">
+<h2><em>Meet-in-the-Middle</em>-Angriff</h2>
 <ul class="simple">
-<li><p>Observation: <span class="math">\(E(K_2,E(K_1,P)) = E(K_3,P)\)</span> does not hold. I.e., the use of double DES results in a mapping that is not equivalent to a single DES encryption.</p></li>
+<li><p>Beobachtung: <span class="math">\(E(K_2,E(K_1,P)) = E(K_3,P)\)</span> ist nicht gültig. D. h. die zweifache Anwendung  von DES führt zu einer Abbildung, die nicht äquivalent zu einer einfachen DES-Verschlüsselung ist.</p></li>
 </ul>
 <ul class="incremental simple">
-<li><p>The meet-in-the-middle algorithm will attack this scheme. It does not depend on any particular property of DES but will work against any block encryption cipher.</p></li>
-<li><p>The result is that a known plaintext attack against double-DES will succeed with an effort on the order <span class="math">\(2^{56}\)</span> compared to <span class="math">\(2^{55}\)</span> for a single DES.</p></li>
+<li><p>Der Meet-in-the-Middle-Algorithmus greift dieses Verfahren an. Er hängt nicht von einer bestimmten Eigenschaft von DES ab, sondern funktioniert gegen jede Blockchiffre.</p></li>
+<li><p>Das Ergebnis ist, dass ein bekannter Klartextangriff gegen Doppel-DES mit einem Aufwand in der Größenordnung von <span class="math">\(2^{56}\)</span> erfolgreich ist, verglichen mit <span class="math">\(2^{55}\)</span> für einen einfachen DES.</p></li>
 </ul>
-</div><div class="ld-slide" id="triple-encryption-e-g-triple-des-with-three-keys">
-<h2>Triple Encryption (E.g., Triple-DES with Three-Keys)</h2>
-<img alt="drawings/operationsmodi/triple_encryption.svg" class="align-center" src="drawings/operationsmodi/triple_encryption.svg" style="width: 1500px;" />
-</div><div class="ld-slide" id="triple-des-with-two-keys">
-<h2>Triple-DES with Two Keys</h2>
-<p>Obvious counter to the meet-in-the-middle attack is to use three stages of encryption with three different keys.</p>
+</div><div class="ld-slide" id="dreifache-verschlusselung">
+<h2>Dreifache Verschlüsselung</h2>
+<p><strong>(Z. B. Triple-DES (3DES) mit drei Schlüsseln)</strong></p>
+<img alt="drawings/operationsmodi/triple_encryption.svg" class="align-center" src="drawings/operationsmodi/triple_encryption.svg" style="width: 100%;" />
+</div><div class="ld-slide" id="triple-des-mit-zwei-schlusseln">
+<h2>Triple-DES mit zwei Schlüsseln</h2>
+<p>Die offensichtliche Antwort auf den <em>Meet-in-the-middle</em>-Angriff ist die dreifache Verschlüsselung mit drei verschiedenen Schlüsseln.</p>
 <ul class="simple">
-<li><p>This raises the cost of the meet-in-the-middle attack to <span class="math">\(2^{112}\)</span>, which is beyond what is practical.</p></li>
-<li><p>Has the drawback of requiring a key length of <span class="math">\(56\,bits \times 3 = 168\,bits\)</span>, which may be somewhat unwieldy.</p></li>
-<li><p>As an alternative Tuchman proposed a triple encryption method that uses only two keys.</p></li>
-<li><p>3DES with two keys is a relatively popular alternative to DES and has been adopted for use in the key management standards ANSI X9.17 and ISO 8732.</p></li>
+<li><p>Dies erhöht die Kosten des <em>Meet-in-the-Middle</em>-Angriffs auf <span class="math">\(2^{112}\)</span>, was jenseits dessen liegt, was praktikabel ist.</p></li>
+<li><p>Das hat den Nachteil, dass eine Schlüssellänge von <span class="math">\(56\,bits \times 3 = 168\,bits\)</span> erforderlich ist, was etwas unhandlich sein kann.</p></li>
+<li><p>Als Alternative schlug Tuchman eine dreifache Verschlüsselungsmethode vor, die nur zwei Schlüssel verwendet.</p></li>
+<li><p>3DES mit zwei Schlüsseln war eine Alternative zu DES und wurde in die Schlüsselverwaltungsstandards ANSI X9.17 und ISO 8732 aufgenommen.</p></li>
 </ul>
-</div><div class="ld-slide" id="triple-des-with-three-keys">
-<h2>Triple-DES with Three Keys</h2>
-<ul class="simple">
-<li><p>Several attacks against 3DES with 2 keys have been developed, which are - however - still not practical.</p></li>
-<li><p>Many researchers now feel that three-key 3DES is the preferred alternative.</p></li>
-<li><p>Three-key 3DES has an effective key length of 168 bits and is defined as: <span class="math">\(C=E(K_3,D(K_2,E(K_1, P)))\)</span></p></li>
-<li><p>Backward compatibility with DES is provided by putting: <span class="math">\(K_3 =K_2\)</span> or <span class="math">\(K_1 =K_2\)</span>.</p></li>
-</ul>
-</div><div class="ld-slide" id="modes-of-operation">
-<h2>Modes of Operation</h2>
-<ul class="simple">
-<li><p>A technique for enhancing the effect of a cryptographic algorithm or adapting the algorithm for an application.</p></li>
-<li><p>To apply a block cipher in a variety of applications, five modes of operation have been defined by NIST.</p>
+</div><div class="ld-slide" id="triple-des-mit-drei-schlusseln">
+<h2>Triple-DES mit drei Schlüsseln</h2>
 <ul>
-<li><p>The five modes are intended to cover a wide variety of applications of encryption for which a block cipher could be used</p></li>
-<li><p>These modes are intended for use with any symmetric block cipher, including 3DES and AES.</p></li>
+<li><p>Es wurden mehrere Angriffe gegen 3DES mit 2 Schlüsseln entwickelt, die jedoch (noch) nicht praktikabel sind.</p></li>
+<li><p>Viele Forscher sind inzwischen der Meinung, dass 3DES mit drei Schlüsseln die bevorzugte Alternative ist.</p></li>
+<li><p>3DES mit drei Schlüsseln hat eine effektive Schlüssellänge von 168 Bit und ist definiert als:</p>
+<div class="math">
+\begin{equation*}
+C=E(K_3,D(K_2,E(K_1, P)))
+\end{equation*}
+</div>
+</li>
+<li><p>Rückwärtskompatibilität mit DES ist gegeben, wenn man <span class="math">\(K_3 = K_2\)</span> oder <span class="math">\(K_1 = K_2\)</span> einsetzt.</p></li>
+</ul>
+</div><div class="new-section transition-scale ld-slide" id="betriebsmodi-bei-blockchiffren-1">
+<h2>Betriebsmodi bei Blockchiffren</h2>
+</div><div class="ld-slide" id="betriebsmodi">
+<h2>Betriebsmodi</h2>
+<ul class="simple">
+<li><p>Eine Technik zur Verbesserung der Wirkung eines kryptografischen Algorithmus oder zur Anpassung des Algorithmus an ein Anwendungsszenario. Insbesondere in Abhängigkeit von der Länge des Klartexts.</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>Um eine Blockchiffre in einer Vielzahl von Anwendungen einsetzen zu können, hat das NIST fünf Betriebsmodi definiert.</p>
+<ul>
+<li><p>Die fünf Modi decken eine breite Palette von Verschlüsselungsanwendungen ab, für die eine Blockchiffre verwendet werden kann.</p></li>
+<li><p>Diese Modi sind für die Verwendung mit jeder symmetrischen Blockchiffre vorgesehen, einschließlich 3DES und AES.</p></li>
 </ul>
 </li>
 </ul>
-</div><div class="ld-slide" id="modes-of-operation-overview">
-<h2>Modes of Operation - Overview</h2>
-<table class="small" style="width: 100%;">
+</div><div class="ld-slide" id="betriebsmodi-ubersicht">
+<h2>Betriebsmodi - Übersicht</h2>
+<div class="scrollable docutils container">
+<table class="smaller highlight-line-on-hover" style="width: 100%;">
 <thead>
-<tr><th class="head"><p>Mode</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Typical Application</p></th>
+<tr><th class="head"><p>Modus</p></th>
+<th class="head"><p>Beschreibung</p></th>
+<th class="head"><p>Typische Anwendung</p></th>
 </tr>
 </thead>
 <tbody>
-<tr><td><p>Electronic Codebook (ECB)</p></td>
-<td><p>Each block of plaintext bits is encoded independently using the same key.</p></td>
+<tr><td><p><strong>Electronic Codebook (ECB)</strong></p></td>
+<td><p>Jeder Block von Klartextbits wird unabhängig voneinander mit demselben Schlüssel verschlüsselt.</p></td>
 <td><ul class="simple">
-<li><p>Secure transmission of single values (e.g., an encryption key)</p></li>
+<li><p>Sichere Übertragung einzelner Werte (z. B. eines Verschlüsselungsschlüssels)</p></li>
 </ul>
 </td>
 </tr>
-<tr><td><p>Cipher Block Chaining (CBC)</p></td>
-<td><p>The input to the encryption algorithm is the XOR of the next block of plaintext and the preceding block of ciphertext.</p></td>
+<tr><td><p><strong>Cipher Block Chaining (CBC)</strong></p></td>
+<td><p>Die Eingabe für den Verschlüsselungsalgorithmus ist die XOR-Verknüpfung des nächsten Klartextblocks mit dem vorangegangenen Chiffretextblock.</p></td>
 <td><ul class="simple">
-<li><p>General-purpose block-oriented transmission</p></li>
-<li><p>Authentication</p></li>
+<li><p>Universelle blockorientierte Übertragung</p></li>
+<li><p>Authentifizierung</p></li>
 </ul>
 </td>
 </tr>
-<tr><td><p>Cipher Feedback (CFB)</p></td>
-<td><p>Input is processed s bits at a time.
-Preceding ciphertext is used as input to the encryption algorithm to produce pseudorandom output, which is XORed with plaintext to produce next unit of ciphertext.</p></td>
+<tr><td><p><strong>Cipher Feedback (CFB)</strong></p></td>
+<td><p>Die Eingabe wird Bit für Bit verarbeitet.
+Der vorhergehende Chiffretext wird als Eingabe für den Verschlüsselungsalgorithmus verwendet, um eine pseudozufällige Ausgabe zu erzeugen, die mit dem Klartext XOR-verknüpft wird, um die nächste Einheit des Chiffretextes zu erzeugen.</p></td>
 <td><ul class="simple">
-<li><p>General-purpose stream-oriented transmission</p></li>
-<li><p>Authentication</p></li>
+<li><p>Allgemeine stromorientierte Übertragung</p></li>
+<li><p>Authentifizierung</p></li>
 </ul>
 </td>
 </tr>
-<tr><td><p>Output Feedback (OFB)</p></td>
-<td><p>Similar to CFB, except that the input to the encryption algorithm is the preceding encryption output, and full blocks are used.</p></td>
+<tr><td><p><strong>Output Feedback (OFB)</strong></p></td>
+<td><p>Ähnlich wie CFB, mit dem Unterschied, dass die Eingabe für den Verschlüsselungsalgorithmus die vorangegangene Verschlüsselungsausgabe ist, und volle Blöcke verwendet werden.</p></td>
 <td><ul class="simple">
-<li><p>Stream-oriented transmission over noisy channel (e.g., satellite communication)</p></li>
+<li><p>Stromorientierte Übertragung über verrauschte Kanäle (z. B. Satellitenkommunikation)</p></li>
 </ul>
 </td>
 </tr>
-<tr><td><p>Counter (CTR)</p></td>
-<td><p>Each block of plaintext is XORed with an encrypted counter. The counter is incremented for each subsequent block.</p></td>
+<tr><td><p><strong>Counter (CTR</strong>)</p></td>
+<td><p>Jeder Klartextblock wird mit einem verschlüsselten Zähler XOR-verknüpft. Der Zähler wird für jeden nachfolgenden Block erhöht.</p></td>
 <td><ul class="simple">
-<li><p>General-purpose block-oriented transmission</p></li>
-<li><p>Useful for high-speed requirements</p></li>
+<li><p>Blockorientierte Übertragung für allgemeine Zwecke</p></li>
+<li><p>Nützlich für Hochgeschwindigkeitsanforderungen</p></li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+</div>
 </div><div class="ld-slide" id="electronic-codebook">
 <h2>Electronic Codebook</h2>
 <img alt="opensource-drawings/ecb_encryption.svg" class="align-center" src="opensource-drawings/ecb_encryption.svg" style="width: 1200px;" />
 <img alt="opensource-drawings/ecb_decryption.svg" class="align-center" src="opensource-drawings/ecb_decryption.svg" style="width: 1200px;" />
 <div class="small docutils container">
-<p>Author: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
+<p>Autor: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
 </div>
-</div><div class="ld-slide" id="problems-when-using-ecb-mode-encryption">
-<h2>Problems when using ECB Mode Encryption</h2>
-<p><em>ECB-Tux</em> - the linux pinguin encrypted using ECB mode.</p>
-<img alt="opensource-drawings/tux.ecb.from_robert_david_graham.png" src="opensource-drawings/tux.ecb.from_robert_david_graham.png" />
-<div class="small docutils container">
-<p>Source: <a class="reference external" href="https://github.com/robertdavidgraham/ecb-penguin">https://github.com/robertdavidgraham/ecb-penguin</a></p>
+</div><div class="ld-slide" id="probleme-bei-der-verwendung-der-verschlusselung-im-ecb-modus">
+<h2>Probleme bei der Verwendung der Verschlüsselung im ECB-Modus</h2>
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
+<p><em>ECB-Tux</em> - der Linux-Pinguin verschlüsselt im ECB-Modus:</p>
+<p>Quelle: <a class="reference external" href="https://github.com/robertdavidgraham/ecb-penguin">https://github.com/robertdavidgraham/ecb-penguin</a></p>
 </div>
-<p>Criteria and properties for evaluating and constructing block cipher modes of operation that are superior to ECB.</p>
+<img alt="opensource-drawings/tux.ecb.from_robert_david_graham.png" class="align-center" src="opensource-drawings/tux.ecb.from_robert_david_graham.png" />
+</div>
+<p>Kriterien und Eigenschaften für die Bewertung und Konstruktion von Blockchiffre-Betriebsarten, die ECB überlegen sind.</p>
 <ul class="simple">
 <li><p>Overhead</p></li>
-<li><p>Error recovery</p></li>
-<li><p>Error propagation</p></li>
-<li><p>Diffusion</p></li>
-<li><p>Security</p></li>
+<li><p>Fehlerbehebung</p></li>
+<li><p>Fehlerfortpflanzung</p></li>
+<li><p>Streuung</p></li>
+<li><p>Sicherheit</p></li>
 </ul>
 </div><div class="ld-slide" id="cipher-block-chaining">
 <h2>Cipher Block Chaining</h2>
@@ -752,206 +780,206 @@ Preceding ciphertext is used as input to the encryption algorithm to produce pse
 <div class="incremental docutils container">
 <img alt="opensource-drawings/cbc_decryption.svg" class="align-center" src="opensource-drawings/cbc_decryption.svg" style="width: 1200px;" />
 <div class="small docutils container">
-<p>Author: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
+<p>Autor: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
 </div>
 </div>
-</div><div class="ld-slide" id="converting-block-ciphers-into-stream-ciphers">
-<h2>Converting Block Ciphers into Stream Ciphers</h2>
-<aside class="admonition smaller note">
-<p class="admonition-title">Note</p>
-<p>There are three modes that make it possible to convert a block cipher into a character-oriented stream cipher:</p>
+</div><div class="ld-slide" id="konvertierung-von-blockchiffren-in-stromchiffre">
+<h2>Konvertierung von Blockchiffren in Stromchiffre</h2>
+<aside class="admonition note smaller">
+<p class="admonition-title">Hinweis</p>
+<p>Es gibt drei Modi, die es ermöglichen, eine Blockchiffre in eine zeichenorientierte Stromchiffre umzuwandeln:</p>
 <ul class="simple">
 <li><p>Cipher Feedback Mode (CFB)</p></li>
 <li><p>Output Feedback Mode (OFB)</p></li>
 <li><p>Counter Mode (CTR)</p></li>
 </ul>
-<p>I.e., no padding is required when the message is not a multiple of the block size.</p>
+<p>D. h., es ist kein Auffüllen (<span class="eng">Padding</span>) erforderlich, wenn die Nachricht nicht ein Vielfaches der Blockgröße ist.</p>
 </aside>
-<p>For AES, DES, or any block cipher, encryption is performed on a block of b bits:</p>
+<p>Bei AES, DES oder jeder anderen Blockchiffre erfolgt die Verschlüsselung immer Block-für-Block mit Blockgrößen von b Bits:</p>
 <ul class="simple">
-<li><p>In the case of (3)DES <span class="math">\(b=64\)</span></p></li>
-<li><p>In the case of AES <span class="math">\(b=128\)</span></p></li>
+<li><p>Im Fall von (3)DES: <span class="math">\(b=64\)</span></p></li>
+<li><p>Im Fall von AES: <span class="math">\(b=128\)</span></p></li>
 </ul>
 </div><div class="ld-slide" id="cipher-feedback-mode">
-<h2>Cipher Feedback Mode</h2>
+<h2><em>Cipher Feedback Mode</em></h2>
 <img alt="opensource-drawings/cfb_encryption.svg" class="align-center" src="opensource-drawings/cfb_encryption.svg" style="width: 1200px;" />
 <div class="incremental docutils container">
 <img alt="opensource-drawings/cfb_decryption.svg" class="align-center" src="opensource-drawings/cfb_decryption.svg" style="width: 1200px;" />
 <div class="small docutils container">
-<p>Author: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
+<p>Autor: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
 </div>
 </div>
-</div><div class="ld-slide" id="cipher-feedback-mode-used-as-a-stream-cipher">
-<h2>Cipher Feedback Mode used as a Stream Cipher</h2>
-<img alt="drawings/operationsmodi/cfb_s_bits.svg" class="align-center" src="drawings/operationsmodi/cfb_s_bits.svg" style="width: 1200px;" />
+</div><div class="ld-slide" id="cipher-feedback-mode-als-stromchiffre">
+<h2><em>Cipher Feedback Mode</em> als Stromchiffre</h2>
+<img alt="drawings/operationsmodi/cfb_s_bits.svg" class="align-center" src="drawings/operationsmodi/cfb_s_bits.svg" style="width: 100%;" />
 </div><div class="ld-slide" id="output-feedback-mode">
-<h2>Output Feedback Mode</h2>
+<h2><em>Output Feedback Mode</em></h2>
 <img alt="opensource-drawings/ofb_encryption.svg" class="align-center" src="opensource-drawings/ofb_encryption.svg" style="width: 1200px;" />
 <div class="incremental docutils container">
 <img alt="opensource-drawings/ofb_decryption.svg" class="align-center" src="opensource-drawings/ofb_decryption.svg" style="width: 1200px;" />
 <div class="small docutils container">
-<p>Author: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
+<p>Autor: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
 </div>
 </div>
 <!-- When used as a Stream Cipher we can simply discard the last bytes of the encrypted block cipher. -->
 </div><div class="ld-slide" id="counter-mode">
-<h2>Counter Mode</h2>
+<h2><em>Counter Mode</em></h2>
 <img alt="opensource-drawings/ctr_encryption.svg" class="align-center" src="opensource-drawings/ctr_encryption.svg" style="width: 1200px;" />
 <div class="incremental docutils container">
 <img alt="opensource-drawings/ctr_decryption.svg" class="align-center" src="opensource-drawings/ctr_decryption.svg" style="width: 1200px;" />
 <div class="small docutils container">
-<p>Author: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
+<p>Autor: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">https://commons.wikimedia.org/wiki/User:WhiteTimberwolf</a></p>
 </div>
 </div>
-</div><div class="ld-slide" id="counter-mode-advantages">
-<h2>Counter Mode - Advantages</h2>
+</div><div class="ld-slide" id="counter-mode-vorteile">
+<h2><em>Counter Mode</em> - Vorteile</h2>
 <dl class="field-list simple">
-<dt>Hardware efficiency<span class="colon">:</span></dt>
-<dd><p>can make use of hardware parallelization.</p>
+<dt>Hardware-Effizienz<span class="colon">:</span></dt>
+<dd><p>kann von der Parallelisierung der Hardware profitieren</p>
 </dd>
-<dt>Software efficiency<span class="colon">:</span></dt>
-<dd><p>easily parallelizable in software.</p>
+<dt>Software-Effizienz<span class="colon">:</span></dt>
+<dd><p>leicht parallelisierbar in Software</p>
 </dd>
-<dt>Preprocessing<span class="colon">:</span></dt>
-<dd><p>the  encryption of the counters</p>
+<dt>Vorverarbeitung<span class="colon">:</span></dt>
+<dd><p>die Verschlüsselung der Zähler</p>
 </dd>
-<dt>Random access<span class="colon">:</span></dt>
-<dd><p>The i-th block of plaintext of ciphertext can be processed in random-access fashion.</p>
+<dt>Zufälliger Zugriff<span class="colon">:</span></dt>
+<dd><p>Der i-te Block des Klartextes/des Chiffretextes kann im Zufallszugriff verarbeitet werden</p>
 </dd>
-<dt>Provable security<span class="colon">:</span></dt>
-<dd><p>as secure as the other modes</p>
+<dt>Nachweisbare Sicherheit<span class="colon">:</span></dt>
+<dd><p>genauso sicher wie die anderen Verfahren.</p>
 </dd>
-<dt>Simplicity<span class="colon">:</span></dt>
-<dd><p>only the encryption algorithm is required.</p>
+<dt>Einfachheit<span class="colon">:</span></dt>
+<dd><p>Es wird nur der Verschlüsselungsalgorithmus benötigt.</p>
 </dd>
 </dl>
-</div><div class="ld-slide" id="feedback-characteristics-of-modes-of-operation">
-<h2>Feedback Characteristics of Modes of Operation</h2>
+</div><div class="ld-slide" id="ruckkopplungseigenschaften-der-betriebsmodi">
+<h2>Rückkopplungseigenschaften<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>  der Betriebsmodi</h2>
 <img alt="drawings/operationsmodi/feedback_characteristics.svg" class="align-center" src="drawings/operationsmodi/feedback_characteristics.svg" style="width: 1750px;" />
-</div><div class="ld-slide" id="xts-aes-mode-for-block-oriented-storage-devices">
-<h2>XTS-AES Mode for Block-Oriented Storage Devices</h2>
-<p>Approved as an additional block cipher mode of operation by NIST in 2010 Mode is also an IEEE Standard, IEEE Std 1619-2007</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>(<span class="eng">Feedback Characteristics</span>)</p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="xts-aes-modus-fur-blockorientierte-speichergerate">
+<h2>XTS-AES Modus für blockorientierte Speichergeräte</h2>
+<p>2010 vom NIST als zusätzlicher Blockchiffre-Betriebsmodus genehmigt.</p>
+<p>Modus ist auch ein IEEE-Standard, IEEE Std 1619-2007</p>
 <aside class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Which potential threats are relevant?</p>
+<p class="admonition-title">Frage</p>
+<p>Welche potenziellen Bedrohungen sind relevant?</p>
 <!-- many similar blocks -->
 <!-- data is freely accessible -->
 </aside>
 <ul class="simple">
-<li><p>Standard describes a method of encryption for data stored in sector- based devices where the threat model includes possible access to stored data by the adversary.</p></li>
-<li><p>Has received widespread industry support</p></li>
+<li><p>Die Norm beschreibt eine Verschlüsselungsmethode für Daten, die in sektorbasierten Geräten gespeichert sind, wobei das Bedrohungsmodell einen möglichen Zugriff des Gegners auf die gespeicherten Daten beinhaltet.</p></li>
+<li><p>Hat breite Unterstützung der Industrie erhalten.</p></li>
 </ul>
-</div><div class="ld-slide" id="tweakable-block-ciphers">
-<h2>Tweakable Block Ciphers</h2>
+</div><div class="ld-slide" id="tweakable-blockchiffren">
+<h2>Tweakable Blockchiffren</h2>
 <ul>
-<li><p>XTS-AES mode is based on the concept of a tweakable block cipher</p></li>
-<li><p>General structure:</p>
-<p>To compute the ciphertext a:</p>
+<li><p>Der XTS-AES-Modus basiert auf dem Konzept einer veränderbaren (<span class="eng">tweakable</span>) Blockchiffre.</p></li>
+<li><p>Allgemeine Struktur:</p>
+<p>Um Chiffriertextes a zu berechnen, wird benötigt:</p>
 <ul class="simple">
-<li><p><strong>Plaintext</strong></p></li>
-<li><p><strong>Symmetric key</strong></p></li>
+<li><p><strong>Klartext</strong></p></li>
+<li><p><strong>Symmetrischer Schlüssel</strong></p></li>
 <li><p><strong>Tweak</strong></p></li>
 </ul>
-<p>is required.</p>
 </li>
-<li><p>Tweak need not be kept secret; purpose is to provide variability.</p></li>
+<li><p>Der <em>Tweak</em> muss nicht geheim gehalten werden; der Zweck ist, Variabilität zu bieten.</p></li>
 </ul>
-</div><div class="ld-slide" id="tweakable-block-ciphers-1">
-<h2>Tweakable Block Ciphers</h2>
+</div><div class="ld-slide" id="tweakable-blockchiffren-1">
+<h2>Tweakable Blockchiffren</h2>
 <img alt="drawings/operationsmodi/tweakable_block_cipher.svg" class="align-center" src="drawings/operationsmodi/tweakable_block_cipher.svg" style="width: 1750px;" />
-</div><div class="ld-slide" id="storage-encryption-requirements">
-<h2>Storage Encryption Requirements</h2>
-<p>The requirements for encrypting stored data, also referred to as “data at rest”, differ somewhat from those for transmitted data.</p>
-<p>The P1619 standard was designed to have the following characteristics:</p>
-<ul class="incremental simple">
-<li><p>The ciphertext is freely available for an attacker.</p></li>
-<li><p>The data layout is not changed on the storage medium and in transit.</p></li>
-<li><p>Data are accessed in fixed sized blocks, independently from each other.</p></li>
-<li><p>Encryption is performed in 16-byte blocks, independently from each other.</p></li>
-<li><p>There are no other metadata used, except the location of the data blocks within the whole data set.</p></li>
-<li><p>The same plaintext is encrypted to different ciphertexts at different locations, but always to the same ciphertext when written to the same location again.</p></li>
-<li><p>A standard conformant device can be constructed for decryption of data encrypted by another standard conformant device.</p></li>
+</div><div class="ld-slide" id="anforderungen-an-die-speicherverschlusselung">
+<h2>Anforderungen an die Speicherverschlüsselung</h2>
+<p>Die Anforderungen an die Verschlüsselung gespeicherter Daten, die auch als <em>data at rest</em> bezeichnet werden, unterscheiden sich von denen für übertragene Daten.</p>
+<p>Die Norm P1619 wurde in Hinblick auf folgende Eigenschaften entwickelt:</p>
+<ul class="incremental smaller simple">
+<li><p>Der Chiffretext ist für einen Angreifer frei verfügbar.</p></li>
+<li><p>Das Datenlayout wird auf dem Speichermedium und beim Transport nicht verändert.</p></li>
+<li><p>Der Zugriff auf die Daten erfolgt in Blöcken fester Größe und unabhängig voneinander.</p></li>
+<li><p>Die Verschlüsselung erfolgt in 16-Byte-Blöcken, die unabhängig voneinander sind.</p></li>
+<li><p>Es werden keine weiteren Metadaten verwendet, außer der Position der Datenblöcke innerhalb des gesamten Datensatzes.</p></li>
+<li><p>Derselbe Klartext wird an verschiedenen Stellen in verschiedene Chiffretexte verschlüsselt, aber immer in denselben Chiffretext, wenn er wieder an dieselbe Stelle geschrieben wird.</p></li>
+<li><p>Ein standardkonformes Gerät kann für die Entschlüsselung von Daten konstruiert werden, die von einem anderen standardkonformen Gerät verschlüsselt wurden.</p></li>
 </ul>
-</div><div class="ld-slide" id="xts-aes-operation-on-a-single-block">
-<h2>XTS-AES Operation on a Single Block</h2>
+</div><div class="ld-slide" id="xts-aes-operation-auf-einem-block">
+<h2>XTS-AES Operation auf einem Block</h2>
 <img alt="drawings/operationsmodi/xts_aes.svg" class="align-center" src="drawings/operationsmodi/xts_aes.svg" style="width: 1750px;" />
-<div class="small two-columns docutils container">
+<div class="tiny two-columns docutils container">
+<div class="column no-separator docutils container">
 <ul class="simple">
-<li><p>Key: The key where: <span class="math">\(Key = Key_1\, ||\, Key_2\)</span></p></li>
-<li><p><span class="math">\(P_j\)</span>: The jth block of plaintext. All blocks have length 128 bits. A plaintext data unit, typically a disk sector, consists of a sequence of plaintext blocks.</p></li>
-<li><p><span class="math">\(C_j\)</span>: The jth block of ciphertext.</p></li>
-<li><p><span class="math">\(j\)</span>: The sequential number of the 128bit block inside the data unit.</p></li>
-<li><p><span class="math">\(i\)</span>: The value of the 128bit tweak.</p></li>
-<li><p><span class="math">\(\alpha\)</span>: A primitive element of GF(2^{128}) that corresponds to the polynomial <span class="math">\(x\)</span> (i.e., 0000...0010)</p></li>
-<li><p><span class="math">\(\alpha^j\)</span>: <span class="math">\(\alpha\)</span> multiplied by itself <span class="math">\(j\)</span> times in <span class="math">\(GF(2^{128})\)</span></p></li>
-<li><p><span class="math">\(\oplus\)</span> Bitwise XOR</p></li>
-<li><p><span class="math">\(\otimes\)</span> Modular multiplication with binary coefficients modulo <span class="math">\(x^{128}+x^7+x^2+x+1\)</span>.</p></li>
+<li><p>Key: Der Schlüssel wobei gilt: <span class="math">\(Key = Key_1\, ||\, Key_2\)</span></p></li>
+<li><p><span class="math">\(P_j\)</span>: Der j-te Block des Klartexts. Alle Blöcke haben eine Länge von 128 bits. Eine Klartextdateneinheit - in der Regel ein Festplattensektor - besteht aus einer Folge von Klartextblöcken.</p></li>
+<li><p><span class="math">\(C_j\)</span>: Der j-te Block des Chiffretextes.</p></li>
+<li><p><span class="math">\(j\)</span>: Die fortlaufende Nummer des 128-Bit-Blocks innerhalb der Dateneinheit.</p></li>
+<li><p><span class="math">\(i\)</span>: Der Wert des 128-Bit-Tweaks.</p></li>
 </ul>
+</div>
+<div class="column docutils container">
+<ul class="simple">
+<li><p><span class="math">\(\alpha\)</span>: Ein primitives Element des <span class="math">\(GF(2^{128})\)</span> welches dem Polynom <span class="math">\(x\)</span> (d. h. 0000...0010) entspricht.</p></li>
+<li><p><span class="math">\(\alpha^j\)</span>: <span class="math">\(\alpha\)</span> <span class="math">\(j\)</span> mal mit sich selbst multipliziert im Körper <span class="math">\(GF(2^{128})\)</span></p></li>
+<li><p><span class="math">\(\oplus\)</span> Bitwise XOR</p></li>
+<li><p><span class="math">\(\otimes\)</span> Modulare Multiplikation mit Binärkoeffizienten modulo <span class="math">\(x^{128}+x^7+x^2+x+1\)</span>.</p></li>
+</ul>
+</div>
 </div>
 </div><div class="integrated-exercise ld-slide" id="ubung">
 <h2>Übung</h2>
-<ol class="arabic simple">
-<li><p>Why is it important in CBC to protect the IV?</p></li>
-</ol>
-<blockquote>
-<aside class="admonition admonition-solution">
-<p class="admonition-title">Solution</p>
-<p>If the IV is sent as is, we may be able in certain scenarios to flip some bytes of the plaintext (of the first block) when we change the IV.</p>
-</aside>
-</blockquote>
-<ol class="arabic simple" start="2">
-<li><p>In which operation modes is padding necessary?</p></li>
-</ol>
-<blockquote>
-<aside class="admonition admonition-solution">
-<p class="admonition-title">Solution</p>
-<p>ECB and CBC (the input to the encryption is a full plaintext block).</p>
-</aside>
-</blockquote>
-<ol class="arabic" start="3">
-<li><p>What happens in case of a transmission error (single bit flip in the ciphertext) in ECB, CBC, CFB, OFB, CTR?</p>
-<aside class="admonition admonition-solution">
-<p class="admonition-title">Solution</p>
-<dl class="field-list simple">
-<dt>ECB<span class="colon">:</span></dt>
-<dd><p>one block is affected (in case of DES and AES approx. 50% of the bits).</p>
-</dd>
-<dt>CBC<span class="colon">:</span></dt>
-<dd><p>in the next block we will have one flipped bit in the plaintext and approx. 50% in the current block.</p>
-</dd>
-<dt>CFB<span class="colon">:</span></dt>
-<dd><p>The flipped bit will affect the corresponding plaintext bit and all subsequent bits with a probability of approx. 50% as long the flipped bit is used as input to the encryption.</p>
-</dd>
-<dt>OFB, CTR<span class="colon">:</span></dt>
-<dd><p>In the plaintext one bit will be flipped.</p>
-</dd>
-</dl>
-</aside>
+<ul>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1" id="ld-exercise-1">
+<p>Warum ist es bei CBC wichtig, den Initialisierungsvektor (IV) zu schützen?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:D+vCM1+ZSDqt/EfYMPTKTXESaA+NxAwXCWUewE5Rq/g=:wRB2Dc46ZLMQIQ77:d9OepO3OQ4Ox/IhMhehSIrAR+NX+gk4ugWRAYfI76asyIMZezq43qfGsbXVVVsDEIYwO+SHYFSbOgk4ngjHgGno3A/jg/EnxwSAyWUHMxU2i+29zGupiVNu+kGXwjNkQRvOTQj3o28/CEJoh+n5VuHzuH924sDz0PWQtWFxVVsjL09Sm9VKhYiDi2ycxyM6z8xe7FTqYxXG4/bscr29PzCKxPdXZk4Y2Q5r7dUgBjXD+Q8TnNw==</div>
+</div>
 </li>
-<li><p>Why does the IV in OFB has to be a nonce (i.e., unique to each execution of the encryption algorithm)?</p></li>
-</ol>
-<blockquote>
-<aside class="admonition admonition-solution">
-<p class="admonition-title">Solution</p>
-<p>The O_i only depend on the key and the IV, if the IV is reused with the same key and we happen to know a specific plaintext we may be able to decrypt a corresponding ciphertext in a different message.</p>
-</aside>
-</blockquote>
-<ol class="arabic" start="5">
-<li><p>You want to determine if a program for encrypting files uses ECB mode. What do you need to do?</p>
-<aside class="admonition admonition-one-solution">
-<p class="admonition-title">One Solution</p>
-<p>Use a document that consists of more than one block where each block has the size of the underlying cipher and each block has the same content. If ECB mode is used all blocks are encrypted in the same way.</p>
-</aside>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2" id="ld-exercise-2">
+<p>In welchen Betriebsarten ist eine Auffüllung (<span class="eng">Padding</span>) notwendig?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:wNQM5Wg1VGKzSfc1lkZIezMcQxAKectJw8iBqEfDJiE=:NOBD82D25K2xUUZ0:yuFrFxK1NdrNZmw98SuwgyZaYAKjbi9Zloenyt8qiIdlC58c0YOkG/5S6KsQv9EmJNvAF4ZzWrxPeahfXTxouUILc3kGpcLomuWxQW0O8aRKMvqoJkpUQBdT439roo7s6Vrz90ajnZ7eMHH1nExCv8E=</div>
+</div>
 </li>
-<li><p>A friend of yours invented a new block cipher. You are <strong>very</strong> skeptical. Think about some very simple tests to invalidate the cipher.</p></li>
-<li><p>Use the OFB mode in combination with a Caesar cipher. The block size is a single character. The key is the number of characters you are going to shift a character - as before. The IV is some character. To make the XOR work we map every character to a value and extend the alphabet with the digits 1 to 3, &quot;!&quot;, &quot;?&quot; and the &quot;_&quot;. This way it is always possible to output a meaningful character.</p>
-<blockquote>
-<p>Hence, we will have the following encoding:</p>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3" id="ld-exercise-3">
+<p>Was geschieht im Falle eines Übertragungsfehlers (einzelner Bitflip im Chiffretext) bei ECB, CBC, CFB, OFB, CTR?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:2EA0+6m+OM+2YjqXKeILQqWoGoIXrGQ96siE9GmZULE=:abvnSlrLc2bu+Z7n:nKi4Ua5e0j0HYNYvdauEot42aIhh7HurjBvHkh7jZ1lBwri7aKd4NsPmX5pNEF+LERpYul+uXTVmuidLEbGfvOgX+O/MhrmHSdGvxsFXir/DfaTHxrJ8tECoJ9+IEjDEG2yrP/R9P2+eFX3YU5Cd/WDOBI8IuV5SO6B5ob0+AA2z38MotczTZEyd0lKoUy9xF2yisOH1yYB9GvgsEokR8VPPPW/PT6hn3MnT4Nlwc3W0uSfeadeqHrW63I4v+leaFdnawV6NfrQtZeUc+bUnQedAfrGNFGL9zMTfD1ASupoHhUxtQkUlXbeIwic510YTxkyYf6kmL7V1Y8o2ZUskKsgqHCiTbui1HMlkBNXMpQv9mxqPIvf/KgScfGFnbLcOiBLCUSGaZnK7pfGCaZ+upAI6SeoPh1Zdif+Y3Vk99ZTDKMd1Thv5YvJWCo82S8iuHTOHxmYeJ8WHKDbh69MjQwMhUkA14sG5begsTH7c5DPnLBjBgQAvfOAy5h3YjO3V4ARUT2fj7Zp+B6ZKP5ysTr7TRlMgIZ7VvuHM68CaQtinbzWJ0dUwaWS5g4cpXyf3kzXCrRiU1tUMEnGue3HwSBiB49gwWqqFZuh1U/mNgMzN0QvJG5PBrI4UFtBZJw3T5nY50k8c08fPudRsJuyqu4gyvtd171MDQu4S2O+GQ1CtuVNB6UeHM5Ka5YRiQnlUKbMLt97RI5C3kFZpZNr35mZHjz+//jExlt+48lcsBFDWPFbjNcdHHQRAXMrIIT3Fn45VvRUIJ2WkqVRovVoLyAhCkkSyjCgkViai0d74zkpJYpak9eQ0SFZeEVNsYhH8CWGhqCvKY3NLyMBR19Qewt3B+aTuC9Welz321yOzEikeeP1Nj4Rumcb0ugk4G644ouefjFtMJaUiLcsaBj+fz8TFfIDZqdOnIvDGPdg=</div>
+</div>
+</li>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="4" data-exercise-title="4" id="ld-exercise-4">
+<p>Warum muss der IV im Falle von OFB eine Nonce (<span class="eng">Number used ONCE</span>) sein (d. h. eine Zahl, die nur einmal für die Ausführung des Verschlüsselungsalgorithmus verwendet wird)?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:rH338LgaUFFHjQ50eFMd8mChgZs/1Wn2bcrUSA+nWN8=:QI+cH8QAiLvJCaYP:FEK5GclAcXN6zTcyb/dlKWUft+zKlRp4b0P9azzuKTP5vII6JjWGc5T81FEFgA/YzyeK0LL02oYk5qKyGZrKeC5uxqLNhADJhGiDQnuZ1gDx77l01+WPbCk4FX0arPO5P+U3na9xaA26hPdnjiakmPxJXomhIInEPPtD6aF0JudeNr/HTKoHODw4Xf9ll7beDIQWGt10SSSbwyDSNcM5hBuQYoswXhJ5DeZPcP2dt7pi19NSEMw+Mdm2NhIQThVrOjVzEEXImDn8PO1o0mnuxc8cH8gPoinEsBrltJDKKHSXK0UDlS20pdb+Q+DR7asE7on/StIZ9YQQNBQ41a4jZGVsPK5Ec1pfgpN0yV63DJJHlnEou25bxzhKlpxnbbCXsV+hnaX7K35o9p1FlflcunSqNg==</div>
+</div>
+</li>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="5" data-exercise-title="5" id="ld-exercise-5">
+<p>Sie möchten feststellen, ob ein Programm zur Verschlüsselung von Dateien den ECB-Modus verwendet. Was müssen Sie tun?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:DN5xcyBX6SPBuBMepxTjciFAhEpLeXd7T6s8pwItEz4=:MiEU8ODuk0Gtf5lI:klhcn+cPpuh6Knw0gixB6PJi0EtjRLL7bhBc5AhBzoAbMiC36GPkzO2B+Q8bzbNjQ/+Dh0deApUCxTeCErrWRyLk8rAe1RGat8+xV9PUj9hUxp4Ljx+b/LPEWOUZc3Aj1MDBovyc027hB/qMoRftMAWQeI1yZErQ560rLybjhj4hecohIMiAVympPdNIYC+Bnz9Bi6JF/V0uBAK+OMiJvz7ddS/yNYmrsSh8vs9bgIoQxrUht6Du7O+VsCIdVbmAge3znjvizlxwTUIgzwNY0JsLQmQypi6Eyl1ztanPmahr38B+X774UaLhqAzjEdWfKQG3Pr481TDc7f6irVS4M7vrUdc5xYm6VHocdhDkwRtd2emyGmrk</div>
+</div>
+</li>
+</ul>
+</div><div class="integrated-exercise ld-slide" id="ubung-1">
+<h2>Übung</h2>
+<div class="tiny docutils container">
+<div class="ld-exercise" data-exercise-id="6" data-exercise-title="6" id="ld-exercise-6">
+<p>Verwenden Sie den OFB-Modus in Kombination mit einer Caesar-Chiffre. Die Blockgröße ist ein einzelnes Zeichen. Der Schlüssel ist die Anzahl der Zeichen, um die Sie ein Zeichen verschieben wollen - wie zuvor. Die IV ist ein Zeichen. Damit sie ein XOR durchführen können, ordnen wir jedem Zeichen einen Wert zu und erweitern das Alphabet um die Ziffern 1 bis 3, &quot;!&quot;, &quot;?&quot; und das &quot;_&quot;. Auf diese Weise ist es immer möglich, ein sinnvolles Zeichen auszugeben.</p>
+<p>Daraus ergibt sich die folgende Kodierung:</p>
+<div class="three-columns smaller docutils container">
+<div class="column no-separator docutils container">
 <table>
 <thead>
 <tr><th class="head"><p>Index</p></th>
-<th class="head"><p>Character</p></th>
-<th class="head"><p>Binary Representation</p></th>
+<th class="head"><p>Zeichen</p></th>
+<th class="head"><p>Binärdarstellung</p></th>
 </tr>
 </thead>
 <tbody>
@@ -999,6 +1027,18 @@ Preceding ciphertext is used as input to the encryption algorithm to produce pse
 <td><p>K</p></td>
 <td><p>01010</p></td>
 </tr>
+</tbody>
+</table>
+</div>
+<div class="column no-separator docutils container">
+<table>
+<thead>
+<tr><th class="head"><p>Index</p></th>
+<th class="head"><p>Zeichen</p></th>
+<th class="head"><p>Binärdarstellung</p></th>
+</tr>
+</thead>
+<tbody>
 <tr><td><p>11</p></td>
 <td><p>L</p></td>
 <td><p>01011</p></td>
@@ -1043,6 +1083,18 @@ Preceding ciphertext is used as input to the encryption algorithm to produce pse
 <td><p>V</p></td>
 <td><p>10101</p></td>
 </tr>
+</tbody>
+</table>
+</div>
+<div class="column docutils container">
+<table>
+<thead>
+<tr><th class="head"><p>Index</p></th>
+<th class="head"><p>Zeichen</p></th>
+<th class="head"><p>Binärdarstellung</p></th>
+</tr>
+</thead>
+<tbody>
 <tr><td><p>22</p></td>
 <td><p>W</p></td>
 <td><p>10110</p></td>
@@ -1085,34 +1137,13 @@ Preceding ciphertext is used as input to the encryption algorithm to produce pse
 </tr>
 </tbody>
 </table>
-<p>Now encode some messages using your new cipher. What will you realize?</p>
-<aside class="admonition admonition-solution">
-<p class="admonition-title">Solution</p>
-<p>The same character is no longer (necessarily) mapped to the same target when it reappears in the original message; i.e, we have some diffusion.</p>
-<aside class="admonition admonition-example">
-<p class="admonition-title">Example</p>
-<div class="math">
-\begin{equation*}
-IV = A, k = 3, M = AA
-\end{equation*}
 </div>
-<div class="math">
-\begin{equation*}
-.. 1. I_1 = IV = A; E(I_1) = D; C_1 = A \oplus D = D
-\end{equation*}
 </div>
-<div class="math">
-\begin{equation*}
-.. 2. I_2 = D; E(I_2) = G, C_2 = A \oplus G = G
-\end{equation*}
+<p>Verschlüsseln Sie nun einige Nachrichten mit dieser Chiffre. Welchen Effekt hat die Anwendung des OFB-Modus auf die Nachrichten?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:PDfvwsDiWQpLJ6uVE4/uESxjzdHJRvHpOBdnSnTQX/c=:2sVBTMqqB+y+E/58:kNjErFr2v/9DIUieKNUxFwdK3rHgdtvUVTnW7O7oZFTSVKFu+mDc+tm0pGlFGGr0LMlwce4Ov4dcoxsf/NVNIGjunjsvt0+i65zH/eTMiIl8hKpXhJjitSRR55xcT0sYPmfYXDTd4GyIGwIt6LJlubHC8ixizw9BN74th+wR8E53APjtXlN2YBEiogyR26DrUYAEJdcFOVxsYMYfOdZgwPuLJcCfAYFlEm6zD84mCmGTI3iU1yQ0B5bB9etHvNQ8W5Jta8JhxpFEfxyo/E9ijqbX6b5gpJ0DR8VB8+6KyTHUE10OX/v9ruDxSbisZAfjgFWI4eRV6Qtgxo3z2UlXoNaHS15PebmWV0kPXm/Lz4oDh/eKoyjChS2DgpWfS8m9HtNsiaGoaIwQTAf0XoJBsPtVYsbmXxV3OuvGAq1nvvWSv3Flv2qZJc8Hp0rJmWq/TtZpZMAsiEJ7gMk6+ZYC1yytYvULcDuECeAC3BpQiaq0wWYXQ4UW4YLSkOF7EMC16VHKbSrUYphnyTjiF3hQV8waXw1rYqGIj3wEZZaPAX00v0L687+p8rX2EP5KlRiimWsViBmNm/xiNlzjhpeKgyru80EKR02jwB87VPNrt6JJ4/1uN8eTASXYWJriFQ1QGy6ImOye8eeov5LyBHiRwCFS9PultQ3j7tMFtU80RdiAuj+xLDH5mQIw+t73tHUrXov/sYjF9r5x6ZXFt88MifkNeavsOF3Fpr8qxPNvlTQkJkdxPMJHO9e5U3Bp7HQccHmc8WLk53F2B4IY+d/fQS5OmNUEcG+FgurQc7fkrVUbM8DKIlks2GTDB4qUJQWZhEicJgbI9ZvszE+ByX3+hy7WM4Dy3q5gANbGOkwEO+5AIPT0RmiUIB3YjcToYyacdc9WTDtFBtju44pLB3SFNn4plxBl6+6KnTjkNGhA7eQBqQAmpV2Gn0aChqUndr681N3jvIuyngGO8PqRQoT1G7XMfUdgHGrVr0m5d5cooTDWfIc2fav4Da53DjhKcx3izvZI8KUx4irGi3E55KKJ/duEZDb3Hp1QVWT/L+Oi9D+cM9g4rVn37VT4u0tRcQPK+ly8tAis4dhPoFoqHXV4wfTZOyWUgnVb9Yf1SyA3rBgBoNJFNV4pwGNDJKZ5V8SmRLhUjvV4xgA8adR1OeCDMjnC03dPDH2QrTMVdqTlG0i7V9FTde0RFqVpjSlkeh68bRvi3EWH18lwzzIvRIOguCXywMwjXmae76azklhKpcVUFAc6su/8arX4LR5yfiIsFuNTqPytGhFvJJvf86YxK0af2KIkYWYzYJZFakYj4kBPOm/88dUYmyoQv6wOySq1qXw=</div>
 </div>
-</aside>
-</aside>
-<!-- example: M = T -->
-<!-- IV Z, E(IV) = 3, C_1 = T \oplus 3 = "P" (10011 \oplus 11100 = 01111 = P) -->
-</blockquote>
-</li>
-</ol>
+</div>
 </div>
 </body>
 </html>

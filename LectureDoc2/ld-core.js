@@ -20,6 +20,107 @@
 */
 "use strict";
 
+const lectureDoc2Crypto = function () {
+
+    // based on code found at https://github.com/themikefuller/Web-Cryptography
+
+    async function encrypt(message, password, iterations) {
+
+        const msg = new TextEncoder().encode(message);
+        const pass = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), {
+            "name": "PBKDF2"
+        }, false, ['deriveBits']);
+
+        const salt = crypto.getRandomValues(new Uint8Array(32));
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+
+        const keyBits = await crypto.subtle.deriveBits({
+            "name": "PBKDF2",
+            "salt": salt,
+            "iterations": iterations,
+            "hash": {
+                "name": "SHA-256"
+            }
+        }, pass, 256);
+
+        // console.log(new Uint8Array(bits)); // create view then log...
+
+        const key = await crypto.subtle.importKey('raw', keyBits, {
+            "name": "AES-GCM"
+        }, false, ['encrypt']);
+
+        const enc = await crypto.subtle.encrypt({
+            "name": "AES-GCM",
+            "iv": iv
+        }, key, msg);
+
+        const iterationsB64 = btoa(rounds.toString());
+
+        const saltB64 = btoa(Array.from(new Uint8Array(salt)).map(val => {
+            return String.fromCharCode(val)
+        }).join(''));
+
+        const ivB64 = btoa(Array.from(new Uint8Array(iv)).map(val => {
+            return String.fromCharCode(val)
+        }).join(''));
+
+        const encB64 = btoa(Array.from(new Uint8Array(enc)).map(val => {
+            return String.fromCharCode(val)
+        }).join(''));
+
+        return iterationsB64 + ':' + saltB64 + ':' + ivB64 + ':' + encB64;
+    };
+
+    async function decrypt(encrypted, password) {
+
+        const parts = encrypted.split(':');
+        const rounds = parseInt(atob(parts[0]));
+
+        const salt = new Uint8Array(atob(parts[1]).split('').map(val => {
+            return val.charCodeAt(0);
+        }));
+
+        const iv = new Uint8Array(atob(parts[2]).split('').map(val => {
+            return val.charCodeAt(0);
+        }));
+
+        // console.log("extracted iv: " + new Uint8Array(iv) +  " and salt: "+ new Uint8Array(salt));
+
+        const enc = new Uint8Array(atob(parts[3]).split('').map(val => {
+            return val.charCodeAt(0);
+        }));
+
+        const pass = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), {
+            "name": "PBKDF2"
+        }, false, ['deriveBits']);
+
+        const keyBits = await crypto.subtle.deriveBits({
+            "name": "PBKDF2",
+            "salt": salt,
+            "iterations": rounds,
+            "hash": {
+                "name": "SHA-256"
+            }
+        }, pass, 256);
+
+        let key = await crypto.subtle.importKey('raw', keyBits, {
+            "name": "AES-GCM"
+        }, false, ['decrypt']);
+
+        let dec = await crypto.subtle.decrypt({
+            "name": "AES-GCM",
+            "iv": iv
+        }, key, enc);
+
+        return (new TextDecoder().decode(dec));
+    };
+
+    return {
+        decryptAESGCMPBKDF: decrypt,
+        encryptASEGCMPBKDF: encrypt,
+    };
+
+}();
 
 /**
  * For `lectureDoc2` we use "modules" that start with lectureDoc2.
@@ -484,6 +585,7 @@ const lectureDoc2 = function () {
 
             const slidePane = document.createElement("DIV");
             slidePane.className = "ld-light-table-slide-pane";
+            slidePane.classList.add("ld-slide-context");
             slidePane.appendChild(slideScaler);
             slidePane.appendChild(slideOverlay);
 
@@ -502,6 +604,7 @@ const lectureDoc2 = function () {
 
         document.getElementsByTagName("BODY")[0].prepend(lightTableDialog);
     }
+
 
     function setupHelp() {
         const help_dialog = document.createElement("DIALOG")
@@ -545,6 +648,7 @@ const lectureDoc2 = function () {
     function setupMainPane() {
         const mainPane = document.createElement("DIV");
         mainPane.id = "ld-main-pane";
+        mainPane.className = "ld-slide-context";
 
         /* 
         Copies all slide(-template)s found in the document to the main pane.
@@ -586,6 +690,7 @@ const lectureDoc2 = function () {
                 <span class="ld-continuous-view-slide-number">${i+1}</span>
             `;
             slide_pane.className = "ld-continuous-view-slide-pane"
+            slide_pane.classList.add("ld-slide-context");
             slide_pane.id = "ld-continuous-view-slide-no-" + i;
             slide_pane.prepend(slide_scaler);
 
@@ -597,11 +702,54 @@ const lectureDoc2 = function () {
                 aside.parentElement.removeChild(aside);
                 continuousViewPane.appendChild(aside);
             }
+
+            // Move exercises below the slide:
+            slide.querySelectorAll(":scope .ld-exercise").forEach((e) => {
+                const solution = e.querySelector(":scope .ld-exercise-solution");
+                if (solution) {
+                    solution.parentElement.removeChild(solution);
+                    const task =  e.cloneNode(true);
+                    task.classList.add("ld-extracted-exercise");
+                    const solutionWrapper = document.createElement("DIV");
+                    solutionWrapper.className = "ld-exercise-solution-wrapper";
+                    const passwordField = document.createElement("INPUT");
+                    passwordField.type = "password";
+                    passwordField.placeholder = "🔑";
+                    solutionWrapper.appendChild(passwordField);
+                    solutionWrapper.appendChild(solution);
+                    task.append(solutionWrapper);
+                    continuousViewPane.appendChild(task);
+
+                    passwordField.addEventListener("input", (e) => {
+                        const currentPassword = e.target.value
+                        if (currentPassword.length > 2) {
+                            const decryptedPromise = lectureDoc2Crypto.decryptAESGCMPBKDF(
+                                solution.innerText.trim(), 
+                                currentPassword
+                            )
+                            console.log("trying to decrypt: " + currentPassword);
+                            decryptedPromise.then((decrypted) => {
+                                solution.innerHTML = decrypted;
+                                try {
+                                    MathJax.typeset();
+                                } catch (error) {
+                                    // actually, we don't care...   
+                                }
+                                solutionWrapper.removeChild(passwordField);
+                                solution.removeAttribute("encrypted");
+                            }).catch((error) => {
+                                console.log("wrong password: " + currentPassword);
+                            });
+                            
+                        }
+                    });
+                }
+            });
         });
 
         document.getElementsByTagName("BODY")[0].prepend(continuousViewPane);
     }
-
+    
 
     function setupMenu() {
         const menuPane = document.createElement("DIV");
@@ -628,11 +776,6 @@ const lectureDoc2 = function () {
             </div>
         `
         document.getElementsByTagName("BODY")[0].prepend(menuPane);
-    }
-
-    function setupExerciseSolutionsView() {
-        // Crypto: https://stackblitz.com/edit/webcrypto-encrypt-and-base64?file=index.ts
-        // TODO
     }
 
 
@@ -1203,7 +1346,7 @@ const lectureDoc2 = function () {
 
                     case "h": toggleDialog("help"); break;
 
-                    case "s": toggleSlideNumber(); break;
+                    case "n": toggleSlideNumber(); break;
 
                     case "c": toggleContinuousView(); break;
 
@@ -1581,7 +1724,6 @@ const lectureDoc2 = function () {
         setupJumpTargetDialog();
         setupContinuousView();
         setupMainPane();
-        setupExerciseSolutionsView();
         setupMenu();
 
         /*

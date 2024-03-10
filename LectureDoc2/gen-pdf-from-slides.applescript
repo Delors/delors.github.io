@@ -40,9 +40,12 @@ on run argv
 	tell application "Safari" to activate
 	tell application "Safari"
 		open thePath & filename
-
+		
 		set theScript to "lectureDoc2.preparePrinting();"
+		delay 1 -- the script sometimes needs some time to execute
 		set slidesCount to (do JavaScript theScript in document 1)
+		delay 3 -- the script sometimes needs some time to execute
+
 		delay slidesCount * 0.15 -- required to wait until all slides are rendered
  
 	end tell

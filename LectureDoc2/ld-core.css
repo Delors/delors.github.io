@@ -27,16 +27,21 @@
         loaded; either to the default values defined in JavaScript or to the 
         values specified in the document. 
         */
-    --ld-slide-width: 1920px;   /* cf. lectureDoc2.presentation.slide.width */
-    --ld-slide-height: 1200px;  /* cf. lectureDoc2.presentation.slide.height */
+    --ld-slide-width: 1920px; /* cf. lectureDoc2.presentation.slide.width */
+    --ld-slide-height: 1200px; /* cf. lectureDoc2.presentation.slide.height */
 
     /*  The default zoom levels. */
-    --ld-light-table-zoom-level: 0.2;   /* may be overridden from within LectureDoc */ 
+    --ld-light-table-zoom-level: 0.2; /* may be overridden from within LectureDoc */
     --ld-continuous-view-zoom-level: 0.5; /* hard coded - cannot be changed by the user  */
 
-    --ld-rel-max-supplemental-area-width: 75%; 
-    --ld-rel-max-supplemental-area-height: 70%; 
-  
+    --ld-rel-max-supplemental-area-width: 75%;
+    --ld-rel-max-supplemental-area-height: 70%;
+
+    /* The following is the definition used by the LectureDoc UI / 
+       all UI content that is not found on the slides. */
+    font-size: 14px;
+    font-family: Helvetica, sans-serif;
+    font-weight: 300;
 }
 
 /* Additional basic normalization. */
@@ -52,16 +57,6 @@ div {
     scrollbar-color: #999 #333;
 }
 
-/*
-::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-*/
 
 /*  We need a fixed size for the main pane to make the content as a whole 
     scalable using the scale property. The scale property is updated on viewport 
@@ -120,15 +115,17 @@ div {
     position: absolute;
     /*  To only show one slide, we simply scale all other slides to a size of 0.
         This makes them effectively invisible without removing them from the DOM
-        as it would be the case when we would set display to none.
+        as it would be the case when we would set display to none. The latter would make animations impossible.
 
         Compared to using the display property (i.e., none <-> block) this has 
         a number of advantages: 
          - counters, e.g., for section titles work as expected.
          - the scale property can be easily animated and enables "cool" 
            animations.
+        
+        Using display: hidden would be an alternative that would support numbering, but would make animations impossible.
         */
-    scale: 0; 
+    scale: 0;
 }
 
 /*  ----------------------------------------------------------------------------
@@ -163,7 +160,8 @@ div {
     justify-content: center;
     align-items: flex-start;
     align-content: flex-start;
-    scroll-snap-type: y mandatory; /* facilitates saving the scroll-position */
+    scroll-snap-type: y mandatory;
+    /* facilitates saving the scroll-position */
 }
 
 .ld-light-table-slide-overlay {
@@ -178,19 +176,18 @@ div {
     width: calc(var(--ld-slide-width) * var(--ld-light-table-zoom-level));
     height: calc(var(--ld-slide-height) * var(--ld-light-table-zoom-level));
     position: relative;
-    margin: 3px; 
+    margin: 3px;
     overflow: hidden;
     scroll-snap-align: start;
 }
 
-.ld-light-table-slide-pane.ld-light-table-slide-pane-hide{
+/* The class .hide is associated with slides when the user searches for slides.*/
+.ld-light-table-slide-pane.ld-light-table-slide-pane-hide {
     width: 0;
     margin: 0;
     scale: 0;
-    transition: width 0ms 750ms, scale 750ms ease-out; 
-    
+    transition: width 0ms 750ms, scale 750ms ease-out;
 }
-
 
 .ld-light-table-slide-scaler {
     position: absolute;
@@ -228,12 +225,10 @@ div {
 */
 
 #ld-continuous-view-pane {
-    width: calc(
-        var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
-    max-width: calc(
-        var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
+    width: calc(var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
+    max-width: calc(var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
     margin: auto;
-    display: none; 
+    display: none;
     /*
     ATTENTION:  When the continuous view pane becomes the "scroll container", 
                 printing the slide set/generating a PDF slide set becomes 
@@ -248,14 +243,10 @@ div {
 
 .ld-continuous-view-slide-pane {
     box-sizing: border-box;
-    width: calc(
-        var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
-    max-width: calc(
-        var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
-    height: calc(
-        var(--ld-slide-height) * var(--ld-continuous-view-zoom-level));
-    max-height: calc(
-        var(--ld-slide-height) * var(--ld-continuous-view-zoom-level));
+    width: calc(var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
+    max-width: calc(var(--ld-slide-width) * var(--ld-continuous-view-zoom-level));
+    height: calc(var(--ld-slide-height) * var(--ld-continuous-view-zoom-level));
+    max-height: calc(var(--ld-slide-height) * var(--ld-continuous-view-zoom-level));
     position: relative;
     /*
         ATTENTION:  SEE ABOVE!
@@ -287,10 +278,12 @@ div {
        Conceptually we would like to use a calculation that ensures that the image
        is always appropriately scaled, but this doesn't work at the moment.
     */
-    scale: calc( 0.5 / 0.75); 
+    scale: calc(0.5 / 0.75);
 }
 
-@media print { /* at least Safari seems to honor this setting...*/
+@media print {
+
+    /* at least Safari seems to honor this setting...*/
     .ld-continuous-view-slide-pane {
         page-break-before: always;
     }
@@ -329,7 +322,9 @@ a {
     The icons are rendered as background images of DIV elements to make it possible to open the slides from a file.
 */
 
-@media print { /* at least Safari seems to honor this setting...*/
+@media print {
+
+    /* at least Safari seems to honor this setting...*/
     #ld-menu {
         display: none;
     }
@@ -342,9 +337,10 @@ a {
     top: 0;
     left: 0;
     z-index: 9999;
-    border-radius: 2em;
+    border-radius: 16px;
+    padding: 0px;
     /*transform: translate(-216px, -162px) scale(0.1); 10%*/
-    transform: translate(-228px, -171px) scale(0.05); 
+    transform: translate(-228px, -171px) scale(0.05);
     overflow: hidden;
     background-color: white;
     transition: all 0.5s ease-in-out;
@@ -363,14 +359,13 @@ a {
 }
 
 #ld-menu:hover {
-    width: calc(480px + 0.5em);
-    height: calc(360px + 0.5em);
-    border-radius: 0.25em;
-    padding:0.25em;
+    width: calc(480px + 8px);
+    height: calc(360px + 8px);
+    padding: 4px;
     /*transform: initial;*/
-    transform: translate(calc(-120px + 0.05em), calc(-90px + 0.05em)) scale(0.5) ;
+    transform: translate(calc(-120px + 2px), calc(-90px + 2px)) scale(0.5);
     opacity: 1 !important;
-    box-shadow: 2px 2px 4px, -1px -1px 2px gray;;
+    box-shadow: 2px 2px 4px, -1px -1px 2px gray;
     transition: all 0.5s ease-in-out;
 }
 
@@ -380,21 +375,21 @@ a {
     grid-template-rows: repeat(3, 120px);
 }
 
-div#ld-menu-buttons > div {
+div#ld-menu-buttons>div {
     height: 120px;
-    width: 120px;   
+    width: 120px;
     transition: all 0.5s ease-in-out;
-} 
+}
 
-div#ld-menu-buttons > div:hover {
+div#ld-menu-buttons>div:hover {
     opacity: 0.25;
     transition: all 0.5s ease-in-out;
     cursor: pointer;
-} 
+}
 
-div#ld-menu-buttons > div.empty:hover {
+div#ld-menu-buttons>div.empty:hover {
     cursor: initial;
-} 
+}
 
 div#ld-menu #ld-slides-button {
     background-image: url('icons/slides.svg');
@@ -477,11 +472,15 @@ LectureDoc has special support for creating stack based layouts.
 
 /*  
 
-Styling of scrollable elements 
+.scrollable
+_________________
+
+Styling of scrollable elements. In general, it is necessary to put the content which should be scrollable in a div with the class "scrollable".  
 
 */
 
-.scrollable { /* The user "class". */
+.scrollable {
+    /* The user "class". */
     overflow-y: scroll;
-    /* The height will be computed by JavaScript depending on the mode.  */ 
+    /* The height will be computed by JavaScript depending on the mode.  */
 }

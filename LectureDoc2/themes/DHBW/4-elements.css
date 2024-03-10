@@ -68,16 +68,15 @@ a:hover {
 .footnote-list {
     position: absolute;
     bottom: 10px;
-    font-size: smaller;
+    font-size: 0.75em;
     border-left: none;
     padding-left: none;
 }
 
 /*
-    Styling of list where each list item has multiple paragraphs, but all - except of the first one - should be rendered in a smaller font and in gray.
+    Styling of lists where each list item has multiple paragraphs, but all - except of the first one (rst wraps each block of text belonging to a list item in a div/p element) - should be rendered in a smaller font and in gray.
 */
-
-.list-with-explanations li *:not(:first-child) {
+.list-with-explanations>li>*:not(:first-child) {
     color: gray;
     font-size: smaller;
 }
@@ -104,8 +103,9 @@ a:hover {
     position: relative;
 }
 
-/*  The DIV element with the class ".ld-copy-to-clipboard-button" is added by LectureDoc; i.e.,
-    the copy-to-clipboard class has explicit support in LectureDoc's core */
+/*  The DIV with the class ".ld-copy-to-clipboard-button" is added by LectureDoc; 
+    i.e., the copy-to-clipboard class has explicit support in LectureDoc's core.
+*/
 .code.copy-to-clipboard div.ld-copy-to-clipboard-button {
     content: url(copy_to_clipboard.svg);
     opacity: 0;
@@ -143,17 +143,12 @@ a:hover {
 }
 
 
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-/* TODO move the following style definitions in them in the right place*/
-
-
 .center-child-elements {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-
 
 span.ger-quote::before {
     content: '„';
@@ -183,14 +178,89 @@ span.ger-quote::after {
     mix-blend-mode: luminosity;
 }
 
-
 /*
   Makes the title of a slide smaller.
 */
 .ld-slide.smaller-slide-title > h2{
-    font-size: 1.25rem; /* the default size is 1.5rem */
+    font-size: calc(var(--slide-font-size) * 1.2); /* the default size is 1.5rem */
 }
 
+blockquote {
+    padding: 0.2em 0.5em;
+    border-radius: 0.4em;
+    background-color: rgba(55, 55, 55, 0.075);
+}
+
+.epigraph {
+    font-family: var(--slide-serif-font-family);
+    font-style: italic;
+    font-variant-ligatures: additional-ligatures;
+}
+
+ul {
+    list-style-position: outside;
+    padding-left: 0.85em;
+}
+
+ol.loweralpha {
+    list-style-position: outside;
+    padding-left: 0em;
+    margin-left: 1.5em;
+}
+
+ol.arabic {
+    list-style-position: outside;
+    padding-left: 1.5em;
+}
+
+ol.arabic.long-list {
+    list-style-position: outside;
+    padding-left: 2em;
+}
+
+li {
+    padding-left: 0.25em;
+}
+
+ul.negative-list,
+ul > li.negative-list {
+    list-style-type: "❗️";
+}
+
+ul.positive-list,
+ul > li.positive-list {
+    list-style-type: "✓";
+}
+
+
+pre.code {
+    margin: 0;
+    border-radius: calc(var(--slide-border-radius) * 0.5);
+}
+
+/*
+
+    The following provides an option to rotate the title by 90 degrees.
+
+*/
+
+.ld-slide.vertical-title {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.ld-slide.vertical-title h2 {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* TODO move the following style definitions in them in the right place*/
 
 .admonition {
     padding: 0.55em;
@@ -226,66 +296,18 @@ aside.admonition-definition p.admonition-title {
     border-bottom: 2px solid white;
 }
 
-
-blockquote {
-    padding: 0.5em;
-    border-radius: 0.4em;
-    background-color: rgba(55, 55, 55, 0.075);
-}
-
-.epigraph {
-    font-family: var(--slide-serif-font-family);
-    font-style: italic;
-    font-variant-ligatures: additional-ligatures;
-}
-
 .complement {
     font-size: smaller;
-    background-color: rgb(240, 240, 240);
-    color: var(--dhbw-gray);
-    padding-left: 0.6em;
-    padding-right: 0.6em;
-    padding-top: 0.35em;
-    padding-bottom: 0.35em;
-    margin-top: -0.5em;
-    border-radius: 0.5em;
+    background-color: var(--dhbw-light-gray);
+    color: var(--dhbw-dark-gray);
+    padding: 0.35em 0.6em;
+    border-radius: 0.33em;
 }
 
 .topic-title {
     text-align: center;
     padding-top: 0.5em;
 }
-
-
-pre.code {
-    margin: 0;
-}
-
-
-ul {
-    list-style-position: outside;
-    padding-left: 1.1em;
-}
-
-ol {
-    list-style-position: outside;
-    padding-left: 1.1em;
-}
-
-li {
-    padding-left: 0.5em;
-}
-
-ul.negative-list,
-ul > li.negative-list {
-    list-style-type: "❗️";
-}
-
-ul.positive-list,
-ul > li.positive-list {
-    list-style-type: "✓";
-}
-
 
 /*
     Styling of warning asides. 
@@ -395,7 +417,7 @@ ul.impressive li {
     padding-bottom: 0.25em;
     width: 1200px;
     margin: auto;
-    box-shadow: 4px 4px 6px gray;
+    box-shadow: var(--br-shadow);
     border-radius: 0.25em;
 }
 
@@ -469,28 +491,6 @@ table.annotated-text :is(td, th):last-child:not(:empty) {
     text-align: justify;
 }
 
-
-/*
-
-    The following provides an option to rotate the title by 90 degrees.
-
-*/
-
-.ld-slide.vertical-title {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-}
-
-.ld-slide.vertical-title h2 {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    vertical-align: top;
-    margin: 0;
-    padding: 0;
-}
-
-
 div:not(.admonition).note {
     margin: 0.5em 0em;
     box-shadow: 4px 4px 6px gray;
@@ -508,9 +508,13 @@ div:not(.admonition).note {
 
 
 /*
-highlight-line-on-hover
-    2) highlight-on-hover 
-    3) compact
+    1) highlight-line-on-hover
+    2) highlight-on-hover
+    3) highlight-identical-cells
+    4) highlight-cell-on-hover
+
+    1) compact
+    
     4) no-table-borders
     5) no-inner-borders
     6) no-column-borders
@@ -518,6 +522,10 @@ highlight-line-on-hover
 table {
     border: 1.5px solid black;
     box-shadow: 4px 4px 8px gray;
+}
+
+table.text-align-center td {
+    text-align: center;
 }
 
 th,
@@ -532,6 +540,10 @@ up to the cell level.
 td:has(p>span.red) {
     background-color: var(--light-red);
     font-weight: bold;
+}
+
+table.highlight-cell-on-hover td:hover {
+    background-color: var(--dhbw-light-gray);
 }
 
 table.highlight-line-on-hover tr:hover {
@@ -614,11 +626,6 @@ table.no-column-borders :is(td, th) {
     border-right: 0;
 }
 
-.compact-ps>p {
-    margin-top: 0em;
-    margin-bottom: 0em;
-}
-
 /* 
 
     Adding "wobble" to the class list of a table makes the last row larger when it is shown.
@@ -672,7 +679,6 @@ table.no-column-borders :is(td, th) {
     border-radius: var(--slide-border-radius);
     box-shadow: var(--br-shadow);
 }
-
 
 .assessment {
     margin: 0.5em 0 0.5em 0;

@@ -624,7 +624,7 @@ a { text-decoration: none; }
 <dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2024-02-26</dd>
+<dd class="version">2024-03-09</dd>
 <dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
@@ -723,7 +723,7 @@ m(x) = x^8 + x^4 + x^3 +x +1
 </tbody>
 </table>
 </div><div class="vertical-title smaller-slide-title ld-slide" id="aes-ver-entschlusselungsprozess-br-key-size-128bits-10-runden">
-<h2>AES - Ver-/Entschlüsselungsprozess <span class="raw-html"><br></span> <span class="much-smaller">(Key Size 128bits ⇒ 10 Runden)</span></h2>
+<h2>AES - Ver-/Entschlüsselungsprozess <span class="raw-html"><br></span> <span class="far-smaller">(Key Size 128bits ⇒ 10 Runden)</span></h2>
 <img alt="AES Encryption and Decryption Process" class="align-center" src="drawings/aes/encryption_and_decryption_process.svg" style="height: 1150px;" />
 </div><div class="smaller ld-slide" id="aes-detaillierter-aufbau">
 <h2>AES Detaillierter Aufbau</h2>
@@ -1879,38 +1879,41 @@ InvMixColumns(S_i \oplus w_j) = InvMixColumns(S_i) \oplus InvMixColumns(w_j)
 </li>
 <li><p>Berechne <cite>w[8]</cite> und <cite>w[9]</cite>.</p></li>
 </ol>
-<div class="protected-exercise-solution">
-<p class="rubric">Formeln für die Berechnung des *RoundKey*</p>
-<div class="math">
-\begin{equation*}
-w[8] = w[4] \oplus g(w[7])
-\end{equation*}
-</div>
-<div class="math">
-\begin{equation*}
-w[9] = w[5] \oplus w[8]
-\end{equation*}
-</div>
-<div class="math">
-\begin{equation*}
-w[10] = w[6] \oplus w[9]
-\end{equation*}
-</div>
-<div class="math">
-\begin{equation*}
-w[11] = w[7] \oplus w[10]
-\end{equation*}
-</div>
-</div><div class="protected-exercise-solution">
-<p class="rubric">Berechnung von :math:`w[8]` und :math:`w[9]`</p>
-<pre class="literal-block">g(w[7]):
-    1. after left shift of w[7]:              79 A2 93 D6
-    2. after s-box substituion:               B6 3A DC F6
-    3. after add RoundConstant (02 00 00 00):  B4 3A DC F6
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">sec-aes/folien.rst</span>, line 713)</p>
+<p>Unknown directive type &quot;protected-exercise-solution&quot;.</p>
+<pre class="literal-block">.. protected-exercise-solution:: Formeln für die Berechnung des *RoundKey*
 
-w[8] = E2 32 FC F1 xor B4 3A DC F6 = 56 08 20 07
-w[9] = w[8]                      xor 91 12 91 88 = C7 1A B1 8F</pre>
-</div></div><div class="integrated-exercise ld-slide" id="ubung-aes-128">
+    .. math::
+
+        w[8] = w[4] \oplus g(w[7])
+
+        w[9] = w[5] \oplus w[8]
+
+        w[10] = w[6] \oplus w[9]
+
+        w[11] = w[7] \oplus w[10]
+</pre>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">sec-aes/folien.rst</span>, line 725)</p>
+<p>Unknown directive type &quot;protected-exercise-solution&quot;.</p>
+<pre class="literal-block">.. protected-exercise-solution:: Berechnung von :math:`w[8]` und :math:`w[9]`
+
+    ::
+
+        g(w[7]):
+            1. after left shift of w[7]:              79 A2 93 D6
+            2. after s-box substituion:               B6 3A DC F6
+            3. after add RoundConstant (02 00 00 00):  B4 3A DC F6
+
+        w[8] = E2 32 FC F1 xor B4 3A DC F6 = 56 08 20 07
+        w[9] = w[8]                      xor 91 12 91 88 = C7 1A B1 8F
+
+
+</pre>
+</aside>
+</div><div class="integrated-exercise ld-slide" id="ubung-aes-128">
 <h2>Übung (AES-128)</h2>
 <p>Nehmen wir an, dass der Zustand (<em>State</em>) folgendermaßen sei:</p>
 <pre class="literal-block">00 3C 6E 47
@@ -1921,19 +1924,35 @@ w[9] = w[8]                      xor 91 12 91 88 = C7 1A B1 8F</pre>
 <li><p>Führen Sie den <em>Substitute Bytes</em> Schritt durch (Anwendung der S-box Transformation).</p></li>
 <li><p>Führen Sie die <em>Shift Rows Transformation</em> auf dem Ergebnis des vorherigen Schrittes durch.</p></li>
 </ol>
-<div class="protected-exercise-solution">
-<p class="rubric">Substitute Bytes</p>
-<pre class="literal-block">63 EB 9F A0
-C0 2F 93 92
-AB 30 AF C7
-20 CB 2B A2</pre>
-</div><div class="protected-exercise-solution">
-<p class="rubric">Shift Rows</p>
-<pre class="literal-block">63 EB 9F A0
-2F 93 92 C0
-AF C7 AB 30
-A2 20 CB 2B</pre>
-</div></div><div class="integrated-exercise ld-slide" id="ubung-aes-128-mix-columns-transformation">
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">sec-aes/folien.rst</span>, line 759)</p>
+<p>Unknown directive type &quot;protected-exercise-solution&quot;.</p>
+<pre class="literal-block">.. protected-exercise-solution:: Substitute Bytes
+
+    ::
+
+        63 EB 9F A0
+        C0 2F 93 92
+        AB 30 AF C7
+        20 CB 2B A2
+</pre>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">sec-aes/folien.rst</span>, line 768)</p>
+<p>Unknown directive type &quot;protected-exercise-solution&quot;.</p>
+<pre class="literal-block">.. protected-exercise-solution:: Shift Rows
+
+    ::
+
+        63 EB 9F A0
+        2F 93 92 C0
+        AF C7 AB 30
+        A2 20 CB 2B
+
+
+</pre>
+</aside>
+</div><div class="integrated-exercise ld-slide" id="ubung-aes-128-mix-columns-transformation">
 <h2>Übung (AES-128) - <em>Mix Columns Transformation</em></h2>
 <p>Nehmen wir an, dass der Zustand (<em>State</em>) folgendermaßen sei:</p>
 <pre class="literal-block">6A 59 CB BD
@@ -1945,24 +1964,23 @@ A2 20 CB 2B</pre>
 CE 4D 4B C2
 89 71 BE 88
 65 47 97 CD</pre>
-<div class="protected-exercise-solution">
-<p class="rubric">Mix Columns Transformation</p>
-<div class="math">
-\begin{equation*}
-0x02 \times 0x6A = (simple\; left\; shift\; of\; 6A): 1101\, 0100_b
-\end{equation*}
-</div>
-<div class="math">
-\begin{equation*}
-0x03 \times 0x4E = 0x4E \oplus (0x02 \times 0x4E) = 0100\, 1110_b \oplus 1001\, 1100_b = 1101 0010_b
-\end{equation*}
-</div>
-<div class="math">
-\begin{equation*}
-S'_{0,0} = 1101\, 0100_b \oplus 1101\, 0010_b \oplus 0x98 \oplus 0x8B = 0x15
-\end{equation*}
-</div>
-</div></div><div class="integrated-exercise ld-slide" id="ubung-aes-128-roundkey-anwendung">
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">sec-aes/folien.rst</span>, line 802)</p>
+<p>Unknown directive type &quot;protected-exercise-solution&quot;.</p>
+<pre class="literal-block">.. protected-exercise-solution:: Mix Columns Transformation
+
+     .. math::
+
+        0x02 \times 0x6A = (simple\; left\; shift\; of\; 6A): 1101\, 0100_b
+
+        0x03 \times 0x4E = 0x4E \oplus (0x02 \times 0x4E) = 0100\, 1110_b \oplus 1001\, 1100_b = 1101 0010_b
+
+        S'_{0,0} = 1101\, 0100_b \oplus 1101\, 0010_b \oplus 0x98 \oplus 0x8B = 0x15
+
+
+</pre>
+</aside>
+</div><div class="integrated-exercise ld-slide" id="ubung-aes-128-roundkey-anwendung">
 <h2>Übung (AES-128) - <em>RoundKey</em> Anwendung</h2>
 <p>Wenden Sie den folgenden <em>RoundKey</em>:</p>
 <p><span class="docutils literal"><span class="pre">-w[x]------</span>   <span class="pre">-w[x+1]----</span>   <span class="pre">-w[x+2]----</span>   <span class="pre">-w[x+3]----</span></span></p>
@@ -1972,24 +1990,37 @@ S'_{0,0} = 1101\, 0100_b \oplus 1101\, 0010_b \oplus 0x98 \oplus 0x8B = 0x15
 16 0C 05 3A
 3D C1 DE 2A
 B3 4B 5A 0A</pre>
-<div class="protected-exercise-solution">
-<p class="rubric">RoundKey Anwendung</p>
-<p>Denken Sie daran, dass der <em>RoundKey</em> auf die Spalte angewendet wird!</p>
-<pre class="literal-block">78 70 99 4B
-76 76 3C 39
-30 7D 37 34
-54 23 5B F1</pre>
-</div></div><div class="integrated-exercise ld-slide" id="ubung-aes-128-1">
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">sec-aes/folien.rst</span>, line 834)</p>
+<p>Unknown directive type &quot;protected-exercise-solution&quot;.</p>
+<pre class="literal-block">.. protected-exercise-solution:: RoundKey Anwendung
+
+    Denken Sie daran, dass der *RoundKey* auf die Spalte angewendet wird!
+
+    ::
+
+        78 70 99 4B
+        76 76 3C 39
+        30 7D 37 34
+        54 23 5B F1
+
+
+</pre>
+</aside>
+</div><div class="integrated-exercise ld-slide" id="ubung-aes-128-1">
 <h2>Übung (AES-128)</h2>
 <p>Fragen Sie sich, was passiert, wenn Sie einen Block, der nur aus <span class="docutils literal">0x00</span> Werten besteht, mit einem Schlüssel verschlüsseln, der ebenfalls nur aus <span class="docutils literal">0x00</span> Werten besteht?</p>
-<div class="protected-exercise-solution">
-<p class="rubric">0x00 Schlüssel und Daten</p>
-<ul class="simple">
-<li><p>Die erste Substitution wird alle Werte auf denselben Wert abbilden: <span class="math">\(0x63\)</span>'.</p></li>
-<li><p>Die Zeilenverschiebung hat keine Auswirkung.</p></li>
-<li><p>Spalten mischen (weil die Werte nicht mehr <span class="math">\(0x00\)</span> sind, führt dies zu einer gewissen Diffusion <span class="math">\(0x02 \times 0x63\)</span> und <span class="math">\(0x03 \times 0x63\)</span> ist nicht <span class="math">\(0x63\)</span>. )</p></li>
-<li><p><em>AddRoundKey</em> wirkt sich ebenfalls aus und führt (schon in der ersten Runde) zu einiger Konfusion.</p></li>
-</ul>
-</div></div>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">sec-aes/folien.rst</span>, line 854)</p>
+<p>Unknown directive type &quot;protected-exercise-solution&quot;.</p>
+<pre class="literal-block">.. protected-exercise-solution:: 0x00 Schlüssel und Daten
+
+    - Die erste Substitution wird alle Werte auf denselben Wert abbilden: :math:`0x63`'.
+    - Die Zeilenverschiebung hat keine Auswirkung.
+    - Spalten mischen (weil die Werte nicht mehr :math:`0x00` sind, führt dies zu einer gewissen Diffusion :math:`0x02 \times 0x63` und :math:`0x03 \times 0x63` ist nicht :math:`0x63`. )
+    - *AddRoundKey* wirkt sich ebenfalls aus und führt (schon in der ersten Runde) zu einiger Konfusion.
+</pre>
+</aside>
+</div>
 </body>
 </html>

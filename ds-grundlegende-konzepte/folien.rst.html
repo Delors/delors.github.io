@@ -5,11 +5,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="version" content="LD2 0.1" />
 <meta content="Michael Eichberg" name="author" />
-<meta content="&quot;Java&quot;, &quot;Concurrency&quot;" name="keywords" />
-<meta content="Nebenläufigkeit in Java" lang="de" name="description" xml:lang="de" />
-<meta content="Concurrency in Java" lang="en" name="description" xml:lang="en" />
-<meta content="lecture-ds-nebenlaeufigkeit" name="id" />
+<meta content="&quot;Lamport Clock&quot;, &quot;2PC&quot;" name="keywords" />
+<meta content="Grundlegende Konzepte verteilter Systeme: Lamport-Uhren und 2PC" lang="de" name="description" xml:lang="de" />
+<meta content="Basic concepts of distributed systems: Lamport Clocks and 2PC" lang="en" name="description" xml:lang="en" />
+<meta content="lecture-ds-2pc-und-zeit" name="id" />
 <meta content="last-viewed" name="first-slide" />
+<meta content="2024-WirklichSchwierig!" name="exercises-master-password" />
 <title>Grundlegende Konzepte verteilter Systeme</title>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml.js?config=TeX-AMS_CHTML"></script>
 <link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
@@ -646,7 +647,7 @@ a { text-decoration: none; }
 </dl>
 </div>
 <div class="footer-left tiny minor docutils container">
-<p>Version: 2024-02-29</p>
+<p>Version: 2024-03-06</p>
 </div>
 </div>
 <div class="center-child-elements ld-slide" id="section-1">
@@ -827,7 +828,7 @@ Gangunterschied: x = \frac{(T_2 - T_1) - (T_4 - T_3)}{2}
 </ol>
 <img alt="images/lamport-exercise/task.svg" class="box-shadow rounded-corners align-center" src="images/lamport-exercise/task.svg" style="width: 60%;" />
 <div class="ld-exercise-solution">
-wSPF78IYnfakE5NK8EPHiQ==:jYHSB6gQbeaNmp6Crez4RTHI8nCd2R9y7tmLLpk7xCzgAjWMFjl9XOpsZFe3IjMaSqOl/1NYEC9oC8zI9wpr5DsFEM56ueLVvVudnYG9Zw4MVqHkIqTpz9/st8IHYLHgqJU3pN4JWUNjp+32gEp3irNvzbdYgFkr/Nm2JAGCHB2LjBc754gnYD4oEmKWjlujh5xmjbIRK7J1hjSPfVMdhvkSB3uPy6+sEtJP52y3QSQ0C+pcoMk2ID2FrM02Iy/ocWHF0YjDC4dY9aZAo8MGDOJ48QwLPQ0UTj+/+R8f0vbHNVMI2zC3HadXyBTg5Tz/8jwFSAKMGTXMY/c8CAHyAnHGs8FS7qMj63aTQ4IetnpvweskXzDgD7R34IAGvH4Do5tkNeQQpqyGFjM3Db+n5La1XbEpG+TG1wfl0phoFK6EAWNTx8WMxIdAkGT4dt4miA3tJKqY3UaQ4kfTzjVU8bEMSBiCOpBAtfeOLSDMpFWA5ohCjFY5HwK62hQHtUElbhNGO0ppQDbKJqPqjqZ7a2oxoBqCQuPp6hcnztoL5Gc3e+3Q/GJEYzhnHG6PP/HU8aUW2LzNcJ88QnM=</div></div></div><div class="new-section ld-slide" id="verteilte-transaktionen">
+MTAwMDAw:0oD3AxIRBXfea2XPzzRXEfYzuSF0W9DFsXw0XaO0Abg=:dS+4RbVuXdZ+tHGL:PBGGORUqe3PMNVYZWsq6ilx/PW5MVw3e3tuayH/qr4H8PQEk3hwIx35aa9GetWac9gY/Gmox5EiM1eWGEbUnFI8zXgGykpfnF0mJn69OG9HxwTBNgGqL//n0L9JGAoC4smCR+ME537jkdNxj8AxGwUscxx7X1B/ZvIOQmTXyixT2+migR2c3VR6Pyd+n9WjU0faBMrhfr2MscsgvClGHnJ/ZSeqr6awceVKc2xWMtjew/GMlvPo/K663v+XYDtBV2sx3C/wJE5BSPklAc0OOcpfYbR6G88aA/MKTChPHGq3Zg7k6WToSKaJ8NFqQPOiiomL29ptQiUnVNM7h+FKwRVgnNZFnCh9yFRw+OH5rLjiwBuObRq1gYCATGW5/VPWlJleK7AwBJHxZfD8DdKmawSESaiBriCmici1Ni3ylOXAF/KM5DvGA55PrhoFLNKEfb0RBob7n0EzVskLdEYT6Bi0SUzzf/YIlrRRHJECTUcUzkZnKlFgX19+KLC/NDWoGAECghWHSev+AvKGlAcntkiXLb+kd8Pv1AKa++KmzEhNaL3auIRCKwwuBwv3phk6zErV4SpZlc+pIpOr2LwM7RYfMtVAb1Cc31lKe</div></div></div><div class="new-section ld-slide" id="verteilte-transaktionen">
 <h2>Verteilte Transaktionen</h2>
 </div><div class="ld-slide" id="atomic-commit-protocol">
 <h2><span class="ger-quote">Atomic Commit Protocol</span></h2>
@@ -875,7 +876,7 @@ wSPF78IYnfakE5NK8EPHiQ==:jYHSB6gQbeaNmp6Crez4RTHI8nCd2R9y7tmLLpk7xCzgAjWMFjl9XOp
 </li>
 <li><p><strong>Entscheidungsphase</strong>:</p>
 <ul class="incremental simple">
-<li><p>Falls alle <span class="math">\(P_i\)</span> mit READY geantwortet haben, sendet <span class="math">\(K\)</span> COMMIT an alle <span class="math">\(P_i\)</span>; anderenfalls sendet K eine ABORT-Nachricht an alle <span class="math">\(P_i\)</span></p></li>
+<li><p>Falls alle <span class="math">\(P_i\)</span> mit READY geantwortet haben, sendet <span class="math">\(K\)</span> COMMIT an alle <span class="math">\(P_i\)</span>; anderenfalls sendet <span class="math">\(K\)</span> eine ABORT-Nachricht an alle <span class="math">\(P_i\)</span></p></li>
 <li><p>Falls die Entscheidung COMMIT war, machen alle <span class="math">\(P_i\)</span> die Transaktion <em>stabil</em></p></li>
 <li><p>Falls die Entscheidung ABORT war, setzen alle <span class="math">\(P_i\)</span> die Transaktion zurück.</p></li>
 <li><p>Alle <span class="math">\(P_i\)</span> senden schließlich eine OK-Nachricht an <span class="math">\(K\)</span></p></li>
@@ -887,10 +888,10 @@ wSPF78IYnfakE5NK8EPHiQ==:jYHSB6gQbeaNmp6Crez4RTHI8nCd2R9y7tmLLpk7xCzgAjWMFjl9XOp
 </div></div><div class="integrated-exercise ld-slide" id="ubung-1">
 <h2>Übung</h2>
 <div class="ld-exercise">
-<p class="rubric">Two-Phase-Commit-Protokoll</p>
+<p class="rubric">Two-Phase-Commit</p>
 <p>Analysieren Sie, wie das Two-Phase-Commit-Protokoll mit Fehlersituationen umgeht.</p>
 <p>Welche Fehler können zu welchen Zeitpunkten auftreten und welche kann das Protokoll beheben?</p>
 <div class="ld-exercise-solution">
-AYR/XXWDCy2zW/1/iNXcag==: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</div></div></div>
+MTAwMDAw:5JA1IPYhpUpgvMbNsGOyL7J9csOiQmWbfH8WXpMsCSI=:HJg1/fRJx5hWInq+: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</div></div></div>
 </body>
 </html>
