@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="exercise-passwords" content="$MTAwMDAw:3954b18iFxmhL6275j84Y6lX4b5gqMh8aTun1ZBXQJQ=:PImCxC7/KCE/Qrvs:/C1CJ6nfXYoqi8sFD/5h+9npXlKCNMKVT3ixKJmtRYzAlvMbtSElDdu+Y82go6D8xFAL7B5r6FJRyluVdo2YJ6mVE+m8zewRSKAvPACRsLwxzS7zAeBBzs4Q5f+ItvxGQFbmMKj4FukXgkP+f3tStqmBTtbloDcXSqaioX3nbJa49uzmDYLdKyf88H9YoFx9+Ps1t/6CqH7RhrWjXEeT37jl3sMqOCfhVpsqpMtm5dWvr+I4XnpRDMwRiDOAGM5j6VC9ufGrZN6lKaVLDtKZkmDO8d9AA9GD/QgMeBp3hT9RPJ3lhd0QtaZB6ZbiaEZMQHo8EytwJzWcetSBR+ILA7yfxvicIsC68v1aJOIn9IYmqcvyNv009k6CC3YCylHJ19q0VrHy94DGYIB6+BocxjbhmuHXVNDHcceeo5VCO3GUexfcIg3K90ocj4XejTbTADsPJXj9JtZGGaKvLR+qhtCz5ytxN2oObVQrqPQbAtccQVE7lfQNJW+x+yCxqOlii5cgsUUqVXqQIpykmAdqvP+Qzteu85yMVtgwruP05Ws86pxmIf6QMqet47BuewusiFQh8a0k4cSgzfWPLyX2H+SW3JN039GHcA98QLDLBuAC55vdShZsdVIGkAgr+j5w0Shxs5aCTSF5nQPu8Mh3VXzr020LmRO3ac/hyfkQSzBtC/y7fZD2qiJhLc97CD90toKduH1QgQZXud3/PoXmbohraRI5BEWYhl/NacOiW1aELU6fhQby" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;TOR&quot;" name="keywords" />
+<meta content="TOR" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-sec-tor" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>TOR - The Onion Router</title>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml.js?config=TeX-AMS_CHTML"></script>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">TOR - The Onion Router</h1>
+<dl class="docinfo simple">
+<dt class="dozent">Dozent<span class="colon">:</span></dt>
+<dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt class="kontakt">Kontakt<span class="colon">:</span></dt>
+<dd class="kontakt"><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2024-03-13</dd>
+</dl>
+</div>
+<div class="ld-slide" id="tor-the-onion-router-1">
+<h2>Tor (The Onion Router)</h2>
+<ul class="incremental simple">
+<li><p>Anwendungsunabhängiger <strong>low-latency Anonymisierungsdienst für TCP-Verbindungen</strong>, der den Standort und die IP des Nutzers verschleiert</p></li>
+<li><p>Typische Anwendung: anonymes Surfen im Internet und Instant Messaging (z. B. Briar)</p></li>
+<li><p>Frei und Open Source</p></li>
+<li><p>gegründet 2002, öffentlich nutzbar seit 2003, Code seit 2004 frei verfügbar</p></li>
+<li><p>Baut ein <em>Overlay-Netzwerk</em> auf</p></li>
+<li><p>Grundlegendes Prinzip: Onion Routing</p></li>
+</ul>
+<div class="supplemental docutils container">
+<dl class="field-list simple">
+<dt>low-latency<span class="colon">:</span></dt>
+<dd><p>Die Verzögerung durch die Anonymisierung ist so gering, dass Tor für Instant Messaging und das Surfen im Internet verwendet werden kann.</p>
+</dd>
+<dt>Overlay-Netzwerk<span class="colon">:</span></dt>
+<dd><p>Tor baut ein eigenes Netzwerk auf, welches auf dem Internet aufsetzt. Die Verbindungen zwischen den Tor-Knoten werden von Tor zusätzlich verschlüsselt.</p>
+</dd>
+</dl>
+</div>
+</div><div class="ld-slide" id="tor-verwendung-und-sicherheit">
+<h2>Tor - Verwendung und Sicherheit</h2>
+<ul class="incremental">
+<li><p>legale/intendierte Nutzungen: Nutzer mit allg. Datenschutzbedürfnissen, <em>Whistleblowers</em>, Dissidenten, Journalisten, ...</p></li>
+<li><p>illegale Zwecke (Darknet).</p>
+<div class="smaller minor docutils container">
+<p>Es wird geschätzt, dass etwa 80% des Datenverkehrs im Zusammenhang mit dem Zugriff auf Kinderpornografie steht. Solche Schätzungen sind allerdings mit Vorsicht zu genießen!</p>
+</div>
+</li>
+<li><p>Mehrere Sicherheitslücken wurden in der Vergangenheit gefunden und geschlossen. Die Angriffe <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> waren:</p>
+<ul class="simple">
+<li><p><span class="minor">DoS Attacken</span></p></li>
+<li><p>Deanonymisierungsattacken</p></li>
+<li><p>Identifikation von <em>Onion Services</em> (aka <em>Hidden Services</em>)</p></li>
+</ul>
+</li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://github.com/Attacks-on-Tor/Attacks-on-Tor#correlation-attacks">Aufstellung von Angriffen auf Tor</a>.</p>
+</aside>
+</aside>
+<div class="supplemental docutils container">
+<blockquote class="epigraph">
+<p>[Sicherheitslücke gefunden in 2013] Wenn ein einzelner Nutzer Tor über einen längeren Zeitraum [3 bis 6-Monate, abhängig von einigen Faktoren] regelmäßig nutzt, ist es fast sicher, dass er <em>de-anonymisiert</em> werden kann.</p>
+<p>[Übersetzt mit DeepL.]</p>
+<p class="attribution">—<a class="reference external" href="https://www.infosecurity-magazine.com/news/tor-is-not-as-safe-as-you-may-think/">https://www.infosecurity-magazine.com/news/tor-is-not-as-safe-as-you-may-think/</a></p>
+</blockquote>
+<p>Surface web vs. Deep web vs. Dark web</p>
+</div>
+</div><div class="ld-slide" id="tor-hintergrund">
+<h2>Tor - Hintergrund</h2>
+<ul class="incremental simple">
+<li><p>Die grundlegende Idee ist es eine Trennung zwischen der Quelle und dem Ziel des Datenverkehrs zu schaffen.</p></li>
+<li><p>Der Datenverkehr wird über <em>mehrere Knoten</em> (<em>Relays</em>) umgeleitet, die jeweils nur den vorherigen und den nächsten Knoten kennen. Der Weg den ein Datenpaket nimmt, wird als <em>Circuit</em> oder <em>Path</em> bezeichnet.</p></li>
+<li><p>Der Pfad wird dazu vorher ausgewählt und der gesamte Datenverkehr entsprechend des Pfades verschlüsselt.</p></li>
+<li><p>Tor bietet Anonymität auch für die Serverseite durch <em>Onion Services</em> (auch <em>Hidden Services</em>), die nur über eine von Tor vergebene Onion-Adresse erreicht werden können.</p></li>
+</ul>
+</div><div class="ld-slide" id="tor-bedrohungsmodel">
+<h2>Tor - Bedrohungsmodel</h2>
+<p>Tor bietet Schutz for folgenden Angreifern: Einem Angreifer dem es gelingt ...</p>
+<ul class="simple">
+<li><p>einen Teil der Kommunikation zu beobachten und</p></li>
+<li><p>nur einen Teil der Tor-Knoten zu kontrollieren, indem er entweder einen eigenen Tor-Knoten (<em>Relay</em>; früher <em>Onion-Router</em>) betreibt oder einen bereits laufenden Knoten kompromittiert.</p></li>
+</ul>
+<aside class="admonition incremental margin-top-2em">
+<p class="admonition-title">Warnung</p>
+<p>Folgendes Szenario ist nicht abgedeckt: Ein Angreifer, der beide Enden der Kommunikation, den <span class="docutils literal">Entry Guard</span> und den <span class="docutils literal">Exit Node</span> überwachen kann.</p>
+<p>Gegen solche Angreifer bietet Tor keine Anonymität.</p>
+</aside>
+</div><div class="ld-slide" id="tor-aufbau">
+<h2>Tor - Aufbau</h2>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<img alt="Tor - Network" class="align-center" src="images/tor/base-network.svg" style="height: 960px;" />
+</div>
+<div class="layer incremental overlay docutils container">
+<img alt="Tor - Directory Authority" class="align-center" src="images/tor/directory-authority.svg" style="height: 960px;" />
+</div>
+<div class="layer incremental overlay docutils container">
+<img alt="TOR - Bridges and Bridge Nodes" class="align-center" src="images/tor/bridge-nodes.svg" style="height: 960px;" />
+</div>
+<div class="layer incremental overlay docutils container">
+<img alt="TOR - Onion Routing" class="align-center" src="images/tor/msg.svg" style="height: 960px;" />
+</div>
+</div>
+<div class="supplemental docutils container">
+<p><a class="reference external" href="https://spec.torproject.org">Spezifikation</a></p>
+<dl class="field-list">
+<dt>Tor-Knoten<span class="colon">:</span></dt>
+<dd><p>Rechner, die das Tor-Netzwerk bilden. Es gibt drei Arten von Tor-Knoten:</p>
+<ul class="simple">
+<li><p><em>Entry Nodes</em> (auch <em>Guard Nodes</em>): Diese Knoten sind die ersten Knoten in der Kette. Sie kennen die IP-Adresse des Clients. Sie können den Datenverkehr nicht entschlüsseln. Sie können aber sehen, dass der Datenverkehr von einem bestimmten Client kommt.</p></li>
+<li><p><em>Middle Nodes</em>: Diese Knoten sind die mittleren Knoten in der Kette. Sie kennen weder die IP-Adresse des Clients noch die IP-Adresse des Ziels. Sie können den Datenverkehr nicht entschlüsseln. Sie können aber sehen, dass der Datenverkehr von einem bestimmten Entry Node kommt und an einen bestimmten Exit Node geht.</p></li>
+<li><p><em>Exit Nodes</em>: Diese Knoten sind die letzten Knoten in der Kette. Sie kennen die IP-Adresse des Ziels. Sie können den Datenverkehr entschlüsseln. Sie können aber nicht sehen, von welchem Entry Node der Datenverkehr kommt.</p></li>
+<li><p><em>Bridge Nodes</em>: Diese Knoten sind <em>Entry Nodes</em>, die nicht bzw. nicht vollständig öffentlich bekannt. Diese dienen ggf. dazu in Ländern, in denen Tor blockiert wird, den Zugang zu Tor zu ermöglichen. Sollte eine Verbindung zu einer Bridge nicht hergestellt werden können, aufgrund der Struktur der Nachrichten - zum Beispiel aufgrund der Verwendung von <em>Deep Packet Inspection</em> - dann ist es möglich diese mit Hilfe von <em>Pluggable Transports</em> zu verschleiern.</p></li>
+</ul>
+</dd>
+<dt>Tor-Netzwerk<span class="colon">:</span></dt>
+<dd><p>besteht aus mehreren tausend Tor-Knoten. Viele Knoten sind freiwillig betriebene Knoten.</p>
+</dd>
+<dt>Circuit/Path<span class="colon">:</span></dt>
+<dd><p>Ein Circuit besteht typischerweise aus drei Knoten: <em>Entry Node</em>, <em>Middle Node</em> und <em>Exit Node</em>. Mehr Knoten sind möglich, haben jedoch nur einen geringen Einfluss auf die Sicherheit. Die Übertragung der Daten zwischen diesen Knoten erfolgt verschlüsselt. In welcher Form die Daten vom <em>Exit Node</em> zum Ziel übertragen werden, ist nicht Teil von Tor. Hat der Client eine verschlüsselte Verbindung initiiert (HTTPS), dann ist auch der Datenverkehr zwischen dem Exit Node und dem Ziel (noch) verschlüsselt ansonsten nicht und der Exit Node kann den Datenverkehr lesen.</p>
+</dd>
+<dt>Directory Authority<span class="colon">:</span></dt>
+<dd><p>Knoten, die die Liste der aktiven Tor-Knoten verwalten. Diese Liste wird von allen Tor-Knoten regelmäßig in Hinblick auf das <em>Consensus Document</em> bzgl. der Knoten und deren Eigenschaften sowie Zustand abgefragt. Das <em>Consensus Document</em> wird von den <em>Directory Authorities</em> einmal pro Stunde gemeinsam erstellt und beschreibt die relevanten Eigenschaften jedes Tor-Knotens. Die Authentizität des <em>Consensus Document</em> wird durch die Signaturen der <em>Directory Authorities</em> nachgewiesen.</p>
+<p>Es gibt (Stand 2023) 9 <em>Directory Authorities</em>.</p>
+</dd>
+<dt><span class="eng">Onion Routing</span><span class="colon">:</span></dt>
+<dd><p>bedeutet, dass die Datenpakete mehrfach verschlüsselt werden. Jeder Tor-Knoten kann nur die Verschlüsselungsschicht entfernen, für die er den Schlüssel hat. Die Schlüssel werden mit dem Client während des Aufbaus des Circuits ausgehandelt. Es gibt für jeden Tor-Knoten einen eigenen Schlüssel und die Nachrichten werden in umgekehrter Reihenfolge der Tor-Knoten entlang des Pfades verschlüsselt. d. h. die Verschlüsselung für den Entry Node wird als letztes angewendet, da diese als erstes entfernt wird.</p>
+</dd>
+<dt>Cells<span class="colon">:</span></dt>
+<dd><p>sind die Datenpakete, die zwischen den Tor-Knoten ausgetauscht werden. Cells sind immer 512Byte groß, um es unmöglich zu machen anhand der Größe der Datenpakete Rückschlüsse auf die Daten zu ziehen.</p>
+</dd>
+</dl>
+<aside class="admonition admonition-hinweis">
+<p class="admonition-title">Hinweis</p>
+<p>In älteren Dokumenten wird der <em>Client</em> auch als <em>Onion Proxy (OP)</em> bezeichnet und die Tor-Knoten als <em>Onion Router (OR)</em>. Die Tor-Knoten (<span class="eng">Nodes</span>) werden auch als <em>Onion Relay</em> bezeichnet.</p>
+</aside>
+</div>
+</div><div class="vertical-title tiny ld-slide" id="initiierung-eines-circuits-konzeptionell">
+<h2>Initiierung eines Circuits (konzeptionell)</h2>
+<img alt="Initiierung eines Circuits" class="align-center" src="images/tor/circuit-creation.svg" style="width: 1800px;" />
+<div class="supplemental docutils container">
+<p>Jeder Tor-Knoten verfügt über mehrere Keys. Für den Aufbau der Verbindung werden die <em>Onion Keys</em> verwendet. Mit Hilfe dieser werden die initialen Datenpakete mittels Public-Key Kryptografie verschlüsselt. Dies wird benötigt, um den AES Key - einer pro Knoten - der für den eigentlichen Versand benötigt wird, auszuhandeln und sicher zu übertragen.</p>
+<p>In der Grafik wird der Aufbau eines Circuits mit zwei Tor-Knoten dargestellt. Der Client kennt die Onion Keys der Tor-Knoten (<span class="docutils literal">OR1</span> und <span class="docutils literal">OR2</span>). Die Onion Keys werden verwendet, um die <em>Create</em> Zelle zu verschlüsseln. Der Entry Node verwendet diese Onion Keys um die <em>Create</em> Zelle zu entschlüsseln und den gemeinsamen Schlüssel zu erzeugen. Um einen längeren Pfad aufzubauen, muss der Client ggf. einfach mehrere <span class="docutils literal">Extend</span> Nachrichten versenden. Erhält ein Knoten eine Relay Nachricht, dann kann der Knoten diese mit dem mit ihm ausgehandelten AES Key entschlüsseln und die Nachricht weiterleiten. Er kann den Inhalt (zum Beispiel eine weitere Relay Nachricht oder eine Extend Nachricht) nicht lesen.</p>
+</div>
+</div><div class="ld-slide" id="tor-relays-in-deutschland">
+<h2>Tor Relays in Deutschland</h2>
+<img alt="Tor Relays gelistet von Tor Metrics Jan. 2024" class="align-center" src="images/tor-metrics-relays.png" style="height: 1050px;" />
+<div class="supplemental docutils container">
+<p><strong>Flags</strong></p>
+<p>Beschreibung jedes Tor-Knotens in Hinblick auf die Rolle des Knotens im Tor-Netzwerk. Zum Beispiel: kann der Knoten als Entry Node verwendet werden? Ist der Knoten schnell genug um als Exit Node verwendet zu werden?</p>
+<p>Auszug wichtiger <em>Flags</em>:</p>
+<dl class="field-list simple">
+<dt>HSDir<span class="colon">:</span></dt>
+<dd><p>Ein Router ist ein <em>v2 Hidden Service Directory</em></p>
+</dd>
+<dt>Running<span class="colon">:</span></dt>
+<dd><p>Eine Authority konnte sich innerhalb der letzten 45 Minuten mit dem Router verbinden.</p>
+</dd>
+<dt>Stable<span class="colon">:</span></dt>
+<dd><p>die gewichtet Zeit zwischen zwei Fehlern (<em>weighted MTBF</em>) ist größer als 7 Tage oder größer als der Median aller aktiven Router.</p>
+</dd>
+<dt>Valid<span class="colon">:</span></dt>
+<dd><p>eine Version von Tor wird ausgeführt, die von den Authorities als aktuell angesehen wird und keine bekannten Schwachstellen aufweist.</p>
+</dd>
+</dl>
+</div>
+</div><div class="ld-slide" id="informationen-uber-tor-relays">
+<h2>Informationen über Tor Relays</h2>
+<img alt="Tor Relay Snorlax" class="picture align-right" src="images/tor-relay-snorlax.png" style="width: 50%;" />
+<div class="smaller width-40 float-left docutils container">
+<div class="stack">
+<div class="layer incremental">
+<ul class="simple">
+<li><p>Viele Tor Relays werden von Freiwilligen betrieben</p></li>
+<li><p>In Deutschland gibt es viele Relays</p></li>
+<li><p>Hetzner ist diesbezüglich beliebt...</p></li>
+</ul>
+<div class="incremental docutils container">
+<p>... und deswegen steht Hetzner auf der Liste der zu <a class="reference external" href="https://community.torproject.org/relay/community-resources/good-bad-isps/">vermeidenden Hoster</a> (Stand Jan. 2024).</p>
+</div>
+</div><div class="layer incremental">
+<p>Ein Tor-Knoten wird as <span class="docutils literal">schnell</span> (<em>fast</em>) eingestuft, wenn er aktiv ist und eine Bandbreite von mindestens 100KB/s hat oder unter den Top 7/8tel aller bekannten aktiven Router ist.</p>
+<p>Zum Vergleich: Die durchschnittliche Bandbreite in Deutschland ist 80Mbit/s (cf. <a class="reference external" href="https://www.statista.com/statistics/1338657/average-internet-speed-germany/">Statista</a>).</p>
+<p>(Stand Jan. 2024)</p>
+</div></div></div>
+<div class="supplemental docutils container">
+<p>Pfade, die über die ganze Welt gehen verhindern, dass der <span class="docutils literal">Entry-</span> und <span class="docutils literal"><span class="pre">Exit-node</span></span> beim gleichen Anbieter liegen.</p>
+<img alt="Tor Circuit" class="picture align-center" src="images/tor-circuit.png" />
+<p><strong>Jan. 2024 - zu vermeidende Hoster</strong>:</p>
+<pre class="code text literal-block"><code>Frantech / Ponynet / BuyVM (AS53667)
+OVH SAS / OVHcloud (AS16276)
+Online S.A.S. / Scaleway (AS12876)
+Hetzner Online GmbH (AS24940)
+IONOS SE (AS8560)
+netcup GmbH (AS197540)
+Psychz Networks (AS40676)
+1337 Services GmbH / RDP.sh (AS210558)</code></pre>
+</div>
+</div><div class="ld-slide" id="tor-exit-nodes">
+<h2>Tor Exit Nodes</h2>
+<p>Die Anzahl der Exit nodes ist deutlich kleiner (2. Jan. 2024 - 1314 Einträge) als die Anzahl der Knoten. Dies liegt daran, dass die technischen Anforderungen höher sind (z. B. stabile IP Adressen) und insbesondere daran, dass die Betreiber der <span class="docutils literal">Exit nodes</span> darauf vorbereitet sein müssen ggf. (zahlreiche) Anfragen von den Behörden zu bekommen. <a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<img alt="Deutscher Tor Exit Node von der TU Berlin" class="picture align-center" src="images/tor-german-exit-node.png" />
+<div class="supplemental docutils container">
+<p>Reverse IP Lookup für 130.149.80.199 durchgeführt mit <a class="reference external" href="https://www.iplocation.net/ip-lookup">IP Location Service</a>.</p>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://community.torproject.org/relay/community-resources/tor-exit-guidelines/">Tor Exit Node Guidelines</a></p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="tor-relays-exit-policy">
+<h2>Tor Relays: <span class="docutils literal">Exit Policy</span></h2>
+<p>Jeder <span class="docutils literal">Node</span> legt in seiner <span class="docutils literal">Exit Policy</span> genau fest welchen Datenverkehr weiterleiten möchte:</p>
+<ul class="simple">
+<li><p>Es gibt offene Exit Nodes, die alle Anfragen weiterleiten.</p></li>
+<li><p>Es gibt Knoten, die die Daten nur an weitere Tor-Knoten weiterleiten.</p></li>
+<li><p>Es gibt Knoten, die nur bestimmte Dienste (z. B. HTTPs) weiterleiten.</p></li>
+<li><p>Es gibt <span class="ger-quote">private Exit Nodes</span>, die nur zu einem bestimmten Netz Verbindungen aufbauen.</p></li>
+</ul>
+</div><div class="ld-slide" id="onion-services-hidden-services">
+<h2>Onion Services/Hidden Services</h2>
+<ul>
+<li><p>Server, die Anfragen nur aus dem Tor-Netzwerk annehmen, werden als <em>Onion Services</em> (bzw. <em>Hidden Services</em>) bezeichnet.</p></li>
+<li><p><span class="docutils literal">.onion</span> ist eine <em>Pseudo</em>-Top-Level-Domain, die für Onion Services verwendet wird.</p></li>
+<li><p>Onion Services können nur über das Tor-Netzwerk erreicht werden.</p>
+<p><span class="minor">Onion-Adresse der New-York-Times im Tor Netzwerk: https://nytimesn7cgmftshazwhfgzm37qxb44r64ytbb2dj3x62d2lljsciiyd.onion (Aus Deutschland faktisch nicht nutzbar.)</span></p>
+</li>
+</ul>
+</div><div class="ld-slide" id="tor-browser">
+<h2>Tor Browser</h2>
+<p>Standardanwendung für den Zugriff auf das Tor-Netzwerk.</p>
+<div class="stack docutils container">
+<div class="layer clearfix docutils container">
+<img alt="Tor Browser mit Ney-York-Times - 01.01.2024" class="align-left" src="images/tor-onion-service-nyt.png" style="height: 848px;" />
+<div class="scriptsize docutils container">
+<p>Ergebnis nach mehreren Minuten Wartezeit und zwei Versuchen überhaupt eine Verbindung aufzubauen.</p>
+</div>
+</div>
+<div class="layer incremental docutils container">
+<p><strong>Sicherheitseinstellungen des Tor Browsers</strong></p>
+<dl class="field-list simple">
+<dt>Standard<span class="colon">:</span></dt>
+<dd><p>alle Browserfunktionen sind aktiviert.</p>
+</dd>
+<dt>Sicherer<span class="colon">:</span></dt>
+<dd><p>JavaScript ist auf Nicht-HTTPS-Seiten deaktiviert. Wenn JavaScript aktiviert ist, dann sind die Leistungsoptimierungen deaktiviert. Audio und Video (HTML5-Medien) sowie WebGL werden nur nach Mausklick abgespielt.</p>
+</dd>
+<dt>Sicher<span class="colon">:</span></dt>
+<dd><p>(zusätzlich) JavaScript ist immer deaktiviert. Einige Schriftarten, Symbole, mathematische Symbole und Bilder sind deaktiviert.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Das Tor-Netzwerk erlaubt ggf. das Setzen des <span class="docutils literal">Exit Nodes</span>, um zum Beispiel geografische Sperren zu umgehen. Entsprechende Dienstanbieter können dies jedoch leicht erkennen, da die Knoten des Tor Netzwerkes bekannt sind (<a class="reference external" href="https://check.torproject.org/torbulkexitlist">https://check.torproject.org/torbulkexitlist</a>) und verweigern dann den Zugriff.</p>
+</div>
+</div><div class="ld-slide" id="tor">
+<h2>Tor</h2>
+<ul class="positive-list incremental">
+<li><p>Schützt vor der Analyse des Datenverkehrs.</p>
+<p>Von <a class="reference external" href="https://securedrop.org/">SecureDrop</a> wird zum Beispiel für Whistleblower empfohlen sich mit dem SecureDrop Service über Tor zu verbinden und erst dann Dokumente hochzuladen.</p>
+</li>
+<li><p>Tor Browser schützt relativ effektiv vor Website-Fingerprinting.</p></li>
+</ul>
+<ul class="negative-list incremental simple">
+<li><p>Teilweise sehr langsam (insbesondere bei Onion Services).</p></li>
+<li><p>Monitoring des Netzwerks ist an den Grenzen möglich.</p></li>
+<li><p>Ende-zu-Ende Korrelation von Datenverkehr ist möglich.</p></li>
+<li><p>Die Anonymität hängt auch von der Anzahl der Nutzer ab.</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p><em>Website Fingerprinting</em></p>
+<p>Website Fingerprinting ermöglicht es die besuchten Websites anhand des Datenverkehrs zu identifizieren. Dabei wird nicht der Inhalt der Datenpakete analysiert, sondern die statistischen Eigenschaften des Datenverkehrs. Wie groß sind die Datenpakete (d. h. die ausgelieferten Dateien)? Wie viele Datenpakete werden wann verschickt? Wie lange dauert es bis ein Datenpaket verschickt wird (d. h. Geschwindigkeit der Webseite)? Wie lange dauert es bis ein Datenpaket ankommt?</p>
+<p><em>(Cross-)Browser Fingerprinting</em></p>
+<p>Durch das Sammeln vieler (auch kleiner) Informationen über den/die Browser und das Betriebssystem kann ein für praktische Zwecke hinreichend eindeutiger Fingerabdruck erstellt werden. Dieser kann dann zur Identifikation des Nutzers verwendet werden.</p>
+<p>Kleiner Auszug aus den möglichen Informationen:</p>
+<ul class="simple">
+<li><p>System Fonts</p></li>
+<li><p>Werden Cookies unterstützt?</p></li>
+<li><p>Betriebssystem</p></li>
+<li><p>Betriebssystem Sprache</p></li>
+<li><p>Keyboard layout</p></li>
+<li><p>Art/Version des Browsers</p></li>
+<li><p>verfügbare Sensoren: Beschleunigungssensor, Näherungssensor, Gyroskop</p></li>
+<li><p>verfügbare Browser Plugins</p></li>
+<li><p>HTTP-Header Eigenschaften</p></li>
+<li><p>CPU Klasse</p></li>
+<li><p>HTML 5 Canvas Fingerprinting</p></li>
+<li><p>Unterstützung von Multitouch</p></li>
+</ul>
+<p><em>Monitoring des Netzwerks an den Grenzen</em></p>
+<p>Hat in der Vergangenheit dazu geführt, dass Nutzer von Tor-Netzwerken identifiziert werden konnten.</p>
+<p><em>Ende-zu-Ende Korrelation von Datenverkehr</em></p>
+<p>Auch als <em>Traffic Confirmation</em> bekannt. Diese Art von Attacke ist möglich, wenn <em>Relays</em> am Anfang und am Ende der Verbindung kontrolliert werden. Die Angreifer können dann den Datenverkehr an beiden Enden beobachten und die Datenpakete korrelieren z. B. basierend auf statistischen Informationen über die Zeitpunkte und Volumen von Datenflüssen.</p>
+</div>
+</div><div class="integrated-exercise transition-move-left ld-slide" id="ubung-tor">
+<h2>Übung: Tor</h2>
+<ul>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Onion Services" id="ld-exercise-1">
+<p class="rubric">Onion Services</p>
+<p>Ist es für <em>Onion Services</em> (.onion) notwendig auf HTTPS zu setzen oder reicht HTTP für eine sichere Kommunikation? Ist die Verwendung von HTTPS ggf. sogar problematisch?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:imPLh3v9yyKbOW5N/aHETyp7QZ86Cxp5W3eqDqTCdo0=:ePMR91i+n0UIwCI2:iOVDeRMh6VnR6J75H30ihoktSOJz9DWepMQUC0jyfyNBvuQt+3e+mm5vrhdLGAFTVvRbkujIh8K+Ms9gy2haOSmUEr6hmwGRWxfxktwyL2LqRqgUQIxeN9tUFu7lU07HMvX9Do6OSBWLGrR90hnaD/hJb5M4HJCIYELnw6MN+D6f7JlcKpyKYh4KFlxFuGIXE0be1+MXLK16zobfzQgIB4Th69WFgdezRai2S8Wgbg3GRslswclGOeO+jrOk86FGhaMe3AiSSWvEHh45cEtMLkge1U/nd06fHwZgCT9rPBo4qnY9iANIUGsOQVyO0Z8UnlkxVHc9G1Mf9qGUuMYG44KibWJWBIXzQ3EgYQWz9LSNbl9OjnRxdQpBzHo51Q8SFGU9IJ/e3vt2Tomfkr1KITxfvv0QMnghvtHwJZJCZd/Ds7cCWJUuAC7PMsPXq9YFc5Jkkh9EX4do0X1aCMm7EV4Y7q9Bt37KcIZOi88rjGpxQ4x+RH4N6zsCDozn2KJXi+cMoi0TjklAHE+395opuIbtEphWcBIsznF5tGZzWikGSyYjNg2t6t2WCz4BwUbWBFLOJrL9NcDsz+9BQcwSM0E73QF2Mumbyi2+GnwOzGZU7902hl/6soGVAzZB0b0ftmAMgIBY/tZ2rf1BuudBucLR8Qhn2TpJPv8NZw5OVdeK4Fv16EXPlfV2hOolARNEaVjXlcOl6++Z1kBXKKArn0DMzpe6OHfFQ/aRTSXrOOP2AHbynFD4EDkMKwdYmyuSGjIXvAJjoBb1Po0Mde6/ygovHohTJnuxGj6kUIb97x1X</div>
+</div>
+</li>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - TOR und DNS Lookups" id="ld-exercise-2">
+<p class="rubric">TOR und DNS Lookups</p>
+<p>Warum führt der Tor Browser keine DNS Lookups durch? Warum ist dies wichtig und wer kann/muss es stattdessen machen?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:wt02JqXsaeAb2bwZXVY5jXKS6uvKKjQELKfvdgvLSvE=:hEH6Jg01n1us5HHp:n3POWxHVHJkQ0Wptk513h43Wa1dRVw0wZ5QFNTYIvwL6mvFJqsmkk6EjCz5npIrhfEyjc+NRap4UoAFxr8PEgvwwxn9c1lwSpmrnFBRMyCbdFYix3j++KSQ1vnHPbpK4EmPgD+JtGylfHR1z6psoWZ6HOr1FfeZmuIo0Utd+eRaFeLiyoE2BeZFgjBVb/qBwmgxW9PVtglZpOdpokucSDlC06ejrVEJ4BetRZyGsF67jtdKbRLxYhqudLSPaqDhbIv9XWlOvY+MXrV8hxonjapdDsLpUMxrO/31yS2kZlSwW4lHhoiL7rtVBDeYKeIZThwxm2W0C5D/BPjqi4gesfgLBs5iQ6vjjH+rLgARV3Id2h7+hnrvRuIs6GIaN3E6Vr4UqFqnzNvlHVc0F1OzYukHv3pFfWK/5pBvG7fLcgcve3xrM6n9h0tXp8lXsDihS8F7L+GNaHC7qM73oQLA9nsebKYbHVg==</div>
+</div>
+</li>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - TOR abschalten?" id="ld-exercise-3">
+<p class="rubric">TOR abschalten?</p>
+<p>Warum hätte das Abschalten von TOR auf kriminelle Aktivitäten im Internet vermutlich nur einen geringeren Einfluss?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:QNMsX6pSGvMyckxR92XQvJxDrymZw8YhT/h/ua+97T0=:+yjGH+9ssImpvnWz:zkWrxuKDfxwIZ5wnTkNvFuca2SINoUHpMmJnjVMsBbtVjPyTYIVh8WYXJ60YztBgc5HfMPpvMnSEoCGo0UqVXiGEsKBU9cvRLFFidWt2tCKRiNFyPz8ZhWJUeDWOJREvj2fj5T+YSdfrknt+RgCKV/F4QE05VAeGIy8tLaai+EguZKY2rz9BRlgCLwraxqpYIVYo07amypoaq/2RpFN2/3GhAA4wL6r0ILuRfrI4+GMRZL79kTKY6YoiQod0DHopySSZ16cOPwydRA==</div>
+</div>
+</li>
+</ul>
+</div><div class="integrated-exercise transition-move-left ld-slide" id="ubung-tor-1">
+<h2>Übung: Tor</h2>
+<ul>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Wie vergleichen sich Proxies und Tor-Knoten?" id="ld-exercise-4">
+<p class="rubric">Wie vergleichen sich Proxies und Tor-Knoten?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:4DP0MLz6vexIRi9fuaCmMIRhZt32gYyibT372zeV69w=:CDkXZIE1Xji2WlVD:GLQlRJlZ57Jw9rZeC5+CCFq0ziGY7KpJ5Nx4S+lj70XY2bD0vYLBdzy9WLBEO/CyHYRUn9fnm1pIeD4TiRJpaccQ7GpsYeKnF6zATYfPcm3elZjwJINZu6Kda5PdX8wW876/Gket5ZNC3oGb0vGPaK/4d3HJpi4CIzzb/hCKzFZLwdV5GcR6P8u1N/kAlDC5Dfq5gWukXHlUhFXzkNwEepkvPLideKTJ3Kt0MQ7q2oZWDeQeqm7ILANsBYyG4RTvt6bYNqsF9Wqy85UJLw78xE2ONsiW499rJRYLOnDwd613/XgX2D5gw3LFKvQJLYsoEdZlWrAp3T7EHboSfVA0mHT76LPPNkOEX/tLlBBs2lTXk2hwIWhxR5v45EYJeBJk4RJnF/0Ue7an0f+B73g=</div>
+</div>
+</li>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - Wie unterscheidet sich Tor von einem VPN?" id="ld-exercise-5">
+<p class="rubric">Wie unterscheidet sich Tor von einem VPN?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:WL2eZHJPqcFINMo+xHILT2NZN4xxqMWGPX+a6eK9EJQ=:KB3jT/8Bp3foOl2A:45yOHe/JEVMlyX+hhdeP+2xzoNOki/VyrzIoXwBT2pNkS1cttPtT/GiwAaNfX09veeMhkDgL7stDJoNlS62ayjRk+fL+DWPOotOZFZqAKzq7Y0NRPYA9ICCrujHdf/6qLdCYqjMioQ6DJd+pURzrLq5Kp8JACNkmU9UPlQFyepsT8GkeUqcehq9rW7nqHT6lcYOUpjJuhLrOcLurN4txT4GyOAg+kXNSk7a+d4ziRdhQJdmjODS5LDqI+kGhzqby3zqZW2wbGcISWPftD3VJ2mBEzz+pJ/SBT/w8mnXsr5Hgki3ystYC20XjEGwDUgIDQgWWBwUrzwHoe1W6WCm8e8YOrtuthjK+PsaL1sp+4J1oVust5FhAREUw3EnCK089P0WXmhDL6zLUcb7hIjQTOodm36d/R6DQ2Hc2fSxHNIa3BywrZaQ7hYkKR47/4/D/TmDVuLgEYVH4O6M7mH63VpHWUx0lZsZsBG3xMjI0Ns23QcpIhq0CkDElgcPSy5/XdX0GcGLaTSnGPDTNsCB/7nnOmNKASVfi9wFXO9Mnfiy3+RtPuW/hfNTFvFfVUoZLCBUK7JYTfvWnlExkbLT/RNEZhPe2f6UjoMBk/HLjjy3Ky/IPZMzGG7zxUnxpTRQ0NsS/w/nEfnjEJ+6v1tRWeK2Zda/GNSmSFlqROymn/UcQSaQDyZ4QtiD3dEzf22PGQMGn+YcjN9YYiI9VXUm4Z135BzPsr/ftZ/xkZDOOD16rZY7ml15SsjbOWwwD3rAinA==</div>
+</div>
+</li>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="6" data-exercise-title="6 - Tor über VPN oder VPN über TOR?" id="ld-exercise-6">
+<p class="rubric">Tor über VPN oder VPN über TOR?</p>
+<p>Macht es Sinn ein VPN über Tor oder anders herum zu betreiben?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:9dHABKHaZ633PUOSHXW5REhHFngdijDfJEKWIur9eKk=:donxKYUEnia0wMAT:twrxA/8TMSxpa0nP5dpeLe/fQ1hWco5LwS0ZePw/crheLRWzbpy9Upj/N52HlMiXS7Ibg31WqC5pl11sTrDfgPLie9VgBMF6/jt5sLN5ksNZej6HMKmcgJwqv8VJsKxdtVp46DFsL0QZxXOGTf9vk6KJ1Aan1JIs9PXD8OO7QlqtWXvY1CReLtvNtiwdJ8qn0YVV49mAsk13ExNyRA3SVVg6s3fJN4wvjt41m3+n2KfaLxYkwpeyTWWko6u4V8WETR2gNe0mock17F5+rticWjMzINswEZYUU2gVoTdlpwciMfL2sbtPSAcjVdYWidSiaqv3l1BBeQvdA7acel8dl8CP/4vNh1ER3z/WPBizCz3/aAuZ8D++WWjBM0cMr7Drb5xEjVoXvw5m86b+fYYpeSTe7ucLEoZLDbuipW6DN7K0d3MR4oOhOw+uMwrGo5mIDdGfvMtXlzLy8kh53S2feWQV3rKgTkk5YO0XoeIaTBTcw+cjCLTCzb3IlcoExeyMJTAPCieTcYSVxFsw6ZUMEQt8372um6HgYOgAMN7eBqnYZvOZ1CvNDXVmkiWabIA2Vuk2KkH5K1sGBQ1GwJjLI87gMO9aDisgOBCxYu/9vavz95DVsy81RIv66/Kqw/bE6Qg5iDoHeoWKESGlYrHX9V7KO7NXaT4hV6n7k/ns9YaYlmPAH8b9sXOQC5RD4DYYGmzLwXwQl3TNCiWEliiiXn6X1ls6KPJeGuf6BgZcJW9BabAhr4SV3dkuWbNpKDIhHq2gS8Moz6e+McoNVgdKsRhL15TZyQ+KUsjJREOo6AFhIIfGuWvwBU2+CxgjkXdRDLURHsO4j0IIU1lkbKBoeGMW3arF3LwK2sAfjbjoLZ8/F1Cb4zfNO2jmetT+jDS9GTxW/vQ6KHbOm+HFFNE15vtAfMb7caHYA8Azf0k+03GruXWo8wQpt6VFmRSQo76D+V7DMkJgtzadiECub17fvvwUqsyN4DrH</div>
+</div>
+</li>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="7" data-exercise-title="7 - Kontrolle über TOR Netzwerk?" id="ld-exercise-7">
+<p class="rubric">Kontrolle über TOR Netzwerk?</p>
+<p>Was passiert, wenn eine Angreifer in der Lage ist <span class="math">\(50\% + 1\)</span> der <span class="docutils literal">Directory Authority</span> Server zu kontrollieren?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:iMsJgOmuhn/aiarzyYQssikJBxbqVcjJbmf69hXaL2A=:0C1zuflb/eyBw9eo:03AXG8YzSHtNUJl9fYZqY2jpUzVP5YqpCCQPyXHW89bn78Kl6sDn9mEOzwhXV2NPEoiyuxohgJVk7Of9rEQ616gw9+7Q7iMoxN+9vLGWz/k4C615AxYmDTyCCHM9lcMxdvkHJ3b7muOGQvGItkhpd9FUtxUnRrA7+BoqCDtwhvd+fOUiVI9TtNeEOP/5joO4uxvmZU10S6lupUh0b2jUBruWTS5z9khWaSsiMALqX5v5QJYEQm21SUDsr7OOGX99qSQXbx3wAau2FCoHBVyt7J4aQv7K8FPecB8v6JcBur4Lpd7KOpEDq/YxYoG8R4NmFgiZSBBZdMNE8xytqM1NHSc7J5c10OKqkwgJIfYGIPt8El1AVBPB7urr3Z7y8eo5z3yn15b5mGSAEMWJweGewbyX4Zn4q8ZObdCc</div>
+</div>
+</li>
+</ul>
+<!-- IDEAs/TODOs/FIXMEs
+add a discussion about alle the keys used by tor and how they are initialized! -->
+</div>
+</body>
+</html>

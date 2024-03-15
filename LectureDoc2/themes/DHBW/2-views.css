@@ -126,10 +126,14 @@
 .stack {
     position: relative;
     width: 100%;
-    height: 100%;
-    /* reset in JavaScript ld-animations.js to the required size.*/
+    /* DON'T SET HEIGHT! */
     counter-reset: stack-layer 0;
 }
+
+#ld-continuous-view-pane .ld-slide .stack {
+    display: flex;
+    flex-direction: column;
+} 
 
 /*div*/
 .layer {
@@ -141,10 +145,7 @@
     /* All layers must have the same margin! */
 }
 
-:is(#ld-continuous-view-pane, #ld-main-pane, #ld-light-table-dialog) .ld-slide .stack
-
-/*div*/
-.layer.overlay {
+:is(#ld-continuous-view-pane, #ld-main-pane, #ld-light-table-dialog) .ld-slide .stack .layer.overlay {
     background-color: transparent;
 }
 
@@ -155,10 +156,7 @@
 }
 */
 
-:is(#ld-main-pane, #ld-light-table-dialog) .ld-slide .stack
-
-/*div*/
-.layer {
+:is(#ld-main-pane, #ld-light-table-dialog) .ld-slide .stack .layer {
     position: absolute;
     top: 0;
     left: 0;
@@ -169,7 +167,7 @@
 
 /*  We only add numbers when we have more than one layer that is not an overlay layer.
 */
-.stack:has(.layer:not(.overlay):not(:first-child)) .layer:not(.overlay)::before {
+.stack:has(.layer:not(.overlay):not(:first-child)) .layer:not(.overlay):not(.no-number)::before {
     position: absolute;
     right: 0.6em;
     bottom: 0.35em;

@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="exercise-passwords" content="$MTAwMDAw:Kt1+hmkLuaq2IS3Ex1N7iRv2Ji4RGMhnpUEeWx0/64M=:6qTPD14EtEZMk8yR:UZZFKrIVtrolW+WpBkk02UzTqMvslIAIH3WLyyXERwZDw23StS2OvKdVLJ0vlj/Z9sO/Z79vDbiUt4HoBWZqeln1RmbTm2T2ttIEbYcJujFVIwM0aTxcBeMG97p0e3mfZmkSjZ44fKJmhCaVuvpCTyfEDz0F7n19NIFPtyRNiuD+5IdEk2M19s2wcGYDtpQVC1RVvwCRu8AxzL6Kwqyr9kvNTSj8iI+hEgZrWjPPmI86pK5a86REUSFqVsJL7JOaotcAlndHVWBfqcBmiUzqhJtLiCcNb0Qx2vxAZ04VarI9lw0EcJX/zuvmQ0aYzUla5uhnFeeV225YqqiPc2fQ/BCPC9I4qcdKbnHo/CtmtyeGUb6q0AjznGkLwDpshaziEB0sxZcvWNA=" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;TCP&quot;, &quot;DDoS&quot;, SSH" name="keywords" />
+<meta content="Network Security - Eine Einführung in die Sicherheit von (verteilten) Systemen" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-a-primer-in-network-security" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Eine erste Einführung in die Sicherheit von (verteilten) Systemen</title>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml.js?config=TeX-AMS_CHTML"></script>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Eine erste Einführung in die Sicherheit von (verteilten) Systemen</h1>
+<dl class="docinfo simple">
+<dt class="dozent">Dozent<span class="colon">:</span></dt>
+<dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt class="kontakt">Kontakt<span class="colon">:</span></dt>
+<dd class="kontakt"><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2024-03-15</dd>
+</dl>
+<div class="footer-left tiny docutils container">
+<p>Die Folien basieren in weiten Teilen auf einem Foliensatz von Prof. Dr. Henning Pagnia.</p>
+<p>Alle Fehler sind meine eigenen.</p>
+</div>
+</div>
+<div class="ld-slide" id="themen">
+<h2>Themen</h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#transmission-control-protocol-tcp">Transmission Control Protocol (TCP)</a></p></li>
+<li><p><a class="reference internal" href="#einmal-passworter">Einmal-Passwörter</a></p></li>
+<li><p><a class="reference internal" href="#secure-shell-ssh">Secure Shell (SSH)</a></p></li>
+<li><p><a class="reference internal" href="#firewalls">Firewalls</a></p></li>
+</ul>
+</div><div class="new-section transition-fade ld-slide" id="transmission-control-protocol-tcp">
+<h2>Transmission Control Protocol (TCP)</h2>
+</div><div class="vertical-title ld-slide" id="tcp-grundlagen">
+<h2>TCP Grundlagen</h2>
+<ul class="incremental more-space-between-list-items simple">
+<li><p>Protokoll der Schicht 4 (Transport Layer) basiert auf IP</p></li>
+<li><p>verbindungsorientierte Kommunikation zweier Rechner im Internet zuverlässig und geordnet:</p>
+<ul class="incremental">
+<li><p>Verwerfen von Duplikaten und fehlerhaft übertragener Pakete</p></li>
+<li><p>automatisches Wiederversenden fehlender Pakete</p></li>
+<li><p>Nachrichtenpuffer: Daten werden in korrekter Reihenfolge an Applikation zugestellt</p></li>
+</ul>
+</li>
+<li><p>Verbindungsaufbau immer zwischen zwei Sockets (Socket-Adresse: IP Adresse und 16 Bit-Port-Nummer)</p></li>
+</ul>
+</div><div class="ld-slide" id="aufbau-einer-tcp-verbindung">
+<h2>Aufbau einer TCP Verbindung</h2>
+<p>Dreifacher Handshake:</p>
+<div class="supplemental docutils container">
+<p><strong>Terminologie</strong>:</p>
+<dl class="field-list simple">
+<dt>SYN<span class="colon">:</span></dt>
+<dd><p><span class="eng">synchronize (session establishment)</span></p>
+</dd>
+<dt>ACK<span class="colon">:</span></dt>
+<dd><p><span class="eng">acknowledge</span></p>
+</dd>
+<dt>RST<span class="colon">:</span></dt>
+<dd><p><span class="eng">reset</span></p>
+</dd>
+</dl>
+<p><strong>Verbindungsaufbau - Ablauf</strong>:</p>
+<ol class="arabic simple">
+<li><p>Client sendet SYN Paket mit initialer Sequenznummer 1000 an den Server.</p></li>
+<li><p>Server sendet ein SYN-ACK Paket mit einem SYN mit seiner initialen Sequenznummer 2000 und ein ACK mit der Sequenznummer 1001 an den Client</p></li>
+<li><p>Client sendet ein ACK Paket mit Sequenznummer 2001 an den Server; danach ist die Verbindung aufgebaut.</p></li>
+</ol>
+<p>Das Betriebssystem sollte die initialen Sequenznummern zufällig wählen, so dass ein Angreifer diese nicht leicht vorhersagen kann. Beide Seiten haben eigene Sequenznummern, die unabhängig voneinander sind.</p>
+<p>Bei einer laufenden Verbindung werden die Sequenznummern inkrementiert und es ist nicht (mehr) erkennbar wer die Verbindung aufgebaut hat.</p>
+</div>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<div class="center-child-elements"><svg width="1200" height="600" viewBox="0 0 1200 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+    <text x="125" y="75" style="font-weight: bolder">Client</text>
+    <line x1="200" y1="100" x2="200" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <text x="925" y="75" style="font-weight: bolder">Server</text>
+    <line x1="1000" y1="100" x2="1000" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="200" y1="400" x2="200" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="1000" y1="400" x2="1000" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+
+    <text x="500" y="65" transform="rotate(6.6)">SYN(1000)</text>
+    <line x1="200" y1="110" x2="1000" y2="190" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+</svg></div></div>
+<div class="layer overlay incremental docutils container">
+<div class="center-child-elements"><svg height="600" width="1200" viewBox="0 0 1200 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+
+    <text x="270" y="300" transform="rotate(-6.6)">SYN(2000), ACK(1001)</text>
+    <line x1="1000" y1="200" x2="200" y2="290" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+</svg></div></div>
+<div class="layer overlay incremental docutils container">
+<div class="center-child-elements"><svg height="600" width="1200" viewBox="0 0 1200 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+
+    <text x="555" y="315" transform="rotate(6.6)">ACK(2001)</text>
+    <line x1="200" y1="300" x2="1000" y2="390" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+</svg></div></div>
+</div>
+</div><div class="ld-slide" id="ports-bei-tcp">
+<h2>Ports bei TCP</h2>
+<ul class="incremental simple">
+<li><p>Port-Nummern werden für die Kommunikation zwischen zwei Diensten/Prozessen verwendet</p></li>
+<li><p>Ports sind 16 Bit Zahlen (0-65535)</p></li>
+<li><p>(Unix) Ports &lt; 1024 sind privilegiert (nur root kann diese öffnen)</p></li>
+<li><p>einige Port-Nummern sind Standarddiensten zugeordnet</p></li>
+</ul>
+</div><div class="small ld-slide" id="port-nummern-einiger-standarddienste">
+<h2>Port-Nummern einiger Standarddienste <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<p><strong>Ungeschützte Dienste</strong></p>
+<table class="highlight-line-on-hover">
+<colgroup>
+<col style="width: 13.3%" />
+<col style="width: 80.0%" />
+<col style="width: 6.7%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>Protokoll</p></th>
+<th class="head"><p>Dienst</p></th>
+<th class="head"><p>Portnummer</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>ftp</p></td>
+<td><p>Dateitransfer</p></td>
+<td><p>21</p></td>
+</tr>
+<tr><td><p>smtp</p></td>
+<td><p>Simple Mail Transfer Protocol</p></td>
+<td><p>25</p></td>
+</tr>
+<tr><td><p>dns</p></td>
+<td><p>Domain Name System</p></td>
+<td><p>53</p></td>
+</tr>
+<tr><td><p>http</p></td>
+<td><p>Hypertext Transfer Protocol</p></td>
+<td><p>80</p></td>
+</tr>
+<tr><td><p>login</p></td>
+<td><p>Login auf entfernte Rechner</p></td>
+<td><p>513</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Geschützte Dienste</strong></p>
+<table class="highlight-line-on-hover">
+<colgroup>
+<col style="width: 13.3%" />
+<col style="width: 80.0%" />
+<col style="width: 6.7%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>Protokoll</p></th>
+<th class="head"><p>Dienst</p></th>
+<th class="head"><p>Portnummer</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>ssh</p></td>
+<td><p>Secure Shell</p></td>
+<td><p>22</p></td>
+</tr>
+<tr><td><p>https</p></td>
+<td><p>HTTP über Secure Socket Layer</p></td>
+<td><p>443</p></td>
+</tr>
+<tr><td><p>smtps</p></td>
+<td><p>SMTP über Secure Socket Layer</p></td>
+<td><p>465</p></td>
+</tr>
+<tr><td><p>imaps</p></td>
+<td><p>IMAP über Secure Socket Layer</p></td>
+<td><p>993</p></td>
+</tr>
+<tr><td><p>pop3s</p></td>
+<td><p>POP3 über Secure Socket Layer</p></td>
+<td><p>995</p></td>
+</tr>
+</tbody>
+</table>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.iana.org/assignments/service-names-port-numbers">Port numbers assigned by IANA</a></p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="angriffe-auf-tcp-motivation">
+<h2>Angriffe auf TCP - Motivation</h2>
+<ul class="incremental simple">
+<li><p>Netzwerkprogrammierung mit TCP ist relativ komfortabel.</p></li>
+<li><p>Viele Dienste sind mit TCP implementiert.</p></li>
+<li><p>Angreifer nutzen Schwachstellen in TCP Diensten aus.</p></li>
+<li><p>Server haben heutzutage i. Allg. alle nicht verwendeten Dienste geschlossen. Angreifer muss verwundbare Dienste zum Beispiel durch Port Scans finden.</p></li>
+</ul>
+</div><div class="ld-slide" id="port-scans-tcp-connect-scan">
+<h2>Port Scans: TCP Connect Scan</h2>
+<div class="two-columns docutils container">
+<div class="column docutils container">
+<ul class="incremental simple">
+<li><p>vollständiger Verbindungsaufbau zu allen bzw. zu ausgewählten Ports</p></li>
+</ul>
+<div class="incremental docutils container">
+<p><strong>Bewertung</strong>:</p>
+<ul class="simple">
+<li><p>simpelster Port Scan</p></li>
+<li><p>große Entdeckungsgefahr (Scan selbst ist kein Angriff)</p></li>
+<li><p>mögliche Verbesserung: zwischen dem Scannen mehrerer Ports Pausen einstreuen (Wie lange?)</p></li>
+</ul>
+</div>
+</div>
+<div class="column no-border docutils container">
+<svg width="900" height="440" viewBox="0 0 1200 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+    <text x="125" y="75" style="font-weight: bolder">Scanner</text>
+    <line x1="200" y1="100" x2="200" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <text x="925" y="75" style="font-weight: bolder">Server</text>
+    <line x1="1000" y1="100" x2="1000" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="200" y1="400" x2="200" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="1000" y1="400" x2="1000" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+
+    <text x="500" y="65" transform="rotate(6.6)">SYN</text>
+    <line x1="200" y1="110" x2="1000" y2="190" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+    <text x="390" y="300" transform="rotate(-6.6)">SYN / ACK</text>
+    <line x1="1000" y1="200" x2="200" y2="290" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+    <text x="555" y="315" transform="rotate(6.6)">ACK</text>
+    <line x1="200" y1="300" x2="1000" y2="390" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+</svg></div>
+</div>
+</div><div class="ld-slide" id="port-scans-tcp-syn-scan">
+<h2>Port Scans: TCP SYN Scan</h2>
+<div class="two-columns docutils container">
+<div class="column docutils container">
+<ol class="arabic simple incremental">
+<li><p>Senden eines TCP-Segments mit gesetztem SYN-Flag an einen Port</p></li>
+<li><p>falls der <em>Port offen</em> ist, kommt SYN/ACK zurück danach RST senden</p></li>
+<li><p>falls der <em>Port nicht offen</em> ist, kommt RST (oder nichts) zurück</p></li>
+</ol>
+<div class="incremental docutils container">
+<p><strong>Bewertung</strong>:</p>
+<ul class="simple">
+<li><p>kein vollständiger Verbindungsaufbau</p></li>
+<li><p>meist nicht protokolliert</p></li>
+<li><p>geringe(re) Entdeckungsgefahr</p></li>
+</ul>
+</div>
+</div>
+<div class="column docutils container">
+<svg width="900" height="440" viewBox="0 0 1200 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+    <text x="125" y="75" style="font-weight: bolder">Scanner</text>
+    <line x1="200" y1="100" x2="200" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <text x="925" y="75" style="font-weight: bolder">Server</text>
+    <line x1="1000" y1="100" x2="1000" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="200" y1="400" x2="200" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="1000" y1="400" x2="1000" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+
+    <text x="500" y="65" transform="rotate(6.6)">SYN</text>
+    <line x1="200" y1="110" x2="1000" y2="190" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+    <text x="390" y="300" transform="rotate(-6.6)">SYN / ACK</text>
+    <line x1="1000" y1="200" x2="200" y2="290" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+    <text x="555" y="315" transform="rotate(6.6)">RST</text>
+    <line x1="200" y1="300" x2="1000" y2="390" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+</svg></div>
+</div>
+</div><div class="ld-slide" id="port-scans-stealth-scans">
+<h2>Port Scans: Stealth Scans</h2>
+<p>Versenden eines für den Verbindungsaufbau ungültigen TCP-Segments an einen Port:</p>
+<blockquote>
+<ul class="incremental simple">
+<li><p>NULL-Scan (keine Flags)</p></li>
+<li><p>ACK-Scan (ACK-Flag)</p></li>
+<li><p>FIN-Scan (FIN-Flag)</p></li>
+<li><p>XMAS-Scan (alle Flags)</p></li>
+</ul>
+<p class="incremental">Laut RFC kommt RST zurück, falls Port offen. (Reaktion aber abhängig vom Betriebssystem)</p>
+</blockquote>
+<div class="incremental docutils container">
+<p><strong>Bewertung</strong>:</p>
+<ul class="simple">
+<li><p>Zugriff wird meist nicht protokolliert</p></li>
+<li><p>Scan bleibt unbemerkt</p></li>
+</ul>
+</div>
+<div class="supplemental docutils container">
+<p><strong>XMAS-Scan</strong>:</p>
+<p>Bei diesem Scan sind alle Flags gesetzt; ein XMAS-Scan wird auch als Christmas-Tree-Scan bezeichnet, da das Paket erleuchtet ist wie ein Weihnachtsbaum.</p>
+</div>
+</div><div class="ld-slide" id="port-scans-idle-scan">
+<h2>Port Scans: Idle Scan <a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
+<p>Bei allen bisher betrachteten Scans kann der Scanner prinzipiell identifiziert werden. Unter Verwendung eines sog. Zombies geht es auch anders:</p>
+<div class="two-columns docutils container">
+<div class="column docutils container">
+<p>Sondiere IP ID des Zombies:</p>
+<img alt="Idle Scan - Schritte 1-2" class="align-left" src="images/idle-scan/idle-scan-step1.svg" style="width: 700px;" />
+</div>
+<div class="column faded-to-white docutils container">
+<p>Starte Scan:</p>
+<img alt="Idle Scan - Schritte 3-5" class="align-left" src="images/idle-scan/idle-scan-step2.svg" style="width: 750px;" />
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Zombies: ein Rechner (Computer, Drucker oder anderes IoT Gerät) im Internet <em>möglichst ohne eigenen Netzverkehr</em> und mit <span class="ger-quote">altem</span> Betriebssystem, bei dem die IP ID in vorhersehbarer Weise inkrementiert wird.</p>
+<p>Sollte ein Intrusion Detection System vorhanden sein, so wird dieses den Zombie als Angreifer identifizieren.</p>
+<p><strong>Grundlegende Idee</strong>: Der Zombie sendet ein RST Paket zurück, da er kein SYN gesendet hat und kein SYN/ACK erwarte. Dadurch erfährt der Angreifer die aktuelle IP ID des Zombies. Über diesen Seitenkanal - d. h. die Veränderung der IP ID des Zombies - kann der Angreifer nun den Zustand des Ports auf dem Zielrechner ermitteln.</p>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://nmap.org/book/idlescan.html">NMap Book</a></p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="port-scans-idle-scan-1">
+<h2>Port Scans: Idle Scan</h2>
+<div class="two-columns docutils container">
+<div class="column docutils container">
+<p>Starte Scan:</p>
+<img alt="Idle Scan - Schritte 3-5" class="align-left" src="images/idle-scan/idle-scan-step2.svg" style="width: 750px;" />
+</div>
+<div class="column docutils container">
+<p>Sondiere IP ID des Zombies:</p>
+<img alt="Idle Scan - Schritt 6" class="align-right" src="images/idle-scan/idle-scan-step3.svg" style="width: 700px;" />
+</div>
+</div>
+</div><div class="ld-slide" id="port-scans-idle-scan-zusammenfassung">
+<h2>Port Scans: Idle Scan - Zusammenfassung</h2>
+<ul>
+<li><p>Angreifer sendet SYN/ACK Paket an Zombie</p></li>
+<li><p>der Zombie antwortet mit RST und enthüllt seine IP ID (<span class="eng">IP Fragment Identification Number</span>).</p></li>
+<li><p>Angreifer sendet SYN (&quot;vom&quot; Zombie) an Port des Servers</p></li>
+<li><p>[<strong>Port offen</strong>] Der Zielrechner antwortet mit SYN/ACK an den Zombie, wenn der Port offen ist.</p>
+<p>[<strong>Port geschlossen</strong>] Der Zielrechner antwortet mit RST an den Zombie, wenn der Port geschlossen ist. Dies wird vom Zombie ignoriert.</p>
+</li>
+<li><p>[<strong>Port offen</strong>] Der Zombie antwortet mit RST, da er kein SYN gesendet hat und kein SYN/ACK erwartet und erhöht seine IP ID.</p></li>
+<li><p>Der Angreifer sendet wieder ein SYN/ACK an den Zombie, um die IP ID zu erfahren.</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Mit einem IDLE Scan kann nicht unterschieden werden, ob der Port geschlossen oder gefiltert ist.</p>
+</div>
+</div><div class="ld-slide" id="port-scans-mit-nmap">
+<h2>Port Scans mit nmap</h2>
+<ul class="incremental simple">
+<li><p>alle Arten von Port-Scans möglich</p></li>
+<li><p>auch OS fingerprinting</p></li>
+<li><ol class="loweralpha simple" start="21">
+<li><ol class="upperalpha simple" start="21">
+<li><p>sogar Ermittlung der Versionsnummern von Diensten</p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<pre class="code bash incremental smaller copy-to-clipboard literal-block"><code>$<span class="whitespace"> </span>nmap<span class="whitespace"> </span><span class="literal number">192</span>.168.178.121<span class="whitespace"> </span>-Pn<span class="whitespace">
+</span>Starting<span class="whitespace"> </span>Nmap<span class="whitespace"> </span><span class="literal number">7</span>.94<span class="whitespace"> </span><span class="operator">(</span><span class="whitespace"> </span>https://nmap.org<span class="whitespace"> </span><span class="operator">)</span><span class="whitespace"> </span>at<span class="whitespace"> </span><span class="literal number">2023</span>-12-14<span class="whitespace"> </span><span class="literal number">13</span>:16<span class="whitespace"> </span>PST<span class="whitespace">
+</span>Nmap<span class="whitespace"> </span>scan<span class="whitespace"> </span>report<span class="whitespace"> </span><span class="keyword">for</span><span class="whitespace"> </span>Michaels-MacBook-Pro<span class="whitespace"> </span><span class="operator">(</span><span class="literal number">192</span>.168.178.121<span class="operator">)</span><span class="whitespace">
+</span>Host<span class="whitespace"> </span>is<span class="whitespace"> </span>up<span class="whitespace"> </span><span class="operator">(</span><span class="literal number">0</span>.0056s<span class="whitespace"> </span>latency<span class="operator">)</span>.<span class="whitespace">
+</span>Not<span class="whitespace"> </span>shown:<span class="whitespace"> </span><span class="literal number">995</span><span class="whitespace"> </span>filtered<span class="whitespace"> </span>tcp<span class="whitespace"> </span>ports<span class="whitespace"> </span><span class="operator">(</span>no-response<span class="operator">)</span><span class="whitespace">
+</span>PORT<span class="whitespace">     </span>STATE<span class="whitespace"> </span>SERVICE<span class="whitespace">
+</span><span class="literal number">53</span>/tcp<span class="whitespace">   </span>open<span class="whitespace">  </span>domain<span class="whitespace">
+</span><span class="literal number">88</span>/tcp<span class="whitespace">   </span>open<span class="whitespace">  </span>kerberos-sec<span class="whitespace">
+</span><span class="literal number">445</span>/tcp<span class="whitespace">  </span>open<span class="whitespace">  </span>microsoft-ds<span class="whitespace">
+</span><span class="literal number">5000</span>/tcp<span class="whitespace"> </span>open<span class="whitespace">  </span>upnp<span class="whitespace">
+</span><span class="literal number">7000</span>/tcp<span class="whitespace"> </span>open<span class="whitespace">  </span>afs3-fileserver</code></pre>
+<div class="supplemental docutils container">
+<p><strong>OS-Fingerprinting</strong></p>
+<p>Beim OS-Fingerprinting werden Datenpakete analysiert, die aus einem Netzwerk stammen, um Informationen für spätere Angriffe zu gewinnen. Durch die Erkennung des Betriebssystems, mit dem ein Netzwerk arbeitet, haben Hacker es leichter, Schwachstellen zu finden und auszunutzen. OS-Fingerprinting kann auch Konfigurationsattribute von entfernten Geräten sammeln. Diese Art von Aufklärungsangriff ist in der Regel (einer) der erste(n) Schritt(e).</p>
+<p>Es gibt zwei Arten von OS-Fingerprinting: (1) Aktiv und (2) passiv.</p>
+<blockquote>
+<ol class="arabic simple">
+<li><p>Bei einem aktiven OS-Fingerprinting-Versuch senden die Angreifer ein Paket an das Zielsystem und warten auf eine Antwort, um den Inhalt des TCP-Pakets zu analysieren.</p></li>
+<li><p>Bei einem passiven Versuch agieren die Angreifer eher als &quot;Schnüffler&quot;, der keine absichtlichen Änderungen oder Aktionen im Netzwerk vornimmt. Passives OS-Fingerprinting ist ein unauffälligerer, aber wesentlich langsamerer Prozess.</p></li>
+</ol>
+</blockquote>
+</div>
+</div><div class="ld-slide" id="port-knocking">
+<h2>Port Knocking</h2>
+<ul class="incremental simple">
+<li><p>Ein Knock-Daemon versteckt offene Ports auf dem Server.</p></li>
+<li><p>Zugriffe auf alle Ports werden im Log-File protokolliert.</p></li>
+<li><p>Knock-Daemon beobachtet das Log-File.</p></li>
+<li><p>Erst nach Erkennen einer vordefinierten (Einmal-)Klopfsequenz öffnet der Knock-Daemon den gewünschten Port für diesen Client.</p></li>
+<li><p>Client kann nun die Verbindung aufbauen.</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p><strong>Weiterführend</strong></p>
+<p>Alternativen zu einer Knock-Sequenz ist zum Beispiel, dass der Port nur dann als offen gilt, wenn die IP ID eine bestimmte Sequenznummer aufweist.</p>
+<ol class="upperalpha simple" start="13">
+<li><p>Krzywinski: Port Knocking: Network Authentication Across Closed Ports in SysAdmin Magazine 12: 12-17. (2003)</p></li>
+</ol>
+<p>TCP Stealth</p>
+</div>
+</div><div class="ld-slide" id="connection-hijacking">
+<h2>Connection Hijacking</h2>
+<p>Angreifer übernimmt eine bestehende - zum Beispiel eine bereits durch (Einmal-)Passwort authentisierte - Verbindung.</p>
+<img alt="Connection Hijacking (einfache Variante)" class="align-center" src="images/connection-hijacking.svg" style="height: 800px;" />
+<div class="supplemental docutils container">
+<p>TCP/IP-Hijacking ist eine Form eines Man-in-the-Middle-Angriffs. Der Angreifer bestimmt erst die IP-Adressen der beiden Sitzungsteilnehmer.</p>
+<p>Danach gibt es mehrere Möglichkeiten:</p>
+<ul>
+<li><p>Der Angreifer schickt (&quot;in einer Pause&quot;) ein Paket mit der passenden Sequenznummer an den Server.</p>
+<p><em>(Dies kann dann in einem ACK-Storm enden, was ggf. unterbunden werden muss (zum Beispiel durch das Senden eines RSTs), oder ignoriert werden kann.)</em></p>
+</li>
+<li><p>Der Angreifer macht einen Client mit einem DoS-Angriff unerreichbar, um sich dann mit dem Anderen zu verbinden, indem er die Netzwerk-ID des ausgeschalteten Clients nutzt.</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="denial-of-service-dos-angriffe">
+<h2>Denial-of-Service (DoS) Angriffe</h2>
+<p>Ziel des Angreifers: Lahmlegen eines Dienstes oder des ganzen Systems ...</p>
+<ul class="simple">
+<li><p>durch Ausnutzen von Schwachstellen (<span class="eng">vulnerabilities</span>, z. B. Buffer Overflow)</p></li>
+<li><p>durch Generierung von Überlast (Ausschöpfen von RAM, CPU, Netzwerkbandbreite, ...)</p></li>
+</ul>
+<aside class="admonition incremental smaller">
+<p class="admonition-title">Beispiel: Ping-of-Death</p>
+<p>(Historisch: aus dem Jahr 1997)</p>
+<p>Ein <span class="docutils literal">ping</span> verwendet Internet Control Message Protocol (ICMP) üblicherweise kleine Nachrichten, verwendete Länge ist aber einstellbar.</p>
+<p>Falls zu groß ⇒ Buffer Overflow ⇒ Systemabsturz!</p>
+<p>Variante: mittels Fragmentierung ließen sich generell übergroße IP-Pakete (&gt;65,536 Byte) erstellen.</p>
+</aside>
+</div><div class="ld-slide" id="denial-of-service-syn-flooding-angriff">
+<h2>Denial-of-Service: SYN-flooding Angriff</h2>
+<ul class="incremental">
+<li><p>Angriff auf Design</p></li>
+<li><p>Angreifer sendet eine Verbindungsaufbauanforderung (gesetztes SYN-Flag) an Zielmaschine</p></li>
+<li><p>Server generiert eine halboffene TCP-Verbindung</p></li>
+<li><p>Angreifer wiederholt in schneller Folge dieses erste Paket zum Verbindungsaufbau</p>
+<p>⇒ vollständiges Füllen der internen Systemtabelle</p>
+<p>⇒ Anfragen normaler Benutzer werden zurückgewiesen</p>
+</li>
+<li><p>Angreifer verwendet i. Allg. IP-Spoofing weswegen Firewalls wirkungslos sind.</p></li>
+<li><p>Abwehr: SYN-Cookies</p></li>
+</ul>
+</div><div class="ld-slide" id="syn-cookies-d-j-bernstein">
+<h2><a class="reference external" href="https://cr.yp.to/syncookies.html">SYN-Cookies - D J. Bernstein</a></h2>
+<p>SYN-Cookies sind speziell konstruiert initiale Sequenznummern.</p>
+<div class="stack">
+<div class="layer">
+<svg width="1700" height="600" viewBox="0 0 1700 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+    <text x="125" y="75" style="font-weight: bolder">Client</text>
+    <line x1="200" y1="100" x2="200" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="200" y1="400" x2="200" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+
+    <text x="925" y="75" style="font-weight: bolder">Server</text>
+    <line x1="1500" y1="100" x2="1500" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="1500" y1="400" x2="1500" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+
+    <text x="500" y="75" transform="rotate(4.25)">SYN(1000)</text>
+    <line x1="200" y1="110" x2="1500" y2="190" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+</svg></div><div class="layer overlay incremental">
+<svg height="600" width="1700" viewBox="0 0 1700 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+
+    <text x="270" y="290" transform="rotate(-4.25)">SYN(2000), ACK(with cookie)</text>
+    <line x1="1500" y1="200" x2="200" y2="290" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+</svg><div class="smaller docutils container">
+<p>Der Cookie ermöglicht es, dass keine Informationen im Speicher gehalten werden müssen. Der Cookie encodiert die Informationen, die der Server benötigt, um die Verbindung aufzubauen: Client IP, time window, etc.</p>
+</div>
+</div><div class="layer overlay incremental">
+<svg height="600" width="1800" viewBox="0 0 1800 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+
+    <text x="555" y="325" transform="rotate(4.2)">ACK(with cookie(+1))</text>
+    <line x1="200" y1="300" x2="1500" y2="390" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+    <text x="1515" y="340" style="font-size:40px">Validierung</text>
+    <text x="1515" y="390" style="font-size:40px">des Cookie</text>
+    <line x1="1600" y1="400" x2="1600" y2="455" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+    <text x="1515" y="490" style="font-size:40px">ggf. </text>
+    <text x="1515" y="540" style="font-size:40px">Verbindungs-</text>
+    <text x="1515" y="590" style="font-size:40px">aufbau</text>
+
+</svg></div></div></div><div class="ld-slide" id="distributed-denial-of-service-ddos-angriff">
+<h2>Distributed Denial-of-Service (DDoS) Angriff</h2>
+<p>Opfer wird von sehr vielen Angreifern mit Nachrichten überflutet.</p>
+<div class="incremental docutils container">
+<p>Ein Beispiel: Smurf-Angriff:</p>
+<img alt="Smurf Angriff" class="align-center" src="images/smurf-angriff.svg" style="height: 800px;" />
+</div>
+</div><div class="ld-slide" id="distributed-denial-of-service-ddos-angriff-1">
+<h2>Distributed Denial-of-Service (DDoS) Angriff</h2>
+<ul class="incremental simple">
+<li><p>Bot-Netze (Botnetze) werden verwendet, um DDoS-Angriffe durchzuführen.</p></li>
+<li><p>Bot-Netze können viele 10.000 Rechner umfassen.</p></li>
+<li><p>IoT Geräte sind besonders beliebt (z. B. IP-Kameras, Smart-TVs, Smart-Home Geräte, ...), da diese oft nicht ausreichend geschützt sind und trotzdem permanent mit dem Internet verbunden sind.</p></li>
+<li><p>Beliebte Ziele:</p>
+<ul>
+<li><p>Onlinespieleserver</p></li>
+<li><p>Banking-Portale</p></li>
+<li><p>politische Webseiten</p></li>
+</ul>
+</li>
+<li><p>Firewalls und Intrusion Detection Systeme sind meist wirkungslos, da die Angriffe von vielen verschiedenen IP-Adressen kommen.</p></li>
+</ul>
+</div><div class="ld-slide" id="distributed-reflected-denial-of-service-drdos-angriff">
+<h2>Distributed-Reflected-Denial-of-Service (DRDoS) Angriff</h2>
+<ul class="simple">
+<li><p>Idee:</p>
+<ul class="incremental smaller">
+<li><p>Es wird eine Anfrage an einen Server gesendet, die eine große Antwort auslöst. (z. B. hat(te) der NTP Monlist Befehl eine Antwort, die ca. 200 Fach größer ist als die Anfrage!)</p></li>
+<li><p>Mittels IP-Spoofing wird die IP-Adresse des Opfers als Absenderadresse verwendet.</p></li>
+<li><p>Es werden insbesondere Dienste basierend auf UDP verwendet, da hier keine Verbindung aufgebaut werden muss.</p></li>
+</ul>
+</li>
+</ul>
+<ul class="incremental smaller simple">
+<li><p>Nehmen einen signifikanten Teil aller DDoS-Angriffe ein.</p></li>
+<li><p>Die Tatsache, dass die Sender legitime Server sind, erschwert die Abwehr.</p></li>
+<li><p><span class="eng">Egress Filtering</span> kann helfen, die Verwendung von IP-Spoofing zu verhindern.</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Bereits im Jahr 2018 wurde ein Angriff mit einer Bandbreite von 1,7 TBit/s beobachtet.</p>
+<dl class="field-list simple">
+<dt>Egress Filtering<span class="colon">:</span></dt>
+<dd><p>Der Router verwirft alle Pakete, die eine Absenderadresse verwenden, die nicht aus dem eigenen Netzwerk stammt.</p>
+</dd>
+</dl>
+</div>
+</div><div class="ld-slide" id="distributed-denial-of-service-ddos-angriffe-beispiel">
+<h2><a class="reference external" href="https://cloud.google.com/blog/products/identity-security/google-cloud-mitigated-largest-ddos-attack-peaking-above-398-million-rps">Distributed Denial-of-Service (DDoS) Angriffe - Beispiel</a></h2>
+<blockquote class="epigraph">
+<p>[...] Google's DDoS Response Team has observed the trend that distributed denial-of-service (DDoS) attacks are <strong>increasing exponentially in size</strong>. Last year, we blocked the largest DDoS attack recorded at the time. This August [2023], we stopped an even larger DDoS attack — 7½ times larger — that also used new techniques to try to disrupt websites and Internet services.</p>
+<p>This new series of DDoS attacks reached <strong>a peak of 398 million requests per second (rps)</strong>, and relied on a novel HTTP/2 “Rapid Reset” technique based on stream multiplexing that has affected multiple Internet infrastructure companies. By contrast, last year's largest-recorded DDoS attack peaked at 46 million rps.</p>
+</blockquote>
+</div><div class="ld-slide" id="distributed-denial-of-service-ddos-angriffe">
+<h2>Distributed Denial-of-Service (DDoS) Angriffe</h2>
+<div class="incremental docutils container">
+<p>Beispiele:</p>
+<ul class="simple">
+<li><p>TCP Stack Attacks (SYN, FIN, RST, ACK, SYN-ACK, URG-PSH, other combinations of TCP Flags, slow TCP attacks)</p></li>
+<li><p>Application Attacks (HTTP GET/POST Floods, slow HTTP Attacks, SIP Invite Floods, DNS Attacks, HTTPS Protocol Attacks)</p></li>
+<li><p>SSL/TLS Attacks (Malformed SSL Floods, SSL Renegotiation, SSL Session Floods)</p></li>
+<li><p>DNS Cache Poisoning</p></li>
+<li><p>Reflection Amplification Flood Attacks (TCP, UDP, ICMP, DNS, mDNS, SSDP, NTP, NetBIOS, RIPv1, rpcbind, SNMP, SQL RS, Chargen, L2TP, Microsoft SQL Resolution Service)</p></li>
+<li><p>Fragmentation Attacks (Teardrop, Targa3, Jolt2, Nestea)</p></li>
+<li><p>Vulnerability Attacks</p></li>
+<li><p>Resource Exhaustion Attacks (Slowloris, Pyloris, LOIC, etc.)</p></li>
+<li><p>Flash Crowd Protection</p></li>
+<li><p>Attacks on Gaming Protocols.</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="schutz-vor-ddos-angriffen-on-site-robustheitsmasznahmen">
+<h2>Schutz vor DDoS-Angriffen - On-Site Robustheitsmaßnahmen</h2>
+<ul class="incremental simple">
+<li><p>Aufrüsten der Ressourcen (z. B. Bandbreite, CPU, RAM, ...)</p></li>
+<li><p>Exemplarische Sofortmaßnahmen bei aktivem Angriff:</p>
+<ul class="incremental smaller">
+<li><p>Whitelisting von IP-Adressen von besonders wichtigen Clients</p></li>
+<li><p>Blacklisting von IP-Adressen aus bestimmten Bereichen</p></li>
+<li><p>Captchas</p></li>
+<li><p>Überprüfung der Browser-Echtheit</p></li>
+</ul>
+</li>
+<li><p>Anti-DDos Appliances</p></li>
+</ul>
+<aside class="admonition warning incremental">
+<p class="admonition-title">Achtung</p>
+<p>Diese Maßnahmen sind häufig teuer und ggf. begrenzt effektiv; wenn der Angriff die verfügbare Brandbreite übersteigt, sind diese Maßnahmen wirkungslos.</p>
+</aside>
+</div><div class="ld-slide" id="schutz-vor-ddos-angriffen-off-site-robustheitsmasznahmen">
+<h2>Schutz vor DDoS-Angriffen - Off-Site Robustheitsmaßnahmen</h2>
+<ul class="incremental simple">
+<li><p>Einbinden des ISP</p></li>
+<li><p>Einbinden spezialisierter Dienstleister (im Angriffsfall wird mittels BGP-Rerouting der Traffic an den Dienstleister umgeleitet, der dann die DDos Attacke filtert.)</p></li>
+<li><p>Content-Delivery-Networks (CDNs) für statische Inhalte (z. B. Cloudflare, Akamai, ...)</p></li>
+<li><p>Distributed Clouds</p></li>
+</ul>
+</div><div class="ld-slide" id="password-sniffing">
+<h2>Password Sniffing</h2>
+<dl class="field-list simple">
+<dt>In der Anfangszeit<span class="colon">:</span></dt>
+<dd><p>unverschlüsselte Übertragung von Passwörtern (telnet, ftp, ...)</p>
+</dd>
+<dt>In der Übergangszeit (bzw. in bestimmten Szenarien auch heute)<span class="colon">:</span></dt>
+<dd><p>Verwendung von Einmal-Passwörtern (S/Key, ...)</p>
+</dd>
+<dt>Heute<span class="colon">:</span></dt>
+<dd><p>Passwörter werden verschlüsselt übertragen (ssh, https, ...)</p>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<p>Unverschlüsselte Passworte können leicht mittels eines Sniffers, der den Netzwerkverkehr mitschneidet (z. B. Wireshark), abgefangen werden.</p>
+</div>
+</div><div class="ld-slide" id="einmal-passworter">
+<h2>Einmal-Passwörter</h2>
+<p>Die Idee ist, dass Passwörter nur genau einmal gültig sind und nicht wiederverwendbar sind.</p>
+<ul class="simple">
+<li><p>Tokens (z. B. RSA SecurID)</p></li>
+<li><p>Codebuch: Liste von Einmal-Passwörtern, die das gemeinsame Geheimnis sind.</p></li>
+<li><p>S/Key: Passwort &quot;wird mit einem Zähler kombiniert&quot; und dann gehasht.</p></li>
+</ul>
+</div><div class="ld-slide" id="das-s-key-verfahren">
+<h2>Das S/Key Verfahren</h2>
+<p>Einmal-Passwort-System nach Codebuch-Verfahren, dass im Original auf der kryptographischen Hashfunktion MD4 basiert.</p>
+<div class="stack">
+<div class="layer">
+<p><strong>Initialisierung</strong></p>
+<ol class="arabic simple incremental smaller">
+<li><p>Der Nutzer gibt sein Passwort W ein; dies ist der geheime Schlüssel. (Sollte W bekannt werden, dann ist die Sicherheit des Verfahrens nicht mehr gewährleistet.)</p></li>
+<li><p>Eine kryptografische Hash-Funktion H wird n-mal auf W angewandt, wodurch eine Hash-Kette von n einmaligen Passwörtern entsteht. <span class="math">\(H(W), H(H(W)), \dots, H^{n}(W)\)</span></p></li>
+<li><p>Das initiale Passwort wird verworfen.</p></li>
+<li><p>Der Benutzer erhält die n Passwörter, die in umgekehrter Reihenfolge ausgedruckt werden: <span class="math">\(H^n(W), H^{n-1}(W), ..., H(H(W)), H(W)\)</span>.</p></li>
+<li><p>Nur das Passwort <span class="math">\(H^n(W)\)</span>, das an erster Stelle der Liste des Benutzers steht, der Wert von <span class="math">\(n\)</span> und ggf. ein Salt, wird auf dem Server gespeichert.</p></li>
+</ol>
+</div><div class="layer incremental">
+<p><strong>Anmeldung</strong></p>
+<p>Identifiziere <span class="math">\(n\)</span> das letzte verwendete Passwort.</p>
+<ul class="incremental smaller simple">
+<li><p>Der Server fragt den Nutzer nach dem Passwort <span class="math">\(n-1\)</span> (d. h. <span class="math">\(H^{n-1}(W)\)</span>) und übermittelt ggf. auch den Salt.</p></li>
+<li><p>Der Server hasht das Passwort und vergleicht es dann mit dem gespeicherten Passwort <span class="math">\(H^n(W)\)</span>.</p></li>
+<li><p>Ist das Passwort korrekt, dann wird der Nutzer angemeldet und der Server speichert das Passwort <span class="math">\(H^{n-1}(W)\)</span> als neues Passwort <span class="math">\(H^n(W)\)</span> und dekrementiert n.</p></li>
+</ul>
+</div></div><div class="supplemental docutils container">
+<p>Intern verwendet S/KEY 64-bit Zahlen. Für die Benutzbarkeit werden diese Zahlen auf sechs kurze Wörter, von ein bis vier Zeichen, aus einem öffentlich zugänglichen 2048-Wörter-Wörterbuch (<span class="math">\(2048 = 2^{11}\)</span>) abgebildet. Zum Beispiel wird eine 64-Bit-Zahl auf &quot;ROY HURT SKI FAIL GRIM KNEE&quot; abgebildet.</p>
+</div>
+</div><div class="ld-slide" id="secure-shell-ssh">
+<h2><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc4254">Secure Shell (SSH)</a></h2>
+<p><strong>Verschlüsselte Verbindung</strong></p>
+<p>SSH ermöglicht die sichere Fernanmeldung von einem Computer bei einem anderen (typischerweise über TCP über Port 22). Es bietet mehrere Optionen für eine starke Authentifizierung und schützt die Sicherheit und Integrität der Kommunikation durch starke Verschlüsselung</p>
+<div class="incremental docutils container">
+<p><strong>Ablauf</strong></p>
+<ol class="arabic simple">
+<li><p>Authentisierung des Server-Rechners</p></li>
+<li><p>Authentisierung des Benutzers (bzw. des Clients) mittels</p>
+<ol class="loweralpha simple">
+<li><p>Passwort</p></li>
+<li><p><span class="obsolete">.rhosts-Eintrag</span></p></li>
+<li><p>privatem <span class="minor">(RSA-)</span>Key (hauptsächlich verwendete Methode)</p></li>
+</ol>
+</li>
+<li><p>Kommunikation über symmetrisch verschlüsselte Verbindung</p></li>
+</ol>
+</div>
+<div class="supplemental docutils container">
+<p>Die Authentifizierung mittels eines Schlüsselpaars dient primäre der Automatisierung (dann wird auch keine <span class="ger-quote">Schlüsselphrase</span> zum Schutz des Passworts verwendet). Auf jeden Fall ist effektives Schlüsselmanagement erforderlich:</p>
+<blockquote class="epigraph">
+<p>[...] In einigen Fällen haben wir mehrere Millionen SSH-Schlüssel gefunden, die den Zugang zu Produktionsservern in Kundenumgebungen autorisieren, wobei 90 % der Schlüssel tatsächlich ungenutzt sind und für einen Zugang stehen, der zwar bereitgestellt, aber nie gekündigt wurde.</p>
+<p class="attribution">—<a class="reference external" href="https://www.ssh.com/academy/ssh/protocol">SSH.com (Dez. 2023)</a></p>
+</blockquote>
+</div>
+</div><div class="ld-slide" id="secure-shell-ssh-protokoll">
+<h2>Secure Shell (SSH) - Protokoll</h2>
+<img alt="SSH Protokoll" class="align-center" src="images/ssh/initiation.svg" style="width: 1850px;" />
+<div class="incremental small docutils container">
+<p>Beide Seiten haben einen Public-private Key Schlüsselpaar zur Gegenseitigen Authentifizierung</p>
+<dl class="field-list simple">
+<dt>User Keys<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p><span class="docutils literal">Authorized keys</span> - Datei mit den öffentlichen Schlüsseln der Nutzer, gespeichert auf Serverseite</p></li>
+<li><p><span class="docutils literal">Identity keys</span> private Schlüssel der Nutzer</p></li>
+</ul>
+</dd>
+<dt>Host keys<span class="colon">:</span></dt>
+<dd><p>benötigt für die Authentifizierung von Servern, um Man-in-the-Middle-Angriffe zu verhindern.</p>
+</dd>
+<dt>Session Keys<span class="colon">:</span></dt>
+<dd><p>werden für die symmetrische Verschlüsselung der Daten in einer Verbindung verwendet. Session Keys (<span class="ger">Sitzungsschlüssel</span>) werden während des  Verbindungsaufbaus ausgehandelt.</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental docutils container">
+<p>Im Falle von SSH gibt es kein initiales Vertrauen zwischen Server und Client.</p>
+</div>
+</div><div class="ld-slide" id="secure-shell-ssh-verbindungsaufbau-beispiel">
+<h2>Secure Shell (SSH) - Verbindungsaufbau - Beispiel</h2>
+<div class="scrollable docutils container">
+<pre class="code text smallest literal-block"><code>debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: Applying options for *
+debug1: Connecting to example.org [1.2.3.4] port 22.
+debug1: Connection established.
+debug1: identity file /home/user/.ssh/id_rsa type -1
+debug1: identity file /home/user/.ssh/id_rsa-cert type -1
+debug1: identity file /home/user/.ssh/id_dsa type -1
+debug1: identity file /home/user/.ssh/id_dsa-cert type -1
+debug1: Remote protocol version 1.99, remote software version OpenSSH_5.8
+debug1: match: OpenSSH_5.8 pat OpenSSH*
+debug1: Enabling compatibility mode for protocol 2.0
+debug1: Local version string SSH-2.0-OpenSSH_5.5p1 Debian-6
+debug1: SSH2_MSG_KEXINIT sent
+debug1: SSH2_MSG_KEXINIT received
+debug1: kex: server-&gt;client aes128-ctr hmac-md5 none
+debug1: kex: client-&gt;server aes128-ctr hmac-md5 none
+debug1: SSH2_MSG_KEX_DH_GEX_REQUEST(1024&lt;1024&lt;8192) sent
+debug1: expecting SSH2_MSG_KEX_DH_GEX_GROUP
+debug1: SSH2_MSG_KEX_DH_GEX_INIT sent
+debug1: expecting SSH2_MSG_KEX_DH_GEX_REPLY
+debug1: Host 'example.org' is known and matches the RSA host key.
+debug1: Found key in /home/user/.ssh/known_hosts:1
+debug1: ssh_rsa_verify: signature correct
+debug1: SSH2_MSG_NEWKEYS sent
+debug1: expecting SSH2_MSG_NEWKEYS
+debug1: SSH2_MSG_NEWKEYS received
+debug1: Roaming not allowed by server
+debug1: SSH2_MSG_SERVICE_REQUEST sent
+debug1: SSH2_MSG_SERVICE_ACCEPT received
+debug1: Authentications that can continue: publickey,password,keyboard-interactive,hostbased
+debug1: Next authentication method: publickey
+debug1: Trying private key: /home/user/.ssh/id_rsa
+debug1: Trying private key: /home/user/.ssh/id_dsa
+debug1: Next authentication method: keyboard-interactive
+debug1: Authentications that can continue: publickey,password,keyboard-interactive,hostbased
+debug1: Next authentication method: password
+user&#64;example.org's password:
+debug1: Authentication succeeded (password).
+debug1: channel 0: new [client-session]
+debug1: Requesting no-more-sessions&#64;openssh.com
+debug1: Entering interactive session.
+debug1: Sending environment.
+debug1: Sending env LANG = en_US.UTF-8</code></pre>
+</div>
+</div><div class="ld-slide" id="secure-shell-ssh-risiken-durch-mangelnde-schlusselverwaltung">
+<h2>Secure Shell (SSH) - Risiken durch mangelnde Schlüsselverwaltung</h2>
+<ul class="incremental simple">
+<li><p>Schlüssel werden nicht regelmäßig ausgetauscht</p></li>
+<li><p>Schlüssel werden nicht gelöscht, wenn sie nicht mehr benötigt werden</p></li>
+<li><p>viele (die meisten) Schlüssel werden nicht verwendet</p></li>
+<li><p>Es ist of nicht bekannt, wer Zugriff auf welche Schlüssel hat(te)</p></li>
+<li><p>Es ist nicht bekannt, welche Schlüssel auf welche Systeme Zugriff haben</p></li>
+<li><p>Malware kann SSH-Schlüssel stehlen</p></li>
+<li><p>SSH Keys können ggf. privilegierten Zugriff gewähren</p></li>
+<li><p>SSH Keys können benutzt werden, wenn um Backdoors zu verstecken</p></li>
+<li><p>Server keys erlauben ggf. Man-in-the-Middle-Angriffe</p></li>
+</ul>
+</div><div class="ld-slide" id="ssh-tunneling">
+<h2>SSH Tunneling</h2>
+<ul class="simple">
+<li><p>ermöglicht die Übertragung beliebiger Netzwerkdaten über eine verschlüsselte SSH-Verbindung. z. B.</p>
+<ul>
+<li><p>um ältere Anwendungen zu verschlüsseln.</p></li>
+<li><p>um VPNs (Virtual Private Networks) zu implementieren</p></li>
+<li><p>um über Firewalls hinweg auf Intranetdienste zuzugreifen.</p></li>
+</ul>
+</li>
+<li><p>ermöglicht auch Port-forwarding (lokale Ports werden auf entfernten Rechner weitergeleitet)</p></li>
+</ul>
+<img alt="SSH Protokoll" class="align-center" src="images/ssh/tunneling.svg" style="width: 1450px;" />
+</div><div class="ld-slide" id="ssh-und-back-tunneling">
+<h2>SSH und <span class="ger-quote">Back-tunneling</span></h2>
+<ul class="incremental simple">
+<li><p>Der Angreifer richtet einen Server außerhalb des Zielnetzwerks ein</p></li>
+<li><p>Nach Infiltration des Zielsystems verbindet der Angreifer sich von innen mit dem externen SSH-Server.</p></li>
+<li><p>Diese SSH-Verbindung wird so eingerichtet, das eine TCP-Port-Weiterleitung von einem Port auf dem externen Server zu einem SSH-Port auf einem Server im internen Netzwerk möglich ist.</p></li>
+<li><p>Die meisten Firewalls bieten wenig bis gar keinen Schutz dagegen.</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Es ist in diesem Fall besonders interessant für den Angreifer den SSH Server zum Beispiel bei einem Cloud-Anbieter zu betreiben, welcher von dem Unternehmen  standardmäßig verwendet wird (am Anfang steht immer die Aufklärung!). In diesem Fall wird die Firewall keine ausgehenden SSH-Verbindungen dorthin blockieren.</p>
+</div>
+</div><div class="ld-slide" id="schwachstellen-in-ssh">
+<h2>Schwachstellen in SSH</h2>
+<blockquote class="epigraph">
+<p><strong>Nearly 11 million SSH servers vulnerable to new Terrapin attacks</strong></p>
+<p>[...]
+It [The Terrapin attack] manipulates sequence numbers during the handshake process to compromise the integrity of the SSH channel, particularly when specific encryption modes like ChaCha20-Poly1305 or CBC with Encrypt-then-MAC are used.
+[...]</p>
+<p>By Bill Toulas</p>
+<p class="attribution">—<a class="reference external" href="https://www.bleepingcomputer.com/news/security/nearly-11-million-ssh-servers-vulnerable-to-new-terrapin-attacks/">January 3, 2024 10:06 AM</a></p>
+</blockquote>
+</div><div class="integrated-exercise transition-move-left ld-slide" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Port Scans - IDLE Scan" id="ld-exercise-1">
+<p class="rubric">Port Scans - IDLE Scan</p>
+<ul class="simple">
+<li><p>Warum kann mit einem IDLE Scan nicht festgestellt werden warum ein Port geschlossen oder gefiltert ist?</p></li>
+<li><p>Welchen Wert hat die IP ID des Zombies, der einem IDLE Scan durchführt, wenn der Zielport offen bzw. geschlossen ist wenn der Scanner diesen wieder abfragt?</p></li>
+</ul>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:k0kUKZaU4kFWCulkYdSu0GndiDy+EGgHTNdwl3Wgwwo=:oWoCJtl0DCic91ut:oQIgVVbJssMUZc2g8KpO8cEuJPRkVsEyA4dtSfV9FstPIEDoYlH6mULwMwsh5mXYJwCYLjjtgKF/tYJGAHCBZ0sj3oqp2i0pANYjwl+LDpz8gWeTpM1Ch9DcB5t8U//r8Urw03qvwrpmj5rWvP2qjC7L4lJfzVB1prOMZvtxDCPavwhQXG8f2hlvLg7bui5QKGPfJ9hwm4Vz1waFVdo3mGzfk8o6yt3Gk8hd1lDvLN0hU6mPg1QauVKZAPgDDH6uf9lC4N44W8I150vV7Oup5zrXu+DlFwUjrXlSqm4jXpqaK+Oyy/PjEd2MfdEeUK2JPA6mqCRQdPOi/d+foSwgqGmsTQzywgSQ9R94DpTtoiw8hKki3qTeP53wkH31cPVMc9KHv8jTim4HW7pBP9cP10HGGXumA2xLL/ARJmAMJCKOtX5HBNSUdT1dSjnjlL6uT6Se+mecC1vOg7YMhCSFvvtmZkrvCb/NtqyIS8WRvNJv2wzuDfOU4hYEE2KbqzHg+Koryh6gWtmXASimGVTDxklNQI3InlGFPpEt6YdxpqoqLdETF+RHBtK2yqLVEWgxUG5S8mTtiTM2Ei9NAtYwafzqxN1fIl+R3ZkdR+OKYer6zV+sCu6GcV0iq3AtfJeuIXJEFm1GKjfbLo+MzekjAjaTQQa9sXj0NSn8+tmoQ5ZjzLI=</div>
+</div>
+</div><div class="integrated-exercise transition-move-left ld-slide" id="ubung-1">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - S/Key" id="ld-exercise-2">
+<p class="rubric">S/Key</p>
+<ol class="arabic simple">
+<li><p>Welche Vorteile bieten Einmalpasswortsysteme gegenüber Systemen mit mehrfach zu verwendenden Passworten?</p></li>
+<li><p>Welchen Angriffen sind Einmalpasswortsysteme weiterhin ausgesetzt?</p></li>
+<li><p>Generieren Sie eine Liste von Einmalpassworten mit Initialwert :math:` r = 769`. Generieren Sie <span class="math">\(H(r)\)</span> bis <span class="math">\(H^6(r)\)</span> wenn die Einwegfunktion hier der Einfachheit halber <span class="math">\(H(x) = x^2\; mod\; 1000\)</span> ist.</p></li>
+<li><p>Wie oft kann sich der Benutzer anmelden? Wie sieht seine Liste aus?</p></li>
+<li><p>Welchen Wert speichert der Server vor dem jeweiligen Anmeldevorgang?</p></li>
+<li><p>Spielen Sie zwei Anmeldevorgänge durch.</p></li>
+<li><p>Wenn ein Passwort <span class="math">\(H^L(W), 1 &lt; L &lt; N\)</span> bekannt ist, welche Auswirkungen hat dies auf die Sicherheit des Verfahrens?</p></li>
+</ol>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:Fhm1Bx+8UGft3xZM+LNZoFCo0wWd3Ori825qO7khJDY=:pBZ1JQnWd/iEBGpj:0EpRnDXhiszLFJ77l3ox1aIAO+QwUYTLj7eLseumNrjXfF0ggU7pD0FQqnApqR8fDqAVTeAJpvQzylvRPBryUdUtnF+0o9vFottbHTL3JzXCQovbE+ZCtEbPsomZqPO9p9lRU8PWrcGX+dcrveFpZZqX2L4r2j8Hql+8xbw/4h+GRMUaWDe4B2HNXVvF75UNwirC+sAACrd+B4gdV3wWh6bZABhut/8Om0ZgU4K+zVtiUQXiwgQs0VF9a6YFqZliNEqaFAX4wEScNTIh/mXOUc5RC4YDJtwYP7UEd81Kkq3lj7JAG7XxwN6SbApuzXirT/oHBWlaFoYiR2DUT662mkS41m2IHaXuUK1WHQEA2B8/HEZ+311g8dvsLHDCkw+/JJsNOcVkoxqqPz/XZ/JrTchJ+dAIbR1McYR2u36bG1Xf5z1bn8ic0w4iFbRTI501+BZzL+8cpeulLGi4WZuUic7TcoUvfm6peubvJF2prXFYBzXDDk7HqaeGhfvJxtkaNxoT3fS8Z43XueYkJ7+wYj5nK9ZgLtxrqjduWhmImRcRsTjROLOi+/AWIvAFux1GCzrVPICx/WppB/qFceNdQdDqVUG5eJnLhvrI4TKTfZW28o6ug4ZAnfamWlyUmFQEvd8F9UiS0fbwImG/+jnfhxQlqlGnd0r4N4nxhKFYWXqrTUPkteAHKraMlhbM4psHyxdJs0rHazDTblM3EQEddPey6n80RFM59qI3gdvgT4f9Zm6MUpZX9As1SQhDvRsCERQRZCiJpFh6ODB6jDpC2prnX8VKXTEj0lS14crdMAuCVJP6qFJjqKgPhnBqSIIHs3EogmY6+LiEr0r09ltpkOmRqgwQfe6MMiG/ASiQ8fmkq/+laKNOmWewp+UHyid1QgXYDSENiUYJ6iINNsHcRA6bzj/xAsUB4xHbPD06zEtdwogZNYZruDtab4/SDan5uvSC20AvyKT8b/eDw74hafS0JbkW2a8riyMT3YZZiVYF2FhAn9Y2Gvxcv8vR9ebkn0RI0Szy8STSJHaJ9L0D5GS5YYYZZsf1OnbbejCqgjVckUa9LBEuPZlUYRsADKReX/vWvgGppAOAxqfzy9fWbXp7ex5AYQa5Pb1foELPoP7e34yvt630PpihTmJnDq3kIuUbHFhoy935i0437o+hdUtzgW4k+aNfWFSd4vOADLFRN08GyIgUM7s4MWltfV8/WNcs6qs0kjTx0xNI0i2Pwxv/hikcFh1ef8KlC8XJCxf1XyXq0kf6uTYLy2N6LbmaCLHm6oaHhQ+LCsQ0x0LuOHPHJIl81lftNazaPYa3h4aoIE2RVy/nK7whYk5nSKjrO/mQ0+fHWQ/ROMBe6YEdkxhBrC3CBbcbsg1MweFoXs0ttkJlWGAbrson5VnYoE7/TvZ2pvUGDpHqdW/U85EC0rTLBALMM11vOwVzQuXbF8EF+rUHaNOxjwwEqZCee1RwRocCemQLViRxo7+tJiyMcZzUXaYbrDqB00bQ3TgvA2zZIZYo+8b7FBQzRZ3lSoxHR5QptQ==</div>
+</div>
+</div><div class="integrated-exercise transition-move-left ld-slide" id="ubung-2">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - DDoS" id="ld-exercise-3">
+<p class="rubric">DDoS</p>
+<ol class="arabic simple">
+<li><p>Welches Problem entsteht wenn zum Schutze vor Angriffen auf die Verfügbarkeit die Ressourcen von IT-Systemen und deren Internet-Anbindung erhöht werden?</p></li>
+<li><p>Recherchieren Sie was ein &quot;Low and Slow Angriff&quot; ist.</p></li>
+<li><p>Wo kann überall &quot;Egress filtering&quot; statt finden.</p></li>
+</ol>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:Qfa3f16T8expN/erg22nUdPb82wUdjk9RDTs8cH+QtA=:CrKM14nmj+nM4P4W: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</div>
+</div>
+</div><div class="new-section transition-fade ld-slide" id="firewalls">
+<h2>Firewalls</h2>
+</div><div class="ld-slide" id="unabhangiges-netz-ideale-situation">
+<h2>Unabhängiges Netz - <span class="ger-quote">Ideale Situation</span></h2>
+<img alt="Ideale Situation" class="align-center" src="images/firewalls/all-save.svg" style="height: 700px;" />
+<dl class="field-list simple">
+<dt>Vorteile<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>keinerlei Angriffsmöglichkeiten von außen</p></li>
+</ul>
+</dd>
+<dt>Nachteile<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>kein Schutz gegen Insider</p></li>
+<li><p>kein Zugang zum Internet</p></li>
+</ul>
+</dd>
+</dl>
+</div><div class="ld-slide" id="von-der-notwendigkeit-des-schutzes-von-rechnern">
+<h2>Von der Notwendigkeit des Schutzes von Rechnern</h2>
+<blockquote class="epigraph">
+<p>[...] Züger und sein Team hätten [...] erst kürzlich ein Experiment durchgeführt, [...]. Sie hätten einen Computer &quot;ohne jeglichen Schutz&quot; mit dem Internet verbunden, um zu sehen, wie lange es dauere, bis er befallen sei. Konkrete Details zur Konfiguration dieses Systems werden zwar nicht genannt, angeblich war der Rechner aber schon nach 20 Minuten infiltriert.</p>
+<p class="attribution">—<a class="reference external" href="https://www.golem.de/news/iot-hacker-missbrauchen-zahnbuersten-fuer-ddos-angriffe-2402-181921.html">Golem.de 6.2.2024</a></p>
+</blockquote>
+</div><div class="ld-slide" id="schutzschicht-zwischen-internem-und-externem-netz">
+<h2>Schutzschicht zwischen internem und externem Netz</h2>
+<img alt="Schutzschicht zwischen internem und externem Netz" class="align-center" src="images/firewalls/firewall.svg" style="height: 770px;" />
+<ul class="simple">
+<li><p>Kontrolle des Nachrichtenverkehrs durch Filterung</p></li>
+<li><p>begrenzte Isolation mit begrenztem Schutz</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Eine Firewall schafft zwischen verbundenen Netzen Sicherheitsdomänen mit unterschiedlichem Schutzbedarf. Eine wichtige Teilaufgabe ist das Ausarbeiten von Sicherheitsrichtlinien.</p>
+</div>
+</div><div class="ld-slide" id="realisierung-von-virtual-private-networks-vpn">
+<h2>Realisierung von Virtual Private Networks (VPN)</h2>
+<img alt="Realisierung von Virtual Private Networks (VPN)" class="align-center" src="images/firewalls/vpn.svg" style="width: 1500px;" />
+<ul class="simple">
+<li><p>Aufbau einer scheinbar privaten Verbindung von Firmenteilnetzen über das (öffentliche) Internet</p></li>
+<li><p>Zusätzliche Verbindungsverschlüsselung zwischen den Firewalls.</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Ziel ist es aktive und passive Angriffe zu unterbinden.
+Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Informationen liefern über die Verbindungen liefern.</p>
+</div>
+</div><div class="ld-slide" id="kommerzielle-vpns-fur-endnutzer">
+<h2>Kommerzielle VPNs für Endnutzer</h2>
+<img alt="Einsatz von Virtual Private Networks (VPN) für Privatnutzer" class="align-center" src="images/firewalls/vpn-commercial.svg" style="width: 1400px;" />
+<div class="supplemental docutils container">
+<p><strong>Motivation</strong></p>
+<ul class="simple">
+<li><p>Schutz der Privatsphäre; der ISP kennt nicht mehr die Webseiten, die man aufruft</p></li>
+<li><p>Die IP-Adresse des Nutzers ist den aufgerufenen Webseiten nicht mehr bekannt und kann deswegen der Umgehung von Geo-Blocking dienen.</p></li>
+</ul>
+<p><strong>Nachteile?</strong></p>
+<ul class="simple">
+<li><p>Vertrauen in den VPN-Anbieter muss vorhanden sein. Insbesondere, beim Einsatz zum Stärken der Privatsphäre, muss der VPN-Anbieter vertrauenswürdig sein und sollte ein so genannter &quot;no-log&quot; Anbieter sein. Es gibt auch (kostenlose) VPN-Anbieter, die die Daten der Nutzer verkaufen (ehemals: <a class="reference external" href="https://techcrunch.com/2019/02/21/facebook-removes-onavo/?guccounter=1&amp;guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&amp;guce_referrer_sig=AQAAAGVIppEgEOd9Z0FoMbmk2TCleRmD9wCMWDmIzGYEjIo1c7Cmz8NpiSoibthFG5IZQzmZ-kiJq-5Wj1bj21byh7YUrC_aSJJk1Bapwz80GSgzLFS-LHCF2OOetUYLSKwEG7W75znuqJJBJcNTTbtJ1UGB95Yu90saK9aIIkEywcRq">Facebook Onavo</a>).</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="schutz-auf-den-schichten-des-tcp-ip-stacks">
+<h2>Schutz auf den Schichten des TCP/IP Stacks</h2>
+<p>Zentraler Schutz des gesamten internen Netzwerks durch:</p>
+<ul class="incremental">
+<li><p>Paket Filter (<span class="eng">Packet Filtering</span>)</p>
+<ul>
+<li><p>Blockieren bestimmter IP-Empfänger-Adressen (extern / intern)</p></li>
+<li><p>Blockieren bestimmter IP-Absender-Adressen (extern / intern)</p>
+<p><span class="minor">(z. B. aus dem Internet mit internen IP-Absender-Adressen.)</span></p>
+</li>
+<li><p>Blockieren bestimmter Dienste; ggf. nur für bestimmte IP-Adressen</p></li>
+</ul>
+</li>
+<li><p>Filter auf Anwendungsebene (<span class="eng">Application-level Filtering</span>)</p>
+<ul class="simple">
+<li><p>inhaltsbezogene Filterung der Verkehrsdaten eines Dienstes</p></li>
+<li><p>z. B. Virenfilter</p></li>
+<li><p>wirkungslos bei verschlüsselten Verkehrsdaten</p></li>
+</ul>
+</li>
+<li><p>Protokollierungsmöglichkeit der Kommunikation von / nach extern</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Firewalls (alleine) können die Struktur des Netzwerks nicht verbergen.</p>
+</div>
+</div><div class="smaller ld-slide" id="dos-attacke-auf-anwendungsebene">
+<h2>DoS Attacke auf Anwendungsebene</h2>
+<blockquote class="epigraph">
+<p>[...]</p>
+<p>Angriff auf die Kleinen</p>
+<p>Waren bei früheren Spamangriffen massenhaft Accounts auf der größten Mastodon-Instanz mastodon.social angelegt worden, die dann von dort ihre Inhalte verbreiteten, trifft es nun nicht die größte, sondern die kleinsten. Automatisiert werden dabei Instanzen ausgesucht, auf denen eine Registrierung ohne Überprüfung und sogar ohne ein Captcha möglich ist. Das können etwa solche mit wenigen Accounts sein, die von Enthusiasten etwa für eine Gemeinde betrieben werden. Waren die Verantwortlichen in den vergangenen Tagen nicht aufmerksam, wurden diese Instanzen dann regelrecht überrannt. Die Spam-Accounts verschickten massenhaft Nachrichten mit einem Bild des namensgebenden Frühstücksfleischs und Links zu Discord-Servern, die wohl lahmgelegt werden sollten.</p>
+<p class="attribution">—<a class="reference external" href="https://www.heise.de/news/Mastodon-Spamwelle-zeigt-Schwaechen-auf-und-weckt-Sorge-vor-schlimmerer-Methode-9632055.html">Mastodon: Spamwelle zeigt Schwächen auf [...]</a></p>
+</blockquote>
+</div><div class="ld-slide" id="realisierungsmoglichkeiten-von-firewalls">
+<h2>Realisierungsmöglichkeiten von Firewalls</h2>
+<ul class="incremental simple">
+<li><p>Hardware-Firewall</p>
+<ul>
+<li><p>Screening Router</p></li>
+<li><p>Application Gateway (auch Bastion Host)</p>
+<ul>
+<li><p>Proxy-Server für bestimmte Dienste</p></li>
+<li><p>Client-Software (HTTP-Browser, telnet, ftp, ...)</p></li>
+<li><p>Server-Software</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Software-Firewall (<em>Personal Firewall</em>)</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Im Falle eines <span class="eng">Bastion Host</span>, ist dies der einzige unmittelbar erreichbare Rechner.</p>
+</div>
+<!-- .. class:: vertical-title -->
+</div><div class="ld-slide" id="dual-homed-host">
+<h2>Dual-Homed Host</h2>
+<img alt="Dual-Homed Host" class="margin-1em align-right" src="images/firewalls/dual-homed-host.svg" style="width: 800px;" />
+<p><strong>Aufbau</strong></p>
+<ul class="simple">
+<li><p>zwei Netzwerkkarten: ggf. private interne Adressen</p></li>
+<li><p>Screening Router &amp; Gate: Packet Filter und Application-Level Filter</p></li>
+<li><p>Proxy-Dienste installieren</p></li>
+<li><p>Benutzer-Logins von extern</p></li>
+<li><p>Konf. der Netzwerkkarten: IP-Pakete nicht automat. weiterleiten</p></li>
+</ul>
+</div><div class="ld-slide" id="screening-router">
+<h2>Screening Router</h2>
+<div class="two-columns no-default-width docutils container">
+<div class="column no-separator docutils container">
+<p><strong>Aufbau</strong></p>
+<ul class="simple">
+<li><p>programmierbarer Hardwarerouter</p></li>
+<li><p>simple Filterfunktionen:</p></li>
+<li><p>nur Paket-Header prüfen</p></li>
+<li><p>schnelle Auswertung ermöglicht hohen Durchsatz</p></li>
+<li><p>Realisierung eines Packet Filters</p></li>
+</ul>
+<p><strong>Bewertung</strong></p>
+<div class="two-columns width-60 docutils container">
+<div class="column docutils container">
+<ul class="positive-list simple">
+<li><p>einfach und billig</p></li>
+<li><p>flexibel</p></li>
+</ul>
+</div>
+<div class="column docutils container">
+<ul class="negative-list simple">
+<li><p>schwer zu testen</p></li>
+<li><p>Protokollierung</p></li>
+<li><p>Fernwartung</p></li>
+<li><p>keine Inhaltsfilterung</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="column docutils container">
+<img alt="Screening Router" class="margin-1em align-center" src="images/firewalls/screening-router.svg" style="width: 600px;" />
+</div>
+</div>
+</div><div class="ld-slide" id="screened-host">
+<h2>Screened Host</h2>
+<img alt="Screened Host" class="margin-1em padding-left-1em align-right" src="images/firewalls/screened-host.svg" style="height: 900px;" />
+<p><strong>Aufbau</strong></p>
+<ul class="simple">
+<li><p>Screening Router blockiert:</p>
+<ul>
+<li><p>Pakete von / an interne Rechner (nicht Gate)</p></li>
+<li><p>Source-Routed Pakete</p></li>
+</ul>
+</li>
+<li><p>von extern nur Gate sichtbar</p></li>
+<li><p>Pakete von intern nur via Gate</p></li>
+<li><p>Gate bietet Proxy-Server (z. B. für E-Mail)</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Gibt es für eine bestimmte Anwendung kein Application-level Proxy, dann kann auf einen für TCP/UDP generischen Proxy zurückgegriffen werden. Dieser arbeitet auf dem Session Layer und kann nur die Header-Informationen auswerten. Es handelt sich dann um ein <span class="eng">Circuit-level Proxy/Gateway</span>. Im Vergleich zu einem Application-level Proxy ist die Sicherheit geringer, da der Circuit-level Proxy nicht in der Lage ist, die Daten zu interpretieren.</p>
+<p>Ein allgemeines Problem ist, dass viele Anwendungen auf generische Protokolle wie HTTP aufsetzen. Weiterhin betreiben einige Anwendungen <span class="ger-quote">Port Hopping</span>, d. h. sie wechseln den Port wenn der Standardport nicht offen ist.</p>
+<p>Eine Anforderung an <span class="ger-quote">Next-generation Firewalls</span> ist, dass diese die Analyse von den Daten einer Anwendung unabhängig vom Port und Protokoll ermöglichen.</p>
+</div>
+</div><div class="ld-slide" id="konfiguration-eines-gateways">
+<h2>Konfiguration eines Gateways</h2>
+<p>Das Ziel der Konfiguration muss eine minimale angreifbare Oberfläche sein.</p>
+<ul class="incremental simple">
+<li><p>Abschalten aller nicht-benötigten Netzdienste</p></li>
+<li><p>Löschen aller nicht benötigter Programme</p></li>
+<li><p>Rechte von /bin/sh auf 500 setzen</p></li>
+<li><p>Rechte aller Systemverzeichnisse auf 711 setzen</p></li>
+<li><p>keine regulären Benutzerkennungen</p></li>
+<li><p>root-Login mit Einmal-Passwortsystem</p></li>
+<li><p>setzen von Platten- und Prozess-Quotas</p></li>
+<li><p>volle Protokollierung, möglichst auf Hardcopy-Gerät</p></li>
+<li><p>möglichst sichere, stabile und regelmäßig aktualisierte Betriebssystemversion einsetzen</p></li>
+</ul>
+</div><div class="ld-slide" id="screened-subnet">
+<h2>Screened Subnet</h2>
+<img alt="Screened Subnet" class="align-right" src="images/firewalls/screened-subnet.svg" style="width: 950px;" />
+<p><strong>Aufbau</strong></p>
+<ul class="incremental simple">
+<li><p>interner Screening Router als weiterer Schutzwall</p>
+<ul>
+<li><p>blockiert Dienste, die nicht einmal bis zum Gate gelangen sollen</p></li>
+<li><p>lässt nur Pakete zum / vom Gate durch</p></li>
+</ul>
+</li>
+<li><p>äußeres Netz realisiert Demilitarisierte Zone (DMZ) für HTTP-Server, Mail-Server, ...</p></li>
+</ul>
+</div><div class="ld-slide" id="intrusion-detection-systeme-ids">
+<h2>Intrusion Detection Systeme (IDS)</h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Ein IDS ist ein Gerät (meist ein speziell konfigurierter Rechner), das vielfältige Techniken zur Erkennung von Angriffen anwendet und Angriffe meldet und ggf. abwehrt, in dem (z. B.) die Firewall automatisch umkonfiguriert wird.</p>
+</aside>
+<div class="incremental docutils container">
+<p><strong>Motivation</strong></p>
+<ul class="incremental simple">
+<li><p>Firewalls alleine sind zu statisch und deswegen häufig nicht ausreichend</p></li>
+<li><p>bessere Aufzeichnung und flexiblere Erkennung notwendig</p></li>
+<li><p>angepasste Reaktion notwendig</p></li>
+</ul>
+</div>
+<div class="incremental docutils container">
+<p><strong>Umsetzung</strong></p>
+<p>An verschiedenen, neuralgischen Stellen werden spezielle Sensoren platziert, die (hier) den Netzwerkverkehr überwachen und verdächtige Aktivitäten melden.</p>
+</div>
+<div class="supplemental docutils container">
+<p>Miteinander verwandt bzw. typischerweise in einem Produkt zu finden:</p>
+<ul class="simple">
+<li><p>Intrusion Detection (IDS)</p></li>
+<li><p>Intrusion Response (IRS)</p></li>
+<li><p>Intrusion Prevention (IPS)</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="ids-erkennungstechniken">
+<h2>IDS-Erkennungstechniken</h2>
+<ul class="simple">
+<li><p>Signaturerkennung</p></li>
+<li><p>statistische Analyse</p></li>
+<li><p>Anomalieerkennung</p></li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Probleme</p>
+<ul class="simple">
+<li><p>Fälschlicherweise gemeldete Angriffe (false positives)</p></li>
+<li><p>nicht gemeldete Angriffe (false negatives) (insb. bei neuartigen Angriffen)</p></li>
+<li><p>Echtzeitanforderung, insb. bei Hochgeschwindigkeitsnetzen</p></li>
+<li><p>Aufzeichnung bei Netzwerken mit Switches ( ⇒ spez. SPAN Port)</p></li>
+<li><p>Sensoren sollen unbeobachtbar sein (stealth)</p></li>
+</ul>
+</aside>
+</div><div class="integrated-exercise transition-move-left ld-slide" id="ubung-3">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Firewalls" id="ld-exercise-4">
+<p class="rubric">Firewalls</p>
+<ol class="arabic simple">
+<li><p>Was sind Vorteile eines Dual Homed Host gegenüber einem Paketfilter? Was sind die Nachteile?</p></li>
+<li><p>Benennen Sie zwei konzeptionelle Grenzen von Firewalls. D. h. zwei Szenarien gegen die Firewalls nicht schützen können.</p></li>
+<li><p>Für welche der folgenden Cybersicherheitsstrategien können Firewalls eingesetzt werden:</p>
+<ol class="arabic simple">
+<li><p>Angriffe vermeiden</p></li>
+<li><p>Angriffe erkennen</p></li>
+<li><p>Angriffe abwehren/Angriffen entgegenwirken</p></li>
+<li><p>Reaktion auf Angriffe</p></li>
+</ol>
+</li>
+<li><p>Sie werden beauftragt die Firewall so einzurichten, dass Mails mit Schadsoftware nicht durchgelassen werden. Wie reagieren Sie?</p></li>
+</ol>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:nw8a1anVRccLEJ28ilntg1sprigDvsXFJaMn7TtsVPI=:QozuOaUmNbgA9F8W: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</div>
+</div>
+</div>
+</body>
+</html>
