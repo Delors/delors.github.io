@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta name="exercise-passwords" content="$MTAwMDAw:Nx8ftUnHPrY6l0P0lwgtOzCDa0Wqs/ngXZEUnTVg7YM=:ug+Ho433BVpxYj95:Fe4x5oWWUF843nfHmYtel1JzaQ+Iw4358Yg0rsHv1MIgMGTK05i1ldeMI0sgZt1CO54pxS8R9FycIQISMWiP0XOthY2n5gtfAF7gipwzMFBfjt5C8HeJJIPO8ZUCa+l5FsYOcASHaIdfCNzHFV4PUb8zFpAn3MtX33nYa9qYwK746CPX30C1PQAqFzTq66zBFpfg3mfoAJmTPuT1aHd7VW8TUEIL1v4Hu83ITrZNY3IiuNLApQQn" />
+<meta name="exercise-passwords" content="$MTAwMDAw:+K+imO2kZtJo5WlExbmgmY2yG4ytPh0QakMrLzDoEKs=:WssoEVl6grtU5O0h:5UxBF3dnSjWCjtwVWNNO3pf4SyPQp4lB6+NgrdeI/z1TLDwCqt1Ce5AFmu0YB2ELmfKAa3ZG+DsimFdL7Jwn6BhUKVkMfROvK1dkBrNLY8F95kYCMj6aZ2rk0Nq4gqhtBchzDQpAvBLrCYFkjyChxO67hjqbV9BAUcXoWCC1Ec8ZJRKRJkBRvFOiP20PIESc+fsJ/7YMbeUNqgn9KEo0wWq3qXSk+JPqWbw9I8WKV44hWFqSPe670Ge5ybKO+6XBVhOiHdZQhXO2pnraETUQzhj8XjhCwK0I4m5G78y8nhPD+dvec94/jfq/s68iw4LhW8O7DtD4wn5w4T6hNQ==" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="version" content="LD2 0.1" />
@@ -625,7 +625,7 @@ a { text-decoration: none; }
 <dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2024-03-15</dd>
+<dd class="version">2024-03-17</dd>
 <dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
@@ -884,11 +884,14 @@ a { text-decoration: none; }
 </ul>
 </li>
 </ul>
-</div><div class="ld-slide" id="des-design">
+<div class="supplemental">
+<p>Bei DES enthält ein 64 Bit langer Schlüssel 8 Paritätsbits, die zur Überprüfung der Schlüsselübertragung verwendet werden.
+Die 8 Paritätsbits werden dann aus dem 64-Bit-Schlüssel entfernt. Somit ist die effektive Schlüssellänge 56 Bit.</p>
+</div></div><div class="ld-slide" id="des-design">
 <h2>DES - Design</h2>
 <img alt="drawings/des/design.svg" class="align-center" src="drawings/des/design.svg" style="width: 1200px;" />
-</div><div class="ld-slide" id="des-rundenfunktion">
-<h2>DES Rundenfunktion</h2>
+</div><div class="ld-slide" id="des-rundenfunktion-f">
+<h2>DES Rundenfunktion (<span class="ger-quote">F</span>)</h2>
 <div class="note small width-40 docutils container">
 <p><strong>Legende</strong></p>
 <p>R ist die rechte Hälfte der Nachricht.</p>
@@ -1295,22 +1298,27 @@ Entschlüsselungen/s</p></td>
 <li><p>Im Allgemeinen möchten wir die Unterschlüssel so wählen, dass die Schwierigkeit, einzelne Unterschlüssel abzuleiten, und die Schwierigkeit, den Hauptschlüssel wieder zurückzuerhalten, maximiert werden.</p></li>
 <li><p>Es wird vorgeschlagen, dass die Schlüsselableitungsfunktion für die Unterschlüssel (<span class="eng">Key Schedule</span>) zumindest das <strong>Strenge Lawinenkriterium</strong> und das <strong>Bit-Unabhängigkeitskriterium</strong> für Schlüssel/Ciphertext garantieren sollte.</p></li>
 </ul>
-</div><div class="integrated-exercise transition-scale ld-slide" id="ubung-feistelchiffre-implementieren">
-<h2>Übung - Feistelchiffre Implementieren</h2>
+</div><div class="integrated-exercise transition-scale ld-slide" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Feistelchiffre Implementieren" id="ld-exercise-1">
+<p class="rubric">Feistelchiffre Implementieren</p>
 <p>Implementieren Sie eine Feistel Chiffre in einer Programmiersprache Ihrer Wahl (z. B. Java, Scala, Python, C, JavaScript ...), die es Ihnen ermöglicht:</p>
 <ul class="simple">
 <li><p>Nachrichten zu ver- und entschlüsseln</p></li>
 <li><p>Blöcke von 128 Bit zu verschlüsseln</p></li>
-<li><p>die Funktion <span class="math">\(f\)</span> einfach auszutauschen, um die Wirkung von <span class="math">\(f\)</span> zu testen (je nach Sprache Ihrer Wahl können Sie z. B. native Funktionen höherer Ordnung oder einen Funktionszeiger verwenden)</p></li>
-<li><p>Für die Ableitung der Rundenschlüssel können Sie eine Funktion verwenden, die ein einfaches Verschieben des Schlüssels durchführt</p></li>
+<li><p>die Funktion <span class="math">\(f\)</span> einfach auszutauschen, um die Wirkung von <span class="math">\(f\)</span> zu testen</p></li>
+<li><p>Für die Ableitung der Rundenschlüssel können Sie eine Funktion verwenden, die eine Rotation des Schlüssels durchführt (z. B. <a class="reference external" href="https://docs.oracle.com/javase%2F7%2Fdocs%2Fapi%2F%2F/java/lang/Integer.html#rotateLeft(int,%20int))">Integer.rotateLeft</a>).</p></li>
 </ul>
-<div class="tiny docutils container">
-<p><strong>Hinweis</strong></p>
-<p>Kümmern Sie sich nicht um Nachrichten, die größer oder kleiner als die Blockgröße sind. Dies ist nicht notwendig, um die Auswirkungen von <span class="math">\(f\)</span> oder der Verwendung eines Rundenschlüssels zu verstehen. Kümmern Sie sich nicht um einen Schlüssel, der nicht die richtige Größe hat. D. h. verwenden Sie eine Nachricht und einen Schlüssel mit der entsprechenden Größe.</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:z7fD78YL7Atx3a0BRiNu5i55F4WkQL5lj2TVnF3GZDI=:DFiMhft2fmzubvdG:nx+3jyxpSbItFCN0NXvNsUHqUWXiWRuRFIroOkPtI/E6B1brLVY03GFggg4jQSnho+EvqK3TZzaXEFAzv6rTVfNGiXnY3Bqzj6HTtdda/hja1s6AS6wNSBmR9pGj3Mr3VMk08Lx8nxNisimR7+gE6EoJb1FD7p5Y12sOZPiOhW0oXvk36KVY6Dlzd7ZqAY0N5x6NFVoL5hscefm9xnLKJEfy0rChFS7p2dueeZsv7XQJNN9LutKQOA==</div>
 </div>
-</div><div class="integrated-exercise ld-slide" id="ubung">
+<div class="supplemental">
+<p><strong>Hinweise</strong></p>
+<p>Kümmern Sie sich nicht um Nachrichten, die größer oder kleiner als die Blockgröße sind. Dies ist nicht notwendig, um die Auswirkungen von <span class="math">\(f\)</span> oder der Verwendung eines Rundenschlüssels zu verstehen. Kümmern Sie sich nicht um einen Schlüssel, der nicht die richtige Größe hat. D. h. verwenden Sie eine Nachricht und einen Schlüssel mit der entsprechenden Größe.</p>
+<p>Um die Austauschbarkeit der Funktion f zu erreichen können Sie je nach Sprache z. B. native Funktionen höherer Ordnung, einen Funktionszeiger oder ein Interface verwenden.</p>
+</div></div><div class="integrated-exercise ld-slide" id="ubung-1">
 <h2>Übung</h2>
-<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Feistelchiffre Evaluieren" id="ld-exercise-1">
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Feistelchiffre Evaluieren" id="ld-exercise-2">
 <p class="rubric">Feistelchiffre Evaluieren</p>
 <ol class="arabic simple">
 <li><p>Was passiert, wenn f nur 0x00-Werte zurückgibt (unabhängig vom Rundenschlüssel)?</p></li>
@@ -1320,7 +1328,7 @@ Entschlüsselungen/s</p></td>
 <li><p>Was passiert, wenn du deinen Schlüssel änderst? Was passiert in extremen Fällen (z. B. wenn das Passwort nur aus &quot;0 &quot;s besteht?</p></li>
 </ol>
 <div class="ld-exercise-solution" encrypted="">
-MTAwMDAw:1PeucD3rR9tP8uezrym5zQUImJj6XDCC5a961Ek1yng=:94ZO50aevM+wYrh9:6yMbiqKHtssfbvXB6lSv74bRiiYR/5Y9v3fRh3wO+Qki38ZinwaNEL39lB9xnD5bbOz7YQipDGb33RooKz9m41XsiAkGoOv/tfHl9DORJBNovmznktC7Xm7x7OhqRVziBQBHdP8emzVXvZJ9Cr3Bpb6sxVexb/+eZv/SwK1rePkcDnKFYWrSFt1Lt0iFFbH+TWwaEsNi800X7wYaaptNi4abHnXWHBuF6I2O9HBExBZr3/U3IsBz04SXH4xobTlgDkvb3N1s0ool4hrKW08t9GlJiW77D3KUnWB4WqulOCIIdBgqDh0OaqvT5Ws/X+7Oa/VJcr+OyFXPprbZ3mjgyp8bItqzF6Rb92IexowcqJP1WyWWcFcJhnkWUZLbQ66mJggX4ioSUcUh3jaTPZK56VUw5CnG8QxWz/tVD5FNp3v588eV/UmuCLxkF4p4gH7ILl6VLAzA0olDk+MoipM8P/dKKcAtaLqIb3D2lfM4kF9t5rekZ6YOyo/mzMZEVlfc+8b+QvtvqTk6LKPHTuY1pAZiWAR7gYZLiJO6uPPjvzIAtodcSLRdXW0NZK6ZJevPx0aqyIfw7ud516UmtyeMFc9g2YaG76Xy74zCC+B7hBd96qOvmwtDErBqagRS9VJOPNs/NtT0D+1wo1lH8hfV5xABnY+3yCqbshMuGqWLivbUficq1cbPH2wb3u0Qn4afpswV/QuDAG7ED5e7msxg7P2PobBaxnnsoL2LteDY</div>
+MTAwMDAw:ClgNHw9uHksI+P/KG8ShzGrFiibpNFN/2U9GMm10VFI=:zoeFVaTpLBqYLeiD:Ly0asSn8rw/281NsD6/Uuniw0O89erXjuCR4AU4PPqALp8NNCnuWpU0bQh7bSGyfxFe04mugqjzkZ/xnLyKJw3LfSDox5+N3vteQSVrRwLBLdVahDEn+Z0qQ+i0HV3oyq0hsW5Wy1HrqgkgGfMpQv1fxp3gg1+D+RWRNdXrvoFV6XRjo/A0ohbF1DifWeeOifHJwx/1FtwUNVBdzEeGoDTu/bbxks/mNYuNvtCoA3BYl3NrRjUH7np5PDDAay6yqBncDESIViDXDKaD/bdnMKCqdrFoi7l+TGErxFdvvJgqNHKP+PxxxuEz8t6qpqxMEpVls0uOGWJJynwPPZQAcUS7DwHnZoE3ELtAZibMhPNmIcsiFR5WXOJh68+xtuKtRQngC754tUFvdK6++XstW05sNepadZ+o+HQomrYwl/8n3TCb9RBlv3P8sFUX0ggJTVY9xDLjfQfduJqfCOXfQZWdbUzWM6cyd22U1PEW5Iw5rJH7+PibuGWTVufzN162itLTkP709lkp8XyTesPX/15DwIi3fM/ZXUPFpx6W8Jhfl4UZib33U9A2tRxflnY2NZRPYcesOvqMtpsfyqwSjf8R6Q2WZ9fqGcPez50ALucm7HD3aZcbqa6vwx8tuWRy/UDkFSB2Mp+wK6lqkKMTsMbV2NXA6PsAFMhS86FK46pyWom/EK8vZHA/XZFZL6K+KDaGMbvaXuFyR5O24zgViOEdWTDHYdn/QQMvgp6TR</div>
 </div>
 </div>
 </body>
