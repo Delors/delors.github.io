@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta name="exercise-passwords" content="$MTAwMDAw:/f6zLMwymP/L1j0yPQBFNUbZIRxl8Tl/TWyDPa0Abe4=:7E/kBuWS3x37Deqy:yohw9SRSYejKjhSYiE+9Yw8uo6z6x0hQBRZMFlMvjqg15Pqbq4B9Hje+LkqEpGW/+IYlab39idwXryOdr41Bdmr1wsTmMOC0LaxvgOEKCZqfaX0r92sdbFkRvRDQlmAQZ5cvYDiFufc8CXjfFL6LjjgtrHbvD5PqwbSM22DjKt3cp40+RZ3p8WbqcMZPhlgHjAfVMoyyoBmwNNQN1nEvwnhcwEvs+JapwRzFOlX7y0qeG04MYl6k7b9uz5HvtfsZzBKuOvUsgAElBjQHPAO0xBnmlhqVQfTDkYCmtaXJ7AorTrSpvUlanJqiq3URADbu8lNQZRA39G0c/Svo5oLhcKNzkLuPGRCnJV63dY89IiEp/98IRa0UXpLA72sd" />
+<meta name="exercise-passwords" content="$MTAwMDAw:W7eR8HXqbHPWnqsPS+fWz4rCh7u++E3OKXTR3RGgIpM=:13Y4TJspWEK+fxLU:e5miWV03nFMba0xqftDPZ7UlvVVNpksFRAlLYQ1piQhIeyh9dICgx5pdg9Usmew6EkBdpluSQfkBY5iZHw+2vlZdMynspw0SnMRdulXK4JhrzXgj1t95RuoIRdLm/7f+6l39IsVYPwMRTxKQry4b7voqw25fZKXFtoJYq1hbnkQljXGoLlYu8u6oVAPMs5qNgs6WykcM0dWZQEe4G242hVIx3qULWZ2eBLreTb433rN3vZzyXiNqxGL9wKiDAPveUAKi6bqDCqIXE5SWvwUnnE5mQNB4KvwkOZvmuI44TXPXvHAu3rG+aJrJbDJ6YqKbMLsYI5elTE7j5RFGHpvoBdT7Yg5dMEMkK0d8Hl/4w0ax9nO/OPxCneBrULKAE+G4rNJszyftSb4NyFhWnmmRYkK4JEi5Epjm1nctidh6OaWvNeEqpSV85Qhs+pMPAulajYt4G9vXYg==" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="version" content="LD2 0.1" />
@@ -630,12 +630,23 @@ a { text-decoration: none; }
 <dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">2024-03-26</dd>
 </dl>
-<div class="footer-left tiny minor docutils container">
-<p>Version: 2024-03-15</p>
-</div>
-</div>
-<div class="ld-slide" id="hashfunktionen">
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/sec-hashfunktionen/folien.rst.html">https://delors.github.io/sec-hashfunktionen/folien.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/sec-hashfunktionen/folien.rst.html.pdf">https://delors.github.io/sec-hashfunktionen/folien.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></div>
+<div class="new-section ld-slide" id="hashfunktionen-grundlagen">
+<h2>Hashfunktionen - Grundlagen</h2>
+</div><div class="ld-slide" id="hashfunktionen">
 <h2>Hashfunktionen</h2>
 <ul class="incremental simple">
 <li><p>Eine Hashfunktion <span class="math">\(H\)</span> akzeptiert eine beliebig lange Nachricht <span class="math">\(M\)</span> als Eingabe und gibt einen Wert fixer Größe zurück: <span class="math">\(h = H(M)\)</span>.</p></li>
@@ -699,9 +710,54 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 </div><div class="ld-slide" id="beziehung-zwischen-den-sicherheitsanforderungen-an-hashfunktionen">
 <h2>Beziehung zwischen den Sicherheitsanforderungen an Hashfunktionen</h2>
 <img alt="Beziehung zwischen den Eigenschaften von Hashfunktionen" class="align-center" src="drawings/hash_functions/properties.svg" style="width: 1200px;" />
-</div><div class="ld-slide" id="anforderungen-an-die-resistenz-von-hashfunktionen">
+</div><div class="ld-slide" id="nachrichtenauthentifizierung-vereinfacht">
+<h2>Nachrichtenauthentifizierung - vereinfacht</h2>
+<p class="far-smaller">Nachrichten können auf verschiedene Weisen authentifiziert werden, so dass <em>Man-in-the-Middle-Angriffe</em> (MitM)<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> verhindert werden können.</p>
+<div class="stack">
+<div class="layer">
+<img alt="drawings/digests/all_encrypted.svg" class="align-center" src="drawings/digests/all_encrypted.svg" style="width: 1326px;" />
+</div><div class="layer incremental">
+<img alt="drawings/digests/hash_encrypted.svg" class="align-center" src="drawings/digests/hash_encrypted.svg" style="width: 1560px;" />
+</div><div class="layer incremental">
+<img alt="drawings/digests/secret_appended.svg" class="align-center" src="drawings/digests/secret_appended.svg" style="width: 1560px;" />
+</div><div class="layer incremental">
+<img alt="drawings/digests/secret_encrypted.svg" class="align-center" src="drawings/digests/secret_encrypted.svg" style="width: 1774px;" />
+</div></div><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p><em>man</em> ist hier geschlechtsneutral zu verstehen.</p>
+</aside>
+</aside>
+<div class="supplemental">
+<p>Im ersten Szenario wird der Hash an die Nachricht angehängt und als ganzes verschlüsselt. Wir erhalten Vertraulichkeit und Authentizität.</p>
+<p>Im zweiten Szenario wird der Hash der Nachricht berechnet und dann verschlüsselt. Der Empfänger kann den Hash berechnen und mit dem entschlüsselten Hash vergleichen. Wir erhalten Authentizität, aber keine Vertraulichkeit.</p>
+<p>Im dritten Szenario wird an die Nachricht ein geteiltes Secret angehängt und  alles zusammen gehasht. Die Nachricht wird dann mit dem Ergebnis der vorhergehenden Operation zusammen verschickt.</p>
+<p>Im letzten Szenario werden alle Ansätze</p>
+<aside class="admonition admonition-hinweis">
+<p class="admonition-title">Hinweis</p>
+<p>Bei <em>Man-in-the-Middle-Angriffen</em> handelt es sich um einen Fachbegriff und häufig wird zum Beispiel Eve oder Mallory verwendet, um die Person zu bezeichnen, die den Angriff durchführt. Gelegentlich wird auch <em>Adversary-in-the-Middle</em> oder <em>Person-in-the-Middle</em> verwendet.</p>
+</aside>
+<aside class="admonition admonition-message-digests">
+<p class="admonition-title">Message-Digests</p>
+<p>Im allgemeinen Sprachgebrauch wird auch von <span class="eng">Message Digests</span> gesprochen.</p>
+</aside>
+</div></div><div class="ld-slide" id="digitale-signaturen-vereinfacht">
+<h2>Digitale Signaturen - vereinfacht</h2>
+<p class="far-smaller">Digitale Signaturen dienen dem Nachweis der Authentizität einer Nachricht und der Integrität der Nachricht.  Jeder, der einen öffentlichen Schlüssel hat, kann die Signatur überprüfen, aber nur der Besitzer des privaten Schlüssels kann die Signatur erstellen.</p>
+<div class="stack">
+<div class="layer">
+<img alt="drawings/signatures/just_authentication.svg" class="align-center" src="drawings/signatures/just_authentication.svg" style="width: 1582px;" />
+</div><div class="layer incremental">
+<img alt="drawings/signatures/authentication_and_encryption.svg" class="align-center" src="drawings/signatures/authentication_and_encryption.svg" style="width: 1775px;" />
+</div></div></div><div class="ld-slide" id="anforderungen-an-die-resistenz-von-hashfunktionen">
 <h2>Anforderungen an die Resistenz von Hashfunktionen</h2>
 <table class="smaller highlight-line-on-hover incremental">
+<colgroup>
+<col style="width: 48.3%" />
+<col style="width: 17.2%" />
+<col style="width: 17.2%" />
+<col style="width: 17.2%" />
+</colgroup>
 <thead>
 <tr><th class="head"></th>
 <th class="head"><p>Preimage Resistant</p></th>
@@ -737,8 +793,10 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 </tr>
 </tbody>
 </table>
-<div class="supplemental docutils container">
-<p><strong>Hintergrund</strong></p>
+<div class="supplemental">
+<p class="rubric">Einbruchserkennung und Viruserkennung - Hintergrund</p>
+<p>Bei der Einbruchserkennung und Viruserkennung ist <em>second preimage</em> Resistenz erforderlich. Andernfalls könnte ein Angreifer seine Malware so schreiben, ass diese einen Hash wie eine vorhandene gutartige Software hat und so verhindern, dass die Malware auf eine schwarze Liste gesetzt werde kann, ohne den Kollateralschaden, dass auch die gutartige Software fälschlicherweise als Malware erkannt wird.</p>
+<p class="rubric">Aufwand eines Kollisionsangriffs</p>
 <p>Ein Kollisionsangriff erfordert weniger Aufwand als ein <em>preimage</em> oder ein <em>second preimage</em> Angriff.</p>
 <p>Dies wird durch das Geburtstagsparadoxon erklärt. Wählt man Zufallsvariablen aus einer Gleichverteilung im Bereich von <span class="math">\(0\)</span> bis <span class="math">\(N-1\)</span>, so übersteigt die Wahrscheinlichkeit, dass ein sich wiederholendes Element gefunden wird, nach <span class="math">\(\sqrt{N}\)</span> Auswahlen <span class="math">\(0,5\)</span>. Wenn wir also für einen m-Bit-Hashwert Datenblöcke zufällig auswählen, können wir erwarten, zwei Datenblöcke innerhalb von <span class="math">\(\sqrt{2^m} = 2^{m/2}\)</span> Versuchen zu finden.</p>
 <aside class="admonition smaller">
@@ -746,8 +804,7 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 <p>Es ist relativ einfach, ähnliche Meldungen zu erstellen. Wenn ein Text 8 Stellen hat, an denen ein Wort mit einem anderen ausgetauscht werden kann, dann hat man bereits <span class="math">\(2^{8}\)</span> verschiedene Texte.</p>
 <p>Es ist relativ trivial(1), vergleichbare(2) Nachrichten(3) zu schreiben(4). Wenn ein Text 8 Stellen hat, an denen ein Ausdruck(5) mit einem vergleichbaren (6) ausgetauscht werden kann, dann erhält(7) man bereits <span class="math">\(2^{8}\)</span> verschiedene Dokumente(8).</p>
 </aside>
-</div>
-</div><div class="ld-slide" id="effizienzanforderungen-an-kryptografische-hashfunktionen">
+</div></div><div class="ld-slide" id="effizienzanforderungen-an-kryptografische-hashfunktionen">
 <h2>Effizienzanforderungen an kryptografische Hashfunktionen</h2>
 <dl class="field-list simple">
 <dt>Effizienz bei der Verwendung für Signaturen und zur Authentifizierung<span class="colon">:</span></dt>
@@ -776,7 +833,47 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 <p><span class="math">\(L\)</span> = Anzahl der Eingabeblöcke</p>
 <p><span class="math">\(b\)</span> = Länge des Eingabeblocks</p>
 </div>
-</div><div class="ld-slide" id="hmac-hash-based-message-authentication-code">
+</div><div class="integrated-exercise ld-slide" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - XOR als Hashfunktion" id="ld-exercise-1">
+<p class="rubric">XOR als Hashfunktion</p>
+<p>Warum ist eine einfache <span class="ger-quote">Hash-Funktion</span>, die einen 256-Bit-Hash-Wert berechnet, indem sie ein XOR über alle Blöcke einer Nachricht durchführt, im Allgemeinen ungeeignet?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:cyI98aqDYbP8jlpuWhQZZSwbxBX19/35+ztS32u87rs=:FIMJFy7xz59vtw/W:a+3qQ5c3Q1aCjkpAnLxIBHKy/n2kvROebXRECcPicJffXPHCWuskqa21kU17P/kzO96cHbVZnh4OdnqzONU+Xm6xas+ZArpuAy7d0eYcX93AYHZk0NWarTmAPjrbazFQeuSl1nMwoQiJQlR/QFqSl0ytCGWKS8pU32FjiwyZeeIuzBgi9vU6MjnqJkqwQo87iEucnRUsleG3ADcNK7l8qhSFnY176ottCq9G4hzO5cRGbUsHtzjlXhJzfAWT+0uV8L9+7l5Zw7BhKAvdiOz+WvzR5oaN3FnCQLlpIUseiykgiOum+xPMns2W5G+x7UvEnzWmf63s49Y5SpXn5WIQIqNemsxyCtSmqDasDoIMOT+CKc87HeaJ2FfQ1kgz5Y2RGizTceO0QdYgZbp2PjGHnrOgH/GXNPwDjALhGSvYc9t87ilK7MwRwkjrtS+v3HgISoYoXlI8Xw==</div>
+</div>
+</div><div class="integrated-exercise ld-slide" id="ubung-1">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Bewertung der Sicherheit" id="ld-exercise-2">
+<p class="rubric">Bewertung der Sicherheit</p>
+<ul class="list-with-explanations">
+<li><p>Eine Nachricht <span class="math">\(M\)</span> bestehe aus <span class="math">\(N\)</span> 64-bit Blöcken: <span class="math">\(X_1, \ldots, X_n\)</span>.</p></li>
+<li><p>Der Hashcode H(M) ist ein simpler XOR über alle Blöcke: <span class="math">\(H(M) = h = X_1 \oplus X_2 \oplus \ldots \oplus X_n\)</span>.</p></li>
+<li><p><span class="math">\(h\)</span> wird als der <span class="math">\(X_{N+1}\)</span> Block an die Nachricht angehängt und danach wird unter Verwendung des CBC Modus die Nachricht inkl. des Hashcodes verschlüsselt (<span class="math">\(C = Y_1, \ldots, Y_{N+1}\)</span>).</p></li>
+<li><p>Gegen welche Art von Manipulation ist diese Konstruktion <em>nicht</em> sicher?</p>
+<p>Studieren Sie ggf. noch einmal den CBC Modus.</p>
+</li>
+</ul>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:4zCXykXQEd7l9dn5Nr5DzJb/rjiKZ+Oxj+sASnYNa/0=:oHPTNpL0sJmybkpW:uuFY95u+KTdm1HmWL1/WbSX20SuNBLJi1m621nBcGWxvCos9uWVChwKuby7k/L6NI0/XskonRcaaCe9dFPa8UeuO7WfbiFqtIB8n021S+sNJI+3m5iX9ZjYmkB9LlKGy2Ali7nksyKIb/qES7VuXdIj+XkRJ6vVWsL8PgCQliYhfBznlu9UdHr+Qjf9ZtxRA2h/wuMWH+iazZAGmw+oRb+/RJOqLfdmzEyliXHz6WSb9sE6CEJMdlvPxdVtiCmqBfDoPI4BVX3qgLUj5bQwOjQTiiFtmodsfcLdYsOd/5gEb7D4zWtiBc+2Ux+hbU2m8iPqR4ubVp9h/EH16fwMxUc3GZoopVEJ073/d3rl9A7+M8GnZM4MUe/P8M0ajkq33LQim8CCTRJ/SKxLkXI3cKuTzYRGAjebC8mRpM0OEW94SXLq9hx3hbKE3OHlgYrgKHVrbx+955Qsy1pOTTR5hSVZ+HuDnT/EoJFySzXw1AQFSCP0Me62qATYRgQI/p/WsXuuoNWM8t+RNtpQyiWD8LbaWIQeNrWqcgNs09y3wjkzUYRU6h530q4E0oRSXCcoED+GZFdYiMpWfUOOykmNNY2kQXxBZfRqYxghbPMcF7cXLZxcN8xwlAj047XUtSY+nfbmKvGpJgbTZcH4ODlX0nI0oCfGEhB2jy48ZuoLEiBOtWI8aYk9bLSgM/TApdqcyMUuvAK1p1/+d+HsccgdXoxNRuRQDcNxP+gxv1872Pu8pm9HbRo4URNKhtn2toYcIwW0FmYL0OsL3c9iSnnttCsfV2IWuGn+iJDWSa6zpVA1qeMuP0FU45iszJ0DyliaFmrrr9ErkcrxpfoPu/uPoAHQdfZ+R3bHI53Dw</div>
+</div>
+</div><div class="integrated-exercise ld-slide" id="ubung-2">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Irrelevanz von Second-Preimage-Resistenz und Kollisionssicherheit" id="ld-exercise-3">
+<p class="rubric">Irrelevanz von Second-Preimage-Resistenz und Kollisionssicherheit</p>
+<p>Warum sind <em>Second-Preimage-Resistenz</em> und Kollisionssicherheit von nachgeordneter Relevanz, wenn der Hash-Algorithmus zum Hashing von Passwörtern verwendet wird?</p>
+<div class="ld-exercise-solution" encrypted="">
+MTAwMDAw:tmfs3ZfiSTXw8PHhpiByZcpV0q93XdWL3g9zdw0uSqA=:P4hMtGwh8CuSbyhj:EUfo0lfdSgS0cG5UtwREEvQaBQ5s6As3l9m2EUGdwxoNyvs8wG7sEEsG9IxpJF88zUi8DBhNislnv7cvRQtoQYZXjCcqaVniT5a/gnIjnbruU+s+q4PDHneC4EB4NXL3EnI5ZhwQwZFBXW73FHqRVeaqCeIKaSUkLHTsdPqK2GxChKaYwXohrCYIy/b43idFp57HWpaTnJSiZ4tMljq9iOXiwYWOzxWW1skSaPCquLIKi8UU//WeKkDMP+YH8V3vbvHSc5FQxS//VUztURSYwncPNtvLZsa+EUnrbQ7jWdOabm+kMx8Imjmug9yuZjD4/sCcDlhS6gcXA05nANqpOFcxordVe3Woc9hejJbtlQcESGa3hSGkNwEF6mtJehoMu9cvZiTP11NMAEcK3DM6COlF5cSeIHvsj2na5kxf7GcRQYX00I/21qoWHJcUwz11PVueIPUYVpc/Zm7wiKIDWnLbHfidMKJu1qocZw==</div>
+</div>
+</div><div class="new-section transition-move-left ld-slide" id="message-authentication-codes-macs">
+<h2><em>Message Authentication Codes</em> (MACs)</h2>
+<div class="supplemental">
+<aside class="admonition admonition-hinweis">
+<p class="admonition-title">Hinweis</p>
+<p><em>Message Authentication Codes</em> könnte ins Deutsche mit
+Nachrichtenauthentifizierungscodes übersetzt werden, dies ist aber nicht üblich.</p>
+<p>Im allgemeinen Sprachgebrauch wird von <em>MAC</em>s gesprochen.</p>
+</aside>
+</div></div><div class="ld-slide" id="hmac-hash-based-message-authentication-code">
 <h2>HMAC (Hash-based Message Authentication Code)</h2>
 <div class="small docutils container">
 <p>Auch als <em>keyed-hash message authentication code</em> bezeichnet.</p>
@@ -839,20 +936,9 @@ K' &amp; = &amp;\begin{cases}
 </span>    <span class="literal string affix">b</span><span class="literal string single">'h</span><span class="literal string escape">\x88\xc2\xb6</span><span class="literal string single">X</span><span class="literal string escape">\xb7\xcb\x9c\x90\xc2</span><span class="literal string single">R...</span><span class="whitespace">
 </span>      \<span class="name">x16</span>\<span class="name">x87</span>\<span class="name">x87</span>\<span class="name">x0e</span>\<span class="name">xad</span>\<span class="name">xa1</span>\<span class="name">xe1</span><span class="punctuation">:</span><span class="literal number integer">9</span>\<span class="name">xca</span><span class="literal string single">'</span></code></pre>
 </div>
-</div><div class="integrated-exercise ld-slide" id="ubung">
-<h2>Übung</h2>
-<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - XOR als Hashfunktion" id="ld-exercise-1">
-<p class="rubric">XOR als Hashfunktion</p>
-<p>Warum ist eine einfache Hash-Funktion, die einen 256-Bit-Hash-Wert berechnet, indem sie ein XOR über alle Blöcke einer Nachricht durchführt, im Allgemeinen ungeeignet?</p>
-<div class="ld-exercise-solution" encrypted="">
-MTAwMDAw:XkBI9OYdNe7fokY0L6xsKmvaYZe92jEYR6FutP/HJDU=:5gnNnXGw+TosQzXG:hiB7N2WRqp5Rl93TYHv1xLcE5/H+8vWlGDnkVK4S8gtXY0+HV4jjmt07Zb0BcvL8/n1EAJ7GmyCFrSud/3TOV8RU5jrLFwzBXy3YJvmpUByFeGR4+kLtXq0E+FOGDPkUY01VchwKHrAcBnjNmweg6wC7juyBrjX1GPSXBIlhUG1+w3Y7fEq53112nHdPj7VgQKanU0DGndgw6xR6mLzVW6Ac3L7DEtkjzIx28qZOIeQDtQXWqcg29DMYv8Kxb0qXg4tgVBqYBHHuMYhg5wzNe+R54gIHTQIMRTQfGqdYK1FQ0Lh24a9BZoM3CJR1HOXPVClKJwBjoT3XrrfbOQGP2ii7sQZvtS3uzZzwHsKlL2hDhA+crusAmNp4Jb6W5tvfH7KbVkxEu8bPItdLOVz1qIj8kbWg/MsKve1T6j5CdAPy</div>
-</div>
-<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Irrelevanz von Second-Preimage-Resistenz und Kollisionssicherheit" id="ld-exercise-2">
-<p class="rubric">Irrelevanz von Second-Preimage-Resistenz und Kollisionssicherheit</p>
-<p>Warum sind <em>Second-Preimage-Resistenz</em> und Kollisionssicherheit von nachgeordneter Relevanz, wenn der Hash-Algorithmus zum Hashing von Passwörtern verwendet wird?</p>
-<div class="ld-exercise-solution" encrypted="">
-MTAwMDAw:rXN2TjrKsG34t1DGCgepgO+E8X90Bvo/6Nby2WZgBcE=:nbM7NwbBfJgXwa1t:dh0KCiDdRHID7eSHVCWuB1G+UtT7b0HVt7/EdzitzuMnHWhMoDo/mTfs9t5UbkSW8zL16t/GkDUFekkszdbEQtWxGEYwhKn/bpg7BhjueXothngZmMEiuLjbq+pW9opZSNkkEtWmirlQgwsQA3c1XGxtZPLizEj6vSgJTyslo1PcManhX1RBTUnd7m0HZuWn/9/KvIzDP+mAKqiz8uTmnA2JeewL3D99PRELHlkqcTj8A2zdB/I0EMxE4ia9xUrlwEM=</div>
-</div>
+</div><div class="ld-slide" id="gcm-glaois-counter-mode">
+<h2>GCM - Glaois Counter Mode</h2>
+<p>TODO</p>
 </div>
 </body>
 </html>
