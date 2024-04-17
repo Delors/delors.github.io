@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta name="exercise-passwords" content="$MTAwMDAw:b89ueHGSwtQMDHLMwpHDncODIhbjmuJGIbXZRnYtqQA=:HNNlwyG79ie+XfeO:H5aKK5qluhG9XAkfiBOPg1F1TYlrQ9QKiowKKqckjufjhh5rfrnXEI1kHDYcprG982VwnawcD/QUHE21lI3Y9Ay67wWA9i0koVeWd7tFxRzclSb6a5klTJLGFWRDIvb9fMQ9CVqBO4HLsFXmyMdAJJJd9j7DvsiLQhlwpwv34mPoyRyDKcZn3yGhrC/AGpkqHEdrX62f+Fr/6xaqyqx0s9j4iY5EtSvwhz+PnTOluP9m880qljrOGCclC5KGbAXipQ+5/JBjNEqftaGTsT3/TtY6Yt12M3Af4K/8nkkJNyp0HUfnv/s10JD7QQ5nZbrSakdvsMWu95CwQcf8SaVAsklPHz+U6DsMKTrvhQl42HvfahvAcyVgnMqcg3WBFbzKeer/kOW08CKPDpXudgpFDEyf+17o5Q/DH1ibbQ==" />
+<meta name="exercise-passwords" content="$MTAwMDAw:7UL7tfoxBfF6NG3RkwGPl5s+N0cv7YTSo0ssIL4KuYQ=:+ADSUU2dSMbYMGOE:iEYKc/35bbKw7fR6QGLsbhUInDt1cGEppDm1cjjEwktkQdqn8qWIBHUlEmQf2o7lnP53wgPJhZqSMi+HyYSj4MvdgwHOv7pc5eZB0K5ZKfPW3dVKPzmL6Z4T7rD4qhjRe++j5sstYAQZ51NG2yOMcwh1/1do+JbyaAp2IjDwtvFnhlP0D6O0PsrTBbyUAdHpJ9Yz/Wk/bmmTpfv02sNvFpyaAQJrV8GmNuOzmFI162APj6aWnW1iXqWA05iJxm8x3l/XCm4IK37pP6h0DCCN9P/bfE06YqCDu7MuTL3eStqb//kcQ7yDkWvdS+gBIuAdCL9Jz7GL6h3jIm+UF4njDCNSvJqAo2K+VlwD7FxttBqc93zFGfQ1mfoFj3W/G2/zR4krHRVwzAUszvB+XWbRmRq8nlcgtYezhpd3mA==" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="version" content="LD2 0.1" />
@@ -625,7 +625,7 @@ a { text-decoration: none; }
 <dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2024-04-05</dd>
+<dd class="version">2024-04-16</dd>
 <dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
@@ -641,67 +641,7 @@ a { text-decoration: none; }
 </dd>
 </dl>
 </div></div>
-<div class="new-section transition-fade ld-slide" id="einschub-mehrfachverschlusselung">
-<h2>Einschub: Mehrfachverschlüsselung</h2>
-</div><div class="ld-slide" id="doppelte-verschlusselung">
-<h2>Doppelte Verschlüsselung</h2>
-<img alt="drawings/operationsmodi/double_encryption.svg" class="align-center" src="drawings/operationsmodi/double_encryption.svg" style="width: 1200px;" />
-</div><div class="ld-slide" id="meet-in-the-middle-angriff">
-<h2><em>Meet-in-the-Middle</em>-Angriff</h2>
-<div class="stack">
-<div class="layer">
-<div class="assessment docutils container">
-<p>Beobachtung: <span class="math">\(E(K_2,E(K_1,P)) = E(K_3,P)\)</span> ist nicht gültig. D. h. die zweifache Anwendung von DES führt zu einer Abbildung, die nicht äquivalent zu einer einfachen DES-Verschlüsselung ist.</p>
-</div>
-</div><div class="layer incremental">
-<p>Der Meet-in-the-Middle-Algorithmus greift dieses Verfahren an. Er hängt nicht von einer bestimmten Eigenschaft von DES ab, sondern funktioniert gegen jede Blockchiffre.</p>
-<ul class="incremental">
-<li><p>Möglicher Known-Plaintext-Angriff:</p>
-<ol class="arabic simple incremental">
-<li><p>Man berechnet <em>für alle Schlüssel</em> <span class="math">\(K_1\)</span> die Chiffretexte <span class="math">\(E(K_1,P)\)</span> und speichert diese.</p></li>
-<li><p>Man berechnet <em>für alle Schlüssel</em> <span class="math">\(K_2\)</span> die Klartexte <span class="math">\(D(K_2,C)\)</span> .</p></li>
-<li><p>Man vergleicht die beiden Ergebnisse und prüft, ob es Übereinstimmungen gibt.</p></li>
-</ol>
-<div class="incremental docutils container">
-<p>Dieser Aufwand ist lediglich doppelt so hoch wie der Aufwand bei einer einfachen Verschlüsselung.</p>
-</div>
-</li>
-</ul>
-</div><div class="layer incremental">
-<aside class="admonition warning">
-<p class="admonition-title">Die zweifache Anwendung einer Blockchiffre ist nicht sinnvoll</p>
-<p>Das Ergebnis ist, dass ein bekannter Klartextangriff gegen Doppel-DES mit einem Aufwand in der Größenordnung von <span class="math">\(2^{56}\)</span> im Durchschnitt erfolgreich ist, verglichen mit durchschnittlich <span class="math">\(2^{55}\)</span> für einen einfachen DES.</p>
-</aside>
-</div></div></div><div class="ld-slide" id="dreifache-verschlusselung">
-<h2>Dreifache Verschlüsselung</h2>
-<p><strong>(Z. B. Triple-DES (3DES) mit drei Schlüsseln)</strong></p>
-<img alt="drawings/operationsmodi/triple_encryption.svg" class="align-center" src="drawings/operationsmodi/triple_encryption.svg" style="width: 100%;" />
-</div><div class="ld-slide" id="triple-des-mit-zwei-schlusseln">
-<h2>Triple-DES mit zwei Schlüsseln</h2>
-<p>Die offensichtliche Antwort auf den <em>Meet-in-the-middle</em>-Angriff ist die dreifache Verschlüsselung mit drei verschiedenen Schlüsseln.</p>
-<ul class="simple">
-<li><p>Dies erhöht die Kosten des <em>Meet-in-the-Middle</em>-Angriffs auf <span class="math">\(2^{112}\)</span>, was jenseits dessen liegt, was praktikabel ist.</p></li>
-<li><p>Das hat den Nachteil, dass eine Schlüssellänge von <span class="math">\(56\,bits \times 3 = 168\,bits\)</span> erforderlich ist, was etwas unhandlich sein kann.</p></li>
-<li><p>Als Alternative schlug Tuchman eine dreifache Verschlüsselungsmethode vor, die nur zwei Schlüssel verwendet.</p></li>
-<li><p>3DES mit zwei Schlüsseln war eine Alternative zu DES und wurde in die Schlüsselverwaltungsstandards ANSI X9.17 und ISO 8732 aufgenommen.</p></li>
-</ul>
-</div><div class="ld-slide" id="triple-des-mit-drei-schlusseln">
-<h2>Triple-DES mit drei Schlüsseln</h2>
-<ul>
-<li><p>Es wurden mehrere Angriffe gegen 3DES mit 2 Schlüsseln entwickelt, die jedoch (noch) nicht praktikabel sind.</p></li>
-<li><p>Viele Forscher sind inzwischen der Meinung, dass 3DES mit drei Schlüsseln die bevorzugte Alternative ist.</p></li>
-<li><p>3DES mit drei Schlüsseln hat eine effektive Schlüssellänge von 168 Bit und ist definiert als:</p>
-<div class="math">
-\begin{equation*}
-C=E(K_3,D(K_2,E(K_1, P)))
-\end{equation*}
-</div>
-</li>
-<li><p>Rückwärtskompatibilität mit DES ist gegeben, wenn man <span class="math">\(K_3 = K_2\)</span> oder <span class="math">\(K_1 = K_2\)</span> einsetzt.</p></li>
-</ul>
-</div><div class="new-section transition-scale ld-slide" id="betriebsmodi-bei-blockchiffren-1">
-<h2>Betriebsmodi bei Blockchiffren</h2>
-</div><div class="ld-slide" id="betriebsmodi">
+<div class="ld-slide" id="betriebsmodi">
 <h2>Betriebsmodi</h2>
 <ul class="simple">
 <li><p>Eine Technik zur Verbesserung der Wirkung eines kryptografischen Algorithmus oder zur Anpassung des Algorithmus an ein Anwendungsszenario. Insbesondere in Abhängigkeit von der Länge des Klartexts.</p></li>
@@ -965,7 +905,7 @@ MTAwMDAw:DFYVS1M4ktwUjkDARaSluX7v3u0w8Fy15ZTJZ+2i9aM=:RvoQxZXgY/FvL6QQ:CTlnOUmJX
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2" id="ld-exercise-2">
 <p>In welchen Betriebsarten ist eine Auffüllung (<span class="eng">Padding</span>) notwendig?</p>
 <div class="ld-exercise-solution" encrypted="">
-MTAwMDAw:ySRn50ZfrVlVaULlZVakviNwqByA7ByHHqNQKJumEkg=:P0ovL5q79YjTmfz9:tDO3UzBHdo/8M5xJiwJGQiF1lYqZ0u9o4a4XSG6z980EqJuUzmD61o2xDaIBBY5g8hHR9jbkEyOj/KUZA5Tw1MJ2t+hytk2An3QdEYqQcSqo/EH8nv/+FZhJEHs1J6NwQCZgHxHTN6fZaUCOmC/sN/I=</div>
+MTAwMDAw:ySRn50ZfrVlVaULlZVakviNwqByA7ByHHqNQKJumEkg=:P0ovL5q79YjTmfz9:km9ne7srI0D3+6VhR0E4oFis9fk905ZrXpNwCXVtlsQUZYMtRy0+NZ4V/X5Rk46vsG41VKHVgS099g5OhRFLrtgsEJwg/n9mwWk5GRrk7cU2yipxUHCV3CHIAMMZBvAQ8wYZVzy3YxES+PBXI5jgHEs=</div>
 </div>
 </li>
 <li><p></p>

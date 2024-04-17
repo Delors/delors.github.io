@@ -624,7 +624,7 @@ a { text-decoration: none; }
 <dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2024-04-05</dd>
+<dd class="version">2024-04-16</dd>
 <dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
@@ -1298,6 +1298,64 @@ Entschlüsselungen/s</p></td>
 <li><p>Bei jeder Feistel-Blockchiffre wird der Hauptschlüssel verwendet, um einen Unterschlüssel für jede Runde zu erzeugen.</p></li>
 <li><p>Im Allgemeinen möchten wir die Unterschlüssel so wählen, dass die Schwierigkeit, einzelne Unterschlüssel abzuleiten, und die Schwierigkeit, den Hauptschlüssel wieder zurückzuerhalten, maximiert werden.</p></li>
 <li><p>Es wird vorgeschlagen, dass die Schlüsselableitungsfunktion für die Unterschlüssel (<span class="eng">Key Schedule</span>) zumindest das <strong>Strenge Lawinenkriterium</strong> und das <strong>Bit-Unabhängigkeitskriterium</strong> für Schlüssel/Ciphertext garantieren sollte.</p></li>
+</ul>
+</div><div class="new-section transition-fade ld-slide" id="mehrfachverschlusselung">
+<h2>Mehrfachverschlüsselung</h2>
+</div><div class="ld-slide" id="doppelte-verschlusselung">
+<h2>Doppelte Verschlüsselung</h2>
+<img alt="drawings/multiple_encryption/double_encryption.svg" class="align-center" src="drawings/multiple_encryption/double_encryption.svg" style="width: 1200px;" />
+</div><div class="ld-slide" id="meet-in-the-middle-angriff">
+<h2><em>Meet-in-the-Middle</em>-Angriff</h2>
+<div class="stack">
+<div class="layer">
+<div class="assessment docutils container">
+<p>Beobachtung: <span class="math">\(E(K_2,E(K_1,P)) = E(K_3,P)\)</span> ist nicht gültig. D. h. die zweifache Anwendung von DES führt zu einer Abbildung, die nicht äquivalent zu einer einfachen DES-Verschlüsselung ist.</p>
+</div>
+</div><div class="layer incremental">
+<p>Der Meet-in-the-Middle-Algorithmus greift dieses Verfahren an. Er hängt nicht von einer bestimmten Eigenschaft von DES ab, sondern funktioniert gegen jede Blockchiffre.</p>
+<ul class="incremental">
+<li><p>Möglicher Known-Plaintext-Angriff:</p>
+<ol class="arabic simple incremental">
+<li><p>Man berechnet <em>für alle Schlüssel</em> <span class="math">\(K_1\)</span> die Chiffretexte <span class="math">\(E(K_1,P)\)</span> und speichert diese.</p></li>
+<li><p>Man berechnet <em>für alle Schlüssel</em> <span class="math">\(K_2\)</span> die Klartexte <span class="math">\(D(K_2,C)\)</span> .</p></li>
+<li><p>Man vergleicht die beiden Ergebnisse und prüft, ob es Übereinstimmungen gibt.</p></li>
+</ol>
+<div class="incremental docutils container">
+<p>Dieser Aufwand ist lediglich doppelt so hoch wie der Aufwand bei einer einfachen Verschlüsselung.</p>
+</div>
+</li>
+</ul>
+</div><div class="layer incremental">
+<aside class="admonition warning">
+<p class="admonition-title">Die zweifache Anwendung einer Blockchiffre ist nicht sinnvoll</p>
+<p>Das Ergebnis ist, dass ein bekannter Klartextangriff gegen Doppel-DES mit einem Aufwand in der Größenordnung von <span class="math">\(2^{56}\)</span> im Durchschnitt erfolgreich ist, verglichen mit durchschnittlich <span class="math">\(2^{55}\)</span> für einen einfachen DES.</p>
+</aside>
+</div></div></div><div class="ld-slide" id="dreifache-verschlusselung">
+<h2>Dreifache Verschlüsselung</h2>
+<p><strong>(Z. B. Triple-DES (3DES) mit drei Schlüsseln)</strong></p>
+<img alt="drawings/multiple_encryption/triple_encryption.svg" class="align-center" src="drawings/multiple_encryption/triple_encryption.svg" style="width: 100%;" />
+</div><div class="ld-slide" id="triple-des-mit-zwei-schlusseln">
+<h2>Triple-DES mit zwei Schlüsseln</h2>
+<p>Die offensichtliche Antwort auf den <em>Meet-in-the-middle</em>-Angriff ist die dreifache Verschlüsselung mit drei verschiedenen Schlüsseln.</p>
+<ul class="simple">
+<li><p>Dies erhöht die Kosten des <em>Meet-in-the-Middle</em>-Angriffs auf <span class="math">\(2^{112}\)</span>, was jenseits dessen liegt, was praktikabel ist.</p></li>
+<li><p>Das hat den Nachteil, dass eine Schlüssellänge von <span class="math">\(56\,bits \times 3 = 168\,bits\)</span> erforderlich ist, was etwas unhandlich sein kann.</p></li>
+<li><p>Als Alternative schlug Tuchman eine dreifache Verschlüsselungsmethode vor, die nur zwei Schlüssel verwendet.</p></li>
+<li><p>3DES mit zwei Schlüsseln war eine Alternative zu DES und wurde in die Schlüsselverwaltungsstandards ANSI X9.17 und ISO 8732 aufgenommen.</p></li>
+</ul>
+</div><div class="ld-slide" id="triple-des-mit-drei-schlusseln">
+<h2>Triple-DES mit drei Schlüsseln</h2>
+<ul>
+<li><p>Es wurden mehrere Angriffe gegen 3DES mit 2 Schlüsseln entwickelt, die jedoch (noch) nicht praktikabel sind.</p></li>
+<li><p>Viele Forscher sind inzwischen der Meinung, dass 3DES mit drei Schlüsseln die bevorzugte Alternative ist.</p></li>
+<li><p>3DES mit drei Schlüsseln hat eine effektive Schlüssellänge von 168 Bit und ist definiert als:</p>
+<div class="math">
+\begin{equation*}
+C=E(K_3,D(K_2,E(K_1, P)))
+\end{equation*}
+</div>
+</li>
+<li><p>Rückwärtskompatibilität mit DES ist gegeben, wenn man <span class="math">\(K_3 = K_2\)</span> oder <span class="math">\(K_1 = K_2\)</span> einsetzt.</p></li>
 </ul>
 </div><div class="integrated-exercise transition-scale ld-slide" id="ubung">
 <h2>Übung</h2>
