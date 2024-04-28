@@ -21,7 +21,7 @@
 :root {
     /*  Specifies the width and height of slides in pixels. This has proven
         to be very helpful when adding pictures and drawings as it enables a
-        common reference frame. Besides that only the ratio is relevant.
+        common reference frame. Besides that, only the ratio is relevant.
 
         These value are always set by the JavaScript when the document is
         loaded; either to the default values defined in JavaScript or to the 
@@ -32,7 +32,7 @@
 
     /*  The default zoom levels. */
     --ld-light-table-zoom-level: 0.2; /* may be overridden from within LectureDoc */
-    --ld-continuous-view-zoom-level: 0.5; /* hard coded - cannot be changed by the user  */
+    --ld-continuous-view-zoom-level: 0.5; /* hard coded - cannot be changed by the user */
 
     --ld-rel-max-supplemental-area-width: 75%;
     --ld-rel-max-supplemental-area-height: 70%;
@@ -71,7 +71,7 @@ div {
     The actual (fixed) size, however, doesn't really matter, because the content
     is scaled anyway. Nevertheless, when external content is embededd (in 
     particular images) it makes sense to have a size that resembles a "natural"
-    screen resolution to avoid having the user to scale everything up or down
+    screen resolution to avoid having the creator to scale everything up or down
     when adding media content. 
     Nevertheless, in the end all that matters is the aspect ratio.
 */
@@ -104,7 +104,7 @@ div {
         as selecting texts/elements when giving a presentation.
         
         However, in the Javascript code we reenable interaction with selected 
-        elements such as links as this enable inter-slide navigations.
+        elements such as links to enable inter-slide navigation.
         */
     -webkit-user-select: none;
     user-select: none;
@@ -115,7 +115,8 @@ div {
     position: absolute;
     /*  To only show one slide, we simply scale all other slides to a size of 0.
         This makes them effectively invisible without removing them from the DOM
-        as it would be the case when we would set display to none. The latter would make animations impossible.
+        as it would be the case when we would set display to none. The latter 
+        would make animations impossible.
 
         Compared to using the display property (i.e., none <-> block) this has 
         a number of advantages: 
@@ -123,7 +124,8 @@ div {
          - the scale property can be easily animated and enables "cool" 
            animations.
         
-        Using display: hidden would be an alternative that would support numbering, but would make animations impossible.
+        Using display: hidden would be an alternative that would support 
+        numbering, but would make animations impossible.
         */
     scale: 0;
 }
@@ -181,7 +183,8 @@ div {
     scroll-snap-align: start;
 }
 
-/* The class .hide is associated with slides when the user searches for slides.*/
+/*  The class .hide is programmatically associated with slides when the user 
+    searches for slides. */
 .ld-light-table-slide-pane.ld-light-table-slide-pane-hide {
     width: 0;
     margin: 0;
@@ -317,14 +320,16 @@ a {
 
     The menu.
 
-    The menu is a DIV element with the id ld-menu. It is placed in the top left and expands when the mouse hovers over it.
+    The menu is a DIV element with the id ld-menu. It is placed in the top left 
+    and expands when the mouse hovers over it.
 
-    The icons are rendered as background images of DIV elements to make it possible to open the slides from a file.
+    The icons are rendered as background images of DIV elements to make it 
+    possible to open the slides from a file.
 */
 
 @media print {
 
-    /* at least Safari seems to honor this setting...*/
+    /* At least Safari seems to honor this setting... */
     #ld-menu {
         display: none;
     }
@@ -337,13 +342,14 @@ a {
     top: 0;
     left: 0;
     z-index: 9999;
-    border-radius: 16px;
+    border-radius: 64px;
     padding: 0px;
     /*transform: translate(-216px, -162px) scale(0.1); 10%*/
     transform: translate(-228px, -171px) scale(0.05);
     overflow: hidden;
     background-color: white;
     transition: all 0.5s ease-in-out;
+    box-shadow: 10px 10px 20px, -1px -1px 2px gray;
 }
 
 /*
@@ -351,11 +357,11 @@ a {
     When we are not presenting a slide, the menu is more visible.
 */
 #ld-menu:not(:has(+ #ld-main-pane[style*="display: none;"])) {
-    opacity: 0.075;
+    opacity: 0.175;
 }
 
 #ld-menu:has(+ #ld-main-pane[style*="display: none;"]) {
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 #ld-menu:hover {
@@ -363,8 +369,9 @@ a {
     height: calc(360px + 8px);
     padding: 4px;
     /*transform: initial;*/
+    border-radius: 16px;
     transform: translate(calc(-120px + 2px), calc(-90px + 2px)) scale(0.5);
-    opacity: 1 !important;
+    opacity: 0.975 !important;
     box-shadow: 2px 2px 4px, -1px -1px 2px gray;
     transition: all 0.5s ease-in-out;
 }
@@ -413,6 +420,10 @@ div#ld-menu #ld-continuous-view-with-nr-button {
 
 div#ld-menu #ld-light-table-button {
     background-image: url('icons/light-table.svg');
+}
+
+div#ld-menu #ld-exercises-passwords-button {
+    background-image: url('icons/pwds.svg');
 }
 
 

@@ -2,16 +2,16 @@
        
    Core Ideas: 
    
-    -   LectureDoc (i.e., the slide set) must be 
-        usable without a Server(!); hence, no JavaScript modules :-(...
+    -   LectureDoc's main functionality (i.e., presenting the slide set) must be 
+        usable without a Server. However, advanced functionality may depend on 
+        a server. However, we can't use JavaScript modules.
    
     -   We store all relevant state information in a state object; this object 
         is then used to re-instantiate a LectureDoc session later on. This object
         is saved in local storage whenever the user leaves the webpage. To make
-        it possible to distinguish state information with a specific document, a 
-        document has to be associated with a unique id. This id has to be 
-        set by the user. If no id is configured, no state information will be
-        saved.
+        it possible to associate state information with a specific document, a 
+        document has to have a unique id. This id has to be set by the user. 
+        If no id is configured, no state information will be saved.
         Saved states always overrides information found in the document.
 
     -   Meta information about the presentation is stored in the presentation 
@@ -20,116 +20,29 @@
 */
 "use strict";
 
-const lectureDoc2Crypto = function () {
-
-    // based on code found at https://github.com/themikefuller/Web-Cryptography
-
-    async function encrypt(message, password, iterations) {
-
-        const msg = new TextEncoder().encode(message);
-        const pass = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), {
-            "name": "PBKDF2"
-        }, false, ['deriveBits']);
-
-        const salt = crypto.getRandomValues(new Uint8Array(32));
-        const iv = crypto.getRandomValues(new Uint8Array(12));
-
-        const keyBits = await crypto.subtle.deriveBits({
-            "name": "PBKDF2",
-            "salt": salt,
-            "iterations": iterations,
-            "hash": {
-                "name": "SHA-256"
-            }
-        }, pass, 256);
-
-        // console.log(new Uint8Array(bits)); // create view then log...
-
-        const key = await crypto.subtle.importKey('raw', keyBits, {
-            "name": "AES-GCM"
-        }, false, ['encrypt']);
-
-        const enc = await crypto.subtle.encrypt({
-            "name": "AES-GCM",
-            "iv": iv
-        }, key, msg);
-
-        const iterationsB64 = btoa(rounds.toString());
-
-        const saltB64 = btoa(Array.from(new Uint8Array(salt)).map(val => {
-            return String.fromCharCode(val)
-        }).join(''));
-
-        const ivB64 = btoa(Array.from(new Uint8Array(iv)).map(val => {
-            return String.fromCharCode(val)
-        }).join(''));
-
-        const encB64 = btoa(Array.from(new Uint8Array(enc)).map(val => {
-            return String.fromCharCode(val)
-        }).join(''));
-
-        return iterationsB64 + ':' + saltB64 + ':' + ivB64 + ':' + encB64;
-    };
-
-    async function decrypt(encrypted, password) {
-
-        const parts = encrypted.split(':');
-        const rounds = parseInt(atob(parts[0]));
-
-        const salt = new Uint8Array(atob(parts[1]).split('').map(val => {
-            return val.charCodeAt(0);
-        }));
-
-        const iv = new Uint8Array(atob(parts[2]).split('').map(val => {
-            return val.charCodeAt(0);
-        }));
-
-        // console.log("extracted iv: " + new Uint8Array(iv) +  " and salt: "+ new Uint8Array(salt));
-
-        const enc = new Uint8Array(atob(parts[3]).split('').map(val => {
-            return val.charCodeAt(0);
-        }));
-
-        const pass = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), {
-            "name": "PBKDF2"
-        }, false, ['deriveBits']);
-
-        const keyBits = await crypto.subtle.deriveBits({
-            "name": "PBKDF2",
-            "salt": salt,
-            "iterations": rounds,
-            "hash": {
-                "name": "SHA-256"
-            }
-        }, pass, 256);
-
-        let key = await crypto.subtle.importKey('raw', keyBits, {
-            "name": "AES-GCM"
-        }, false, ['decrypt']);
-
-        let dec = await crypto.subtle.decrypt({
-            "name": "AES-GCM",
-            "iv": iv
-        }, key, enc);
-
-        return (new TextDecoder().decode(dec));
-    };
-
-    return {
-        decryptAESGCMPBKDF: decrypt,
-        encryptASEGCMPBKDF: encrypt,
-    };
-
-}();
 
 /**
- * For `lectureDoc2` we use "modules" that start with lectureDoc2.
+ * The main "module" of LectureDoc2.
  * 
  * lectureDoc2 is an object which contains a reference to the meta-information
  * object (presentation) and a function (getState) to return the current state.
  * Furthermore, a function to optimize the view for printing is provided.
+ * 
+ * All `lectureDoc2`related "modules" start with lectureDoc2.
  */
 const lectureDoc2 = function () {
+
+    function instantiate(library) {
+        try {
+            return library();
+        } catch (error) {
+            console.error(`LectureDoc2 ${library} missing`);
+            return undefined;
+        }
+    }
+
+    const ld = instantiate(lectureDoc2Library);
+    const ldCrypto = instantiate(lectureDoc2Crypto);
 
     /**
      * The meta-information about the document.
@@ -180,7 +93,7 @@ const lectureDoc2 = function () {
          * presentation is shown for the first time. If false the slide view
          * is used.
          */
-        showContinuousView: true,        
+        showContinuousView: true,
         /**
          * If true the help dialog will be shown when this presentation is
          * shown for the first time.
@@ -200,16 +113,16 @@ const lectureDoc2 = function () {
         // The overall progress.
         currentSlideNo: 0,
         // stores for each slide the number of executed animation steps
-        slideProgress: {}, 
-        
+        slideProgress: {},
+
         // Help dialog related state
         showHelp: false,
-        
+
         // Light table related state
         showLightTable: false, // "actually" set by document or by default in presentation
         lightTableZoomLevel: 0.2,
         lightTableViewScrollY: 0, // FIXME use different approach this one depends on the size of viewport ...
-        
+
         // Continuous view related state
         showContinuousView: true, // "actually" set by document or by default in presentation
         continuousViewScrollY: 0,
@@ -222,7 +135,7 @@ const lectureDoc2 = function () {
     /* The following information is only short lived and does not need
      * to be preserved during reloads.
      */
-    let ephermal = { 
+    let ephermal = {
         // The following information is related to animations.
         previousSlide: undefined,
         ldPerDocumentChannel: undefined,
@@ -332,12 +245,12 @@ const lectureDoc2 = function () {
         if (state.showHelp) toggleDialog("help");
 
         if (state.showContinuousView) toggleContinuousView();
-        if (state.showContinuousViewSlideNumber) { 
-            showContinuousViewSlideNumber(true); 
+        if (state.showContinuousViewSlideNumber) {
+            showContinuousViewSlideNumber(true);
         }
 
-        if (state.showMainSlideNumber) { 
-            showMainSlideNumber(true); 
+        if (state.showMainSlideNumber) {
+            showMainSlideNumber(true);
         }
     }
 
@@ -357,7 +270,7 @@ const lectureDoc2 = function () {
 
     /**
      * Resets LectureDoc for the current document by deleting all associated
-     * state additionally global state associated with LectureDoc is also 
+     * state. Additionally, global state associated with LectureDoc is also 
      * deleted.
      */
     function resetLectureDoc() {
@@ -405,8 +318,9 @@ const lectureDoc2 = function () {
      */
     function setupCopyToClipboard() {
         document.querySelectorAll(".code.copy-to-clipboard").forEach((code) => {
-            const copyToClipboardButton = document.createElement("div");
-            copyToClipboardButton.classList.add("ld-copy-to-clipboard-button");
+            const copyToClipboardButton = ld.div({ classes: ["ld-copy-to-clipboard-button"] });
+            //const copyToClipboardButton = document.createElement("div");
+            //copyToClipboardButton.classList.add("ld-copy-to-clipboard-button");
             code.insertBefore(copyToClipboardButton, code.firstChild);
         });
     }
@@ -424,6 +338,15 @@ const lectureDoc2 = function () {
         }
     }
 
+    function getEncryptedExercisesPasswords() {
+        try {
+            return document.querySelector('meta[name="exercises-passwords"]').content;
+        } catch (error) {
+            console.info("no exercises specified or no master password set");
+            return undefined;
+        }
+    }
+
     /**
      * Parses the meta information about slide dimensions and initializes the
      * corresponding variables.
@@ -435,7 +358,7 @@ const lectureDoc2 = function () {
      */
     function initSlideDimensions() {
         try {
-            const slideDimensions = 
+            const slideDimensions =
                 document.querySelector('meta[name="slide-dimensions"]').content;
             const [w, h] = slideDimensions.split("x").map((e) => e.trim());
             presentation.slide.width = w;
@@ -448,14 +371,14 @@ const lectureDoc2 = function () {
         root.setProperty("--ld-slide-width", presentation.slide.width + "px");
         root.setProperty("--ld-slide-height", presentation.slide.height + "px");
     }
-    
+
     /**
      * Counts the number of slides in the document and initializes `slideCount`.
      * 
      * This method has to be called before the slides are copied.
      */
     function initSlideCount() {
-        presentation.slideCount = 
+        presentation.slideCount =
             document.querySelectorAll("body>div.ld-slide").length
     }
 
@@ -464,7 +387,7 @@ const lectureDoc2 = function () {
      */
     function lastSlideNo() {
         return presentation.slideCount - 1;
-    } 
+    }
 
     /**
      * Initializes the state information regarding the current slide to show and
@@ -473,7 +396,7 @@ const lectureDoc2 = function () {
      */
     function initCurrentSlide() {
         try {
-            presentation.firstSlide = 
+            presentation.firstSlide =
                 document.querySelector('meta[name="first-slide"]').content;
         } catch (error) {
             console.info("first slide not specified; showing last viewed");
@@ -496,10 +419,10 @@ const lectureDoc2 = function () {
     }
 
     function initShowLightTable() {
-        const showLightTable = 
+        const showLightTable =
             document.querySelector('meta[name="ld-show-light-table"]');
         if (showLightTable) {
-            presentation.showLightTable = 
+            presentation.showLightTable =
                 showLightTable.content.trim().toLowerCase();
             state.showLightTable = (presentation.showLightTable === "true")
         } else {
@@ -510,12 +433,12 @@ const lectureDoc2 = function () {
     function initShowContinuousView() {
         // recall that the default for presentations which are opened for
         // the first time is true
-        const showContinuousView = 
+        const showContinuousView =
             document.querySelector('meta[name="ld-show-continuous-view"]');
         if (showContinuousView) {
-            presentation.showContinuousView = 
+            presentation.showContinuousView =
                 showContinuousView.content.trim().toLowerCase();
-            state.showContinuousView = 
+            state.showContinuousView =
                 (presentation.showContinuousView === "true");
         } else {
             state.showContinuousView = presentation.showContinuousView;
@@ -538,18 +461,12 @@ const lectureDoc2 = function () {
     }
 
     function setupLightTable() {
-        const lightTableDialog = document.createElement("DIALOG")
-        lightTableDialog.id = "ld-light-table-dialog"
-        lightTableDialog.className = "ld-dialog"
+        const lightTableDialog = ld.dialog({ id: "ld-light-table-dialog" });
+        const lightTableDialogContainer = ld.div({ id: "ld-light-table-dialog-container", parent: lightTableDialog });
 
-        const lightTableDialogContainer = document.createElement("DIV")
-        lightTableDialogContainer.id = "ld-light-table-dialog-container"
-        lightTableDialog.appendChild(lightTableDialogContainer)
-
-        const lightTableHeader = document.createElement("DIV")
-        lightTableHeader.id = "ld-light-table-header"
+        const lightTableHeader = ld.div({ classes: ["ld-dialog-header"], parent: lightTableDialogContainer });
         lightTableHeader.innerHTML = `
-            <div id="ld-light-table-slides-count">${presentation.slideCount} slides</div>
+            <span id="ld-light-table-slides-count">${presentation.slideCount} slides</span>
             <div id="ld-light-table-search" >
                 <input
                 type="search"
@@ -559,96 +476,137 @@ const lectureDoc2 = function () {
                 tabindex ="-1"
                 />
             </div>
-            <div id="ld-light-table-close">
-                <button id="ld-light-table-close-button" type="button">×</button>
+            <div class="ld-dialog-close">
+                <div id="ld-light-table-close-button" class="ld-dialog-close-button"></div>
             </div>
         `
-        lightTableDialogContainer.appendChild(lightTableHeader)
 
-        const lightTableSlides = document.createElement("DIV")
-        lightTableSlides.id = "ld-light-table-slides";
-        lightTableDialogContainer.appendChild(lightTableSlides);
+        const lightTableSlides = ld.div({ id: "ld-light-table-slides", parent: lightTableDialogContainer });
 
         document.querySelectorAll("body > .ld-slide").forEach((slideTemplate, i) => {
             const slide = slideTemplate.cloneNode(true);
             slide.removeAttribute("id"); // not needed anymore (in case it was set)
 
-            const slideScaler = document.createElement("DIV");
-            slideScaler.className = "ld-light-table-slide-scaler";
+            const slideScaler = ld.div({ classes: ["ld-light-table-slide-scaler"] });
             slideScaler.appendChild(slide);
 
-            
-            const slideOverlay = document.createElement("DIV");
-            slideOverlay.className = "ld-light-table-slide-overlay";
+            const slideOverlay = ld.div({ classes: ["ld-light-table-slide-overlay"] });
             slideOverlay.dataset.ldSlideNo = i;
-            slideOverlay.innerHTML = `<span>${i+1}</span>`
+            slideOverlay.innerHTML = `<span>${i + 1}</span>`
 
-            const slidePane = document.createElement("DIV");
-            slidePane.className = "ld-light-table-slide-pane";
-            slidePane.classList.add("ld-slide-context");
-            slidePane.appendChild(slideScaler);
-            slidePane.appendChild(slideOverlay);
-
-            lightTableSlides.appendChild(slidePane);
+            ld.div({
+                classes: ["ld-light-table-slide-pane", "ld-slide-context"],
+                parent: lightTableSlides,
+                children: [slideScaler, slideOverlay]
+            });
         });
 
-        const lightTableFooter = document.createElement("DIV")
-        lightTableFooter.id = "ld-light-table-footer"
-        lightTableFooter.innerHTML = `
+        ld.div({ classes: ["ld-dialog-footer"], parent: lightTableDialogContainer }).innerHTML = `
             <div id="ld-light-table-zoom">
             <label for="ld-light-table-zoom-slider">Zoom:</label>
-            <input type="range" id="ld-light-table-zoom-slider" name="Zoom" min="0.05"  max="0.3" step="0.05" value="0.2"/>
+            <input type="range" id="ld-light-table-zoom-slider" name="Zoom" 
+                   min="0.05" max="0.3" step="0.05" value="0.2"/>
             </div>
         `
-        lightTableDialogContainer.appendChild(lightTableFooter)
 
         document.getElementsByTagName("BODY")[0].prepend(lightTableDialog);
     }
 
 
     function setupHelp() {
-        const help_dialog = document.createElement("DIALOG")
-        help_dialog.id = "ld-help-dialog"
-        help_dialog.className = "ld-dialog"
+        const helpDialog = ld.dialog({ id: "ld-help-dialog" });
+        helpDialog.innerHTML = `
+            <div class="ld-dialog-header">
+                <span class="ld-dialog-title">Help</span>
+                <div class="ld-dialog-close">
+                    <div id="ld-help-close-button" class="ld-dialog-close-button"></div>
+                </div>
+            </div>`
         try {
-            help_dialog.innerHTML = `
-                <div id="ld-help-header">
-                    <span id="ld-help-title">Help</span>
-                    <div id="ld-help-close">
-                        <button id="ld-help-close-button" type="button">×</button>
-                    </div>
-                </div>`
-            help_dialog.appendChild(lectureDoc2Help());
+            helpDialog.appendChild(lectureDoc2Help());
         } catch (error) {
-            help_dialog.innerText = 'Help not found. "ld-help.js" probably not loaded.'
+            helpDialog.innerText = 'Help not found.';
         }
 
-        document.getElementsByTagName("BODY")[0].prepend(help_dialog);
+        document.getElementsByTagName("BODY")[0].prepend(helpDialog);
+    }
+
+    function createPasswordInput() {
+        const passwordElement = ld.create("INPUT", { classList: ["passwords"] });
+        //const passwordElement = document.createElement("INPUT");
+        //passwordElement.className = "passwords";
+        passwordElement.type = "password";
+        passwordElement.placeholder = "🔑";
+        return passwordElement
+    }
+
+    function setupExercisesPasswordsDialog() {
+        const exercisesPasswordsDialog = ld.dialog({ id: "ld-exercises-passwords-dialog" });
+        exercisesPasswordsDialog.innerHTML = `
+                <div class="ld-dialog-header">
+                    <span class="ld-dialog-title">Exercises Passwords</span>
+                    <div id="ld-dialog-close">
+                        <div id="ld-exercises-passwords-close-button" class="ld-dialog-close-button"></div>
+                    </div>
+                </div>`
+        const encryptedExercisesPasswords = getEncryptedExercisesPasswords();
+        if (encryptedExercisesPasswords) {
+            const passwordInput = createPasswordInput();
+            const contentArea = ld.div({
+                id: 'ld-exercises-passwords-content',
+                parent: exercisesPasswordsDialog,
+                children: [passwordInput]
+            });
+            passwordInput.addEventListener("input", (e) => {
+                const currentPassword = e.target.value
+                if (currentPassword.length > 2) {
+                    const decryptedPromise = ldCrypto.decryptAESGCMPBKDF(
+                        encryptedExercisesPasswords,
+                        currentPassword
+                    )
+                    decryptedPromise.then((decrypted) => {
+                        //contentArea.innerText = decrypted;
+                        const decryptedPasswords = JSON.parse(decrypted);
+                        const pwds = ld.convertToTable(decryptedPasswords[1]["passwords"]);
+                        contentArea.removeChild(passwordInput);
+                        contentArea.appendChild(pwds);
+                    }).catch((error) => {
+                        console.log("Decryption using password: " + currentPassword+" failed - "+error);
+                    });
+                }
+            });
+        } else {
+            ld.div({ parent: exercisesPasswordsDialog }).innerHTML = `
+                <div id="ld-exercises-passwords-content">
+                    <b>This document has no exercises or the master password is not set.</b>
+                </div>`
+        }
+
+        document.getElementsByTagName("BODY")[0].prepend(exercisesPasswordsDialog);
+        document.
+            querySelector("#ld-exercises-passwords-close-button").
+            addEventListener("click", toggleExercisesPasswordsDialog);
     }
 
     function setupJumpTargetDialog() {
-        const jump_target_dialog = document.createElement("DIALOG")
-        jump_target_dialog.id = "ld-jump-target-dialog"
-        jump_target_dialog.className = "ld-dialog"
-        jump_target_dialog.innerHTML = `
+        const jumpTargetDialog = ld.dialog({ id: "ld-jump-target-dialog" });
+        jumpTargetDialog.innerHTML = `
             <span id="ld-jump-target-current"></span> / 
             <span id="ld-jump-target-max">${presentation.slideCount}</span>        
         `
 
-        document.getElementsByTagName("BODY")[0].prepend(jump_target_dialog);
+        document.getElementsByTagName("BODY")[0].prepend(jumpTargetDialog);
     }
 
     function setupSlideNumberPane() {
-        const slideNumberPane = document.createElement("DIV");
-        slideNumberPane.id = "ld-slide-number-pane";
+        const slideNumberPane = ld.div({ id: "ld-slide-number-pane" });
         slideNumberPane.innerHTML = `<span id="ld-slide-number">/</span>`
+
         document.getElementsByTagName("BODY")[0].prepend(slideNumberPane);
     }
 
     function setupMainPane() {
-        const mainPane = document.createElement("DIV");
-        mainPane.id = "ld-main-pane";
-        mainPane.className = "ld-slide-context";
+        const mainPane = ld.div({ id: "ld-main-pane", classes: ["ld-slide-context"] });
 
         /* 
         Copies all slide(-template)s found in the document to the main pane.
@@ -673,28 +631,28 @@ const lectureDoc2 = function () {
         document.getElementsByTagName("BODY")[0].prepend(mainPane);
     }
 
+
+
     function setupContinuousView() {
-        const continuousViewPane = document.createElement("DIV")
-        continuousViewPane.id = "ld-continuous-view-pane"
+        const continuousViewPane = ld.div({ id: "ld-continuous-view-pane" });
 
         document.querySelectorAll("body > .ld-slide").forEach((slideTemplate, i) => {
             const slide = slideTemplate.cloneNode(true);
             slide.removeAttribute("id"); // not needed anymore (in case it was set)
 
-            const slide_scaler = document.createElement("DIV");
-            slide_scaler.className = "ld-continuous-view-scaler";
-            slide_scaler.appendChild(slide);
+            const slideScaler = ld.div({ classes: ["ld-continuous-view-scaler"] });
+            slideScaler.appendChild(slide);
 
-            const slide_pane = document.createElement("DIV");
-            slide_pane.innerHTML = `
-                <span class="ld-continuous-view-slide-number">${i+1}</span>
+            const slidePane = document.createElement("DIV");
+            slidePane.innerHTML = `
+                <span class="ld-continuous-view-slide-number">${i + 1}</span>
             `;
-            slide_pane.className = "ld-continuous-view-slide-pane"
-            slide_pane.classList.add("ld-slide-context");
-            slide_pane.id = "ld-continuous-view-slide-no-" + i;
-            slide_pane.prepend(slide_scaler);
+            slidePane.className = "ld-continuous-view-slide-pane"
+            slidePane.classList.add("ld-slide-context");
+            slidePane.id = "ld-continuous-view-slide-no-" + i;
+            slidePane.prepend(slideScaler);
 
-            continuousViewPane.appendChild(slide_pane);
+            continuousViewPane.appendChild(slidePane);
 
             // Move DIVs and ASIDEs with supplemental infos below the slide:
             const aside = slide.querySelector(":scope .supplemental");
@@ -708,26 +666,24 @@ const lectureDoc2 = function () {
                 const solution = e.querySelector(":scope .ld-exercise-solution");
                 if (solution) {
                     solution.parentElement.removeChild(solution);
-                    const task =  e.cloneNode(true);
+                    const task = e.cloneNode(true);
                     task.classList.add("ld-extracted-exercise");
-                    const solutionWrapper = document.createElement("DIV");
-                    solutionWrapper.className = "ld-exercise-solution-wrapper";
-                    const passwordField = document.createElement("INPUT");
-                    passwordField.type = "password";
-                    passwordField.placeholder = "🔑";
-                    solutionWrapper.appendChild(passwordField);
-                    solutionWrapper.appendChild(solution);
-                    task.append(solutionWrapper);
+
+                    const passwordField = createPasswordInput();
+                    const solutionWrapper = ld.div({ 
+                        classes: ["ld-exercise-solution-wrapper"],
+                        parent: task,
+                        children: [passwordField, solution]
+                    });
                     continuousViewPane.appendChild(task);
 
                     passwordField.addEventListener("input", (e) => {
                         const currentPassword = e.target.value
                         if (currentPassword.length > 2) {
-                            const decryptedPromise = lectureDoc2Crypto.decryptAESGCMPBKDF(
-                                solution.innerText.trim(), 
+                            const decryptedPromise = ldCrypto.decryptAESGCMPBKDF(
+                                solution.innerText.trim(),
                                 currentPassword
                             )
-                            console.log("trying to decrypt: " + currentPassword);
                             decryptedPromise.then((decrypted) => {
                                 solution.innerHTML = decrypted;
                                 try {
@@ -740,7 +696,6 @@ const lectureDoc2 = function () {
                             }).catch((error) => {
                                 console.log("wrong password: " + currentPassword);
                             });
-                            
                         }
                     });
                 }
@@ -749,14 +704,14 @@ const lectureDoc2 = function () {
 
         document.getElementsByTagName("BODY")[0].prepend(continuousViewPane);
     }
-    
+
 
     function setupMenu() {
         const menuPane = document.createElement("DIV");
         menuPane.id = "ld-menu";
         menuPane.innerHTML = `
             <div id="ld-menu-buttons">
-                <!-- The icons are set using css. Using img overhere
+                <!-- The icons are set using css. Using img over here
                     would not work when the slides are opened locally
                     (due to the same-origin-policy) -->
                 <div id="ld-slides-button"></div>
@@ -772,7 +727,7 @@ const lectureDoc2 = function () {
                 <div id="ld-light-table-button"></div>
                 <div class="empty"></div>
                 <div class="empty"></div>
-                <div class="empty"></div>
+                <div id="ld-exercises-passwords-button"></div>
             </div>
         `
         document.getElementsByTagName("BODY")[0].prepend(menuPane);
@@ -782,7 +737,7 @@ const lectureDoc2 = function () {
     /**
      * Fixes issues related to the copying of the slide templates.
      */
-    function applyDOMfixes(){
+    function applyDOMfixes() {
         /*  Due to the copying of the slide templates, the ids in inline SVGs 
             (e.g. for defining and referencing markers) are no longer unique, 
             which is a violation of the spec and causes troubles in Chrome and 
@@ -798,11 +753,11 @@ const lectureDoc2 = function () {
                 svgIds.set("url(#" + oldId + ")", "url(#" + newId + ")");
             });
             svgIds.forEach((newId, oldId) => {
-                const refs =`.//@*[.="${oldId}"]`;
-                const it = document.evaluate(refs,svg,null,XPathResult.ANY_TYPE,null);
+                const refs = `.//@*[.="${oldId}"]`;
+                const it = document.evaluate(refs, svg, null, XPathResult.ANY_TYPE, null);
                 let attr, attrs = []
                 while (attr = it.iterateNext())
-                attrs.push(attr);
+                    attrs.push(attr);
                 attrs.forEach((ref) => {
                     ref.textContent = newId;
                 });
@@ -817,7 +772,7 @@ const lectureDoc2 = function () {
         document.querySelector("body").prepend(message);
     }
 
-    function showMessage(htmMessage,ms = 3000) {
+    function showMessage(htmMessage, ms = 3000) {
         const messageBox = document.querySelector("#ld-message-box");
         messageBox.innerHTML = htmMessage;
         messageBox.show();
@@ -851,14 +806,14 @@ const lectureDoc2 = function () {
      * state is correctly updated!
      */
     function showSlide(slideNo, setNewMarker = false) {
-        if (typeof(slideNo) == "string" || slideNo instanceof String) {
+        if (typeof (slideNo) == "string" || slideNo instanceof String) {
             slideNo = parseInt(slideNo);
         }
 
         const slideId = "ld-slide-no-" + slideNo;
         const ldSlide = document.getElementById(slideId)
         /* We now want to use the style based display property again: */
-        ldSlide.style.removeProperty("display"); 
+        ldSlide.style.removeProperty("display");
         ldSlide.style.scale = 1;
         if (setNewMarker)
             ldSlide.classList.add("ld-current-slide");
@@ -867,14 +822,14 @@ const lectureDoc2 = function () {
         document.getElementById("ld-slide-number").innerText = slideNo + 1;
     }
 
-    function hideSlide(slideNo, setOldMarker = false) {        
+    function hideSlide(slideNo, setOldMarker = false) {
         if (ephermal.previousSlide) {
             ephermal.previousSlide.classList.remove("ld-previous-slide");
             /* When we simply "keep" all slides in the DOM, we have a significant
                memory issue in Safari. A small set with ~40 slide can 
                suddenly require 1.5 to 2GB of memory!
              */
-            ephermal.previousSlide.style.display = "none"; 
+            ephermal.previousSlide.style.display = "none";
         }
         const ldSlide = document.getElementById("ld-slide-no-" + slideNo);
         if (ldSlide) {
@@ -899,18 +854,18 @@ const lectureDoc2 = function () {
      * In general, `advancePresentation` should be called.
      */
     function moveToNextSlide() {
-        postMessage("moveToNextSlide",undefined);
+        postMessage("moveToNextSlide", undefined);
         localMoveToNextSlide();
     }
     function localMoveToNextSlide() {
         if (state.currentSlideNo < lastSlideNo()) {
-            hideSlide(state.currentSlideNo,true);
-            showSlide(++state.currentSlideNo,true);
+            hideSlide(state.currentSlideNo, true);
+            showSlide(++state.currentSlideNo, true);
         }
     }
 
     function moveToPreviousSlide() {
-        postMessage("moveToPreviousSlide",undefined);
+        postMessage("moveToPreviousSlide", undefined);
         localMoveToPreviousSlide();
     }
     function localMoveToPreviousSlide() {
@@ -957,7 +912,7 @@ const lectureDoc2 = function () {
      * progress is implicitly covered by the visible and hidden elements.
      */
     function advancePresentation() {
-        postMessage("advancePresentation",undefined);        
+        postMessage("advancePresentation", undefined);
         localAdvancePresentation();
     }
     function localAdvancePresentation() {
@@ -967,7 +922,7 @@ const lectureDoc2 = function () {
         for (let i = 0; i < elementsCount; i++) {
             if (elements[i].style.visibility == "hidden") {
                 elements[i].style.visibility = "visible";
-                setSlideProgress(slide, i+1)
+                setSlideProgress(slide, i + 1)
                 return;
             }
         }
@@ -975,7 +930,7 @@ const lectureDoc2 = function () {
         localMoveToNextSlide();
     }
     function retrogressPresentation() {
-        postMessage("retrogressPresentation",undefined);        
+        postMessage("retrogressPresentation", undefined);
         localRetrogressPresentation();
     }
     function localRetrogressPresentation() {
@@ -984,14 +939,14 @@ const lectureDoc2 = function () {
         const elementsToAnimate = getElementsToAnimate(slide)
         if (elementsToAnimate) {
             if (i > elementsToAnimate.length) {
-                i = elementsToAnimate.length-1;
+                i = elementsToAnimate.length - 1;
             }
             if (i > 0) {
-                i = i-1;
+                i = i - 1;
                 elementsToAnimate[i].style.visibility = "hidden";
                 setSlideProgress(slide, i);
                 return;
-            } 
+            }
         }
         // When we reach this point all elements are hidden (again).
         localMoveToPreviousSlide();
@@ -1001,13 +956,13 @@ const lectureDoc2 = function () {
     }
 
     function resetCurrentSlideProgress() {
-        postMessage("resetCurrentSlideProgress",undefined);
-        localResetCurrentSlideProgress(); 
+        postMessage("resetCurrentSlideProgress", undefined);
+        localResetCurrentSlideProgress();
     }
     function localResetCurrentSlideProgress() {
         localResetSlideProgress(getCurrentSlide());
     }
-    function localResetSlideProgress(slide /* : element*/) {    
+    function localResetSlideProgress(slide /* : element*/) {
         hideAllAnimatedElements(slide);
         if (state.slideProgress) {
             delete state.slideProgress[slide.id];
@@ -1032,11 +987,11 @@ const lectureDoc2 = function () {
         });
     }
 
-    function resetAllAnimations(){
-        postMessage("resetAllAnimations",undefined);        
+    function resetAllAnimations() {
+        postMessage("resetAllAnimations", undefined);
         localResetAllAnimations();
     }
-    function localResetAllAnimations(){
+    function localResetAllAnimations() {
         document.querySelectorAll("#ld-main-pane .ld-slide").forEach((slide) => {
             localResetSlideProgress(slide);
         });
@@ -1074,7 +1029,7 @@ const lectureDoc2 = function () {
             const targetSlideNo = slideNo > lastSlideNo() ? lastSlideNo() : slideNo;
 
             if (state.showContinuousView) {
-                window.scrollTo(0,document.getElementById("ld-continuous-view-slide-no-" + targetSlideNo).offsetTop);
+                window.scrollTo(0, document.getElementById("ld-continuous-view-slide-no-" + targetSlideNo).offsetTop);
             } else {
                 goToSlide(targetSlideNo);
             }
@@ -1082,7 +1037,7 @@ const lectureDoc2 = function () {
     }
 
     function goToSlide(targetSlideNo) {
-        postMessage("goToSlide",targetSlideNo);        
+        postMessage("goToSlide", targetSlideNo);
         localGoToSlide(targetSlideNo);
     }
 
@@ -1104,8 +1059,7 @@ const lectureDoc2 = function () {
 
     function updateLightTableViewScrollY(y) {
         if (y) {
-            const lightTableView = document.querySelector("#ld-light-table-slides");
-            lightTableView.scrollTo(0,y);
+            document.querySelector("#ld-light-table-slides").scrollTo(0, y);
         }
     }
 
@@ -1120,7 +1074,12 @@ const lectureDoc2 = function () {
         }
     }
 
-    
+    function toggleExercisesPasswordsDialog() {
+        // we don't want the press of the "m" key to fill the password input field
+        setTimeout(() => { toggleDialog("exercises-passwords") });
+    }
+
+
     /**
      * Toggles a modal dialog. 
      * 
@@ -1198,7 +1157,7 @@ const lectureDoc2 = function () {
         if (state.showContinuousView) {
             mainPane.style.display = "none";
             continuousViewPane.style.display = "block";
-            window.scrollTo(0,state.continuousViewScrollY);
+            window.scrollTo(0, state.continuousViewScrollY);
         } else {
             continuousViewPane.style.display = "none";
             mainPane.style.display = "flex";
@@ -1229,7 +1188,7 @@ const lectureDoc2 = function () {
         clearJumpTarget();
 
         if (!state.showContinuousView) toggleContinuousView();
-        if (!state.showContinuousViewSlideNumber) showContinuousViewSlideNumber(true);   
+        if (!state.showContinuousViewSlideNumber) showContinuousViewSlideNumber(true);
 
         const slideList = document.querySelectorAll("#ld-continuous-view-pane div.ld-slide")
         const slideCount = slideList.length;
@@ -1239,7 +1198,7 @@ const lectureDoc2 = function () {
         function scrollToNextSlide() {
             if (!slidesIteratorResult.done) {
                 const slide = slidesIteratorResult.value;
-                slide.scrollIntoView({behavior: "smooth"});
+                slide.scrollIntoView({ behavior: "smooth" });
                 slidesIteratorResult = slidesIterator.next();
                 setTimeout(scrollToNextSlide, 100);
             }
@@ -1254,7 +1213,7 @@ const lectureDoc2 = function () {
      * body to "none".
      */
     function hideLectureDoc() {
-        postMessage("hideLectureDoc",undefined);
+        postMessage("hideLectureDoc", undefined);
         localHideLectureDoc();
     }
     function localHideLectureDoc() {
@@ -1262,12 +1221,12 @@ const lectureDoc2 = function () {
     }
 
     function ensureLectureDocIsVisible() {
-        postMessage("ensureLectureDocIsVisible",undefined);
+        postMessage("ensureLectureDocIsVisible", undefined);
         return localEnsureLectureDocIsVisible();
     }
     function localEnsureLectureDocIsVisible() {
         if (document.body.style.display == "none") {
-            document.body.style.display = "initial"; 
+            document.body.style.display = "initial";
             return true;
         } else {
             return false;
@@ -1348,6 +1307,8 @@ const lectureDoc2 = function () {
 
                     case "n": toggleSlideNumber(); break;
 
+                    case "m": toggleExercisesPasswordsDialog(); break;
+
                     case "c": toggleContinuousView(); break;
 
                     case "p": optimizeViewForPrinting(); break;
@@ -1396,13 +1357,15 @@ const lectureDoc2 = function () {
 
     function registerSlideClickedListener() {
         // we still want to be able to click links and the "ld-copy-to-clipboard-button" icon
-        document.querySelectorAll("#ld-main-pane :is(a,div.ld-copy-to-clipboard-button)").forEach((a) => {a.addEventListener(
-            "click",
-            (event) => {
-                event["link_clicked"] = true;
-            },
-            {capture: true}
-        )});
+        document.querySelectorAll("#ld-main-pane :is(a,div.ld-copy-to-clipboard-button)").forEach((a) => {
+            a.addEventListener(
+                "click",
+                (event) => {
+                    event["link_clicked"] = true;
+                },
+                { capture: true }
+            )
+        });
 
         document.getElementById("ld-main-pane").addEventListener("click", (event) => {
             if (event.link_clicked)
@@ -1417,7 +1380,7 @@ const lectureDoc2 = function () {
             /* Let's determine if we have clicked on the left or right part. */
             if (event.pageX < (window.innerWidth / 2)) {
                 moveToPreviousSlide();
-                showMessage("⬅︎",400);
+                showMessage("⬅︎", 400);
             } else {
                 advancePresentation();
             }
@@ -1429,7 +1392,7 @@ const lectureDoc2 = function () {
      * @param str id The unique id of the target element on a slide!
      */
     function jumpToSlideWithElementWithId(id) {
-        postMessage("jumpToSlideWithElementWithId",id);
+        postMessage("jumpToSlideWithElementWithId", id);
         localJumpToSlideWithElementWithId(id);
     }
     function localJumpToSlideWithElementWithId(id) {
@@ -1437,7 +1400,7 @@ const lectureDoc2 = function () {
         if (slide) {
             localGoToSlide(slide.dataset.ldSlideNo);
         } else {
-            console.warn("invalid jump target: "+id);
+            console.warn("invalid jump target: " + id);
             return;
         }
 
@@ -1449,7 +1412,7 @@ const lectureDoc2 = function () {
     }
 
     function jumpToSlideWithDataId(id) {
-        postMessage("jumpToSlideWithDataId",id);
+        postMessage("jumpToSlideWithDataId", id);
         localJumpToSlideWithDataId(id);
     }
     /**
@@ -1471,29 +1434,35 @@ const lectureDoc2 = function () {
         */
         document.
             querySelectorAll("#ld-main-pane a.reference.internal").
-            forEach((a) => { a.addEventListener("click",(event) => {
-                event.stopPropagation();
-                const target = a.getAttribute("href");
-                jumpToSlideWithDataId(target.substring(1));
-            })  });
+            forEach((a) => {
+                a.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    const target = a.getAttribute("href");
+                    jumpToSlideWithDataId(target.substring(1));
+                })
+            });
 
         /*
         Handle links related to the bibliography.
         */
         document.
             querySelectorAll("#ld-main-pane a.citation-reference").
-            forEach((a) => { a.addEventListener("click",(event) => {
-                event.stopPropagation();
-                const target = a.getAttribute("href");
-                jumpToSlideWithElementWithId(target);
-            })  });
+            forEach((a) => {
+                a.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    const target = a.getAttribute("href");
+                    jumpToSlideWithElementWithId(target);
+                })
+            });
         document.
             querySelectorAll('#ld-main-pane a[role="doc-backlink"]').
-            forEach((a) => { a.addEventListener("click",(event) => {
-                event.stopPropagation();
-                const target = a.getAttribute("href");
-                jumpToSlideWithElementWithId(target);
-            })  });
+            forEach((a) => {
+                a.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    const target = a.getAttribute("href");
+                    jumpToSlideWithElementWithId(target);
+                })
+            });
     }
 
     function registerCopyToClipboardClickedListener() {
@@ -1529,7 +1498,7 @@ const lectureDoc2 = function () {
     function registerLightTableSlideSearchListener() {
         const lightTableSlides = document.querySelector("#ld-light-table-slides");
         const searchInput = document.querySelector("#ld-light-table-search-input");
-        searchInput.addEventListener("input",() => {
+        searchInput.addEventListener("input", () => {
             const searchValue = searchInput.value;
             lightTableSlides.querySelectorAll(":scope .ld-light-table-slide-pane").forEach((slidePane) => {
                 const ns = document.evaluate(
@@ -1560,7 +1529,7 @@ const lectureDoc2 = function () {
     function registerLightTableCloseListener() {
         document.
             querySelector("#ld-light-table-close-button").
-            addEventListener("click", () => { toggleLightTable(); });
+            addEventListener("click", toggleLightTable);
     }
 
     function registerHelpCloseListener() {
@@ -1579,11 +1548,11 @@ const lectureDoc2 = function () {
     }
 
     function registerMenuClickListener() {
-        
+
         document.
             querySelector("#ld-slides-button").
-            addEventListener("click", () => { 
-                if(state.showContinuousView) {
+            addEventListener("click", () => {
+                if (state.showContinuousView) {
                     toggleContinuousView();
                 }
                 showMainSlideNumber(false);
@@ -1591,16 +1560,16 @@ const lectureDoc2 = function () {
         document.
             querySelector("#ld-slides-with-nr-button").
             addEventListener("click", () => {
-                if(state.showContinuousView) {
+                if (state.showContinuousView) {
                     toggleContinuousView();
                 }
-                showMainSlideNumber(true); 
+                showMainSlideNumber(true);
             });
 
         document.
             querySelector("#ld-continuous-view-button").
-            addEventListener("click", () => { 
-                if(!state.showContinuousView) {
+            addEventListener("click", () => {
+                if (!state.showContinuousView) {
                     toggleContinuousView();
                 }
                 showContinuousViewSlideNumber(false);
@@ -1608,12 +1577,12 @@ const lectureDoc2 = function () {
 
         document.
             querySelector("#ld-continuous-view-with-nr-button").
-            addEventListener("click", () => { 
-                if(!state.showContinuousView) {
+            addEventListener("click", () => {
+                if (!state.showContinuousView) {
                     toggleContinuousView();
                 }
                 showContinuousViewSlideNumber(true);
-             });
+            });
 
         document.
             querySelector("#ld-help-button").
@@ -1621,10 +1590,14 @@ const lectureDoc2 = function () {
 
         document.
             querySelector("#ld-light-table-button").
-            addEventListener("click", () => { toggleLightTable(); });
+            addEventListener("click", toggleLightTable);
+
+        document.
+            querySelector("#ld-exercises-passwords-button").
+            addEventListener("click", toggleExercisesPasswordsDialog);
     }
 
-    
+
     /**
      * Some initial support for swipe gestures.
      */
@@ -1632,29 +1605,29 @@ const lectureDoc2 = function () {
         let xDown = null;
         let yDown = null;
 
-        document.addEventListener('touchstart', function(evt) {
+        document.addEventListener('touchstart', function (evt) {
             ensureLectureDocIsVisible();
             xDown = evt.changedTouches[0].clientX;
             yDown = evt.changedTouches[0].clientY;
         }, false);
 
-        document.addEventListener('touchend', function(evt) {
+        document.addEventListener('touchend', function (evt) {
             let xUp = evt.changedTouches[0].clientX;
             let yUp = evt.changedTouches[0].clientY;
 
             let xDiff = xDown - xUp;
             let yDiff = yDown - yUp;
-            console.log("touch event (x,y): ",xDiff, yDiff);
+            console.log("touch event (x,y): ", xDiff, yDiff);
             if (Math.abs(xDiff) > Math.abs(yDiff)) {
                 if (xDiff < -10) {
                     retrogressPresentation();
-                } else if (xDiff > 10){
+                } else if (xDiff > 10) {
                     advancePresentation();
                 }
             } else {
                 if (yDiff < -10) {
                     retrogressPresentation();
-                } else if (yDiff > 10){
+                } else if (yDiff > 10) {
                     advancePresentation();
                 }
             }
@@ -1679,7 +1652,7 @@ const lectureDoc2 = function () {
     try {
         animations = lectureDoc2Animations;
     } catch (error) {
-        console.warn("failed loading advanced animations module: "+error)
+        console.warn("failed loading advanced animations module: " + error)
     }
 
     /**
@@ -1691,7 +1664,7 @@ const lectureDoc2 = function () {
         initDocumentId();
         initSlideDimensions();
 
-        if(animations) {
+        if (animations) {
             animations.beforeLDDOMManipulations();
         }
         initSlideCount();   // We need to do this here, because the animations 
@@ -1719,8 +1692,9 @@ const lectureDoc2 = function () {
         */
         setupMessageBox();
         setupLightTable();
+        setupExercisesPasswordsDialog();
         setupHelp();
-        setupSlideNumberPane();        
+        setupSlideNumberPane();
         setupJumpTargetDialog();
         setupContinuousView();
         setupMainPane();
@@ -1733,9 +1707,9 @@ const lectureDoc2 = function () {
 
         /*  Due to the copying of the slide templates, some things (e.g.,
             no longer unique ids), need to be fixed. */
-        applyDOMfixes(); 
+        applyDOMfixes();
 
-        if(animations) {
+        if (animations) {
             animations.afterLDDOMManipulations();
         }
     });
@@ -1750,7 +1724,7 @@ const lectureDoc2 = function () {
         // we finally remove the the slide templates (i.e., the original slides)
         // from the DOM 
         document.querySelectorAll("body > div.ld-slide").forEach((slide) => {
-            slide.style.display= "none";
+            slide.style.display = "none";
         });
 
         // Whatever the state is/was - let's apply it before we make state changes
@@ -1775,8 +1749,8 @@ const lectureDoc2 = function () {
         registerHelpCloseListener();
         registerMenuClickListener();
         registerSwipeListener();
-       
-        if(animations) {
+
+        if (animations) {
             animations.afterLDListenerRegistrations();
         }
 
@@ -1798,11 +1772,10 @@ const lectureDoc2 = function () {
 
                     case "hideLectureDoc": localHideLectureDoc(); break;
                     case "ensureLectureDocIsVisible": localEnsureLectureDocIsVisible(); break;
-                    
 
                     //case "reset": ; break;
-                    default: 
-                        console.warn("unknown message: "+event.data);
+                    default:
+                        console.warn("unknown message: " + event.data);
                         console.dir(event);
                 }
             });
@@ -1810,9 +1783,11 @@ const lectureDoc2 = function () {
     });
 
     return {
-        'presentation': presentation,
+        'lib': ld,
+        'crypto': ldCrypto,
+        'presentation': presentation, // "constant"
         'getState': function () { return state; }, // the state object as a whole may change
-        'getEphermal': function () { return ephermal; }, 
+        'getEphermal': function () { return ephermal; },
         'preparePrinting': optimizeViewForPrinting,
     };
 }();

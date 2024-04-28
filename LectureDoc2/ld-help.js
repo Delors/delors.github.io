@@ -4,7 +4,7 @@ const lectureDoc2Help = function () {
     var div = document.createElement('div');
     div.id = "ld-help";
     div.innerHTML = `
-        <h1><a href="https://github.com/Delors/LectureDoc2" target="_blank" rel="external noopener noreferrer">LectureDoc</a><sup>2</sup></h1>
+        <h1><a href="https://github.com/Delors/LectureDoc2" target="_blank" rel="external noopener noreferrer" tabindex="1">LectureDoc</a><sup>2</sup></h1>
         <p>
             <strong>Developed by M. Eichberg</strong><br>
         </p>
@@ -33,8 +33,9 @@ const lectureDoc2Help = function () {
                 <tr><td>c</td><td>toggle continuous view</td></tr>
                 <tr></tr>
                 <tr><td>l</td><td>toggle light table</td></tr>
-                <tr></tr>
+                <tr class="ld-help-keys-category"><td colspan="2">State</td></tr>
                 <tr><td>n</td><td>toggle slide number</td></tr>
+                <tr><td>m</td><td>enter exercises masterpassword</td></tr>
                 <tr class="ld-help-keys-category"><td colspan="2">Help</td></tr>
                 <tr><td>h</td><td>toggle help</td></tr>
                 <tr class="ld-help-keys-category"><td colspan="2">Printing</td></tr>
