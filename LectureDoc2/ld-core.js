@@ -158,7 +158,7 @@ const lectureDoc2 = function () {
         lightTableViewScrollY: 0, // FIXME use approach which doesn't depend on viewport size
 
         // Continuous view related state
-        showContinuousView: true, // "actually" set by document or by default in presentation
+        showContinuousView: true, // set in the document or by default in presentation
         continuousViewScrollY: 0,
         showContinuousViewSlideNumber: false,
 
@@ -272,6 +272,15 @@ const lectureDoc2 = function () {
         if (ldSlideNo) {
             state.currentSlideNo = Number(ldSlideNo)-1;
         }
+        const ldView = params.get("ld-view");
+        if (ldView) {
+            if (ldView === "continuous")
+                state.showContinuousView = true;
+            else if (ldView === "slides")
+                state.showContinuousView = false;
+            else
+                console.error(`URL contains invalid view: ${ldView}`);
+        }
     }
 
 
@@ -338,7 +347,10 @@ const lectureDoc2 = function () {
         // the state is saved before/on a reload.
         document.removeEventListener("visibilitychange", storeStateOnVisibilityHidden);
         deleteStoredState();
-        location.reload();
+        const url = new URL(document.location);
+        url.search = "";
+        url.hash = "";
+        location.replace(url);
     }
 
 
@@ -827,7 +839,7 @@ const lectureDoc2 = function () {
         console.assert(solutionWrapper !== null);
         console.assert(solution !== null);
 
-        if (!solution.hasAttribute("encrypted")) {
+        if (!solution.dataset.encrypted) {
             return;
         }
         ldCrypto.decryptAESGCMPBKDF(
@@ -842,7 +854,7 @@ const lectureDoc2 = function () {
             }
             // The first child is the input field!
             solutionWrapper.firstElementChild.remove(); //Child(passwordField);
-            solution.removeAttribute("encrypted");
+            delete solution.dataset.encrypted;
         }).catch((error) => {
             console.log("wrong password: " + password+ " - "+error);
         });
@@ -1505,7 +1517,7 @@ const lectureDoc2 = function () {
                     if (resetCount.v == 0) {
                         resetLectureDoc();
                     } else if (resetCount.v == 4) {
-                        showMessage('When you press "r" again all animation progress will be reset.')
+                        showMessage('Press "r" again to reset all animation progress.')
                         return;
                     } else if (resetCount.v == 3) {
                         resetAllAnimations();
@@ -1695,7 +1707,7 @@ const lectureDoc2 = function () {
         // Handle links to "other" slides, the bibliography and also back-links.
         document.
             querySelectorAll('#ld-main-pane a:where(.reference.internal, .citation-reference, [role="doc-backlink"])').
-            forEach(registerInternalLinkClickListener)
+            forEach((e) => registerInternalLinkClickListener(e));
 
         // // Handle links to other slides in the document.
         // document.

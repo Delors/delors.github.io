@@ -19,6 +19,40 @@ const lectureDoc2Animations = function () {
 
     */
 
+    function getSlide(element) { 
+        // Originally, we used the following code to get the parent slide:
+        // document.evaluate(
+        //     `*/ancestor::*[contains(@class,'ld-slide')]`,
+        //     scrollable,
+        //     null,
+        //     XPathResult.ANY_TYPE,
+        //     null).iterateNext()
+        // However, xPath expressions are evaluated differently by 
+        // different browsers. Hence, we have to do it on our own.
+        if (!element) return null;
+
+        if (element.classList.contains("ld-slide")) {
+            return element;
+        } else {
+            return getSlide(element.parentNode);
+        }
+    }
+
+    function getParent(element, className) {
+        if (!element) return null;
+        return getParentOrThis(element.parentNode, className);
+    }
+
+    function getParentOrThis(element, className) {  
+        if (!element) return null;
+
+        if (element.classList.contains(className)) {
+            return element;
+        } else {
+            return getParentOrThis(element.parentNode, className);
+        }
+    }
+
     /**
      * Handles the rendering of a "stacked layout" in the continuous view.
      */
@@ -85,23 +119,13 @@ const lectureDoc2Animations = function () {
         const zoomFactor = root.getPropertyValue("--ld-continuous-view-zoom-level");
         const extraHeight = overallHeight - maxOuterHeight;
 
-        const slide = document.evaluate(
-            `*/ancestor::*[contains(@class,'ld-slide')]`,
-            stack,
-            null,
-            XPathResult.ANY_TYPE,
-            null).iterateNext()
-        const oldSlideHeight = slide.offsetHeight
-        const slidePaneHeight = (oldSlideHeight + extraHeight)
+        const slide = getSlide(stack);
+        const oldSlideHeight = slide.offsetHeight;
+        const slidePaneHeight = (oldSlideHeight + extraHeight);
         slide.style.height = slidePaneHeight + "px";
 
-        const slidePane = document.evaluate(
-            `*/ancestor::*[contains(@class,'ld-continuous-view-slide-pane')]`,
-            stack,
-            null,
-            XPathResult.ANY_TYPE,
-            null).iterateNext().style;
-        slidePane.height = slidePane.maxHeight = (slidePaneHeight * zoomFactor) + "px";
+        const slidePaneStyle = getParent(stack, "ld-continuous-view-slide-pane").style;
+        slidePaneStyle.height = slidePaneStyle.maxHeight = (slidePaneHeight * zoomFactor) + "px";
     }
 
     /**
@@ -129,12 +153,13 @@ const lectureDoc2Animations = function () {
         stack.style.height = maxHeight + "px";
     }
 
+
+
     function adaptHeightOfSlideToScrollable(scrollable) {
         const root = getComputedStyle(document.querySelector(":root"));
         const zoomFactor = root.getPropertyValue("--ld-continuous-view-zoom-level");
 
         const requiredHeight = parseInt(window.getComputedStyle(scrollable).height,10);
-        console.log("requiredHeight: " + requiredHeight);
         const parentNodeStyle = window.getComputedStyle(scrollable.parentNode)
         const parentHeight = parseInt(parentNodeStyle.height,10);
         const paddingBottom = parseInt(parentNodeStyle.paddingBottom,10);
@@ -142,26 +167,19 @@ const lectureDoc2Animations = function () {
 
         const availableHeight = parentHeight - offsetTop - paddingBottom;
         const additionalHeight = requiredHeight - availableHeight;
-        console.log("additionalHeight: " + additionalHeight);
         if (additionalHeight > 0) {
-            const slide = document.evaluate(
-                `*/ancestor::*[contains(@class,'ld-slide')]`,
-                scrollable,
-                null,
-                XPathResult.ANY_TYPE,
-                null).iterateNext()
-            const slideHeight = parseInt(window.getComputedStyle(slide).height,10);
+            const slide = getSlide(scrollable);
+            // We can either use the height of the computed style for the 
+            // slide or the value from the root.
+            // const slideHeight = parseInt(window.getComputedStyle(slide).height,10);
+            const slideHeight = parseInt(root.getPropertyValue("--ld-slide-height"),10);
+            
             slide.style.height = slide.style.maxheight = (slideHeight + additionalHeight) + "px";
 
-            const slidePane = document.evaluate(
-                `*/ancestor::*[contains(@class,'ld-continuous-view-slide-pane')]`,
-                scrollable,
-                null,
-                XPathResult.ANY_TYPE,
-                null).iterateNext().style;
-            
-            slidePane.height = slidePane.maxHeight = (slideHeight + additionalHeight) * zoomFactor + "px";
-            
+            const slidePaneStyle = getParent(scrollable,"ld-continuous-view-slide-pane").style;
+            slidePaneStyle.height = slidePaneStyle.maxHeight =
+                (slideHeight + additionalHeight) * zoomFactor + "px";
+
             scrollable.style.height = requiredHeight + "px";
         }
     }
@@ -249,7 +267,7 @@ const lectureDoc2Animations = function () {
                 if (event.isIntersecting) {
                     const scrollable = event.target;
                     scrollableObserver.unobserve(scrollable);
-
+                    // console.log("intersection with scrollable: " + scrollable);
                     if (document.evaluate(
                         `*/ancestor::*[@id='ld-continuous-view-pane']`,
                         scrollable,
