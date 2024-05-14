@@ -68,14 +68,14 @@ const lectureDoc2Animations = function () {
         }
 
         // 1. query all layers to compute the necessary heights
-        var overallHeight = 0;
-        var maxOuterHeight = 0;
+        let overallHeight = 0;
+        let maxOuterHeight = 0;
 
-        var maxGroupedLayersOuterHeight = 0;
-        var groupedLayers = [];
+        let maxGroupedLayersOuterHeight = 0;
+        let groupedLayers = [];
 
         function processLastGroupedLayers() {
-            overallHeight += maxGroupedLayersOuterHeight  ;
+            overallHeight += maxGroupedLayersOuterHeight;
             groupedLayers.forEach((layer, i) => {
                 const marginHeight = getTopAndBottomMargin(layer)
                 layer.style.width = stackWidth + "px";
@@ -106,9 +106,11 @@ const lectureDoc2Animations = function () {
                 // or any of the stacked overlay layers.
                 maxGroupedLayersOuterHeight = Math.max(maxGroupedLayersOuterHeight, layerOuterHeight);
             }
-            // console.log("layerOuterHeight: " + layerOuterHeight + " maxGrouped: "+ maxGroupedLayersOuterHeight+" maxOuterHeight: " + maxOuterHeight);
+            console.log("layerOuterHeight: " + layerOuterHeight + " maxGrouped: "+ maxGroupedLayersOuterHeight+" maxOuterHeight: " + maxOuterHeight+" overallHeight: " + overallHeight);
         });
         processLastGroupedLayers();
+        console.log("[Done] maxOuterHeight: " + maxOuterHeight+" overallHeight: " + overallHeight);
+
 
         // 2. set the height of the stack to the sum of the heights of all 
         //    non-overlay layers (after adapting the heights of them if necessary)
@@ -117,15 +119,42 @@ const lectureDoc2Animations = function () {
         // 3. adapt the height of the slide to accommodate the unfolded stack
         const root = getComputedStyle(document.querySelector(":root"));
         const zoomFactor = root.getPropertyValue("--ld-continuous-view-zoom-level");
-        const extraHeight = overallHeight - maxOuterHeight;
+        // extraHeight is the height of the stack minus the height of the largest
+        // layer
+        //const extraHeight = overallHeight - maxOuterHeight; 
 
+        // we have to compute how much content fits on the "original" slide...
         const slide = getSlide(stack);
-        const oldSlideHeight = slide.offsetHeight;
-        const slidePaneHeight = (oldSlideHeight + extraHeight);
-        slide.style.height = slidePaneHeight + "px";
 
-        const slidePaneStyle = getParent(stack, "ld-continuous-view-slide-pane").style;
-        slidePaneStyle.height = slidePaneStyle.maxHeight = (slidePaneHeight * zoomFactor) + "px";
+        // get bottom offset of the highest element in the slide
+        let maxOffsetBottom = 0;
+        let footerHeight = 0;
+        slide.querySelectorAll(":scope > *").forEach((element) => {
+            let offsetBottom = element.offsetTop+element.offsetHeight;
+            maxOffsetBottom = Math.max(maxOffsetBottom, offsetBottom);
+            const elementStyle = window.getComputedStyle(element);
+            if (elementStyle.position === "absolute") {
+                if (elementStyle.bottom) {
+                    footerHeight = Math.max(
+                        footerHeight, 
+                        parseInt(elementStyle.bottom)+parseInt(elementStyle.height));    
+                }
+            }
+        });
+        const requiredHeight = 
+            maxOffsetBottom + 
+            footerHeight +
+            parseInt(getComputedStyle(slide).paddingBottom);
+        const newHeight = Math.max(requiredHeight, slide.offsetHeight);
+        console.log("newHeight: " + requiredHeight);
+
+        //const oldSlideHeight = slide.offsetHeight;
+        //const slidePaneHeight = (oldSlideHeight + extraHeight);
+        slide.style.height = newHeight + "px";
+
+        const slidePane = getParent(stack, "ld-continuous-view-slide-pane");
+        const slidePaneStyle = slidePane.style;
+        slidePaneStyle.height = slidePaneStyle.maxHeight = (newHeight * zoomFactor) + "px";
     }
 
     /**
