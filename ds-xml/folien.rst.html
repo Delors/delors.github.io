@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Web Programmierung&quot;, &quot;XML&quot;, &quot;XPath&quot;" name="keywords" />
+<meta content="XML, XPath" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-distributed-systems-xml-xpath" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>XML (eXtensible Markup Language) und XPath</title>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">XML (eXtensible Markup Language) und XPath</h1>
+
+<div class="line-above tiny docutils container">
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>2024-05-14</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/ds-xml/folien.rst.html">https://delors.github.io/ds-xml/folien.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/ds-xml/folien.rst.html.pdf">https://delors.github.io/ds-xml/folien.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></div>
+<div class="new-section transition-fade ld-slide" id="xml-extensible-markup-language">
+<h2>XML (eXtensible Markup Language)</h2>
+</div><div class="ld-slide" id="markup-languages">
+<h2><em>Markup Languages</em></h2>
+<ul class="simple">
+<li><p>Sprachen, die verwendete werden, um Texte zu strukturieren und zu formatieren</p></li>
+</ul>
+<ul class="incremental list-with-explanations simple">
+<li><p>maschinenlesbar</p></li>
+<li><p>Beispiele:</p>
+<ul>
+<li><p>HTML</p></li>
+<li><p>XML</p></li>
+<li><p>LaTeX</p></li>
+<li><p>Markdown</p></li>
+<li><p>reStructuredText</p></li>
+<li><p>...</p></li>
+</ul>
+</li>
+</ul>
+<div class="supplemental">
+<p>Auch wenn Markup-Sprachen für Menschen lesbar sind, sind sie in erster Linie für Maschinen gedacht. Darüber hinaus sollte im Allgemeinen vermieden werden, dass der Markup dem Formatieren dient/zum formatieren verwendet wird.</p>
+<p>YAML hat keinen Dokumentenfokus und ist nicht (mehr) als Markup-Sprache klassifiziert.</p>
+</div></div><div class="ld-slide" id="xml-hintergrund">
+<h2>XML - Hintergrund</h2>
+<ul class="incremental">
+<li><p>Aufbauend auf <strong>Standard Generalized Markup Language (SGML)</strong></p>
+<ul class="list-with-explanations">
+<li><p>SGML ist Standardisiert als ISO 8879:1986</p></li>
+<li><p>In SGML ist die Basis für jedes Dokument eine Formatbeschreibung mit Hilfe einer <em>Document type definition</em> (DTD)</p>
+<p>Beschreibt welche Elemente es gibt und wie diese ineinander geschachtelt werden können</p>
+<pre class="code DTD far-smaller literal-block"><code><span class="keyword">&lt;!ELEMENT</span> <span class="name tag">note</span> <span class="operator">(</span><span class="name tag">head</span><span class="operator">,</span><span class="name tag">body</span><span class="operator">)</span><span class="keyword">&gt;</span>
+<span class="keyword">&lt;!ELEMENT</span> <span class="name tag">head</span> <span class="operator">(</span><span class="keyword constant">#PCDATA</span><span class="operator">)</span><span class="keyword">&gt;</span>
+<span class="keyword">&lt;!ELEMENT</span> <span class="name tag">body</span> <span class="operator">(</span><span class="keyword constant">#PCDATA</span><span class="operator">)</span><span class="keyword">&gt;</span></code></pre>
+</li>
+</ul>
+</li>
+<li><p>XML ist eine vereinfachte Version von SGML und wurde 1998 standardisiert.</p></li>
+<li><p>XML dient der Kodierung und Strukturierung einzelner Instanzen von Dokumenten.</p></li>
+</ul>
+</div><div class="ld-slide" id="xml">
+<h2>XML<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<ul class="incremental list-with-explanations simple">
+<li><p>Ein XML Dokument kann man sich als einen Baum von Elementen vorstellen, die Informationen enthalten.</p></li>
+<li><p>Dokumentenstruktur kann durch DTDs oder XML-Schemas beschrieben werden.</p></li>
+<li><p>Eine explizite Beschreibung der Dokumentenstruktur ist nicht zwingend erforderlich (aber häufig sinnvoll).</p></li>
+<li><p>XML Dokumente müssen stringente Anforderungen an die Syntax erfüllen (<span class="eng">Well-formed XML Dokumente</span>).</p></li>
+<li><p>XML bildet die Basis für viele weitere Sprachen wie MathML, GraphML, SVG, …</p></li>
+<li><p>Abfragen auf XML basierenden Dokumenten können mittels XPath oder XQuery durchgeführt werden.</p></li>
+<li><p>Auf XML basierende Dokumenten können durch XSLT transformiert werden.</p></li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>XML 1.0: eXtensible Markup Language, <a class="reference external" href="https://www.w3.org/TR/xml/">https://www.w3.org/TR/xml/</a> (Aktuell)</p>
+<p>XML 1.1: <a class="reference external" href="https://www.w3.org/TR/2006/REC-xml11-20060816/">https://www.w3.org/TR/2006/REC-xml11-20060816/</a> (nur für Spezialfälle)</p>
+</aside>
+</aside>
+<div class="supplemental">
+<p>In Hinblick auf XML betrachten wir Dokumente als Instanzen von Informationen, die eine Struktur haben. Unter dieser Perspektive ist vieles ein Dokument:</p>
+<ul class="simple">
+<li><p>Artikel, Bücher, Notizen, Gedichte, Romane</p></li>
+<li><p>Technische Handbücher, Beiblätter, Produktverpackungen</p></li>
+<li><p>Mails, Nachrichten</p></li>
+<li><p>Rechnungen, Bestellungen, Lieferscheine</p></li>
+<li><p>Log Dateien, Protokolle, Konfigurationsdateien</p></li>
+</ul>
+<p>Wesentliche Anforderungen bzgl. der Syntax eines XML Dokuments (<em>Well-formed</em> XML Dokumente):</p>
+<ul class="simple">
+<li><p>es gibt nur ein Wurzelelement</p></li>
+<li><p>Element überlappen sich nicht; d. h. für alle Elemente (außer dem Wurzelelement) gilt: Befindet sich das Start-Tag im Inhalt eines anderen Elements, so befindet sich das End-Tag im Inhalt desselben Elements. Es ergibt sich somit ein Baum.</p></li>
+</ul>
+</div></div><div class="ld-slide" id="was-bietet-xml">
+<h2>Was bietet XML?</h2>
+<ul class="simple">
+<li><p>Internationalisierung durch die Verwendung von Unicode.</p></li>
+<li><p>Validierung von Instanzen (d. h. von Dokumenten).</p></li>
+<li><p>Lokalisierung von Namen über Namensräume (z. B. <em>Mein</em> Haus ist nicht dein <em>Haus</em>).</p></li>
+<li><p>Ein <em>menschenlesbares</em> Format.</p></li>
+<li><p>Hierarchische Struktur.</p></li>
+<li><p>Erweiterbarkeit.</p></li>
+</ul>
+<div class="supplemental">
+<p>Wie auch in HTML (HyperText Markup Language) kann auch in XML jedes Zeichen als Referenz auf ein Unicode-Zeichen kodiert werden.</p>
+<p>Beispiel:</p>
+<pre class="code xml literal-block"><code><span class="name entity">&amp;#x2200;&amp;#x03b1;&amp;#x2208;&amp;#x0393;</span></code></pre>
+<p>entspricht:</p>
+<blockquote>
+&#x2200;&#x03b1;&#x2208;&#x0393;</blockquote>
+</div></div><div class="ld-slide" id="xml-dokument-beispiel">
+<h2>XML Dokument - Beispiel</h2>
+<pre class="code xml far-smaller literal-block"><code><span class="comment preproc">&lt;?xml version=“1.0” encoding=“UTF-8” standalone=&quot;yes&quot; ?&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;lehrveranstaltungen</span><span class="whitespace"> </span><span class="name attribute">status=</span><span class="literal string">&quot;akkreditiert&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+    </span><span class="comment multiline">&lt;!-- Modul muss überarbeitet werden... --&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;modul&gt;</span><span class="whitespace">
+        </span><span class="name tag">&lt;vorlesung&gt;</span>Web<span class="whitespace"> </span>Entwicklung<span class="name tag">&lt;/vorlesung&gt;</span><span class="whitespace">
+        </span><span class="name tag">&lt;vorlesung&gt;</span>Verteilte<span class="whitespace"> </span>Systeme<span class="name tag">&lt;/vorlesung&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;/modul&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;/lehrveranstaltungen&gt;</span></code></pre>
+<div class="incremental docutils container">
+<dl class="field-list simple">
+<dt>XML-Deklaration<span class="colon">:</span></dt>
+<dd><p><span class="docutils literal"><span class="pre">&lt;?xml</span> <span class="pre">version=“1.0”</span> <span class="pre">encoding=“UTF-8”</span> <span class="pre">standalone=&quot;yes&quot;?&gt;</span></span></p>
+</dd>
+<dt>Start-Tags<span class="colon">:</span></dt>
+<dd><p><span class="docutils literal">&lt;lehrveranstaltungen&gt;</span>, <span class="docutils literal">&lt;modul&gt;</span>, <span class="docutils literal">&lt;vorlesung&gt;</span></p>
+</dd>
+<dt>End-Tags<span class="colon">:</span></dt>
+<dd><p><span class="docutils literal">&lt;/lehrveranstaltungen&gt;</span>, <span class="docutils literal">&lt;/modul&gt;</span>, <span class="docutils literal">&lt;/vorlesung&gt;</span></p>
+</dd>
+<dt>Attribute<span class="colon">:</span></dt>
+<dd><p><span class="docutils literal">status</span></p>
+</dd>
+<dt>#Text Nodes<span class="colon">:</span></dt>
+<dd><p><span class="docutils literal">Web Entwicklung</span>, <span class="docutils literal">Verteilte Systeme</span></p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<p>Die Spezifikationen bzgl. <span class="docutils literal">encoding</span> (Kodierung des Dokuments) und <span class="docutils literal">standalone</span> (Ist das Dokument von anderen Dokumenten abhängig) sind <em>nur</em> Pseudoattribute, da sie zum Prolog des Dokuments gehören.</p>
+</div></div><div class="ld-slide" id="xml-dokument-allgemeine-struktur">
+<h2>XML Dokument - allgemeine Struktur</h2>
+<div class="stack">
+<div class="layer no-box-shadow">
+<img alt="drawings/xml/struktur-prolog.svg" class="align-center" src="drawings/xml/struktur-prolog.svg" style="height: 700px;" />
+</div><div class="layer incremental overlay no-box-shadow">
+<img alt="drawings/xml/struktur-element.svg" class="align-center" src="drawings/xml/struktur-element.svg" style="height: 700px;" />
+</div><div class="layer incremental overlay no-box-shadow">
+<img alt="drawings/xml/struktur-epilog.svg" class="align-center" src="drawings/xml/struktur-epilog.svg" style="height: 700px;" />
+</div></div></div><div class="ld-slide" id="formale-beschreibung-der-xml-syntax">
+<h2>Formale Beschreibung der XML Syntax</h2>
+<ul>
+<li><p>die Syntax von XML Dokumenten wird durch eine <em>formale Grammatik</em> (hier: EBNF) beschrieben.</p>
+<p>Beispiel - Beschreibung des Prologs von XML Dokumenten in EBNF:</p>
+<pre class="code ebnf far-smaller literal-block"><code><span class="keyword">prolog      </span><span class="error">::</span><span class="operator">=</span> <span class="keyword">XMLDecl</span><span class="name entity">? Misc* (doctypedecl Misc*)?</span>
+<span class="keyword">XMLDecl     </span><span class="error">::=</span> <span class="literal string double">&quot;&lt;?xml&quot;</span> <span class="keyword">VersionInfo EncodingDecl</span><span class="name entity">? SDDecl?</span> <span class="keyword">S</span><span class="name entity">? &quot;?</span><span class="error">&gt;</span><span class="literal string double">&quot;&quot;</span>
+<span class="keyword">VersionInfo </span><span class="error">::=</span> <span class="keyword">S </span><span class="literal string double">&quot;version&quot;</span> <span class="keyword">Eq </span><span class="punctuation">(</span><span class="literal string double">&quot;'&quot;</span> <span class="keyword">VersionNum </span><span class="literal string double">&quot;'&quot;</span> <span class="punctuation">|</span> <span class="literal string single">'&quot;'</span> <span class="keyword">VersionNum </span><span class="literal string single">'&quot;'</span><span class="punctuation">)</span>
+<span class="keyword">Eq          </span><span class="error">::=</span> <span class="keyword">S</span><span class="name entity">? &quot;=&quot; S?</span>
+<span class="keyword">VersionNum  </span><span class="error">::=</span> <span class="literal string double">&quot;1.&quot;</span> <span class="punctuation">[</span><span class="error">0</span><span class="operator">-</span><span class="error">9</span><span class="punctuation">]</span><span class="error">+</span>
+<span class="keyword">Misc        </span><span class="error">::=</span> <span class="keyword">Comment </span><span class="punctuation">|</span> <span class="keyword">PI </span><span class="punctuation">|</span> <span class="keyword">S</span></code></pre>
+<div class="incremental minor rounded-corners dhbw-light-gray-background padding-1em far-far-smaller margin-top-2em docutils container">
+<p>Wir werden uns auf eine informelle Beschreibung der Syntax der wichtigsten Konstrukte beschränken.</p>
+</div>
+</li>
+</ul>
+<div class="supplemental">
+<p>EBNF (<em>Extended Backus-Naur Form</em>) 101:</p>
+<ul class="simple">
+<li><p>'+' bedeutet 'eins oder mehr',</p></li>
+<li><p>'?' bedeutet 'optional'</p></li>
+<li><p>'*' bedeutet 'null oder mehr'.</p></li>
+<li><p>Klammerkonstrukte werden gruppiert.</p></li>
+<li><p>'|' (Pipe-Zeichen) bedeutet 'oder'.</p></li>
+<li><p>'S' steht für Leerzeichen (hier).</p></li>
+<li><p>'string' bedeutet das Vorkommen der wörtlichen Zeichenkette.</p></li>
+<li><p>[c-c] ist eine Zeichenklasse und steht für ein einzelnes Zeichen im angegebenen Bereich.</p></li>
+</ul>
+<p>EBNFs sind eng mit regulären Ausdrücke verwandt. EBNFs können jedoch auch rekursive Strukturen beschreiben und werden häufig für die Beschreibung von Programmiersprachen verwendet.</p>
+</div></div><div class="ld-slide" id="elemente">
+<h2>Elemente</h2>
+<ul class="simple">
+<li><p>Im Allgemeinen bestehen Elemente aus einem Start-Tag (z. B. <span class="docutils literal">&lt;start&gt;</span>), seinem Inhalt und einem End-Tag (z. B. <span class="docutils literal">&lt;/start&gt;</span>).</p></li>
+<li><p>Der Inhalt eines Elements ist geordnet.</p></li>
+<li><p>Start-Tags können Attribute haben - Name/Wert-Paare (z. B. <span class="docutils literal">&lt;start <span class="pre">kind=&quot;slow&quot;/&gt;</span></span>).</p></li>
+<li><p>Die Elemente müssen wohlgeformt sein: balanciert, konforme Syntax, gültige Attribute, keine Duplikate, usw.</p></li>
+<li><p>Elemente können leer sein (z. B. <span class="docutils literal">&lt;empty/&gt;</span>); d. h. sie haben keinen Inhalt, können aber Attribute haben.</p></li>
+</ul>
+</div><div class="ld-slide" id="attribute">
+<h2>Attribute</h2>
+<ul class="simple">
+<li><p>Attribute sind <em>ungeordnete</em> Name/Wert-Paare, die in einem Start-Tag eines Elements enthalten sind.</p></li>
+<li><p>Jedes Attribut darf nur einmal in einem Element vorkommen.</p></li>
+<li><p>Ausgewählte Zeichen müssen maskiert werden, wenn sie im Wert vorkommen sollen.</p></li>
+<li><p>Die Werte von Attributen werden normalisiert (z. B. werden Zeilenumbrüche entfernt).</p></li>
+</ul>
+</div><div class="ld-slide" id="vordefinierte-entity-references">
+<h2>Vordefinierte <em>Entity References</em></h2>
+<table class="align-center">
+<thead>
+<tr><th class="head"><p><em>Entity Reference</em></p></th>
+<th class="head"><p>Zeichen</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p><span class="docutils literal">&amp;lt;</span></p></td>
+<td><p><span class="docutils literal">&lt;</span></p></td>
+</tr>
+<tr><td><p><span class="docutils literal">&amp;gt;</span></p></td>
+<td><p><span class="docutils literal">&gt;</span></p></td>
+</tr>
+<tr><td><p><span class="docutils literal">&amp;amp;</span></p></td>
+<td><p><span class="docutils literal">&amp;</span></p></td>
+</tr>
+<tr><td><p><span class="docutils literal">&amp;quot;</span></p></td>
+<td><p><span class="docutils literal">&quot;</span></p></td>
+</tr>
+<tr><td><p><span class="docutils literal">&amp;apos;</span></p></td>
+<td><p><span class="docutils literal">'</span></p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="whitespace-in-xml">
+<h2><em>Whitespace</em> in XML</h2>
+<ul class="simple">
+<li><p>Oft wird Leerraum (Leerzeichen, Zeilenumbrüche, Tabulatoren usw.) hinzugefügt, um das XML &quot;lesbarer&quot; zu machen.</p></li>
+<li><p>Leerzeichen können als nicht signifikant gekennzeichnet werden; dies erfordert jedoch einen validierenden XML Prozessor.</p></li>
+</ul>
+</div><div class="ld-slide" id="xml-fur-anwendungen-infosets">
+<h2>XML für Anwendungen - <em>Infosets</em></h2>
+<p><span class="eng">Infosets (Information Sets)</span></p>
+<ul class="simple">
+<li><p>Ein <em>Infoset</em> ist eine (abstrakte) Darstellung eines XML Dokuments; losgelöst von der konkreten Syntax (z. B. ob der Wert eines Attributs in <span class="docutils literal">&quot;&quot;</span> oder <span class="docutils literal">''</span> gefasst wurde; oder ob <em>Entity References</em> verwendet wurden, etc.).</p></li>
+</ul>
+<ul class="incremental">
+<li><p>Ein <em>Infoset</em> enthält alle Informationen, die in einem XML Dokument enthalten sind.</p>
+<img alt="drawings/xml/infoset.svg" class="align-center" src="drawings/xml/infoset.svg" style="width: 100%;" />
+<p>Ein Infoset ist eine Hierarchie (oder ein Baum) von Elementen mit benannten Eigenschaften.</p>
+</li>
+</ul>
+</div><div class="ld-slide" id="ausgewahlte-info-items">
+<h2>Ausgewählte <em>Info Items</em></h2>
+<p>Die verschiedenen <em>Info Items</em> eines <em>Infosets</em> stellen z. B. die folgenden Informationen bereit:</p>
+<dl class="field-list simple">
+<dt><em>Document Info Item</em><span class="colon">:</span></dt>
+<dd><p>Kinder, Wurzelelement, Basis-URI.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt><em>Element Info Item</em><span class="colon">:</span></dt>
+<dd><p>lokaler Name, Kinder, Attribute, Vorgänger</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt><em>Attribute Info Item</em><span class="colon">:</span></dt>
+<dd><p>lokaler Name, normalisierter Wert, deklarierendes Element</p>
+</dd>
+</dl>
+<div class="incremental docutils container">
+<p>Es gibt weitere <em>Info Items</em> für Kommentare, Verarbeitungsanweisungen, Text, etc.</p>
+</div>
+</div><div class="new-section transition-fade ld-slide" id="xml-namensraume">
+<h2>XML Namensräume</h2>
+<div class="block-footer margin-bottom-1em docutils container">
+<p><span class="eng">XML Namespaces</span></p>
+</div>
+</div><div class="ld-slide" id="namensraume-in-xml-motivation">
+<h2>Namensräume in XML - Motivation</h2>
+<div class="stack">
+<div class="layer">
+<p>Wenn wir nur einen Namen(sraum) haben sollten...</p>
+<ul class="incremental simple">
+<li><p>Was würde passieren, wenn wir Markup von zwei verschiedenen Autoritäten nutzen wollten?</p></li>
+<li><p>Wie assoziiere ich Semantik mit gemischtem Markup?</p></li>
+<li><p>Wie verbinde ich ein Schema (oder Regeln) mit dem gemischten Markup?</p></li>
+</ul>
+</div><div class="layer incremental">
+<p><em>Variante 1</em>:</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;date&gt;</span>1/27<span class="name tag">&lt;/date&gt;</span></code></pre>
+<p><em>Variante 2</em>:</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;date&gt;&lt;year&gt;</span>2004<span class="name tag">&lt;/year&gt;&lt;day&gt;</span>1<span class="name tag">&lt;/day&gt;&lt;month&gt;</span>27<span class="name tag">&lt;/month&gt;&lt;/date&gt;</span></code></pre>
+<div class="incremental margin-top-1em">
+<p>Wie kann ich beide unterscheiden?</p>
+</div></div></div></div><div class="ld-slide" id="xml-namen-und-namensraume">
+<h2>XML - Namen und Namensräume</h2>
+<p>Namen werden in zwei Teile unterteilt:</p>
+<dl class="field-list simple">
+<dt><span class="docutils literal">Präfix</span><span class="colon">:</span></dt>
+<dd><p>Ein Bezeichner für einen Namensraum.</p>
+</dd>
+<dt><span class="docutils literal">lokaler Name</span><span class="colon">:</span></dt>
+<dd><p>Ein Bezeichner für einen Namen in diesem Namensraum</p>
+</dd>
+</dl>
+<div class="incremental margin-top-1em">
+<p>Diese Teile werden durch einen Doppelpunkt getrennt und <strong>QNames</strong> (<span class="eng">Qualified Names</span>) genannt.</p>
+</div><div class="incremental margin-top-1em">
+<p>Beispiel:</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;c:pseudocode&gt;</span><span class="whitespace">
+  </span><span class="name tag">&lt;c:comment</span><span class="whitespace"> </span><span class="name attribute">xlink:href=</span><span class="literal string">&quot;http://somewhere...&quot;</span><span class="name tag">/&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;/c:pseudocode&gt;</span></code></pre>
+<p>Dies gilt nur für Element- und Attributnamen.</p>
+</div><div class="supplemental">
+<p>Jedes Präfix, das &quot;xml&quot; enthält, ist für das W3C reserviert.</p>
+</div></div><div class="ld-slide" id="xml-prafixe-und-namensraume">
+<h2>XML Präfixe und Namensräume</h2>
+<ul class="simple">
+<li><p>Präfixe müssen durch assoziierte Präfixe mit Namensräumen deklariert werden, <em>bevor</em> sie verwendet werden.</p></li>
+<li><p>Diese Assoziation kann nur für Elemente deklariert werden.</p></li>
+</ul>
+<ul class="incremental list-with-explanations">
+<li><p>Die Syntax lautet: <span class="docutils literal"><span class="pre">xmlns:prefix=&quot;some:uri&quot;</span></span>.</p>
+<p>Beispiel:</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;c:pseudocode</span><span class="whitespace"> </span><span class="name attribute">xmlns:c=</span><span class="literal string">&quot;urn:publicid:IDN+mathdoc.org&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;c:comment</span><span class="whitespace"> </span><span class="name attribute">xlink:href=</span><span class="literal string">&quot;http://somewhere...&quot;</span><span class="whitespace">
+               </span><span class="name attribute">xmlns:xlink=</span><span class="literal string">&quot;http://www.w3.org/...&quot;</span><span class="name tag">/&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;/c:pseudocode&gt;</span></code></pre>
+</li>
+<li><p><em>Bevor</em> bedeutet, dass der Präfix auf dem Element, in dem das Präfix vorkommt - oder auf einem Vorgängerelement - deklariert werden muss.</p></li>
+</ul>
+<div class="supplemental">
+<p>Das Präfix <span class="docutils literal">xml</span> ist vordefiniert und die URI ist: <span class="docutils literal"><span class="pre">http://www.w3.org/XML/1998/namespace</span></span>.</p>
+<p>Mit Hilfe einer URI (Uniform Resource Identifier) wird ein Namensraum identifiziert. Die URI muss nicht aufgelöst werden können.</p>
+<p>URI-Werte können Webadressen sein (z. B. <span class="docutils literal"><span class="pre">http://youdomain.com</span></span>), aber auch andere Werte wie URNs (Namen): <span class="docutils literal"><span class="pre">urn:...</span></span> oder andere Schemata: <span class="docutils literal"><span class="pre">scheme:scheme-specific-part</span></span>.</p>
+</div></div><div class="ld-slide" id="default-namespace">
+<h2><em>Default Namespace</em></h2>
+<ul class="simple">
+<li><p>Der Standardnamensraum kann vorgegeben werden.</p></li>
+</ul>
+<ul class="incremental">
+<li><p>Dies gilt nur für Elementnamen ohne Präfixe.</p></li>
+<li><p>Die Syntax lautet: <span class="docutils literal"><span class="pre">xmlns=&quot;some:uri&quot;</span></span>.</p>
+<p>Beispiel:</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;c:pseudocode</span><span class="whitespace"> </span><span class="name attribute">xmlns:c=</span><span class="literal string">&quot;urn:publicid:IDN+mathdoc.org&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+   </span><span class="name tag">&lt;c:comment</span><span class="whitespace"> </span><span class="name attribute">xmlns=</span><span class="literal string">&quot;http://www.w3.org/1999/xhtml&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+      </span><span class="name tag">&lt;p&gt;</span>Dieser<span class="whitespace"> </span>Code<span class="whitespace"> </span>macht<span class="whitespace"> </span>folgendes:<span class="name tag">&lt;/p&gt;</span><span class="whitespace">
+      </span>...<span class="whitespace">
+   </span><span class="name tag">&lt;/c:comment&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;/c:pseudocode&gt;</span></code></pre>
+</li>
+</ul>
+<div class="supplemental">
+<p>Mit <span class="docutils literal"><span class="pre">xmlns=&quot;&quot;</span></span> kann der gesetzte Standardnamensraum aufgehoben werden.</p>
+<aside class="admonition warning">
+<p class="admonition-title">Hinweis</p>
+<p>Attribute ohne Präfix befinden sich immer im leeren Namensraum, d. h. sie haben keinen Namensraum</p>
+</aside>
+</div></div><div class="ld-slide" id="geltungsbereich-von-namensraumen">
+<h2>Geltungsbereich von Namensräumen<a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
+<ul class="simple">
+<li><p>Der Geltungsbereich einer Deklaration eines Namensraums ist das Element, in dem sie vorkommt.</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>Es gibt keinen Unterschied zwischen Deklarationen auf dem Wurzelelement und anderswo.</p></li>
+<li><p>Das Element, seine Attribute und seine Kinder können dieses Präfix in ihren Namen verwenden.</p></li>
+<li><p>Namespaces können redefiniert werden.</p></li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<dl class="field-list simple">
+<dt>eng<span class="colon">:</span></dt>
+<dd><p><em>Namespace Scoping</em></p>
+</dd>
+</dl>
+</aside>
+</aside>
+</div><div class="ld-slide" id="der-name-des-namensraums">
+<h2>Der Name des Namensraums</h2>
+<ul class="simple">
+<li><p>Das Präfix ist nur eine Abkürzung des eigentlichen Namens des Namensraumes (d. h. des Wertes der Deklaration).</p></li>
+<li><p>Ein Name besteht nun aus zwei Teilen:</p>
+<ol class="arabic simple">
+<li><p>der Name des Namensraum, der mit dem Präfix verbunden ist.</p></li>
+<li><p>der lokale Name; d. h. der Teil des Namens nach dem Doppelpunkt.</p></li>
+</ol>
+</li>
+</ul>
+</div><div class="ld-slide" id="namensraume-und-das-xml-information-set-infoset">
+<h2>Namensräume und das XML Information Set (Infoset)</h2>
+<div class="stack">
+<div class="layer">
+<p class="rubric">Elemente</p>
+<dl class="field-list simple">
+<dt>Name des Namensraums<span class="colon">:</span></dt>
+<dd><p>der Name des Namensraums oder <span class="docutils literal">no value</span>, wenn es keinen gibt.</p>
+</dd>
+<dt>Lokaler Name<span class="colon">:</span></dt>
+<dd><p>der lokale Teil des Namens (d. h. nach dem Doppelpunkt).</p>
+</dd>
+<dt>Präfix<span class="colon">:</span></dt>
+<dd><p>der für das Element verwendete Namensraumpräfix oder <span class="docutils literal">no value</span>, wenn es keinen gibt.</p>
+</dd>
+<dt>Im Geltungsbereich definierte Namensräume<span class="colon">:</span></dt>
+<dd><p>Eine ungeordnete Liste von <em>Namespace Info Items</em>.</p>
+</dd>
+<dt>Deklarationen von Namensräumen<span class="colon">:</span></dt>
+<dd><p>Eine ungeordnete Liste aller Attribute des Elements, die Namensräume deklarieren.</p>
+</dd>
+</dl>
+</div><div class="layer incremental">
+<p class="rubric">Attribute</p>
+<dl class="field-list simple">
+<dt>Name des Namensraums<span class="colon">:</span></dt>
+<dd><p>der Name des Namensraums oder <span class="docutils literal">no value</span>, wenn es keinen gibt.</p>
+</dd>
+<dt>Lokaler Name<span class="colon">:</span></dt>
+<dd><p>der lokale Teil des Namens (d. h. nach dem Doppelpunkt).</p>
+</dd>
+<dt>Präfix<span class="colon">:</span></dt>
+<dd><p>der für das Attribut verwendete Namensraumpräfix oder <span class="docutils literal">no value</span>, wenn es keinen gibt.</p>
+</dd>
+</dl>
+</div></div></div><div class="ld-slide" id="namensraume">
+<h2>Namensräume</h2>
+<p class="rubric">Setzen des Standardnamensraums</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;pseudocode</span><span class="whitespace"> </span><span class="name attribute">xmlns=</span><span class="literal string">&quot;urn:publicid:IDN+mathdoc.org&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;comment&gt;</span>e<span class="whitespace"> </span>=<span class="whitespace"> </span>mc^2<span class="name tag">&lt;/comment&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;/pseudocode&gt;</span></code></pre>
+<p class="rubric">Definition eines Präfixes (hier: <span class="ger-quote">m</span>)</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;m:pseudocode</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">&quot;urn:publicid:IDN+mathdoc.org&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;m:comment&gt;</span>e<span class="whitespace"> </span>=<span class="whitespace"> </span>mc^2<span class="name tag">&lt;/m:comment&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;/m:pseudocode&gt;</span></code></pre>
+<p class="rubric">Redefinition eines Präfixes (hier: <span class="ger-quote">m</span>)</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;m:pseudocode</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">&quot;urn:publicid:IDN+mathdoc.org&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;m:comment</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">&quot;urn:comment&quot;</span><span class="name tag">&gt;</span>e<span class="whitespace"> </span>=<span class="whitespace"> </span>mc^2<span class="name tag">&lt;/m:comment&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;/m:pseudocode&gt;</span></code></pre>
+</div><div class="new-section transition-fade ld-slide" id="xpath">
+<h2>XPath</h2>
+</div><div class="ld-slide" id="xpath-ubersicht">
+<h2>XPath - Übersicht</h2>
+<ul class="incremental list-with-explanations simple">
+<li><p>XPath ist eine Syntax/Sprache zur Adressierung von Knoten in einem Dokument.</p></li>
+<li><p>XPath-Ausdrücke sind <em>Pfadausdrücke</em> (<span class="eng">path expressions</span>).</p></li>
+<li><p>Erlaubt es folgende Dinge auszudrücken:</p>
+<ul>
+<li><p>Selektiere alle <span class="docutils literal">vorlesung</span>-Kinderelemente des <span class="docutils literal">lehrveranstaltungselements</span>-Elements.</p></li>
+<li><p>Finde die Geschwisterknoten des Elements <span class="docutils literal">vorlesung</span>.</p></li>
+<li><p>Finde das Element <span class="docutils literal">lehrveranstaltung</span>, bei dem das Attribut <span class="docutils literal">status</span> den Wert <span class="docutils literal">aufgekündigt</span> hat.</p></li>
+</ul>
+</li>
+<li><p>Es handelt sich um einen eigenen Mini-Standard, der von vielen Spezifikationen verwendet wird (XSLT, XQuery, ...).</p></li>
+<li><p>Implementationen sind in vielen Programmiersprachen verfügbar (z. B. Java, JavaScript, Python, ...) und alle Browser unterstützen XPath-Ausdrücke für die Selektion von Elementen.</p></li>
+</ul>
+</div><div class="ld-slide" id="xpath-pfadausdrucke">
+<h2>XPath - Pfadausdrücke</h2>
+<ul class="simple">
+<li><p>Ein Pfadausdruck besteht aus einer Folge von Schritten, die durch Schrägstriche getrennt sind. (Ähnlich wie bei Dateipfaden.)</p></li>
+</ul>
+<ul class="incremental">
+<li><p>Ein einzelner Schrägstrich (&quot;<span class="docutils literal">/</span>&quot;) steht für das Wurzelelement.</p></li>
+<li><p>Nachfolgende benannte Schritte im Pfad stellen Kinder dar:</p>
+<pre class="code xslt far-smaller literal-block"><code>/lehrveranstaltungen/modul</code></pre>
+<p>Wählt das untergeordnete Element <span class="docutils literal">modul</span> des Dokumentenelements <span class="docutils literal">lehrveranstaltungen</span> aus.</p>
+</li>
+<li><p>XPath-Ausdrücke müssen nicht bei der Wurzel starten:</p>
+<pre class="code xslt far-smaller literal-block"><code>modul/vorlesung</code></pre>
+<p>Wählt das <span class="docutils literal">vorlesung</span>-Kinderelement des <span class="docutils literal">modul</span>-Elements aus.</p>
+</li>
+</ul>
+</div><div class="ld-slide" id="resultat-eines-xpath-ausdrucks">
+<h2>Resultat eines XPath-Ausdrucks</h2>
+<ul class="simple">
+<li><p>Das Ergebnis der Auswertung eines XPath-Ausdrucks ist ein <em>Node Set</em>.<a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></li>
+<li><p>Ein <span class="docutils literal">Node</span> ist nur ein anderer Begriff für <em>Info Item</em>.</p></li>
+</ul>
+<ul class="incremental">
+<li><p>Beispiel</p>
+<p>Sei das folgende XML-Dokument gegeben:</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;modul&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;vorlesung&gt;</span>Eins<span class="name tag">&lt;/vorlesung&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;vorlesung&gt;</span>Zwei<span class="name tag">&lt;/vorlesung&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;/modul&gt;</span></code></pre>
+<p>Dann würde der Ausdruck:</p>
+<pre class="code xslt far-smaller literal-block"><code>/modul/vorlesung</code></pre>
+<p>Zwei <span class="docutils literal">vorlesung</span>-Elemente als Menge zurückgeben.</p>
+</li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
+<p>Die Reihenfolge der Ergebnisse muss nicht über alle Implementierungen (z. B. Browser) hinweg konsistent sein.</p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="attribute-selektieren">
+<h2>Attribute Selektieren</h2>
+<ul class="simple">
+<li><p>Attribute können über den entsprechenden Schritt: <span class="docutils literal">&#64;Name</span> ausgewählt werden.</p></li>
+</ul>
+<ul class="incremental">
+<li><p>Beispiel</p>
+<p>Sei das folgende XML-Dokument gegeben:</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;modul&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;vorlesung</span><span class="whitespace"> </span><span class="name attribute">mhb=</span><span class="literal string">&quot;123&quot;</span><span class="name tag">&gt;</span>Eins<span class="name tag">&lt;/vorlesung&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;vorlesung</span><span class="whitespace"> </span><span class="name attribute">mhb=</span><span class="literal string">&quot;456&quot;</span><span class="name tag">&gt;</span>Zwei<span class="name tag">&lt;/vorlesung&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;/modul&gt;</span></code></pre>
+<p>Dann würde der Ausdruck:</p>
+<pre class="code xslt far-smaller literal-block"><code>/modul/vorlesung/&#64;mhb</code></pre>
+<p>Die beiden <span class="docutils literal">mhb</span> Attribute als Menge zurückgeben.</p>
+</li>
+</ul>
+</div><div class="ld-slide" id="namen-und-namensraume">
+<h2>Namen und Namensräume</h2>
+<ul class="simple">
+<li><p>Jeder Schritt eines XPath-Ausdrucks kann einen <em>QName</em> verwenden: <span class="docutils literal"><span class="pre">&lt;Präfix&gt;:&lt;Lokaler</span> Name&gt;</span></p></li>
+<li><p>Das Matching basiert auf dem lokalen Namen und dem Namen des Namespaces und nicht auf dem Präfix.</p></li>
+</ul>
+<ul class="incremental">
+<li><p>Beispiele für XPath-Ausdrücke mit Namensraum:</p>
+<pre class="code xslt far-smaller literal-block"><code>/dhbw:modul/dhbw:vorlesung<span class="whitespace">
+</span>/dhbw:modul/dhbw:vorlesung/&#64;mhb<span class="whitespace">
+</span>/dhbw:modul/dhbw:vorlesung/&#64;i:mhb</code></pre>
+</li>
+</ul>
+<aside class="admonition warning incremental margin-top-1em">
+<p class="admonition-title">Hinweis</p>
+<p>Die Präfixbindung wird außerhalb des Ausdrucks definiert (i. d. R. anwendungsspezifisch).</p>
+</aside>
+<div class="supplemental">
+<p>In dem gezeigten Beispiel müsste die Anwendung die Präfixe (<span class="docutils literal">dhbw</span> und <span class="docutils literal">i</span>) mit den entsprechenden Namensräumen verknüpfen.</p>
+<p class="rubric">kein Präfix = kein Namensraum</p>
+<p>Ein Namenstest innerhalb eines Pfadausdrucks, der kein Präfix spezifiziert ist nur für  Namen ohne Namensraum erfolgreich!</p>
+<p>Zum Beispiel:</p>
+<pre class="code xslt far-smaller literal-block"><code>m:section/title</code></pre>
+<p>selektiert das Element <span class="docutils literal">title</span> im folgenden Beispiel, da es keinen Namensraum hat:</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;m:section</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">'urn:...'</span><span class="name tag">&gt;</span><span class="whitespace">
+  </span><span class="name tag">&lt;title&gt;</span>Kein<span class="whitespace"> </span>Namespace<span class="name tag">&lt;/title&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;/m:section&gt;</span></code></pre>
+<p>in folgendem Beispiel jedoch nicht:</p>
+<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;m:section</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">'urn:...'</span><span class="whitespace">
+           </span><span class="name attribute">xmlns=</span><span class="literal string">'urn:something-else...'</span><span class="name tag">&gt;</span><span class="whitespace">
+  </span><span class="name tag">&lt;title&gt;</span>Ich<span class="whitespace"> </span>habe<span class="whitespace"> </span>einen<span class="whitespace"> </span>Namensraum...<span class="name tag">&lt;/title&gt;</span><span class="whitespace">
+</span><span class="name tag">&lt;/m:section&gt;</span></code></pre>
+<p><em>Der Namensabgleich basiert auf dem lokalen Namen und dem Namen des Namensraums.</em></p>
+</div></div><div class="ld-slide" id="wildcards-in-xpath">
+<h2><em>Wildcards</em> in xPath</h2>
+<ul class="simple">
+<li><p><span class="docutils literal">*</span> wird als Platzhalter für Namen verwendet werden.</p></li>
+</ul>
+<ul class="incremental">
+<li><p>Beispiele:</p>
+<ul class="incremental">
+<li><p>Alle Elemente, die in einem <span class="docutils literal">modul</span>-Element enthalten sind:</p>
+<pre class="code xslt far-smaller literal-block"><code>/modul/*</code></pre>
+</li>
+<li><p>Alle Attribute eines <span class="docutils literal">vorlesung</span>-Elements:</p>
+<pre class="code xslt far-smaller literal-block"><code>/modul/vorlesung/&#64;*</code></pre>
+</li>
+<li><p>Verwendung von Namensräumen:</p>
+<pre class="code xslt far-smaller literal-block"><code>/dhbw:modul/dhbw:*<span class="whitespace">
+</span>/dhbw:modul/dhbw:vorlesung/&#64;i:*</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="kontextknoten">
+<h2>Kontextknoten</h2>
+<ul class="simple">
+<li><p>Die Auswertung erfolgt immer in Bezug auf einen Kontextknoten.</p></li>
+<li><p>Der Kontextknoten wird mit <span class="docutils literal">.</span> (Punkt) referenziert.</p></li>
+</ul>
+<ul class="incremental">
+<li><p>Beispiel - Selektion der Attribute des Kontextknotens:</p>
+<pre class="code xslt far-smaller literal-block"><code>./&#64;*</code></pre>
+<p>Der Kontextknoten ist implizit.</p>
+</li>
+<li><p>Der Kontextknoten muss nicht zwingend ein Element sein.</p></li>
+</ul>
+</div><div class="ld-slide" id="bedingtes-matching">
+<h2>Bedingtes Matching</h2>
+<ul class="simple">
+<li><p>Prädikate erlauben die Angaben von Bedingungen und folgen der Deklaration des <em>Schrittes</em>.</p></li>
+<li><p>Prädikate sind in eckigen Klammern (<span class="docutils literal">[</span> und <span class="docutils literal">]</span>) eingeschlossen.</p></li>
+</ul>
+<ul class="incremental">
+<li><p>Beispiel</p>
+<pre class="code xslt far-smaller literal-block"><code>/modul/vorlesung[&#64;mhb='123']</code></pre>
+<p>Wählt das <span class="docutils literal">vorlesung</span>-Element aus, das das Attribut <span class="docutils literal">mhb</span> mit dem Wert <span class="docutils literal">123</span> hat.</p>
+</li>
+<li><p>Es gibt eine Vielzahl von Operatoren (einschließlich boolescher Logik (<span class="docutils literal">or</span> und <span class="docutils literal">and</span>)), die verwendet werden können.</p></li>
+<li><p>Die Verwendung von Unterausdrücken ist ebenfalls möglich.</p>
+<p>Beispiel</p>
+<pre class="code xslt far-smaller literal-block"><code>lehrveranstaltungen/modul[vorlesung/&#64;mhb='123']</code></pre>
+</li>
+</ul>
+</div><div class="ld-slide" id="selektion-von-elternknoten-und-vorgangerknoten">
+<h2>Selektion von Elternknoten und Vorgängerknoten</h2>
+<ul class="simple">
+<li><p>Über den Kontextknoten kann  auf  übergeordnete und vorgelagerte Elemente zugegriffen werden.</p></li>
+<li><p><span class="docutils literal">..</span> steht für das übergeordnete Element; wie bei Verzeichnissen.</p></li>
+</ul>
+<ul class="incremental">
+<li><p>Beispiel</p>
+<pre class="code xslt far-smaller literal-block"><code>/modul/vorlesung[&#64;mhb='123']/..</code></pre>
+<p>Wählt das <span class="docutils literal">modul</span>-Element aus, das das <span class="docutils literal">vorlesung</span>-Element mit dem Attribut <span class="docutils literal">mhb</span> und dem Wert <span class="docutils literal">123</span> enthält.</p>
+</li>
+</ul>
+</div><div class="ld-slide" id="selektion-von-kindknoten">
+<h2>Selektion von Kindknoten</h2>
+<ul class="list-with-explanations">
+<li><p>mit dem <span class="docutils literal">//</span> können Elemente, die keine direkten Kinder sind abgeglichen werden</p>
+<p>Es werden somit die Nachkommen des <em>aktuellen Kontexts</em> durchsucht.</p>
+</li>
+</ul>
+<ul class="incremental">
+<li><p>Beispiel</p>
+<pre class="code xslt far-smaller literal-block"><code>lehrveranstaltungen//vorlesung[&#64;mhb='123']/..</code></pre>
+<p>Wählt alle <span class="docutils literal">vorlesung</span>-Elemente mit dem Attribut <span class="docutils literal">mhb</span> und dem Wert <span class="docutils literal">123</span>, die Nachkommen des <span class="docutils literal">lehrveranstaltungen</span>-Elements sind aus.</p>
+</li>
+</ul>
+</div><div class="ld-slide" id="auswahl-von-knoten-die-keine-elemente-oder-attribute-sind">
+<h2>Auswahl von Knoten, die keine Elemente oder Attribute sind</h2>
+<table class="align-center incremental">
+<thead>
+<tr><th class="head"><p>Funktion</p></th>
+<th class="head"><p>Beschreibung</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p><span class="docutils literal">text()</span></p></td>
+<td><p>Wählt den Textinhalt eines Elements aus.</p></td>
+</tr>
+<tr><td><p><span class="docutils literal">comment()</span></p></td>
+<td><p>Wählt Kommentare aus.</p></td>
+</tr>
+<tr><td><p><span class="docutils literal"><span class="pre">processing-instruction()</span></span></p></td>
+<td><p>Wählt Verarbeitungsanweisungen aus.</p></td>
+</tr>
+<tr><td><p><span class="docutils literal">node()</span></p></td>
+<td><p>Wählt alle Knoten aus.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="incremental docutils container">
+<p>Beispiel</p>
+<pre class="code xml far-smaller literal-block"><code>/document/comment()</code></pre>
+<p>Wählt alle Kommentare aus, die Kinder des <span class="docutils literal">document</span>-Elements sind.</p>
+</div>
+</div><div class="ld-slide" id="beziehungen-zwischen-knoten">
+<h2>Beziehungen zwischen Knoten</h2>
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
+<p class="rubric">Baumstruktur</p>
+<img alt="drawings/xml/xpath-axis.svg" class="align-center" src="drawings/xml/xpath-axis.svg" style="height: 900px;" />
+</div>
+<div class="column incremental docutils container">
+<p class="rubric">Weitere Beziehungen</p>
+<dl class="field-list simple">
+<dt>Attribute<span class="colon">:</span></dt>
+<dd><p>Jedes Element kann Attribute haben <span class="minor">(welche keine Kinder im Baum sind)</span>.</p>
+</dd>
+<dt>Namensraum<span class="colon">:</span></dt>
+<dd><p>Jedes Element kann Namensräume haben <span class="minor">(welche keine Kinder bzgl. des Baums sind)</span>.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div><div class="ld-slide" id="axen-in-xpath-beschreiben-die-richtungen-von-beziehungen-zwischen-knoten">
+<h2>Axen in XPath beschreiben die Richtungen von Beziehungen zwischen Knoten.</h2>
+<div class="two-columns docutils container">
+<div class="incremental column">
+<ul class="simple">
+<li><p>Baumbeziehungen:</p>
+<ul>
+<li><p><span class="docutils literal">ancestor</span>, <span class="docutils literal"><span class="pre">ancestor-or-self</span></span></p></li>
+<li><p><span class="docutils literal">parent</span>, <span class="docutils literal">child</span>, <span class="docutils literal">self</span></p></li>
+<li><p><span class="docutils literal">descendant</span>, <span class="docutils literal"><span class="pre">descendant-or-self</span></span></p></li>
+<li><p><span class="docutils literal">following</span>, <span class="docutils literal"><span class="pre">following-sibling</span></span></p></li>
+<li><p><span class="docutils literal">preceding</span>, <span class="docutils literal"><span class="pre">preceding-sibling</span></span></p></li>
+</ul>
+</li>
+<li><p>Weitere Beziehungen:</p>
+<ul>
+<li><p><em>Attribute</em></p></li>
+<li><p><em>Namensräume</em></p></li>
+</ul>
+</li>
+</ul>
+</div><div class="incremental column">
+<ul>
+<li><p>Beispiel:</p>
+<blockquote>
+<pre class="code xslt far-smaller literal-block"><code>//modul/ancestor::lehrveranstaltungen</code></pre>
+<p>Wählt das <span class="docutils literal">lehrveranstaltungen</span>-Element aus, das das <span class="docutils literal">modul</span>-Element enthält.</p>
+</blockquote>
+</li>
+<li><p>Beispiel:</p>
+<blockquote>
+<pre class="code xslt far-smaller literal-block"><code>//modul/child::vorlesung</code></pre>
+<p>Wählt das <span class="docutils literal">vorlesung</span>-Element aus, das ein Kind des <span class="docutils literal">modul</span>-Elements ist.</p>
+</blockquote>
+</li>
+</ul>
+</div></div>
+</div><div class="no-title center-child-elements ld-slide" id="xpath-support">
+<h2>XPath Support</h2>
+<div class="box-shadow padding-1em dhbw-red-background white rounded-corners docutils container">
+<p>Alle gängigen Browser unterstützen XPath 1.0.</p>
+<p>Gängige Bibliotheken (z. B. Saxon) unterstützen XPath 3.1.</p>
+</div>
+<div class="block-footer margin-bottom-1em docutils container">
+<p><a class="reference external" href="https://www.saxonica.com/welcome/welcome.xml">https://www.saxonica.com/welcome/welcome.xml</a></p>
+</div>
+</div>
+</body>
+</html>
