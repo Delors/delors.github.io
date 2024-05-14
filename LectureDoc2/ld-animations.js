@@ -207,9 +207,10 @@ const lectureDoc2Animations = function () {
 
             const slidePaneStyle = getParent(scrollable,"ld-continuous-view-slide-pane").style;
             slidePaneStyle.height = slidePaneStyle.maxHeight =
-                (slideHeight + additionalHeight) * zoomFactor + "px";
+                Math.ceil((slideHeight + additionalHeight) * zoomFactor) + "px";
 
             scrollable.style.height = requiredHeight + "px";
+            scrollable.classList.remove("scrollable");
         }
     }
 
