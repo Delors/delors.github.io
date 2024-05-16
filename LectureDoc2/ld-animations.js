@@ -188,7 +188,13 @@ const lectureDoc2Animations = function () {
         const root = getComputedStyle(document.querySelector(":root"));
         const zoomFactor = root.getPropertyValue("--ld-continuous-view-zoom-level");
 
-        const requiredHeight = parseInt(window.getComputedStyle(scrollable).height,10);
+        const scrollableStyle = window.getComputedStyle(scrollable);
+        const requiredHeight = 
+            parseInt(scrollableStyle.height,10)+
+            // the following is a REAL hack to make sure that the last
+            // line of the scrollable is fully visible in Safari.
+            // Chrome and Firefox currently don't work at all...
+            parseInt(scrollableStyle.lineHeight);
         const parentNodeStyle = window.getComputedStyle(scrollable.parentNode)
         const parentHeight = parseInt(parentNodeStyle.height,10);
         const paddingBottom = parseInt(parentNodeStyle.paddingBottom,10);
