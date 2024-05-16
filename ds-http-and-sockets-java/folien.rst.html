@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;HTTP&quot;, &quot;Sockets&quot;" name="keywords" />
+<meta content="HTTP und Socketprogrammierung" lang="de" name="description" xml:lang="de" />
+<meta content="HTTP amd Sockets" lang="en" name="description" xml:lang="en" />
+<meta content="lecture-ds-http-and-sockets" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>HTTP und Sockets (in Java)</title>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">HTTP und Sockets (in Java)</h1>
+
+<div class="line-above padding-bottom-1em docutils container">
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>2024-05-15</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<dl class="field-list simple">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><dl class="field-list simple">
+<dt>HTML<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/ds-http-and-sockets/folien.rst.html">https://delors.github.io/ds-http-and-sockets/folien.rst.html</a></p>
+</dd>
+<dt>PDF<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/ds-http-and-sockets/folien.rst.html.pdf">https://delors.github.io/ds-http-and-sockets/folien.rst.html.pdf</a></p>
+</dd>
+</dl>
+</dd>
+<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div><div class="footer-left tiny docutils container">
+<p>Dieser Foliensatz basiert auf Folien von Prof. Dr. Henning Pagnia.</p>
+<p>Alle Fehler sind meine eigenen.</p>
+</div>
+</div>
+<div class="ld-slide" id="ip-wiederholung">
+<h2>IP - Wiederholung</h2>
+<p>Die Vermittlungsschicht (Internet Layer)</p>
+<ul class="simple">
+<li><p>übernimmt das Routing</p></li>
+<li><p>realisiert Ende-zu-Ende-Kommunikation</p></li>
+<li><p>überträgt Pakete</p></li>
+<li><p>ist im Internet durch IP realisiert</p></li>
+<li><p>löst folgende Probleme:</p>
+<ul>
+<li><p>Sender und Empfänger erhalten netzweit eindeutige Bezeichner (⇒ IP-Adressen)</p></li>
+<li><p>die Pakete werden durch spezielle Geräte (⇒ Router) weitergeleitet</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="smaller ld-slide" id="tcp-und-udp-wiederholung">
+<h2>TCP und UDP - Wiederholung</h2>
+<div class="two-columns docutils container">
+<div class="column docutils container">
+<p class="rubric">Transmission Control Protocol (TCP), RFC 793</p>
+<ul class="simple">
+<li><p>verbindungsorientierte Kommunikation</p></li>
+<li><p>ebenfalls Konzept der Ports</p></li>
+<li><p>Verbindungsaufbau zwischen zwei Prozessen (Dreifacher Handshake, Full-Duplex-Kommunikation)</p>
+<ul>
+<li><p>geordnete Kommunikation</p></li>
+<li><p>zuverlässige Kommunikation</p></li>
+<li><p>Flusskontrolle</p></li>
+<li><p>hoher Overhead ⇒ eher langsam</p></li>
+<li><p>nur Unicasts</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="column docutils container">
+<p class="rubric">User Datagram Protocol (UDP), RFC 768</p>
+<ul class="simple">
+<li><p>verbindungslose Kommunikation via Datagramme</p>
+<ul>
+<li><p>unzuverlässig (⇒ keine Fehlerkontrolle)</p></li>
+<li><p>ungeordnet (⇒ beliebige Reihenfolge)</p></li>
+<li><p>wenig Overhead (⇒ schnell)</p></li>
+</ul>
+</li>
+<li><p>Größe der Nutzdaten ist 65507 Byte, in der Praxis jedoch meist deutlich kleiner</p></li>
+<li><p>Anwendungsfelder:</p>
+<ul class="smaller">
+<li><p>Anwendungen mit vorwiegend kurzen Nachrichten (z. B. NTP, RPC, NIS)</p></li>
+<li><p>Anwendungen mit hohem Durchsatz, die ab und zu Fehler tolerieren (z. B. Multimedia)</p></li>
+<li><p>Multicasts sowie Broadcasts</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div><div class="new-section transition-scale ld-slide" id="hypertext-transfer-protocol-http">
+<h2>Hypertext Transfer Protocol (HTTP)</h2>
+</div><div class="ld-slide" id="http">
+<h2>HTTP</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.ietf.org/rfc/rfc7230.txt">RFC 7230</a> – 7235: HTTP/1.1 (redigiert im Jahr 2014; urspr. 1999 RFC 2626)</p></li>
+<li><p>RFC 7540: HTTP/2 (seit Mai 2015 standardisiert)</p></li>
+<li><p>Eigenschaften:</p>
+<ul>
+<li><p>Client / Server (Browser / Web-Server)</p></li>
+<li><p>basierend auf TCP, i. d. R. Port 80</p></li>
+<li><p>Server (meist) zustandslos</p></li>
+<li><p>seit HTTP/1.1 auch persistente Verbindungen und Pipelining</p></li>
+<li><p>abgesicherte Übertragung (Verschlüsselung) möglich mittels Secure Socket Layer (SSL) bzw. Transport Layer Security (TLS)</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="konzeptioneller-ablauf">
+<h2>Konzeptioneller Ablauf</h2>
+<div class="two-columns docutils container">
+<div class="center-child-elements docutils container">
+<img alt="images/http/http.svg" src="images/http/http.svg" style="width: 1100px;" />
+</div>
+<div class="small docutils container">
+<p class="rubric">HTTP-Kommandos</p>
+<p>(<span class="ger-quote">Verben</span>)</p>
+<ul class="simple">
+<li><p>HEAD</p></li>
+<li><p>GET</p></li>
+<li><p>POST</p></li>
+<li><p>PUT</p></li>
+<li><p>PATCH</p></li>
+<li><p>DELETE</p></li>
+<li><p>OPTIONS</p></li>
+<li><p>TRACE</p></li>
+<li><p>CONNECT</p></li>
+<li><p>...</p></li>
+</ul>
+</div>
+</div>
+</div><div class="small ld-slide" id="protokolldefinition">
+<h2>Protokolldefinition</h2>
+<p>Aufbau der Dokumentenbezeichner <em>Uniform Resource Locator (URL)</em></p>
+<div class="text-align-center rounded-corners padding-1em dhbw-light-gray-background docutils container">
+<p><span class="docutils literal"><span class="pre">scheme://host[:port][abs_path[?query][#anchor]]</span></span></p>
+</div>
+<dl class="field-list simple">
+<dt><span class="docutils literal">scheme</span><span class="colon">:</span></dt>
+<dd><p>Protokoll (case-insensitive) (z. B. <span class="docutils literal">http</span>, <span class="docutils literal">https</span> oder <span class="docutils literal">ftp</span>)</p>
+</dd>
+<dt><span class="docutils literal">host</span><span class="colon">:</span></dt>
+<dd><p>DNS-Name (oder IP-Adresse) des Servers (case-insensitive)</p>
+</dd>
+<dt><span class="docutils literal">port</span><span class="colon">:</span></dt>
+<dd><p>(optional) falls leer, 80 bei <span class="docutils literal">http</span> und 443 bei <span class="docutils literal">https</span></p>
+</dd>
+<dt><span class="docutils literal">abs_path</span><span class="colon">:</span></dt>
+<dd><p>(optional) Pfadausdruck relativ zum Server-Root (case-sensitive)</p>
+</dd>
+<dt><span class="docutils literal"><span class="pre">?query</span></span><span class="colon">:</span></dt>
+<dd><p>(optional) direkte Parameterübergabe (case-sensitive) (<span class="docutils literal"><span class="pre">?from=…&amp;to=…</span></span>)</p>
+</dd>
+<dt><span class="docutils literal">#anchor</span><span class="colon">:</span></dt>
+<dd><p>(optional) Sprungmarke innerhalb des Dokuments</p>
+</dd>
+</dl>
+<div class="incremental small docutils container">
+<p>Uniform Resource Identifier (URI) sind eine Verallgemeinerung von URLs.</p>
+<ul>
+<li><p>definiert in RFC 1630 (im Jahr 1994)</p></li>
+<li><p>entweder URL (Location) oder URN (Name) (z. B. <span class="docutils literal">urn:isbn:1234567890</span>)</p></li>
+<li><p>Beispiele von URIs, die keine URL sind, sind <em>XML Namespace Iidentifiers</em></p>
+<pre class="code XML tiny literal-block"><code><span class="name tag">&lt;svg</span><span class="whitespace"> </span><span class="name attribute">version=</span><span class="literal string">&quot;1.1&quot;</span><span class="whitespace"> </span><span class="name attribute">xmlns=</span><span class="literal string">&quot;http://www.w3.org/2000/svg&quot;</span><span class="name tag">&gt;</span>...<span class="name tag">&lt;/svg&gt;</span></code></pre>
+</li>
+</ul>
+</div>
+</div><div class="scriptsize ld-slide" id="das-get-kommando">
+<h2>Das GET Kommando</h2>
+<div class="stack">
+<div class="layer">
+<ul>
+<li><p>Dient dem Anfordern von HTML-Daten vom Server (Request-Methode).</p></li>
+<li><p>Minimale Anfrage:</p>
+<dl class="field-list">
+<dt>Anfrage<span class="colon">:</span></dt>
+<dd><pre class="literal-block">GET &lt;Path&gt; HTTP/1.1
+Host: &lt;Hostname&gt;
+Connection: close
+&lt;Leerzeile (CRLF)&gt;</pre>
+</dd>
+<dt>Optionen<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>Client kann zusätzlich weitere Infos über die Anfrage sowie sich selbst senden.</p></li>
+<li><p>Server sendet Status der Anfrage sowie Infos über sich selbst und ggf. die angeforderte HTML-Datei.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Fehlermeldungen werden ggf. vom Server ebenfalls als HTML-Daten verpackt und als Antwort gesendet.</p></li>
+</ul>
+</div><div class="layer incremental">
+<p class="rubric">Beispiel Anfrage des Clients</p>
+<pre class="code http literal-block"><code><span class="name function">GET</span> <span class="name namespace">/web/web.php</span> <span class="keyword reserved">HTTP</span><span class="operator">/</span><span class="literal number">1.1</span>
+<span class="name attribute">Host</span><span class="operator">:</span> <span class="literal">archive.org</span>
+<span class="error">**CRLF**</span></code></pre>
+<p class="rubric">Beispiel Antwort des Servers</p>
+<pre class="code http literal-block"><code><span class="keyword reserved">HTTP</span><span class="operator">/</span><span class="literal number">1.1</span> <span class="literal number">200</span> <span class="name exception">OK</span>
+<span class="name attribute">Server</span><span class="operator">:</span> <span class="literal">nginx/1.25.1</span>
+<span class="name attribute">Date</span><span class="operator">:</span> <span class="literal">Thu, 22 Feb 2024 19:47:11 GMT</span>
+<span class="name attribute">Content-Type</span><span class="operator">:</span> <span class="literal">text/html; charset=UTF-8</span>
+<span class="name attribute">Transfer-Encoding</span><span class="operator">:</span> <span class="literal">chunked</span>
+<span class="name attribute">Connection</span><span class="operator">:</span> <span class="literal">close</span>
+<span class="error">**CRLF**</span>
+<span class="comment preproc">&lt;!DOCTYPE html&gt;</span>
+…
+<span class="punctuation">&lt;/</span><span class="name tag">html</span><span class="punctuation">&gt;</span>**CRLF**</code></pre>
+</div></div></div><div class="new-section transition-scale ld-slide" id="sockets">
+<h2>Sockets</h2>
+</div><div class="ld-slide" id="sockets-in-java">
+<h2>Sockets in Java</h2>
+<p><strong>Sockets sind Kommunikationsendpunkte.</strong></p>
+<ul class="simple">
+<li><p>Sockets werden adressiert über die IP-Adresse (InetAddress-Objekt) und eine interne Port-Nummer (int-Wert).</p></li>
+<li><p>Sockets gibt es bei TCP und auch bei UDP, allerdings mit unterschiedlichen Eigenschaften:</p>
+<dl class="field-list simple">
+<dt>TCP<span class="colon">:</span></dt>
+<dd><p>verbindungsorientierte Kommunikation über <em>Streams</em></p>
+</dd>
+<dt>UDP<span class="colon">:</span></dt>
+<dd><p>verbindungslose Kommunikation mittels <em>Datagrams</em></p>
+</dd>
+</dl>
+</li>
+<li><p>Das Empfangen von Daten ist in jedem Fall blockierend, d. h. der empfangende Thread bzw. Prozess wartet, falls keine Daten vorliegen.</p></li>
+</ul>
+</div><div class="ld-slide" id="tcp-sockets">
+<h2>TCP Sockets</h2>
+<img alt="images/http/tcp_sockets.svg" class="align-center" src="images/http/tcp_sockets.svg" style="height: 950px;" />
+<div class="supplemental">
+<ol class="arabic simple">
+<li><p>Der Server-Prozess wartet an dem bekannten Server-Port.</p></li>
+<li><p>Der Client-Prozess erzeugt einen privaten Socket.</p></li>
+<li><p>Der Socket baut zum Server-Prozess eine Verbindung auf – falls der Server die Verbindung akzeptiert.</p></li>
+<li><p>Die Kommunikation erfolgt Strom-orientiert: Für beide Parteien wird je ein Eingabestrom und ein Ausgabestrom eingerichtet, über den nun Daten ausgetauscht werden können.</p></li>
+<li><p>Wenn alle Daten ausgetauscht wurden, schließen im Allg. beide Parteien die Verbindung.</p></li>
+</ol>
+</div></div><div class="smaller-slide-title ld-slide" id="ein-einfacher-portscanner-in-java">
+<h2>(Ein einfacher) Portscanner in Java</h2>
+<pre class="code java tiny copy-to-clipboard literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.net.*</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.io.*</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">LowPortScanner</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="whitespace"> </span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">String</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string">&quot;localhost&quot;</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">args</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">args</span><span class="whitespace"> </span><span class="operator">[</span><span class="literal number integer">0</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+    </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">1024</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="operator">++</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="name">Socket</span><span class="whitespace"> </span><span class="name">s</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Socket</span><span class="punctuation">(</span><span class="name">host</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">i</span><span class="punctuation">);</span><span class="whitespace">
+        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;There is a server on port &quot;</span><span class="operator">+</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;at &quot;</span><span class="operator">+</span><span class="name">host</span><span class="punctuation">);</span><span class="whitespace">
+        </span><span class="name">s</span><span class="punctuation">.</span><span class="name attribute">close</span><span class="punctuation">();</span><span class="whitespace">
+      </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">catch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">UnknownHostException</span><span class="whitespace"> </span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">err</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">e</span><span class="punctuation">);</span><span class="whitespace">
+        </span><span class="keyword">break</span><span class="whitespace"> </span><span class="punctuation">;</span><span class="whitespace">
+      </span><span class="punctuation">}</span><span class="whitespace">
+      </span><span class="keyword">catch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">IOException</span><span class="whitespace"> </span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="comment multiline">/* probably no server waiting at this port */</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
+</div><div class="ld-slide" id="austausch-von-daten">
+<h2>Austausch von Daten</h2>
+<ul class="incremental simple">
+<li><p>Nach erfolgtem Verbindungsaufbau können zwischen Client und Server mittels des Socket-InputStream und Socket-OutputStream Daten ausgetauscht werden.</p></li>
+<li><p>Hierzu leitet man die rohen Daten am besten durch geeignete Filter-Streams, um eine möglichst hohe semantische Ebene zu erreichen.</p>
+<ul>
+<li><p>Beispiele: <span class="docutils literal">PrintWriter</span>, <span class="docutils literal">BufferedReader</span>, <span class="docutils literal">BufferedInputStream</span>, <span class="docutils literal">BufferedOutputStream</span></p></li>
+<li><p>Die Netzwerkkommunikation kann dann ggf. bequem über wohlbekannte und komfortable Ein- und Ausgabe-Routinen (z. B. <span class="docutils literal">readLine</span> oder <span class="docutils literal">println</span>) durchgeführt werden.</p></li>
+<li><p>Filter-Streams werden auch für den Zugriff auf andere Geräte und Dateien verwendet.</p></li>
+</ul>
+</li>
+</ul>
+<div class="supplemental">
+<p>Durch die Verwendung des <em>Decorater-Patterns</em> können die Filter-Streams beliebig geschachtelt werden und vielfältig verwendet werden. Dies macht die Anwendungsprogrammierung  einfacher und erlaubt zum Beispiel das einfache Umwandeln von Zeichenketten, Datenkomprimierung, Verschlüsselung, usw.</p>
+</div></div><div class="smaller-slide-title ld-slide" id="schachtelung-von-streams-ein-einfacher-echo-dienst">
+<h2>(Schachtelung von Streams) Ein einfacher Echo-Dienst</h2>
+<div class="stack tiny">
+<div class="layer">
+<pre class="code Java copy-to-clipboard literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.net.*</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.io.*</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">EchoClient</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">IOException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">BufferedReader</span><span class="whitespace"> </span><span class="name">userIn</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">BufferedReader</span><span class="punctuation">(</span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">InputStreamReader</span><span class="punctuation">(</span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">in</span><span class="punctuation">));</span><span class="whitespace">
+    </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="name">String</span><span class="whitespace"> </span><span class="name">theLine</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">userIn</span><span class="punctuation">.</span><span class="name attribute">readLine</span><span class="punctuation">();</span><span class="whitespace">
+      </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">theLine</span><span class="punctuation">.</span><span class="name attribute">equals</span><span class="punctuation">(</span><span class="literal string">&quot;.&quot;</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="keyword">break</span><span class="punctuation">;</span><span class="whitespace">
+      </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">Socket</span><span class="whitespace"> </span><span class="name">s</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Socket</span><span class="punctuation">(</span><span class="literal string">&quot;localhost&quot;</span><span class="comment multiline">/*hostname*/</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">7</span><span class="comment multiline">/*serverPort*/</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="name">BufferedReader</span><span class="whitespace"> </span><span class="name">networkIn</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace">
+            </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">BufferedReader</span><span class="punctuation">(</span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">InputStreamReader</span><span class="punctuation">(</span><span class="name">s</span><span class="punctuation">.</span><span class="name attribute">getInputStream</span><span class="punctuation">()));</span><span class="whitespace">
+        </span><span class="name">PrintWriter</span><span class="whitespace"> </span><span class="name">networkOut</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">PrintWriter</span><span class="punctuation">(</span><span class="name">s</span><span class="punctuation">.</span><span class="name attribute">getOutputStream</span><span class="punctuation">());</span><span class="whitespace">
+        </span><span class="name">networkOut</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">theLine</span><span class="punctuation">);</span><span class="whitespace">
+        </span><span class="name">networkOut</span><span class="punctuation">.</span><span class="name attribute">flush</span><span class="punctuation">();</span><span class="whitespace">
+        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">networkIn</span><span class="punctuation">.</span><span class="name attribute">readLine</span><span class="punctuation">());</span><span class="whitespace">
+      </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
+</div><div class="layer incremental">
+<pre class="code Java copy-to-clipboard literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.net.*</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.io.*</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">EchoServer</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">BufferedReader</span><span class="whitespace"> </span><span class="name">in</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="whitespace"> </span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="name">ServerSocket</span><span class="whitespace"> </span><span class="name">server</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">ServerSocket</span><span class="punctuation">(</span><span class="literal number integer">7</span><span class="whitespace"> </span><span class="comment multiline">/*DEFAULT PORT*/</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">Socket</span><span class="whitespace"> </span><span class="name">con</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">server</span><span class="punctuation">.</span><span class="name attribute">accept</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+          </span><span class="name">in</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">BufferedReader</span><span class="punctuation">(</span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">InputStreamReader</span><span class="punctuation">(</span><span class="name">con</span><span class="punctuation">.</span><span class="name attribute">getInputStream</span><span class="punctuation">()));</span><span class="whitespace">
+          </span><span class="name">PrintWriter</span><span class="whitespace"> </span><span class="name">out</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">PrintWriter</span><span class="punctuation">(</span><span class="name">con</span><span class="punctuation">.</span><span class="name attribute">getOutputStream</span><span class="punctuation">());</span><span class="whitespace">
+          </span><span class="name">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">in</span><span class="punctuation">.</span><span class="name attribute">readLine</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="punctuation">;</span><span class="whitespace">
+          </span><span class="name">out</span><span class="punctuation">.</span><span class="name attribute">flush</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">;</span><span class="whitespace">
+        </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">catch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">IOException</span><span class="whitespace"> </span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">err</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">e</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+      </span><span class="punctuation">}</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">catch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">IOException</span><span class="whitespace"> </span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">err</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">e</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
+</div></div></div><div class="ld-slide" id="udp-sockets">
+<h2>UDP Sockets</h2>
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
+<p class="rubric">Clientseitig</p>
+<ol class="arabic simple">
+<li><p><span class="docutils literal">DatagramSocket</span> erzeugen</p></li>
+<li><p><span class="docutils literal">DatagramPacket</span> erzeugen</p></li>
+<li><p><span class="docutils literal">DatagramPacket</span> absenden</p></li>
+<li><p>ggf. Antwort empfangen und verarbeiten</p></li>
+</ol>
+</div>
+<div class="column docutils container">
+<p class="rubric">Serverseitig</p>
+<ol class="arabic simple">
+<li><p><span class="docutils literal">DatagramSocket</span> auf festem Port erzeugen</p></li>
+<li><p>Endlosschleife beginnen</p></li>
+<li><p><span class="docutils literal">DatagramPacket</span> vorbereiten</p></li>
+<li><p><span class="docutils literal">DatagramPacket</span> empfangen</p></li>
+<li><p><span class="docutils literal">DatagramPacket</span> verarbeiten</p></li>
+<li><p>ggf. Antwort erstellen und absenden</p></li>
+</ol>
+</div>
+</div>
+</div><div class="smaller-slide-title ld-slide" id="udp-basierter-echo-server">
+<h2>UDP basierter Echo Server</h2>
+<div class="tiny docutils container">
+<pre class="code Java copy-to-clipboard literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.net.*</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.io.*</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">UDPEchoServer</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">DEFAULT_PORT</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">7</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="comment single">// privileged port</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">DatagramSocket</span><span class="whitespace"> </span><span class="name">server</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">DatagramSocket</span><span class="punctuation">(</span><span class="name">DEFAULT_PORT</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="keyword">while</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+          </span><span class="keyword type">byte</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">buffer</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="keyword type">byte</span><span class="operator">[</span><span class="literal number integer">65507</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="comment single">// room for incoming message</span><span class="whitespace">
+          </span><span class="name">DatagramPacket</span><span class="whitespace"> </span><span class="name">dp</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">DatagramPacket</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">buffer</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="punctuation">);</span><span class="whitespace">
+          </span><span class="name">server</span><span class="punctuation">.</span><span class="name attribute">receive</span><span class="punctuation">(</span><span class="name">dp</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">;</span><span class="whitespace">
+          </span><span class="name">String</span><span class="whitespace"> </span><span class="name">data</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">String</span><span class="punctuation">(</span><span class="name">dp</span><span class="punctuation">.</span><span class="name attribute">getData</span><span class="punctuation">(),</span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="name">dp</span><span class="punctuation">.</span><span class="name attribute">getLength</span><span class="punctuation">());</span><span class="whitespace">
+          </span><span class="name">DatagramPacket</span><span class="whitespace"> </span><span class="name">dp2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace">
+            </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">DatagramPacket</span><span class="punctuation">(</span><span class="name">data</span><span class="punctuation">.</span><span class="name attribute">getBytes</span><span class="punctuation">(),</span><span class="whitespace">
+              </span><span class="name">data</span><span class="punctuation">.</span><span class="name attribute">getBytes</span><span class="punctuation">().</span><span class="name attribute">length</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">dp</span><span class="punctuation">.</span><span class="name attribute">getAddress</span><span class="punctuation">(),</span><span class="whitespace"> </span><span class="name">dp</span><span class="punctuation">.</span><span class="name attribute">getPort</span><span class="punctuation">());</span><span class="whitespace">
+          </span><span class="name">server</span><span class="punctuation">.</span><span class="name attribute">send</span><span class="punctuation">(</span><span class="name">dp2</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">;</span><span class="whitespace">
+        </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">catch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">IOException</span><span class="whitespace"> </span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">err</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">e</span><span class="punctuation">);}</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
+</div>
+</div><div class="integrated-exercise transition-fade ld-slide" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Ein einfacher HTTP-Client" id="ld-exercise-1">
+<p class="rubric">Ein einfacher HTTP-Client</p>
+<ol class="loweralpha list-with-explanations smaller">
+<li><p>Schreiben Sie einen HTTP-Client, der den Server <span class="docutils literal">archive.org</span> kontaktiert, die Datei <span class="docutils literal">/web/web.php</span> anfordert und die Antwort des Servers auf dem Bildschirm ausgibt.</p>
+<p>Verwenden Sie HTTP/1.1 und eine Struktur ähnlich dem in der Vorlesung vorgestellten Echo-Client.</p>
+<p>Senden Sie das GET-Kommando, die Host-Zeile sowie eine Leerzeile als Strings an den Server.</p>
+</li>
+<li><p>Modifizieren Sie Ihren Client, so dass eine URL als Kommandozeilenparameter akzeptiert wird.</p>
+<p>Verwenden Sie die (existierende) Klasse URL, um die angegebene URL zu zerlegen.</p>
+</li>
+<li><p>Modifizieren Sie Ihr Programm, so dass die Antwort des Servers als lokale Datei abgespeichert wird. Laden Sie die Datei zum Anzeigen in einen Browser.</p>
+<p>Nutzen Sie die Klasse <span class="docutils literal">FileOutputStream</span> oder <span class="docutils literal">FileWriter</span> zum Speichern der Datei.</p>
+<p>Kann Ihr Programm auch Bilddateien (z. B. &quot;/images/logo_wayback_210x77.png&quot;) korrekt speichern?</p>
+</li>
+</ol>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:zMqdfVoIq90VLbrrU0vDrs4QB3Gj9P8k77SIBJvGU/g=:kSsSkO6NGqdkcP/m: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</div>
+</div>
+</div><div class="integrated-exercise ld-slide" id="ubung-1">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Protokollaggregation" id="ld-exercise-2">
+<p class="rubric">Protokollaggregation</p>
+<p>Schreiben Sie ein UDP-basiertes Java-Programm, mit dem sich Protokoll-Meldungen auf einem Server zentral anzeigen lassen. Das Programm soll aus mehreren Clients und einem Server bestehen. Jeder Client liest von der Tastatur eine Eingabezeile in Form eines Strings ein, der dann sofort zum Server gesendet wird. Der Server wartet auf Port 4999 und empfängt die Meldungen beliebiger Clients, die er dann unmittelbar ausgibt.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:OuZEodo+NB8tYFEblGiFPpb+FQnA1JoqVx8c6tEF+ow=:1uqVrgL9XiLc27Vo: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</div>
+</div>
+</div>
+</body>
+</html>
