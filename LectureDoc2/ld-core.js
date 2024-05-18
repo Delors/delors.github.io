@@ -1407,7 +1407,12 @@ const lectureDoc2 = function () {
         if (state.showContinuousView) {
             mainPane.style.display = "none";
             continuousViewPane.style.display = "block";
-            window.scrollTo(0, state.continuousViewScrollY);
+            setTimeout(() => {
+                // We have to defer the scrollTo to make sure that the browser has
+                // rendered the continuous view and the scroll position makes
+                // sense to the browser.
+                window.scrollTo(0, state.continuousViewScrollY);
+            });
         } else {
             continuousViewPane.style.display = "none";
             mainPane.style.display = "flex";
