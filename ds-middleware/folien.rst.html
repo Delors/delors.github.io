@@ -657,8 +657,8 @@ a { text-decoration: none; }
 <li><p>die Heterogenität verteilter Systeme zu verwalten.</p></li>
 </ol>
 </aside>
-</div><div class="tiny ld-slide" id="ein-einfacher-server-mit-sockets">
-<h2>Ein einfacher Server mit Sockets</h2>
+</div><div class="tiny ld-slide" id="ein-einfacher-server-mit-sockets-in-c">
+<h2>Ein einfacher Server mit Sockets (in C)</h2>
 <div class="stack smaller docutils container">
 <div class="layer docutils container">
 <pre class="code C copy-to-clipboard literal-block"><code><span class="comment multiline">/* A simple TCP based server. The port number is passed as an argument */</span><span class="whitespace">
@@ -1303,8 +1303,8 @@ Prozeduraufruf und einem Methodenaufruf auf ein Objekt</p>
 <dd><p>Ermöglicht die Versendung einer Aufgabe an genau einen beliebigen Worker aus einer Menge von (homogenen) Workern.</p>
 </dd>
 </dl>
-</div></div><div class="ld-slide" id="zeromq-beispiel-publish-subscribe">
-<h2>ZeroMQ - Beispiel <em>Publish-Subscribe</em></h2>
+</div></div><div class="ld-slide" id="zeromq-beispiel-publish-subscribe-java">
+<h2>ZeroMQ - Beispiel <em>Publish-Subscribe</em> (Java)</h2>
 <div class="two-columns tiny docutils container">
 <div class="column docutils container">
 <pre class="code java smaller literal-block"><code><span class="keyword namespace">import static</span><span class="whitespace"> </span><span class="name namespace">java.lang.Thread.currentThread</span><span class="whitespace">
@@ -1355,7 +1355,45 @@ Prozeduraufruf und einem Methodenaufruf auf ein Objekt</p>
 </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
 </div>
 </div>
-</div><div class="ld-slide" id="mom-message-oriented-middleware">
+</div><div class="ld-slide" id="zeromq-beispiel-publish-subscribe-python">
+<h2>ZeroMQ - Beispiel <em>Publish-Subscribe</em> (Python)</h2>
+<div class="two-columns tiny docutils container">
+<div class="column docutils container">
+<pre class="code python smaller literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">signal</span><span class="whitespace">
+</span><span class="keyword namespace">import</span> <span class="name namespace">time</span><span class="whitespace">
+</span><span class="keyword namespace">import</span> <span class="name namespace">zmq</span><span class="whitespace">
+
+</span><span class="name">signal</span><span class="operator">.</span><span class="name">signal</span><span class="punctuation">(</span><span class="name">signal</span><span class="operator">.</span><span class="name">SIGINT</span><span class="punctuation">,</span> <span class="name">signal</span><span class="operator">.</span><span class="name">SIG_DFL</span><span class="punctuation">)</span><span class="whitespace">
+
+</span><span class="name">context</span> <span class="operator">=</span> <span class="name">zmq</span><span class="operator">.</span><span class="name">Context</span><span class="punctuation">()</span><span class="whitespace">
+</span><span class="name">socket</span> <span class="operator">=</span> <span class="name">context</span><span class="operator">.</span><span class="name">socket</span><span class="punctuation">(</span><span class="name">zmq</span><span class="operator">.</span><span class="name">PUB</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name">socket</span><span class="operator">.</span><span class="name">bind</span><span class="punctuation">(</span><span class="literal string single">'tcp://*:5555'</span><span class="punctuation">)</span><span class="whitespace">
+
+</span><span class="keyword">for</span> <span class="name">i</span> <span class="operator word">in</span> <span class="name builtin">range</span><span class="punctuation">(</span><span class="literal number integer">5</span><span class="punctuation">):</span><span class="whitespace">
+</span>    <span class="name">socket</span><span class="operator">.</span><span class="name">send</span><span class="punctuation">(</span><span class="literal string affix">b</span><span class="literal string single">'status 5'</span><span class="punctuation">)</span><span class="whitespace">
+</span>    <span class="name">socket</span><span class="operator">.</span><span class="name">send</span><span class="punctuation">(</span><span class="literal string affix">b</span><span class="literal string single">'All is well'</span><span class="punctuation">)</span><span class="whitespace">
+</span>    <span class="name">time</span><span class="operator">.</span><span class="name">sleep</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">)</span></code></pre>
+</div>
+<div class="column docutils container">
+<pre class="code python smaller literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">signal</span><span class="whitespace">
+</span><span class="keyword namespace">import</span> <span class="name namespace">zmq</span><span class="whitespace">
+
+
+</span><span class="name">signal</span><span class="operator">.</span><span class="name">signal</span><span class="punctuation">(</span><span class="name">signal</span><span class="operator">.</span><span class="name">SIGINT</span><span class="punctuation">,</span> <span class="name">signal</span><span class="operator">.</span><span class="name">SIG_DFL</span><span class="punctuation">)</span><span class="whitespace">
+
+</span><span class="name">context</span> <span class="operator">=</span> <span class="name">zmq</span><span class="operator">.</span><span class="name">Context</span><span class="punctuation">()</span><span class="whitespace">
+</span><span class="name">socket</span> <span class="operator">=</span> <span class="name">context</span><span class="operator">.</span><span class="name">socket</span><span class="punctuation">(</span><span class="name">zmq</span><span class="operator">.</span><span class="name">SUB</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name">socket</span><span class="operator">.</span><span class="name">connect</span><span class="punctuation">(</span><span class="literal string single">'tcp://localhost:5555'</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name">socket</span><span class="operator">.</span><span class="name">setsockopt</span><span class="punctuation">(</span><span class="name">zmq</span><span class="operator">.</span><span class="name">SUBSCRIBE</span><span class="punctuation">,</span> <span class="literal string affix">b</span><span class="literal string single">'status'</span><span class="punctuation">)</span><span class="whitespace">
+
+</span><span class="keyword">while</span> <span class="keyword constant">True</span><span class="punctuation">:</span><span class="whitespace">
+</span>    <span class="name">message</span> <span class="operator">=</span> <span class="name">socket</span><span class="operator">.</span><span class="name">recv_multipart</span><span class="punctuation">()</span><span class="whitespace">
+</span>    <span class="name builtin">print</span><span class="punctuation">(</span><span class="literal string affix">f</span><span class="literal string single">'Received: </span><span class="literal string interpol">{</span><span class="name">message</span><span class="literal string interpol">}</span><span class="literal string single">'</span><span class="punctuation">)</span></code></pre>
+</div>
+</div>
+<div class="supplemental">
+<p>Bzgl. des Handlings von Signalen in Python siehe auch: <a class="reference external" href="https://docs.python.org/3/library/signal.html#signal.signal">https://docs.python.org/3/library/signal.html#signal.signal</a></p>
+</div></div><div class="ld-slide" id="mom-message-oriented-middleware">
 <h2>MOM - Message Oriented Middleware</h2>
 <ul class="incremental list-with-explanations">
 <li><p>MOM bzw. Message-queueing Systems unterstützen persistente asynchrone Kommunikation.</p></li>

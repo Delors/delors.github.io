@@ -74,7 +74,10 @@ const lectureDoc2Animations = function () {
         let maxGroupedLayersOuterHeight = 0;
         let groupedLayers = [];
 
-        function processLastGroupedLayers() {
+        function processLastGroupedLayers(lastGroup = false) {
+            // the following is a REAL hack to make sure that the last
+            // line of the last stack is fully visible in Safari.
+            maxGroupedLayersOuterHeight += parseInt(getComputedStyle(stack).lineHeight);
             overallHeight += maxGroupedLayersOuterHeight;
             groupedLayers.forEach((layer, i) => {
                 const marginHeight = getTopAndBottomMargin(layer)
@@ -88,7 +91,8 @@ const lectureDoc2Animations = function () {
             });
         }
 
-        stack.querySelectorAll(":scope >.layer").forEach((layer, i) => {
+        const layers = stack.querySelectorAll(":scope >.layer");        
+        layers.forEach((layer, i) => {
             const layerOffsetHeight = layer.offsetHeight
             const layerOuterHeight = layerOffsetHeight + getTopAndBottomMargin(layer);
             maxOuterHeight = Math.max(maxOuterHeight, layerOuterHeight);
@@ -108,8 +112,8 @@ const lectureDoc2Animations = function () {
             }
             console.log("layerOuterHeight: " + layerOuterHeight + " maxGrouped: "+ maxGroupedLayersOuterHeight+" maxOuterHeight: " + maxOuterHeight+" overallHeight: " + overallHeight);
         });
-        processLastGroupedLayers();
-        console.log("[Done] maxOuterHeight: " + maxOuterHeight+" overallHeight: " + overallHeight);
+        processLastGroupedLayers(true);
+        // console.log("[Done] maxOuterHeight: " + maxOuterHeight+" overallHeight: " + overallHeight);
 
 
         // 2. set the height of the stack to the sum of the heights of all 
@@ -158,7 +162,7 @@ const lectureDoc2Animations = function () {
     }
 
     /**
-     * Handles the rendering of a stack layout in the standard slides view.
+     * Handles the rendering of a stack based layout in the standard slides view.
      * 
      * In pure CSS it is not possible to adapt the height of an element to 
      * the height of its tallest child when all children are positioned 
