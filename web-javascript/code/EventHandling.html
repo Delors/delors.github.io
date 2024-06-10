@@ -1,0 +1,36 @@
+<html lang=en>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Eventhandling</title>
+    </head>
+    <body>
+        
+
+        <script>
+            const box = document.getElementById('box');
+            let color = 0;
+            const setColor = () => {
+                color = (color + 1) % 512 ;
+                let rgb = color
+                if (rgb > 255) rgb = 256-(rgb-255);
+                // console.log(rgb);
+                document.body.style.backgroundColor = 
+                    `rgb(${rgb}, ${rgb}, ${rgb})`;
+            };
+            setInterval(setColor,10); // the function setColor is called every 10ms
+
+            function getUsers() {
+                fetch('http://127.0.0.1:4080/users')
+                    .then(response => response.json())
+                    .then(users => {
+                        const usersElement = document.getElementById('users');
+                        usersElement.innerText = JSON.stringify(users);
+                    });
+            }
+        </script>
+        
+        <div id=users> </div>
+        <button onclick="getUsers()">Get Users</button>
+    </body>
+</html>

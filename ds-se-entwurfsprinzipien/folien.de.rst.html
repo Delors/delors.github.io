@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Verteilte Anwendungen&quot;, &quot;Design Principles&quot;, &quot;Architekturstile&quot;" name="keywords" />
+<meta content="Diskussion von Entwurfsprinzipien für moderne verteilte Anwendungen" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-ds-design-principles" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Entwurfsprinzipien für &lt;br&gt; Moderne Verteilte Anwendungen</title>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Entwurfsprinzipien für <span class="raw-html"><br></span> Moderne Verteilte Anwendungen</h1>
+
+<p>(<span class="eng">Design Principles and Design Patterns for Distributed Applications</span>)</p>
+<div class="line-above padding-bottom-1em docutils container">
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/ds-se-entwurfsprinzipien/folien.de.rst.html">https://delors.github.io/ds-se-entwurfsprinzipien/folien.de.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/ds-se-entwurfsprinzipien/folien.de.rst.html.pdf">https://delors.github.io/ds-se-entwurfsprinzipien/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></div>
+<div class="new-section ld-slide" id="entwurfsprinzipien">
+<h2>Entwurfsprinzipien</h2>
+</div><div class="ld-slide" id="entwurfsziele">
+<h2>Entwurfsziele</h2>
+<p>Die Entitäten (<span class="dhbw-light-gray">Klassen</span>, <span class="dhbw-gray">Module</span>, <span class="dhbw-gray">Komponenten</span>, Services…) unseres Entwurfs können:</p>
+<ul class="list-with-explanations incremental">
+<li><p>unabhängig von einander von einem “kleinen” Team iterativ entwickelt werden</p>
+<p>Dies setzt die - unabhängige Testbarkeit - voraus.</p>
+</li>
+<li><p>unabhängig von einander bereitgestellt (<span class="eng">to deploy</span>) werden</p></li>
+<li><p>unabhängig von einander gewartet und weiterentwickelt werden</p></li>
+</ul>
+<aside class="admonition warning incremental">
+<p class="admonition-title">Hinweis</p>
+<p>Diese Kriterien erlauben es uns einen <span class="ger-quote">fertigen</span> Entwurf zu beurteilen ohne zu sagen, wie das Ziel erreicht werden kann.</p>
+</aside>
+<div class="supplemental docutils container">
+<p>Die unabhängige Testbarkeit ersetzt aber nicht die Notwendigkeit von Integrationstests.</p>
+</div>
+</div><div class="center-child-elements ld-slide" id="section-1">
+<h2></h2>
+<div class="dhbw-red xxl docutils container">
+<p>Design benötigt Prinzipien!</p>
+</div>
+<div class="dhbw-gray docutils container">
+<p>Oder welche Entität ist von wem, wann, warum und in welcher Weise abhängig?</p>
+<p>Welche Entität soll mit welcher zusammen definiert werden?</p>
+<div class="dhbw-light-gray tiny docutils container">
+<p><a class="citation-reference" href="#martin2017" id="citation-reference-1" role="doc-biblioref">[Martin2017]</a></p>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Es muss Leitlinien geben, die uns helfen einen guten Entwurf zu erstellen, der die genannten Ziele erreicht. Weiterhin muss klar sein wie dieser beurteilt werden kann. d. h. Code darf nicht beliebig <span class="ger-quote">platziert</span> werden; Schnittstellen sollten nicht aus dem Bauch heraus entworfen werden.</p>
+<p>Die folgenden Prinzipien wurden (zumindest teilweise) im Kontext der objekt-orientierten Programmierung identifiziert und beschrieben; passen jedoch auf verschiedensten Abstraktionsgeraden, deswegen ist im Folgenden auch von Entitäten die Rede.</p>
+</div>
+</div><div class="ld-slide" id="kopplung-coupling">
+<h2>Kopplung (<span class="eng">coupling</span>)</h2>
+<div class="foundations docutils container">
+<p>Kopplung beschreibt die Stärke der Abhängigkeit zwischen verschiedenen Entitäten<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+</div>
+<div class="incremental docutils container">
+<p>Eine Entität E1 ist mit Entität E2 verbunden, wenn E1 direkt oder indirekt E2 benötigt.</p>
+<p><span class="incremental">Kopplung ist nicht gleich Kopplung:</span></p>
+<ul class="incremental simple">
+<li><p>statische und dynamische Kopplung</p></li>
+<li><p>Code-basierte und Daten-basierte</p></li>
+<li><p>...</p></li>
+</ul>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Eine Entität kann z. B. eine Methode, Klasse, Modul, Package, Komponente oder Service sein.</p>
+</aside>
+</aside>
+<div class="supplemental docutils container">
+<p><em>Dynamische Kopplung</em> entsteht zur Laufzeit durch den Austausch von Nachrichten, statische Kopplung zur Compilezeit.</p>
+<p>(<em>Temporale Kopplung</em> bezieht sich darauf, dass etwas gleichzeitig ausgeführt wird.)</p>
+</div>
+</div><div class="ld-slide" id="hohe-statische-kopplung-high-static-coupling">
+<h2>Hohe statische Kopplung (<span class="eng">high (static) coupling</span>)</h2>
+<p>Eine Entität mit hoher Kopplung ist nicht wünschenswert:</p>
+<ul class="simple">
+<li><p>Änderungen in verwendeten Entitäten erfordern (oft) lokale Anpassungen (mind. neues Testen)</p></li>
+<li><p>sie sind schwerer zu verstehen</p></li>
+<li><p>sie sind schwerer wiederzuverwenden, da die Verwendung auch aller weiteren Entitäten notwendig ist von denen die Entität abhängt</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Hohe Kopplung ist aber nicht per-se schlecht! Eine hohe Kopplung an Dinge, die extrem stabil sind, ist im Allgemeinen unkritisch.</p>
+</div>
+</div><div class="ld-slide" id="niedrige-statische-kopplung-low-static-coupling">
+<h2>Niedrige statische Kopplung (<span class="eng">low (static) coupling</span>)</h2>
+<ul class="simple">
+<li><p>Eine niedrige Kopplung unterstützt den Entwurf von vergleichsweise unabhängigen und deswegen besser wiederverwendbaren Entitäten.</p></li>
+<li><p><span class="ger-quote">generische</span> Entitäten mit einer hohen Wiederverwendungswahrscheinlichkeit sollten eine geringe Kopplung aufweisen.</p></li>
+</ul>
+<img alt="The Interface Segregation Principle applied to a class diagram" class="align-center" src="images/coupling/applied-isp.svg" style="width: 100%;" />
+<div class="supplemental docutils container">
+<p>Keine Kopplung ist (auch) nicht wünschenswert, da dies zu Entitäten führt, die alle Arbeit durchführen; weiterhin führt dies auch dazu, dass sich ggf. die Arbeit sehr viel schlechter aufteilen lässt und dann eine agile Entwicklung mit einem kleinen Team nicht mehr möglich ist.</p>
+<p>Relevante Frage: Wer ist/sollte der Eigentümer der Schnittstellen sein? D. h. aus welcher Perspektive sollte die Schnittstelle entworfen werden?</p>
+</div>
+</div><div class="vertical-title far-smaller ld-slide" id="niedrige-vs-hohe-dynamische-kopplung">
+<h2>Niedrige vs. hohe dynamische Kopplung</h2>
+<div class="width-100 larger docutils container">
+<div class="width-100 clearfix docutils container">
+<img alt="images/coupling/message-based-coupling.svg" class="align-left" src="images/coupling/message-based-coupling.svg" style="width: 62%;" />
+<p>Anforderung-Antwort (Synchron)</p>
+<p>(<span class="eng">Request-response</span>)</p>
+</div>
+<div class="width-100 incremental docutils container">
+<img alt="images/coupling/pub-sub-coupling.svg" class="align-right" src="images/coupling/pub-sub-coupling.svg" style="width: 75%;" />
+<p>PubSub (Asynchron)</p>
+<p>(<span class="eng">Publisher-subscriber</span>)</p>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Beobachtungen:</p>
+<p>Die Skalierbarkeit der ersten Lösung hängt direkt von der Performance von Zahlung und Inventarisierung ab. Für die Verfügbarkeit der Gesamtlösung gilt das Gleiche.</p>
+<p>PubSub ist hier deutlich mächtiger; Nachteile von PubSub liegen im Bereich:</p>
+<ul class="simple">
+<li><p>Indirektion</p></li>
+<li><p>garantierter Nachrichtenverbleib bzw. garantierte Nachrichtenverarbeitung</p></li>
+<li><p>verteilter Zustand bei Fehlern</p></li>
+</ul>
+<p>In diesem Fall führt lose Kopplung zu sehr viel höherer Komplexität bei der Fehlerbehandlung.</p>
+</div>
+</div><div class="ld-slide" id="zusammenhalt-kohasion-cohesion">
+<h2>Zusammenhalt / Kohäsion (<span class="eng">Cohesion</span>)</h2>
+<div class="foundations docutils container">
+<p>Der Zusammenhalt ist ein Maß der Stärke zwischen den Elementen einer Entität.</p>
+</div>
+<p>Ausgewählte Typen von Zusammenhalt:</p>
+<ul class="list-with-explanations incremental">
+<li><p><span class="the-green">Funktionale Kohäsion</span></p>
+<p>Die Elemente realisieren eine logische Funktion.</p>
+</li>
+<li><p>…</p></li>
+<li><p><span class="the-orange">Logische bzw. technische Kohäsion</span></p>
+<p>Die Elemente stehen aus technischer Sicht in enger Beziehung.</p>
+</li>
+<li><p><span class="shiny-red">Zufällig</span></p>
+<p>Es gibt keine relevante Beziehung zwischen den Elementen.</p>
+</li>
+</ul>
+<div class="supplemental docutils container">
+<p>Eine wesentliche Frage ist: <span class="ger-quote">Worin besteht der abgeschlossene Kontext, um etwas auf einer entsprechenden Abstraktionsebene kohäsiv erscheinen zu lassen?</span></p>
+<p>Technische Kohäsion entsteht zum Beispiel an der Schnittstelle für den Zugriff auf die Datenbank.</p>
+</div>
+</div><div class="ld-slide" id="geringer-zusammenhalt-low-cohesion">
+<h2>Geringer Zusammenhalt (<span class="eng">Low Cohesion</span>)</h2>
+<p>Entitäten mit geringem Zusammenhalt sind nicht wünschenswert!</p>
+<p>Sie sind:</p>
+<ul class="simple">
+<li><p>schwer zu verstehen</p></li>
+<li><p>schwer wiederzuverwenden</p></li>
+<li><p>schwer zu warten und oft von Änderungen betroffen</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Services mit einer geringen Kohäsion repräsentieren häufig Dinge auf sehr grober, abstrakter Ebene und haben Verantwortlichkeiten übernommen für Dinge, die sie bessere delegieren sollten.</p>
+</div>
+</div><div class="ld-slide" id="hoher-zusammenhalt-high-cohesion">
+<h2>Hoher Zusammenhalt (<span class="eng">High Cohesion</span>)</h2>
+<p>Alle Funktionalität und alle Daten sollten <span class="ger-quote">natürlich</span> zum Konzept gehören, das von der Entität realisiert wird.</p>
+</div><div class="center-child-elements ld-slide" id="section-2">
+<h2></h2>
+<div class="far-far-larger text-align-center margin-bottom-2em docutils container">
+<p>Konflikt</p>
+</div>
+<div class="three-columns box-shadow margin-bottom-2em docutils container">
+<div class="column no-separator center-child-elements docutils container">
+<div class="text-align-right docutils container">
+<p><span class="shiny-green">niedrige Kopplung</span></p>
+</div>
+</div>
+<div class="column bold xxl text-align-center no-separator incremental docutils container">
+<p>↔︎</p>
+</div>
+<div class="column no-separator center-child-elements incremental docutils container">
+<div class="width-100 docutils container">
+<p><span class="shiny-green">hohe Kohäsion</span></p>
+</div>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Eine sehr niedrige Kopplung führt zwangsweise dazu, das man zu viel Funktionalität in ein Modul/einen Service/eine Klasse/eine Funktion packt. Eine hohe Kohäsion führt zwangsweise dazu, dass man (sehr) viele Module/Services/Klassen/Funktionen benötigt, die häufig viele (starke) Kopplungen haben. Es gilt also die richtige Balance zu finden.</p>
+</div>
+</div><div class="transition-fade center-child-elements thin ld-slide" id="zusammenfassung">
+<h2>Zusammenfassung</h2>
+<div class="line-above padding-top-1em margin-top-1em far-far-larger docutils container">
+<p>Kopplung und Kohäsion erlauben es uns einen Entwurf auf allen (Abstraktions-)ebenen zu beurteilen.</p>
+</div>
+</div><div class="ld-slide" id="von-verantwortung-und-zustandigkeit">
+<h2>Von Verantwortung und Zuständigkeit</h2>
+<aside class="admonition note">
+<p class="admonition-title">Wie verteilt man die Zuständigkeiten auf verschiedene Entitäten?</p>
+<p></p>
+</aside>
+<ul class="simple">
+<li><p>Der Verteilung von Zuständigkeiten ist die zentrale Tätigkeit während des Entwurfs.</p></li>
+<li><p>Entwurfsmuster, Idiome und Prinzipien helfen dabei die Zuständigkeiten zu verteilen.</p></li>
+<li><p>Bei der Verteilung von Zuständigkeiten gibt es eine große Bandbreite:</p>
+<ul class="incremental">
+<li><p>Deswegen gibt es gute und schlechte Entwürfe, schöne und hässliche, effiziente und ineffiziente.</p></li>
+<li><p>Eine schlechte Wahl führt zu fragilen Systemen, welche schwer zu warten, zu verstehen, wiederzuverwenden oder zu erweitern sind.</p></li>
+</ul>
+</li>
+</ul>
+<div class="supplemental docutils container">
+<p>Bei der Verteilung der Zuständigkeiten gibt es eine große Bandbreite in Hinblick darauf, wie die nicht-funktionalen - und die funktionalen Eigenschaften einer Software realisiert werden.</p>
+</div>
+</div><div class="center-child-elements no-title ld-slide" id="leitgedanke-bzgl-funktionaler-kohasion">
+<h2>Leitgedanke bzgl. funktionaler Kohäsion</h2>
+<p><strong>Leitgedanke bzgl. funktionaler Kohäsion:</strong></p>
+<p><span class="far-far-larger">Code, der sich gemeinsam ändert, bleibt zusammen.</span></p>
+</div><div class="ld-slide" id="fasse-die-dinge-zusammen-die-sich-aus-dem-gleichen-grund-und-zur-selben-zeit-andern">
+<h2>Fasse die Dinge zusammen, die sich aus dem gleichen Grund und zur selben Zeit ändern.</h2>
+<img alt="Anwendung des Common Closure Principle und des Single Responsibility Principle" src="images/ccp-and-srp.svg" style="width: 100%;" />
+<div class="supplemental docutils container">
+<dl class="field-list simple">
+<dt>Single Responsibility Principle (SRP)<span class="colon">:</span></dt>
+<dd><p>Ein Modul sollte nur einem einzigen Akteur gegenüber verantwortlich sein. D. h. es sollte nur eine wohldefinierte Gruppe von Akteuren geben, die eine Veränderung veranlassen/verlangen können. Code, von dem verschiedene Akteure abhängen, sollte aufgeteilt werden.</p>
+</dd>
+<dt>Common Closure Principle (CCP)<span class="colon">:</span></dt>
+<dd><p>Fasse in Komponenten solche Klassen zusammen, die sich aus dem gleichen Grund und zur gleichen Zeit ändern. Z. B. weil sie die gleichen Stakeholder haben oder die gleichen rechtlichen Grundlagen haben.</p>
+</dd>
+</dl>
+<p>Die beiden Prinzipien sind eng miteinander verwandt. Das CCP ist ein Prinzip, das auf allen Abstraktionsgeraden angewendet werden kann. Das SRP ist - zumindest ursprünglich - ein Prinzip, das nur auf der Ebene von Klassen und Modulen angewendet wurde.</p>
+</div>
+</div><div class="center-child-elements ld-slide" id="section-3">
+<h2></h2>
+<div class="dhbw-red far-far-larger docutils container">
+<p>Dependency Inversion Principle (DIP)</p>
+</div>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<blockquote class="epigraph">
+<p>…all well-structured [object-oriented] architectures have clearly defined layers, with each layer providing some coherent set of services through a well-defined and controlled interface…</p>
+<p class="attribution">—Grady Booch</p>
+</blockquote>
+</div>
+<div class="layer incremental docutils container">
+<blockquote class="epigraph">
+<p>High-Level-Module sollten nicht von Low-Level-Modulen abhängen. Beide sollten von Abstraktionen abhängen.</p>
+<p>Abstraktionen sollten nicht von Details abhängen. Details sollten von Abstraktionen abhängen.</p>
+<p class="attribution">—Agile Software Development; Robert C. Martin; Prentice Hall, 2003</p>
+</blockquote>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p><strong>Mögliche Interpretation</strong></p>
+<p>Je höher das Modul in einer Schichtenarchitektur positioniert ist, desto allgemeiner ist die Funktion, die es implementiert.</p>
+<p>Je niedriger das Modul, desto detaillierter ist die Funktion, die es implementiert.</p>
+<p><strong>Ein Klassendesign, dass das DIP verletzt:</strong></p>
+<img alt="images/dip-layers/traditionelle-schichtenabhaengigkeit.svg" class="align-center" src="images/dip-layers/traditionelle-schichtenabhaengigkeit.svg" style="width: 60%;" />
+<p><strong>Die Einhaltung des DIP sollte auf allen Ebenen der Architektur sichergestellt werden.</strong></p>
+</div>
+</div><div class="ld-slide" id="dependency-inversion-principle">
+<h2>Dependency Inversion Principle</h2>
+<img alt="images/dip-layers/dip-konforme-schichtenabhaengigkeit.svg" class="align-center" src="images/dip-layers/dip-konforme-schichtenabhaengigkeit.svg" style="height: 1000px;" />
+<div class="supplemental docutils container">
+<p class="rubric">Begründung</p>
+<p>Gute Softwarekonzepte sind in Module gegliedert.</p>
+<p>High-Level-Module enthalten die wichtigen politischen Entscheidungen und Geschäftsmodelle einer Anwendung. Sie definieren die Identität der Anwendung.</p>
+<p>Low-Level-Module enthalten detaillierte Implementierungen einzelner Mechanismen, die zur Umsetzung der Richtlinie benötigt werden.</p>
+</div>
+</div><div class="center-child-elements no-title ld-slide" id="open-closed-principle-ocp">
+<h2>Open-closed Principle (OCP)</h2>
+<div class="dhbw-red far-far-larger docutils container">
+<p>Open-closed Principle (OCP)</p>
+</div>
+<blockquote class="epigraph">
+<p>Ein Softwareartefakt sollte offen für Erweiterungen, aber abgeschlossen gegenüber Veränderungen sein.</p>
+<p class="attribution">—Bertrand Meyer 1988, Robert C. Martin 1996</p>
+</blockquote>
+<div class="supplemental docutils container">
+<p>D. h. es sollte möglich sein neue Erweiterungen zu realisieren ohne dass man die Software verändern, rekompilieren, neu bereitstellen (<span class="eng">to deploy</span>) oder vergleichbares muss. Klassisches Beispiel ist ein Texteditor wie VS Code, welcher durch <em>Extensions</em>/<em>Plug-Ins</em> erweitert werden kann; d. h. es die Software is erweiterbar ohne das man diese neu kompilieren muss.</p>
+</div>
+</div><div class="smaller ld-slide" id="open-closed-principle-case-study">
+<h2>Open-closed Principle - Case Study</h2>
+<figure class="align-center">
+<img alt="images/ocp-example/ocp-intended-subscriber_de.svg" src="images/ocp-example/ocp-intended-subscriber_de.svg" style="width: 1750px;" />
+<figcaption>
+<p>Ist dieses Design offen für Erweiterungen?</p>
+</figcaption>
+</figure>
+<div class="supplemental docutils container">
+<p>In diesem Fall haben wir eine Architektur, die auf “Services” aufbaut welche lose gekoppelt sind und über Nachrichten kommunizieren.</p>
+</div>
+<div class="footer-left tiny docutils container">
+<p><a class="reference external" href="https://dzone.com/articles/the-open-closed-principle-at-an-architectural-leve">Beispiel nach David Llobrega, 2019</a></p>
+</div>
+</div><div class="smaller transition-scale ld-slide" id="open-closed-principle-case-study-1">
+<h2>Open-closed Principle - Case Study</h2>
+<figure class="align-center">
+<img alt="images/ocp-example/ocp-two-subscribers_de.svg" src="images/ocp-example/ocp-two-subscribers_de.svg" style="width: 1750px;" />
+<figcaption>
+<p>Ist dieses Design <em>wirklich</em> offen für Erweiterungen?</p>
+</figcaption>
+</figure>
+<div class="supplemental docutils container">
+<p>Das Problem ist, dass wir hier die Nachrichten - welche im Prinzip die Schnittstelle modellieren - relativ exakt an den Anforderungen des Services zur Bestimmung der Verfügbarkeit von Autos ausgerichtet haben.</p>
+<p>Wie sähe in diesem Fall z. B. eine Erweiterung um einen Dienst für Kundenprämienberechnung aus?</p>
+<p>Über die <span class="docutils literal">VereinbarungID</span> bekommen wir Zugriff auf die Daten des Kunden aber dies fordert dann mehr als einen <em>Lookup</em> in einer Datenbank und ggf. auch das Einbinden mehrerer Dienste, was es zu vermeiden gilt, da die Kopplung unnötig ansteigen würde.</p>
+</div>
+</div><div class="smaller transition-scale ld-slide" id="open-closed-principle-case-study-2">
+<h2>Open-closed Principle - Case Study</h2>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<img alt="images/ocp-example/ocp-multiple-subscribers_de.svg" class="align-center" src="images/ocp-example/ocp-multiple-subscribers_de.svg" style="width: 1600px;" />
+</div>
+<div class="layer overlay center-child-elements incremental docutils container">
+<div class="width-75 question docutils container">
+<p>Wie stellen wir fest welche Informationen in eine Nachricht gehören, um offen für <em>relevante</em> Erweiterungen zu sein?</p>
+</div>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Eine Antwort darauf liefern ggf. <em>Bounded-Context</em> aus dem <em>Domain-driven Design</em></p>
+<p>Ein <em>Bounded Context</em> ist ein Gültigkeitsbereich eines Domänenmodells, einer <a class="reference external" href="https://leanpub.com/ddd-referenz/read#ubiquitous-language">Ubiquitous Language</a> und die Basis für die Organisation des Projekts.[...]</p>
+<blockquote>
+<p><span class="dhbw-red">Eine Modellierung nach den Daten führt nicht zu sinnvollen Bounded Contexts, sondern eher zu komplexen Modellen. Wichtig ist, die Daten als Folge der Funktionalitäten zu modellieren.</span></p>
+</blockquote>
+<p>Domain-driven Design behandelt Beziehungen zwischen <em>Bounded Contexts</em> im sogenannten <em>Strategic Design</em>.</p>
+<p><a class="reference external" href="https://www.heise.de/hintergrund/Domain-driven-Design-und-Bounded-Context-Eigentlich-ganz-einfach-oder-4634258.html?seite=all">https://www.heise.de/hintergrund/Domain-driven-Design-und-Bounded-Context-Eigentlich-ganz-einfach-oder-4634258.html?seite=all</a></p>
+</div>
+</div><div class="center-child-elements no-title ld-slide" id="liskov-substitution-principle-lsp">
+<h2>Liskov Substitution Principle (LSP)</h2>
+<div class="dhbw-red far-far-larger docutils container">
+<p>Liskov Substitution Principle (LSP)</p>
+</div>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<blockquote class="epigraph">
+<p>Subtypes must be substitutable for their base types.</p>
+<p class="attribution">—Barbara Liskov, 1988</p>
+</blockquote>
+</div>
+<div class="layer incremental docutils container">
+<p><strong>Moderne Interpretation</strong></p>
+<p>Die Implementierungen von Schnittstellen müssen austauschbar sein.</p>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Im Original wird auf die Substituierbarkeit von Subtypen im Kontext der objekt-orientierten Programmierung eingegangen. Das Prinzip lässt sich aber auch auf andere Abstraktionsgeraden übertragen. Insbesondere auch auf die Ebene von Services deren Schnittstellen und Implementierungen.</p>
+</div>
+</div><div class="smaller ld-slide" id="interface-segregation-principle-common-reuse-principle">
+<h2>Interface Segregation Principle &amp; Common Reuse Principle</h2>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<figure>
+<img alt="images/segregation/no-segregation.svg" src="images/segregation/no-segregation.svg" style="width: 1700px;" />
+<figcaption>
+<p>(Ausgangszustand)</p>
+</figcaption>
+</figure>
+</div>
+<div class="layer incremental docutils container">
+<figure>
+<img alt="images/segregation/no-segregation-2nd-service.svg" src="images/segregation/no-segregation-2nd-service.svg" style="width: 1700px;" />
+<figcaption>
+<p>(Geplante Erweiterung)</p>
+</figcaption>
+</figure>
+</div>
+<div class="layer incremental docutils container">
+<figure>
+<img alt="images/segregation/effective-segregation.svg" src="images/segregation/effective-segregation.svg" style="width: 1700px;" />
+<figcaption>
+<p>(Teilung der Schnittstelle)</p>
+</figcaption>
+</figure>
+</div>
+</div>
+<aside class="admonition warning margin-top-1em incremental">
+<p class="admonition-title">Leitgedanke</p>
+<p>Hänge nicht von Dingen ab, die du nicht benötigst.</p>
+</aside>
+<div class="supplemental docutils container">
+<p>Segregation (<span class="ger">Abtrennung</span>) bezeichnet hier die Aufspaltung eines bestehenden Interfaces bei dem die Teile abgespalten werden, die logisch zu einer anderen Funktionalität gehören. d. h. die von der Schnittstelle zur Verfügung gestellte Funktionalität ist nicht homogen und wird deswegen in verschiedene Teile aufgeteilt.</p>
+</div>
+</div><div class="center-child-elements no-title ld-slide" id="command-query-separation-cqs">
+<h2>Command-Query Separation (CQS)</h2>
+<div class="dhbw-red far-far-larger docutils container">
+<p>Command-Query Separation (CQS)</p>
+</div>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<blockquote class="epigraph">
+<p>Methoden werden strikt aufgeteilt in:</p>
+<p><strong>Abfragen</strong> (<span class="eng">Queries</span>), die keine Veränderung des Objektzustandes erlauben</p>
+<p><strong>Kommandos</strong> (<span class="eng">Commands</span>), die den Zustand verändern, aber keine Werte zurückliefen</p>
+<p class="attribution">—Bertrand Meyer, 1988</p>
+</blockquote>
+</div>
+<div class="layer incremental center-child-elements docutils container">
+<p>Auf der Ebene von nachrichten- bzw. ereignisgetriebenen Systemen wird CQS zum CQRS erweitert (Command-Query Responsibility Segregation).</p>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Ein Java Iterator mit seiner <span class="ger-quote">next</span> Methode verletzt ganz klar dieses Prinzip!</p>
+</div>
+</div><div class="ld-slide" id="traditionelle-interaktion-mit-informationssystemen-crud">
+<h2>Traditionelle Interaktion mit Informationssystemen (CRUD)</h2>
+<div class="two-columns docutils container">
+<div class="tiny docutils container">
+<figure>
+<img alt="images/cqs_and_cqrs/crud.svg" src="images/cqs_and_cqrs/crud.svg" style="width: 1400px;" />
+<figcaption>
+<p>Darstellung nach <a class="reference external" href="https://martinfowler.com/bliki/CQRS.html">Martin Fowler</a>.</p>
+</figcaption>
+</figure>
+</div>
+<div class="scriptsize docutils container">
+<ol class="arabic simple">
+<li><p>Modell liest von DB</p></li>
+<li><p>Service stellt Information für Präsentationsschicht bereit</p></li>
+<li><p>Nutzer hat Änderung vorgenommen</p></li>
+<li><p>Weiterleitung der Änderung</p></li>
+<li><p>Modell validiert</p></li>
+<li><p>Modell aktualisiert DB</p></li>
+</ol>
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Darstellung einer Anwendung mit traditioneller Architektur.</p>
+</div>
+</div><div class="center-child-elements no-title ld-slide" id="command-query-responsibility-segregation-principle">
+<h2>Command-Query Responsibility Segregation Principle</h2>
+<div class="dhbw-red far-far-larger docutils container">
+<p>Command-Query Responsibility Segregation Principle</p>
+</div>
+<div class="two-columns docutils container">
+<div class="tiny docutils container">
+<img alt="images/cqs_and_cqrs/cqrs.svg" src="images/cqs_and_cqrs/cqrs.svg" style="width: 1400px;" />
+<p>Darstellung nach <a class="reference external" href="https://martinfowler.com/bliki/CQRS.html">Martin Fowler</a>.</p>
+</div>
+<div class="scriptsize docutils container">
+<ol class="arabic simple">
+<li><p>Abfrage-Modell liest von DB</p></li>
+<li><p>Abfrage-Service stellt Information für Präsentations- schicht bereit</p></li>
+<li><p>Nutzer hat Änderung vorgenommen</p></li>
+<li><p>Weiterleitung der Änderung</p></li>
+<li><p>Kommando-Modell validiert</p></li>
+<li><p>Kommando-Modell aktualisiert DB</p></li>
+</ol>
+</div>
+</div>
+<div class="text-align-right serif italic smaller margin-0-5em padding-right-1em docutils container">
+<p>⸺ Greg Young, 2010</p>
+</div>
+<div class="supplemental docutils container">
+<p>Command-Query-Responsibility-Segregation (CQRS) wendet das CQS-Prinzip an, indem es separate Abfrage- und Befehlsnachrichten zum Abrufen bzw. Ändern von Daten verwendet.</p>
+</div>
+</div><div class="smaller ld-slide" id="command-query-responsibility-segregation-principle-cqrs">
+<h2>Command-Query Responsibility Segregation Principle (CQRS)</h2>
+<p class="rubric">Einsatzszenarien</p>
+<ul class="incremental simple">
+<li><p>Die Anzahl an Schreibe- und Leseoperationen ist extrem unterschiedlich.</p></li>
+<li><p>Die Datenmodelle bzgl. Abfragen und <span class="ger-quote">Kommandos</span> unterscheiden sich deutlich und es kommen ggf. mehrere Datenbanken zum Einsatz.</p></li>
+<li><p>Die Validierung der Daten ist komplex.</p></li>
+</ul>
+<div class="incremental docutils container">
+<p class="rubric">Vorteile/Möglichkeiten</p>
+<ul class="incremental list-with-explanations">
+<li><p>Die Modelle können von unterschiedlichen Teams entwickelt werden (im Rahmen einzelner Services).</p></li>
+<li><p>Unterschiedliche Skalierung bzgl. Abfragen und Kommandos ist möglich.</p></li>
+<li><p>Passt sehr gut zu ereignisgetriebenen Programmiermodellen/Architekturen.</p>
+<p>Erlaubt sehr einfache Unterstützung von <em>Event Sourcing</em>.</p>
+</li>
+</ul>
+</div>
+</div><div class="new-section ld-slide" id="moderne-architekturprinzipien-fur-br-verteilte-anwendungen">
+<h2>Moderne Architekturprinzipien für <span class="raw-html"><br></span> verteilte Anwendungen</h2>
+</div><div class="center-child-elements no-title ld-slide" id="gute-anwendungsarchitekturen">
+<h2>Gute Anwendungsarchitekturen</h2>
+<div class="foundations docutils container">
+<p>Die (technischen) Ziele einer guten Anwendungsarchitektur <span class="incremental">sollten der Minimierung des Aufwands dienen, der notwendig ist, um das System zu entwickeln und zu warten bzw. weiterzuentwickeln.</span></p>
+</div>
+</div><div class="smaller ld-slide" id="ein-einfacher-restful-web-service-mit-spring">
+<h2>Ein einfacher RESTful Web Service mit Spring</h2>
+<pre class="code java tiny literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">package</span><span class="whitespace"> </span><span class="name namespace">com.example.restservice</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.concurrent.atomic.AtomicLong</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.springframework.web.bind.annotation.*</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span><span class="name decorator">&#64;RestController</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">GreetingController</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">  </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="name">String</span><span class="whitespace"> </span><span class="name">template</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string">&quot;Hello, %s!&quot;</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">  </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="name">AtomicLong</span><span class="whitespace"> </span><span class="name">counter</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">AtomicLong</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">  </span><span class="name decorator">&#64;GetMapping</span><span class="punctuation">(</span><span class="literal string">&quot;/greeting&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Greeting</span><span class="whitespace"> </span><span class="name function">greeting</span><span class="punctuation">(</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">      </span><span class="name decorator">&#64;RequestParam</span><span class="punctuation">(</span><span class="name">value</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string">&quot;name&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">defaultValue</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string">&quot;World&quot;</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">String</span><span class="whitespace"> </span><span class="name">name</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">  </span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Greeting</span><span class="punctuation">(</span><span class="name">counter</span><span class="punctuation">.</span><span class="name attribute">incrementAndGet</span><span class="punctuation">(),</span><span class="whitespace"> </span><span class="name">String</span><span class="punctuation">.</span><span class="name attribute">format</span><span class="punctuation">(</span><span class="name">template</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">name</span><span class="punctuation">));</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<div class="footer-left tiny docutils container">
+<p>Beispiel von <a class="reference external" href="http://spring.io">http://spring.io</a>.</p>
+</div>
+</div><div class="center-child-elements ld-slide" id="section-4">
+<h2></h2>
+<div class="foundations faded-to-white docutils container">
+<p>Die (technischen) Ziele einer guten Anwendungsarchitektur dienen der Minimierung des Aufwands, der notwendig ist, um das System zu entwickeln und zu warten bzw. weiterzuentwickeln.</p>
+</div>
+<div class="foundations incremental docutils container">
+<p>Eine gute Anwendungsarchitektur erlaubt es Entscheidungen, die sich <em>nicht</em> aus den Geschäftsanforderungen ergeben, zu verzögern bzw. <span class="ger-quote">leicht</span> anpassbar zu machen.</p>
+</div>
+<div class="supplemental docutils container">
+<p>Entscheidungen, die nicht am Anfang final getroffen werden sollten, da sie ggf. die Architektur dominieren:</p>
+<ul class="simple">
+<li><p>Frameworks</p></li>
+<li><p>Datenbanken</p></li>
+<li><p>Webserver</p></li>
+<li><p>Kommunikationsprotokolle</p></li>
+<li><p>...</p></li>
+</ul>
+<p>Im RESTful-Beispiel hatten wir einen technischen Service for Augen - er implementiert keine wesentliche Geschäftslogik!</p>
+</div>
+</div><div class="ld-slide" id="traditionelle-n-schichten-architektur-wiederholung">
+<h2>Traditionelle n-Schichten Architektur (Wiederholung)</h2>
+<img alt="images/n-layer-architecture.svg" class="align-center" src="images/n-layer-architecture.svg" style="height: 950px;" />
+<div class="supplemental docutils container">
+<p>Codeabhängigkeiten ergeben sich zum Beispiel beim Verwenden eines Object-relational Mappers (ORM).</p>
+<p>Solch eine Architektur war Ende der 90er/Anfang der 2000er Standard und ist für einfache Programme auch heute noch akzeptabel, da diese häufig sehr schnell zu entwickeln sind und viel Erfahrung mit dieser Architektur vorhanden ist. Besser ist es jedoch gleich eine der folgenden Architekturen anzuwenden, um ggf. vorbereitet zu sein, wenn das System wächst.</p>
+</div>
+</div><div class="ld-slide" id="hexagonal-architecture-ports-adapters">
+<h2>Hexagonal Architecture (Ports &amp; Adapters) <a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<img alt="images/hexagonal-architecture/overview.svg" class="align-center" src="images/hexagonal-architecture/overview.svg" style="height: 800px;" />
+</div>
+<div class="layer overlay incremental docutils container">
+<img alt="images/hexagonal-architecture/control-flow-overlay.svg" class="align-center" src="images/hexagonal-architecture/control-flow-overlay.svg" style="height: 800px;" />
+</div>
+<div class="layer overlay incremental docutils container">
+<img alt="images/hexagonal-architecture/code-dependency-overlay.svg" class="align-center" src="images/hexagonal-architecture/code-dependency-overlay.svg" style="height: 800px;" />
+</div>
+</div>
+<div class="text-align-right serif italic smaller margin-0-5em docutils container">
+<p>⸺ Alistair Cockburn, 2005</p>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets tiny" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://alistair.cockburn.us/hexagonal-architecture/">https://alistair.cockburn.us/hexagonal-architecture/</a> und <a class="reference external" href="https://www.thoughtworks.com/insights/blog/architecture/demystify-software-architecture-patterns">https://www.thoughtworks.com/insights/blog/architecture/demystify-software-architecture-patterns</a></p>
+</aside>
+</aside>
+<div class="supplemental docutils container">
+<p>Ziel der hexagonalen Architektur ist es die Anwendungslogik unabhängig von der UI und den Datenbanken etc. zu machen. Die Anwendungslogik/die Anwendungskomponenten sollen lose gekoppelt sein und einfach mit Ihrer Umgebung verbunden werden können durch die Nutzung von <em>Ports &amp; Adapters</em>.</p>
+<p>Für die Implementierung von <em>Primary Ports</em> werden oft <em>Inversion of Control Frameworks</em> verwendet.
+Die Implementierung von <em>Secondary Ports</em> erfordert üblicherweise den Einsatz von <em>Dependency Inversion</em>.</p>
+<p>Im Allgemeinen ist es oft notwendig in den Adaptern Entity Klassen hin und zurück <span class="ger-quote">zu Mappen</span>, um sicherzustellen, dass keine technischen Abhängigkeiten in den Kern einsickern.</p>
+<p>Die hexagonale Architektur wird von einigen als Ausgangsarchitektur für <em>Microservices</em> gesehen, da häufig einzelne Services nach diesem Architekturmuster implementiert werden.</p>
+<blockquote class="epigraph">
+<p>Meine Heransgehensweise für die Planung einer komplexen Geschäftsanwendung ist in der Regel eine Kombination aus Domain Driven Design, Microservices und hexagonaler Architektur: Einsatz von Strategic Design zur Planung von Core Domain, Sub Domains und Bounded Contexts. Aufteilung eines Bounded Contexts in einen oder mehrere Microservices. Ein Microservice kann ein oder mehrere Aggregates enthalten, aber auch den kompletten Bounded Context, sofern dieser nicht zu groß ist (und statt des gewünschten Microservices wieder ein Monolith entsteht).</p>
+<p class="attribution">—<a class="reference external" href="https://www.happycoders.eu/de/software-craftsmanship/hexagonale-architektur/">https://www.happycoders.eu/de/software-craftsmanship/hexagonale-architektur/</a></p>
+</blockquote>
+</div>
+</div><div class="ld-slide" id="onion-architecture">
+<h2><em>Onion Architecture</em> <a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></h2>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<img alt="images/onion-architecture/overview.svg" class="align-center" src="images/onion-architecture/overview.svg" style="height: 800px;" />
+</div>
+<div class="layer overlay incremental docutils container">
+<img alt="images/onion-architecture/code-dependencies-overlay.svg" class="align-center" src="images/onion-architecture/code-dependencies-overlay.svg" style="height: 800px;" />
+</div>
+</div>
+<div class="text-align-right serif italic smaller margin-0-5em docutils container">
+<p>⸺ Jeffrey Palermo, 2008</p>
+</div>
+<div class="supplemental docutils container">
+<p>Schlüssellehren der <em>Onion Architecture</em> (Zwiebelarchitektur):</p>
+<ul class="simple">
+<li><p>Die Anwendung ist rund um ein unabhängiges Objektmodel gebaut.</p></li>
+<li><p>Innere Schichten definieren Schnittstellen.</p></li>
+<li><p>Äußere Schichten implementieren Schnittstellen.</p></li>
+<li><p>Die Richtung der Kopplung ist immer in Richtung zum Zentrum!</p></li>
+<li><p>Der Anwendungskern (<em>Application Core</em>) kann immer ohne die Infrastruktur kompiliert und davon unabhängig ausgeführt werden.</p></li>
+</ul>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/">https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/</a></p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="clean-architecture-martin2017">
+<h2><em>Clean Architecture</em> <a class="citation-reference" href="#martin2017" id="citation-reference-2" role="doc-biblioref">[Martin2017]</a></h2>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<img alt="images/clean-architecture/entities-ring.svg" src="images/clean-architecture/entities-ring.svg" style="height: 800px;" />
+</div>
+<div class="layer overlay incremental docutils container">
+<img alt="images/clean-architecture/use-cases-ring.svg" src="images/clean-architecture/use-cases-ring.svg" style="height: 800px;" />
+</div>
+<div class="layer overlay incremental docutils container">
+<img alt="images/clean-architecture/controllers-ring.svg" src="images/clean-architecture/controllers-ring.svg" style="height: 800px;" />
+</div>
+<div class="layer overlay incremental docutils container">
+<img alt="images/clean-architecture/web-ring.svg" src="images/clean-architecture/web-ring.svg" style="height: 800px;" />
+</div>
+<div class="layer overlay incremental docutils container">
+<img alt="images/clean-architecture/code-abhaengigkeiten.svg" src="images/clean-architecture/code-abhaengigkeiten.svg" style="height: 800px;" />
+</div>
+<div class="layer overlay incremental docutils container">
+<img alt="images/clean-architecture/legende.svg" src="images/clean-architecture/legende.svg" style="height: 800px;" />
+</div>
+</div>
+<div class="supplemental docutils container">
+<p class="rubric">Entities</p>
+<p>Entities (<span class="ger">Entitäten</span>) kapseln unternehmensweite kritische Geschäftsregeln.</p>
+<ul class="simple">
+<li><p>Objekte mit Methoden</p></li>
+<li><p>Datastrukturen</p></li>
+<li><p>Funktionen</p></li>
+<li><p>...</p></li>
+</ul>
+<p>Entitäten sind <span class="ger-quote">Dinge</span>, die sich nicht aufgrund externer (technischer) Änderungen ändern sollten. Zum Beispiel aufgrund von geänderten Sicherheitsanforderungen oder der verwendeten Datenbank.</p>
+<p class="rubric">Use Cases</p>
+<p>Anwendungsspezifische Geschäftsregeln orchestrieren den Fluss der Daten von und zu den Entitäten; Änderungen an den Anwendungsfällen (<em>Use Cases</em>) sollten auf die Entitäten keinen Einfluss haben.</p>
+<p class="rubric">Controllers, Gateways, Presenters</p>
+<p>Die Aufgabe des Rings der Schnittstellen und Adapter ist die Konvertierung der Daten der Anwendungsfällen/Use Cases bzw. Entitäten und dem Format, dass für die externen Funktionalitäten sinnvoll ist.</p>
+<p>In diesem Ring erfolgt zum Beispiel die Implementierung des MVC Patterns für eine GUI, oder das ORM Mapping.</p>
+<p class="rubric">DBs, Web, Devices</p>
+<p>In diesem Ring befinden sich die externen Details, in der Regel gibt es hier keinen oder nur minimalen <em>Glue Code</em>.</p>
+<p class="rubric">Code Abhängigkeiten</p>
+<p>Wie bei den anderen Architekturen auch, gehen auch hier die Abhängigkeiten immer von außen nach innen. D. h. die Entitäten sind von nichts abhängig, die Anwendungsfälle von den Entitäten, die Schnittstellen von den Anwendungsfällen und die externen Details von den Schnittstellen.</p>
+</div>
+</div><div class="ld-slide" id="clean-architecture-prototypische-implementierung">
+<h2><em>Clean Architecture</em> - Prototypische Implementierung</h2>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<img alt="images/clean-architecture/uml-overview.svg" class="align-center" src="images/clean-architecture/uml-overview.svg" style="height: 800px;" />
+</div>
+<div class="layer overlay incremental docutils container">
+<img alt="images/clean-architecture/uml-kontrollfluss.svg" class="align-center" src="images/clean-architecture/uml-kontrollfluss.svg" style="height: 800px;" />
+</div>
+</div>
+<div class="supplemental docutils container">
+<p>Mit einer solchen Implementierung sind auch echte initiale Kosten verbunden - mehrere Interfaces müssen implementiert und gewartet werden. Partielle Lösungen sind denkbar, müssen aber wohl überlegt sein, um ungewünschte Abhängigkeiten zu vermeiden, die häufig zu einer schlechten Wartbarkeit und langfristigen bzw. verzögerten Kosten führen.</p>
+</div>
+</div><div class="ld-slide" id="gemeinsamkeiten-aktueller-architekturen">
+<h2>Gemeinsamkeiten aktueller Architekturen</h2>
+<ul class="incremental simple">
+<li><p>Unabhängig von Frameworks</p></li>
+<li><p>Testbar</p></li>
+<li><p>Unabhängig von der Benutzerschnittstelle</p></li>
+<li><p>Unabhängig von Datenbanken</p></li>
+<li><p>Unabhängig von jeglichen externen Agenten/Systemen</p></li>
+</ul>
+</div><div class="transition-scale ld-slide" id="literatur">
+<h2>Literatur</h2>
+<div role="list" class="citation-list">
+<div class="citation" id="martin2017" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Martin2017<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#citation-reference-1">1</a>,<a role="doc-backlink" href="#citation-reference-2">2</a>)</span>
+<p>Clean Architecture: A Craftsman's Guide to Software Structure and Design; Robert C. Martin, Addison-Wesley, 2017</p>
+</div>
+</div>
+</div>
+</body>
+</html>

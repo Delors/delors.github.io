@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta name="exercises-passwords" content="MTAwMDAw:I25/XMNUjBx87lL9ysMUsKZFu5Yr8SrTf41sb3HUHeU=:CnAfj2dJs08PhD41:dE5liiEVjkS6oo+4/O/2LSs5522WU/NHv+gy+3fwHIF4A3lYtrooQ3YbzyFDuVnIc0SCJXrt0yAlhNuJD3Lk2RtYAwm5kdnOoOkq2Sn4AW8kXahFTr4Ro+HkFjUmBa7bvxZuVA3iTDxs/HFrIqIt9hId1Znf9sbdV2K/a3jLcMyfXAPu7BdUjOzLCMb6rbY9GFXc+MWbO53H2h/YgRUndGD9TrBT5M7Z1Br7IPDLMMcmToxA3OMuL07C4ljqbLXqQwDpphJzMrjEWxg0qOjAVuCQlUo/4kz0isSe6UmZvjcqiuYoCxSdFKsmsBLk5H84fJa53RL9iuEtLcOKKW0Db2j3aLAmQuUFY49lmwqHiZqW9a0PWoyd9drLZyjXDhrRngY=" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="Public-key Cryptography" name="keywords" />
+<meta content="Public-Key Cryptography and RSA" lang="en" name="description" xml:lang="en" />
+<meta content="Public-Key Kryptografie and RSA" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-security-public_key_cryptography" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Public-Key-Kryptographie und RSA</title>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Public-Key-Kryptographie und RSA</h1>
+<dl class="docinfo simple">
+<dt class="dozent">Dozent<span class="colon">:</span></dt>
+<dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">1.0</dd>
+<dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
+<dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
+</dd>
+</dl>
+<div class="supplemental">
+<dl class="field-list simple">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><dl class="field-list simple">
+<dt>HTML<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/sec-public-key-kryptographie/folien.de.rst.html">https://delors.github.io/sec-public-key-kryptographie/folien.de.rst.html</a></p>
+</dd>
+<dt>PDF<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/sec-public-key-kryptographie/folien.de.rst.html.pdf">https://delors.github.io/sec-public-key-kryptographie/folien.de.rst.html.pdf</a></p>
+</dd>
+</dl>
+</dd>
+<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></div>
+<div class="smaller ld-slide" id="terminologie-bzgl-asymmetrischer-verschlusselung">
+<h2>Terminologie bzgl. asymmetrischer Verschlüsselung</h2>
+<ul class="incremental simple">
+<li><p>Asymmetrische Schlüssel</p></li>
+<li><p>Public-Key-Zertifikat</p></li>
+<li><p>Public-Key (asymmetrischer) kryptografischer Algorithmus</p></li>
+<li><p>Public-Key-Infrastruktur (PKI)</p></li>
+</ul>
+<div class="supplemental">
+<dl class="field-list simple">
+<dt>Asymmetrische Schlüssel<span class="colon">:</span></dt>
+<dd><p>Zwei zusammengehörige Schlüssel, ein öffentlicher und ein privater Schlüssel, die zur Durchführung komplementärer Operationen verwendet werden, z. B. Ver- und Entschlüsselung oder Signaturerstellung und Signaturprüfung.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Public-Key-Zertifikat<span class="colon">:</span></dt>
+<dd><p>Ein digitales Dokument, das mit dem privaten Schlüssel einer Zertifizierungsstelle (eng:<cite>Certification Authority</cite>) ausgestellt und digital signiert wird und den Namen eines Teilnehmers an einen öffentlichen Schlüssel bindet. Das Zertifikat gibt an, dass der im Zertifikat genannte Teilnehmer die alleinige Kontrolle und den Zugriff auf den entsprechenden privaten Schlüssel hat.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Public-Key (asymmetrischer) kryptografischer Algorithmus<span class="colon">:</span></dt>
+<dd><p>Ein kryptographischer Algorithmus, der zwei zusammengehörige Schlüssel verwendet, einen öffentlichen und einen privaten Schlüssel. Die beiden Schlüssel haben die Eigenschaft, dass die Ableitung des privaten Schlüssels aus dem öffentlichen Schlüssel rechnerisch nicht machbar ist bzw. sein sollte (vgl. Quantenkryptografie).</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Public-Key-Infrastruktur (PKI)<span class="colon">:</span></dt>
+<dd><p>Eine Reihe von Richtlinien, Prozessen, Serverplattformen, Software und Workstations, die für die Verwaltung von Zertifikaten und öffentlich-privaten Schlüsselpaaren verwendet werden, einschließlich der Möglichkeit, Public-Key-Zertifikate auszustellen, zu pflegen und zu widerrufen.</p>
+</dd>
+</dl>
+</div></div><div class="ld-slide" id="missverstandnisse-bei-der-verwendung-von-public-key-kryptosystemen">
+<h2>Missverständnisse bei der Verwendung von Public-Key-Kryptosystemen</h2>
+<ul class="incremental simple">
+<li><p>Public-Key-Verschlüsselung ist sicherer vor Kryptoanalyse als die symmetrische Verschlüsselung.</p></li>
+<li><p>Public-Key-Kryptografie (d. h. die Verschlüsselung mit öffentlichen Schlüsseln) ist eine Allzwecktechnik, die die symmetrische Verschlüsselung überflüssig gemacht hat.</p></li>
+<li><p>Man hat das Gefühl, dass die Schlüsselverteilung bei der Verschlüsselung mit öffentlichen Schlüsseln trivial ist, verglichen mit dem mühsamen Handshaking, das bei der symmetrischen Verschlüsselung mit Schlüsselverteilungszentren verbunden ist.</p></li>
+</ul>
+</div><div class="ld-slide" id="prinzipien-von-public-key-kryptosystemen">
+<h2>Prinzipien von Public-Key-Kryptosystemen</h2>
+<ul>
+<li><p>Das Konzept der <em>Public-Key-Kryptographie</em> (d. h. der Kryptografie mit öffentlichen Schlüsseln) entstand aus dem Versuch, zwei der schwierigsten Probleme im Zusammenhang mit der symmetrischen Verschlüsselung zu lösen:</p>
+<aside class="admonition admonition-schlusselverteilung">
+<p class="admonition-title">Schlüsselverteilung</p>
+<p>Wie kann man generell sicher kommunizieren, ohne einem KDC seinen Schlüssel anvertrauen zu müssen?</p>
+</aside>
+<aside class="admonition admonition-digitale-signaturen">
+<p class="admonition-title">Digitale Signaturen</p>
+<p>Wie kann man überprüfen, ob eine Nachricht unversehrt vom angegebenen Absender stammt?</p>
+</aside>
+</li>
+</ul>
+<div class="supplemental">
+<p>KDC = Key Distribution Center</p>
+</div></div><div class="transition-fade center-child-elements ld-slide" id="prinzipien-von-public-key-kryptosystemen-1">
+<h2>Prinzipien von Public-Key-Kryptosystemen</h2>
+<blockquote>
+<p><strong>Whitfield Diffie</strong> und <strong>Martin Hellman</strong> von der Stanford University erzielten 1976 einen Durchbruch, indem sie eine Methode entwickelten, die beide Probleme löste und sich radikal von allen bisherigen Ansätzen der Kryptografie unterschied.</p>
+</blockquote>
+</div><div class="ld-slide" id="bestandteile-von-public-key-kryptosystemen">
+<h2>Bestandteile von Public-Key-Kryptosystemen</h2>
+<dl class="incremental field-list simple">
+<dt><em>Klartext</em> (<span class="eng">Plaintext</span>)<span class="colon">:</span></dt>
+<dd><p>Die lesbare Nachricht oder Daten, die dem Algorithmus als Eingabe dienen.</p>
+</dd>
+<dt><em>Verschlüsselungsalgorithmus</em><span class="colon">:</span></dt>
+<dd><p>Führt verschiedene Umwandlungen des Klartextes durch.</p>
+</dd>
+<dt><em>Öffentlicher Schlüssel</em><span class="colon">:</span></dt>
+<dd><p>Wird für <em>Verschlüsselung</em> oder <em>Entschlüsselung</em> verwendet.</p>
+</dd>
+<dt><em>Privater Schlüssel</em><span class="colon">:</span></dt>
+<dd><p>Verwendet für <em>Verschlüsselung</em> oder <em>Entschlüsselung</em>.</p>
+</dd>
+<dt><em>Chiffretext</em> (<span class="eng">Ciphertext</span>)<span class="colon">:</span></dt>
+<dd><p>Die verschlüsselte Nachricht, die als Ausgabe produziert wird.</p>
+</dd>
+<dt><em>Entschlüsselungsalgorithmus</em><span class="colon">:</span></dt>
+<dd><p>Nimmt den Geheimtext und den passenden Schlüssel entgegen und erzeugt den ursprünglichen Klartext.</p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="verschlusselung-mit-offentlichem-schlussel">
+<h2>Verschlüsselung mit öffentlichem Schlüssel</h2>
+<img alt="Verschlüsselung mit öffentlichem Schlüssel" class="align-center" src="drawings/public_key_cryptography/enc_with_pub_key.svg" style="height: 925px;" />
+</div><div class="ld-slide" id="verschlusselung-mit-privatem-schlussel">
+<h2>Verschlüsselung mit privatem Schlüssel</h2>
+<img alt="Verschlüsselung mit privatem Schlüssel" class="align-center" src="drawings/public_key_cryptography/enc_with_priv_key.svg" style="height: 900px;" />
+</div><div class="smaller-slide-title ld-slide" id="konventionelle-und-public-key-verschlusselung">
+<h2>Konventionelle und Public-Key-Verschlüsselung</h2>
+<div class="two-columns smaller docutils container">
+<div class="column smaller docutils container">
+<p><strong>Konventionelle Verschlüsselung</strong></p>
+<p><em>Benötigt zur Anwendung</em>:</p>
+<ol class="arabic simple">
+<li><p>Es wird derselbe Algorithmus mit demselben Schlüssel für die Ver- und Entschlüsselung verwendet.</p></li>
+<li><p>Der Sender und der Empfänger müssen den Algorithmus und den Schlüssel kennen bzw. besitzen.</p></li>
+</ol>
+<p><em>Notwendig für die Sicherheit</em>:</p>
+<ol class="arabic simple">
+<li><p>Der Schlüssel muss geheim gehalten werden.</p></li>
+<li><p>Es muss unmöglich oder zumindest unpraktisch sein, eine Nachricht zu entschlüsseln, wenn der Schlüssel geheim gehalten wird.</p></li>
+<li><p>Die Kenntnis des Algorithmus und von (ggf. vielen) Geheimtexten ist nicht ausreichend, um den Schlüssel zu ermitteln.</p></li>
+</ol>
+</div>
+<div class="column smaller docutils container">
+<p><strong>Public-Key Verschlüsselung</strong></p>
+<p><em>Benötigt zur Anwendung</em>:</p>
+<ol class="arabic simple">
+<li><p>Zwei Algorithmen: je einer für die Ver-/Entschlüsselung. Weiterhin ein Paar von Schlüsseln; je einer für die Ver-/Entschlüsselung.</p></li>
+<li><p>Der Absender und der Empfänger müssen jeweils einen der passenden Schlüssel besitzen (nicht den gleichen).</p></li>
+</ol>
+<p><em>Notwendig für die Sicherheit</em>:</p>
+<ol class="arabic simple">
+<li><p>Einer der  Schlüssel muss geheim bleiben.</p></li>
+<li><p>Es muss unmöglich sein, eine Nachricht zu entschlüsseln, wenn ein Schlüssel geheim gehalten wird.</p></li>
+<li><p>Die Kenntnis des Algorithmus und eines Schlüssels sowie von  Geheimtexten ist nicht ausreichend, um den anderen Schlüssel zu ermitteln.</p></li>
+</ol>
+</div>
+</div>
+</div><div class="ld-slide" id="public-key-kryptosystem-vertraulichkeit">
+<h2>Public-Key-Kryptosystem: Vertraulichkeit</h2>
+<img alt="Vertraulichkeit" class="align-center" src="drawings/public_key_cryptography/confidentiality.svg" style="height: 950px;" />
+</div><div class="ld-slide" id="public-key-kryptosystem-authentifizierung">
+<h2>Public-Key-Kryptosystem: Authentifizierung</h2>
+<img alt="Authentifizierung" class="align-center" src="drawings/public_key_cryptography/authentication.svg" style="height: 950px;" />
+</div><div class="ld-slide" id="public-key-kryptosystem-authentifizierung-und-geheimhaltung">
+<h2>Public-Key-Kryptosystem: Authentifizierung und Geheimhaltung</h2>
+<img alt="Authentifizierung und Geheimhaltung" class="align-center" src="drawings/public_key_cryptography/authentication_and_secrecy.svg" style="height: 700px;" />
+</div><div class="ld-slide" id="anwendungen-fur-public-key-kryptosysteme">
+<h2>Anwendungen für Public-Key-Kryptosysteme</h2>
+<ul class="simple">
+<li><p>Kryptosysteme mit öffentlichen Schlüsseln lassen sich in drei Kategorien einteilen:</p>
+<ol class="arabic simple incremental">
+<li><p><em>Ver-/Entschlüsselung</em>: Der Absender verschlüsselt eine Nachricht mit dem öffentlichen Schlüssel des Empfängers.</p></li>
+<li><p><em>Digitale Unterschriften</em>: Der Absender <span class="ger-quote">unterschreibt</span> eine Nachricht mit seinem privaten Schlüssel.</p></li>
+<li><p><em>Schlüsselaustausch</em>: Zwei Seiten arbeiten zusammen, um einen Sitzungsschlüssel (d. h. einen symmetrischen Schlüssel) auszutauschen.</p></li>
+</ol>
+</li>
+</ul>
+<ul class="incremental simple">
+<li><p>Einige Algorithmen eignen sich für alle drei Anwendungen, während andere nur für eine oder zwei verwendet werden können.</p></li>
+</ul>
+</div><div class="ld-slide" id="anwendungen-fur-public-key-kryptosysteme-1">
+<h2>Anwendungen für Public-Key-Kryptosysteme</h2>
+<table class="incremental wobble">
+<colgroup>
+<col style="width: 30.2%" />
+<col style="width: 23.3%" />
+<col style="width: 23.3%" />
+<col style="width: 23.3%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>Algorithmus</p></th>
+<th class="head"><p>Ver-/ Entschlüsselung</p></th>
+<th class="head"><p>Digitale Signaturen</p></th>
+<th class="head"><p>Schlüssel-austausch</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>RSA</p></td>
+<td><p><span class="shiny-green">✓</span></p></td>
+<td><p><span class="shiny-green">✓</span></p></td>
+<td><p><span class="shiny-green">✓</span></p></td>
+</tr>
+<tr><td><p>Elliptic Curve</p></td>
+<td><p><span class="shiny-green">✓</span></p></td>
+<td><p><span class="shiny-green">✓</span></p></td>
+<td><p><span class="shiny-green">✓</span></p></td>
+</tr>
+<tr><td><p>Diffie-Hellman</p></td>
+<td><p><span class="shiny-red">✗</span></p></td>
+<td><p><span class="shiny-red">✗</span></p></td>
+<td><p><span class="shiny-green">✓</span></p></td>
+</tr>
+<tr><td><p>DSS</p></td>
+<td><p><span class="shiny-red">✗</span></p></td>
+<td><p><span class="shiny-green">✓</span></p></td>
+<td><p><span class="shiny-red">✗</span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="small docutils container">
+<p><em>DSS = Digital Signature Standard</em>, entwickelt von der NSA (National Security Agency)</p>
+</div>
+</div><div class="ld-slide" id="anforderungen-an-public-key-algorithmen">
+<h2>Anforderungen an Public-Key-Algorithmen</h2>
+<ul class="incremental simple">
+<li><p>Für eine Partei <span class="math">\(B\)</span> ist es rechnerisch einfach, ein Schlüsselpaar (bestehend aus öffentlicher Schlüssel <span class="math">\(PU_b\)</span> und privater Schlüssel <span class="math">\(PR_b\)</span>) zu erzeugen.</p></li>
+<li><p>Für einen Absender <span class="math">\(A\)</span> ist es rechnerisch einfach, bei Kenntnis des öffentlichen Schlüssels von <span class="math">\(B\)</span> und der zu verschlüsselnden Nachricht den entsprechenden Chiffretext zu erzeugen.</p></li>
+<li><p>Für den Empfänger <span class="math">\(B\)</span> ist es rechnerisch einfach, den resultierenden Chiffretext mit Hilfe des privaten Schlüssels zu entschlüsseln, um die ursprüngliche Nachricht wiederherzustellen.</p></li>
+<li><p>Für einen Angreifer, der den öffentlichen Schlüssel kennt, ist es <em>rechnerisch unmöglich</em>, den privaten Schlüssel zu ermitteln.</p></li>
+<li><p>Für einen Angreifer, der den öffentlichen Schlüssel und einen Chiffretext kennt, ist es <em>rechnerisch unmöglich</em>, die ursprüngliche Nachricht wiederherzustellen.</p></li>
+<li><p>Die beiden Schlüssel können in beliebiger Reihenfolge verwendet werden.</p></li>
+</ul>
+</div><div class="ld-slide" id="anforderungen-an-public-key-algorithmen-1">
+<h2>Anforderungen an Public-Key-Algorithmen</h2>
+<ul class="incremental">
+<li><p>Benötigt wird eine Falltürfunktion (<span class="ger-quote">Trapdoor-Einwegfunktion</span>)</p>
+<div class="smaller docutils container">
+<p>Eine Einwegfunktion ist eine Funktion, bei der jeder Funktionswert eine eindeutige Umkehrung hat, wobei die <em>Berechnung der Funktion einfach</em> ist, während die <em>Bestimmung der Umkehrfunktion praktisch undurchführbar ist</em>.</p>
+<ul class="simple">
+<li><p><span class="math">\(Y = f(X)\)</span> einfach</p></li>
+<li><p><span class="math">\(X = f^{–1}(Y)\)</span> <span class="ger-quote">unmöglich</span></p></li>
+</ul>
+</div>
+</li>
+<li><p>Eine Einwegfunktion mit Falltür ist eine Familie invertierbarer Funktionen <span class="math">\(f_k\)</span>, für die gilt:</p>
+<div class="smaller docutils container">
+<ul class="simple">
+<li><p><span class="math">\(Y = f_k(X)\)</span> einfach, wenn <span class="math">\(k\)</span> und <span class="math">\(X\)</span> bekannt sind.</p></li>
+<li><p><span class="math">\(X = f_k^{–1}(Y)\)</span> einfach,  wenn <span class="math">\(k\)</span> und <span class="math">\(Y\)</span> bekannt sind.</p></li>
+<li><p><span class="math">\(X = f_k^{–1}(Y)\)</span> unmöglich, wenn <span class="math">\(Y\)</span> bekannt ist, aber k nicht.</p></li>
+</ul>
+</div>
+</li>
+<li><p>Ein praktisches Public-Key-Verfahren hängt von einer geeigneten Trapdoor-Einwegfunktion ab.</p></li>
+</ul>
+<div class="supplemental">
+<p>Ein Falltürfunktion lässt sich nicht trivial umkehren; bzw. die Umkehrung erfordert spezielle (weitergehende) Informationen.</p>
+</div></div><div class="ld-slide" id="public-key-kryptoanalyse">
+<h2>Public-Key-Kryptoanalyse</h2>
+<div class="stack">
+<div class="layer">
+<p>Ein Verschlüsselungsverfahren mit öffentlichem Schlüssel ist anfällig für einen Brute-Force-Angriff.</p>
+<ul class="incremental smaller simple">
+<li><p>Gegenmaßnahme: große Schlüssel verwenden!</p></li>
+<li><p>Die Schlüsselgröße muss klein genug sein, um eine praktische Ver- und Entschlüsselung zu ermöglichen.</p></li>
+<li><p>Vorgeschlagene Schlüsselgrößen führen zu Verschlüsselungs-/Entschlüsselungsgeschwindigkeiten, die für den allgemeinen Gebrauch zu langsam sind.</p></li>
+<li><p>Die Verschlüsselung mit öffentlichen Schlüsseln ist derzeit auf die Schlüsselverwaltung und Signaturanwendungen beschränkt.</p></li>
+</ul>
+</div><div class="layer incremental">
+<p>Eine andere Form des Angriffs besteht darin, einen Weg zu finden, den privaten Schlüssel anhand des öffentlichen Schlüssels zu berechnen.</p>
+<p><em>Bislang konnte nicht mathematisch bewiesen werden, dass diese Form des Angriffs für einen bestimmten Public-Key-Algorithmus nicht durchführbar ist.</em></p>
+</div><div class="layer incremental">
+<p>Schließlich gibt es noch einen Angriff mit wahrscheinlicher Nachricht.</p>
+<p><em>Dieser Angriff kann vereitelt werden, indem einige zufällige Bits an einfache Nachrichten angehängt werden.</em></p>
+</div></div><div class="supplemental">
+<p>Bei einem Angriff mit <span class="ger-quote">wahrscheinlicher Nachricht</span>, verschlüsselt der Angreifer eine Reihe von Nachrichten (z. B. alle DES Schlüssel mit dem öffentlichen Schlüssel des Adressaten) und analysiert die resultierenden Chiffretexte, um den privaten Schlüssel zu ermitteln.</p>
+</div></div><div class="ld-slide" id="rivest-shamir-adleman-rsa-algorithm">
+<h2>Rivest-Shamir-Adleman (RSA) Algorithm</h2>
+<ul class="incremental list-with-explanations">
+<li><p>Entwickelt 1977 am MIT von Ron Rivest, Adi Shamir und Len Adleman.</p></li>
+<li><p>Universeller Ansatz zur Verschlüsselung mit öffentlichen Schlüsseln.</p></li>
+<li><p>Ist eine Chiffre, bei der Klartext und Chiffretext ganze Zahlen zwischen <span class="math">\(0\)</span> und <span class="math">\(n - 1\)</span> für ein bestimmtes <span class="math">\(n\)</span> sind.</p></li>
+<li><p>Eine typische Größe für <span class="math">\(n\)</span> waren 1024 Bits oder 309 Dezimalziffern.</p>
+<p>Solch kleine Zahlen werden heute als äußerst unsicher angesehen, insbesondere angesichts der bevorstehenden Quantencomputer und der Entwicklung von Quantenalgorithmen (vgl. <a class="reference external" href="https://en.wikipedia.org/wiki/Shor's_algorithm">Shors Algorithmus</a>), die Zahlen effizient faktorisieren können.</p>
+</li>
+</ul>
+</div><div class="ld-slide" id="rsa-algorithmus">
+<h2>RSA Algorithmus</h2>
+<ul class="incremental">
+<li><p>RSA verwendet einen Ausdruck mit Exponentialen</p></li>
+<li><p>Der Klartext wird in Blöcken verschlüsselt, wobei jeder Block einen Binärwert hat, der kleiner als eine bestimmte Zahl <span class="math">\(n\)</span> ist .</p></li>
+<li><p>Die Ver- und Entschlüsselung erfolgt für einen Klartextblock <span class="math">\(M\)</span> und einen Chiffretextblock <span class="math">\(C\)</span> in der folgenden Form:</p>
+<blockquote>
+<p><span class="math">\(C = M^e\; mod\; n\)</span></p>
+<p><span class="math">\(M = C^d\; mod\; n = (M^e)^d\; mod\; n = M^{ed}\; mod\; n\)</span></p>
+</blockquote>
+</li>
+<li><p>Sowohl der Sender als auch der Empfänger müssen den Wert von <span class="math">\(n\)</span> kennen.</p></li>
+<li><p>Der Absender kennt den Wert von <span class="math">\(e\)</span>, und nur der Empfänger kennt den Wert von <span class="math">\(d\)</span></p></li>
+<li><p>Dies ist ein Public-Key-Verschlüsselungsalgorithmus mit dem öffentlichen Schlüssel <span class="math">\(PU=\lbrace e,n \rbrace\)</span> und dem privaten Schlüssel <span class="math">\(PR=\lbrace d,n \rbrace\)</span>.</p></li>
+</ul>
+</div><div class="ld-slide" id="anforderungen-an-den-rsa-algorithmus">
+<h2>Anforderungen an den RSA Algorithmus</h2>
+<p>Damit dieser Algorithmus für die Verschlüsselung mit öffentlichen Schlüsseln geeignet ist, müssen die folgenden Anforderungen erfüllt sein:</p>
+<ol class="arabic simple incremental">
+<li><p>Es ist möglich, Werte für <span class="math">\(e\)</span>, <span class="math">\(d\)</span>, <span class="math">\(n\)</span> so zu finden, dass <span class="math">\(M^{ed}\,mod\, n = M\)</span> für alle <span class="math">\(M &lt; n\)</span>.</p></li>
+<li><p>Es ist relativ einfach, <span class="math">\(M^e\;mod\; n\)</span> und <span class="math">\(C^d\, mod\, n\)</span> für alle Werte von <span class="math">\(M &lt; n\)</span> zu berechnen.</p></li>
+<li><p>Es ist nicht möglich, <span class="math">\(d\)</span> zu bestimmen, wenn <span class="math">\(e\)</span> und <span class="math">\(n\)</span> gegeben sind.</p></li>
+</ol>
+</div><div class="ld-slide" id="the-rsa-algorithm">
+<h2>The RSA Algorithm</h2>
+<div class="two-columns slightly-more-smaller docutils container">
+<div class="docutils container">
+<p><strong>Schlüsselgenerierung von Alice</strong></p>
+<table class="align-left no-table-borders no-inner-borders incremental">
+<tbody>
+<tr><td><p>Wähle p, q</p></td>
+<td><p><span class="math">\(p\)</span> und <span class="math">\(b\)</span> beide prim, <span class="math">\(p \neq q\)</span></p></td>
+</tr>
+<tr><td><p>Berechne n</p></td>
+<td><p><span class="math">\(n = p \times q\)</span></p></td>
+</tr>
+<tr><td><p>Berechne 𝜙(n)</p></td>
+<td><p><span class="math">\(\phi(n) = (p - 1)(q - 1)\)</span></p></td>
+</tr>
+<tr><td><p>Wähle e</p></td>
+<td><p><span class="math">\(GGT(\phi(n),e) = 1; \qquad 1 &lt; e &lt; \phi(n)\)</span></p></td>
+</tr>
+<tr><td><p>Berechne d</p></td>
+<td><p><span class="math">\(d \equiv e^{-1}\; (mod\; \phi(n)) \Leftrightarrow ed\; mod\; \phi(n)= 1\)</span></p></td>
+</tr>
+<tr><td><p>Public-Key</p></td>
+<td><p><span class="math">\(PU = \lbrace e,n \rbrace\)</span></p></td>
+</tr>
+<tr><td><p>Private-Key</p></td>
+<td><p><span class="math">\(PR = \lbrace d,n \rbrace\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="width-40 docutils container">
+<div class="incremental docutils container">
+<p><strong>Verschlüsselung von Bob mit Alices öffentlichen Schlüssel</strong></p>
+<table class="no-table-borders no-inner-borders">
+<tbody>
+<tr><td><p>Klartext</p></td>
+<td><p><span class="math">\(M&lt;n\)</span></p></td>
+</tr>
+<tr><td><p>Chiffretext</p></td>
+<td><p><span class="math">\(C=M^e\; mod\; n\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="incremental docutils container">
+<p><strong>Entschlüsselung von Alice mit ihrem privaten Schlüssel</strong></p>
+<table class="no-table-borders no-inner-borders">
+<tbody>
+<tr><td><p>Chiffretext</p></td>
+<td><p><span class="math">\(C\)</span></p></td>
+</tr>
+<tr><td><p>Klartext</p></td>
+<td><p><span class="math">\(M = C^d\; mod\; n\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div><div class="ld-slide" id="beispiel-fur-den-rsa-algorithmus">
+<h2>Beispiel für den RSA-Algorithmus</h2>
+<dl class="field-list">
+<dt>p und q<span class="colon">:</span></dt>
+<dd><p><span class="math">\(p = 11; q = 17; n = 187\)</span></p>
+</dd>
+<dt>Klartext<span class="colon">:</span></dt>
+<dd><p>88</p>
+</dd>
+<dt>Verschlüsselung<span class="colon">:</span></dt>
+<dd><p><span class="math">\(PU =\lbrace e= 7, n= 187 \rbrace\)</span>:</p>
+<p><span class="math">\(88^7\;mod\; 187 = 11 = C\)</span></p>
+</dd>
+<dt>Entschlüsselung<span class="colon">:</span></dt>
+<dd><p><span class="math">\(PR =\lbrace d= 23, n = 187 \rbrace\)</span>:</p>
+<p><span class="math">\(11^{23}\; mod\; 187 = 88 = P\)</span></p>
+</dd>
+</dl>
+</div><div class="ld-slide" id="potenzierung-in-der-modularen-arithmetik">
+<h2>Potenzierung in der Modularen Arithmetik</h2>
+<ul>
+<li><p>Sowohl bei der Verschlüsselung als auch bei der Entschlüsselung in RSA wird eine ganze Zahl potenziert mit einer weiteren ganzen Zahl <span class="math">\(mod\; n\)</span></p></li>
+<li><p>Eine Eigenschaft der modularen Arithmetik kann genutzt werden:</p>
+<p><span class="math">\([(a\; mod\; n) \times (b\; mod\; n)]\; mod\; n =(a \times b)\; mod\; n\)</span></p>
+<blockquote>
+<p>Beispiel:</p>
+<p><span class="math">\(2^{11} = 2^1 \times 2^2 \times 2^8 = 2  \times  4  \times  256\)</span></p>
+<p><span class="math">\(2^9\; mod\; 13 = [(2^1\; mod\; 13) \times (2^8 \; mod\; 13)]\; mod\; 13\)</span></p>
+</blockquote>
+</li>
+<li><p>Bei RSA haben Sie es mit potenziell großen Exponenten zu tun, so dass die Effizienz der Potenzierung eine wichtige Rolle spielt.</p></li>
+</ul>
+<div class="block-footer white dhbw-gray-background text-align-center docutils container">
+<p>Wiederholung</p>
+</div>
+</div><div class="ld-slide" id="algorithmus-zur-berechnung-von-a-b-mod-n">
+<h2>Algorithmus zur Berechnung von <span class="math">\(a^b\; mod\; n\)</span></h2>
+<p class="rubric">Quadrieren und Multiplizieren (<span class="eng">Square and Multiply</span>)</p>
+<p>Die Ganzzahl <span class="math">\(b\)</span> wird als Binärzahl <span class="docutils literal"><span class="pre">b[k]b[k-1]...b[0]</span></span> ausgedrückt:</p>
+<aside class="admonition small note">
+<p class="admonition-title">Hinweis</p>
+<p><span class="docutils literal">c</span> stellt lediglich die Komponente dar.</p>
+</aside>
+<pre class="code pseudocode literal-block"><code><span class="name variable">c</span> <span class="punctuation">:</span><span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span> <span class="name variable">f</span> <span class="punctuation">:</span><span class="operator">=</span> <span class="literal number integer">1</span>
+<span class="name variable">for</span> <span class="name variable">i</span> <span class="punctuation">:</span><span class="operator">=</span> <span class="name variable">k</span> <span class="name variable">downto</span> <span class="literal number integer">0</span>
+    <span class="name variable">do</span> <span class="name variable">c</span> <span class="punctuation">:</span><span class="operator">=</span> <span class="literal number integer">2</span> <span class="operator">*</span> <span class="name variable">c</span>
+       <span class="name variable">f</span> <span class="punctuation">:</span><span class="operator">=</span> <span class="punctuation">(</span><span class="name variable">f</span> <span class="operator">*</span> <span class="name variable">f</span><span class="punctuation">)</span> <span class="operator">mod</span> <span class="name variable">n</span>
+    <span class="name variable">if</span> <span class="name variable">b</span><span class="operator">[</span><span class="name variable">i</span><span class="operator">]</span> <span class="operator">=</span> <span class="literal number integer">1</span>
+        <span class="name variable">then</span> <span class="name variable">c</span> <span class="punctuation">:</span><span class="operator">=</span> <span class="name variable">c</span> <span class="operator">+</span> <span class="literal number integer">1</span>
+             <span class="name variable">f</span> <span class="punctuation">:</span><span class="operator">=</span> <span class="punctuation">(</span><span class="name variable">f</span> <span class="operator">*</span> <span class="name variable">a</span><span class="punctuation">)</span> <span class="operator">mod</span> <span class="name variable">n</span>
+<span class="name variable">return</span> <span class="name variable">f</span></code></pre>
+</div><div class="ld-slide" id="ergebnis-des-schnellen-modularen-exponierungsalgorithmus-fur-a-b-mod-n">
+<h2>Ergebnis des schnellen modularen Exponierungsalgorithmus für <span class="math">\(a^b\;mod\;n\)</span></h2>
+<p><span class="math">\(a=7; b = 560 = 1000110000_b\)</span>, und <span class="math">\(n=561\)</span></p>
+<table style="width: 100%;">
+<colgroup>
+<col style="width: 5.7%" />
+<col style="width: 9.4%" />
+<col style="width: 9.4%" />
+<col style="width: 9.4%" />
+<col style="width: 9.4%" />
+<col style="width: 9.4%" />
+<col style="width: 9.4%" />
+<col style="width: 9.4%" />
+<col style="width: 9.4%" />
+<col style="width: 9.4%" />
+<col style="width: 9.4%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>i</p></th>
+<th class="head"><p>9</p></th>
+<th class="head"><p>8</p></th>
+<th class="head"><p>7</p></th>
+<th class="head"><p>6</p></th>
+<th class="head"><p>5</p></th>
+<th class="head"><p>4</p></th>
+<th class="head"><p>3</p></th>
+<th class="head"><p>2</p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>0</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p><span class="math">\(b_i\)</span></p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><td><p>c</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>4</p></td>
+<td><p>8</p></td>
+<td><p>17</p></td>
+<td><p>35</p></td>
+<td><p>70</p></td>
+<td><p>140</p></td>
+<td><p>280</p></td>
+<td><p>560</p></td>
+</tr>
+<tr><td><p>f</p></td>
+<td><p>7</p></td>
+<td><p>49</p></td>
+<td><p>157</p></td>
+<td><p>526</p></td>
+<td><p>160</p></td>
+<td><p>241</p></td>
+<td><p>298</p></td>
+<td><p>166</p></td>
+<td><p>67</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="effiziente-verschlusselung-mit-dem-offentlichen-schlussel">
+<h2>Effiziente Verschlüsselung mit dem öffentlichen Schlüssel</h2>
+<ul class="simple">
+<li><p>Um den RSA-Algorithmus bei Verwendung des öffentlichen Schlüssels zu beschleunigen, wird in der Regel eine bestimmte Wahl von <span class="math">\(e\)</span> getroffen:</p>
+<ul>
+<li><p>Die häufigste Wahl ist 65537 (<span class="math">\(2^{16} + 1\)</span>)</p></li>
+<li><p>Zwei weitere beliebte Wahlmöglichkeiten sind <span class="math">\(e=3\)</span> und <span class="math">\(e=17\)</span></p></li>
+<li><p>Jede dieser Möglichkeiten hat nur zwei 1-Bits, so dass die Anzahl der Multiplikationen, die für die Potenzierung erforderlich sind, minimiert wird.</p></li>
+<li><p>Mit einem sehr kleinen öffentlichen Schlüssel, wie <span class="math">\(e = 3\)</span>, wird RSA jedoch anfällig für einen einfachen Angriff.</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="effiziente-entschlusselung-mit-dem-privaten-schlussel">
+<h2>Effiziente Entschlüsselung mit dem privaten Schlüssel</h2>
+<ul>
+<li><p>Die Entschlüsselung verwendet die Potenzierung mit <span class="math">\(d\)</span>.</p></li>
+<li><p>Ein kleiner Wert von <span class="math">\(d\)</span> ist anfällig für einen Brute-Force-Angriff und für andere Formen der Kryptoanalyse.</p></li>
+<li><p>Der Chinesischen Restsatz (CRT) kann verwendet werden, um Berechnungen zu beschleunigen:</p>
+<p>Die Größen <span class="math">\(d\; mod\; (p - 1)\)</span> und <span class="math">\(d\; mod\; (q - 1)\)</span> können vorberechnet werden.</p>
+<p>Das Ergebnis ist, dass die Berechnung etwa viermal so schnell ist wie die direkte Berechnung von <span class="math">\(M = C^d\; mod\; n\)</span>.</p>
+</li>
+</ul>
+</div><div class="ld-slide" id="schlusselgenerierung">
+<h2>Schlüsselgenerierung</h2>
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
+<p>Vor der Anwendung des Public-Key-Kryptosystems muss jeder Teilnehmer ein Schlüsselpaar erzeugen:</p>
+<ul class="simple">
+<li><p>Bestimmung der Primzahlen <span class="math">\(p\)</span> und <span class="math">\(q\)</span>.</p></li>
+<li><p>Wahl von <span class="math">\(e\)</span> oder <span class="math">\(d\)</span> und Berechnung der anderen.</p></li>
+</ul>
+</div>
+<div class="column smaller padding-left-2em docutils container">
+<ul>
+<li><p>Da der Wert von <span class="math">\(n = pq\)</span> jedem potenziellen Gegner bekannt sein wird, müssen die Primzahlen aus einer ausreichend großen Menge ausgewählt werden.</p></li>
+<li><p>Die Methode, die zum Finden großer Primzahlen verwendet wird, muss einigermaßen effizient sein.</p>
+<p>Es kann z. B. der Miller-Rabin-Algorithmus verwendet werden.</p>
+</li>
+</ul>
+</div>
+</div>
+</div><div class="ld-slide" id="die-sicherheit-von-rsa-funf-mogliche-ansatze-fur-einen-angriff">
+<h2>Die Sicherheit von RSA - Fünf mögliche Ansätze für einen Angriff</h2>
+<ul class="incremental simple">
+<li><p>Brute-Force: Dabei werden alle möglichen privaten Schlüssel ausprobiert.</p></li>
+<li><p>Mathematische Angriffe: Es gibt mehrere Ansätze, die vom Aufwand her alle dem Faktorisieren des Produkts aus zwei Primzahlen entsprechen.</p></li>
+<li><p>Zeitliche Angriffe: Diese hängen von der Laufzeit des Entschlüsselungsalgorithmus ab.</p></li>
+<li><p>Hardware-Fehler-basierter Angriff: Hier geht es darum, Hardware-Fehler in den Prozessor zu induzieren, der digitale Signaturen erzeugt.</p></li>
+<li><p>Gewählte Chiffretext-Angriffe: Bei dieser Art von Angriffen werden Eigenschaften des RSA-Algorithmus ausgenutzt.</p></li>
+</ul>
+</div><div class="ld-slide" id="faktorisierungsproblem">
+<h2>Faktorisierungsproblem</h2>
+<p>Es gibt drei Ansätze für einen mathematischen Angriff auf RSA:</p>
+<ol class="arabic simple">
+<li><p>Faktorisierung von <span class="math">\(n\)</span> in seine beiden Primfaktoren. Dies ermöglicht die Berechnung von <span class="math">\(\phi(n) = (p - 1) \times (q - 1)\)</span>, was wiederum die Bestimmung von <span class="math">\(d = e^{-1} (mod\; ø(n))\)</span> ermöglicht.</p></li>
+<li><p>Direkte Bestimmung von <span class="math">\(\phi(n)\)</span>, ohne vorher <span class="math">\(p\)</span> und <span class="math">\(q\)</span> zu bestimmen. Dies ermöglicht wiederum die Bestimmung von <span class="math">\(d = e^{-1} (mod\; \phi(n))\)</span>.</p></li>
+<li><p>Direkte Bestimmung von <span class="math">\(d\)</span>, ohne vorher <span class="math">\(\phi(n)\)</span> zu bestimmen.</p></li>
+</ol>
+</div><div class="ld-slide" id="timing-angriffe">
+<h2>Timing-Angriffe</h2>
+<ul class="simple">
+<li><p>Paul Kocher, ein IT-Sicherheits-Berater, demonstrierte, dass ein Schnüffler einen privaten Schlüssel ermitteln kann, indem er verfolgt, wie lange ein Computer braucht, um Nachrichten zu entschlüsseln.</p></li>
+<li><p>Diese Angriffe sind nicht nur auf RSA, sondern auch auf andere Verschlüsselungssysteme mit öffentlichen Schlüsseln anwendbar.</p></li>
+<li><p>Solche Angriffe sind aus zwei Gründen alarmierend:</p>
+<ul>
+<li><p>Es kommt aus einer völlig unerwarteten Richtung.</p></li>
+<li><p>Es handelt sich um einen reinen Chiffretext-Angriff.</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="gegenmasznahmen-gegen-timing-angriffe">
+<h2>Gegenmaßnahmen gegen Timing-Angriffe</h2>
+<div class="smaller docutils container">
+<dl class="field-list simple">
+<dt>Konstante Potenzierungszeit<span class="colon">:</span></dt>
+<dd><p>Es gilt sicherzustellen, dass alle Potenzierungen die gleiche Zeit benötigen, bevor ein Ergebnis zurückgegeben wird; dies ist eine einfache Lösung, die jedoch die Leistung beeinträchtigt.</p>
+</dd>
+</dl>
+<dl class="inkrementell field-list simple">
+<dt>Zufällige Verzögerung<span class="colon">:</span></dt>
+<dd><p>Eine bessere Leistung könnte erreicht werden, indem man dem Potenzierungsalgorithmus eine zufällige Verzögerung hinzufügt, um den Zeitangriff zu verwirren.</p>
+</dd>
+</dl>
+<dl class="inkrementell field-list simple">
+<dt>Verschleierung<span class="colon">:</span></dt>
+<dd><p>Multiplikation des Chiffriertextes mit einer Zufallszahl vor der Potenzierung; dieser Vorgang verhindert, dass der Angreifer erfährt, welche Bits des Chiffriertextes im Computer verarbeitet werden, und verhindert somit die für den Timing-Angriff erforderliche Bit-für-Bit-Analyse.</p>
+</dd>
+</dl>
+</div>
+</div><div class="ld-slide" id="fehlerbasierter-angriff">
+<h2>Fehlerbasierter Angriff</h2>
+<p>(<span class="eng">Fault-based attack</span>)</p>
+<ul class="simple">
+<li><p>Ein Angriff auf einen Prozessor, der digitale RSA-Signaturen erzeugt.</p>
+<ul>
+<li><p>Verursacht Fehler in der Signaturberechnung, indem er die Leistung des Prozessors reduziert.</p></li>
+<li><p>Diese Fehler führen dazu, dass die Software ungültige Signaturen erzeugt, die dann vom Angreifer analysiert werden können, um den privaten Schlüssel wiederherzustellen.</p></li>
+</ul>
+</li>
+<li><p>Der Angriffsalgorithmus besteht darin, Ein-Bit-Fehler zu erzeugen und die Ergebnisse zu beobachten.</p></li>
+<li><p>Obwohl dieser Angriff eine Überlegung wert ist, scheint er in vielen Anwendungen keine ernsthafte Bedrohung für RSA darzustellen.</p>
+<ul>
+<li><p>Er setzt voraus, dass der Angreifer physischen Zugriff auf den Zielcomputer hat und in der Lage ist, die Eingangsleistung des Prozessors direkt zu kontrollieren.</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="gewahlter-chiffretext-angriff">
+<h2>Gewählter Chiffretext-Angriff</h2>
+<p>(<span class="eng">Chosen Ciphertext Attack (CCA)</span>)</p>
+<ul class="simple">
+<li><p>Der Angreifer wählt eine Reihe von Chiffretexten aus und erhält dann die entsprechenden Klartexte, die mit dem privaten Schlüssel des Ziels entschlüsselt wurden.</p>
+<ul>
+<li><p>Der Angreifer könnte also einen Klartext auswählen, ihn mit dem öffentlichen Schlüssel des Ziels verschlüsseln und dann den Klartext zurückerhalten, indem er ihn mit dem privaten Schlüssel entschlüsselt.</p></li>
+<li><p>Der Angreifer macht sich die Eigenschaften von RSA zunutze und wählt Datenblöcke aus, die, wenn sie mit dem privaten Schlüssel des Ziels verarbeitet werden, die für die Kryptoanalyse benötigten Informationen liefern.</p></li>
+</ul>
+</li>
+<li><p>Um solche Angriffe abzuwehren, empfiehlt RSA Security Inc., den Klartext mit einem Verfahren zu modifizieren, das als optimales asymmetrisches Verschlüsselungs-Padding (OAEP) bekannt ist</p></li>
+</ul>
+</div><div class="integrated-exercise ld-slide" id="ubung">
+<h2>Übung</h2>
+<ol class="arabic">
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1" id="ld-exercise-1">
+<p class="rubric">Führen Sie den Square-and-Multiply Algorithmus für <span class="math">\(3^{17}\, mod\, 23\)</span> aus.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:w1RTt/MSn9ybGNo9KaWAmpo7xVhlFF4zFGfSX9bm+i0=:SCWefVcfkhhBJ2Fu:SB87Z+sJF63e5K8wkVGsFBfdxuwXX2HG87zEaggXIOnODVaBRsiy2f57grrImyy4dCGeWrahrjGw8GAV6OxrdM2kJcbr2hDXWoMB7Zifzl104EXLSk3ZOX4eYwCoKxxrkcFW/fiF8bGHdv8cqA4DnMOYAmm53EYipP3MrBmZp0cM6CZ4DcTfYF9sHfCGHQxxHk6TVVrXxVolZWJPvejUQRw+KRHJNxn7k9/aHVvpUicnkcKG30cBcaLDU3jakZ8PwaS0rAdLHUiGeWEeb/ugYZPy4DpqfU8UIpA=</div>
+</div>
+</li>
+<li><p></p>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2" id="ld-exercise-2">
+<p class="rubric">Verschlüsseln Sie eine Nachricht mit RSA.</p>
+<p>D. h., wählen Sie 2 kleine Primzahlen, berechnen Sie dann <span class="math">\(e\)</span>, <span class="math">\(d\)</span>, <span class="math">\(n\)</span>. Verschlüsseln Sie dann die Nachricht (d. h. einen (eher) kleinen Wert) mit dem öffentlichen Schlüssel einer anderen Person und senden Sie der Person die verschlüsselte Nachricht. Die Zielperson soll Ihre Nachricht entschlüsseln. Überprüfen Sie anschließend, ob die Verschlüsselung erfolgreich war.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:RlsQu8MwJzCBx6Ia4V4cuJxmE4NaobZKbuHMuFqUAHk=:ji03zQa65uVuPPj5:G/0YjLYw5b5/UhWGWYWfz3jz954Sftm1E8ffRxT3LueoL/Ybu40grFcw/cyfJFOIsHzhdD7VDK+HqJOYIzprfIAkIqj76A59oLw59vPxVoKhTgdz8wmjDoEGm7SRd8eASXigDQ7y9mbDfurpscq0tosq2r+/rMrCZqwPm84AG9FXOvI5Cq/Wut0dynOVpJmeGXnWWWv6UvlvoyJWA3Sp6VNEV8VMOrYe9WjS1yaWmf1eUEYhyChxPGZ53ZrTLbylP8btWTf0gNQWV+Yf/2NAbzZj/TEJs7v3eamjd4P9Gq7/n9klsPormILI+ITLGK8622b6sn2/xnMUTcxGqWcNJUPgGHK+UQAZ/Xuj1n5SXKem7CGNIvfkSu4gEaGUVkiB/pXLCI75gZBdZ2yuxTBwaBCvMnQSfrT3+P6QQpOiOMfC7+DHY+i2Jcbr0iJ5Qn303NJ8uxxgsCRqAj3ZFUMrHTj0gxLvSSxlcNA4r02SpTN4BZkeKvcEPPd9WFY+Fdd/5zSwRKVupHfim9Wt5zKYsWV+TvJxUctXmnCTSbpjbBqK55nvbRHVg33dpPUr/6DT7t/keYiiTVo8YPtlZVYSqbR+jppBJlTwNZZkwJaU7kSr2igI1f7vjy07fIQ8dln/Q6PdglDVSC413IdeMcuW+aJ9GTWRSAVstLJJyqGuRqL2e6FKZCwAgKSA4iGlEiY5LqNa8rDe/hFUoDbhdETY77mqtvl1rXN4vwiVGYBqt3tnJA5p4djdUCfxDnVe511OJzvXEBpGs2xlWOOkx/IQ0fmfhFFi0VjjhQPD+olgHXIwExfI+C1/90oSCHb82ufezsRAABKUtHNf74F2XdKnc7p5jaktHgAzsWr833J1pUH2YItMEYxRMrvXM3KLi300vS3pO+geHq/I2UzvHuU+nfHWdAkSZgSOH2qjR5MXpsPPSt9hEdlVcFIx1pfZTqljqAhb1nICBNxu3DCTeh3YcjfylnU037MFlCJuzDZbDmpv0XSclwFJ4nxlXhyNNMx1Rx4XOGsmv4oYPvaNjVBYMANEo7tEzwjRjWbcpB5bwrwAq3xatCNQxDqfzmZqh4o0Ut3GoE9BpGQSLG2ZL/oAlb4lp49jr+XwUHBVNy8GzcRo5QhfCSf8C7IYiZZjKzI8sXCClaXC1SsR5wBLCXDDGkWz/jYbZOmLaNRUOCik1KGw8U1rXcYAo1teJ4mbwNF0ADe+91uU7dnLfN05bFFJnnTy68zE5vAduyHfN+Jer5YAQSeFZ9Cbp6WbuxRPnJ85j4KnkEEgGRQ1YckIXjsKVaDxqpdMtwTh4IvYDKV4SS4eonVYY/s+cF+zZja5fbIpWwMka91MrQmq6NrUfjyFCkVGN/mkz9iSvcjNUzdNYtw0CvlnqJSSFEgjZqH1uAT0hzh2Lg92gU6nttlFTpAIrPsU4j2Rg2tsc41Fj/e2k4/a1hjg9hHPtiW2rwwpE0lopeKw6y8PFvKcLqcTtZ7+R3KpOuXSmC2SbZV8/nzSTRKtFoHGasgedAJEy5yWGNDnm0h0SlyJoYouMudU1wSwHXEiYdcBveMKbOOAal5RPYKEXtxbdtvelXSbWA==</div>
+</div>
+</li>
+</ol>
+</div>
+</body>
+</html>

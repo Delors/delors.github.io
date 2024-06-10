@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta name="exercises-passwords" content="MTAwMDAw:wtZu7zixN+VxgsxQWLCi0l4KEyr7yJz/TEQn5emRweo=:HxoMMdLAaAaFrRfG:IK8mjHw/xUoMg8okoYjSVwZAVyra05PBEtsvxzs8DFBq2Wdm0c7mSHV5viixr4A83Tr0aUt/lmW0EQtp9JuIOEnsEvTKb+vjDoguaIS+sffGPJHEMVUH4d/eTFmV/sVjszUdloYpwSNiR58rtu/N3Qbeou86Ar4Td5XLQ73FF+3QpvocJmbjFuI2RBDfU/mYAr5vfp1kYn4YlVxXvt6A9rLyD5E9SKAai+lJa6UdeFo3uLL218nKiddamnFz3mgRgsfZ8sbyqWgeYKAv1qmwHekDplpD7U5JKGBDoxTAVaV9CuOTZXnX5+j54wFz1IcIthLAdvKSXYVu/fys827EGzkiVzdhjpFo+zgAq1vMWuX42dewDThgMHusgQJ2y0WyMGyyhzQCMfr3TUt2RWKbYdLIbr4VFXZI76V2jcYkwnOybTpNZKJMjcXyd4TShBhUTIcvjiwYC745QOYPQepwBNHePbZBZ89fb/aT5ukpVlge5GtibQU7zDQK5K0zSZC+zQVYbH5Mf2hk5hP9YSYf7tLU5lYW" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Middleware&quot;, &quot;RPC&quot;, &quot;RMI&quot;, &quot;MoM&quot;" name="keywords" />
+<meta content="Middleware" lang="de" name="description" xml:lang="de" />
+<meta content="Middleware" lang="en" name="description" xml:lang="en" />
+<meta content="lecture-ds-middleware" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Middleware</title>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Middleware</h1>
+
+<div class="line-above margin-top-1em padding-top-1em docutils container">
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<dl class="field-list simple">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><dl class="field-list simple">
+<dt>HTML<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/ds-middleware/folien.de.rst.html">https://delors.github.io/ds-middleware/folien.de.rst.html</a></p>
+</dd>
+<dt>PDF<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/ds-middleware/folien.de.rst.html.pdf">https://delors.github.io/ds-middleware/folien.de.rst.html.pdf</a></p>
+</dd>
+</dl>
+</dd>
+<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></div>
+<div class="new-section transition-fade ld-slide" id="einfuhrung-in-middleware">
+<h2>Einführung in Middleware</h2>
+</div><div class="center-child-elements ld-slide" id="was-ist-middleware">
+<h2>Was ist Middleware?</h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Middleware ist eine Klasse von Software-Technologien, die dazu dienen,</p>
+<ol class="upperroman simple">
+<li><p>die Komplexität und</p></li>
+<li><p>die Heterogenität verteilter Systeme zu verwalten.</p></li>
+</ol>
+</aside>
+</div><div class="tiny ld-slide" id="ein-einfacher-server-mit-sockets-in-c">
+<h2>Ein einfacher Server mit Sockets (in C)</h2>
+<div class="stack smaller docutils container">
+<div class="layer docutils container">
+<pre class="code C copy-to-clipboard literal-block"><code><span class="comment multiline">/* A simple TCP based server. The port number is passed as an argument */</span><span class="whitespace">
+</span><span class="comment preproc">#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;stdio.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/types.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/socket.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;netinet/in.h&gt;</span><span class="comment preproc">
+</span><span class="whitespace">
+</span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">error</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">msg</span><span class="punctuation">){</span><span class="name">perror</span><span class="punctuation">(</span><span class="name">msg</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">);}</span><span class="whitespace">
+
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">argc</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">argv</span><span class="punctuation">[]){</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">newsockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">portno</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">clilen</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="name">buffer</span><span class="punctuation">[</span><span class="literal number integer">256</span><span class="punctuation">];</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">n</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr_in</span><span class="whitespace"> </span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">cli_addr</span><span class="punctuation">;</span><span class="whitespace">
+
+  </span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">socket</span><span class="punctuation">(</span><span class="name">AF_INET</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">SOCK_STREAM</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// socket() returns a socket descriptor
+</span><span class="whitespace">  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+  </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR opening socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="name">bzero</span><span class="punctuation">((</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">));</span><span class="whitespace"> </span><span class="comment single">// bzero() sets all values to zero.
+</span><span class="whitespace">  </span><span class="name">portno</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">atoi</span><span class="punctuation">(</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]);</span><span class="whitespace"> </span><span class="comment single">// atoi() converts str into an integer
+</span><span class="whitespace">
+  </span><span class="punctuation">...</span></code></pre>
+</div>
+<div class="layer incremental docutils container">
+<pre class="code C copy-to-clipboard literal-block"><code><span class="whitespace">  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_family</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">AF_INET</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_addr</span><span class="punctuation">.</span><span class="name">s_addr</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">INADDR_ANY</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_port</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">htons</span><span class="punctuation">(</span><span class="name">portno</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bind</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+  </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR on binding&quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">listen</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="literal number integer">5</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// tells the socket to listen for connections
+</span><span class="whitespace">  </span><span class="name">clilen</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">cli_addr</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">newsockfd</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">accept</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">cli_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">clilen</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">newsockfd</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR on accept&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="name">bzero</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">256</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">read</span><span class="punctuation">(</span><span class="name">newsockfd</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">255</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">n</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR reading from socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Here is the message: %s</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">write</span><span class="punctuation">(</span><span class="name">newsockfd</span><span class="punctuation">,</span><span class="literal string">&quot;I got your message&quot;</span><span class="punctuation">,</span><span class="literal number integer">18</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">n</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR writing to socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">return</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div>
+</div>
+<div class="block-footer text-align-center dhbw-gray-background white docutils container">
+<p>Motivation</p>
+</div>
+</div><div class="tiny ld-slide" id="ein-einfacher-client-mit-sockets-in-c">
+<h2>Ein einfacher Client mit Sockets (in C)</h2>
+<div class="stack smaller">
+<div class="layer">
+<pre class="code c copy-to-clipboard literal-block"><code><span class="comment preproc">#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;stdio.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/types.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;sys/socket.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;netinet/in.h&gt;</span><span class="comment preproc">
+#include</span><span class="whitespace"> </span><span class="comment preprocfile">&lt;netdb.h&gt;</span><span class="comment preproc">
+</span><span class="whitespace">
+</span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">error</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">msg</span><span class="punctuation">){</span><span class="whitespace"> </span><span class="name">perror</span><span class="punctuation">(</span><span class="name">msg</span><span class="punctuation">);</span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">);}</span><span class="whitespace">
+
+</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">argc</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">argv</span><span class="punctuation">[]){</span><span class="whitespace">
+  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">sockfd</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">portno</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">n</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">sockaddr_in</span><span class="whitespace"> </span><span class="name">serv_addr</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword">struct</span><span class="whitespace"> </span><span class="name class">hostent</span><span class="whitespace"> </span><span class="operator">*</span><span class="name">server</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="name">buffer</span><span class="punctuation">[</span><span class="literal number integer">256</span><span class="punctuation">];</span><span class="whitespace">
+
+  </span><span class="name">portno</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">atoi</span><span class="punctuation">(</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">2</span><span class="punctuation">]);</span><span class="whitespace">
+
+  </span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">socket</span><span class="punctuation">(</span><span class="name">AF_INET</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">SOCK_STREAM</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">sockfd</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+    </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR opening socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="punctuation">...</span></code></pre>
+</div><div class="layer incremental">
+<pre class="code c literal-block"><code><span class="whitespace">  </span><span class="punctuation">...</span><span class="whitespace">
+
+  </span><span class="name">server</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">gethostbyname</span><span class="punctuation">(</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]);</span><span class="whitespace">
+  </span><span class="name">bzero</span><span class="punctuation">((</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">));</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_family</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">AF_INET</span><span class="punctuation">;</span><span class="whitespace">
+  </span><span class="name">bcopy</span><span class="punctuation">((</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="name">server</span><span class="operator">-&gt;</span><span class="name">h_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_addr</span><span class="punctuation">.</span><span class="name">s_addr</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">server</span><span class="operator">-&gt;</span><span class="name">h_length</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">serv_addr</span><span class="punctuation">.</span><span class="name">sin_port</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">htons</span><span class="punctuation">(</span><span class="name">portno</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">connect</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="operator">&amp;</span><span class="name">serv_addr</span><span class="punctuation">,</span><span class="keyword">sizeof</span><span class="punctuation">(</span><span class="name">serv_addr</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR connecting&quot;</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Please enter the message: &quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">bzero</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">256</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">fgets</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">255</span><span class="punctuation">,</span><span class="name">stdin</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">write</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">,</span><span class="name">strlen</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">));</span><span class="whitespace">
+  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">n</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">error</span><span class="punctuation">(</span><span class="literal string">&quot;ERROR writing to socket&quot;</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">bzero</span><span class="punctuation">(</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">256</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">read</span><span class="punctuation">(</span><span class="name">sockfd</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">,</span><span class="literal number integer">255</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;%s</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="name">buffer</span><span class="punctuation">);</span><span class="whitespace">
+
+  </span><span class="keyword">return</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div></div><div class="block-footer text-align-center dhbw-gray-background white docutils container">
+<p>Motivation</p>
+</div>
+</div><div class="ld-slide" id="probleme-bei-der-verwendung-von-sockets">
+<h2>Probleme bei der Verwendung von Sockets</h2>
+<p>Wir müssen uns kümmern um …</p>
+<ul class="incremental negative-list list-with-explanations">
+<li><p>… die Einrichtung eines Kanals und alle Fehler, die während dieses Prozesses auftreten können.</p></li>
+<li><p>… die Festlegung eines Protokolls.</p>
+<p>Wer sendet was, wann, in welcher Reihenfolge und welche Antwort wird erwartet?</p>
+</li>
+<li><p>… Nachrichtenformate</p>
+<p>Umwandlung von Daten der Anwendungsebene in Bytes, die über das Netz übertragen werden können.</p>
+</li>
+</ul>
+<div class="block-footer text-align-center dhbw-gray-background white docutils container">
+<p>Motivation</p>
+</div>
+</div><div class="ld-slide" id="middleware-als-programmierabstraktion">
+<h2>Middleware als Programmierabstraktion</h2>
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
+<ul class="simple">
+<li><p>Eine Softwareschicht oberhalb des Betriebssystems und unterhalb des Anwendungsprogramms, die eine gemeinsame Programmierabstraktion in einem verteilten System bietet.</p></li>
+<li><p>Ein Baustein auf höherer Ebene als die vom Betriebssystem bereitgestellten APIs (z. B. Sockets)</p></li>
+</ul>
+</div>
+<div class="column docutils container">
+<img alt="images/middleware.svg" class="align-center" src="images/middleware.svg" style="height: 1100px;" />
+</div>
+</div>
+</div><div class="ld-slide" id="middleware-als-programmierabstraktion-1">
+<h2>Middleware als Programmierabstraktion</h2>
+<p>Die von Middleware angebotenen Programmierabstraktionen verbergen einen Teil der Heterogenität und bewältigen einen Teil der Komplexität, mit der Programmierer einer verteilten Anwendung umgehen müssen:</p>
+<ul class="incremental positive-list simple">
+<li><p>Middleware maskiert immer die Heterogenität der zugrundeliegenden Netzwerke und Hardware.</p></li>
+<li><p>Middleware maskiert meistens die Heterogenität von Betriebssystemen und/oder Programmiersprachen.</p></li>
+<li><p><span class="minor">Manche Middleware maskiert sogar die Heterogenität zwischen den Implementierungen des gleichen Middleware-Standards durch verschiedene Hersteller</span>.</p></li>
+</ul>
+<div class="supplemental">
+<p>Alte Middlewarestandards – wie zum Beispiel CORBA – waren sehr komplex und die Implementierungen verschiedener Hersteller meist nicht vollständig kompatibel.</p>
+</div></div><div class="ld-slide" id="transparenzziele-von-middleware-aus-sicht-der-programmierung">
+<h2>Transparenzziele von Middleware aus Sicht der Programmierung</h2>
+<p>Middleware bietet (beim Programmieren) Transparenz in Bezug auf eine oder mehrere der folgenden Dimensionen:</p>
+<ul class="simple">
+<li><p>Standort</p></li>
+<li><p>Nebenläufigkeit</p></li>
+<li><p>Replikation</p></li>
+<li><p>Ausfälle (bedingt)</p></li>
+</ul>
+<div class="assessment margin-top-2em docutils container">
+<p>Middleware ist die Software, die ein verteiltes System (DS) programmierbar macht.</p>
+</div>
+</div><div class="ld-slide" id="middleware-als-infrastruktur">
+<h2>Middleware als Infrastruktur</h2>
+<ul class="incremental list-with-explanations">
+<li><p>Hinter Programmierabstraktionen steht eine komplexe Infrastruktur, die diese Abstraktionen implementiert</p>
+<p>Middleware-Plattformen können sehr komplexe Softwaresysteme sein.</p>
+</li>
+<li><p>Da die Programmierabstraktionen immer höhere Ebenen erreichen, muss die zugrunde liegende Infrastruktur, die die Abstraktionen implementiert, entsprechend wachsen.</p></li>
+<li><p>Zusätzliche Funktionalität wird fast immer durch zusätzliche Softwareschichten implementiert.</p></li>
+<li><p>Die zusätzlichen Softwareschichten erhöhen den Umfang und die Komplexität der für die Nutzung der neuen Abstraktionen erforderlichen Infrastruktur.</p></li>
+</ul>
+<div class="supplemental">
+<p>Seit Jahrzehnten kann beobachtet werden, dass Middleware immer komplexer wird bzw. wurde bis zu dem Punkt an dem die Komplexität kaum mehr beherrschbar war. Zu diesen Zeitpunkten wurden dann häufig neue Ansätze entwickelt, die die Komplexität reduzierten bis diese wiederum Eingang in komplexere Middleware-Produkten Eingang fand.</p>
+<p>Ansätze, wie z. B. REST, haben sich als recht erfolgreich erwiesen stellen aber Entwickler vor neue Herausforderungen.</p>
+</div></div><div class="ld-slide" id="middleware-und-nicht-funktionale-anforderungen">
+<h2>Middleware und nicht-funktionale Anforderungen</h2>
+<p>Die Infrastruktur kümmert sich um nicht-funktionale Eigenschaften, die normalerweise von Datenmodellen, Programmiermodellen und Programmiersprachen ignoriert werden:</p>
+<ul class="simple">
+<li><p>Performance</p></li>
+<li><p>Verfügbarkeit</p></li>
+<li><p>Ressourcenmanagement</p></li>
+<li><p>Zuverlässigkeit</p></li>
+<li><p>usw.</p></li>
+</ul>
+</div><div class="ld-slide" id="middleware-als-infrastruktur-1">
+<h2>Middleware als Infrastruktur</h2>
+<p>Middleware unterstützt zusätzliche Funktionen die die Entwicklung, Wartung und Überwachung einfacher und kostengünstiger machen (Auszug):</p>
+<ul class="incremental">
+<li><p>Protokollierung (<span class="eng">Logging</span>)</p></li>
+<li><p>Wiederherstellung (<span class="eng">Recovery</span>)</p></li>
+<li><p>Sprachprimitive für transaktionale Abgrenzung</p>
+<p>(<span class="minor">Bzw. fortgeschrittene Transaktionsmodelle (z. B. transaktionale RPC) oder transaktionale Dateisysteme</span>)</p>
+</li>
+</ul>
+</div><div class="smaller-slide-title ld-slide" id="konzeptionelle-darstellung-historischer-middleware">
+<h2>Konzeptionelle Darstellung (historischer) Middleware</h2>
+<div class="footer-left x-tiny minor docutils container">
+<p>Darstellung nach: Alonso; Web services: Concepts, Architectures and Applications; Springer, 2004</p>
+</div>
+<img alt="images/historische-middleware-konzeptuell.svg" class="align-center" src="images/historische-middleware-konzeptuell.svg" style="height: 900px;" />
+<div class="supplemental">
+<p>Insbesondere die explizite Erzeugung von Stubs und Skeletons durch einen IDL Compiler erfolgt so in der heutigen Zeit nicht mehr. Die Erzeugung von Stubs und Skeletons - wenn überhaupt erforderlich - erfolgt heute automatisch durch die Middleware.</p>
+</div></div><div class="vertical-title ld-slide" id="historische-entwicklung-von-middleware">
+<h2>Historische Entwicklung von Middleware</h2>
+<img alt="images/historic_middleware_technologies.svg" class="align-center" src="images/historic_middleware_technologies.svg" style="height: 1150px;" />
+</div><div class="ld-slide" id="entwicklung-von-middleware">
+<h2>Entwicklung von Middleware</h2>
+<ul class="simple">
+<li><p>Middleware beabsichtigt die Details der Hardware, der Netze und der Verteilung auf niedriger Ebene zu verbergen.</p></li>
+<li><p>Anhaltender Trend zu immer leistungsfähigeren Primitiven (<em>Events</em>), die zusätzliche Eigenschaften haben oder eine flexiblere Nutzung des Konzepts ermöglichen.</p></li>
+<li><p>Die Entwicklung und das Erscheinungsbild für den Programmierer wird von den Trends in den Programmiersprachen diktiert:</p>
+<ul>
+<li><p>RPC und C</p></li>
+<li><p>CORBA und C++</p></li>
+<li><p>RMI (Corba) und Java</p></li>
+<li><p><span class="ger-quote">Klassische</span> Webservices und XML</p></li>
+<li><p>RESTful Webservices und JSON</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="no-title center-child-elements ld-slide" id="middleware-high-level-view">
+<h2>Middleware - High-level View</h2>
+<div class="huge dhbw-red padding-1em dhbw-light-gray-background rounded-corners docutils container">
+<p>Eine Middleware stellt eine umfassende Plattform für die Entwicklung und den Betrieb komplexer verteilter Systeme zur Verfügung.</p>
+</div>
+</div><div class="new-section transition-scale ld-slide" id="middleware-technologien">
+<h2>Middleware-Technologien</h2>
+</div><div class="new-subsection transition-move-left ld-slide" id="remote-procedure-calls-rpcs">
+<h2>Remote Procedure Calls (RPCs)</h2>
+</div><div class="ld-slide" id="remote-procedure-call-rpc">
+<h2>Remote Procedure Call (RPC)</h2>
+<div class="huge text-align-center black-background rounded-corners padding-1em white box-shadow margin-top-1em docutils container">
+<p>Schwerpunkt: verstecken der Netzkommunikation.</p>
+</div>
+<div class="incremental margin-top-2em docutils container">
+<p>Ein Prozess kann eine Prozedur aufrufen deren Implementierung sich auf einem entfernten Rechner befindet:</p>
+<ul class="simple">
+<li><p>Programmierer von verteilten Systemen müssen sich nicht mehr um alle Details der Netzwerkprogrammierung kümmern (d. h. keine <span class="ger-quote">expliziten</span> Sockets mehr).</p></li>
+<li><p>Überbrückung der konzeptionellen Lücke zwischen dem Aufruf lokaler Funktionalität über Prozeduren und dem Aufruf entfernter Funktionalität über Sockets.</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="rpcs-konzeptionell-synchrone-kommunikation">
+<h2>RPCs konzeptionell (synchrone Kommunikation)</h2>
+<div class="two-columns docutils container">
+<div class="docutils container">
+<ul class="simple">
+<li><p>Ein Server ist ein Programm, das bestimmte Dienste implementiert.</p></li>
+<li><p>Cients möchten diese Dienste in Anspruch nehmen:</p>
+<ul class="incremental">
+<li><p>Die Kommunikation erfolgt durch das Senden von Nachrichten (kein gemeinsamer Speicher, keine gemeinsamen Festplatten usw.)</p></li>
+<li><p>Einige minimale Garantien müssen gegeben werden (Behandlung von Fehlern, Aufrufsemantik, usw.)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<img alt="images/rpc_konzeptionell.svg" class="align-center" src="images/rpc_konzeptionell.svg" style="height: 900px;" />
+</div>
+</div><div class="ld-slide" id="rpcs-zentrale-fragestellungen-und-herausforderungen">
+<h2>RPCs - zentrale Fragestellungen und Herausforderungen</h2>
+<div class="stack">
+<div class="layer">
+<p>Sollen entfernte Aufrufe transparent oder nicht transparent für den Entwickler sein?</p>
+<blockquote>
+<p>Ein entfernter Aufruf ist etwas völlig anderes als ein lokaler Aufruf; sollte sich der Programmierer dessen bewusst sein?</p>
+</blockquote>
+</div><div class="layer incremental">
+<p>Wie können Daten zwischen Maschinen ausgetauscht werden, die möglicherweise unterschiedliche Darstellungen für verschiedene Datentypen verwenden?</p>
+</div><div class="layer incremental">
+<p>Komplexe Datentypen müssen linearisiert werden:</p>
+<dl class="field-list simple">
+<dt><strong>Marshalling</strong><span class="colon">:</span></dt>
+<dd><p>der Prozess des Aufbereitens der Daten in eine für die Übermittlung in einer Nachricht geeignete Form.</p>
+</dd>
+<dt><strong>Unmarshalling</strong><span class="colon">:</span></dt>
+<dd><p>der Prozess der Wiederherstellung der Daten bei ihrer Ankunft am Zielort, um eine originalgetreue Repräsentation zu erhalten.</p>
+</dd>
+</dl>
+</div><div class="layer incremental">
+<p>Wie findet und bindet man den Dienst, den man tatsächlich will, in einer potenziell großen Sammlung von Diensten und Servern?</p>
+<p>Das Ziel ist, dass der Kunde nicht unbedingt wissen muss, wo sich der Server befindet oder sogar welcher Server den Dienst anbietet (Standorttransparenz).</p>
+</div><div class="layer incremental">
+<p>Wie geht man mehr oder weniger elegant mit Fehlern um:</p>
+<ul class="simple">
+<li><p>Server ist ausgefallen</p></li>
+<li><p>Kommunikation ist gestört</p></li>
+<li><p>Server beschäftigt</p></li>
+<li><p>doppelte Anfragen ...</p></li>
+</ul>
+</div></div><div class="supplemental">
+<p>Je nach System ist die Reihenfolge der Bytes unterschiedlich:</p>
+<ul class="simple">
+<li><p>Intel-CPUs sind Little-Endian.</p></li>
+<li><p>PowerPC ist Big-Endian.</p></li>
+<li><p>ARM kann beides und ist meistens Little-Endian.</p></li>
+</ul>
+</div></div><div class="smaller ld-slide" id="high-level-view-auf-rpc">
+<h2>High-level View auf RPC</h2>
+<div class="assessment docutils container">
+<p>Für Programmierer sieht ein <span class="ger-quote">entfernter</span> Prozeduraufruf fast identisch aus wie ein <span class="ger-quote">lokaler</span> Prozeduraufruf und funktioniert auch so - auf diese Weise wird Transparenz erreicht.</p>
+</div>
+<div class="incremental margin-top-2em docutils container">
+<p>Um Transparenz zu erreichen, führte RPC viele Konzepte von Middleware-Systemen ein:</p>
+<ul class="incremental list-with-explanations">
+<li><p><em>Interface Description Language</em> (IDL)</p></li>
+<li><p>Verzeichnis- und Benennungsdienste</p></li>
+<li><p>Dynamische Bindung</p></li>
+<li><p>Marshalling und Unmarshalling</p></li>
+<li><p><em>Opaque References</em>, um bei verschiedenen Aufrufen auf dieselbe Datenstruktur oder Entität auf dem Server zu verweisen.</p>
+<p>(Der Server ist für die Bereitstellung dieser undurchsichtigen Referenzen verantwortlich.)</p>
+</li>
+</ul>
+</div>
+</div><div class="ld-slide" id="rpc-call-semantics">
+<h2>RPC - Call Semantics</h2>
+<p>Nehmen wir an, ein Client stellt eine RPC-Anfrage an einen Dienst eines bestimmten Servers.
+Nachdem die Zeitüberschreitung abgelaufen ist, beschließt der Client die Anfrage erneut zu senden. Das finale Verhalten hängt von der Semantik des Aufrufs (<span class="eng">Call Semantics</span>) ab:</p>
+<div class="stack margin-top-2em">
+<div class="layer">
+<p class="rubric">Maybe (vielleicht; keine Garantie)</p>
+<p>Die Zielmethode kann ausgeführt worden sein und die Antwortnachricht(en) ging(en) verloren oder die Methode wurde gar nicht erst ausgeführt da die Anfrage verloren ging.</p>
+<div class="minor docutils container">
+<p><span class="docutils literal">XMLHTTPRequests</span> in Webbrowsern verwenden diese Semantik.</p>
+</div>
+</div><div class="layer incremental">
+<p class="rubric">At least once (mindestens einmal)</p>
+<p>Die Prozedur wird ausgeführt werden solange der Server nicht endgültig versagt.</p>
+<p>Es ist jedoch möglich, dass sie mehr als einmal ausgeführt wird wenn der Client die Anfrage nach einer Zeitüberschreitung erneut gesendet hatte.</p>
+</div><div class="layer incremental">
+<p class="rubric">At most once (höchstens einmal)</p>
+<p>Die Prozedur wird entweder einmal oder gar nicht ausgeführt. Ein erneutes Senden der Anfrage führt nicht dazu, dass die Prozedur mehrmals ausgeführt wird.</p>
+</div><div class="layer incremental">
+<p class="rubric">Exactly once (genau einmal)</p>
+<p>Das System garantiert die gleiche Semantik wie bei lokalen Aufrufen unter der Annahme, dass ein abgestürzter Server irgendwann wieder startet.</p>
+<p>Verwaiste Aufrufe, d. h. Aufrufe auf abgestürzten Server-Rechnern, werden nachgehalten, damit sie später von einem neuen Server übernommen werden können.</p>
+</div></div></div><div class="ld-slide" id="asynchrones-rpc">
+<h2>Asynchrones RPC</h2>
+<div class="two-columns fade-to-white docutils container">
+<div class="column docutils container">
+<p>Die Verbindung zwischen Client und Server in einem traditionellen RPC. Der Client wird blockiert und wartet.</p>
+</div>
+<div class="column docutils container">
+<img alt="images/rpcs/synchronous_rpc.svg" class="align-center" src="images/rpcs/synchronous_rpc.svg" style="height: 425px;" />
+</div>
+</div>
+<div class="two-columns fade-to-white line-above margin-top-1em padding-top-1em docutils container">
+<div class="column docutils container">
+<p>Die Verbindung zwischen Client und Server bei einem asynchronen RPC. Der Client wird nicht blockiert.</p>
+</div>
+<div class="column docutils container">
+<img alt="images/rpcs/asynchronous_rpc.svg" class="align-center" src="images/rpcs/asynchronous_rpc.svg" style="height: 450px;" />
+</div>
+</div>
+<div class="supplemental">
+<p>Ein normaler Aufruf mittels <span class="docutils literal">XMLHTTPRequest</span> (JavaScript) ist auch immer asynchron.</p>
+</div></div><div class="ld-slide" id="rpc-bewertung">
+<h2>RPC - Bewertung</h2>
+<ul class="incremental positive-list simple">
+<li><p>RPC bietet einen Mechanismus, um verteilte Anwendungen auf einfache und effiziente Weise zu implementieren.</p></li>
+<li><p>RPC ermöglicht den modularen und hierarchischen Aufbau großer verteilter Systeme:</p>
+<ul>
+<li><p>Client und Server sind getrennte Einheiten</p></li>
+<li><p>Der Server kapselt und verbirgt die Details der Backend-Systeme (wie z. B. Datenbanken)</p></li>
+</ul>
+</li>
+</ul>
+<ul class="incremental negative-list simple">
+<li><p>RPC ist kein Standard, sondern wurde auf viele verschiedene Arten umgesetzt.</p></li>
+<li><p>RPC ermöglicht Entwicklern den Aufbau verteilter Systeme, löst aber nur ausgewählte Aspekte.</p></li>
+</ul>
+<div class="supplemental">
+<p>Wenn man moderne Ansätze wie RESTful WebServices mit RPC vergleicht, dann fällt auf, dass RPC eine deutlich bessere Tranzparenz bietet.</p>
+</div><div class="incremental docutils container">
+<p>Das Network File System (NFS) und SMB sind bekannte RPC-basierte Anwendungen.</p>
+</div>
+</div><div class="new-subsection transition-fade ld-slide" id="java-remote-method-invocation-rmi">
+<h2>Java Remote Method Invocation (RMI)</h2>
+</div><div class="ld-slide" id="java-rmi-remote-method-invocation">
+<h2>Java RMI (Remote Method Invocation)</h2>
+<div class="large rounded-corners dhbw-light-gray-background padding-1em docutils container">
+<p>Ermöglicht es einem Objekt, das in einer Java Virtual Machine (VM) läuft, Methoden eines Objekts aufzurufen, das in einer anderen Java VM läuft.</p>
+</div>
+<div class="incremental docutils container">
+<ul class="simple">
+<li><p>Entfernte Objekte können ähnlich wie lokale Objekte behandelt werden.</p></li>
+<li><p>Übernimmt das Marshalling, den Transport und die Garbage Collection der entfernten Objekte.</p></li>
+<li><p>Teil von Java seit JDK 1.1</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="java-rmi-vs-rpc">
+<h2>Java RMI vs. RPC</h2>
+<img alt="images/rpc_vs_rmi.svg" class="align-center" src="images/rpc_vs_rmi.svg" style="height: 1000px;" />
+<div class="supplemental">
+<p>Java RMI ist eine spezielle Form von RPC, die in Java implementiert wurde. Der Unterschied ergibt sich im Prinzip aus dem Unterschied zwischen einem
+Prozeduraufruf und einem Methodenaufruf auf ein Objekt</p>
+</div></div><div class="ld-slide" id="java-rmi-implementiert-ein-distributed-object-model">
+<h2>Java RMI implementiert ein <em>Distributed Object Model</em></h2>
+<img alt="images/java_rmi-distributed-object-model.svg" class="align-center" src="images/java_rmi-distributed-object-model.svg" style="height: 1000px;" />
+<div class="supplemental">
+<ul>
+<li><p>Jeder Prozess enthält sowohl Objekte die entfernte Aufrufe empfangen können als auch solche, die nur lokale Aufrufe empfangen können.</p>
+<p>(Objekte die entfernte Aufrufe empfangen können, werden <em>Remote Objects</em> genannt).</p>
+</li>
+<li><p>Objekte müssen die Remote-Objektreferenz eines Objekts in einem anderen Prozess kennen, um dessen Methoden aufrufen zu können (Remote Method Invocation; Remote Object References)</p></li>
+</ul>
+</div></div><div class="ld-slide" id="anatomie-eine-java-rmi-aufrufs">
+<h2>Anatomie eine Java RMI Aufrufs</h2>
+<img alt="images/rmi_anatomy/rmi_anatomy.svg" class="align-center" src="images/rmi_anatomy/rmi_anatomy.svg" style="height: 1000px;" />
+<div class="supplemental">
+<p>Der Proxy versteckt für den Client, dass es sich um einen entfernten Aufrufe handelt.  Er implementiert die Remote-Schnittstelle und kümmert sich um das Marshalling und Unmarshalling der Parameter und des Ergebnisses.</p>
+<p>Der Skeleton ist für die Entgegennahme der Nachrichten verantwortlich und leitet die Nachricht an das eigentliche Objekt weiter. Er sorgt für die Transparenz auf Serverseite.</p>
+<p>Referenzen auf <em>Remote Objects</em> sind systemweit eindeutig und können frei zwischen Prozessen weitergegeben werden (z. B. als Parameter). Die Implementierung der entfernten Objektreferenzen wird von der Middleware verborgen (<em>Opaque-Referenzen</em>).</p>
+</div></div><div class="ld-slide" id="rmi-protocol-stack">
+<h2>RMI Protocol Stack</h2>
+<img alt="images/rmi_anatomy/rmi_protocol_stack.svg" class="align-center" src="images/rmi_anatomy/rmi_protocol_stack.svg" style="height: 1000px;" />
+<div class="supplemental">
+<ul class="simple">
+<li><p><em>Remote Reference Layer</em>: RMI-spezifische Kommunikation über TCP/IP, Verbindungsinitialisierung, Serverstandort, Verarbeitung serialisierter Daten</p></li>
+<li><p><em>RMI Transport Layer (TCP)</em>: Verbindungsverwaltung, Bereitstellung einer zuverlässigen Datenübertragung zwischen Endpunkten</p></li>
+<li><p>Internetprotokoll in IP-Paketen enthaltene Datenübertragung (unterste Ebene)</p></li>
+</ul>
+</div></div><div class="ld-slide" id="einfacher-rmi-dienst-und-aufruf">
+<h2>Einfacher RMI Dienst und Aufruf</h2>
+<div class="stack scriptsize">
+<div class="layer">
+<p><strong>Schnittstelle des Zeitservers</strong></p>
+<pre class="code java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.Remote</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.RemoteException</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Date</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">interface</span> <span class="name class">Time</span><span class="whitespace"> </span><span class="keyword declaration">extends</span><span class="whitespace"> </span><span class="name">Remote</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Date</span><span class="whitespace"> </span><span class="name function">getTime</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">RemoteException</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div><div class="layer incremental">
+<p><strong>Implementierung der Schnittelle durch den Zeitserver</strong></p>
+<pre class="code java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.RemoteException</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.server.UnicastRemoteObject</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Date</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">TimeServer</span><span class="whitespace"> </span><span class="keyword declaration">extends</span><span class="whitespace"> </span><span class="name">UnicastRemoteObject</span><span class="whitespace"> </span><span class="keyword declaration">implements</span><span class="whitespace"> </span><span class="name">Time</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">TimeServer</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">RemoteException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword declaration">super</span><span class="punctuation">();</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Date</span><span class="whitespace"> </span><span class="name function">getTime</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Date</span><span class="punctuation">();</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div><div class="layer incremental">
+<p><strong>Registrierung des Zeitservers</strong></p>
+<pre class="code java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.Naming</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">TimeRegistrar</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+
+  </span><span class="comment multiline">/** &#64;param args args[0] has to specify the hostname. */</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">Exception</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">String</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">args</span><span class="operator">[</span><span class="literal number integer">0</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">TimeServer</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">TimeServer</span><span class="punctuation">();</span><span class="whitespace">
+    </span><span class="name">Naming</span><span class="punctuation">.</span><span class="name attribute">rebind</span><span class="punctuation">(</span><span class="literal string">&quot;rmi://&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;/ServerTime&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="punctuation">);</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div><div class="layer incremental">
+<p><strong>Client des Zeitservers</strong></p>
+<pre class="code java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.rmi.Naming</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Date</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">TimeClient</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">Exception</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">String</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">args</span><span class="operator">[</span><span class="literal number integer">0</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="name">Time</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">Time</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">Naming</span><span class="punctuation">.</span><span class="name attribute">lookup</span><span class="punctuation">(</span><span class="literal string">&quot;rmi://&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;/ServerTime&quot;</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Time on &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">host</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot; is &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">timeServer</span><span class="punctuation">.</span><span class="name attribute">getTime</span><span class="punctuation">());</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div></div></div><div class="ld-slide" id="java-rmi-tidbits">
+<h2>Java RMI - Tidbits</h2>
+<ul class="list-with-explanations">
+<li><p>RMI verwendet einen referenzzählenden Garbage-Collection-Algorithmus. Netzwerkprobleme können dann zu einer verfrühten GC führen was wiederum bei Aufrufen zu Ausnahmen führen kann.</p></li>
+<li><p>Die Aufrufsemantik (<em>Call Semantics</em>) von RMI ist <em>at most once</em>.</p></li>
+<li><p>(Un)Marshalling ist in Java RMI automatisch und verwendet Java Object Serialization.</p>
+<p>Der Overhead kann leicht ~25%-50% der Zeit für einen entfernten Aufruf ausmachen.</p>
+</li>
+</ul>
+</div><div class="new-subsection transition-fade ld-slide" id="klassische-web-services-und-soap">
+<h2>Klassische Web Services und SOAP</h2>
+</div><div class="ld-slide" id="integration-von-unternehmensanwendungen">
+<h2>Integration von Unternehmensanwendungen</h2>
+<p>Die Probleme unternehmensübergreifende Punkt-zu-Punkt-Integration zu ermöglichen führten zur Entwicklung der nächsten Generation von Middleware-Technologien.</p>
+<img alt="images/web_services-vs-message_brokers/message-brokers_and_adapters.svg" class="align-center" src="images/web_services-vs-message_brokers/message-brokers_and_adapters.svg" style="height: 700px;" />
+<div class="footer-left tiny docutils container">
+<p>Darstellung nach <em>Web Services - Concepts, Architectures and Applications; Alonso et al.; Springer 2004</em></p>
+</div>
+<div class="supplemental">
+<p>Jedes Unternehmen verwendet(e) seinen eigenen <span class="ger-quote">konkreten`</span> Message-Broker - wenn wir mit mehreren Unternehmen kommunizieren wollen, müssen wir mehrere Adapter/Lösungen implementieren und pflegen.</p>
+</div></div><div class="no-title center-child-elements ld-slide" id="web-services">
+<h2>Web Services</h2>
+<blockquote class="epigraph">
+<p>Webservices are self-contained, modular business applications that have open, internet-oriented, standards-based interfaces.</p>
+<p class="attribution">—UDDI Konsortium</p>
+</blockquote>
+</div><div class="ld-slide" id="web-services-konzeptionell">
+<h2>Web Services - konzeptionell</h2>
+<img alt="images/web_services-vs-message_brokers/webservices_vision.svg" class="align-center" src="images/web_services-vs-message_brokers/webservices_vision.svg" style="height: 1000px;" />
+</div><div class="ld-slide" id="web-services-wesentliche-bestandteile">
+<h2>Web Services - wesentliche Bestandteile</h2>
+<img alt="images/web_services-vs-message_brokers/komponenten.svg" class="align-center" src="images/web_services-vs-message_brokers/komponenten.svg" style="height: 950px;" />
+<div class="supplemental">
+<ul class="simple">
+<li><p><em>Service Provider</em>: Die Einheit, die den Dienst implementiert und anbietet ihn im Namen des Anforderers auszuführen.</p></li>
+<li><p><em>Service Requestor</em>: Der potenzielle Nutzer eines Dienstes.</p></li>
+<li><p><em>Service Registry</em>: Auflistung der verfügbaren Dienste.</p></li>
+</ul>
+</div><div class="block-footer text-align-center dhbw-gray-background white docutils container">
+<p>Konzeptionell hat sich somit im Vergleich zur RPC-Welt nicht viel geändert.</p>
+</div>
+</div><div class="ld-slide" id="web-services-protokoll-stack">
+<h2>Web Services - Protokoll Stack</h2>
+<img alt="images/ws-protocol_stack.svg" class="align-center" src="images/ws-protocol_stack.svg" style="height: 1000px;" />
+</div><div class="ld-slide" id="soap">
+<h2>SOAP</h2>
+<ul class="incremental simple">
+<li><p>SOAP ist das Protokoll klassischer Web Services und ermöglicht die Kommunikation zwischen Anwendungen.</p></li>
+<li><p>SOAP umfasst die folgenden Teile:</p>
+<ul class="smaller dhbw-gray">
+<li><p>Ein Nachrichtenformat, das beschreibt, wie eine Nachricht in ein XML-Dokument verpackt werden kann (Umschläge, Header, Body...)</p></li>
+<li><p>Ein Satz von Kodierungsregeln für Daten</p></li>
+<li><p>Eine Beschreibung wie eine SOAP-Nachricht mit dem zugrundeliegenden Transportprotokoll (HTTP oder SMTP) transportiert werden sollte. Wie eine SOAP-Nachricht in eine HTTP-Anfrage oder in eine E-Mail (SMTP) eingebettet werden kann.</p></li>
+<li><p>Eine Reihe von Regeln, die bei der Verarbeitung einer SOAP-Nachricht zu befolgen sind, und die an dieser Verarbeitung beteiligten Stellen; welche Teile der Nachrichten von wem gelesen werden sollten und welche Maßnahmen diese Stellen ergreifen sollten, wenn sie den Inhalt nicht verstehen.</p></li>
+</ul>
+</li>
+</ul>
+<div class="supplemental">
+<p>SOAP ist eine Weiterentwicklung von XML-RPC und stand ursprünglich für Simple Object Access Protocol.</p>
+<p>SOAP (ab Version 1.2) ist ein Standard des W3C.</p>
+</div></div><div class="ld-slide" id="aufbau-einer-soap-nachricht">
+<h2>Aufbau einer SOAP-Nachricht</h2>
+<div class="two-columns docutils container">
+<img alt="images/soap_message.svg" class="align-center" src="images/soap_message.svg" style="height: 1000px;" />
+<div class="margin-left-1em docutils container">
+<p>Nachrichten sind Umschläge, in die die Nutzdaten der Anwendung eingeschlossen werden.</p>
+<p>Eine Nachricht hat zwei Hauptbestandteile:</p>
+<dl class="field-list simple">
+<dt>Header (optional)<span class="colon">:</span></dt>
+<dd><p>Für infrastrukturelle Daten wie Sicherheit oder Zuverlässigkeit vorgesehen.</p>
+</dd>
+<dt>Body (obligatorisch)<span class="colon">:</span></dt>
+<dd><p>Für Daten auf Anwendungsebene vorgesehen. Jeder Teil kann in Blöcke unterteilt werden.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div><div class="ld-slide" id="beispiel-einer-soap-nachricht">
+<h2>Beispiel einer SOAP-Nachricht</h2>
+<pre class="code xml scriptsize literal-block"><code><span class="whitespace">  </span><span class="name tag">&lt;SOAP-ENV:Envelope</span><span class="whitespace">
+    </span><span class="name attribute">xmlns:SOAP-ENV=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span><span class="whitespace">
+    </span><span class="name attribute">SOAP-ENV:encodingStyle=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;</span><span class="whitespace"> </span><span class="name tag">/&gt;</span><span class="whitespace">
+
+  </span><span class="name tag">&lt;SOAP-ENV:Header&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;t:Transaction</span><span class="whitespace"> </span><span class="name attribute">xmlns:t=</span><span class="literal string">&quot;ws-transactions-URI&quot;</span><span class="whitespace"> </span><span class="name attribute">SOAP-ENV:mustUnderstand=</span><span class="literal string">&quot;1&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+      </span>57539<span class="whitespace">
+    </span><span class="name tag">&lt;/t:Transaction&gt;</span><span class="whitespace">
+  </span><span class="name tag">&lt;/SOAP-ENV:Header&gt;</span><span class="whitespace">
+
+  </span><span class="name tag">&lt;SOAP-ENV:Body&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;m:GetLastTradePrice</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">&quot;Some-URI&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+      </span><span class="name tag">&lt;symbol&gt;</span>DEF<span class="name tag">&lt;/symbol&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;/m:GetLastTradePrice&gt;</span><span class="whitespace">
+  </span><span class="name tag">&lt;/SOAP-ENV:Body&gt;</span><span class="whitespace">
+
+  </span><span class="name tag">&lt;/SOAP-ENV:Envelope&gt;</span></code></pre>
+</div><div class="ld-slide" id="beispiel-eines-soap-aufrufs">
+<h2>Beispiel eines SOAP-Aufrufs</h2>
+<pre class="code http scriptsize literal-block"><code><span class="name function">POST</span> <span class="name namespace">/StockQuote</span> <span class="keyword reserved">HTTP</span><span class="operator">/</span><span class="literal number">1.1</span>
+<span class="name attribute">Host</span><span class="operator">:</span> <span class="literal">www.stockquoteserver.com</span>
+<span class="name attribute">Content-Type</span><span class="operator">:</span> <span class="literal">text/xml; charset=&quot;utf-8&quot;</span>
+<span class="name attribute">Content-Length</span><span class="operator">:</span> <span class="literal">nnnn</span>
+<span class="name attribute">SOAPAction</span><span class="operator">:</span> <span class="literal">&quot;Some-URI&quot;</span>
+
+<span class="name tag">&lt;SOAP-ENV:Envelope</span><span class="whitespace">
+  </span><span class="name attribute">xmlns:SOAP-ENV=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span><span class="whitespace">
+  </span><span class="name attribute">SOAP-ENV:encodingStyle=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+
+  </span><span class="name tag">&lt;SOAP-ENV:Body&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;m:GetLastTradePrice</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">&quot;Some-URI&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+      </span><span class="name tag">&lt;symbol&gt;</span>DIS<span class="name tag">&lt;/symbol&gt;</span><span class="whitespace">
+    </span><span class="name tag">&lt;/m:GetLastTradePrice&gt;</span><span class="whitespace">
+  </span><span class="name tag">&lt;/SOAP-ENV:Body&gt;</span><span class="whitespace">
+
+</span><span class="name tag">&lt;/SOAP-ENV:Envelope&gt;</span></code></pre>
+</div><div class="ld-slide" id="beispiel-einer-soap-antwort">
+<h2>Beispiel einer SOAP-Antwort</h2>
+<pre class="code html scriptsize literal-block"><code>  HTTP/1.1 200 OK
+  Content-Type: text/xml; charset=&quot;utf-8&quot;
+  Content-Length: nnnn
+
+  <span class="punctuation">&lt;</span><span class="name tag">SOAP-ENV:Envelope</span>
+    <span class="name attribute">xmlns:SOAP-ENV</span><span class="operator">=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span>
+    <span class="name attribute">SOAP-ENV:encodingStyle</span><span class="operator">=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;</span> <span class="punctuation">/&gt;</span>
+
+  <span class="punctuation">&lt;</span><span class="name tag">SOAP-ENV:Body</span><span class="punctuation">&gt;</span>
+    <span class="punctuation">&lt;</span><span class="name tag">m:GetLastTradePriceResponse</span> <span class="name attribute">xmlns:m</span><span class="operator">=</span><span class="literal string">&quot;Some-URI&quot;</span><span class="punctuation">&gt;</span>
+      <span class="punctuation">&lt;</span><span class="name tag">Price</span><span class="punctuation">&gt;</span>34.5<span class="punctuation">&lt;/</span><span class="name tag">Price</span><span class="punctuation">&gt;</span>
+    <span class="punctuation">&lt;/</span><span class="name tag">m:GetLastTradePriceResponse</span><span class="punctuation">&gt;</span>
+  <span class="punctuation">&lt;/</span><span class="name tag">SOAP-ENV:Body</span><span class="punctuation">&gt;</span>
+
+  <span class="punctuation">&lt;/</span><span class="name tag">SOAP-ENV:Envelope</span><span class="punctuation">&gt;</span></code></pre>
+</div><div class="ld-slide" id="web-services-standardisierung">
+<h2>Web Services - Standardisierung</h2>
+<div class="stack">
+<div class="layer">
+<img alt="screenshots/ws_standards.png" class="align-right" src="screenshots/ws_standards.png" style="height: 900px;" />
+</div><div class="layer overlay">
+<img alt="screenshots/ws_standards_w3c.png" class="align-left" src="screenshots/ws_standards_w3c.png" style="height: 900px;" />
+</div></div></div><div class="vertical-title ld-slide" id="uberblick">
+<h2>Überblick</h2>
+<img alt="images/genealogy-of-middleware.svg" class="align-center" src="images/genealogy-of-middleware.svg" style="height: 1140px;" />
+</div><div class="new-section transition-move-to-top ld-slide" id="messaging-and-message-oriented-communication-middleware">
+<h2>Messaging and Message-oriented Communication/Middleware</h2>
+</div><div class="ld-slide" id="zeromq">
+<h2>ZeroMQ</h2>
+<ul class="incremental simple">
+<li><p>ZeroMQ ist eine Messaging-Infrastruktur ohne explizite Server (<span class="ger-quote">Broker</span>).</p></li>
+<li><p>ZeroMQ unterstützt verbindungsorientierte aber asynchrone Kommunikation.</p></li>
+<li><p>ZeroMQ basiert auf klassischen Sockets, fügt aber neue Abstraktionen hinzu, um folgende Messaging Patterns zu ermöglichen:</p>
+<ul>
+<li><p><em>request-reply</em></p></li>
+<li><p><em>pub-sub</em> (<span class="eng">publish-subscribe</span>)</p></li>
+<li><p>pipeplining (<span class="ger">parallele Verarbeitung</span>)</p></li>
+</ul>
+</li>
+<li><p>ZeroMQ ermöglicht N-zu-N Kommunikation.</p></li>
+<li><p>ZeroMQ unterstützt sehr viele Programmiersprachen; der Nutzer ist für das passend Marshalling bzw. Unmarshalling verantwortlich.</p></li>
+</ul>
+<div class="supplemental">
+<p>Sollte zum Beispiel der Server in Java und der Client in C geschrieben sein, dann ist ggf. das Verständnis darüber wie ein String übertragen wird unterschiedlich (z. B. mit <span class="docutils literal">null</span> terminiert oder mit einer Länge versehen).</p>
+</div></div><div class="ld-slide" id="zeromq-messaging-patterns">
+<h2>ZeroMQ - Messaging Patterns</h2>
+<div class="stack">
+<div class="layer">
+<img alt="images/zeromq/client-server.svg" class="align-center" src="images/zeromq/client-server.svg" style="height: 700px;" />
+</div><div class="layer incremental">
+<img alt="images/zeromq/pub-sub.svg" class="align-center" src="images/zeromq/pub-sub.svg" style="height: 700px;" />
+</div><div class="layer incremental">
+<img alt="images/zeromq/pipeline.svg" class="align-center" src="images/zeromq/pipeline.svg" style="height: 900px;" />
+</div></div><div class="supplemental">
+<dl class="field-list simple">
+<dt><em>Client-Server</em><span class="colon">:</span></dt>
+<dd><p>Ermöglicht die <span class="ger-quote">übliche</span> Kommunikation zwischen einem Client und einem Server. Allerdings findet ggf. eine Pufferung statt, wenn der Server nicht erreichbar ist.</p>
+</dd>
+<dt><em>Publish-Subscribe</em><span class="colon">:</span></dt>
+<dd><p>Ermöglicht es den Clients, sich für ein bestimmtes Thema zu registrieren und dann alle Nachrichten zu erhalten, die zu diesem Thema veröffentlicht werden. Ein Nachricht mit einem bestimmten Thema wird an alle dafür registrierten Clients gesendet.</p>
+</dd>
+<dt><em>Pipeline</em><span class="colon">:</span></dt>
+<dd><p>Ermöglicht die Versendung einer Aufgabe an genau einen beliebigen Worker aus einer Menge von (homogenen) Workern.</p>
+</dd>
+</dl>
+</div></div><div class="ld-slide" id="zeromq-beispiel-publish-subscribe-java">
+<h2>ZeroMQ - Beispiel <em>Publish-Subscribe</em> (Java)</h2>
+<div class="two-columns tiny docutils container">
+<div class="column docutils container">
+<pre class="code java smaller literal-block"><code><span class="keyword namespace">import static</span><span class="whitespace"> </span><span class="name namespace">java.lang.Thread.currentThread</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.SocketType</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.ZMQ</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.ZContext</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">Publisher</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace">
+      </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">Exception</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">ZContext</span><span class="whitespace"> </span><span class="name">context</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">ZContext</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="name">ZMQ</span><span class="punctuation">.</span><span class="name attribute">Socket</span><span class="whitespace"> </span><span class="name">publisher</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace">
+          </span><span class="name">context</span><span class="punctuation">.</span><span class="name attribute">createSocket</span><span class="punctuation">(</span><span class="name">SocketType</span><span class="punctuation">.</span><span class="name attribute">PUB</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="name">publisher</span><span class="punctuation">.</span><span class="name attribute">bind</span><span class="punctuation">(</span><span class="literal string">&quot;tcp://*:5556&quot;</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="name">publisher</span><span class="punctuation">.</span><span class="name attribute">bind</span><span class="punctuation">(</span><span class="literal string">&quot;ipc://&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">endpoint</span><span class="operator">&gt;</span><span class="punctuation">);</span><span class="whitespace">
+
+      </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="operator">!</span><span class="name">currentThread</span><span class="punctuation">().</span><span class="name attribute">isInterrupted</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">zipcode</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">some</span><span class="whitespace"> </span><span class="name">zipcode</span><span class="operator">&gt;</span><span class="whitespace">
+        </span><span class="comment single">//  Send to all subscribers</span><span class="whitespace">
+        </span><span class="name">String</span><span class="whitespace"> </span><span class="name">update</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">String</span><span class="punctuation">.</span><span class="name attribute">format</span><span class="punctuation">(</span><span class="literal string">&quot;%05d %s&quot;</span><span class="punctuation">,</span><span class="whitespace">
+            </span><span class="name">zipcode</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">some</span><span class="whitespace"> </span><span class="name">msg</span><span class="operator">&gt;</span><span class="punctuation">);</span><span class="whitespace">
+        </span><span class="name">publisher</span><span class="punctuation">.</span><span class="name attribute">send</span><span class="punctuation">(</span><span class="name">update</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
+</div>
+<div class="column docutils container">
+<pre class="code java smaller literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.StringTokenizer</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.SocketType</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.ZMQ</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.ZContext</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">Subscriber</span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">ZContext</span><span class="whitespace"> </span><span class="name">context</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">ZContext</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="name">ZMQ</span><span class="punctuation">.</span><span class="name attribute">Socket</span><span class="whitespace"> </span><span class="name">subscriber</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace">
+          </span><span class="name">context</span><span class="punctuation">.</span><span class="name attribute">createSocket</span><span class="punctuation">(</span><span class="name">SocketType</span><span class="punctuation">.</span><span class="name attribute">SUB</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="name">subscriber</span><span class="punctuation">.</span><span class="name attribute">connect</span><span class="punctuation">(</span><span class="literal string">&quot;tcp://localhost:5556&quot;</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="name">subscriber</span><span class="punctuation">.</span><span class="name attribute">subscribe</span><span class="punctuation">(</span><span class="whitespace">
+          </span><span class="operator">&lt;</span><span class="name">zipcode</span><span class="punctuation">(</span><span class="name">Str</span><span class="punctuation">)</span><span class="operator">&gt;</span><span class="punctuation">.</span><span class="name attribute">getBytes</span><span class="punctuation">(</span><span class="name">ZMQ</span><span class="punctuation">.</span><span class="name attribute">CHARSET</span><span class="punctuation">));</span><span class="whitespace">
+      </span><span class="keyword">while</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="name">String</span><span class="whitespace"> </span><span class="name">string</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">subscriber</span><span class="punctuation">.</span><span class="name attribute">recvStr</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">);</span><span class="whitespace">
+        </span><span class="comment single">// e.g. take string apart:</span><span class="whitespace">
+        </span><span class="comment single">//   part1: zipcode</span><span class="whitespace">
+        </span><span class="comment single">//   part2: message</span><span class="whitespace">
+        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">string</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
+</div>
+</div>
+</div><div class="ld-slide" id="zeromq-beispiel-publish-subscribe-python">
+<h2>ZeroMQ - Beispiel <em>Publish-Subscribe</em> (Python)</h2>
+<div class="two-columns tiny docutils container">
+<div class="column docutils container">
+<pre class="code python smaller literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">signal</span><span class="whitespace">
+</span><span class="keyword namespace">import</span> <span class="name namespace">time</span><span class="whitespace">
+</span><span class="keyword namespace">import</span> <span class="name namespace">zmq</span><span class="whitespace">
+
+</span><span class="name">signal</span><span class="operator">.</span><span class="name">signal</span><span class="punctuation">(</span><span class="name">signal</span><span class="operator">.</span><span class="name">SIGINT</span><span class="punctuation">,</span> <span class="name">signal</span><span class="operator">.</span><span class="name">SIG_DFL</span><span class="punctuation">)</span><span class="whitespace">
+
+</span><span class="name">context</span> <span class="operator">=</span> <span class="name">zmq</span><span class="operator">.</span><span class="name">Context</span><span class="punctuation">()</span><span class="whitespace">
+</span><span class="name">socket</span> <span class="operator">=</span> <span class="name">context</span><span class="operator">.</span><span class="name">socket</span><span class="punctuation">(</span><span class="name">zmq</span><span class="operator">.</span><span class="name">PUB</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name">socket</span><span class="operator">.</span><span class="name">bind</span><span class="punctuation">(</span><span class="literal string single">'tcp://*:5555'</span><span class="punctuation">)</span><span class="whitespace">
+
+</span><span class="keyword">for</span> <span class="name">i</span> <span class="operator word">in</span> <span class="name builtin">range</span><span class="punctuation">(</span><span class="literal number integer">5</span><span class="punctuation">):</span><span class="whitespace">
+</span>    <span class="name">socket</span><span class="operator">.</span><span class="name">send</span><span class="punctuation">(</span><span class="literal string affix">b</span><span class="literal string single">'status 5'</span><span class="punctuation">)</span><span class="whitespace">
+</span>    <span class="name">socket</span><span class="operator">.</span><span class="name">send</span><span class="punctuation">(</span><span class="literal string affix">b</span><span class="literal string single">'All is well'</span><span class="punctuation">)</span><span class="whitespace">
+</span>    <span class="name">time</span><span class="operator">.</span><span class="name">sleep</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">)</span></code></pre>
+</div>
+<div class="column docutils container">
+<pre class="code python smaller literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">signal</span><span class="whitespace">
+</span><span class="keyword namespace">import</span> <span class="name namespace">zmq</span><span class="whitespace">
+
+
+</span><span class="name">signal</span><span class="operator">.</span><span class="name">signal</span><span class="punctuation">(</span><span class="name">signal</span><span class="operator">.</span><span class="name">SIGINT</span><span class="punctuation">,</span> <span class="name">signal</span><span class="operator">.</span><span class="name">SIG_DFL</span><span class="punctuation">)</span><span class="whitespace">
+
+</span><span class="name">context</span> <span class="operator">=</span> <span class="name">zmq</span><span class="operator">.</span><span class="name">Context</span><span class="punctuation">()</span><span class="whitespace">
+</span><span class="name">socket</span> <span class="operator">=</span> <span class="name">context</span><span class="operator">.</span><span class="name">socket</span><span class="punctuation">(</span><span class="name">zmq</span><span class="operator">.</span><span class="name">SUB</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name">socket</span><span class="operator">.</span><span class="name">connect</span><span class="punctuation">(</span><span class="literal string single">'tcp://localhost:5555'</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name">socket</span><span class="operator">.</span><span class="name">setsockopt</span><span class="punctuation">(</span><span class="name">zmq</span><span class="operator">.</span><span class="name">SUBSCRIBE</span><span class="punctuation">,</span> <span class="literal string affix">b</span><span class="literal string single">'status'</span><span class="punctuation">)</span><span class="whitespace">
+
+</span><span class="keyword">while</span> <span class="keyword constant">True</span><span class="punctuation">:</span><span class="whitespace">
+</span>    <span class="name">message</span> <span class="operator">=</span> <span class="name">socket</span><span class="operator">.</span><span class="name">recv_multipart</span><span class="punctuation">()</span><span class="whitespace">
+</span>    <span class="name builtin">print</span><span class="punctuation">(</span><span class="literal string affix">f</span><span class="literal string single">'Received: </span><span class="literal string interpol">{</span><span class="name">message</span><span class="literal string interpol">}</span><span class="literal string single">'</span><span class="punctuation">)</span></code></pre>
+</div>
+</div>
+<div class="supplemental">
+<p>Bzgl. des Handlings von Signalen in Python siehe auch: <a class="reference external" href="https://docs.python.org/3/library/signal.html#signal.signal">https://docs.python.org/3/library/signal.html#signal.signal</a></p>
+</div></div><div class="ld-slide" id="mom-message-oriented-middleware">
+<h2>MOM - Message Oriented Middleware</h2>
+<ul class="incremental list-with-explanations">
+<li><p>MOM bzw. Message-queueing Systems unterstützen persistente asynchrone Kommunikation.</p></li>
+<li><p>Sehr große Nachrichten werden unterstützt.</p></li>
+<li><p>Es wird nur die Garantie gegeben, dass Nachrichten letztendlich in die Warteschlange des Empfängers gelegt werden und die Nachrichten in der richtigen Reihenfolge ankommen.</p>
+<p>(Insbesondere wird keine Garantie gegeben, dass die Nachricht gelesen wird.)</p>
+</li>
+<li><p>Der Sender und Empfänger sind nicht notwendigerweise gleichzeitig aktiv.</p></li>
+<li><p>Nachrichten haben immer einen eindeutigen Empfänger und quasi beliebigen Inhalt.</p></li>
+</ul>
+</div><div class="ld-slide" id="mom-grundlegendes-interface">
+<h2>MOM - Grundlegendes Interface</h2>
+<table class="highlight-line-on-hover">
+<thead>
+<tr><th class="head"><p>Operation</p></th>
+<th class="head"><p>Beschreibung</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>PUT</p></td>
+<td><p>Legt eine Nachricht in eine bestimmte Warteschlange.</p></td>
+</tr>
+<tr><td><p>GET</p></td>
+<td><p>Blockiert an einer bestimmten Warteschlange bis eine Nachricht verfügbar ist. Entfernt die erste Nachricht.</p></td>
+</tr>
+<tr><td><p>POLL</p></td>
+<td><p>Prüft, ob eine Nachricht in einer bestimmten Warteschlange verfügbar ist. Entfernt ggf.  die erste Nachricht. POLL blockiert niemals</p></td>
+</tr>
+<tr><td><p>NOTIFY</p></td>
+<td><p>Registriert einen Handler (<em>Callback</em>) der aufgerufen wird, wenn eine Nachricht einer bestimmten Warteschlange hinzugefügt wird.</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="mom-queue-managers">
+<h2>MOM - Queue Managers</h2>
+<img alt="images/message-queueing.svg" class="align-center" src="images/message-queueing.svg" style="height: 1000px;" />
+<div class="supplemental">
+<p><em>Queue Managers</em> sind der zentrale Baustein von Message-queueing Systemen. Im Allgemeinen gibt es (mindestens konzeptionell) einen lokalen <em>Queue Manager</em> pro Prozess. Ein <em>Queue Manager</em> ist ein Prozess, der Nachrichten in Warteschlangen speichert und verwaltet. Bei Bedarf kann er mehrere Warteschlangen verwalten und an andere <em>Queue Manager</em> weiterleiten.</p>
+</div></div><div class="integrated-exercise ld-slide" id="ubung-java">
+<h2>Übung - Java</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Asynchrone, verbindungsorientierte Kommunikation" id="ld-exercise-1">
+<p class="rubric">Asynchrone, verbindungsorientierte Kommunikation</p>
+<p>Entwickeln Sie einen Client für einen <span class="ger-quote">Logging Server</span>, der Lognachrichten (Strings) an den Server sendet. Im Fehlerfall, z. B. wenn der Server nicht verfügbar ist oder es zu einer Netzwerkpartitionierung kam, sollen die Nachrichten zwischengepuffert werden und bei Serververfügbarkeit wieder zugestellt werden. Mit anderen Worten: Im Fehlerfall soll der Client nicht blockieren, sondern weiter funktionieren. Der Client stellt stattdessen die Nachrichten dann zu, wenn der Server wieder verfügbar wird.</p>
+<p>Stellen Sie sicher, dass Nachrichten immer in der richtigen Reihenfolge am Server ankommen. D. h. stellen Sie zum Beispiel sicher, dass eine gepufferte Nachricht nie nach einer neueren Nachricht ankommt.</p>
+<p>Verwenden Sie den Code im Anhang als Schablone.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:wkDFVUl4vyznXMTzYvibpDnAkGpUyUHBUdFvRvZOz7k=:Kf8sqka8dTlxodPa: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</div>
+</div>
+<div class="supplemental">
+<p class="rubric">Einfacher TCP basierter SyslogServer in Java</p>
+<pre class="code java far-smaller copy-to-clipboard literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.net.*</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.io.*</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">SyslogServer</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">ServerSocket</span><span class="whitespace"> </span><span class="name">server</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">ServerSocket</span><span class="punctuation">(</span><span class="literal number integer">9999</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">Socket</span><span class="whitespace"> </span><span class="name">con</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">server</span><span class="punctuation">.</span><span class="name attribute">accept</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+            </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">in</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">con</span><span class="punctuation">.</span><span class="name attribute">getInputStream</span><span class="punctuation">();</span><span class="whitespace">
+            </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">ir</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">InputStreamReader</span><span class="punctuation">(</span><span class="name">in</span><span class="punctuation">);</span><span class="whitespace">
+            </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">br</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">BufferedReader</span><span class="punctuation">(</span><span class="name">ir</span><span class="punctuation">);</span><span class="whitespace">
+            </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;[Logging] &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">br</span><span class="punctuation">.</span><span class="name attribute">readLine</span><span class="punctuation">());</span><span class="whitespace">
+        </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">catch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">IOException</span><span class="whitespace"> </span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+            </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">err</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">e</span><span class="punctuation">);</span><span class="whitespace">
+        </span><span class="punctuation">}</span><span class="whitespace">
+      </span><span class="punctuation">}</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">catch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">IOException</span><span class="whitespace"> </span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">err</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">e</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">finally</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">server</span><span class="whitespace"> </span><span class="operator">!=</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="name">server</span><span class="punctuation">.</span><span class="name attribute">close</span><span class="punctuation">();</span><span class="whitespace">
+      </span><span class="punctuation">}</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+<p class="rubric">Schablone für den Client in Java</p>
+<pre class="code java far-smaller copy-to-clipboard literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.net.*</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.io.*</span><span class="punctuation">;</span><span class="whitespace">
+
+</span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">Client</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+
+  </span><span class="comment multiline">/**
+   * Versendet die Nachricht an den Server (wenn möglich).
+   */</span><span class="whitespace">
+  </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">sendMsg</span><span class="punctuation">(</span><span class="name">String</span><span class="whitespace"> </span><span class="name">msg</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">IOException</span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">Socket</span><span class="whitespace"> </span><span class="name">s</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Socket</span><span class="punctuation">(</span><span class="literal string">&quot;localhost&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">9999</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="name">BufferedReader</span><span class="whitespace"> </span><span class="name">networkIn</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace">
+          </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">BufferedReader</span><span class="punctuation">(</span><span class="whitespace">
+              </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">InputStreamReader</span><span class="punctuation">(</span><span class="name">s</span><span class="punctuation">.</span><span class="name attribute">getInputStream</span><span class="punctuation">()));</span><span class="whitespace">
+      </span><span class="name">PrintWriter</span><span class="whitespace"> </span><span class="name">networkOut</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace">
+          </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">PrintWriter</span><span class="punctuation">(</span><span class="name">s</span><span class="punctuation">.</span><span class="name attribute">getOutputStream</span><span class="punctuation">());</span><span class="whitespace">
+      </span><span class="name">networkOut</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">msg</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="name">networkOut</span><span class="punctuation">.</span><span class="name attribute">flush</span><span class="punctuation">();</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+
+  </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">Datenstruktur</span><span class="whitespace"> </span><span class="name">zum</span><span class="whitespace"> </span><span class="name">Zwischenspeichern</span><span class="whitespace"> </span><span class="name">der</span><span class="whitespace">
+  </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">bisher</span><span class="whitespace"> </span><span class="name">nicht</span><span class="whitespace"> </span><span class="name">erfolgreich</span><span class="whitespace"> </span><span class="name">versendeten</span><span class="whitespace"> </span><span class="name">Nachrichten</span><span class="operator">!</span><span class="whitespace">
+
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">log</span><span class="punctuation">(</span><span class="name">String</span><span class="whitespace"> </span><span class="name">msg</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">Schicke</span><span class="whitespace"> </span><span class="name">Nachricht</span><span class="whitespace"> </span><span class="name">an</span><span class="whitespace"> </span><span class="name">den</span><span class="whitespace"> </span><span class="name function">Server</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">wenn</span><span class="whitespace"> </span><span class="name">möglich</span><span class="punctuation">).</span><span class="whitespace">
+      </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">Blockiert</span><span class="whitespace"> </span><span class="name">nicht</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">wenn</span><span class="whitespace"> </span><span class="name">der</span><span class="whitespace"> </span><span class="name">Server</span><span class="whitespace"> </span><span class="name">nicht</span><span class="whitespace"> </span><span class="name">verfügbar</span><span class="whitespace"> </span><span class="name">ist</span><span class="punctuation">.</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">startThread</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">Exception</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="name">Thread</span><span class="punctuation">.</span><span class="name attribute">ofVirtual</span><span class="punctuation">().</span><span class="name attribute">start</span><span class="punctuation">(()</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+          </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+              </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+                </span><span class="comment single">// Alle 5 Sekunden prüfen wir ob wir noch</span><span class="whitespace">
+                </span><span class="comment single">// nicht versendete Nachrichten haben:</span><span class="whitespace">
+                </span><span class="name">Thread</span><span class="punctuation">.</span><span class="name attribute">sleep</span><span class="punctuation">(</span><span class="literal number integer">5000</span><span class="punctuation">);</span><span class="whitespace">
+              </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">catch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">InterruptedException</span><span class="whitespace"> </span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+              </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">Versende</span><span class="whitespace"> </span><span class="name">Nachrichten</span><span class="punctuation">,</span><span class="whitespace">
+              </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">die</span><span class="whitespace"> </span><span class="name">noch</span><span class="whitespace"> </span><span class="name">nicht</span><span class="whitespace"> </span><span class="name">versendet</span><span class="whitespace"> </span><span class="name">wurden</span><span class="whitespace">
+          </span><span class="punctuation">}</span><span class="whitespace">
+      </span><span class="punctuation">});</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">Exception</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="name">startThread</span><span class="punctuation">();</span><span class="whitespace">
+      </span><span class="name">BufferedReader</span><span class="whitespace"> </span><span class="name">userIn</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace">
+          </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">BufferedReader</span><span class="punctuation">(</span><span class="whitespace">
+              </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">InputStreamReader</span><span class="punctuation">(</span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">in</span><span class="punctuation">));</span><span class="whitespace">
+      </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+          </span><span class="name">String</span><span class="whitespace"> </span><span class="name">theLine</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">userIn</span><span class="punctuation">.</span><span class="name attribute">readLine</span><span class="punctuation">();</span><span class="whitespace">
+          </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">theLine</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">)</span><span class="whitespace">
+              </span><span class="keyword">break</span><span class="punctuation">;</span><span class="whitespace">
+          </span><span class="name">log</span><span class="punctuation">(</span><span class="name">theLine</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="punctuation">}</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div></div><div class="integrated-exercise ld-slide" id="ubung-python">
+<h2>Übung - Python</h2>
+<div class="ld-exercise scrollable" data-exercise-id="2" data-exercise-title="2 - Asynchrone, verbindungsorientierte Kommunikation" id="ld-exercise-2">
+<p class="rubric">Asynchrone, verbindungsorientierte Kommunikation</p>
+<p>Entwickeln Sie sowohl einen Client (bzw. eine Clientkomponente) als auch einen Server für das zentralisierte Loggen von Nachrichten.</p>
+<p>Im Fehlerfall, z. B. wenn der Server nicht verfügbar ist oder es zu einer Netzwerkpartitionierung kam, sollen die Nachrichten, die der Client an den Server senden will/wollte, zwischengepuffert werden und bei Serververfügbarkeit wieder zugestellt werden. Mit anderen Worten: die Methode des Clients zum senden von Nachrichten sollte nicht blockieren, sondern immer weiter funktionieren - auch im Fehlerfall.</p>
+<p><strong>Anforderungen</strong></p>
+<ul class="simple">
+<li><p>Stellen Sie sicher, dass Nachrichten immer in der richtigen Reihenfolge am Server ankommen. D. h. stellen Sie zum Beispiel sicher, dass eine gepufferte Nachricht nie nach einer neueren Nachricht ankommt.</p></li>
+<li><p>Der Client nimmt (hier) die Nachrichten über die Konsole entgegen und sendet sie direkt an den Server. Der Server sollte diese dann sofort ausgeben!</p></li>
+<li><p>Stellen Sie sicher, dass keine Nachrichten verloren gehen, wenn der Server unkontrolliert beendet wird.</p></li>
+<li><p>Bevor Sie versuchen eine Nachricht wieder zu versenden, warten Sie X Sekunden (z. B. 5 Sekunden).</p></li>
+</ul>
+<p><strong>Hinweise</strong></p>
+<ul class="simple">
+<li><p>Orientieren Sie sich an dem Code auf den Folien.</p></li>
+<li><p>Nutzen Sie ggf. die Möglichkeit Sockets in <span class="docutils literal">File</span>-Objekte zu verwandeln, um die Nachrichten zu senden. Vergessen Sie ggf. nicht <span class="docutils literal">flush()</span> aufzurufen, damit die Nachricht auch wirklich versendet wird.</p></li>
+<li><p>Prüfen Sie explizit, dass - wenn Sie Ihren Server abrupt beenden (CTRL+C) - und dann ganz schnell mehrere kleine Nachrichten senden, dass diese auch später <em>alle</em> ankommen. Falls dies nicht der Fall ist, überlegen Sie sich, wie Sie das Problem lösen können und implementieren Sie die Lösung.</p></li>
+</ul>
+<p><strong>Keine Anforderungen</strong></p>
+<ul class="simple">
+<li><p>Duplikate von Nachrichten müssen nicht erkannt werden.</p></li>
+</ul>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:lJaiQMlI7ujcgRtugoX1zznfG5e5dvAd8ONKoaPxzu8=:C0nK8nBXvNKmzE7q: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</div>
+</div>
+<div class="supplemental">
+<p class="rubric">Schablone für die Serverseite</p>
+<pre class="code python copy-to-clipboard far-smaller literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">queue</span><span class="whitespace">
+</span><span class="keyword namespace">import</span> <span class="name namespace">socket</span><span class="whitespace">
+</span><span class="keyword namespace">import</span> <span class="name namespace">queue</span><span class="whitespace">
+</span><span class="keyword namespace">import</span> <span class="name namespace">threading</span><span class="whitespace">
+
+</span><span class="name">HOST</span> <span class="operator">=</span> <span class="literal string double">&quot;localhost&quot;</span><span class="whitespace">
+</span><span class="name">PORT</span> <span class="operator">=</span> <span class="literal number integer">5678</span><span class="whitespace">
+
+</span><span class="name">PRINT_QUEUE</span> <span class="operator">=</span> <span class="name">queue</span><span class="operator">.</span><span class="name">Queue</span><span class="punctuation">()</span><span class="whitespace">
+
+</span><span class="keyword">def</span> <span class="name function">print_queue_handler</span><span class="punctuation">():</span><span class="whitespace">
+</span>    <span class="keyword">while</span> <span class="keyword constant">True</span><span class="punctuation">:</span><span class="whitespace">
+</span>        <span class="keyword">try</span><span class="punctuation">:</span><span class="whitespace">
+</span>            <span class="name">msg</span> <span class="operator">=</span> <span class="name">PRINT_QUEUE</span><span class="operator">.</span><span class="name">get</span><span class="punctuation">()</span><span class="whitespace">
+</span>            <span class="name builtin">print</span><span class="punctuation">(</span><span class="name">msg</span><span class="punctuation">,</span> <span class="name">end</span><span class="operator">=</span><span class="literal string double">&quot;&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span>        <span class="keyword">finally</span><span class="punctuation">:</span><span class="whitespace">
+</span>            <span class="name">PRINT_QUEUE</span><span class="operator">.</span><span class="name">task_done</span><span class="punctuation">()</span><span class="whitespace">
+
+
+</span><span class="keyword">def</span> <span class="name function">ts_print</span><span class="punctuation">(</span><span class="name">msg</span><span class="punctuation">):</span><span class="whitespace">
+</span>    <span class="name">PRINT_QUEUE</span><span class="operator">.</span><span class="name">put</span><span class="punctuation">(</span><span class="name">msg</span><span class="punctuation">)</span><span class="whitespace">
+
+</span><span class="comment single"># implement the server logic here...</span><span class="whitespace">
+
+</span><span class="keyword">if</span> <span class="name variable magic">__name__</span> <span class="operator">==</span> <span class="literal string double">&quot;__main__&quot;</span><span class="punctuation">:</span><span class="whitespace">
+</span>    <span class="name">threading</span><span class="operator">.</span><span class="name">Thread</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="name">print_queue_handler</span><span class="punctuation">,</span> <span class="name">daemon</span><span class="operator">=</span><span class="keyword constant">True</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span><span class="whitespace">
+</span>    <span class="comment single"># start/run server</span><span class="whitespace">
+</span>    <span class="name">PRINT_QUEUE</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">()</span></code></pre>
+</div></div>
+</body>
+</html>

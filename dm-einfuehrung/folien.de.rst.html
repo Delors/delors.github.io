@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Dokumenten Management&quot;" name="keywords" />
+<meta content="&quot;Einführung in das Dokumenten Management&quot;" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-dm-einfuehrung" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Dokumentenmanagement, Archivierungs- und Verschlüsselungsverfahren</title>
+<link rel="stylesheet" href="../LectureDoc2/normalize.css" type="text/css" />
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol,
+.compact li, .compact ul, .compact ol,
+.simple  > li p, dl.simple  > dd,
+.compact > li p, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+/* inline images */
+p img, p video, figure img, figure video {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 9338 2023-04-08 21:08:47Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+div.line-block,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution,
+.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<div class="ld-slide" id="slide0">
+<h1 class="title">Dokumentenmanagement, Archivierungs- und Verschlüsselungsverfahren</h1>
+
+<div class="smaller line-above docutils container">
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<dl class="field-list simple">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><dl class="field-list simple">
+<dt>HTML<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/dm-einfuehrung/folien.de.rst.html">https://delors.github.io/dm-einfuehrung/folien.de.rst.html</a></p>
+</dd>
+<dt>PDF<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/dm-einfuehrung/folien.de.rst.html.pdf">https://delors.github.io/dm-einfuehrung/folien.de.rst.html.pdf</a></p>
+</dd>
+</dl>
+</dd>
+<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div><div class="footer-left smallest incremental docutils container">
+<p>Dieser Foliensatz basiert auf Folien von: Klaus Götzer.</p>
+<p>Dokumenten-Management von <em>Klaus Götzer, Patrick Maué, und Ulrich Emmert</em>, dpunkt.verlag, 2023.</p>
+<p>Alle Fehler sind meine eigenen.</p>
+</div>
+</div>
+<div class="ld-slide" id="dokumentmanagement-archivierungs-und-verschlusselungsverfahren-w3wi-eh304-1">
+<h2>Dokumentmanagement, Archivierungs- und Verschlüsselungsverfahren - W3WI_EH304.1</h2>
+<dl class="field-list">
+<dt>Verortung<span class="colon">:</span></dt>
+<dd><p>Drittes Studienjahr (5. oder 6. Semester)</p>
+</dd>
+<dt>Umfang<span class="colon">:</span></dt>
+<dd><p>25 Vorlesungsstunden und 50 Stunden Selbststudium (2,5 ECTS)</p>
+</dd>
+<dt>Übergeordnetes Modul<span class="colon">:</span></dt>
+<dd><p>Fortgeschrittene Konzepte des Informationsmanagements im Gesundheitswesen (W3WI_EH304)</p>
+</dd>
+<dt>Prüfungsleistung<span class="colon">:</span></dt>
+<dd><p><span class="obsolete">Klausur (60 min/60 Punkte)</span> oder</p>
+<p><strong>Portfolio</strong> (hier mündl. Prüfungsgespräche mit 10min pro Person.)</p>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<p class="rubric">Kerninhalte gem. MHB</p>
+<ul class="simple">
+<li><p>Definitionen, Grundsätze, Aufgaben, Funktionen und Prozesse von Dokumentenmanagement</p></li>
+<li><p>Archivierungssysteme</p></li>
+<li><p>Struktur elektronischer Verwaltungsunterlagen, Archivierungsvarianten der Software- und Hardware-Lösungen</p></li>
+<li><p>Rechtliche, technische, organisatorische und wirtschaftliche Anforderungen</p></li>
+<li><p>Schnittstellen</p></li>
+<li><p>Aktuelle Standards</p></li>
+<li><p>Verfügbarkeit elektronischer Verwaltungsakten</p></li>
+<li><p>IT-Sicherheit von digital erzeugten und gescannten Dokumenten</p></li>
+<li><p>Elektronische Signaturen</p></li>
+<li><p>Archivierungsverfahren</p></li>
+<li><p>Verschlüsselungsverfahren</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="literatur">
+<h2>Literatur</h2>
+<ul>
+<li><p>Bzgl. Dokumentenmanagement:</p>
+<img alt="images/dokumentenmanagement.jpg" class="box-shadow" src="images/dokumentenmanagement.jpg" />
+</li>
+<li><p>weitere bzgl. der IT sicherheitsrelevanten Aspekte: Verschlüsselungsverfahren und Signaturen</p></li>
+</ul>
+</div><div class="new-section ld-slide" id="warum-dokumentenmanagement">
+<h2>Warum Dokumentenmanagement?</h2>
+</div><div class="ld-slide" id="motivation">
+<h2>Motivation</h2>
+<ul class="incremental list-with-explanations simple">
+<li><p>Die meisten strukturierten Daten liegen elektronisch vor (ERP, CRM, etc.).</p></li>
+<li><p>Dokumente liegen aber (noch immer) in Papierform vor (insbesondere in Deutschland) und es gilt dieses Rationalisierungspotential zu heben.</p></li>
+<li><p>Alle reden von elektronischen Geschäftsprozessen und Digitalisierung - Dokumente sind ein wesentlicher Bestandteil!</p></li>
+<li><p>Wichtige gesetzliche und technische Grundlagen sind geschaffen.</p></li>
+<li><p>Experten schätzen, dass 95% der Papierdokumente nach Ablage nicht mehr genutzt werden, da sie zu schwer zu finden sind.</p></li>
+<li><p>Ähnlich hohe Werte werden für digitale Dokumente genannt, die ohne weitere Strukturierungshilfen in Dateisystemen oder Datenbanken liegen.</p></li>
+<li><p>Die Menge an Dokumenten, die heute entstehen kann durch eine einzelne Person nicht mehr bewältigt werden.</p></li>
+</ul>
+<div class="supplemental">
+<p>Zum  Beispiel fallen für ein einzelnes konventionelles Kraftwerk bereits ca. 500  000 Dokumente.</p>
+</div></div><div class="smaller ld-slide" id="digitalisierung-ein-langwieriger-prozess">
+<h2>Digitalisierung - ein langwieriger Prozess...</h2>
+<figure class="align-center">
+<img alt="images/floppydisk.com.2024-01.png" src="images/floppydisk.com.2024-01.png" style="width: 70%;" />
+<figcaption>
+<p>Jan. 2024</p>
+</figcaption>
+</figure>
+</div><div class="smaller ld-slide" id="digitalisierung-ein-langwieriger-nicht-aufzuhaltender-prozess">
+<h2>Digitalisierung - ein langwieriger nicht-aufzuhaltender Prozess...</h2>
+<blockquote>
+<p class="rubric"><a class="reference external" href="https://www.theregister.com/2024/01/29/japan_government_floppy_disks/">Japanese government finally bids sayonara to the 3.5&quot; floppy disk</a></p>
+<p><strong>Businesses can at long last submit digital docs to government agencies</strong></p>
+</blockquote>
+<blockquote class="epigraph">
+<p>Japan is saying sayonara to the floppy disk, which until now was a required medium for submitting some 1,900 official documents to the government.</p>
+<p>The announcement (Japanese, machine translated) last week from the Ministry of Economy, Trade and Industry brings decades of physical media submission requirements in Japan to an end. [...]</p>
+<p>Despite being a world leader in cutting-edge technology, Japan has an odd relationship with legacy tech. It's still a land of <strong>cash-only payments and fax machines</strong> that has moved slowly to embrace the modern digital economy.</p>
+<p class="attribution">—The Register, Mon 29 Jan 2024 // 19:00 UTC</p>
+</blockquote>
+</div><div class="vertical-title ld-slide" id="digitalisierung-ein-prozess-mit-stilbluten">
+<h2>Digitalisierung - ein Prozess mit Stilblüten...</h2>
+<img alt="images/sparkasse-verschickt-usb-sticks.2024-03-03.png" class="align-center" src="images/sparkasse-verschickt-usb-sticks.2024-03-03.png" style="height: 1175px;" />
+</div><div class="center-child-elements transition-scale ld-slide" id="section-1">
+<h2></h2>
+<div class="docutils container">
+<blockquote class="epigraph">
+<p>Wie die zahlreichste Bibliothek, wenn ungeordnet, nicht so viel Nutzen schafft, als eine sehr mäßige, sorgfältig geordnete; eben so ist die größte Menge von Kenntnissen, die nicht gehörig durch eigenes Denken bearbeitet werden, viel weniger Wert als eine viel geringere Menge von Kenntnissen, die gehörig durchdacht werden.</p>
+<p class="attribution">—Arthur Schopenhauer (mutmaßlich)</p>
+</blockquote>
+</div>
+</div><div class="smaller ld-slide" id="was-kann-ein-dokumentenmanagement-system-dms-leisten">
+<h2>Was kann ein Dokumentenmanagement System (DMS) leisten?</h2>
+<ul class="incremental">
+<li><p>Beschleunigung der Prozesse</p>
+<blockquote>
+<ul class="simple">
+<li><p>Unabhängigkeit des Zugriffes von Ort und Zeit</p></li>
+<li><p>Schnelle Verfügbarkeit der Dokumente</p></li>
+<li><p>Gleichzeitiger Zugriff auf die Dokumente durch mehrere Mitarbeiter</p></li>
+</ul>
+</blockquote>
+</li>
+<li><p>Revisionssicherheit der Ablage</p>
+<blockquote>
+<ul class="simple">
+<li><p>Strukturierte Ablage und Suche von Dokumenten</p></li>
+<li><p>Sicherheit der Dokumente vor Verfälschung und Verlust</p></li>
+<li><p>Transparenz der Prozesse</p></li>
+</ul>
+</blockquote>
+</li>
+<li><p>Redundanzfreie Archivierung</p></li>
+<li><p>Kostenreduktion (Bearbeitungszeiten, Archivkosten.... )</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Revisionssichere Archivsysteme stellen sicher, dass Informationen wieder auffindbar, nachvollziehbar, unveränderbar und verfälschungssicher archiviert sind.</p>
+</div>
+</div><div class="ld-slide" id="gegenuberstellung-konventionelles-archiv-zu-dms">
+<h2>Gegenüberstellung konventionelles Archiv zu DMS</h2>
+<table class="highlight-line-on-hover slightly-more-smaller incremental">
+<thead>
+<tr><th class="head"></th>
+<th class="head"><p>Konventionell</p></th>
+<th class="head"><p>DMS</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Ablagestruktur</p></td>
+<td><p>hierarchisch, meist nach Dokumententypen getrennt</p></td>
+<td><p>datenbankgestützt, Suchbeginn nach jedem Suchkriterium möglich, Suche wahlweise z. B. je Kunde, Vorgang oder Beleg</p></td>
+</tr>
+<tr><td><p>Auskunftsbereitschaft</p></td>
+<td><p>zeitverzögert, nach Sichtung/ Entnahme aller Dokumente</p></td>
+<td><p>unmittelbar durch vorgangsbezogene bzw. dokumentenübergreifende Suche</p></td>
+</tr>
+<tr><td><p>Auskunftsaufwand</p></td>
+<td><p>für Belegsuche, Entnahme und wieder einordnen, evtl. kopieren und Versand</p></td>
+<td><p>nur für Recherche am Bildschirm, gegebenenfalls direkter Versand per E-Mail</p></td>
+</tr>
+<tr><td><p>Redundanz</p></td>
+<td><p>Abteilungsablagen = mehrfacher Aufwand</p></td>
+<td><p>Einmalablage</p></td>
+</tr>
+<tr><td><p>Vollständigkeit</p></td>
+<td><p>leidet unter jeder Entnahme</p></td>
+<td><p>bleibt immer gewahrt</p></td>
+</tr>
+<tr><td><p>Sicherheit</p></td>
+<td><p>Ordner u. Dokumente lassen sich leicht entfernen oder kopieren</p></td>
+<td><p>klare Regelung der Zugriffsrechte, keine ungewollte Entnahme möglich</p></td>
+</tr>
+</tbody>
+</table>
+</div><div class="vertical-title ld-slide" id="zyklus-von-dokumenten">
+<h2>Zyklus von Dokumenten</h2>
+<img alt="drawings/dokumente/lebenszyklus.svg" class="align-center" src="drawings/dokumente/lebenszyklus.svg" style="height: 1150px;" />
+</div><div class="ld-slide" id="grundlegende-voraussetzungen-fur-dokumentenmanagementorganisation">
+<h2>Grundlegende Voraussetzungen für Dokumentenmanagementorganisation</h2>
+<p>In einer Organisation ist zu regeln:</p>
+<ul class="incremental simple">
+<li><p>Kennzeichnung und Beschreibung von Dokumenten</p></li>
+<li><p>Fortschreibung und Historienverwaltung von Dokumenten</p></li>
+<li><p>Ablage und Archivierung von Dokumenten</p></li>
+<li><p>Verteilung und Umlauf von Dokumenten</p></li>
+<li><p>Suche nach Dokumenten bzw. Dokumenteninhalten</p></li>
+<li><p>Vernichtung von Dokumenten</p></li>
+<li><p>Regelung von Verantwortlichkeiten für Inhalt und Verwaltung von Dokumenten</p></li>
+</ul>
+<div class="assessment incremental docutils container">
+<p>Ein Dokumentenmanagementsystem ist ein IT System zur Unterstützung der Dokumentenmanagementorganisation.</p>
+</div>
+</div><div class="new-section ld-slide" id="dokument-und-dokumentenmanagement">
+<h2>Dokument und Dokumentenmanagement</h2>
+</div><div class="ld-slide" id="dokumente-beispiele">
+<h2>Dokumente - Beispiele</h2>
+<img alt="drawings/dokumente/dokumente.svg" class="incremental align-center" src="drawings/dokumente/dokumente.svg" style="height: 950px;" />
+</div><div class="ld-slide" id="was-ist-ein-dokument-aus-logischer-sicht">
+<h2>Was ist ein Dokument aus logischer Sicht?</h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Ein Dokument fasst inhaltlich zusammengehörende Informationen strukturiert zusammen, die nicht ohne erheblichen Bedeutungsverlust weiter unterteilt werden könnten.</p>
+<ul class="simple">
+<li><p>Die Information ist für einen gewissen Zeitraum zu erhalten.</p></li>
+<li><p>Dokumente dienen dem Nachweis von Tatsachen.</p></li>
+</ul>
+</aside>
+<div class="assessment incremental docutils container">
+<p>Das Dokument ist somit eigentlich der Träger, der die Informationen speichert, unabhängig davon ob das Dokument ein Stück Papier, eine Datei auf einem Rechner, ein Videoband oder eine Tontafel ist etc.</p>
+</div>
+</div><div class="ld-slide" id="was-ist-ein-dokument-aus-technischer-sicht">
+<h2>Was ist ein Dokument aus technischer Sicht?</h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Ein Dokument ist ein Objekt, das in einer Datenbank beschrieben wird.</p>
+<p>Das beschriebene Objekt kann selbst elektronisch gespeichert werden.</p>
+</aside>
+<div class="supplemental docutils container">
+<p>Es ist somit eine reine Deklarationsfrage, was ein Dokument ist!</p>
+</div>
+</div><div class="vertical-title ld-slide" id="elektronische-dokumente">
+<h2>Elektronische Dokumente</h2>
+<img alt="drawings/dokumente/elektronische_dokumente.svg" class="align-center" src="drawings/dokumente/elektronische_dokumente.svg" style="height: 1150px;" />
+<div class="supplemental docutils container">
+<dl class="field-list simple">
+<dt>NCI<span class="colon">:</span></dt>
+<dd><p><em>Non-Coded-Information (NCI)-Dokumente</em> sind eingescannte Unterlagen, die als Bild vorliegen, also keine direkte Bearbeitung/Verarbeitung ermöglichen.</p>
+</dd>
+<dt>CI<span class="colon">:</span></dt>
+<dd><p>Ein <em>CI-Dokument</em> ist ein digital erstelltes Dokument, das durch Zeichensätze kodiert ist und von Programmen direkt ausgewertet werden kann.</p>
+</dd>
+<dt>OCR (Optical Character Recognition)<span class="colon">:</span></dt>
+<dd><p>Text einer gedruckten Vorlage wird durch einfachen Mustervergleich automatisch in maschinenlesbare Zeichen transformiert.</p>
+</dd>
+<dt>ICR (Intelligent Character Recognition)<span class="colon">:</span></dt>
+<dd><p>Die Qualität der Texterkennung wird durch Kontextanalyse verbessert. Typische Fehler von OCR-Systemen, wie zum Beispiel Fehlerkennungen von optisch nahe beieinanderliegenden Zeichen (z. B. „8 und B“ oder „0 und O“), werden vermieden. (Wie nahe Zeichen beieinander liegen, ist stark vom verwendeten Schrifttyp abhängig.)</p>
+</dd>
+<dt>OMR (Optical Mark Recognition)<span class="colon">:</span></dt>
+<dd><p>Liest mit großer Sicherheit spezielle Markierungen in vordefinierten Feldern aus - zum Beispiel in Multiple-Choice-Tests und Vordrucken.</p>
+</dd>
+</dl>
+</div>
+<!-- TODO Folie bzgl. strukturierter und unstrukturierter Daten (Dokumentenmanagement S. 103) -->
+</div><div class="ld-slide" id="bestandteile-eines-dokumentes">
+<h2>Bestandteile eines Dokumentes</h2>
+<!-- the following is necessary, because we can't have local svgs that reference local pngs... (browser security) -->
+<div class="stack docutils container">
+<div class="layer docutils container">
+<img alt="images/eheurkunde.png" class="align-center" src="images/eheurkunde.png" style="height: 950px;" />
+</div>
+<div class="layer overlay incremental docutils container">
+<img alt="drawings/dokumente/mit_stempel.svg" class="align-center" src="drawings/dokumente/mit_stempel.svg" style="height: 950px;" />
+</div>
+</div>
+</div><div class="ld-slide" id="struktur-eines-dokumentes">
+<h2>Struktur eines Dokumentes</h2>
+<div class="stack docutils container">
+<div class="layer docutils container">
+<img alt="images/berufung.png" class="align-center" src="images/berufung.png" style="height: 950px;" />
+</div>
+<div class="layer overlay docutils container">
+<img alt="drawings/dokumente/struktur.svg" class="align-center" src="drawings/dokumente/struktur.svg" style="height: 950px;" />
+</div>
+</div>
+</div><div class="ld-slide" id="dokumente-annotieren">
+<h2>Dokumente annotieren</h2>
+<img alt="images/dokument_mit_anmerkungen.png" class="align-center" src="images/dokument_mit_anmerkungen.png" style="height: 1050px;" />
+</div><div class="ld-slide" id="renditions-eines-dokumentes">
+<h2><em>Renditions</em> eines Dokumentes</h2>
+<ul class="incremental simple">
+<li><p>Man unterscheidet zwischen dem Originalformat des Dokuments (z. B. von MS-Word oder LibreOffice) und Renditions (wie PDF/a und TIFF).</p></li>
+<li><p>Formate wie PDF/a und TIFF sind in der Regel langlebiger. Für beide Formate gibt es weitverbreitete Viewer und sie erhalten besser den ursprünglichen optischen Zustand.</p></li>
+<li><p>Preview Images sind oft zusätzlich eingebettet.</p></li>
+</ul>
+</div><div class="ld-slide" id="hashwerte-und-signaturen">
+<h2>Hashwerte und Signaturen <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<ul class="incremental simple">
+<li><p>Hashwert ist wie ein mathematischer Fingerabdruck des Dokumentes.</p></li>
+<li><p>Dieser Hashwert – verknüpft mit einer persönlichen Signatur – zeigt, dass dieses Dokument von dem Absender der Signatur stammt und das Dokument nicht verändert wurde.</p></li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Hashwerte und Signaturen werden wir ausführlich im Zusammenhang mit Verschlüsselungsverfahren betrachten.</p>
+</aside>
+</aside>
+</div><div class="ld-slide" id="volltext-indizierung">
+<h2>Volltext(-indizierung)</h2>
+<ul class="simple">
+<li><p>Für Volltextindizierung wird oft der Volltext - insbesondere wenn er durch OCR/ICR gewonnen wurde - mit dem Dokument abgespeichert.</p></li>
+<li><p>Die indizierten Begriffe werden oft mit der Angabe der Fundstelle im Dokument abgespeichert, um innerhalb des Dokuments das Suchergebnis anzeigen zu können.</p></li>
+</ul>
+</div><div class="ld-slide" id="versionierung-von-dokumenten">
+<h2>Versionierung von Dokumenten</h2>
+<ul class="incremental simple">
+<li><p>Was ist die aktuelle gültige Version?</p></li>
+<li><p>Was hat sich gegenüber den Vorgängern geändert?</p></li>
+<li><p>Was ist für die nächste in Bearbeitung?</p>
+<ul>
+<li><p>Vorgängerversion(en)</p></li>
+<li><p>Freigegebene Version</p></li>
+<li><p>Bearbeitungsversionen</p></li>
+</ul>
+</li>
+<li><p>Versionen des Dokumentes</p></li>
+<li><p>Versionen der Metadaten des Dokumentes</p></li>
+</ul>
+</div><div class="ld-slide" id="meta-daten">
+<h2>Meta-Daten</h2>
+<ul>
+<li><p>Strukturierte Daten, die das Dokument klassifizieren und beschreiben</p>
+<p>Beispiele:</p>
+<ul class="incremental simple">
+<li><p>Eindeutige Schlüssel wie Personalnr., Produktnr., ...</p></li>
+<li><p>Stichwörter zum Klassifizieren des Textes</p></li>
+<li><p>Datum der Erstellung, Änderung, ...</p></li>
+<li><p>Autor</p></li>
+<li><p>Kategorien wie Mahnung, Anfrage, Branche, Land, ...</p></li>
+<li><p>Quelle des Dokuments (Zeitschrift...)</p></li>
+</ul>
+</li>
+</ul>
+<div class="supplemental docutils container">
+<p>Dies ist insbesondere ein Thema der Datenmodellierung, d. h. welche Daten möchte man wie erfassen.</p>
+</div>
+</div><div class="ld-slide" id="arten-von-meta-daten">
+<h2>Arten von Meta-Daten</h2>
+<ul class="simple">
+<li><p>Eindeutiger Schlüssel im DMS</p></li>
+<li><p>Fremdschlüssel (z. B. Buchungsnummern)</p></li>
+</ul>
+<div class="incremental margin-top-2em docutils container">
+<ul class="simple">
+<li><p>Statische Metadaten (unveränderlich)</p></li>
+<li><p>Dynamische Metadaten (wie Status oder Version der Dokumente)</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="beispiele-von-meta-daten-einer-verwaltungssoftware-fur-grafische-zeichnungen">
+<h2>Beispiele von Meta-Daten einer Verwaltungssoftware für grafische Zeichnungen</h2>
+<table class="highlight-line-on-hover far-smaller incremental">
+<thead>
+<tr><th class="head"><p>Nr.</p></th>
+<th class="head"><p>Attribut</p></th>
+<th class="head"><p>Muss</p></th>
+<th class="head"><p>Funktion</p></th>
+<th class="head"><p>Quelle</p></th>
+<th class="head"><p>Bemerkung</p></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>1</p></td>
+<td><p>Zeichnungsnummer</p></td>
+<td><p>M</p></td>
+<td><p>Eindeutiger Schlüssel</p></td>
+<td><p>Manuelle Vergabe durch Benutzer</p></td>
+<td><p>Identifiziert Zeichnung</p></td>
+<td></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>Zeichnungsmappen- nummer</p></td>
+<td><p>M</p></td>
+<td><p>Fremdschlüssel</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>3a</p></td>
+<td><p>Version</p></td>
+<td><p>M</p></td>
+<td><p>Version der Zeichnung verwalten</p></td>
+<td><p>Automatische Vergabe durch DMS bei Check-in</p></td>
+<td><p>Benutzer entscheidet</p></td>
+<td><p>ob <em>minor</em> oder <em>major</em></p></td>
+</tr>
+<tr><td><p>3b</p></td>
+<td><p>Check-In-Datum</p></td>
+<td><p>M</p></td>
+<td><p>Datum des Check-in der Version</p></td>
+<td><p>Automatische Vergabe durch DMS</p></td>
+<td><p>Check-in Datum</p></td>
+<td></td>
+</tr>
+<tr><td><p>3c</p></td>
+<td><p>Dokumenten-Owner</p></td>
+<td><p>M</p></td>
+<td><p>Gruppe aus letzten Bearbeitern</p></td>
+<td><p>Aus USER-ID abgeleitet</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>3d</p></td>
+<td><p>Letzter Bearbeiter</p></td>
+<td><p>M</p></td>
+<td><p>Identifikation</p></td>
+<td><p>USER-ID</p></td>
+<td><p>Beim Check-in</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div><div class="ld-slide" id="zusammenfassung-dokumente-in-einem-dms">
+<h2>Zusammenfassung: Dokumente in einem DMS</h2>
+<p>Ein Dokument in einem DMS ist ein komplexes Objekt, das aus verschiedenen Komponenten bestehen kann:</p>
+<ul class="incremental simple">
+<li><p>Das Dokument im Originalformat (z. B. odt, docx, xlsx, txt, ...)</p></li>
+<li><p>Verschiedene Renditions (pdf, tiff, xml, ....)</p></li>
+<li><p>Vorschaubild</p></li>
+<li><p>Volltext</p></li>
+<li><p>Annotationen (Layer für Anmerkungen, Stempel, ...)</p></li>
+<li><p>Hashwert, um elektronische Signaturen zu erzeugen und/oder zu prüfen</p></li>
+<li><p>Elektronische Signaturen</p></li>
+<li><p>Versionen des Dokumentes</p></li>
+<li><p>Metadaten des Dokumentes bzw. der Komponenten des Dokumentes</p></li>
+</ul>
+</div><div class="ld-slide" id="dokumentenstrukturen">
+<h2>Dokumentenstrukturen</h2>
+<ul class="incremental simple">
+<li><p>Welche Dokumente bilden eine logische Einheit („Mappen“, „Ordner“, „Vorgang“)?</p></li>
+<li><p>Metadaten zu diesen Mappen definieren.</p></li>
+<li><p>Ein Dokument kann in mehreren Mappen sein.</p></li>
+<li><p>Der Inhalt einer Mappe unterteilt sich in:</p>
+<ol class="arabic simple">
+<li><p>Dokumente, die immer da sein müssen,</p></li>
+<li><p>solche, die optional da sind und</p></li>
+<li><p>in nicht vorhersehbare Exoten.</p></li>
+</ol>
+</li>
+</ul>
+<div class="supplemental">
+<p>Ein Beispiel einer Mappe wäre eine Vorgangsakte mit einem Antrag, (am Ende) einem Gutachten, ggf. E-Mails aber auch handschriftlichen Notizen ...</p>
+</div></div><div class="ld-slide" id="zusammengesetzte-dokumente">
+<h2>Zusammengesetzte Dokumente</h2>
+<p>Komplexes Objekt aus mehreren Dokumenten mit eigener Verwaltungsstruktur:</p>
+<ul class="simple">
+<li><p>Metadaten</p></li>
+<li><p>Versionen</p></li>
+<li><p>Rechte</p></li>
+</ul>
+<div class="supplemental">
+<p>Zusammengesetzte Dokumente ≘ <span class="eng">Compound Documents</span></p>
+</div></div><div class="new-section ld-slide" id="dokumentenlebenszyklus">
+<h2>Dokumentenlebenszyklus</h2>
+</div><div class="ld-slide" id="dokumentenlebenszyklus-uberblick">
+<h2>Dokumentenlebenszyklus - Überblick</h2>
+<img alt="drawings/dokumente/lebenszyklus_a_bis_z.svg" class="center-child-elements align-center" src="drawings/dokumente/lebenszyklus_a_bis_z.svg" style="width: 100%;" />
+</div><div class="ld-slide" id="dokumentenlebenszyklus-1">
+<h2>Dokumentenlebenszyklus</h2>
+<p>Dokumente ...</p>
+<ul class="incremental simple">
+<li><p>entstehen</p></li>
+<li><p>verändern sich</p></li>
+<li><p>werden festgeschrieben</p></li>
+<li><p>dienen als Nachweis / Infoquelle</p></li>
+<li><p>müssen bestimmte Zeit aufbewahrt werden</p></li>
+<li><p>können bzw. müssen gelöscht werden.</p></li>
+</ul>
+</div><div class="ld-slide" id="erstellen-von-dokumenten">
+<h2>Erstellen von Dokumenten</h2>
+<ul class="incremental simple">
+<li><p>Scannen analoger Dokumente (Papier, Mikrofilm, ..)</p></li>
+<li><p>Neuerstellung von Dokumenten (Vorlagen im DMS,..)</p></li>
+<li><p>Vorhandene Dokumente einstellen (<em>drag and drop</em>)</p></li>
+<li><p>Dokumente aus Applikationen übernehmen (SAP-Archive-Link, Mail-Archivierung, ...)</p></li>
+<li><p>Spezielle Verfahren bei Migration und Massenimporten</p></li>
+<li><p>Indizieren der Dokumente entweder automatisch oder manuell</p></li>
+</ul>
+</div><div class="ld-slide" id="nutzen-und-bearbeiten-von-dokumenten">
+<h2>Nutzen und Bearbeiten von Dokumenten</h2>
+<ul class="incremental simple">
+<li><p>Suchen und Retrieval:</p>
+<ul>
+<li><p>Volltext</p></li>
+<li><p>Indizes</p></li>
+<li><p>Verknüpfungen (z. B. in Applikationen)</p></li>
+</ul>
+</li>
+<li><p>Ausgabe der Dokumente auf Bildschirm, Drucker, Mail</p></li>
+<li><p>Check-out / bearbeiten / Check-in</p></li>
+</ul>
+</div><div class="ld-slide" id="rahmenbedingungen-fur-die-lebensdauer-von-dokumenten">
+<h2>Rahmenbedingungen für die Lebensdauer von Dokumenten</h2>
+<ul class="incremental simple">
+<li><p>Betriebliche Notwendigkeiten</p></li>
+<li><p>Gesetzliche Aufbewahrungspflichten</p></li>
+<li><p>Datenschutzbestimmungen</p></li>
+</ul>
+<div class="supplemental docutils container">
+<ul class="simple">
+<li><p>Konzept zur intelligenten Verwaltung, Bewertung und Nutzung von Daten bei möglichst geringen Kosten (Geschäftsregeln, Servicelevel, ..)</p></li>
+<li><p>Betrachtung der Daten und Dokumente über ihren gesamten Lebenslauf, aber nicht in Abhängigkeit vom Alter sondern von der Wichtigkeit</p></li>
+<li><p>Entwicklung optimaler Verwaltungsstrategien in Abhängigkeit von der aktuellen Wichtigkeit und Nutzung</p></li>
+<li><p>Enge Verzahnung von Speicherhardware, Archivierung und Daten-, Dokumenten- und Content-Management</p></li>
+</ul>
+</div>
+</div><div class="ld-slide" id="loschen-von-dokumenten">
+<h2>Löschen von Dokumenten</h2>
+<ul class="simple">
+<li><p>Falsche Dokumente (z. B. Fehler beim Indizieren)</p></li>
+<li><p>Nicht mehr benötigte Dokumente</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>Logisches Löschen</p></li>
+<li><p>Physikalisches Löschen</p></li>
+</ul>
+</div><div class="center-child-elements ld-slide" id="archivierung-von-dokumenten">
+<h2>Archivierung (von Dokumenten)</h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p><strong>Archiv</strong></p>
+<p>Ein Archiv ist ein realer oder elektronischer Ort, in dem Dokumente, die zur laufenden Aufgabenerfüllung nicht mehr benötigt werden, erfasst, ausgewertet und zugänglich gemacht werden.</p>
+</aside>
+</div><div class="ld-slide" id="kerneigenschaften-elektronischer-archive">
+<h2>Kerneigenschaften elektronischer Archive</h2>
+<p>Archiv System müssen die folgenden Eigenschaften bei langjähriger Aufbewahrung unterstützen:</p>
+<dl class="incremental field-list simple">
+<dt>Integrität<span class="colon">:</span></dt>
+<dd><p>Nachweis, dass die Informationen während der Aufbewahrung nicht verändert oder gelöscht wurden.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Authenzität<span class="colon">:</span></dt>
+<dd><p>Herkunft lässt sich zweifelsfrei nachweisen.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Lesbarkeit<span class="colon">:</span></dt>
+<dd><p>Informationen müssen auch in Zukunft lesbar sein.</p>
+</dd>
+</dl>
+<div class="assessment incremental docutils container">
+<p>Eigenschaften wie die Unterstützung von Volltextindizierung sind nicht in allen Fällen notwendig.</p>
+</div>
+<div class="supplemental">
+<p>Z. B. muss ein Insolvenzverwalter nach dem Abschluss des Verfahrens die Dokumente 10 Jahre aufbewahren obwohl er in dieser Zeit die Dokumente höchstwahrscheinlich nicht mehr benötigt.</p>
+<p>Informationen über die Ergebnisse von arbeitsmedizinischen Untersuchungen (dies sind ggf. sehr vielfältige und umfangreiche Daten (z. B. Röntenbilder, EKGs)) müssen 30 Jahre bis nach der letzten Untersuchung aufbewahrt werden, da sich daraus ggf. Rentenansprüche ableiten. Daraus leiten sich ggf. Fristen für Dokumente von 50 Jahren und mehr ab.</p>
+</div></div><div class="ld-slide" id="revisionssichere-elektronische-archivierung">
+<h2>Revisionssichere elektronische Archivierung</h2>
+<div class="stack">
+<div class="layer">
+<p>Merkmale revisionssicherer Archivsysteme sind:</p>
+<ul class="incremental simple">
+<li><p>Informationen sind wieder auffindbar,</p></li>
+<li><p>Änderungen sind nachvollziehbar,</p></li>
+<li><p>Informationen sind unveränderbar und</p></li>
+<li><p>die Informationen sind verfälschungssicher archiviert</p></li>
+</ul>
+</div><div class="layer incremental">
+<p>Aufgrund von HGB-Vorschriften gilt für die Revisionssicherheit bei der Archivierung:</p>
+<ul class="incremental simple">
+<li><p>Richtigkeit</p></li>
+<li><p>Vollständigkeit</p></li>
+<li><p>Sicherheit des Gesamtverfahrens</p></li>
+<li><p>Schutz vor Veränderung und Verfälschung</p></li>
+<li><p>Sicherung vor Verlust</p></li>
+<li><p>Nutzung nur durch Berechtigte</p></li>
+<li><p>Einhaltung der Aufbewahrungsfristen</p></li>
+<li><p>Dokumentation des Verfahrens</p></li>
+<li><p>Nachvollziehbarkeit</p></li>
+<li><p>Prüfbarkeit</p></li>
+</ul>
+</div></div></div><div class="ld-slide" id="strategien-fur-die-langfristige-aufbewahrung-von-dokumenten">
+<h2>Strategien für die langfristige Aufbewahrung von Dokumenten</h2>
+<ul class="incremental simple">
+<li><p><em>Technikmuseum</em> (Variante: Alte Umgebung emulieren)</p></li>
+<li><p>Dauerhafte Formate nutzen</p></li>
+<li><p>Migration der Dokumente auf neue Umgebung</p></li>
+</ul>
+</div><div class="ld-slide" id="bewertung-von-dateiformaten-in-hinblick-auf-die-dauerhaftigkeit">
+<h2>Bewertung von Dateiformaten in Hinblick auf die Dauerhaftigkeit</h2>
+<ul class="incremental simple">
+<li><p>vollständige und offene Dokumentation (am besten mit Standardisierung)</p></li>
+<li><p>Plattformunabhängigkeit</p></li>
+<li><p>nicht-proprietär (herstellerunabhängig)</p></li>
+<li><p>keine „verlustbehaftete“ oder proprietäre Komprimierung</p></li>
+<li><p>keine eingebetteten Dateien, Programme oder Skripte</p></li>
+<li><p>keine vollständige oder teilweise Verschlüsselung</p></li>
+<li><p>kein Passwortschutz</p></li>
+<li><p>relevante Nutzerbasis</p></li>
+</ul>
+</div><div class="ld-slide" id="langfristige-aufbewahrung-von-dokumenten">
+<h2>Langfristige Aufbewahrung von Dokumenten</h2>
+<div class="stack far-far-smaller docutils container">
+<div class="layer docutils container">
+<table class="overflow-y-scroll">
+<thead>
+<tr><th class="head"><p>Content Type</p></th>
+<th class="head"><p>High probability for long-term preservation</p></th>
+<th class="head"><p>Medium probability for long-term preservation</p></th>
+<th class="head"><p>Low probability for long-term preservation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Text</p></td>
+<td><ul class="incremental simple">
+<li><p>Plain text (encoding: USASCII, UTF-8, UTF-16 with BOM)</p></li>
+<li><p>XML (includes XSD/XSL/XHTML, etc.; with included or accessible schema)</p></li>
+<li><p>PDF/A-1 (ISO 19005-1) (*.pdf)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>Cascading Style Sheets (*.css)</p></li>
+<li><p>DTD (*.dtd)</p></li>
+<li><p>Plain text (ISO 8859-1 encoding)</p></li>
+<li><p>PDF (*.pdf) (embedded fonts)</p></li>
+<li><p>Rich Text Format (*.rtf)</p></li>
+<li><p>HTML (include a DOCTYPE declaration)</p></li>
+<li><p>SGML (*.sgml)</p></li>
+<li><p>Open Office (*.sxw/*.odt)</p></li>
+<li><p>OOXML (ISO/IEC DIS 29500) (*.docx)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>PDF (*.pdf) (encrypted)</p></li>
+<li><p>Microsoft Word (*.doc)</p></li>
+<li><p>WordPerfect (*.wpd)</p></li>
+<li><p>All other text formats not listed here</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layer incremental docutils container">
+<table class="overflow-y-scroll">
+<thead>
+<tr><th class="head"><p>Content Type</p></th>
+<th class="head"><p>High probability for long-term preservation</p></th>
+<th class="head"><p>Medium probability for long-term preservation</p></th>
+<th class="head"><p>Low probability for long-term preservation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Raster Image</p></td>
+<td><ul class="incremental simple">
+<li><p>TIFF (uncompressed)</p></li>
+<li><p>JPEG2000 (lossless) (*.jp2)</p></li>
+<li><p>PNG (*.png)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>BMP (*.bmp)</p></li>
+<li><p>JPEG/JFIF (*.jpg)</p></li>
+<li><p>JPEG2000 (lossy) (*.jp2)</p></li>
+<li><p>TIFF (compressed)</p></li>
+<li><p>GIF (*.gif)</p></li>
+<li><p>Digital Negative DNG (*.dng)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>MrSID (*.sid)</p></li>
+<li><p>TIFF (in Planar format)</p></li>
+<li><p>FlashPix (*.fpx)</p></li>
+<li><p>PhotoShop (*.psd)</p></li>
+<li><p>RAW</p></li>
+<li><p>JPEG 2000 Part 2 (*.jpf, *.jpx)</p></li>
+<li><p>All other raster image formats not listed here</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layer incremental docutils container">
+<table class="overflow-y-scroll">
+<thead>
+<tr><th class="head"><p>Content Type</p></th>
+<th class="head"><p>High probability for long-term preservation</p></th>
+<th class="head"><p>Medium probability for long-term preservation</p></th>
+<th class="head"><p>Low probability for long-term preservation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Vector Graphics</p></td>
+<td><ul class="incremental simple">
+<li><p>SVG (no Java script binding) (*.svg)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>Computer Graphic Metafile (CGM, WebCGM) (*.cgm)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>Encapsulated Postscript (EPS)</p></li>
+<li><p>Macromedia Flash (*.swf)</p></li>
+<li><p>All other vector image formats not listed here</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layer incremental docutils container">
+<table class="overflow-y-scroll">
+<thead>
+<tr><th class="head"><p>Content Type</p></th>
+<th class="head"><p>High probability for long-term preservation</p></th>
+<th class="head"><p>Medium probability for long-term preservation</p></th>
+<th class="head"><p>Low probability for long-term preservation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Audio</p></td>
+<td><ul class="incremental simple">
+<li><p>AIFF (PCM) (*.aif, *.aiff)</p></li>
+<li><p>WAV (PCM) (*.wav)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>SUN Audio (uncompressed) (*.au)</p></li>
+<li><p>Standard MIDI (*.mid, *.midi)</p></li>
+<li><p>Ogg Vorbis (*.ogg)</p></li>
+<li><p>Free Lossless Audio Codec (*.flac)</p></li>
+<li><p>Advance Audio Coding (*.mp4, *.m4a, *.aac)</p></li>
+<li><p>MP3 (MPEG-1/2, Layer 3) (*.mp3)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>AIFC (compressed) (*.aifc)</p></li>
+<li><p>NeXT SND (*.snd)</p></li>
+<li><p>RealNetworks 'Real Audio' (*.ra, *.rm, *.ram)</p></li>
+<li><p>Windows Media Audio (*.wma)</p></li>
+<li><p>Protected AAC (*.m4p)</p></li>
+<li><p>WAV (compressed) (*.wav)</p></li>
+<li><p>All other audio formats not listed here</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layer incremental docutils container">
+<table class="overflow-y-scroll">
+<thead>
+<tr><th class="head"><p>Content Type</p></th>
+<th class="head"><p>High probability for long-term preservation</p></th>
+<th class="head"><p>Medium probability for long-term preservation</p></th>
+<th class="head"><p>Low probability for long-term preservation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Video</p></td>
+<td><ul class="incremental simple">
+<li><p>Motion JPEG 2000 (ISO/IEC 15444-4)(*.mj2)</p></li>
+<li><p>AVI (uncompressed, motion JPEG) (*.avi)</p></li>
+<li><p>QuickTime Movie (uncompressed, motion JPEG) (*.mov)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>Ogg Theora (*.ogg)</p></li>
+<li><p>MPEG-1, MPEG-2 (*.mpg, *.mpeg, wrapped in AVI, MOV)</p></li>
+<li><p>MPEG-4 (H.263, H.264) (*.mp4, wrapped in AVI, MOV)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>AVI (others) (*.avi)</p></li>
+<li><p>QuickTime Movie (others) (*.mov)</p></li>
+<li><p>RealNetworks 'Real Video' (*.rv)</p></li>
+<li><p>Windows Media Video (*.wmv)</p></li>
+<li><p>All other video formats not listed here</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layer incremental docutils container">
+<table class="overflow-y-scroll">
+<thead>
+<tr><th class="head"><p>Content Type</p></th>
+<th class="head"><p>High probability for long-term preservation</p></th>
+<th class="head"><p>Medium probability for long-term preservation</p></th>
+<th class="head"><p>Low probability for long-term preservation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Spreadsheet/ Database</p></td>
+<td><ul class="incremental simple">
+<li><p>Comma Separated Values (*.csv)</p></li>
+<li><p>Delimited Text (*.txt)</p></li>
+<li><p>SQL DDL</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>DBF (*.dbf)</p></li>
+<li><p>OpenOffice (*.sxc/*.ods)</p></li>
+<li><p>OOXML (ISO/IEC DIS 29500) (*.xlsx)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>Excel (*.xls)</p></li>
+<li><p>All other spreadsheet/ database formats not listed here</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layer incremental docutils container">
+<table class="overflow-y-scroll">
+<thead>
+<tr><th class="head"><p>Content Type</p></th>
+<th class="head"><p>High probability for long-term preservation</p></th>
+<th class="head"><p>Medium probability for long-term preservation</p></th>
+<th class="head"><p>Low probability for long-term preservation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Virtual Reality</p></td>
+<td><ul class="incremental simple">
+<li><p>X3D (*.x3d)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>VRML (*.wrl, *.vrml)</p></li>
+<li><p>U3D (Universal 3D file format)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>All other virtual reality formats not listed here</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layer incremental docutils container">
+<table class="overflow-y-scroll">
+<thead>
+<tr><th class="head"><p>Content Type</p></th>
+<th class="head"><p>High probability for long-term preservation</p></th>
+<th class="head"><p>Medium probability for long-term preservation</p></th>
+<th class="head"><p>Low probability for long-term preservation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Computer Programs</p></td>
+<td><ul class="incremental simple">
+<li><p>Computer program source code, uncompiled (*.c, *.c++, *.java, *.js, *.jsp, *.php, *.pl, etc.)</p></li>
+</ul>
+</td>
+<td></td>
+<td><ul class="incremental simple">
+<li><p>Compiled / Executable files (EXE, *.class, COM, DLL, BIN, DRV, OVL, SYS, PIF)</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layer incremental docutils container">
+<table class="overflow-y-scroll">
+<thead>
+<tr><th class="head"><p>Content Type</p></th>
+<th class="head"><p>High probability for long-term preservation</p></th>
+<th class="head"><p>Medium probability for long-term preservation</p></th>
+<th class="head"><p>Low probability for long-term preservation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Presentation</p></td>
+<td></td>
+<td><ul class="incremental simple">
+<li><p>OpenOffice (*.sxi/*.odp)</p></li>
+<li><p>OOXML (ISO/IEC DIS 29500) (*.pptx)</p></li>
+</ul>
+</td>
+<td><ul class="incremental simple">
+<li><p>PowerPoint (*.ppt)</p></li>
+<li><p>All other presentation formats not listed here</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="minor far-smaller margin-top-1em docutils container">
+<p><a class="reference external" href="https://georgiasouthern.libguides.com/c.php?g=833713&amp;p=5953146">Recommended File Formats for Long-Term Data Curation - Georgia Southern University | University Libraries</a></p>
+</div>
+</div><div class="ld-slide" id="dateiformate-und-ihre-eignung-fur-die-langzeitarchivierung">
+<h2>Dateiformate und ihre Eignung für die Langzeitarchivierung</h2>
+<blockquote class="epigraph">
+<div class="larger docutils container">
+<p><strong>SPASSPROJEKT: Entwicklerin erstellt PDF-Dokument in der Größe der Welt</strong></p>
+<p>Sind PDFs in ihren Ausmaßen in der Größe limitiert? Eine Frau wollte es genau wissen und erstellte ein Dokument, das größer ist als Deutschland.</p>
+</div>
+<p>PDF-Enthusiastin Alex Chan hat ein Experiment durchgeführt, um ein extrem großes PDF-Dokument zu erstellen – lediglich, um zu sehen, ob es möglich ist. Mit ihrem Wissen über das PDF-Dateiformat machte sich Chan daran, ein PDF-Dokument zu erstellen, das größer ist als die Bundesrepublik Deutschland. [...]</p>
+<p>Sie lädt andere Dateiformat-Enthusiasten ein, mit ihr die Möglichkeiten jenseits der dokumentierten Spezifikationen zu erforschen.</p>
+<p class="attribution">—<a class="reference external" href="https://www.golem.de/news/spassprojekt-mann-erstellt-pdf-dokument-in-der-groesse-der-welt-2402-181844.html">Andreas Donath 3. Februar 2024, 14:21 Uhr</a></p>
+</blockquote>
+</div><div class="ld-slide" id="e-mail-archivierung-eine-besondere-herausforderung">
+<h2>E-Mail-Archivierung - eine besondere Herausforderung</h2>
+<div class="docutils container">
+<p>Geschäftliche E-Mails sind Dokumente und müssen mit der gleichen Sorgfalt (revisionssicher) archiviert werden wie andere Dokumente.</p>
+</div>
+<div class="incremental docutils container">
+<p>Herausforderungen:</p>
+<ul class="incremental list-with-explanations">
+<li><p>nicht alle E-Mails sind (geschäftlich) relevant (z. B. private E-Mails oder Spam)</p>
+<p>(Wer entscheidet, was relevant ist? Dezentral die Mitarbeiter oder zentral die IT?)</p>
+</li>
+<li><p>manche E-Mails sind sehr komplex (z. B. Anhänge)</p></li>
+<li><p>E-Mails enthalten links auf flüchtige Dokumente (z. B. Webseiten)</p></li>
+<li><p>E-Mails enthalten Schadsoftware</p>
+<p>(Diesbezüglich gilt das Fernmeldegeheimnis seit dem 1.12.2021 nicht mehr.)</p>
+</li>
+</ul>
+</div>
+<div class="supplemental">
+<p>Aufgrund rechtlicher Rahmenbedingungen wird im Allgemeinen die zentrale Archivierung von E-Mails bevorzugt.</p>
+</div></div><div class="ld-slide" id="pflege-des-systems">
+<h2>Pflege des Systems</h2>
+<p>Regelmäßiges Umkopieren der Bestände ist häufig notwendig:</p>
+<ul class="simple">
+<li><p>Datensätze müssen gelöscht werden (Datenschutz)</p></li>
+<li><p>Dokumente und Mappen sollen zusammengefasst werden (Performance)</p></li>
+<li><p>Datenträger altern (Sicherheit)</p></li>
+</ul>
+<aside class="admonition warning incremental margin-top-2em">
+<p class="admonition-title">Hinweis</p>
+<p>Kann mit einer Migration auf andere Formate bzw. Formatversionen verbunden sein!</p>
+</aside>
+</div><div class="ld-slide" id="sichere-speicherung">
+<h2>Sichere Speicherung</h2>
+<ul class="incremental">
+<li><p>Dokumente und Metadaten können grundsätzlich folgendermaßen gespeichert werden:</p>
+<ul class="simple">
+<li><p>zentrale Speicherung</p></li>
+<li><p>dezentrale, verteilte Speicherung</p></li>
+<li><p>dezentrale Speicherung mit Replikation</p></li>
+</ul>
+<p>Daraus ergeben sich Unterschiede in Hinblick auf:</p>
+<ul class="simple">
+<li><p>Administration</p></li>
+<li><p>Transferzeiten (Latenz)</p></li>
+<li><p>Speicherplatz</p></li>
+</ul>
+</li>
+<li><p>Dokumente und die Metadaten können, müssen aber nicht gemeinsam gespeichert werden.</p></li>
+</ul>
+<div class="supplemental">
+<p>Die Frage ob die Metadaten oder Dokumente zentral oder dezentral gespeichert werden, stellt sich insbesondere bei Behörden und großen Unternehmen, die über mehrere Standorte verfügen.</p>
+</div></div><div class="center-child-elements no-title transition-scale ld-slide" id="sichere-speicherung-kann-nicht-lokal-erfolgen">
+<h2>Sichere Speicherung kann nicht lokal erfolgen</h2>
+<aside class="admonition warning">
+<p class="admonition-title">Hinweis</p>
+<p>Das Speichern auf lokalen Netzlaufwerken oder gar auf dem Arbeitsplatzrechner ist sowohl aus betrieblicher (und ggf. auch rechtlicher Sicht) nicht ausreichend.</p>
+</aside>
+</div><div class="ld-slide" id="drucken-von-dokumenten">
+<h2>Drucken von Dokumenten</h2>
+<p>DM-Systeme müssen das Drucken von Dokumenten unterstützen, da Nutzer oft Ausdrucke benötigen (z. B. auf Baustellen)</p>
+<p>Relevante Anforderungen an den Ausdruck:</p>
+<ul class="incremental simple">
+<li><p>eindeutige Dokumentenkennungen müssen mit ausgedruckt werden</p></li>
+<li><p>relevante Dokumentenmerkmale (z. B. Autoren, Version, Status) sollten auf den Ausdrucken erscheinen</p></li>
+<li><p>ggf. automatisches Paginieren bei mehrseitigen Dokumenten; insbesondere wenn Signaturnachweise gefordert und mitgedruckt werden sollen</p></li>
+</ul>
+</div><div class="new-section ld-slide" id="integration">
+<h2>Integration</h2>
+</div><div class="ld-slide" id="dms-als-infrastruktur">
+<h2>DMS als Infrastruktur</h2>
+<ul class="simple">
+<li><p>DMS kann nie sinnvoll für sich allein stehen</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>DMS bietet Dienste für andere Applikationen an, um Dokumente zu verwalten.</p></li>
+<li><p>Integration in:</p>
+<ul class="incremental">
+<li><p>Standardsysteme (wie MS-Office)</p></li>
+<li><p>Mail-Systeme</p></li>
+<li><p>ERP- / CRM- / PLM-Systeme und andere</p></li>
+<li><p>Suchmaschinen</p></li>
+<li><p>Workflow</p></li>
+<li><p>Scanning</p></li>
+<li><p>...</p></li>
+</ul>
+</li>
+<li><p>Referenzen auf Dokumente außerhalb des DMS</p></li>
+</ul>
+</div><div class="ld-slide" id="typische-web-dienste-eines-dms">
+<h2>Typische (Web-) Dienste eines DMS</h2>
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
+<ul class="simple">
+<li><p>Create document</p></li>
+<li><p>Move document</p></li>
+<li><p>Copy document</p></li>
+<li><p>Delete document</p></li>
+<li><p>Search document</p></li>
+<li><p>Search full text</p></li>
+<li><p>Retrieve full document info</p></li>
+<li><p>...</p></li>
+</ul>
+</div>
+<div class="column docutils container">
+<ul class="simple">
+<li><p>Create folder</p></li>
+<li><p>Move folder</p></li>
+<li><p>Copy folder</p></li>
+<li><p>Delete folder</p></li>
+<li><p>Search folder</p></li>
+<li><p>...</p></li>
+</ul>
+</div>
+</div>
+</div><div class="ld-slide" id="beispiel-anlagendokumentation">
+<h2>Beispiel: Anlagendokumentation</h2>
+<img alt="drawings/dokumente/anlagendokumentation.svg" class="align-center" src="drawings/dokumente/anlagendokumentation.svg" style="width: 100%;" />
+<div class="supplemental docutils container">
+<p>Redlining bzw. die Redlining-Funktion, oder auch Rotstiftfunktion, bezeichnet das Markieren und Ändern von elektronischen Dokumenten oder Zeichnungen zu Feedback-Zwecken. Anmerkungen und Änderungen sind ersichtlich, ohne dass die Originaldatei verändert wird.</p>
+<p>(Vgl. <a class="reference external" href="https://www.fme.de/blog/redlining-spezielle-anwendungsfaelle-auf-basis-von-opentext-documentum-for-life-sciences-teil-5/">https://www.fme.de/blog/redlining-spezielle-anwendungsfaelle-auf-basis-von-opentext-documentum-for-life-sciences-teil-5/</a>)</p>
+</div>
+</div><div class="ld-slide" id="beispiel-anlagendokumentation-1">
+<h2>Beispiel: Anlagendokumentation</h2>
+<ul class="incremental simple">
+<li><p>Integrierte und konsistente Gesamtsicht auf alle Anlagen und ihre Bestandteile (Pläne und sonstige Dokumente)</p></li>
+<li><p>SAP als führendes System für Schlüssel (Datenqualität)</p></li>
+<li><p>Aktuelle Version der Dokumente überall und sofort verfügbar (Web)</p></li>
+<li><p>Revisionssichere Prozesse für Bereitstellung und Freigabe der Prozesse</p></li>
+<li><p>Eine verbindliche Quelle für alle Dokumente und alle Nutzer</p></li>
+<li><p>DMS wird für weitere Bereiche genutzt (z. B. SAP-Eingangs- und Ausgangsrechnungen, Magazin, E-Mail-Archivierung).</p></li>
+</ul>
+</div><div class="ld-slide" id="typische-fragestellungen-bei-integration">
+<h2>Typische Fragestellungen bei Integration</h2>
+<ul class="incremental simple">
+<li><p>Welches System ist bezüglich der Schlüssel das führende System?</p></li>
+<li><p>Einheitliche Nutzer- und Zugriffsrechte</p></li>
+<li><p>Wie werden die Systeme synchronisiert (permanent-online oder zyklisch im Batch)?</p></li>
+<li><p>Schnittstellenrealisierung</p></li>
+<li><p>…</p></li>
+</ul>
+</div><div class="no-title ld-slide" id="zusammenfassung-dokumenten-management-losung">
+<h2>Zusammenfassung: Dokumenten-Management-Lösung</h2>
+<img alt="drawings/dokumente/dokumenten-management-loesung.svg" class="align-center" src="drawings/dokumente/dokumenten-management-loesung.svg" style="height: 1150px;" />
+</div><div class="new-section transition-move-left ld-slide" id="produkte">
+<h2>Produkte</h2>
+</div><div class="ld-slide" id="kategorisierung-von-dms-produkten">
+<h2>Kategorisierung von DMS Produkten</h2>
+<ul class="incremental list-with-explanations">
+<li><p>nach Funktionsbreite</p></li>
+<li><p>nach Funktionstiefe</p>
+<p>Zum Beispiel in Hinblick auf unterstützte Dateiformate, unterstützte Barcode-Typen, ...</p>
+</li>
+<li><p>nach Skalierung</p>
+<p>In Hinblick auf die Anzahl der Dokumente, die Anzahl der gleichzeitigen Nutzer, die Anzahl der Standorte, ...</p>
+</li>
+<li><p>nach Unterstützung spezifischer Kontextabhängiger Anforderungen</p>
+<p>Bei internationalen Unternehmen ist ggf. die Unterstützung von mehreren Sprachen notwendig bzw. die Einhaltung verschiedener rechtlicher Rahmenbedingungen. Weiterhin können besondere Schnittstellen zu anderen Systemen erforderlich sein.</p>
+</li>
+</ul>
+</div><div class="ld-slide" id="enterprise-content-management-ecm">
+<h2>Enterprise Content Management (ECM)</h2>
+<ul class="simple">
+<li><p>Lösungen, die über das reine Dokumentenmanagement hinausgehen und auch Content-Management oder Records-Management (<span class="ger">Schriftgutverwaltung</span>) unterstützen.</p></li>
+<li><p>Häufig aus Content-Management-Systemen (CMS) hervorgegangen.</p></li>
+<li><p>unterstützt auch schwach- oder unstrukturierte Daten (z. B. E-Mails, Webseiten, ...)</p></li>
+</ul>
+<div class="supplemental">
+<p>Beim Records-Management (Schriftgutverwaltung) ist die Betrachtung des gesamten Lebenszyklus von Akten in Hinblick auf einen sachlichen Kontext bzw. Geschäftsvorfall (Transaktion) und die Dokumentation desselbigen im Fokus.</p>
+<p>Records-Management erstreckt sich ggf. auch auf Papierdokumente.</p>
+<p>Records-Management bedingen den Einsatz von DMS und Workflow-Systemen.</p>
+</div></div><div class="ld-slide" id="enterprise-content-management-ecm-im-aiim-modell">
+<h2>Enterprise Content Management (ECM) im AIIM Modell<a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
+<img alt="drawings/ecm.svg" class="align-center" src="drawings/ecm.svg" style="height: 820px;" />
+<div class="footer-left far-smaller docutils container">
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.aiim.org">Association for Intelligent Information Management (AIIM)</a></p>
+</aside>
+</aside>
+</div>
+</div><div class="ld-slide" id="open-source-losungen-stand-2024">
+<h2>Open-Source Lösungen (Stand 2024)</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.agorum.com/agorum-core-open-und-pro-im-vergleich/">Agorum Core Open</a></p></li>
+<li><p><a class="reference external" href="https://www.logicaldoc.com/download-logicaldoc-community">LogicalDOC Open Source DMS</a></p></li>
+<li><p><a class="reference external" href="https://www.bitfarm-archiv.de/dokumentenmanagement/kosten-lizenzierung.html">Bitfarm Archiv</a></p></li>
+</ul>
+</div><div class="ld-slide" id="open-source-losungen-bieten-meist-grundlegende-funktionalitat">
+<h2>Open-Source Lösungen bieten meist grundlegende Funktionalität</h2>
+<blockquote class="epigraph">
+<p>Für bitfarm-Archiv Enterprise sind zumindest die Serverinstallation und eine Schulung des / der IT-Betreuer durch uns oder einen unserer  Dokumentenmagementsystem Partner notwendig. <strong>So können wir dafür garantieren, dass das System funktioniert und den technischen Teil der zum Nachweis der Revisionssicherheit erforderlichen Verfahrensdokumentation übernehmen.</strong></p>
+<p>Gerade in kleineren Unternehmen mit übersichtlichen Anforderungen und knapper Kostenkalkulation kann das DMS anschließend in Eigenleistung konfiguriert werden. Tauchen dabei Fragen oder Probleme auf, stehen Ihnen unsere Supportmitarbeiter zur Seite. [...]Inklusive professionellem Support für ein Jahr sowie Installation, aller Module &amp; Plugins, ist die Enterprise Version schon ab etwa 2500,- € erhältlich.</p>
+</blockquote>
+</div>
+</body>
+</html>
