@@ -8,12 +8,22 @@
  */
 const lectureDoc2Library = function () {
 
-    function create (elementName, { id = undefined, classList = undefined, children = undefined }) {
+    function create(
+        elementName,
+        {
+            id = undefined,
+            classList = undefined,
+            innerHTML = undefined,
+            parent = undefined,
+            children = undefined,
+        }) {
         if (elementName === undefined) throw new Error("element must be defined");
         const element = document.createElement(elementName);
         if (id) element.id = id;
         if (classList) element.classList.add(...classList);
+        if (innerHTML) element.innerHTML = innerHTML;
         if (children) element.append(...children);
+        if (parent) parent.appendChild(element);
         return element;
     };
 
