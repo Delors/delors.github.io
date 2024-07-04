@@ -110,7 +110,13 @@ const lectureDoc2Animations = function () {
                 // or any of the stacked overlay layers.
                 maxGroupedLayersOuterHeight = Math.max(maxGroupedLayersOuterHeight, layerOuterHeight);
             }
-            console.log("layerOuterHeight: " + layerOuterHeight + " maxGrouped: "+ maxGroupedLayersOuterHeight+" maxOuterHeight: " + maxOuterHeight+" overallHeight: " + overallHeight);
+            /*
+            console.log(
+                "layerOuterHeight: " + layerOuterHeight +
+                " maxGrouped: " + maxGroupedLayersOuterHeight +
+                " maxOuterHeight: " + maxOuterHeight +
+                " overallHeight: " + overallHeight);
+            */
         });
         processLastGroupedLayers(true);
         // console.log("[Done] maxOuterHeight: " + maxOuterHeight+" overallHeight: " + overallHeight);

@@ -51,6 +51,13 @@ div.ld-slide:has(h1)::before {
     bottom: 32px;
 }
 
+div.ld-slide:has(h1).text-logo::before {
+    content: var(--dhbw-text);
+    mix-blend-mode: multiply;
+    position: absolute;
+    right: 48px;
+    bottom: 32px;
+}
 
 /* 
     Styling related to a normal title slide.
@@ -184,6 +191,7 @@ div.ld-slide.new-subsection>h2 {
     position: absolute;
     top: 28px;
     right: var(--slide-lr-padding);
+    mix-blend-mode: multiply; /* makes it easier to use it on various backgrounds */
     transform: translateX(30%) translateY(-35%) scale(0.4);
 }
 
@@ -417,19 +425,41 @@ div.ld-slide.new-subsection>h2 {
 
 */
 
-.ld-slide.not-covered-topics {
-    background-color: black;
-    color: var(--dhbw-gray);
-    position: relative;
+#ld-main-pane, #ld-light-table-dialog {
+
+    .ld-slide.not-covered-topics {
+        background-color: black;
+        color: var(--dhbw-gray);
+        position: relative;
+    }
+
+    .ld-slide.not-covered-topics::before {
+        position: absolute;
+        content: var(--dhbw-symbol);
+        scale: 0.75;
+        top: 0;
+        right: 25px;
+    }
 }
 
-.ld-slide.not-covered-topics::before {
-    position: absolute;
-    content: var(--dhbw-symbol);
-    scale: 0.75;
-    top: 0;
-    right: 25px;
+#ld-continuous-view-pane {
+
+    @media screen {
+        .ld-slide.not-covered-topics {
+            background-color: black;
+            color: var(--dhbw-gray);
+        }
+    }
+
+    @media print {
+        .ld-slide.not-covered-topics {
+            text-shadow: 2px 2px 4px black, -2px -2px 4px black;
+            color: white;
+        }
+    }
 }
+    
+
 
 /*
 

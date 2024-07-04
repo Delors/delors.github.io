@@ -1,0 +1,72 @@
+/*  Styling of supplemental information.
+
+    Each slide can only have one block with supplemental information. The 
+    supplemental information is placed differently in the DOM in the different 
+    views.
+    
+    In continuous view mode the supplemental information element is moved below
+    the element for the slide:
+    
+        <div class="ld-slide">...</>
+        <div|aside class="supplemental">...</>
+
+    In slide mode the element remains in the DOM at it is original place. 
+    
+    In slide mode the DIV with the supplemental information is positioned at the
+    right side in the slide mode.
+*/
+
+.ld-continuous-view-slide-pane {
+
+    &:not(:has(+.supplemental)) {
+        margin-bottom: 2px;
+    }
+
+    &:has(+.supplemental) .ld-slide {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    +.supplemental {
+        margin-bottom: 2px;
+        border-top: 1px dashed #333;
+        padding: calc(var(--slide-lr-padding) * var(--ld-continuous-view-zoom-level));
+
+        border-radius:
+            0 0 calc(var(--slide-border-radius) * var(--ld-continuous-view-zoom-level)) calc(var(--slide-border-radius) * var(--ld-continuous-view-zoom-level));
+        box-shadow: none;
+        
+        font-size: var(--supplemental-font-size);
+
+        background-color: var(--slide-background-color);
+    }
+}
+
+:is(#ld-main-pane, #ld-light-table-slides) .supplemental {
+    max-width: var(--ld-rel-max-supplemental-area-width);
+    max-height: var(--ld-rel-max-supplemental-area-height);
+    margin: 0;
+    border-radius: var(--slide-border-radius) 0 0 var(--slide-border-radius);
+    padding: calc(var(--slide-tb-padding) * 0.75) calc(var(--slide-lr-padding) * 0.75);
+    /* the factor has to be larger than the factor used by translate (see below) */
+    
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    
+    overflow-y: scroll;
+    
+    background-color: var(--slide-background-color);
+    transform:
+        translateX(calc(100% - var(--slide-lr-padding) * 0.5)) translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
+    box-shadow: var(--trbl-shadow);
+    transition: 0.75s;
+}
+
+#ld-main-pane .supplemental:hover {
+    transform:
+        translateX(0%) translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
+    transition: 0.75s;
+}
+

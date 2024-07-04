@@ -9,7 +9,8 @@
     possible to open the slides from a file.
 */
 
-@property --ld-menu-current-scale { /* this enables the animation */
+@property --ld-menu-current-scale {
+    /* this enables the animation */
     syntax: '<number>';
     initial-value: 0.05;
     inherits: true;
@@ -22,21 +23,18 @@ nav#ld-menu {
     --ld-menu-padding: 15px;
     --ld-menu-button-size: 120px;
 
-    --ld-menu-full-width: calc(
-        var(--ld-menu-columns) * var(--ld-menu-button-size) + 
-        calc(var(--ld-menu-gap) * (var(--ld-menu-columns) - 1)) + 
-        calc(var(--ld-menu-padding) * 2)) ;
-    --ld-menu-full-height: calc(
-        var(--ld-menu-rows) * var(--ld-menu-button-size) + 
-        calc(var(--ld-menu-gap) * (var(--ld-menu-rows) - 1)) + 
-        calc(var(--ld-menu-padding) * 2)) * ;
+    --ld-menu-full-width: calc(var(--ld-menu-columns) * var(--ld-menu-button-size) + calc(var(--ld-menu-gap) * (var(--ld-menu-columns) - 1)) + calc(var(--ld-menu-padding) * 2));
+    --ld-menu-full-height: calc(var(--ld-menu-rows) * var(--ld-menu-button-size) + calc(var(--ld-menu-gap) * (var(--ld-menu-rows) - 1)) + calc(var(--ld-menu-padding) * 2)) *;
 
-    --ld-menu-current-scale: 0.05; /* required by Firefox (June 2024) */
+    --ld-menu-current-scale: 0.05;
+    /* required by Firefox (June 2024) */
     --ld-menu-current-button-size: calc(var(--ld-menu-button-size) * var(--ld-menu-current-scale));
     --ld-menu-current-gap: calc(var(--ld-menu-gap) * var(--ld-menu-current-scale));
 
-    @media print { display: none; }
-    
+    @media print {
+        display: none;
+    }
+
     width: calc(var(--ld-menu-full-width) * var(--ld-menu-current-scale));
     height: calc(var(--ld-menu-full-height) * var(--ld-menu-current-scale));
     margin: 1px;
@@ -68,7 +66,8 @@ nav#ld-menu {
         opacity: 0.175;
     }
 
-    &:has(+ :where(#ld-main-pane[style*="display: none;"])) { /* :where is required by the :hover below!*/
+    /*  The ":where" selector is required by the :hover below! */
+    &:has(+ :where(#ld-main-pane[style*="display: none;"])) {
         opacity: 0.5;
         --ld-menu-current-scale: 0.1;
     }
@@ -82,10 +81,10 @@ nav#ld-menu {
         transition-timing-function: ease-in-out;
     }
 
-    > button {
+    >button {
         background-color: white;
         background-size: cover;
-    
+
         &:hover {
             opacity: 0.15;
             transition: all 0.5s ease-in-out;
@@ -141,4 +140,3 @@ nav#ld-menu {
         }
     }
 }
-

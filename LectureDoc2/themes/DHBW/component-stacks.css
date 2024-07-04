@@ -1,0 +1,165 @@
+/*  Styling of stacked elements.
+
+    To create elements which stack on top of each other on a single slide 
+    (e.g., to create some animation) use a div with the class stack as the 
+    parent of the elements in the stack. 
+    Each element in the stack is represented by an element (div) with the class 
+    layer. 
+    
+    Use the class overlay to make the background of the layer transparent. 
+    
+    The first layer must not be an overlay layer.
+
+    Example:
+
+        <div class="stack">
+            <div class="layer">...</div>
+            <div class="layer overlay incremental">...</div>
+            <div class="layer incremental">...</div>
+        </div>
+    
+    The first element in the stack is the bottom most element and rendered 
+    first. All other elements are rendered on top of the previous element and
+    will hide the underyling elements.
+    Add the additional css class overlay to layers that should have a 
+    transparent background.
+
+    In general, stack based layouts are most often only useful if the class 
+    incremental is added to the layers.
+*/
+
+
+.stack {
+    width: 100%;
+    /* DON'T SET HEIGHT! */
+
+    position: relative;
+
+    counter-reset: stack-layer 0;
+
+    >.layer {
+        margin-bottom: 0.5em;
+        /* All layers must have the same margin! */
+        border-radius: var(--slide-border-radius);
+        padding: 0.5em;
+
+        background-color: var(--slide-background-color);
+        box-shadow: var(--br-shadow);
+
+        &.overlay {
+            background-color: transparent;
+        }
+
+        &.warning {
+            text-align: center;
+
+            background-color: var(--dhbw-red);
+            color: white;
+        }
+    }
+
+    /*  We only add numbers when we have a stack with more than one layer that
+        is not an overlay layer.
+    */
+    &:has(.layer:not(.overlay, .no-number, :first-child)) .layer:not(.overlay, .no-number)::before {
+        position: absolute;
+        right: 0.6em;
+        bottom: 0.35em;
+
+        font-size: 0.75em;
+        counter-increment: stack-layer;
+        content: counter(stack-layer);
+    }
+}
+
+#ld-continuous-view-pane .stack {
+
+    /* Unfortunately, the final positioning needs to be done in JavaScript! 
+    .layer {  
+        position: absolute;  for all layers, unless the next layer is not an overlay layer.
+        position: relative;  for a non-overlay layer following an overlay layer.
+    }
+    */
+
+    display: flex;
+    flex-direction: column;
+
+        .layer {
+            @media print {
+            page-break-inside: avoid;
+        }
+    }
+} 
+
+:where(#ld-main-pane, #ld-light-table-dialog) .stack > .layer {
+    width: 100%;
+    /* DON'T ADD: height: 100%; !!! */
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    background-color: var(--slide-background-color);
+}
+
+
+
+#ld-light-table-dialog .stack {
+
+    /*
+    First, we associate the nth-child layer with a custom data attribute index
+    that we use in the css calculations!
+
+    See https://crinkles.dev/writing/a-nth-child-css-trick/
+    See https://crinkles.dev/writing/use-the-child-element-count-in-css/ 
+    */
+
+    .layer:nth-child(1) {
+        --layer-index: 1;
+    }
+
+    .layer:nth-child(2) {
+        --layer-index: 2;
+    }
+
+    .layer:nth-child(3) {
+        --layer-index: 3;
+    }
+
+    .layer:nth-child(4) {
+        --layer-index: 4;
+    }
+
+    .layer:nth-child(5) {
+        --layer-index: 5;
+    }
+
+    .layer:nth-child(6) {
+        --layer-index: 6;
+    }
+
+    .layer:nth-child(7) {
+        --layer-index: 7;
+    }
+
+    .layer:nth-child(8) {
+        --layer-index: 8;
+    }
+
+    .layer:nth-child(9) {
+        --layer-index: 9;
+    }
+
+    .layer:nth-child(10) {
+        --layer-index: 10;
+    }
+
+    transform-style: preserve-3d;
+    transform: translateY(0px) perspective(2400px) rotateX(50deg);
+
+    .layer {
+        transform: translateZ(calc(var(--layer-index) * -50px));
+    }
+
+}
+

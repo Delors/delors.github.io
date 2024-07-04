@@ -76,12 +76,18 @@ const lectureDoc2 = function () {
 
     const slideTemplates = document.querySelector("body > template").content;
 
+    /*
+        We use a "promise chain" to be call MathJax multiple times and don't
+        have to wait for the completion of the previous call.
+
+        (See MathJax documentation for more details.)
+    */
     let mathJaxPromise = Promise.resolve();  // Used to hold chain of typesetting calls
 
-    function typesetMath(elements) {
+    function typesetMath(element) {
         mathJaxPromise = mathJaxPromise.
-            then(() => MathJax.typesetPromise(elements)).
-            then(() => console.log("typesetting done")).
+            then(() => MathJax.typesetPromise([element])).
+            then(() => console.log(`typesetting ${element} done`)).
             catch(() => console.log('MathJax not found/used'));
       return mathJaxPromise;
     }
@@ -502,7 +508,7 @@ const lectureDoc2 = function () {
     }
 
 
-       /**
+    /**
      * Adds a div (button) to the DOM to allow the user to copy the content of
      * code blocks.
      * 
@@ -510,10 +516,17 @@ const lectureDoc2 = function () {
      * function needs to be called before the slides are duplicated per the
      * respective view.
      */
-       function setupCopyToClipboard() {
-        document.querySelectorAll(".code.copy-to-clipboard").forEach((code) => {
+    function setupCopyToClipboard(rootNode) {
+        rootNode.querySelectorAll(".code.copy-to-clipboard").forEach((code) => {
             const copyToClipboardButton = ld.div({ classes: ["ld-copy-to-clipboard-button"] });
             code.insertBefore(copyToClipboardButton, code.firstChild);
+            copyToClipboardButton.addEventListener("click", (event) => {
+                event.stopPropagation();
+                const textToCopy = code.innerText
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showMessage("Copied to clipboard.", 1000);
+                });
+            });
         });
     }
 
@@ -567,7 +580,7 @@ const lectureDoc2 = function () {
             });
         });
 
-        typesetMath([lightTableDialog]);
+        typesetMath(lightTableDialog);
         ld.getBody().prepend(lightTableDialog);
     }
 
@@ -626,7 +639,7 @@ const lectureDoc2 = function () {
             addEventListener("click", toggleTableOfContents);
         tocDialog.querySelectorAll(":scope a").
             forEach((a) => {
-                console.log("registering link listener for: "+a);
+                // console.log("registering link listener for: "+a);
                 registerInternalLinkClickListener(a, toggleTableOfContents)
             });
     }
@@ -810,6 +823,7 @@ const lectureDoc2 = function () {
         */
         slideTemplates.querySelectorAll(".ld-slide").forEach((slideTemplate, i) => {
             const slide = slideTemplate.cloneNode(true);
+            setupCopyToClipboard(slide);
             const orig_slide_id = slide.id;
             slide.id = "ld-slide-no-" + i;
             slide.dataset.ldSlideNo = i;
@@ -821,7 +835,7 @@ const lectureDoc2 = function () {
             mainPane.appendChild(slide);
         })
 
-        typesetMath([mainPane]);
+        typesetMath(mainPane);
         document.querySelector("BODY").prepend(mainPane);
     }
 
@@ -856,7 +870,8 @@ const lectureDoc2 = function () {
             password
         ).then((decrypted) => {
             solution.innerHTML = decrypted;
-            typesetMath([solution]);
+            setupCopyToClipboard(solution);
+            typesetMath(solution);
             // The first child is the input field!
             solutionWrapper.firstElementChild.remove(); //Child(passwordField);
             delete solution.dataset.encrypted;
@@ -872,6 +887,8 @@ const lectureDoc2 = function () {
         slideTemplates.querySelectorAll(".ld-slide").forEach((slideTemplate, i) => {
             const slide = slideTemplate.cloneNode(true);
             slide.removeAttribute("id"); // not needed anymore (in case it was set)
+            setupCopyToClipboard(slide);
+
 
             const slideScaler = ld.div({ classes: ["ld-continuous-view-scaler"] });
             slideScaler.appendChild(slide);
@@ -919,7 +936,7 @@ const lectureDoc2 = function () {
             });
         });
 
-        typesetMath([continuousViewPane]);
+        typesetMath(continuousViewPane);
         document.querySelector("body").prepend(continuousViewPane);
     }
 
@@ -1753,18 +1770,6 @@ const lectureDoc2 = function () {
         //     });
     }
 
-    function registerCopyToClipboardClickedListener() {
-        document.querySelectorAll(".ld-copy-to-clipboard-button").forEach((e) => {
-            e.addEventListener("click", (event) => {
-                event.stopPropagation();
-                const textToCopy = e.parentNode.innerText
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    showMessage("Copied to clipboard.", 1000);
-                });
-            });
-        });
-    }
-
     function registerLightTableZoomListener() {
         document.
             getElementById("ld-light-table-zoom-slider").
@@ -1954,8 +1959,6 @@ const lectureDoc2 = function () {
          */
         loadState();
 
-        setupCopyToClipboard(); // needs to be done before slides are copied!
-
         /*
         Setup all components.
 
@@ -2008,7 +2011,6 @@ const lectureDoc2 = function () {
         registerViewportResizeListener();
         registerSlideClickedListener();
         registerSlideInternalLinkClickedListener();
-        registerCopyToClipboardClickedListener();
         registerLightTableZoomListener();
         registerLightTableSlideSelectionListener();
         registerLightTableSlideSearchListener();
