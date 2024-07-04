@@ -1,0 +1,40 @@
+{
+    "source": "orders.xml",
+    "namespaces": {
+        "f": "http://fruits.com",
+        "e": "http://electronics.com",
+		"m" : "http://meat.com"
+    },
+    "xpaths" : [
+        {
+            "expr": "//orders"
+        },
+        {
+            "expr": "//f:order/f:product"
+        },
+        {
+            "expr": "sum(//f:order//@quantity)"
+        },
+        {
+            "expr": "sum(//@m:quantity)"
+        },
+        {
+            "expr": "sum(//@*[local-name()='quantity'])"
+        },
+        {
+            "expr": "//*[local-name()='order']"
+        },
+        {
+            "expr" : "//m:product[1]"
+        },
+        {
+            "expr": "//*[local-name()='order' and sum(.//@*[local-name()='quantity']) > 5]"
+        },
+        {
+            "expr": "count(//orders/*)"
+        },
+        {
+            "expr": "//orders/*/*[last()=4]"
+        }
+    ]
+}

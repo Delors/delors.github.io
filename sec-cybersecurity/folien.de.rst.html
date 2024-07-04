@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;IT Sicherheit&quot;, &quot;Reverse Engineering&quot;" name="keywords" />
+<meta content="Fortgeschrittene Angewandte IT Sicherheit" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-security-java_reverse_engineering" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Cybersecurity</title>
+    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
+    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
+    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
+    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+</head>
+<body>
+<template>
+<div class="text-logo organic-red ld-slide" id="cybersecurity">
+<h1 class="title">Cybersecurity</h1>
+
+<style>
+
+    .dhbw-logo {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        /*overflow: visible;*/
+
+        perspective: 2500px;
+        transform: rotateX(-30deg);
+        transform-style: preserve-3d;
+
+        .side {
+            position: absolute;
+            width: 98px;
+            height: 98px;
+            border-radius: 4px;
+        }
+
+        .left {
+            background-color: rgba(226, 0, 26);
+            transform: translateY(51px) translateX(0px) translateZ(2px);
+        }
+
+        .back {
+            background-color: rgba(226, 0, 26);
+            transform: translateY(51px) translateX(52px) rotateY(65deg) translateX(52px);
+        }
+
+        .front {
+            background-color: rgba(51, 65, 73, 0.56);
+            transform: translateY(51px) translateX(52px) rotateY(-115deg) translateZ(2px) translateX(52px);
+        }
+
+        .right {
+            background-color: rgba(51, 65, 73, 0.56);
+            transform: translateY(51px) translateX(102px) translateZ(-2px);
+        }
+
+        animation: 30s infinite alternate move-across;
+    }
+
+    @keyframes move-across {
+        0% {
+            transform: rotateX(0deg) rotateY(0deg) rotateZ(15deg) translate3d(-1500px,-800px,-100px) scale(4) ;
+        }
+        50%, 100% {
+            transform: rotateX(-30deg) rotateY(360deg) translateX(425px) translateY(115px);
+        }
+    }
+
+    .blur-it {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        animation: blur-it 30s infinite alternate;
+    }
+
+    @keyframes blur-it {
+        0% {
+            filter: blur(10px) opacity(0.1);
+        }
+        10% {
+            filter: blur(0px) opacity(0.8);
+        }
+        50%, 100% {
+            filter: blur(0px);
+        }
+    }
+
+</style>
+
+<div class="blur-it" style="mix-blend-mode: multiply;z-index:-1">
+    <div class="dhbw-logo">
+        <div class="side left"></div>
+        <div class="side front"></div>
+        <div class="side back"></div>
+        <div class="side right"></div>
+    </div>
+</div><div class="docutils container">
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/sec-cybersecurity/folien.de.rst.html">https://delors.github.io/sec-cybersecurity/folien.de.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/sec-cybersecurity/folien.de.rst.html.pdf">https://delors.github.io/sec-cybersecurity/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></div>
+<div class="ld-slide" id="was-ist-cybersecurity">
+<h2>Was ist Cybersecurity?</h2>
+<div class="stack">
+<div class="layer incremental">
+<blockquote class="epigraph">
+<p><strong>Cybersecurity is the practice of protecting systems, networks, and programs from digital attacks</strong>. These cyberattacks are usually aimed at accessing, changing, or destroying sensitive information; extorting money from users via ransomware; or interrupting normal business processes.</p>
+<p class="attribution">—July 4th, 2024 - <a class="reference external" href="https://www.cisco.com/c/en/us/products/security/what-is-cybersecurity.html">Cisco</a></p>
+</blockquote>
+</div><div class="layer incremental">
+<blockquote class="epigraph">
+<p>[...] The security precautions related to computer information and access address four major threats: <strong>(1) theft of data</strong>, such as that of military secrets from government computers; <strong>(2) vandalism</strong>, including the destruction of data by a computer virus; <strong>(3) fraud</strong>, such as employees at a bank channeling funds into their own accounts; and <strong>(4) invasion of privacy</strong>, such as the illegal accessing of protected personal financial or medical data from a large database. [...]</p>
+<p class="attribution">—July 4th, 2024 - <a class="reference external" href="https://www.britannica.com/technology/computer-security">Britannica</a></p>
+</blockquote>
+</div><div class="layer incremental">
+<p>Das Ziel der IT-Sicherheit ist es Systeme vor:</p>
+<ul class="simple">
+<li><p>Ausfall</p></li>
+<li><p>Missbrauch</p></li>
+<li><p>Sabotage</p></li>
+<li><p>Spionage</p></li>
+<li><p>Betrug und Diebstahl zu schützen</p></li>
+</ul>
+</div></div></div><div class="no-title center-child-elements ld-slide" id="indonesia-ransomware-angriff">
+<h2>Indonesia - Ransomware Angriff</h2>
+<blockquote class="epigraph">
+<p><strong>Indonesia won’t pay an $8 million ransom after a cyberattack compromised its national data center</strong></p>
+<p>[...] The attackers have held data hostage and offered a key for access in return for the $8 million ransom, said PT Telkom Indonesia’s director of network &amp; IT solutions, Herlan Wijanarko, without giving further details. Wijanarko said the company, in collaboration with authorities at home and abroad, is investigating and trying to break the encryption that made data inaccessible. [...]</p>
+<p class="attribution">—June 25th, 2024 - <a class="reference external" href="https://apnews.com/article/indonesia-ransomware-attack-national-data-center-213c14c6cc69d7b66815e58478f64cee">AP News</a></p>
+</blockquote>
+</div><div class="no-title center-child-elements ld-slide" id="online-betrug">
+<h2>Online-Betrug</h2>
+<blockquote class="epigraph">
+<p><strong>FAST 4.000 VERHAFTUNGEN: Interpol gelingt großer Schlag gegen Onlinebetrug</strong></p>
+<p>Die Einsatzkräfte haben nicht nur weltweit Tausende von Verdächtigen verhaftet, sondern auch Vermögenswerte im Umfang von 257 Millionen US-Dollar beschlagnahmt.</p>
+<p>[...] Mit einem Gesamtwert von 135 Millionen US-Dollar besteht laut Interpol mehr als die Hälfte davon aus beschlagnahmten Fiat-Währungen wie US-Dollar, Euro oder Yen. Weitere zwei Millionen Dollar liegen in Form von Kryptowährungen vor. Hinzu kommen andere Vermögenswerte wie etwa Immobilien, Luxusfahrzeuge, teurer Schmuck und andere hochwertige Gegenstände und Sammlungen im Gesamtwert von 120 Millionen US-Dollar. [...]</p>
+<p class="attribution">—29. Juni 2024 - <a class="reference external" href="https://www.golem.de/news/fast-4-000-verhaftungen-interpol-gelingt-grosser-schlag-gegen-onlinebetrug-2406-186568.html">Golem.de</a></p>
+</blockquote>
+</div><div class="no-title center-child-elements ld-slide" id="snailload">
+<h2>Snailload</h2>
+<blockquote class="epigraph">
+<p><strong>SnailLoad: Exploiting Remote Network Latency Measurements without JavaScript</strong></p>
+<p>[Side-Channel Attack to circumvent privacy.]</p>
+<p>[...] The attack setup for SnailLoad. A victim downloads data from an attacker's HTTP server while it watches a video on a video-sharing platform, e.g., YouTube. Due to the network bottleneck on the victim's side, the attacker can infer the transmitted amount of data by measuring the packet round trip time. The round trip time traces are unique per video and can be used to classify the video watched by the victim. [...]</p>
+<p class="attribution">—28.6.2024 Snailload: <a class="reference external" href="https://www.snailload.com/snailload.pdf">Paper</a>, <a class="reference external" href="https://www.snailload.com">Web</a></p>
+</blockquote>
+</div><div class="ld-slide" id="ausgewahlte-angriffe-und-angriffsmethoden">
+<h2>Ausgewählte Angriffe und Angriffsmethoden</h2>
+<ul class="incremental simple">
+<li><p>Backdoors (<span class="ger">Hintertüren</span>)</p></li>
+<li><p>(Distributed-)Denial-of-service Angriffe</p></li>
+<li><p>Direct-access Angriffe</p></li>
+<li><p>Eavesdropping (<span class="ger">Abhören</span>)</p></li>
+<li><p>Malware</p></li>
+<li><p>Man-in-the-middle (MITM) Angriffe</p></li>
+<li><p>Social engineering (z. B. Phishing)</p></li>
+<li><p>Privilege escalation</p></li>
+<li><p>Side-Channel attacks/<span class="ger">Seitenkanalangriffe</span></p></li>
+<li><p>Spoofing (z. B. IP-Spoofing)</p></li>
+<li><p>Advanced Persistent Threats (APT)</p></li>
+</ul>
+</div><div class="ld-slide" id="schutzziele-der-it-sicherheit-cia-triade">
+<h2>Schutzziele der IT-Sicherheit: CIA-Triade</h2>
+<div class="center-child-elements"><style>
+.cia-triangle {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    overflow: visible;
+    scale: 1.5;
+    transform: translate(0, 50px);
+
+    * {
+        position: absolute;
+    }
+
+    .bottom-left {
+        left: 0;
+       background: linear-gradient(145.98deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, var(--dhbw-dark-red) 50%, var(--dhbw-dark-red) 100%);
+    }
+    .bottom-right {
+        right: 0;
+        background: linear-gradient(213.98deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, var(--dhbw-dark-red) 50%, var(--dhbw-dark-red) 100%);
+    }
+    .bottom-left,
+    .bottom-right {
+        width: 200px;
+        height: 135px;
+        z-index: 1;
+        bottom: 0;
+        right: 0;
+        box-shadow: 0 5px 3px -3px rgba(0,0,0,0.5);
+    }
+
+    .left {
+        width: 200px;
+        height: 400px;
+        background: linear-gradient(116.57deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, var(--dhbw-light-red) 50%, var(--dhbw-light-red) 100%);
+    }
+
+    .right {
+        width: 200px;
+        height: 400px;
+        right: 0;
+        background: linear-gradient(243.43deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, var(--dhbw-red) 50%, var(--dhbw-red) 100%);
+    }
+
+    p {
+        font-size: 0.75em;
+
+        &.availability {
+            bottom: -20%;
+            left: 50%;
+            transform: translate(-50%);
+        }
+
+        &.integrity {
+            top: 50%;
+            right: -20%;
+            transform: translate(0, -50%);
+        }
+
+        &.confidentiality {
+            top: 50%;
+            left: -70%;
+            transform: translate(0, -50%);
+        }
+    }
+}
+</style>
+
+<div class="cia-triangle incremental">
+    <div class="bottom-left"></div>
+    <div class="bottom-right"></div>
+    <p class="availability">Availability</p>
+    <div class="left incremental"><p class="confidentiality">Confidentiality</p></div>
+    <div class="right incremental"><p class="integrity">Integrity</p></div>
+</div></div><div class="supplemental">
+<p>Confidentiality ≘dt. Vertraulichkeit</p>
+<p>Integrity ≘dt. Integrität</p>
+<p>Availability ≘dt. Verfügbarkeit</p>
+</div></div><div class="new-section transition-fade ld-slide" id="social-engineering-angriffe">
+<h2>Social-Engineering Angriffe</h2>
+</div><div class="ld-slide" id="eigenschaften-von-social-engineering-angriffe">
+<h2>Eigenschaften von Social-Engineering Angriffe</h2>
+<ul class="incremental with-explanations">
+<li><p><strong>sind häufig die Ursache für erfolgreiche Angriffe</strong></p>
+<p>(Der Hacker Kevin Mitnick war praktisch immer aufgrund von Social Engineering erfolgreich.)</p>
+</li>
+<li><p>stellen die größte Bedrohung für die Sicherheit von IT-Systemen dar</p></li>
+<li><p>es wird angenommen, dass die betroffenen Personen es in vielen Fällen nicht merken <span class="incremental">(Beispiel: Fake Bewerbungsgespräch)</span></p></li>
+<li><p>mittels OSINT kann die Vorbereitung von Social-Engineering Angriffen vereinfacht werden</p></li>
+<li><p>neue technische Möglichkeiten (z. B. KI generierte Stimmen) erweitern die Angriffsmöglichkeiten</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p class="rubric">Beispiel eines fortgeschrittenen Social-Engineering Angriffs</p>
+<p>Ein vom Angreifer bewusst eingefädeltes Bewerbungsgespräch für eine Position als Administrator könnte zum Beispiel dazu genutzt werden, um Informationen über das Zielsystem zu erhalten, die für einen Angriff nützlich sind (z. B. welche Software wird eingesetzt, wie sieht die Architektur aus, ...). In diesem Fall ist davon auszugehen, dass ein Bewerber zum Beispiel durch ein Headhunter eine gutes Angebot gemacht wird und er dann im Rahmen des Gesprächs gebeten wird eine Sicherheitsarchitektur darzustellen, die er einführen würde. Es ist dann davon auszugehen, dass er auf seine bisherige Erfahrung zurückgreift und diese darstellt und er somit die Architektur des Zielsystems offenlegt.</p>
+<p class="rubric">Neue Gefahren</p>
+<p>Durch KI generierte Stimmen kann es Angreifern gelingen, z. B. durch das Vortäuschen einer Notlage einer nahestehenden Person, an Informationen zu gelangen.</p>
+</div>
+</div><div class="ld-slide" id="ausgewahlte-social-engineering-angriffe">
+<h2>Ausgewählte Social-Engineering Angriffe</h2>
+<div class="scrollable docutils container">
+<dl class="incremental field-list">
+<dt>Phishing and Spear Phishing<span class="colon">:</span></dt>
+<dd><p><em>Phishing</em> nutzt elekr. Kommunikationswege um an Informationen zu gelangen (z. B. E-Mail oder SMS).</p>
+<p><em>Spear phishing</em> ist Phishing, bei der der Angreifer auf eine bestimmte Zielgruppe oder Person abzielt.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Smishing<span class="colon">:</span></dt>
+<dd><p>Phishing mit Hilfe von SMS.</p>
+</dd>
+</dl>
+<dl class="incremental field-list">
+<dt>Vishing<span class="colon">:</span></dt>
+<dd><p>Phishing mit Hilfe von Telefonanrufen.</p>
+<div class="incremental">
+<p>(Z. B. <a class="reference external" href="https://www.europol.europa.eu/publications-events/publications/vishing-calls">Anrufe von Europol</a>)</p>
+</div></dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Whaling<span class="colon">:</span></dt>
+<dd><p>Phishing, dass sich gegen hochrangige und sehr ausgewählte Personen richtet (z. B. den CEO eines Unternehmens).</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Pharming<span class="colon">:</span></dt>
+<dd><p>Manipulation des DNS-Servers, um den Nutzer auf eine gefälschte Webseite zu leiten, um dann sensitive Informationen zu erlangen.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Spam / Spam over Internet messaging (SPIM)<span class="colon">:</span></dt>
+<dd><p>Unerwünschte und nicht angeforderte E-Mail-Nachrichten oder Nachrichten in sozialen Medien bzw. Instant Messaging-Diensten.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Dumpster Diving<span class="colon">:</span></dt>
+<dd><p>Durchsuchen von <span class="ger-quote">Müllcontainern</span> nach Informationen, die für einen Angriff nützlich sein könnten.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Shoulder Surfing<span class="colon">:</span></dt>
+<dd><p>Beobachten von Personen, die sich an einem Computer anmelden, um das Passwort zu erfahren oder die sensitive Informationen auf dem Schreibtisch liegen haben.</p>
+</dd>
+</dl>
+<dl class="incremental field-list">
+<dt>Tailgating<span class="colon">:</span></dt>
+<dd><p>Ein Angreifer nutzt die Zugangsberechtigung einer Person, um sich Zugang zu einem Gebäude zu verschaffen ohne dass die Person dies bemerkt oder gar zustimmt.</p>
+<p>Dies kann z. B. durch Zugangsschleusen verhindert werden, die immer nur einer Person den Zugang gewähren.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Identity Fraud<span class="colon">:</span></dt>
+<dd><p>Identitätsdiebstahl. Der Angreifer gibt sich als jemand anderes aus, um an Informationen zu gelangen oder um eine Straftat zu begehen.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Invoice Scams<span class="colon">:</span></dt>
+<dd><p>Versenden von Rechnungen, für Dienstleistungen und Produkte die man nicht gekauft hat (z. B. Rechnungen für Postzustellung.)</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Credential Harvesting<span class="colon">:</span></dt>
+<dd><p>Sammlung von Zugangsdaten, die durch Sicherheitslücken in Systemen oder durch Phishing erlangt wurden.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Hoax<span class="colon">:</span></dt>
+<dd><p>Eine bewusste Falschmeldung, die Menschen dazu veranlasst etwas falsches zu glauben.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Impersonation oder Pretexting<span class="colon">:</span></dt>
+<dd><p>Vorgabe einer falschen Identität (z. B. als Mitarbeiter des IT-Supports); d. h. der Angreifer gibt sich persönlich als jemand anderes aus, um an Informationen zu gelangen und nutzt dafür keine elektronischen Hilfsmittel.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Eavesdropping<span class="colon">:</span></dt>
+<dd><p>Abhören von Gesprächen, um an relevante Informationen zu gelangen.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Eliciting Information<span class="colon">:</span></dt>
+<dd><p>Der Angreifer versucht durch geschicktes Fragen an Informationen zu gelangen, die für einen Angriff nützlich sein könnten.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Baiting (<span class="ger">Ködern</span>)<span class="colon">:</span></dt>
+<dd><p>Der Angreifer bietet etwas an, um an Informationen zu gelangen (z. B. ein USB-Stick mit einem Virus, der sich beim Einstecken des USB-Sticks auf dem Rechner installiert.)</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Watering Hole Attack<span class="colon">:</span></dt>
+<dd><p>Der Angreifer infiziert eine Webseite, die von der Zielgruppe häufig besucht wird, um dann die Besucher der Webseite anzugreifen.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>Typo Squatting<span class="colon">:</span></dt>
+<dd><p>Ausnutzen von Tippfehlern durch das Registrieren einer Domain, die der Domain eines Zielunternehmens ähnelt, um dann Besucher der Webseite auf eine gefälschte Webseite zu leiten. (z. B. <cite>www.gooogle.com</cite>)</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental docutils container">
+<p class="rubric">HOAX</p>
+<p>Ein Beispiel eines nicht-harmlosen Streichs (Hoax) ist die Falschmeldung vom 1. April 2003, dass Bill Gates gestorben sei. Diese Falschmeldung wurde von vielen Menschen geglaubt und hatte relevanten Einfluss auf den Aktienmarkt.</p>
+<p class="rubric"><em>Credential harvesting</em></p>
+<p>In der Anfangszeit von Github und Bitbucket wurden häufig Zugangsdaten und Zertifikate in öffentlichen Repositories gefunden, da die Nutzer diese im Quellcode hinterlegt hatten oder sogar als Ressourcen direkt eingebunden hatten.</p>
+<p class="rubric">Typische Phishing E-Mail</p>
+<img alt="images/phishing-mail-fake-fedex.png" class="align-center" src="images/phishing-mail-fake-fedex.png" style="width: 80%;" />
+</div>
+</div><div class="ld-slide" id="motivationstechniken-von-angreifern">
+<h2><span class="ger-quote">Motivationstechniken</span> von Angreifern</h2>
+<ul class="incremental simple">
+<li><p>Autorität: Der Angreifer gibt sich z. B. als Mitarbeiter des IT-Supports aus.</p></li>
+<li><p>Einschüchterung (<span class="eng">Intimidation</span>)</p></li>
+<li><p>Dringlichkeit</p></li>
+<li><p>Konsens (<em>&quot;Alle machen das so.&quot;</em>)</p></li>
+<li><p>Knappheit (<em>&quot;Nur noch Heute im Angebot.&quot;</em>)</p></li>
+<li><p>Vertrautheit</p></li>
+<li><p>Vertrauen</p></li>
+</ul>
+</div>
+</template>
+</body>
+</html>
