@@ -2,27 +2,31 @@
        
    Core Ideas: 
    
-    -   LectureDoc's main functionality (i.e., presenting the slide set) must be 
-        usable without a Server. However, advanced functionality may depend on 
-        a server. However, we can't use JavaScript modules.
+    -   LectureDoc documents are always served by a server and only target 
+        up-to-date browsers. This is enables us to use modern JavaScript 
+        features (e.g., modules).
    
     -   We store all relevant state information in a state object; this object 
         is then used to re-instantiate a LectureDoc session later on. This object
         is saved in local storage whenever the user leaves the webpage. To make
         it possible to associate state information with a specific document, a 
-        document has to have a unique id. This id has to be set by the user. 
+        document has to have a unique id. This id has to be set by the user 
+        using corresponding meta information.
         If no id is configured, no state information will be saved.
         Saved states always overrides information found in the document.
 
     -   Meta information about the presentation is stored in the presentation 
         object. This object is - after initialization - not mutated.
 
-*/
-"use strict";
+    -   Information that does not need to be retained is stored in the 
+        ephemeral object.
 
+*/
+
+import * as ld from './ld-lib.js';
 
 /**
- * The main "module" of LectureDoc2.
+ * The main module of LectureDoc2.
  * 
  * `lectureDoc2` is an object which contains a reference to the meta-information
  * object (presentation) and a function (getState) to return the current state.
@@ -34,50 +38,45 @@
  * @license BSD-3-Clause
  */
 const lectureDoc2 = function () {
-
-    /**
-     * A small wrapper to instantiate a LectureDoc2 related library.
-     */
-    function instantiate(library,required) {
-        try {
-            return library();
-        } catch (error) {
-            console.error(`LectureDoc2 ${library} missing`);
-            if (required) {
-                alert(`
-                    Cannot instantiate LectureDoc2 library: ${library}; 
-                    please contact the author.
-                `);
-            }
-            return undefined;
+    
+    /* We load the crypto module on demand. */
+    let ldCryptoModule = undefined
+    async function ldCrypto() {
+        if (!ldCryptoModule) {
+            ldCryptoModule = await import ("./ld-crypto.js");
         }
+        return ldCryptoModule;
     }
-
-    const ld = instantiate(lectureDoc2Library,true);
-    const ldCrypto = instantiate(lectureDoc2Crypto);
 
     /**
-     * Load the advanced animations package if available.
-     * 
-     * The animations package is expected to be an object with the following
-     * keys and values:
-     *   "beforeLDDOMManipulations": <function beforeLDDOMManipulations()>,
-     *   "afterLDDOMManipulations": <function afterLDDOMManipulations()>,
-     *   "afterLDListenerRegistrations": <function afterLDListenerRegistrations()>
-     * 
-     * These methods will be called at the appropriate times.
+     * Central registry for all events related to the setup/configuration phase
+     * that are triggered by LectureDoc.
      */
-    var animations = undefined;
-    try {
-        animations = lectureDoc2Animations;
-    } catch (error) {
-        console.warn("failed loading advanced animations module: " + error)
-    }
+    const ldEvents = {  
+        beforeLDDOMManipulations: [],
+        afterLDDOMManipulations: [],
+        afterLDListenerRegistrations: [],
+        addEventListener : function (event, listener) {
+            switch(event) {
+                case "beforeLDDOMManipulations":
+                    this.beforeLDDOMManipulations.push(listener);
+                    break;
+                case "afterLDDOMManipulations":
+                    this.afterLDDOMManipulations.push(listener);
+                    break;
+                case "afterLDListenerRegistrations":
+                    this.afterLDListenerRegistrations.push(listener);
+                    break;
+                default:
+                    console.error("Unknown event: "+event);
+            }
+        }
+    };
 
     const slideTemplates = document.querySelector("body > template").content;
 
     /*
-        We use a "promise chain" to be call MathJax multiple times and don't
+        We use a "promise chain" to call MathJax multiple times and don't
         have to wait for the completion of the previous call.
 
         (See MathJax documentation for more details.)
@@ -87,7 +86,7 @@ const lectureDoc2 = function () {
     function typesetMath(element) {
         mathJaxPromise = mathJaxPromise.
             then(() => MathJax.typesetPromise([element])).
-            then(() => console.log(`typesetting ${element} done`)).
+            then(() => console.log(`MathJax done`)).
             catch(() => console.log('MathJax not found/used'));
       return mathJaxPromise;
     }
@@ -184,8 +183,7 @@ const lectureDoc2 = function () {
 
 
     /**  
-     * Short lived information that does not need
-     * to be preserved during reloads.
+     * Short lived information that is not preserved during reloads.
      */
     let ephermal = {
         // The following information is required to enable animations.
@@ -587,6 +585,7 @@ const lectureDoc2 = function () {
 
     function setupHelp() {
         const helpDialog = ld.dialog({ id: "ld-help-dialog" });
+        
         helpDialog.innerHTML = `
             <div class="ld-dialog-header">
                 <span class="ld-dialog-title">Help</span>
@@ -594,11 +593,20 @@ const lectureDoc2 = function () {
                     <div id="ld-help-close-button" class="ld-dialog-close-button"></div>
                 </div>
             </div>`
-        try {
-            helpDialog.appendChild(lectureDoc2Help());
-        } catch (error) {
-            helpDialog.innerText = 'Help not found.';
-        }
+        
+        const helpFrag =   import.meta.resolve("./ld-help.frag.html");
+        fetch(helpFrag)
+            .then((response) => { 
+                return response.text()
+            })
+            .then((htmlFrag) => {
+                const helpTemplate = ld.create("template",{id: "ld-help-template"});
+                helpTemplate.innerHTML = htmlFrag;
+                helpDialog.appendChild(helpTemplate.content); 
+            })
+            .catch((error) => { 
+                helpDialog.innerHTML = `<p>Help not found: ${error}</p>`; 
+            });
 
         document.querySelector("body").prepend(helpDialog);
     }
@@ -679,39 +687,41 @@ const lectureDoc2 = function () {
                 parent: exercisesPasswordsDialog,
                 children: [passwordInput]
             });
-            passwordInput.addEventListener("input", (e) => {
+            passwordInput.addEventListener("input", async (e) => {
                 const currentPassword = e.target.value
                 if (currentPassword.length > 2) {
-                    const decryptedPromise = ldCrypto.decryptAESGCMPBKDF(
-                        encryptedExercisesPasswords,
-                        currentPassword
-                    )
-                    decryptedPromise.then((decrypted) => {
-                        state.exercisesMasterPassword = currentPassword;
-                        const decryptedPasswords = JSON.parse(decrypted);
-                        const exercisesPasswords = decryptedPasswords[1]["passwords"];
-                        const passwordsTable = 
-                            ld.convertToTable(
-                                exercisesPasswords,
-                                (i) => {
-                                    // FIXME make this a button
-                                    const div = ld.div({classes:["ld-unlock-global"]});
-                                    div.addEventListener(
-                                        "click",
-                                        () => decryptExercise(i+1,exercisesPasswords[i][1]));
-                                    const td = ld.create("td",{children : [div]});
-                                    return [td];
-                                }
-                            );
-                        for (let i = 0; i < exercisesPasswords.length; i++) {
-                            localDecryptExercise(i+1,exercisesPasswords[i][1]);
-                        }
-                        contentArea.removeChild(passwordInput);
-                        contentArea.appendChild(passwordsTable);
-                    }).catch((error) => {
-                        console.trace();
-                        console.log("Decryption using: " + currentPassword + " failed - " + error);
-                    });
+                    ldCrypto()
+                        .then((ldCrypto) => {
+                            return ldCrypto.decryptAESGCMPBKDF(
+                                encryptedExercisesPasswords,
+                                currentPassword
+                            )
+                        }).then((decrypted) => {
+                            state.exercisesMasterPassword = currentPassword;
+                            const decryptedPasswords = JSON.parse(decrypted);
+                            const exercisesPasswords = decryptedPasswords[1]["passwords"];
+                            const passwordsTable =
+                                ld.convertToTable(
+                                    exercisesPasswords,
+                                    (i) => {
+                                        // FIXME make this a button
+                                        const div = ld.div({ classes: ["ld-unlock-global"] });
+                                        div.addEventListener(
+                                            "click",
+                                            () => decryptExercise(i + 1, exercisesPasswords[i][1]));
+                                        const td = ld.create("td", { children: [div] });
+                                        return [td];
+                                    }
+                                );
+                            for (let i = 0; i < exercisesPasswords.length; i++) {
+                                localDecryptExercise(i + 1, exercisesPasswords[i][1]);
+                            }
+                            contentArea.removeChild(passwordInput);
+                            contentArea.appendChild(passwordsTable);
+                        }).catch((error) => {
+                            console.trace();
+                            console.log("Decryption using: " + currentPassword + " failed - " + error);
+                        });
                 }
             });
         } else {
@@ -865,19 +875,19 @@ const lectureDoc2 = function () {
         if (!solution.dataset.encrypted) {
             return;
         }
-        ldCrypto.decryptAESGCMPBKDF(
-            solution.innerText.trim(),
-            password
-        ).then((decrypted) => {
-            solution.innerHTML = decrypted;
-            setupCopyToClipboard(solution);
-            typesetMath(solution);
-            // The first child is the input field!
-            solutionWrapper.firstElementChild.remove(); //Child(passwordField);
-            delete solution.dataset.encrypted;
-        }).catch((error) => {
-            console.log("wrong password: " + password+ " - "+error);
-        });
+        ldCrypto()
+            .then((ldCrypto) => {
+                return ldCrypto.decryptAESGCMPBKDF(solution.innerText.trim(), password)
+            }).then((decrypted) => {
+                solution.innerHTML = decrypted;
+                setupCopyToClipboard(solution);
+                typesetMath(solution);
+                // The first child is the input field!
+                solutionWrapper.firstElementChild.remove(); //Child(passwordField);
+                delete solution.dataset.encrypted;
+            }).catch((error) => {
+                console.log("wrong password: " + password + " - " + error);
+            });
     }
     
 
@@ -1942,9 +1952,8 @@ const lectureDoc2 = function () {
         initDocumentId();
         initSlideDimensions();
 
-        if (animations) {
-            animations.beforeLDDOMManipulations();
-        }
+        ldEvents.beforeLDDOMManipulations.forEach(f => f());
+        
         initSlideCount();   // We need to do this here, because the animations 
         initCurrentSlide(); // package may add slides!
         initShowLightTable();
@@ -1986,9 +1995,7 @@ const lectureDoc2 = function () {
             no longer unique ids), need to be fixed. */
         applyDOMfixes();
 
-        if (animations) {
-            animations.afterLDDOMManipulations();
-        }
+        ldEvents.afterLDDOMManipulations.forEach((f) => f());
     });
 
 
@@ -2018,10 +2025,8 @@ const lectureDoc2 = function () {
         registerHelpCloseListener();
         registerMenuClickListener();
         registerSwipeListener();
-
-        if (animations) {
-            animations.afterLDListenerRegistrations();
-        }
+        
+        ldEvents.afterLDListenerRegistrations.forEach((f) => f());  
 
         if (ephermal.ldPerDocumentChannel) {
             ephermal.ldPerDocumentChannel.addEventListener("message", (event) => {
@@ -2062,10 +2067,14 @@ const lectureDoc2 = function () {
     return {
         'lib': ld,
         'crypto': ldCrypto,
-        'presentation': presentation, // "constant"
+        'ldEvents' : ldEvents,
+        'presentation': presentation, // "constant state"
         'getState': function () { return state; }, // the state object as a whole may change
         'getEphermal': function () { return ephermal; },
-        'preparePrinting': prepareForPrinting,
+        'prepareForPrinting': prepareForPrinting,
     };
 }();
 
+export default lectureDoc2;
+/* For debugging purposes and interoperability with Applescript only! */
+window.lectureDoc2 = lectureDoc2;

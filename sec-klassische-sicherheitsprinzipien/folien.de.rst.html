@@ -11,13 +11,17 @@
 <meta content="last-viewed" name="first-slide" />
 <title>Klassische Sicherheitsprinzipien</title>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
-    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
-    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
-    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
     <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
     <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    
 </head>
 <body>
 <template>
@@ -33,18 +37,12 @@
 <dd class="version">1.0</dd>
 </dl>
 <div class="supplemental">
-<dl class="field-list simple">
+<dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
-<dd><dl class="field-list simple">
-<dt>HTML<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io/sec-klassische-sicherheitsprinzipien/folien.de.rst.html">https://delors.github.io/sec-klassische-sicherheitsprinzipien/folien.de.rst.html</a></p>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/sec-klassische-sicherheitsprinzipien/folien.de.rst.html">https://delors.github.io/sec-klassische-sicherheitsprinzipien/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/sec-klassische-sicherheitsprinzipien/folien.de.rst.html.pdf">https://delors.github.io/sec-klassische-sicherheitsprinzipien/folien.de.rst.html.pdf</a></p>
 </dd>
-<dt>PDF<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io/sec-klassische-sicherheitsprinzipien/folien.de.rst.html.pdf">https://delors.github.io/sec-klassische-sicherheitsprinzipien/folien.de.rst.html.pdf</a></p>
-</dd>
-</dl>
-</dd>
-<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
@@ -91,14 +89,13 @@
 <dd><p>Die Sicherheit des Systems sollte nicht von der Geheimhaltung der Sicherheitsmechanismen abhängen (sondern nur vom Schlüssel).</p>
 </dd>
 </dl>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Beispiel - Principle of Least Common Mechanism</strong></p>
 <p>z. B. sollten keine gemeinsamen Speicherbereiche verwendet werden und es ist deswegen sinnvoll - wenn möglich - auf Implementierungen im Kernel zu verzichten und statt dessen auf User-Space-Implementierungen zu setzen.</p>
 <blockquote>
 <p>TCP Connection Hijacking Angriffe wird bzw. wurden z. B. durch die Implementierung des TCP Stacks im Kernel ermöglicht (<span class="math">\(\Leftrightarrow\)</span> <span class="ger-quote">Principle of Least Common Mechanism</span>).</p>
 </blockquote>
-</div>
-</div><div class="ld-slide" id="wiederholung-klassische-sicherheitsprinzipien">
+</div></div><div class="ld-slide" id="wiederholung-klassische-sicherheitsprinzipien">
 <h2>Wiederholung: Klassische Sicherheitsprinzipien</h2>
 <dl class="field-list simple">
 <dt>Principle of Psychological Acceptability<span class="colon">:</span></dt>
@@ -110,13 +107,12 @@
 <dd><p>Die Sicherheitsmechanismen sollten so entworfen sein, dass Fehler in einem Teil des Systems nicht die Sicherheit des gesamten Systems gefährden; d. h. die einzelnen Komponenten sollten möglichst unabhängig voneinander sein und nur über wohldefinierte  Schnittstellen miteinander kommunizieren und entsprechende Sicherheitsüberprüfungen durchführen.</p>
 </dd>
 </dl>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Beispiel - Principle of Isolation:</strong></p>
 <p>Typischerweise kommuniziert zum Beispiel ein Basebandchip (WIFI, LTE, 5G, ...) mit dem Betriebssystem über eine minimale Schnittstelle über die nur Nachrichten übermittelt werden können, die leicht auf ihre Korrektheit überprüft werden können. Insbesondere erfolgt kein direkter Zugriff auf den Speicher des Betriebssystems.</p>
 <p>Einen Angreifer ist es somit ggf. möglich den Basebandchip anzugreifen und ggf. zu kompromittieren, aber er kann nicht direkt auf das Betriebssystem zugreifen und Nachrichten, die bereits auf Betriebssystem oder Anwendungsebene verschlüsselt werden, sind weiterhin sicher.</p>
-</div>
-</div><div class="ld-slide" id="erganzende-sicherheitsprinzipien">
-<h2>ergänzende Sicherheitsprinzipien</h2>
+</div></div><div class="ld-slide" id="erganzende-sicherheitsprinzipien">
+<h2>Ergänzende Sicherheitsprinzipien</h2>
 <dl class="field-list simple">
 <dt>Principle of Modularity<span class="colon">:</span></dt>
 <dd><p>Die Sicherheitsmechanismen sollten so entworfen sein, dass sie unabhängig voneinander implementiert und geprüft werden können.</p>
@@ -132,14 +128,13 @@
 <dd><p>Die Sicherheitsmechanismen sollten so entworfen sein, dass sie keine Überraschungen für die Benutzer bereithalten.</p>
 </dd>
 </dl>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Beispiel für ein Schutzsystem für Netzwerke, dass mehrere Schichten verwendet:</p>
 <ul class="simple">
 <li><p>einfache (und effiziente) Paketfilter auf unterster Ebene</p></li>
 <li><p>zustandsbehaftete Paketfilter auf der nächsten bzw. der Anwendungsebene</p></li>
 </ul>
-</div>
-</div>
+</div></div>
 </template>
 </body>
 </html>

@@ -12,13 +12,17 @@
 <meta content="last-viewed" name="first-slide" />
 <title>Eine erste Einführung in die Sicherheit von (verteilten) Systemen</title>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
-    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
-    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
-    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
     <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
     <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    
 </head>
 <body>
 <template>
@@ -38,18 +42,12 @@
 <p>Alle Fehler sind meine eigenen.</p>
 </div>
 <div class="supplemental">
-<dl class="field-list simple">
+<dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
-<dd><dl class="field-list simple">
-<dt>HTML<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io/sec-tcp-ssh-firewalls/folien.de.rst.html">https://delors.github.io/sec-tcp-ssh-firewalls/folien.de.rst.html</a></p>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/sec-tcp-ssh-firewalls/folien.de.rst.html">https://delors.github.io/sec-tcp-ssh-firewalls/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/sec-tcp-ssh-firewalls/folien.de.rst.html.pdf">https://delors.github.io/sec-tcp-ssh-firewalls/folien.de.rst.html.pdf</a></p>
 </dd>
-<dt>PDF<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io/sec-tcp-ssh-firewalls/folien.de.rst.html.pdf">https://delors.github.io/sec-tcp-ssh-firewalls/folien.de.rst.html.pdf</a></p>
-</dd>
-</dl>
-</dd>
-<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
@@ -80,7 +78,7 @@
 </div><div class="ld-slide" id="aufbau-einer-tcp-verbindung">
 <h2>Aufbau einer TCP Verbindung</h2>
 <p>Dreifacher Handshake:</p>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Terminologie</strong>:</p>
 <dl class="field-list simple">
 <dt>SYN<span class="colon">:</span></dt>
@@ -101,8 +99,7 @@
 </ol>
 <p>Das Betriebssystem sollte die initialen Sequenznummern zufällig wählen, so dass ein Angreifer diese nicht leicht vorhersagen kann. Beide Seiten haben eigene Sequenznummern, die unabhängig voneinander sind.</p>
 <p>Bei einer laufenden Verbindung werden die Sequenznummern inkrementiert und es ist nicht (mehr) erkennbar wer die Verbindung aufgebaut hat.</p>
-</div>
-<div class="stack docutils container">
+</div><div class="stack docutils container">
 <div class="layer docutils container">
 <div class="center-child-elements"><svg width="1200" height="600" viewBox="0 0 1200 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -376,11 +373,10 @@
 <li><p>Scan bleibt unbemerkt</p></li>
 </ul>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>XMAS-Scan</strong>:</p>
 <p>Bei diesem Scan sind alle Flags gesetzt; ein XMAS-Scan wird auch als Christmas-Tree-Scan bezeichnet, da das Paket erleuchtet ist wie ein Weihnachtsbaum.</p>
-</div>
-</div><div class="ld-slide" id="port-scans-idle-scan">
+</div></div><div class="ld-slide" id="port-scans-idle-scan">
 <h2>Port Scans: Idle Scan <a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
 <p>Bei allen bisher betrachteten Scans kann der Scanner prinzipiell identifiziert werden. Unter Verwendung eines sog. Zombies geht es auch anders:</p>
 <div class="two-columns docutils container">
@@ -393,12 +389,11 @@
 <img alt="Idle Scan - Schritte 3-5" class="align-left" src="images/idle-scan/idle-scan-step2.svg" style="width: 750px;" />
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Zombies: ein Rechner (Computer, Drucker oder anderes IoT Gerät) im Internet <em>möglichst ohne eigenen Netzverkehr</em> und mit <span class="ger-quote">altem</span> Betriebssystem, bei dem die IP ID in vorhersehbarer Weise inkrementiert wird.</p>
 <p>Sollte ein Intrusion Detection System vorhanden sein, so wird dieses den Zombie als Angreifer identifizieren.</p>
 <p><strong>Grundlegende Idee</strong>: Der Zombie sendet ein RST Paket zurück, da er kein SYN gesendet hat und kein SYN/ACK erwarte. Dadurch erfährt der Angreifer die aktuelle IP ID des Zombies. Über diesen Seitenkanal - d. h. die Veränderung der IP ID des Zombies - kann der Angreifer nun den Zustand des Ports auf dem Zielrechner ermitteln.</p>
-</div>
-<aside class="footnote-list brackets">
+</div><aside class="footnote-list brackets">
 <aside class="footnote brackets" id="footnote-2" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
 <p><a class="reference external" href="https://nmap.org/book/idlescan.html">NMap Book</a></p>
@@ -428,10 +423,9 @@
 <li><p>[<strong>Port offen</strong>] Der Zombie antwortet mit RST, da er kein SYN gesendet hat und kein SYN/ACK erwartet und erhöht seine IP ID.</p></li>
 <li><p>Der Angreifer sendet wieder ein SYN/ACK an den Zombie, um die IP ID zu erfahren.</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Mit einem IDLE Scan kann nicht unterschieden werden, ob der Port geschlossen oder gefiltert ist.</p>
-</div>
-</div><div class="ld-slide" id="port-scans-mit-nmap">
+</div></div><div class="ld-slide" id="port-scans-mit-nmap">
 <h2>Port Scans mit nmap</h2>
 <ul class="incremental simple">
 <li><p>alle Arten von Port-Scans möglich</p></li>
@@ -455,7 +449,7 @@
 </span><span class="literal number">445</span>/tcp<span class="whitespace">  </span>open<span class="whitespace">  </span>microsoft-ds<span class="whitespace">
 </span><span class="literal number">5000</span>/tcp<span class="whitespace"> </span>open<span class="whitespace">  </span>upnp<span class="whitespace">
 </span><span class="literal number">7000</span>/tcp<span class="whitespace"> </span>open<span class="whitespace">  </span>afs3-fileserver</code></pre>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>OS-Fingerprinting</strong></p>
 <p>Beim OS-Fingerprinting werden Datenpakete analysiert, die aus einem Netzwerk stammen, um Informationen für spätere Angriffe zu gewinnen. Durch die Erkennung des Betriebssystems, mit dem ein Netzwerk arbeitet, haben Hacker es leichter, Schwachstellen zu finden und auszunutzen. OS-Fingerprinting kann auch Konfigurationsattribute von entfernten Geräten sammeln. Diese Art von Aufklärungsangriff ist in der Regel (einer) der erste(n) Schritt(e).</p>
 <p>Es gibt zwei Arten von OS-Fingerprinting: (1) Aktiv und (2) passiv.</p>
@@ -465,8 +459,7 @@
 <li><p>Bei einem passiven Versuch agieren die Angreifer eher als &quot;Schnüffler&quot;, der keine absichtlichen Änderungen oder Aktionen im Netzwerk vornimmt. Passives OS-Fingerprinting ist ein unauffälligerer, aber wesentlich langsamerer Prozess.</p></li>
 </ol>
 </blockquote>
-</div>
-</div><div class="ld-slide" id="port-knocking">
+</div></div><div class="ld-slide" id="port-knocking">
 <h2>Port Knocking</h2>
 <ul class="incremental simple">
 <li><p>Ein Knock-Daemon versteckt offene Ports auf dem Server.</p></li>
@@ -475,19 +468,18 @@
 <li><p>Erst nach Erkennen einer vordefinierten (Einmal-)Klopfsequenz öffnet der Knock-Daemon den gewünschten Port für diesen Client.</p></li>
 <li><p>Client kann nun die Verbindung aufbauen.</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Weiterführend</strong></p>
 <p>Alternativen zu einer Knock-Sequenz ist zum Beispiel, dass der Port nur dann als offen gilt, wenn die IP ID eine bestimmte Sequenznummer aufweist.</p>
 <ol class="upperalpha simple" start="13">
 <li><p>Krzywinski: Port Knocking: Network Authentication Across Closed Ports in SysAdmin Magazine 12: 12-17. (2003)</p></li>
 </ol>
 <p>TCP Stealth</p>
-</div>
-</div><div class="ld-slide" id="connection-hijacking">
+</div></div><div class="ld-slide" id="connection-hijacking">
 <h2>Connection Hijacking</h2>
 <p>Angreifer übernimmt eine bestehende - zum Beispiel eine bereits durch (Einmal-)Passwort authentisierte - Verbindung.</p>
 <img alt="Connection Hijacking (einfache Variante)" class="align-center" src="images/connection-hijacking.svg" style="height: 800px;" />
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>TCP/IP-Hijacking ist eine Form eines Man-in-the-Middle-Angriffs. Der Angreifer bestimmt erst die IP-Adressen der beiden Sitzungsteilnehmer.</p>
 <p>Danach gibt es mehrere Möglichkeiten:</p>
 <ul>
@@ -496,8 +488,7 @@
 </li>
 <li><p>Der Angreifer macht einen Client mit einem DoS-Angriff unerreichbar, um sich dann mit dem Anderen zu verbinden, indem er die Netzwerk-ID des ausgeschalteten Clients nutzt.</p></li>
 </ul>
-</div>
-</div><div class="ld-slide" id="denial-of-service-dos-angriffe">
+</div></div><div class="ld-slide" id="denial-of-service-dos-angriffe">
 <h2>Denial-of-Service (DoS) Angriffe</h2>
 <p>Ziel des Angreifers: Lahmlegen eines Dienstes oder des ganzen Systems ...</p>
 <ul class="simple">
@@ -552,7 +543,7 @@
 
     <text x="500" y="75" transform="rotate(4.25)">SYN(1000)</text>
     <line x1="200" y1="110" x2="1500" y2="190" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
-</svg></div><div class="layer overlay incremental">
+</svg></div><div class="layer overlay incremental overlay incremental">
 <svg height="600" width="1700" viewBox="0 0 1700 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <defs>
         <marker
@@ -572,7 +563,7 @@
 </svg><div class="smaller docutils container">
 <p>Der Cookie ermöglicht es, dass keine Informationen im Speicher gehalten werden müssen. Der Cookie encodiert die Informationen, die der Server benötigt, um die Verbindung aufzubauen: Client IP, time window, etc.</p>
 </div>
-</div><div class="layer overlay incremental">
+</div><div class="layer overlay incremental overlay incremental">
 <svg height="600" width="1800" viewBox="0 0 1800 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <defs>
         <marker
@@ -635,15 +626,14 @@
 <li><p>Die Tatsache, dass die Sender legitime Server sind, erschwert die Abwehr.</p></li>
 <li><p><span class="eng">Egress Filtering</span> kann helfen, die Verwendung von IP-Spoofing zu verhindern.</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Bereits im Jahr 2018 wurde ein Angriff mit einer Bandbreite von 1,7 TBit/s beobachtet.</p>
 <dl class="field-list simple">
 <dt>Egress Filtering<span class="colon">:</span></dt>
 <dd><p>Der Router verwirft alle Pakete, die eine Absenderadresse verwenden, die nicht aus dem eigenen Netzwerk stammt.</p>
 </dd>
 </dl>
-</div>
-</div><div class="ld-slide" id="distributed-denial-of-service-ddos-angriffe-beispiel">
+</div></div><div class="ld-slide" id="distributed-denial-of-service-ddos-angriffe-beispiel">
 <h2><a class="reference external" href="https://cloud.google.com/blog/products/identity-security/google-cloud-mitigated-largest-ddos-attack-peaking-above-398-million-rps">Distributed Denial-of-Service (DDoS) Angriffe - Beispiel</a></h2>
 <blockquote class="epigraph">
 <p>[...] Google's DDoS Response Team has observed the trend that distributed denial-of-service (DDoS) attacks are <strong>increasing exponentially in size</strong>. Last year, we blocked the largest DDoS attack recorded at the time. This August [2023], we stopped an even larger DDoS attack — 7½ times larger — that also used new techniques to try to disrupt websites and Internet services.</p>
@@ -705,10 +695,9 @@
 <dd><p>Passwörter werden verschlüsselt übertragen (ssh, https, ...)</p>
 </dd>
 </dl>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Unverschlüsselte Passworte können leicht mittels eines Sniffers, der den Netzwerkverkehr mitschneidet (z. B. Wireshark), abgefangen werden.</p>
-</div>
-</div><div class="ld-slide" id="einmal-passworter">
+</div></div><div class="ld-slide" id="einmal-passworter">
 <h2>Einmal-Passwörter</h2>
 <p>Die Idee ist, dass Passwörter nur genau einmal gültig sind und nicht wiederverwendbar sind.</p>
 <ul class="simple">
@@ -737,10 +726,9 @@
 <li><p>Der Server hasht das Passwort und vergleicht es dann mit dem gespeicherten Passwort <span class="math">\(H^n(W)\)</span>.</p></li>
 <li><p>Ist das Passwort korrekt, dann wird der Nutzer angemeldet und der Server speichert das Passwort <span class="math">\(H^{n-1}(W)\)</span> als neues Passwort <span class="math">\(H^n(W)\)</span> und dekrementiert n.</p></li>
 </ul>
-</div></div><div class="supplemental docutils container">
+</div></div><div class="supplemental">
 <p>Intern verwendet S/KEY 64-bit Zahlen. Für die Benutzbarkeit werden diese Zahlen auf sechs kurze Wörter, von ein bis vier Zeichen, aus einem öffentlich zugänglichen 2048-Wörter-Wörterbuch (<span class="math">\(2048 = 2^{11}\)</span>) abgebildet. Zum Beispiel wird eine 64-Bit-Zahl auf &quot;ROY HURT SKI FAIL GRIM KNEE&quot; abgebildet.</p>
-</div>
-</div><div class="ld-slide" id="secure-shell-ssh">
+</div></div><div class="ld-slide" id="secure-shell-ssh">
 <h2><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc4254">Secure Shell (SSH)</a></h2>
 <p><strong>Verschlüsselte Verbindung</strong></p>
 <p>SSH ermöglicht die sichere Fernanmeldung von einem Computer bei einem anderen (typischerweise über TCP über Port 22). Es bietet mehrere Optionen für eine starke Authentifizierung und schützt die Sicherheit und Integrität der Kommunikation durch starke Verschlüsselung</p>
@@ -758,14 +746,13 @@
 <li><p>Kommunikation über symmetrisch verschlüsselte Verbindung</p></li>
 </ol>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Die Authentifizierung mittels eines Schlüsselpaars dient primäre der Automatisierung (dann wird auch keine <span class="ger-quote">Schlüsselphrase</span> zum Schutz des Passworts verwendet). Auf jeden Fall ist effektives Schlüsselmanagement erforderlich:</p>
 <blockquote class="epigraph">
 <p>[...] In einigen Fällen haben wir mehrere Millionen SSH-Schlüssel gefunden, die den Zugang zu Produktionsservern in Kundenumgebungen autorisieren, wobei 90 % der Schlüssel tatsächlich ungenutzt sind und für einen Zugang stehen, der zwar bereitgestellt, aber nie gekündigt wurde.</p>
 <p class="attribution">—<a class="reference external" href="https://www.ssh.com/academy/ssh/protocol">SSH.com (Dez. 2023)</a></p>
 </blockquote>
-</div>
-</div><div class="ld-slide" id="secure-shell-ssh-protokoll">
+</div></div><div class="ld-slide" id="secure-shell-ssh-protokoll">
 <h2>Secure Shell (SSH) - Protokoll</h2>
 <img alt="SSH Protokoll" class="align-center" src="images/ssh/initiation.svg" style="width: 1850px;" />
 <div class="incremental small docutils container">
@@ -785,10 +772,9 @@
 </dd>
 </dl>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Im Falle von SSH gibt es kein initiales Vertrauen zwischen Server und Client.</p>
-</div>
-</div><div class="ld-slide" id="secure-shell-ssh-verbindungsaufbau-beispiel">
+</div></div><div class="ld-slide" id="secure-shell-ssh-verbindungsaufbau-beispiel">
 <h2>Secure Shell (SSH) - Verbindungsaufbau - Beispiel</h2>
 <div class="scrollable docutils container">
 <pre class="code text smallest literal-block"><code>debug1: Reading configuration data /etc/ssh/ssh_config
@@ -869,10 +855,9 @@ debug1: Sending env LANG = en_US.UTF-8</code></pre>
 <li><p>Diese SSH-Verbindung wird so eingerichtet, das eine TCP-Port-Weiterleitung von einem Port auf dem externen Server zu einem SSH-Port auf einem Server im internen Netzwerk möglich ist.</p></li>
 <li><p>Die meisten Firewalls bieten wenig bis gar keinen Schutz dagegen.</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Es ist in diesem Fall besonders interessant für den Angreifer den SSH Server zum Beispiel bei einem Cloud-Anbieter zu betreiben, welcher von dem Unternehmen  standardmäßig verwendet wird (am Anfang steht immer die Aufklärung!). In diesem Fall wird die Firewall keine ausgehenden SSH-Verbindungen dorthin blockieren.</p>
-</div>
-</div><div class="ld-slide" id="schwachstellen-in-ssh">
+</div></div><div class="ld-slide" id="schwachstellen-in-ssh">
 <h2>Schwachstellen in SSH</h2>
 <blockquote class="epigraph">
 <p><strong>Nearly 11 million SSH servers vulnerable to new Terrapin attacks</strong></p>
@@ -952,24 +937,22 @@ MTAwMDAw:MfuXmm9FGm2l7Ioe33nig4lY64oK6yzaMm8cMhGnzI0=:+Z3wI65wU4wE4p7s:NrVD75qru
 <li><p>Kontrolle des Nachrichtenverkehrs durch Filterung</p></li>
 <li><p>begrenzte Isolation mit begrenztem Schutz</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Eine Firewall schafft zwischen verbundenen Netzen Sicherheitsdomänen mit unterschiedlichem Schutzbedarf. Eine wichtige Teilaufgabe ist das Ausarbeiten von Sicherheitsrichtlinien.</p>
-</div>
-</div><div class="ld-slide" id="realisierung-von-virtual-private-networks-vpn">
+</div></div><div class="ld-slide" id="realisierung-von-virtual-private-networks-vpn">
 <h2>Realisierung von Virtual Private Networks (VPN)</h2>
 <img alt="Realisierung von Virtual Private Networks (VPN)" class="align-center" src="images/firewalls/vpn.svg" style="width: 1500px;" />
 <ul class="simple">
 <li><p>Aufbau einer scheinbar privaten Verbindung von Firmenteilnetzen über das (öffentliche) Internet</p></li>
 <li><p>Zusätzliche Verbindungsverschlüsselung zwischen den Firewalls.</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Ziel ist es aktive und passive Angriffe zu unterbinden.
 Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Informationen liefern über die Verbindungen liefern.</p>
-</div>
-</div><div class="ld-slide" id="kommerzielle-vpns-fur-endnutzer">
+</div></div><div class="ld-slide" id="kommerzielle-vpns-fur-endnutzer">
 <h2>Kommerzielle VPNs für Endnutzer</h2>
 <img alt="Einsatz von Virtual Private Networks (VPN) für Privatnutzer" class="align-center" src="images/firewalls/vpn-commercial.svg" style="width: 1400px;" />
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Motivation</strong></p>
 <ul class="simple">
 <li><p>Schutz der Privatsphäre; der ISP kennt nicht mehr die Webseiten, die man aufruft</p></li>
@@ -979,8 +962,7 @@ Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Info
 <ul class="simple">
 <li><p>Vertrauen in den VPN-Anbieter muss vorhanden sein. Insbesondere, beim Einsatz zum Stärken der Privatsphäre, muss der VPN-Anbieter vertrauenswürdig sein und sollte ein so genannter &quot;no-log&quot; Anbieter sein. Es gibt auch (kostenlose) VPN-Anbieter, die die Daten der Nutzer verkaufen (ehemals: <a class="reference external" href="https://techcrunch.com/2019/02/21/facebook-removes-onavo/?guccounter=1&amp;guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&amp;guce_referrer_sig=AQAAAGVIppEgEOd9Z0FoMbmk2TCleRmD9wCMWDmIzGYEjIo1c7Cmz8NpiSoibthFG5IZQzmZ-kiJq-5Wj1bj21byh7YUrC_aSJJk1Bapwz80GSgzLFS-LHCF2OOetUYLSKwEG7W75znuqJJBJcNTTbtJ1UGB95Yu90saK9aIIkEywcRq">Facebook Onavo</a>).</p></li>
 </ul>
-</div>
-</div><div class="ld-slide" id="schutz-auf-den-schichten-des-tcp-ip-stacks">
+</div></div><div class="ld-slide" id="schutz-auf-den-schichten-des-tcp-ip-stacks">
 <h2>Schutz auf den Schichten des TCP/IP Stacks</h2>
 <p>Zentraler Schutz des gesamten internen Netzwerks durch:</p>
 <ul class="incremental">
@@ -1002,10 +984,9 @@ Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Info
 </li>
 <li><p>Protokollierungsmöglichkeit der Kommunikation von / nach extern</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Firewalls (alleine) können die Struktur des Netzwerks nicht verbergen.</p>
-</div>
-</div><div class="smaller ld-slide" id="dos-attacke-auf-anwendungsebene">
+</div></div><div class="smaller ld-slide" id="dos-attacke-auf-anwendungsebene">
 <h2>DoS Attacke auf Anwendungsebene</h2>
 <blockquote class="epigraph">
 <p>[...]</p>
@@ -1030,10 +1011,9 @@ Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Info
 </li>
 <li><p>Software-Firewall (<em>Personal Firewall</em>)</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Im Falle eines <span class="eng">Bastion Host</span>, ist dies der einzige unmittelbar erreichbare Rechner.</p>
-</div>
-<!-- .. class:: vertical-title -->
+</div><!-- .. class:: vertical-title -->
 </div><div class="ld-slide" id="dual-homed-host">
 <h2>Dual-Homed Host</h2>
 <img alt="Dual-Homed Host" class="margin-1em align-right" src="images/firewalls/dual-homed-host.svg" style="width: 800px;" />
@@ -1094,12 +1074,11 @@ Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Info
 <li><p>Pakete von intern nur via Gate</p></li>
 <li><p>Gate bietet Proxy-Server (z. B. für E-Mail)</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Gibt es für eine bestimmte Anwendung kein Application-level Proxy, dann kann auf einen für TCP/UDP generischen Proxy zurückgegriffen werden. Dieser arbeitet auf dem Session Layer und kann nur die Header-Informationen auswerten. Es handelt sich dann um ein <span class="eng">Circuit-level Proxy/Gateway</span>. Im Vergleich zu einem Application-level Proxy ist die Sicherheit geringer, da der Circuit-level Proxy nicht in der Lage ist, die Daten zu interpretieren.</p>
 <p>Ein allgemeines Problem ist, dass viele Anwendungen auf generische Protokolle wie HTTP aufsetzen. Weiterhin betreiben einige Anwendungen <span class="ger-quote">Port Hopping</span>, d. h. sie wechseln den Port wenn der Standardport nicht offen ist.</p>
 <p>Eine Anforderung an <span class="ger-quote">Next-generation Firewalls</span> ist, dass diese die Analyse von den Daten einer Anwendung unabhängig vom Port und Protokoll ermöglichen.</p>
-</div>
-</div><div class="ld-slide" id="konfiguration-eines-gateways">
+</div></div><div class="ld-slide" id="konfiguration-eines-gateways">
 <h2>Konfiguration eines Gateways</h2>
 <p>Das Ziel der Konfiguration muss eine minimale angreifbare Oberfläche sein.</p>
 <ul class="incremental simple">
@@ -1144,15 +1123,14 @@ Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Info
 <p><strong>Umsetzung</strong></p>
 <p>An verschiedenen, neuralgischen Stellen werden spezielle Sensoren platziert, die (hier) den Netzwerkverkehr überwachen und verdächtige Aktivitäten melden.</p>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Miteinander verwandt bzw. typischerweise in einem Produkt zu finden:</p>
 <ul class="simple">
 <li><p>Intrusion Detection (IDS)</p></li>
 <li><p>Intrusion Response (IRS)</p></li>
 <li><p>Intrusion Prevention (IPS)</p></li>
 </ul>
-</div>
-</div><div class="ld-slide" id="ids-erkennungstechniken">
+</div></div><div class="ld-slide" id="ids-erkennungstechniken">
 <h2>IDS-Erkennungstechniken</h2>
 <ul class="simple">
 <li><p>Signaturerkennung</p></li>

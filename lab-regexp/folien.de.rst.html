@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
+<meta name="exercises-passwords" content="MTAwMDAw:bnGAK3CRqjd26CFnxuUdIdjoSdFWkO3e4od05o8Q2Bg=:/g9uStMQkrcG2oL4:8VU/AF650lmJZw2usZ3VvbGfgNY8QxXXbT9XA65256vZ+lSWYp7HAtwlMZVv9ZYoBM5XFGMFz9bN5iZxSziECwQkmKkWvTbxWLIpP6oXc+aKPtMRlpaJjcj/HXecQvswT5G+MsmVlD0kpkKDtZXx7czCOsSCThH8S7LVrbgxeT6Zii3ccjePY1rzLV4XWyYqWojGZEC7UXZ0yWQRn+bXgKGelR/NQzSjWVDjO+rEig2Di1RWpbnwjRyc6nKnBElDPGy7PS6RaNuLyZnpR6qqSjcbWXIg8kNlNLv3EZ/Hb7ErAPxh8s75Ryu8TZpEs9v63v0wLcFUzdbty+9tVcUO355LOl4VbzcJTIuShhku0EHkxKE4lWWqe8cyi+Y3azEgKPNIcQuEkmE516tZM005mAitx90BwGrDLUBycyGWDgojvCUbjD5Kb9QIlUQ34N+RwvsVsG7rBN+8VdqUc5BMP41CiWTKj1aPvMeBv9PdgcFzOySCM2VhafqsE1FDH6PftfPFJmkWAXceKp4DLQIS9GD92oFFaCvHWs8Nu7vW1Mu0AnlwACzrSs8IU/s3eAxe0okhHjfz7uvQWWXafuxH2QibbjFuP3P80FOWY4qzVH0EUrWsLIIn81DOhgsCSr+pXAZB72L1JK64VF0eelyOczAz" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="version" content="LD2 0.1" />
@@ -10,17 +11,22 @@
 <meta content="2023_11-w3wi_se403_passwort_wiederherstellung-regexp" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <title>Reguläre Ausdrücke</title>
-    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
-    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
-    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
     <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
     <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    
+    <script src="../LectureDoc2/themes/DHBW/logo.js" type="module"></script>
 </head>
 <body>
 <template>
-<div class="ld-slide" id="regulare-ausdrucke">
+<div class="animated-symbol ld-slide" id="regulare-ausdrucke">
 <h1 class="title">Reguläre Ausdrücke</h1>
 
 <div class="line-above padding-bottom-1em docutils container">
@@ -32,87 +38,73 @@
 <dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>1.0</p>
+<dd><p>1.2</p>
 </dd>
 </dl>
 </div>
 <div class="supplemental">
-<dl class="field-list simple">
+<dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
-<dd><dl class="field-list simple">
-<dt>HTML<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io/lab-regexp/folien.de.rst.html">https://delors.github.io/lab-regexp/folien.de.rst.html</a></p>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/lab-regexp/folien.de.rst.html">https://delors.github.io/lab-regexp/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/lab-regexp/folien.de.rst.html.pdf">https://delors.github.io/lab-regexp/folien.de.rst.html.pdf</a></p>
 </dd>
-<dt>PDF<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io/lab-regexp/folien.de.rst.html.pdf">https://delors.github.io/lab-regexp/folien.de.rst.html.pdf</a></p>
-</dd>
-</dl>
-</dd>
-<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
 </div></div>
 <div class="ld-slide" id="regulare-ausdrucke-wiederholung">
 <h2>Reguläre Ausdrücke (Wiederholung)</h2>
-<p>Reguläre Ausdrücke (<span class="eng">regular expressions</span>) sind ein Standardwerkzeug. Wir verwenden diese insbesondere um Wörterbücher, Leaks und weitere Kontextinformationen zu verarbeiten.</p>
-<p>Reguläre Ausdrücke können insbesondere zum Patternmatching auf Textdaten genutzt werden.</p>
-<p>Reguläre Ausdrück beschreiben reguläre Sprachen und können durch einen endlichen Automaten erkannt werden.</p>
-<p>Reguläre Ausdrücke - in der Standardeinstellung - nehmen immer einen maximalen Musterabgleich vor (<span class="eng">greedy matching / eager matching</span>).</p>
-</div><div class="ld-slide" id="regulare-ausdrucke-grundlagen">
-<h2>Reguläre Ausdrücke (Grundlagen)</h2>
-<ol class="arabic">
-<li><p>Zeichenklassen:</p>
+<ul class="incremental simple">
+<li><p>Reguläre Ausdrücke (<span class="eng">regular expressions</span>) sind ein Standardwerkzeug. Wir verwenden diese z. B. um Wörterbücher, Leaks und weitere Kontextinformationen zu verarbeiten.</p></li>
+<li><p>Reguläre Ausdrücke können insbesondere zum Patternmatching auf Textdaten genutzt werden.</p></li>
+<li><p>Reguläre Ausdrücke beschreiben reguläre Sprachen und können durch einen endlichen Automaten erkannt werden.</p></li>
+<li><p>Reguläre Ausdrücke - in der Standardeinstellung - nehmen immer einen maximalen Musterabgleich vor (<span class="eng">greedy matching / eager matching</span>).</p></li>
+</ul>
+</div><div class="ld-slide" id="regulare-ausdrucke-zeichenklassen">
+<h2>Reguläre Ausdrücke - Zeichenklassen</h2>
+<div class="scrollable docutils container">
+<div class="incremental docutils container">
 <p>Buchstaben und Zahlen können direkt in einem regulären Ausdruck verwenden, um entsprechenden Text zu finden. Zum Beispiel steht <span class="docutils literal">&quot;a&quot;</span> für das Zeichen <span class="docutils literal">a</span>.</p>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;a&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span></p>
+</div>
+<div class="incremental line-above docutils container">
 <p>Der Punkt repräsentiert ein beliebiges Zeichen - außer den Zeilenumbruch.</p>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;a.&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">ab</span></p>
-</li>
-</ol>
-</div><div class="ld-slide" id="regulare-ausdrucke-grundlagen-1">
-<h2>Reguläre Ausdrücke (Grundlagen)</h2>
-<ol class="arabic">
-<li><p>Zeichenklassen (fortgesetzt):</p>
-<p>Eine ganze Klasse von Zeichen kann in eckigen Klammern angegeben werden &quot;[]&quot;.</p>
+</div>
+<div class="incremental line-above docutils container">
+<p>Klassen von Zeichen können in eckigen Klammern angegeben werden &quot;[]&quot;.</p>
+<blockquote>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abcdefg&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;[acg]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span>, <span class="docutils literal">c</span>, <span class="docutils literal">g</span></p>
 <p>Klassen können auch durch Bereiche beschrieben werden (<span class="docutils literal"><span class="pre">a-z</span></span>, <span class="docutils literal"><span class="pre">A-Z</span></span>, <span class="docutils literal"><span class="pre">0-9</span></span>):</p>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;ab12xy&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span>, <span class="docutils literal">b</span>, <span class="docutils literal">x</span>, <span class="docutils literal">y</span></p>
-</li>
-</ol>
-</div><div class="ld-slide" id="regulare-ausdrucke-grundlagen-2">
-<h2>Reguläre Ausdrücke (Grundlagen)</h2>
-<ol class="arabic">
-<li><p>Zeichenklassen (fortgesetzt):</p>
+</blockquote>
+</div>
+<div class="incremental line-above docutils container">
 <p>Welche Buchstaben genau durch eine Klasse repräsentiert werden hängt von den Spracheinstellungen ab!</p>
 <pre class="code bash literal-block"><code><span class="name variable">LANG</span><span class="operator">=</span>de_DE.UTF-8<span class="punctuation">;</span><span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;aä&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span>, <span class="docutils literal">ä</span></p>
 <p>aber</p>
 <pre class="code bash literal-block"><code><span class="name variable">LANG</span><span class="operator">=</span>C<span class="punctuation">;</span><span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;aä&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
 <p>findet <span class="ger-quote">nur</span>: <span class="docutils literal">a</span></p>
-</li>
-</ol>
-</div><div class="ld-slide" id="regulare-ausdrucke-grundlagen-3">
-<h2>Reguläre Ausdrücke (Grundlagen)</h2>
-<ol class="arabic">
-<li><p>Zeichenklassen (fortgesetzt):</p>
+</div>
+<div class="incremental line-above docutils container">
 <p>Die Negation einer Klasse wird durch an ein <span class="docutils literal">^</span> direkt am Anfang der Klasse erzwungen.</p>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc123&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[^a-z]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">1</span>, <span class="docutils literal">2</span>, <span class="docutils literal">3</span></p>
-</li>
-<li><p>Escapezeichen:</p>
+</div>
+</div>
+</div><div class="ld-slide" id="regulare-ausdrucke-escapezeichen">
+<h2>Reguläre Ausdrücke - Escapezeichen</h2>
 <p>Der Backslash <span class="docutils literal">\</span> dient als Escapezeichen für Sonderzeichen.</p>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc-123[a-z]&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;\[a-z\]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal"><span class="pre">[a-z]</span></span> <span class="minor">(aber nicht &quot;abc&quot;)</span></p>
-</li>
-</ol>
-</div><div class="ld-slide" id="regulare-ausdrucke-grundlagen-4">
-<h2>Reguläre Ausdrücke (Grundlagen)</h2>
-<ol class="arabic" start="3">
-<li><p>Anker</p>
+</div><div class="ld-slide" id="regulare-ausdrucke-anker">
+<h2>Reguläre Ausdrücke - Anker</h2>
 <p><span class="docutils literal">^</span>: Steht für den Anfang einer Zeile.</p>
 <p><span class="docutils literal">$</span>: steht für das Ende einer Zeile.</p>
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abcabcabc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;abc&quot;</span><span class="whitespace">
@@ -123,12 +115,9 @@
 </span>abcY<span class="whitespace">
 </span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;XbcYbc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;.bc</span>$<span class="literal string double">&quot;</span><span class="whitespace">
 </span>Ybc</code></pre>
-</li>
-</ol>
-</div><div class="ld-slide" id="regulare-ausdrucke-grundlagen-5">
-<h2>Reguläre Ausdrücke (Grundlagen)</h2>
-<ol class="arabic" start="3">
-<li><p>Quantifizierung</p>
+</div><div class="ld-slide" id="regulare-ausdrucke-quantifizierung">
+<h2>Reguläre Ausdrücke - Quantifizierung</h2>
+<div class="scrollable docutils container">
 <p><span class="docutils literal">*</span>: &quot;null oder mehr&quot; Vorkommen des vorherigen Zeichens oder Musters.</p>
 <p><span class="docutils literal">+</span>: &quot;ein oder mehr&quot; Vorkommen des vorherigen Zeichens oder Musters.</p>
 <p><span class="docutils literal">?</span>: &quot;null oder ein&quot; Vorkommen des vorherigen Zeichens oder Musters.</p>
@@ -138,12 +127,7 @@
 </span>aa,<span class="whitespace"> </span>aaa<span class="whitespace">
 </span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;a?&quot;</span><span class="whitespace">
 </span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a</code></pre>
-</li>
-</ol>
-</div><div class="ld-slide" id="regulare-ausdrucke-grundlagen-6">
-<h2>Reguläre Ausdrücke (Grundlagen)</h2>
-<ol class="arabic" start="3">
-<li><p>Quatifizierung (fortgesetzt)</p>
+<div class="incremental line-above docutils container">
 <p><span class="docutils literal">{X,Y}</span>: zwischen X und Y Vorkommen des vorherigen Zeichens oder Musters. Die obere Grenze ist optional, um zum Beispiel X und mehr Vorkommen zu finden.</p>
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;a{2,2}&quot;</span><span class="whitespace">
 </span>aa<span class="whitespace">
@@ -151,12 +135,11 @@
 </span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;a{2,3}&quot;</span><span class="whitespace">
 </span>aa<span class="whitespace">
 </span>aaa</code></pre>
-</li>
-</ol>
-</div><div class="ld-slide" id="regulare-ausdrucke-grundlagen-7">
-<h2>Reguläre Ausdrücke (Grundlagen)</h2>
-<ol class="arabic" start="4">
-<li><p>Alternativen: <span class="docutils literal">|</span> trennt  verschiedene Alternativen.</p>
+</div>
+</div>
+</div><div class="ld-slide" id="regulare-ausdrucke-alternativen">
+<h2>Reguläre Ausdrücke - Alternativen</h2>
+<p><span class="docutils literal">|</span> trennt  verschiedene Alternativen.</p>
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;HundMausAffe&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;Hund|Affe&quot;</span><span class="whitespace">
 </span>Hund<span class="whitespace">
 </span>Affe</code></pre>
@@ -167,23 +150,16 @@
 </span><span class="comment single"># Perl compatible
 </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Schifffahrt&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string double">&quot;Schiff|Schifffahrt&quot;</span><span class="whitespace">
 </span>Schiff</code></pre>
-</li>
-</ol>
-</div><div class="ld-slide" id="regulare-ausdrucke-grundlagen-8">
-<h2>Reguläre Ausdrücke (Grundlagen)</h2>
-<ol class="arabic" start="5">
-<li><p>Klammern: <span class="docutils literal">()</span> dienen der Gruppierung von Teilausdrücken und der Referenzierbarkeit bzw. Rückreferenzen.</p>
+</div><div class="ld-slide" id="regulare-ausdrucke-klammern">
+<h2>Reguläre Ausdrücke - Klammern</h2>
+<p><span class="docutils literal">()</span> dienen der Gruppierung von Teilausdrücken und der Referenzierbarkeit bzw. Rückreferenzen.</p>
 <p>Beispiel: der folgende Ausdruck findet Zeichenketten, die mit dem Zeichen aufhören mit dem sie begonnen haben.</p>
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;XaaaaX&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;^(.).*\1</span>$<span class="literal string double">&quot;</span><span class="whitespace">
 </span>XaaaaX<span class="whitespace">
 
 </span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;XaaaaY&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;^(.).*\1</span>$<span class="literal string double">&quot;</span></code></pre>
-</li>
-</ol>
-</div><div class="ld-slide" id="regulare-ausdrucke-fortgeschrittene-grundlagen">
-<h2>Reguläre Ausdrücke (Fortgeschrittene Grundlagen)</h2>
-<ol class="arabic" start="6">
-<li><p>Lookahead</p>
+</div><div class="ld-slide" id="regulare-ausdrucke-lookahead">
+<h2>Reguläre Ausdrücke - Lookahead</h2>
 <p><span class="docutils literal"><span class="pre">(?=...)</span></span>: ist ein positiver Lookahead und stellt sicher, dass ein bestimmtes Muster im Text folgt, ohne es selbst in das Ergebnis aufzunehmen.</p>
 <p><span class="docutils literal"><span class="pre">(?!...)</span></span>: ist ein negativer Lookahead und stellt sicher, dass ein bestimmtes Muster im Text <em>nicht</em> folgt.</p>
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;HundKatzeHundMaus&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string single">'Hund(?=Katze).{1,2}'</span><span class="whitespace">
@@ -191,22 +167,26 @@
 
 </span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;HundKatzeHundMaus&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string single">'Hund(?!Katze).{1,2}'</span><span class="whitespace">
 </span>HundMa</code></pre>
-</li>
-</ol>
 </div><div class="transition-scale integrated-exercise ld-slide" id="fingerubungen">
 <h2>Fingerübungen</h2>
-<ol class="arabic simple">
-<li><p>Prüfen Sie ob der Begriff: schmetterling oder Schmetterling in rockyou vorkommt.</p></li>
-</ol>
-<!-- grep -E "^[a-zA-Z]+$" /usr/share/wordlists/rockyou.txt | grep -ni "schmetterling" -->
-<ol class="arabic simple" start="2">
-<li><p>Finden Sie alle Passworte in denen ein Zeichen mind. 3 oder mehrmals wiederholt wird. z. B. &quot;x0000!&quot; oder &quot;aaaabbbb&quot;.</p></li>
-</ol>
-<!-- grep -E "(.)\1{3,}" /usr/share/wordlists/rockyou.txt -->
-<ol class="arabic simple" start="3">
-<li><p>Finden Sie alle Passworte, in denen eine Sequenz mit mindestens 3 Zeichen wiederholt wird. z. B. &quot;TestTest&quot; oder &quot;1AffeIstAffe#&quot;.</p></li>
-</ol>
-<!-- └─$ grep -E "(.{3,}).*\1" /usr/share/wordlists/rockyou.txt -->
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Schmetterling in Rockyou" id="ld-exercise-1">
+<p class="rubric">Schmetterling in Rockyou</p>
+<p>Prüfen Sie ob der Begriff: schmetterling oder Schmetterling in der Datei <span class="docutils literal">rockyou.txt</span> vorkommt.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:3FoWo+yCqnf66xrf6VzJ9F4bAkfJDgSS3xg7q4UAuaQ=:jN8T6v/LMy0V/QYa:5aVNdFwjjvFwVvafqQHGYqDl24YvQmnkdB3cpzyZ9lrWFfqxyzW/vw99A5hnxRRlcT7ckz1i4PGGAnIRAP3Osd7o6U6ZtMlr5iHRUViCkd3FSSwJJPvgmeFjknOLvQGuQCgidBgNne4iX9Qvv6Qt0Fo6rTxuHLxb5lFOe4GssWZ8uM4gst293/QISBrA1yxpAbFb0ytzU16sOGns0PsByejP48LBf9cWeK/2IEEhehSfRWlzB9S3nFsaYuM9y7WIo5yK+bX3MsgYgG8pzaH7g2A232yLGdrLSBAv22VzMIvqIfy8L2dGGyox0sPAw00FMcKFDH0DBRM2gp4aBoikDqr9/IVeAEP3Oo/3Wn83DmtJVe7MUBjN9h2m/tMiO1Rj7/m3iX9f0yu3xuUwl7b9kSHjAY/+jmX75pbPz2UAwOzQpfl90JqDoY5j6CnpTjK5L6LWZIPDYZq8wCltmUBzA73uulJlWA46M7N+xPV2akUz519BGyfegfchJVpP5h0IYbKEa5saHCy/B4oD4JZveH4v8bJHTCT1PNGJYTipTDVcrwaO3PETIpppAf7QnuU2kf0YMxcczrfh55ZSsvQ4SPuJL8BL1yZ9/sneYyDu2UwCl918uiyH5LoesCl3gA8n76fZW//xV9dZP9lzJaGDRd8tDFK+00cNgAGdeSP3fl2+C89+pGy0IoxqExTsabCSd4tkUe6yIsEJ82aEL2ExhCV/mzr3FK7StcJdPfFlPLxETFPvw4DgctLD88hSjNlfgRg9U+B3a1QVgFbWC4nYuiq2HO/R7D9MZydVxJlOKBt66Q7OkG9CAPHbkTS3/YdmijJwyWmX1KdtJbP6mCN6Lw==</div>
+</div>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Wiederholungen von Zeichen in Passwörtern" id="ld-exercise-2">
+<p class="rubric">Wiederholungen von Zeichen in Passwörtern</p>
+<p>Finden Sie alle Passworte in denen ein Zeichen mind. 3 oder mehrmals wiederholt wird. z. B. &quot;x0000!&quot; oder &quot;aaaabbbb&quot;.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:DI4bTNbEPfukzjlilX0MOKJQsQ948+r0ozvFovGrtVo=:qliGG6RDRgHQitEr:LKDRqjxkqbfFTV+oKm9AkCAKHrw9/GguO2qMVh9lLVFFnEngbXlgd5iplfrkhJvg7sTQDIB0jh8uq3PdW8Mx6HBG8dOCO2P9rTULbDT/duRHmQFdeDViiIT762wk/TkgMyzqFXlY+c+pGKMGAPFEycgGs9vFgZejccm1slvNjwKkFD/3YRq1rkWmIXTrEKoNV8WEGdRRFVRgPFotYXXDviEHlgEiyxjdnA0hPOjkX5Hq3zmJ23YcqGMTC/7JxpOIP8UXmqDiDVDVkuD3FV2Ov6yPRoaQRqepdiforY9fghY8tz/gF7i+W/yD43ZhIN7LhXzu/ssEK0PpKQ5SCpHrS4IziDU6dOuDUp7Dol0OWmZUqo+JYXT17Bmh0Uypq5wOEGPpIUATPFzPct4KGhPc9EVeD2g=</div>
+</div>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Wiederholungen von Sequenzen in Passwörtern" id="ld-exercise-3">
+<p class="rubric">Wiederholungen von Sequenzen in Passwörtern</p>
+<p>Finden Sie alle Passworte, in denen eine Sequenz mit mindestens 3 Zeichen wiederholt wird, z. B. <span class="ger-quote">TestTest`</span> oder <span class="ger-quote">1AffeIstAffe#</span>.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:74jc1apfRpUgTZQVXFcpXJ6lLpKH31Vu0/ssAYQSGXo=:oXH4suQiscwDAy60:tAvY6RR+I2caZEbFLiXtrbBuQoc7K5ba1GKJCUw9ZR1IsfEo1KVmumSg7DtRgyPEdbqWwEqf09wuLb/71/Cw2ODf88C8l2m3uYaDMZx5vEB3AYgPlrQyCckYJoN7oGd5p+m6y7WpbUkYyp2ogTXGeDRcs9/DW9pLchcGJfY14nZ7WodtJcS6MhE2zxpLygDHlJhvaTsnjcz0RKQ2wCVpKNNrkYOx54y63R+1NFgZ2rE4IkrLfUS0zYgGh2Ck9yM6CCg9xHzQkV0gYOMrz1GC6/3Ytyooc21/R7KEJG6pPsjeiknc7jcTkSoyTe3tVUzxe9OcYum4yALJjbbmzcInODXUZNivRDT0zW2FsTglE5GDfHwM/p/OYOSxARv4lbTdbg5gsYTr+FVugTaCtZRKQqdePiIoCQ==</div>
+</div>
 </div>
 </template>
 </body>

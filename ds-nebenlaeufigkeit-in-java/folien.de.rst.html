@@ -12,13 +12,17 @@
 <meta content="lecture-ds-nebenlaeufigkeit" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <title>Nebenläufigkeit in Java</title>
-    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
-    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
-    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
     <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
     <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    
 </head>
 <body>
 <template>
@@ -45,7 +49,7 @@
 <dd><p><a class="reference external" href="https://delors.github.io/ds-nebenlaeufigkeit-in-java/folien.de.rst.html">https://delors.github.io/ds-nebenlaeufigkeit-in-java/folien.de.rst.html</a></p>
 <p><a class="reference external" href="https://delors.github.io/ds-nebenlaeufigkeit-in-java/folien.de.rst.html.pdf">https://delors.github.io/ds-nebenlaeufigkeit-in-java/folien.de.rst.html.pdf</a></p>
 </dd>
-<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
@@ -58,9 +62,9 @@
 <div class="stack">
 <div class="layer">
 <img alt="Prozesse vs. Threads" class="align-center" src="images/threads/native_threads.svg" style="width: 100%;" />
-</div><div class="layer incremental overlay">
+</div><div class="layer incremental overlay incremental overlay">
 <img alt="Prozesse vs. Threads" class="align-center" src="images/threads/fibres.svg" style="width: 100%;" />
-</div><div class="layer incremental overlay">
+</div><div class="layer incremental overlay incremental overlay">
 <img alt="Prozesse vs. Threads" class="align-center" src="images/threads/virtual_threads.svg" style="width: 100%;" />
 </div></div><div class="supplemental">
 <ul class="simple">
@@ -234,7 +238,7 @@
 <blockquote>
 <p>Zum Zwecke der bedingten Synchronisation können in Java die Methoden <span class="docutils literal">wait</span>, <span class="docutils literal">notify</span> und <span class="docutils literal">notifyAll</span> verwendet werden.  Diese Methoden erlauben es auf bestimmte Bedingungen zu warten und andere Threads zu benachrichtigen, wenn sich die Bedingung geändert hat.</p>
 </blockquote>
-<div class="stack incremental footnotesize margin-top-1em">
+<div class="stack incremental footnotesize margin-top-1em incremental footnotesize margin-top-1em">
 <div class="layer">
 <ul class="simple">
 <li><p>Diese Methoden können nur innerhalb von Methoden verwendet werden, die die Objektsperre halten; andernfalls wird eine <span class="docutils literal">IllegalMonitorStateException</span> ausgelöst.</p></li>
@@ -266,7 +270,7 @@
 <div class="layer">
 <p>Wenn ein Thread auf eine Bedingung wartet, kann kein anderer Thread auf die andere Bedingung warten.</p>
 <p><span class="minor">Mit den bisher vorgestellten Primitiven ist eine direkte Modellierung dieses Szenarios so nicht möglich. Stattdessen müssen immer alle Threads aufgeweckt werden, um sicherzustellen, dass auch der intendierte Thread aufgeweckt wird. Deswegen ist auch das Überprüfen der Bedingung in einer Schleife notwendig.</span></p>
-</div><div class="layer incremental tiny">
+</div><div class="layer incremental tiny incremental tiny">
 <pre class="code java smaller copy-to-clipboard literal-block"><code><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">BoundedBuffer</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
     </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">buffer</span><span class="operator">[]</span><span class="punctuation">;</span><span class="whitespace">
     </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">first</span><span class="punctuation">;</span><span class="whitespace">
@@ -282,7 +286,7 @@
     </span><span class="punctuation">};</span><span class="whitespace">
     </span><span class="punctuation">...</span><span class="whitespace">
   </span><span class="punctuation">}</span></code></pre>
-</div><div class="layer incremental tiny">
+</div><div class="layer incremental tiny incremental tiny">
 <pre class="code java smaller copy-to-clipboard literal-block"><code><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">synchronized</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">put</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">item</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">InterruptedException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
     </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">numberInBuffer</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">size</span><span class="punctuation">)</span><span class="whitespace">
       </span><span class="name">wait</span><span class="punctuation">();</span><span class="whitespace">
@@ -291,7 +295,7 @@
     </span><span class="name">buffer</span><span class="operator">[</span><span class="name">last</span><span class="operator">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">item</span><span class="punctuation">;</span><span class="whitespace">
     </span><span class="name">notifyAll</span><span class="punctuation">();</span><span class="whitespace">
   </span><span class="punctuation">};</span></code></pre>
-</div><div class="layer incremental tiny">
+</div><div class="layer incremental tiny incremental tiny">
 <pre class="code java smaller copy-to-clipboard literal-block"><code><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">synchronized</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">get</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">InterruptedException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
     </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">numberInBuffer</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
       </span><span class="name">wait</span><span class="punctuation">();</span><span class="whitespace">
@@ -301,7 +305,7 @@
     </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">buffer</span><span class="operator">[</span><span class="name">first</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
   </span><span class="punctuation">}</span><span class="whitespace">
 </span><span class="punctuation">}</span></code></pre>
-</div><div class="layer incremental tiny">
+</div><div class="layer incremental tiny incremental tiny">
 <div class="text-align-center dhbw-red bolder docutils container">
 <p>Fehlersituation, die bei der Verwendung von <span class="docutils literal">notify</span> (statt <span class="docutils literal">notifyAll</span>) auftreten könnte.</p>
 </div>

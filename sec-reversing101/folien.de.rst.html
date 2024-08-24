@@ -11,104 +11,25 @@
 <meta content="lecture-security-java_reverse_engineering" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <title>Reverse Engineering 101</title>
-    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
-    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
-    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
     <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
     <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    
+    <script src="../LectureDoc2/themes/DHBW/logo.js" type="module"></script>
 </head>
 <body>
 <template>
-<div class="text-logo organic-red ld-slide" id="reverse-engineering-101">
+<div class="animated-symbol organic-red ld-slide" id="reverse-engineering-101">
 <h1 class="title">Reverse Engineering 101</h1>
 
-<style>
-
-    .dhbw-logo {
-        width: 200px;
-        height: 200px;
-        position: relative;
-        /*overflow: visible;*/
-
-        perspective: 2500px;
-        transform: rotateX(-30deg);
-        transform-style: preserve-3d;
-
-        .side {
-            position: absolute;
-            width: 98px;
-            height: 98px;
-            border-radius: 4px;
-        }
-
-        .left {
-            background-color: rgba(226, 0, 26);
-            transform: translateY(51px) translateX(0px) translateZ(2px);
-        }
-
-        .back {
-            background-color: rgba(226, 0, 26);
-            transform: translateY(51px) translateX(52px) rotateY(65deg) translateX(52px);
-        }
-
-        .front {
-            background-color: rgba(51, 65, 73, 0.56);
-            transform: translateY(51px) translateX(52px) rotateY(-115deg) translateZ(2px) translateX(52px);
-        }
-
-        .right {
-            background-color: rgba(51, 65, 73, 0.56);
-            transform: translateY(51px) translateX(102px) translateZ(-2px);
-        }
-
-        animation: 30s infinite alternate move-across;
-    }
-
-    @keyframes move-across {
-        0% {
-            transform: rotateX(0deg) rotateY(0deg) rotateZ(15deg) translate3d(-1500px,-800px,-100px) scale(4) ;
-        }
-        50%, 100% {
-            transform: rotateX(-30deg) rotateY(360deg) translateX(425px) translateY(115px);
-        }
-    }
-
-    .blur-it {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        animation: blur-it 30s infinite alternate;
-    }
-
-    @keyframes blur-it {
-        0% {
-            filter: blur(10px) opacity(0.1);
-        }
-        10% {
-            filter: blur(0px) opacity(0.8);
-        }
-        50%, 100% {
-            filter: blur(0px);
-        }
-    }
-
-</style>
-
-<div class="blur-it" style="mix-blend-mode: multiply;z-index:-1">
-    <div class="dhbw-logo">
-        <div class="side left"></div>
-        <div class="side front"></div>
-        <div class="side back"></div>
-        <div class="side right"></div>
-    </div>
-</div><div class="docutils container">
+<div class="docutils container">
 <dl class="field-list simple">
 <dt>Dozent<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
@@ -117,19 +38,17 @@
 <dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>1.0</p>
+<dd><p>1.0.1</p>
 </dd>
 </dl>
 </div>
 <div class="supplemental">
-<dl class="field-list simple">
+<dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
-<dd><ul class="simple">
-<li><p><a class="reference external" href="https://delors.github.io/sec-reversing101/folien.de.rst.html">https://delors.github.io/sec-reversing101/folien.de.rst.html</a></p></li>
-<li><p><a class="reference external" href="https://delors.github.io/sec-reversing101/folien.de.rst.html.pdf">https://delors.github.io/sec-reversing101/folien.de.rst.html.pdf</a></p></li>
-</ul>
+<dd><p><a class="reference external" href="https://delors.github.io/sec-reversing101/folien.de.rst.html">https://delors.github.io/sec-reversing101/folien.de.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/sec-reversing101/folien.de.rst.html.pdf">https://delors.github.io/sec-reversing101/folien.de.rst.html.pdf</a></p>
 </dd>
-<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
@@ -150,10 +69,9 @@
 <li><p>die Rekonstruktion (von Teilen) des Quellcodes von Programmen, die nur als Binärabbild vorliegen.</p></li>
 <li><p>die Analyse von Kommunikationsprotokollen proprietärer Software</p></li>
 </ul>
-</div><div class="supplemental docutils container">
+</div><div class="supplemental">
 <p>Vom Reverse Engineering ist das <strong>Reengineering</strong> zu unterscheiden. Im Fall von letzteren geht es <span class="ger-quote">nur</span> darum die Funktionalität eines bestehenden Systems mit neuen Techniken wiederherzustellen.</p>
-</div>
-</div><div class="ld-slide" id="zweck-von-reverse-engineering">
+</div></div><div class="ld-slide" id="zweck-von-reverse-engineering">
 <h2>Zweck von Reverse Engineering</h2>
 <ul class="incremental simple">
 <li><p>Herstellung von Interoperabilität</p></li>
@@ -163,6 +81,14 @@
 <li><p>Analyse von Viren, Würmern etc.</p></li>
 <li><p>Umgehung von ungerechtfertigten(?) Schutzmaßnahmen (z. B. bei Malware)</p></li>
 </ul>
+</div><div class="ld-slide" id="bootrom-lucke">
+<h2>Bootrom Lücke</h2>
+<blockquote class="epigraph">
+<p><strong>CPU-Lücke macht Malware-Infektionen nahezu unumkehrbar</strong></p>
+<p>Die Schwachstelle verschafft Angreifern Zugang zu einer der höchsten Privilegienstufen heutiger PC-Systeme. Schadsoftware entzieht sich damit jeglicher Erkennung.</p>
+<p>[...] Gegenüber Wired erklärten die Forscher, per Sinkclose ließen sich etwa Bootkits installieren, die für das Betriebssystem und gängige Antivirensoftware unsichtbar seien, während Angreifer einen Vollzugriff auf das Zielsystem erhielten.</p>
+<p class="attribution">—August, 2024 - <a class="reference external" href="https://www.golem.de/news/sinkclose-trifft-amd-cpu-luecke-macht-malware-infektionen-nahezu-unumkehrbar-2408-187913.html">Golem.de</a> (<a class="reference external" href="https://www.amd.com/en/resources/product-security/bulletin/amd-sb-7014.html">AMD CVE</a>)</p>
+</blockquote>
 </div><div class="smaller-slide-title ld-slide" id="cve-2024-3094-liblzma-backdoor-in-openssh">
 <h2><a class="reference external" href="https://nvd.nist.gov/vuln/detail/CVE-2024-3094">CVE-2024-3094</a> - <span class="docutils literal">liblzma</span> Backdoor in OpenSSH<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a><a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
 <ul class="incremental columns far-far-smaller">
@@ -358,12 +284,11 @@
 <li><p>CFR (Java <span class="docutils literal">.class</span> Dateien)</p></li>
 <li><p>IntelliJ</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Mittels Decompiler ist es ggf. möglich Code, der zum Beispiel ursprünglich in Kotlin oder Scala geschrieben und für die JVM kompiliert wurde, als Java Code zurückzubekommen.</p>
 <p>Die Ergebnisse sind für Analysezwecke zwar häufig ausreichend gut – von funktionierendem Code jedoch ggf. (sehr) weit entfernt.</p>
 <p><a class="reference external" href="https://decompiler.com">decompiler.com</a> unterstützt eine große Anzahl ausführbaren Dateien.</p>
-</div>
-<aside class="admonition incremental small hint">
+</div><aside class="admonition incremental small hint">
 <p class="admonition-title">Hinweis</p>
 <p>Decompiler sind generell sehr hilfreich, aber gleichzeitig auch sehr fehlerbehaftet. Vieles, dass im Binärcode möglich ist, hat auf der Ebene des Sourcecodes keine Entsprechung.</p>
 <p>Zum Beispiel unterstützt Java Bytecode beliebige Sprünge. Solche Code wird aber durch normale Programme, die z. B. in Java, Kotlin, Scala oder Clojure geschrieben wurden, nicht erzeugt. Decompiler kommen mit solchem Code in der Regel nicht (gut) zurecht.</p>
@@ -398,13 +323,12 @@
 <li><p>x64dbg (Windows, Open-Source)</p></li>
 <li><p>jdb (Java Debugger)</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p class="rubric">Hardware Debugger</p>
 <p>Für das Debuggen von Hardware gibt es entsprechende Werkzeuge, z. B.
 <a class="reference external" href="https://www.lauterbach.com">Lauterbach Hardware Debugger</a> (kommerziell und sehr teuer).</p>
 <p>Mittels solcher Werkzeuge ist es möglich die Ausführung von Hardware Schritt für Schritt (<span class="eng">single step mode`</span>) zu verfolgen und den Zustand der Hardware (Speicher und Register) zu inspizieren. Dies erfordert jedoch häufig eine JTAG Schnittstelle oder etwas vergleichbares.</p>
-</div>
-</div><div class="new-section transition-fade ld-slide" id="erschwerung-des-reverse-engineering">
+</div></div><div class="new-section transition-fade ld-slide" id="erschwerung-des-reverse-engineering">
 <h2>Erschwerung des Reverse Engineering</h2>
 </div><div class="ld-slide" id="obfuscation-verschleierung">
 <h2>Obfuscation (<span class="ger">Verschleierung</span>)</h2>
@@ -429,14 +353,13 @@
 </ul>
 </li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Gerade im Umfeld von klassischen <em>Binaries</em> für Windows, Mac und Linux erhöhen Compiler Optimierungen, z. B. von C/C++ und Rust Compilern (<span class="docutils literal"><span class="pre">-O2</span> / <span class="pre">-O3</span></span>), bereits den Aufwand, der notwendig ist den Code zu verstehen, erheblich.</p>
 <aside class="admonition hint">
 <p class="admonition-title">Hinweis</p>
 <p>Einen ambitionierten und entsprechend ausgestatteten Angreifer wird <strong>Code Obfuscation</strong> bremsen, aber sicher nicht vollständig ausbremsen und das Vorhaben verteilen.</p>
 </aside>
-</div>
-</div><div class="ld-slide" id="obfuscation-techniken-auszug">
+</div></div><div class="ld-slide" id="obfuscation-techniken-auszug">
 <h2>Obfuscation - Techniken (Auszug)</h2>
 <ul class="scrollable incremental">
 <li><p><span class="minor">entfernen aller Debug-Informationen</span></p></li>
@@ -456,7 +379,7 @@
 <li><p>Den relevanten Teil der Anwendung komprimieren und verschlüsseln und erst bei Verwendung entpacken und entschlüsseln.</p></li>
 <li><p>...</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Obfuscation auf Source Code Ebene:
 <a class="reference external" href="https://www.ioccc.org/">International Obfuscated C Code Contest</a></p>
 <p><strong>Umstellen von Instruktionen</strong></p>
@@ -464,8 +387,7 @@
 <p><strong>Verschleierung von Strings</strong></p>
 <p>Das Verschleiern von Strings kann insbesondere das Reversen von Binärcode erschweren, da ein Angreifer häufig <span class="ger-quote">nur</span> an einer ganz bestimmten Funktionalität interessiert ist und dann Strings ggf. einen sehr guten Einstiegspunkt für die weitergehende Analyse bieten.</p>
 <p>Stellen Sie sich eine komplexe Java Anwendung vor, in der alle Namen von Klassen, Methoden und Attributen durch einzelne oder kurze Sequenzen von Buchstaben ersetzt wurden und sie suchen danach wie von der Anwendung Passworte verarbeitet werden. Handelt es sich um eine GUI Anwendung, dann wäre zum Beispiel die Suche nach Text, der in den Dialogen vorkommt (z. B. <span class="docutils literal">&quot;Password&quot;</span>) z. B. ein sehr guter Einstiegspunkt.</p>
-</div>
-</div><div class="new-section transition-fade ld-slide" id="eine-sehr-kurz-einfuhrung-in-java-bytecode">
+</div></div><div class="new-section transition-fade ld-slide" id="eine-sehr-kurz-einfuhrung-in-java-bytecode">
 <h2>Eine sehr kurz Einführung in Java Bytecode</h2>
 </div><div class="ld-slide" id="die-java-virtual-machine">
 <h2>Die Java Virtual Machine</h2>
@@ -539,10 +461,9 @@ Anschließend werden alle Parameter in aufeinanderfolgenden lokalen Variablen ü
 </span><span class="name">Local</span><span class="whitespace"> </span><span class="name">variable</span><span class="whitespace"> </span><span class="name">table</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="operator">[</span><span class="name">pc</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">pc</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">5</span><span class="operator">]</span><span class="whitespace">  </span><span class="name">local</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="keyword">this</span><span class="whitespace">
                                       </span><span class="name">index</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace">
                                       </span><span class="name">type</span><span class="punctuation">:</span><span class="whitespace">  </span><span class="name">de</span><span class="punctuation">.</span><span class="name attribute">dhbw</span><span class="punctuation">.</span><span class="name attribute">simplesecurepp</span><span class="punctuation">.</span><span class="name attribute">Main</span></code></pre>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Es gibt weitere Metainformationen, die <span class="ger-quote">nur</span> für Debugging-Zwecke benötigt werden, z. B. Informationen über die ursprünglich Quelle des Codes oder die sogenannte &quot;Local Variable Type Table&quot; in Hinblick auf generische Typinformationen. Solche Informationen werden häufig vor Auslieferung entfernt bzw. nicht hineinkompiliert.</p>
-</div>
-</div><div class="ld-slide" id="beispiel-aufruf-einer-komplexeren-methode">
+</div></div><div class="ld-slide" id="beispiel-aufruf-einer-komplexeren-methode">
 <h2>Beispiel: Aufruf einer komplexeren Methode</h2>
 <pre class="code java small literal-block"><code><span class="comment single">// Method descriptor ([Ljava/lang/String;)V</span><span class="whitespace">
 </span><span class="comment single">// Stack: 5, Locals: 8</span><span class="whitespace">

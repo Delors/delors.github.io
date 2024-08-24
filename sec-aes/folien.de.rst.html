@@ -13,13 +13,17 @@
 <meta content="last-viewed" name="first-slide" />
 <title>Advanced Encryption Standard (AES)</title>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
-    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
-    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
-    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
     <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
     <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    
 </head>
 <body>
 <template>
@@ -50,7 +54,7 @@
 </dd>
 </dl>
 </dd>
-<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
@@ -496,10 +500,9 @@ m(x) = x^8 + x^4 + x^3 +x +1
 </tr>
 </tbody>
 </table>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Jedes einzelne Byte des Zustands (<em>State</em>) wird auf folgende Weise auf ein neues Byte abgebildet: Die äußersten linken 4 Bits des Bytes werden als Zeilenwert und die äußersten rechten 4 Bits als Spaltenwert verwendet. Diese beiden Werte dienen als Indizes in der S-Box.</p>
-</div>
-</div><div class="ld-slide" id="aes-inverse-s-box">
+</div></div><div class="ld-slide" id="aes-inverse-s-box">
 <h2>AES Inverse S-box</h2>
 <table class="align-center footnotesize monospaced highlight-on-hover" id="inverse-s-box">
 <tbody>
@@ -811,12 +814,11 @@ m(x) = x^8 + x^4 + x^3 +x +1
 </tr>
 </tbody>
 </table>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p class="rubric">Beispiel</p>
 <p>Der (Hex)Wert <span class="docutils literal">0xA3</span> (<span class="docutils literal">x=A</span> und <span class="docutils literal">y=3</span>) wird von der S-Box auf den (Hex)Wert <span class="docutils literal">0x0A</span> abgebildet.</p>
 <p>Die inverse S-Box bildet den Wert <span class="docutils literal">0x0A</span> (<span class="docutils literal">x=0</span> und <span class="docutils literal">y=A</span>) wieder auf den ursprünglichen Wert ab.</p>
-</div>
-</div><div class="ld-slide" id="s-box-design-grundlagen">
+</div></div><div class="ld-slide" id="s-box-design-grundlagen">
 <h2>S-Box Design Grundlagen</h2>
 <ul class="simple">
 <li><p>Die S-Box ist so konzipiert, dass sie gegen bekannte kryptoanalytische Angriffe resistent ist.</p></li>
@@ -923,13 +925,12 @@ A6 &amp; = &amp; &amp; (1010\,0110) \\
 \end{equation*}
 </div>
 </aside>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <aside class="admonition warning">
 <p class="admonition-title">Warnung</p>
 <p><span class="math">\((03 \times 6E) = 6E \oplus (02 \times 6E)\)</span> und <strong>ist nicht</strong> <span class="math">\(6E \oplus 6E \oplus 6E\)</span>, da wir hier Polynomarithmetik in <span class="math">\(GF(2^8)\)</span> nutzen und <span class="math">\(03\)</span> dem Polynom: <span class="math">\(x+1\)</span> entspricht.</p>
 </aside>
-</div>
-</div><div class="ld-slide" id="mix-column-transformation-begrundung">
+</div></div><div class="ld-slide" id="mix-column-transformation-begrundung">
 <h2><em>Mix Column</em> Transformation - Begründung</h2>
 <ul class="simple">
 <li><p>Die Koeffizienten einer Matrix, die auf einem linearen Code mit maximalem Abstand zwischen den Codewörtern basiert, gewährleisten eine gute Mischung zwischen den Bytes jeder Spalte.</p></li>
@@ -1001,10 +1002,9 @@ x_6x_5x_5x_4x_3x_2x_1x_00 \oplus 0001 1011,&amp; if\; x_7 = 1\\
 <p><span class="math">\(r_{c_{1}}=01, r_{c_{2}}=02,r_{c_{3}}=04,r_{c_{4}}=08,r_{c_{5}}=10\)</span></p>
 <p><span class="math">\(r_{c_{6}}=20,r_{c_{7}}=40,r_{c_{8}}=80,r_{c_{9}}=1B = 0001 1011, r_{c_{10}}=36\)</span></p>
 </aside>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Die <span class="math">\(xtime\)</span> Funktion ist eine Multiplikation im endlichen Körper <span class="math">\(GF(2^8)\)</span> und ist die Polynommultiplikation mit dem Polynom <span class="math">\(x\)</span>.</p>
-</div>
-</div><div class="smaller ld-slide" id="aes-schlusselexpansion-beispiel-runde-1">
+</div></div><div class="smaller ld-slide" id="aes-schlusselexpansion-beispiel-runde-1">
 <h2>AES Schlüsselexpansion - Beispiel (Runde 1)</h2>
 <dl class="field-list">
 <dt>Gegeben sei<span class="colon">:</span></dt>
@@ -1288,10 +1288,9 @@ InvMixColumns(S_i \oplus w_j) = InvMixColumns(S_i) \oplus InvMixColumns(w_j)
 </li>
 <li><p>Die Entwickler glauben, dass die Möglichkeit einer effizienten Implementierung ein Schlüsselfaktor für die Wahl der AES-Chiffre zum neuen Standard war.</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <img alt="Vorberechnung von MixColumns" class="align-center" src="drawings/vorberechnung-von-mixcolumns.png" style="width: 100%;" />
-</div>
-<div class="presenter-notes docutils container">
+</div><div class="presenter-notes docutils container">
 <p>Link auf Diskussion der Tabellen: <a class="reference external" href="https://crypto.stackexchange.com/questions/19175/efficient-aes-use-of-t-tables">https://crypto.stackexchange.com/questions/19175/efficient-aes-use-of-t-tables</a></p>
 </div>
 </div><div class="integrated-exercise ld-slide" id="ubung-aes-128-berechnung-des-roundkey">

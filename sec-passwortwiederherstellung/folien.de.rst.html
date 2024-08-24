@@ -12,17 +12,22 @@
 <meta content="last-viewed" name="first-slide" />
 <title>Passwortwiederherstellung</title>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
-    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
-    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
-    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
     <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
     <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    
+    <script src="../LectureDoc2/themes/DHBW/logo.js" type="module"></script>
 </head>
 <body>
 <template>
-<div class="ld-slide" id="passwortwiederherstellung">
+<div class="animated-symbol organic-red ld-slide" id="passwortwiederherstellung">
 <h1 class="title">Passwortwiederherstellung</h1>
 
 <div class="margin-top-1em padding-top-1em line-above docutils container">
@@ -34,42 +39,46 @@
 <dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>1.0</p>
+<dd><p>1.1</p>
 </dd>
 </dl>
 </div>
 <div class="supplemental">
-<dl class="field-list simple">
+<dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
-<dd><dl class="field-list simple">
-<dt>HTML<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io/sec-passwortwiederherstellung/folien.de.rst.html">https://delors.github.io/sec-passwortwiederherstellung/folien.de.rst.html</a></p>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/sec-passwortwiederherstellung/folien.de.rst.html">https://delors.github.io/sec-passwortwiederherstellung/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/sec-passwortwiederherstellung/folien.de.rst.html.pdf">https://delors.github.io/sec-passwortwiederherstellung/folien.de.rst.html.pdf</a></p>
 </dd>
-<dt>PDF<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io/sec-passwortwiederherstellung/folien.de.rst.html.pdf">https://delors.github.io/sec-passwortwiederherstellung/folien.de.rst.html.pdf</a></p>
-</dd>
-</dl>
-</dd>
-<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
 </div></div>
-<div class="ld-slide" id="was-ist-passwortwiederherstellung">
+<div class="center-child-elements ld-slide" id="was-ist-passwortwiederherstellung">
 <h2>Was ist Passwortwiederherstellung?</h2>
-<div class="smaller docutils container">
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
 <p>Passwortwiederherstellung ist der Prozess, der dazu dient, ein nicht (mehr) vorhandenes Passwort wiederzuerlangen.</p>
-</div>
-<aside class="topic line-above red incremental small">
-<p class="topic-title">Haftungsausschluss</p>
-<div class="stack docutils container">
+</aside>
+<div class="supplemental">
+<ul class="simple">
+<li><p>Wer hat schon einmal Passworte wiederhergestellt?</p></li>
+<li><p>Wer hat Erfahrung mit Linux?</p></li>
+<li><p>Wer hat Erfahrung mit Linux Kommandozeilenwerkzeugen für die Verarbeitung von Dateien mit Text?</p></li>
+<li><p>Wer hat Erfahrung mit regulären Ausdrücken?</p></li>
+<li><p>Wer hat Erfahrung mit Python?</p></li>
+<li><p>Wer hat Erfahrung mit Java (Reverse Engineering)?</p></li>
+</ul>
+</div></div><div class="ld-slide" id="passwortwiederherstellung-haftungsausschluss">
+<h2>Passwortwiederherstellung -  Haftungsausschluss</h2>
+<div class="stack smaller docutils container">
 <div class="layer docutils container">
 <blockquote class="epigraph">
 <p>Wer unbefugt sich oder einem anderen Zugang zu Daten, die nicht für ihn bestimmt und die gegen unberechtigten Zugang besonders gesichert sind, unter Überwindung der Zugangssicherung verschafft, wird mit Freiheitsstrafe bis zu drei Jahren oder mit Geldstrafe bestraft.</p>
 <p class="attribution">—§ 202 a Abs. 1 StGB</p>
 </blockquote>
 </div>
-<div class="layer incremental scriptsize docutils container">
+<div class="layer incremental docutils container">
 <p><strong>Gericht sieht Nutzung von Klartext-Passwörtern als Hacken an</strong></p>
 <blockquote class="epigraph">
 <p>[...] Vor dem Amtsgericht wurde ein Prozess verhandelt, der die Gefahren verdeutlicht, denen sich Menschen mitunter aussetzen, die versuchen, Sicherheitslücken in der Software deutscher Firmen zu finden. Das Amtsgericht hat einen Programmierer verurteilt, der im Auftrag eines Kunden eine Software analysiert und darin eine Sicherheitslücke gefunden hatte, welche die Daten von Einkäufern in Online-Shops im Internet offengelegt hatte. Der Programmierer kontaktierte [...] die betroffene Firma, die daraufhin die Sicherheitslücke schloss und ihn anzeigte. Aufgrund dieses Umstandes wurde der Programmierer nun wegen unbefugten Zugriffs auf fremde Computersysteme und Ausspähens von Daten – welches unter dem sogenannten Hacker-Paragrafen 202a StGB unter Strafe gestellt ist – [...] verurteilt[...].</p>
@@ -77,17 +86,7 @@
 </blockquote>
 </div>
 </div>
-</aside>
-<div class="supplemental">
-<ul class="simple">
-<li><p>Wer hat schon einmal Passworte wiederhergestellt?</p></li>
-<li><p>Wer hat Erfahrung mit Linux?</p></li>
-<li><p>Wer hat Erfahrung mit Linux Kommandozeilenwerkzeugen für die Textverarbeitung?</p></li>
-<li><p>Wer hat Erfahrung mit regulären Ausdrücken?</p></li>
-<li><p>Wer hat Erfahrung mit Python?</p></li>
-<li><p>Wer hat Erfahrung mit Java (Reverse Engineering)?</p></li>
-</ul>
-</div></div><div class="ld-slide" id="ist-passwortwiederherstellung-noch-relevant">
+</div><div class="ld-slide" id="ist-passwortwiederherstellung-noch-relevant">
 <h2>Ist Passwortwiederherstellung noch relevant?</h2>
 <div class="three-columns docutils container">
 <div class="column no-separator docutils container">
@@ -105,16 +104,15 @@
 <div class="incremental margin-top-1em padding-top-1em line-above docutils container">
 <p>Klassische Passwörter werden (noch immer) in zahlreichen Bereichen verwendet. Beispiele sind Smartphones, Cryptosticks, Logins für Computer und Serversysteme, verschlüsselte Dateien und Datenträger.</p>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Hintergrund</strong></p>
 <p>Obwohl an vielen Stellen versucht wird Passwörter aus vielen Gründen zurück zu drängen, so ist die Verwendung noch allgegenwärtig und in machen Bereichen ist auch nicht unmittelbar eine Ablösung zu erkennen.</p>
-<p>Biometrie ist zum Beispiel in machen Bereichen kein Ersatz für Passwörter und wird - wenn überhaupt - nur ergänzend genommen. So ist es zum Beispiel im deutschen Recht erlaubt/möglich einem Beschuldigten sein Smartphone bei Bedarf vor das Gesicht zu halten, um es zu entsperren. Je nach Qualität des Fingerabdrucksensors können ggf. auch genommene Fingerabdrücke verwendet werden. Möchte der Beschuldigte jedoch das Passwort nicht freiwillige nennen, dann besteht keine direkte weitere Handhabe.</p>
-</div>
-</div><div class="ld-slide" id="ist-passwortwiederherstellung-noch-relevant-1">
+<p>Biometrie ist zum Beispiel in machen Bereichen kein Ersatz für Passwörter und wird - wenn überhaupt - nur ergänzend genommen. So ist es zum Beispiel im deutschen Recht erlaubt/möglich einem Beschuldigten sein Smartphone bei Bedarf vor das Gesicht zu halten, um es zu entsperren (Stand 2023). Je nach Qualität des Fingerabdrucksensors können ggf. auch genommene Fingerabdrücke verwendet werden. Möchte der Beschuldigte jedoch das Passwort nicht freiwillige nennen, dann besteht keine direkte weitere Handhabe.</p>
+</div></div><div class="ld-slide" id="ist-passwortwiederherstellung-noch-relevant-1">
 <h2>Ist Passwortwiederherstellung noch relevant?</h2>
 <blockquote class="epigraph">
 <p>Microsoft said hackers working for the Russian government breached its corporate networks recently and stole email from executives and some employees to find out what the company knew about them. The tech company said the breach was not due to any flaw in its software, but rather began with a “password spraying.” The technique worked on what Microsoft said was an old test account, and the hackers then used the account’s privileges to get access to multiple streams of email.</p>
-<p class="attribution">—The Washington Post; Joseph Menn (January 19, 2024)</p>
+<p class="attribution">—19. Januar 2024: The Washington Post; Joseph Menn</p>
 </blockquote>
 </div><div class="ld-slide" id="ist-passwortwiederherstellung-noch-relevant-2">
 <h2>Ist Passwortwiederherstellung noch relevant?</h2>
@@ -124,19 +122,163 @@
 <p>[...]
 Varonis security researcher Dolev Taler, who has been credited with discovering and reporting the bug, said NTLM hashes could be leaked by leveraging Windows Performance Analyzer (WPA) and Windows File Explorer. These two attack methods, however, remain unpatched.</p>
 <p>&quot;What makes this interesting is that WPA attempts to authenticate using NTLM v2 over the open web,&quot; Taler said.</p>
-<p class="attribution">—<a class="reference external" href="https://thehackernews.com/2024/01/researchers-uncover-outlook.html">The Hacker News (Jan 29, 2024)</a></p>
+<p class="attribution">—29. Januar 2024: <a class="reference external" href="https://thehackernews.com/2024/01/researchers-uncover-outlook.html">The Hacker News</a></p>
 </blockquote>
-</div><div class="vertical-title ld-slide" id="ist-passwortwiederherstellung-nicht-trivial">
+</div><div class="ld-slide" id="ist-passwortwiederherstellung-nicht-trivial">
 <h2>Ist Passwortwiederherstellung nicht <span class="ger-quote">trivial</span>?</h2>
-<img alt="Hälfte alle Passwörter in 1 Stunde geknackt" class="picture margin-left-1em margin-right-1em align-center" src="images/golem-passwortcracking.png" style="height: 1050px;" />
-<p><a class="reference external" href="https://www.golem.de/news/forscher-machen-den-test-59-prozent-aller-passwoerter-in-unter-60-minuten-knackbar-2406-186329.html">golem.de</a></p>
+<blockquote class="epigraph">
+<p><strong>59 Prozent aller Passwörter in unter 60 Minuten knackbar</strong></p>
+<p><em>Forscher haben per Brute-Force-Methode mit einer Nvidia Geforce RTX 4090 Millionen von Passwörtern aus dem Darknet geknackt</em>.</p>
+<p>[...] Sicherheitsforscher von Kaspersky haben untersucht, wie schnell sich gängige Passwörter mit einer modernen GPU vom Typ Nvidia Geforce RTX 4090 knacken lassen. Durchgeführt wurde die Untersuchung anhand einer Datenbank mit 193 Millionen echten Nutzerpasswörtern, die die Forscher aus dem Darknet bezogen. Sämtliche Passwörter lagen dabei in Form von gesalzenen MD5-Hashes vor. [...]</p>
+<p class="attribution">—21. Juni 2024: <a class="reference external" href="https://www.golem.de/news/forscher-machen-den-test-59-prozent-aller-passwoerter-in-unter-60-minuten-knackbar-2406-186329.html">golem.de</a></p>
+</blockquote>
 </div><div class="vertical-title ld-slide" id="ist-passwortwiederherstellung-nicht-trivial-1">
 <h2>Ist Passwortwiederherstellung nicht <span class="ger-quote">trivial</span>?</h2>
-<img alt="An AI just cracked your password." class="picture margin-left-1em margin-right-1em align-center" src="logos/home_security_heroes.webp" style="height: 1152px;" />
-<div class="docutils container">
-<p>An AI just cracked your password.</p>
-<p><a class="reference external" href="https://www.homesecurityheroes.com/ai-password-cracking/assets/pdf/hsh-an-ai-just-cracked-your-password-infographic.pdf">Home Security Heroes</a></p>
+<blockquote class="epigraph">
+<p><strong>An AI just cracked your password.</strong></p>
+<p>We used [...] PassGAN to run through a list of 15,680,000 passwords. [...]</p>
+<p>Time It Takes Using AI to Crack Your Password</p>
+<div class="far-smaller incremental docutils container">
+<table class="far-smaller highlight-line-on-hover">
+<thead>
+<tr><th class="head"><p># OF CHARACTER</p></th>
+<th class="head"><p>Numbers Only</p></th>
+<th class="head"><p>Lowercase Letters</p></th>
+<th class="head"><p>Lower- &amp; Uppercase Letters</p></th>
+<th class="head"><p>Numbers, Upper- &amp; Lowercase Letters</p></th>
+<th class="head"><p>Numbers, Upper- &amp; Lowercase Letters, Symbols</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>4</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>4 Seconds</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>22 Seconds</p></td>
+<td><p>42 Seconds</p></td>
+<td><p>6 Minutes</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>Instantly</p></td>
+<td><p>3 Seconds</p></td>
+<td><p>19 Minutes</p></td>
+<td><p>48 Minutes</p></td>
+<td><p>7 Hours</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>Instantly</p></td>
+<td><p>1 Minutes</p></td>
+<td><p>11 Hours</p></td>
+<td><p>2 Days</p></td>
+<td><p>2 Weeks</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>Instantly</p></td>
+<td><p>1 Hours</p></td>
+<td><p>4 Weeks</p></td>
+<td><p>6 Months</p></td>
+<td><p>5 Years</p></td>
+</tr>
+<tr><td><p>11</p></td>
+<td><p>Instantly</p></td>
+<td><p>23 Hours</p></td>
+<td><p>4 Years</p></td>
+<td><p>38 Years</p></td>
+<td><p>356 Years</p></td>
+</tr>
+<tr><td><p>12</p></td>
+<td><p>25 Seconds</p></td>
+<td><p>3 Weeks</p></td>
+<td><p>289 Years</p></td>
+<td><p>2K Years</p></td>
+<td><p>30K Years</p></td>
+</tr>
+<tr><td><p>13</p></td>
+<td><p>3 Minutes</p></td>
+<td><p>11 Months</p></td>
+<td><p>16K Years</p></td>
+<td><p>91K Years</p></td>
+<td><p>2M Years</p></td>
+</tr>
+<tr><td><p>14</p></td>
+<td><p>36 Minutes</p></td>
+<td><p>49 Years</p></td>
+<td><p>827K Years</p></td>
+<td><p>9M Years</p></td>
+<td><p>187M Years</p></td>
+</tr>
+<tr><td><p>15</p></td>
+<td><p>5 Hours</p></td>
+<td><p>890 Years</p></td>
+<td><p>47M Years</p></td>
+<td><p>613M Years</p></td>
+<td><p>14Bn Years</p></td>
+</tr>
+<tr><td><p>16</p></td>
+<td><p>2 Days</p></td>
+<td><p>23K Years</p></td>
+<td><p>2Bn Years</p></td>
+<td><p>26Bn Years</p></td>
+<td><p>1Tn Years</p></td>
+</tr>
+<tr><td><p>17</p></td>
+<td><p>3 Weeks</p></td>
+<td><p>812K Years</p></td>
+<td><p>539.72M Years</p></td>
+<td><p>2Tn Years</p></td>
+<td><p>95Tn Years</p></td>
+</tr>
+<tr><td><p>18</p></td>
+<td><p>10 Months</p></td>
+<td><p>22M Years</p></td>
+<td><p>7.23Bn Years</p></td>
+<td><p>96Tn Years</p></td>
+<td><p>6Qn Years</p></td>
+</tr>
+</tbody>
+</table>
 </div>
+<p class="attribution">—2023: <a class="reference external" href="https://www.securityhero.io/ai-password-cracking/">Home Security Heroes</a></p>
+</blockquote>
+<div class="supplemental">
+<p>Auf der Webseite <a class="reference external" href="https://www.securityhero.io/ai-password-cracking/">https://www.securityhero.io/ai-password-cracking/</a> wird ein Tool angeboten, dass eine Schätzung vornimmt wie lange eine AI braucht, um das Passwort zu knacken.</p>
+<p>Empfohlene Tests:</p>
+<ul class="simple">
+<li><p>start</p></li>
+<li><p>Start</p></li>
+<li><p>StartStart</p></li>
+<li><p>startstart!</p></li>
+</ul>
+<p>Wie bewerten Sie die Einschätzungen dieses Tools?</p>
+</div></div><div class="ld-slide" id="ist-passwortwiederherstellung-nicht-wirklich-trivial">
+<h2>Ist Passwortwiederherstellung nicht wirklich <span class="ger-quote">trivial</span>?</h2>
+<blockquote class="epigraph">
+<p><strong>Check Your Accounts: 10 Billion Passwords Exposed in Largest Leak Ever</strong></p>
+<p><em>The 'RockYou2024' database includes almost 10 billion passwords pulled from 'a mix of old and new data breaches.' Here's how to check if yours are at risk.</em></p>
+<p>[...]Researchers at Cybernews have uncovered a massive trove of nearly 10 billion passwords on a popular hacking forum in what they're calling &quot;largest password compilation&quot; ever.</p>
+<p>The file, titled <span class="docutils literal">rockyou2024.txt</span>, was posted on July 4 by someone going by the name ObamaCare and contains a mind-boggling 9,948,575,739 unique plaintext passwords. The user only joined the forum in late May, but they've posted data from other breaches, too. [...]</p>
+<p class="attribution">—6. Juli 2024: <a class="reference external" href="https://uk.pcmag.com/security/153138/check-your-accounts-10-billion-passwords-exposed-in-largest-leak-ever">PCMag</a></p>
+</blockquote>
 </div><div class="ld-slide" id="wiederherstellung-von-passwortern-mit-unterschiedlicher-komplexitat">
 <h2>Wiederherstellung von Passwörtern mit unterschiedlicher Komplexität</h2>
 <p>Beurteilen Sie die Qualität der folgenden Passwörter in Hinblick darauf wie aufwändig es ist das Passwort wiederherzustellen:</p>
@@ -169,13 +311,33 @@ Varonis security researcher Dolev Taler, who has been credited with discovering 
 </ul>
 </div><div class="ld-slide" id="raum-der-passwortkandidaten">
 <h2>Raum der Passwortkandidaten</h2>
-<ul class="incremental simple">
-<li><p>Eine vierstellige PIN: 10.000 mögliche Kombinationen.</p></li>
-<li><p>„Normales“ Passworte mit 8 Zeichen und 70 Zeichen im Zeichensatz (a-z, A-Z, 0-9 und ausgewählte Sonderzeichen): <span class="math">\(70^8 = 576.480.100.000.000\)</span> Kombinationen.</p></li>
-<li><p>Eine einfache Passphrase mit 4 Wörtern aus einem Wörterbuch mit 100.000 Wörtern: <span class="math">\(100.000^4 = 10^{20}\)</span> Kombinationen.</p></li>
-<li><p>Eine Passphrase mit 6 Wörtern aus einem Wörterbuch mit 2.000 Wörtern: <span class="math">\(2.000^6 = 64 \times 10 ^{18}\)</span> Kombinationen.</p></li>
-<li><p>Ein <span class="ger-quote">komplexes</span> Passwort mit 16 Zeichen und 84 Zeichen im Zeichensatz (a-z, A-Z, 0-9 und die meisten Sonderzeichen): <span class="math">\(84^{16} = 6,14 \times 10^{30}\)</span> Kombinationen.</p></li>
-</ul>
+<dl class="field-list">
+<dt>vierstellige PIN<span class="colon">:</span></dt>
+<dd><div class="incremental docutils container">
+<p><span class="math">\(10.000\)</span> Kombinationen</p>
+</div>
+</dd>
+<dt>Passwort mit 8 Zeichen und 70 Zeichen im Zeichensatz (a-z, A-Z, 0-9 und ausgewählte Sonderzeichen)<span class="colon">:</span></dt>
+<dd><div class="incremental docutils container">
+<p><span class="math">\(70^8 = 576.480.100.000.000 \approx 5,7 \times 10^{14}\)</span> Kombinationen</p>
+</div>
+</dd>
+<dt>Passphrase mit 6 Wörtern aus einem Wörterbuch mit 2.000 Wörtern<span class="colon">:</span></dt>
+<dd><div class="incremental docutils container">
+<p><span class="math">\(2.000^6 = 6,4 \times 10 ^{19}\)</span> Kombinationen</p>
+</div>
+</dd>
+<dt>Passphrase mit 4 Wörtern aus einem Wörterbuch mit 100.000 Wörtern<span class="colon">:</span></dt>
+<dd><div class="incremental docutils container">
+<p><span class="math">\(100.000^4 = 1 \times 10^{20}\)</span> Kombinationen</p>
+</div>
+</dd>
+<dt>Passwort mit 16 Zeichen und 84 Zeichen im Zeichensatz (a-z, A-Z, 0-9 und die meisten Sonderzeichen)<span class="colon">:</span></dt>
+<dd><div class="incremental docutils container">
+<p><span class="math">\(84^{16} = 6,14 \times 10^{30}\)</span> Kombinationen</p>
+</div>
+</dd>
+</dl>
 <div class="supplemental">
 <p>Eine vierstellige PIN kann niemals als sicher angesehen werden. Selbst wenn ein Bruteforce nur auf 4 oder 5 Versuche pro Stunde kommt, so ist es dennoch in wenigen Monaten möglich die PIN zu ermitteln.</p>
 </div></div><div class="center-child-elements no-title ld-slide" id="passworter-nicht-im-klartext-speichern">
@@ -193,25 +355,24 @@ Varonis security researcher Dolev Taler, who has been credited with discovering 
 <li><p>Eine Änderung eines beliebigen Bits in <span class="math">\(M\)</span> sollte mit hoher Wahrscheinlichkeit zu einer Änderung des Hashwerts <span class="math">\(h\)</span> führen.</p></li>
 <li><p>Kryptographische Hashfunktionen werden für die Speicherung von Passwörtern verwendet.</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Kollisionen bei Hashes</strong></p>
-<p>Wenn ein Passwort <span class="ger-quote">nur</span> als Hash gespeichert wird, dann gibt es zwangsläufig Kollisionen und es könnte dann theoretisch passieren, dass ein Angreifer (zufällig) ein völlig anderes Passwort findet, dass bei der Überprüfung des Passworts akzeptiert wird. Die Konstruktion kryptografischer Hashfunktionen stellt jedoch sicher, dass dies in der Praxis nicht auftritt.</p>
-</div>
-</div><div class="ld-slide" id="kryptografische-hashfunktionen-fur-passworte">
+<p>Wenn ein Passwort <span class="ger-quote">nur</span> als Hash gespeichert wird, dann gibt es zwangsläufig Kollisionen und es kann theoretisch passieren, dass ein Angreifer (zufällig) ein völlig anderes Passwort findet, dass bei der Überprüfung des Passworts akzeptiert wird. Die Konstruktion kryptografischer Hashfunktionen stellt jedoch sicher, dass dies in der Praxis nicht auftritt. Sollte jedoch eine <span class="ger-quote">normale Hashfunktion</span> genommen werden, dann ist dieses Szenario durchaus realistisch.</p>
+</div></div><div class="ld-slide" id="kryptografische-hashfunktionen-fur-passworte">
 <h2>Kryptografische Hashfunktionen für Passworte</h2>
-<ul class="incremental smaller more-space-between-list-items simple">
+<ul class="incremental simple">
 <li><p>Bekannte kryptografische Hash-Funktionen: <span class="obsolete">MD4</span>, <span class="obsolete">MD5</span>, SHA-256, SHA-512, RIPE-MD, ...</p></li>
-<li><p>Bekannte Funktion zur Schlüsselableitung: PBKDF2, ...</p></li>
+<li><p>Bekannte Funktion zur Schlüsselableitung: PBKDF2, Argon2 Familie...</p></li>
 <li><p>Beim Hashing von Passwörtern werden die Basisalgorithmen in der Regel mehrfach (ggf. viele hunderttausend Male) angewendet, um die Laufzeit zu verlängern und es für Angreifer schwieriger zu machen.</p></li>
-<li><p>Mehrere Hash-Algorithmen/Schlüsselableitungsfunktionen wurden ausdrücklich für das Hashing von Passwörtern entwickelt, um gängigen Angriffen zu widerstehen. z. B. bcrypt, scrypt oder die Argon2 Familie.</p></li>
-<li><p>Einige dieser Algorithmen sind so rechenintensiv, dass sie nicht für Webanwendungen bzw. Situationen geeignet sind, in denen viele Benutzer gleichzeitig autorisiert werden müssen. Diese Algorithmen werden in der Regel zum Schutz von Dateien, Containern oder lokaler Festplatten verwendet.</p></li>
+<li><p>Mehrere Hash-Algorithmen/Schlüsselableitungsfunktionen wurden ausdrücklich für das Hashing von Passwörtern entwickelt, um gängigen Angriffen zu widerstehen. Z. B. bcrypt, scrypt oder die Argon2 Familie.</p></li>
+<li><p>Einige dieser Algorithmen sind hochgradig parametrisierbar und dann ggf. so rechenintensiv, dass sie nicht für Webanwendungen bzw. Situationen geeignet sind, in denen viele Benutzer gleichzeitig autorisiert werden müssen. Diese Algorithmen werden in der Regel zum Schutz von Dateien, Containern oder lokaler Festplatten verwendet.</p></li>
 </ul>
 </div><div class="ld-slide" id="vom-salzen-salt">
 <h2>Vom Salzen (<span class="eng">Salt</span>) ...</h2>
 <div class="small docutils container">
 <p><strong>Beobachtung/Problem</strong></p>
 <p>Werden Passwörter direkt mit Hilfe einer kryptografischen Hashfunktion gehasht, dann haben zwei Nutzer, die das gleiche Passwort verwenden, den gleichen Hash.</p>
-<table class="tiny">
+<table class="tiny highlight-line-on-hover">
 <thead>
 <tr><th class="head"><p>User</p></th>
 <th class="head"><p>Hash</p></th>
@@ -232,7 +393,7 @@ Varonis security researcher Dolev Taler, who has been credited with discovering 
 <div class="incremental small docutils container">
 <p><strong>Lösung</strong></p>
 <p>Passwörter sollten immer mit einem einzigartigen und zufälligen <span class="ger-quote">Salt</span> gespeichert werden, um Angriffe mittels Regenbogentabellen zu verhindern.</p>
-<table class="tiny">
+<table class="tiny highlight-line-on-hover">
 <thead>
 <tr><th class="head"><p>User</p></th>
 <th class="head"><p>Hash</p></th>
@@ -253,12 +414,11 @@ Varonis security researcher Dolev Taler, who has been credited with discovering 
 </tbody>
 </table>
 </div>
-<div class="supplemental docutils container">
-<p><strong>Regenbogentabellen</strong></p>
-<p>Eine Regenbogentabelle (<span class="eng">rainbow table</span>) bezeichnet eine vorberechnete Tabelle die konzeptionell zum einem Hash ein jeweilig dazugehörendes  Passwort speichert und einen effizienten Lookup ermöglicht. Dies kann ggf. die Angriffsgeschwindigkeit sehr signifikant beschleunigen.</p>
-<p>Aufgrund der allgemeinen Verwendung von Salts sind Angriffe mit Hilfe von Regenbogentabellen heute nur noch von historischer Bedeutung.</p>
-</div>
-</div><div class="ld-slide" id="vom-salzen-salt-1">
+<div class="supplemental">
+<p class="rubric">Rainbow Tables</p>
+<p>Eine Rainbow Table (<span class="ger">Regenbogentabelle</span> - Verwendung jedoch nicht gängig) bezeichnet eine vorberechnete Tabelle die konzeptionell zum einem Hash ein jeweilig dazugehörendes  Passwort speichert und einen effizienten Lookup ermöglicht. Dies kann ggf. die Angriffsgeschwindigkeit sehr signifikant beschleunigen, auch wenn die Tabellen sehr groß sind und ggf. in die Terabytes gehen.</p>
+<p>Aufgrund der allgemeinen Verwendung von Salts sind Angriffe mit Hilfe von Regenbogentabellen heute (fast nur noch) von historischer Bedeutung.</p>
+</div></div><div class="ld-slide" id="vom-salzen-salt-1">
 <h2>Vom Salzen (<span class="eng">Salt</span>)...</h2>
 <ul class="incremental more-space-between-list-items simple">
 <li><p>Ein <em>Salt</em> sollte ausreichend lang sein (zum Beispiel 16 Zeichen oder 16 Byte).</p></li>
@@ -270,11 +430,10 @@ Varonis security researcher Dolev Taler, who has been credited with discovering 
 <p class="admonition-title">Problem</p>
 <p>Sollte es einem Angreifer gelingen in eine Datenbank einzubrechen und die Tabellen mit den Nutzerdaten abzufragen (zum Beispiel aufgrund einer erfolgreichen SQL Injection), dann ist es Ihm danach direkt möglich zu versuchen Passworte wiederherzustellen.</p>
 </aside>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Speicherung von Salts</strong></p>
 <p>In Webanwendungen bzw. allgemein datenbankgestützten Anwendungen wird der <em>Salt</em> häufig in der selben Tabelle gespeichert in der auch der Hash des Passworts gespeichert wird. Im Falle von verschlüsselten Dateien, wird der Salt (unverschlüsselt) mit in der Datei gespeichert.</p>
-</div>
-</div><div class="ld-slide" id="und-pfeffern-pepper-von-passwortern">
+</div></div><div class="ld-slide" id="und-pfeffern-pepper-von-passwortern">
 <h2>... und Pfeffern (<span class="eng">Pepper</span>) von Passwörtern</h2>
 <div class="small docutils container">
 <p>(In Normen bzw. in anderer Literatur wird statt <em>Pepper</em> auch <em>Secret Key</em>s verwendet.)</p>
@@ -291,24 +450,38 @@ Varonis security researcher Dolev Taler, who has been credited with discovering 
 <li><p>Wie ein Salt sollte auch auch <em>Secret Key</em> mind. 16 Byte lang sein. Um ein Brute-Force Angriff auf den <em>Secret Key</em> zu verhindern, sollte dem Angreifer zu einem Hash und Salt auch noch das Klartext Passwort bekannt sein.</p></li>
 <li><p>Der <em>Secret Key</em> sollte pro Instanziierung einer Anwendung einmalig sein.</p></li>
 </ul>
-</div><div class="ld-slide" id="sichere-hashfunktionen-fur-passworte">
-<h2>Sichere Hashfunktionen für Passworte</h2>
-<ul class="simple">
-<li><p>Argon2 (z. B. verwendete von LUKS2)</p></li>
-<li><p>bcrypt (basierend auf Blowfish)</p></li>
-<li><p>scrypt (z. B. ergänzend verwendet für das Hashing von Passwörtern auf Smartphones)</p></li>
-<li><p>yescrypt (z. B. moderne Linux Distributionen)</p></li>
-</ul>
+</div><div class="ld-slide" id="sichere-hash-bzw-schlusselableitungsfunktionen-fur-passworte">
+<h2>Sichere Hash- bzw. Schlüsselableitungsfunktionen für Passworte</h2>
+<aside class="admonition far-smaller note">
+<p class="admonition-title">Bemerkung</p>
+<p>Häufig werden die <span class="ger-quote">Hashwerte</span> von Passwörtern in Datenbanken oder Dateien  als Base64 kodierter String gespeichert.</p>
+</aside>
+<dl class="field-list simple">
+<dt>Argon2<span class="colon">:</span></dt>
+<dd><p>z. B. verwendete von LUKS2</p>
+</dd>
+<dt>bcrypt<span class="colon">:</span></dt>
+<dd><p>basierend auf Blowfish; z. B. verwendet in OpenBSD</p>
+</dd>
+<dt>scrypt<span class="colon">:</span></dt>
+<dd><p>z. B. ergänzend verwendet für das Hashing von Passwörtern auf Smartphones</p>
+</dd>
+<dt>yescrypt<span class="colon">:</span></dt>
+<dd><p>z. B. moderne Linux Distributionen</p>
+</dd>
+</dl>
 </div><div class="ld-slide" id="pbkdf2-password-based-key-derivation-function-2">
 <h2><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc2898.html#section-5.2">PBKDF2</a> (Password-Based Key Derivation Function 2)</h2>
 <ul class="incremental more-space-between-list-items">
 <li><p>Dient der Ableitung eines Schlüssels aus einem Passwort.</p></li>
 <li><p>Das Ergebnis der Anwendung der PBKDF2 wird zusammen mit dem <em>Salt</em> und dem Iterationszähler für die anschließende Passwortverifizierung gespeichert.</p></li>
-<li><p>die <span class="math">\(PBKDF2\)</span> Schlüsselableitungsfunktion hat 5 Parameter <span class="math">\(DK = PBKDF2(\)</span>PRF, Password, Salt, c, dkLen<span class="math">\()\)</span>:</p>
+<li><p>die <span class="math">\(PBKDF2\)</span> Schlüsselableitungsfunktion hat 5 Parameter</p>
+<p><span class="math">\(DK = PBKDF2(\)</span>PRF, Password, Salt, c, dkLen<span class="math">\()\)</span>:</p>
 <blockquote>
+<div class="smaller docutils container">
 <dl class="field-list simple">
 <dt>PRF<span class="colon">:</span></dt>
-<dd><p>eine Pseudozufallsfunktion; typischer Weise ein HMAC</p>
+<dd><p>eine Pseudozufallsfunktion; typischer Weise ein HMAC<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
 </dd>
 <dt>Password<span class="colon">:</span></dt>
 <dd><p>das Masterpasswort</p>
@@ -320,17 +493,23 @@ Varonis security researcher Dolev Taler, who has been credited with discovering 
 <dd><p>Zähler für die Anzahl an Runden</p>
 </dd>
 <dt>dkLen<span class="colon">:</span></dt>
-<dd><p>die Bitlänge des abgeleiteten Schlüssels.</p>
+<dd><p>die Bitlänge des abgeleiteten Schlüssels (<span class="eng">derived key length</span>)</p>
 </dd>
 </dl>
+</div>
 </blockquote>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Ein HMAC bietet sich an, da wir ein Passwort und ein Hash haben.</p>
+</aside>
+</aside>
 </li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Die PBKDF2 ist nicht für das eigentliche Hashen zuständig sondern <span class="ger-quote">nur</span> für das Iterieren der Hashfuntion und das eigentliche Key-stretching.</p>
 <p>Laut OWASP sollten zum Beispiel für PBKDF2-HMAC-SHA512 600.000 Iterationen verwendet werden.</p>
-</div>
-</div><div class="ld-slide" id="hmac-hash-based-message-authentication-code">
+</div></div><div class="ld-slide" id="hmac-hash-based-message-authentication-code">
 <h2>HMAC (Hash-based Message Authentication Code)</h2>
 <div class="small docutils container">
 <p>Auch als <em>keyed-hash message authentication code</em> bezeichnet.</p>
@@ -340,12 +519,12 @@ Varonis security researcher Dolev Taler, who has been credited with discovering 
 HMAC(K,m) &amp; = &amp; H( (K' \oplus opad) || H( ( K' \oplus ipad) || m) ) \\
 K' &amp; = &amp;\begin{cases}
         H(K) &amp; \text{falls K größer als die Blockgröße ist}\\
-        K &amp; \text{andernfalls}
+        K &amp; \text{andernfalls; ggf. Padded}
         \end{cases}
 \end{array}
 \end{align*}
 </div>
-<p><span class="math">\(H\)</span> is eine kryptografische Hashfunktion.</p>
+<p><span class="math">\(H\)</span> is eine kryptografische Hashfunktion (z. B. SHA-256 bzw. SHA-512).</p>
 <p><span class="math">\(m\)</span> ist die Nachricht.</p>
 <p><span class="math">\(K\)</span> ist der geheime Schlüssel (<em>Secret Key</em>).</p>
 <p><span class="math">\(K'\)</span> ist vom Schlüssel K abgeleiteter Schlüssel mit Blockgröße (ggf. <em>padded</em> oder <em>gehasht</em>).</p>
@@ -356,16 +535,15 @@ K' &amp; = &amp;\begin{cases}
 </div>
 </div><div class="ld-slide" id="section-1">
 <h2></h2>
-<img alt="Schlüsselableitung für den inneren und äußeren Schlüssel K'" class="align-left" src="graffles/hmac_i_o_key_derivation.svg" style="height: 450px;" />
-<img alt="Schlüsselableitung für den inneren und äußeren Schlüssel K'" class="incremental margin-top-1em align-right" src="graffles/hmac_message_hashing.svg" style="height: 625px;" />
-<div class="supplemental docutils container">
+<img alt="Schlüsselableitung für den inneren und äußeren Schlüssel K'" class="align-left" src="graffles/hmac/hmac_i_o_key_derivation.svg" style="height: 450px;" />
+<img alt="Schlüsselableitung für den inneren und äußeren Schlüssel K'" class="incremental margin-top-1em align-right" src="graffles/hmac/hmac_message_hashing.svg" style="height: 625px;" />
+<div class="supplemental">
 <p><strong>Padding und Hashing</strong></p>
 <p>Im Rahmen der Speicherung von Passwörtern und <em>Secret Keys</em> ist die Verwendung von Padding Operationen bzw. das Hashing von Passwörtern, um Eingaben in einer wohl-definierten Länge zu bekommen, üblich. Neben dem hier gesehenen Padding, bei dem 0x00 Werte angefügt werden, ist zum Beispiel auch das einfache Wiederholen des ursprünglichen Wertes, bis man auf die notwendige Länge kommt, ein Ansatz.</p>
 <p>Diese Art Padding darf jedoch nicht verwechselt werden mit dem Padding, dass ggf. im Rahmen der Verschlüsselung von Nachrichten notwendig ist, um diese ggf. auf eine bestimmte Blockgröße zu bringen (zum Beispiel bei ECB bzw. CBC Block Mode Operations.)</p>
-</div>
-</div><div class="ld-slide" id="hmac-computation-in-python">
+</div></div><div class="ld-slide" id="hmac-computation-in-python">
 <h2>HMAC Computation in Python</h2>
-<p><strong>Implementierung PBKDF2 mit einer Runde</strong></p>
+<p><strong>Implementierung von PBKDF2 mit einer Runde</strong></p>
 <pre class="code python slightly-more-smaller literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">hashlib</span><span class="whitespace">
 </span><span class="name">pwd</span> <span class="operator">=</span> <span class="literal string affix">b</span><span class="literal string double">&quot;MyPassword&quot;</span><span class="whitespace">
 </span><span class="name">stretched_pwd</span> <span class="operator">=</span> <span class="name">pwd</span> <span class="operator">+</span> <span class="punctuation">(</span><span class="literal number integer">64</span><span class="operator">-</span><span class="name builtin">len</span><span class="punctuation">(</span><span class="name">pwd</span><span class="punctuation">))</span> <span class="operator">*</span> <span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00</span><span class="literal string double">&quot;</span><span class="whitespace">
@@ -381,7 +559,7 @@ K' &amp; = &amp;\begin{cases}
 </span><span class="literal string affix">b</span><span class="literal string single">'h</span><span class="literal string escape">\x88\xc2\xb6</span><span class="literal string single">X</span><span class="literal string escape">\xb7\xcb\x9c\x90\xc2</span><span class="literal string single">R...</span><span class="whitespace">
 </span>  \<span class="name">x16</span>\<span class="name">x87</span>\<span class="name">x87</span>\<span class="name">x0e</span>\<span class="name">xad</span>\<span class="name">xa1</span>\<span class="name">xe1</span><span class="punctuation">:</span><span class="literal number integer">9</span>\<span class="name">xca</span><span class="literal string single">'</span></code></pre>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>HMAC ist auch direkt als Bibliotheksfunktion verfügbar.</p>
 <pre class="code python slightly-more-smaller literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">hashlib</span><span class="whitespace">
 </span><span class="keyword namespace">import</span> <span class="name namespace">hmac</span><span class="whitespace">
@@ -394,8 +572,10 @@ K' &amp; = &amp;\begin{cases}
 </span><span class="name">hash_hmac</span> <span class="operator">=</span><span class="whitespace">
 </span>    <span class="literal string affix">b</span><span class="literal string single">'h</span><span class="literal string escape">\x88\xc2\xb6</span><span class="literal string single">X</span><span class="literal string escape">\xb7\xcb\x9c\x90\xc2</span><span class="literal string single">R...</span><span class="whitespace">
 </span>      \<span class="name">x16</span>\<span class="name">x87</span>\<span class="name">x87</span>\<span class="name">x0e</span>\<span class="name">xad</span>\<span class="name">xa1</span>\<span class="name">xe1</span><span class="punctuation">:</span><span class="literal number integer">9</span>\<span class="name">xca</span><span class="literal string single">'</span></code></pre>
-</div>
-</div><div class="ld-slide" id="pbkdf2-hmac">
+<pre class="code python literal-block"><code><span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00\x00\x00\x01</span><span class="literal string double">&quot;</span><span class="whitespace">
+
+</span><span class="name">Ist</span> <span class="name">die</span> <span class="name">Blocknummer</span> <span class="punctuation">(</span><span class="name">hier</span><span class="punctuation">:</span> <span class="literal number integer">1</span><span class="punctuation">)</span><span class="operator">.</span></code></pre>
+</div></div><div class="ld-slide" id="pbkdf2-hmac">
 <h2>PBKDF2-HMAC</h2>
 <p>(HMAC = Hash-based Message Authentication Code)</p>
 <p>Im Fall von PBKDF2 ist der Schlüssel <span class="math">\(K\)</span> also das Passwort und die Nachricht <span class="math">\(M\)</span> das Salz.</p>
@@ -407,10 +587,9 @@ K' &amp; = &amp;\begin{cases}
 </span>    <span class="name">rounds</span><span class="operator">=</span><span class="literal number integer">1</span><span class="punctuation">,</span>   <span class="comment single"># a real value should be &gt;&gt; 500.000</span><span class="whitespace">
 </span>    <span class="name">keylen</span><span class="operator">=</span><span class="literal number integer">32</span> <span class="punctuation">)</span></code></pre>
 <p class="incremental footnotesize">Bei einer Runde und passenden Blockgrößen ist das Ergebnis der PBKDF2 somit gleich mit der Berechnung des HMACs wenn der Salt um die Nummer des Blocks <span class="docutils literal">\x00\x00\x00\x01</span> ergänzt wurde.</p>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>In der konkreten Anwendung ist es ggf. möglich das <em>Secret</em> auch zu Salzen und den <em>Salt</em> aus einer anderen Quellen abzuleiten.</p>
-</div>
-</div><div class="transition-move-left integrated-exercise ld-slide" id="ubung">
+</div></div><div class="transition-move-left integrated-exercise ld-slide" id="ubung">
 <h2>Übung</h2>
 <div class="slightly-more-smaller docutils container">
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Schwachstellenbewertung" id="ld-exercise-1">
@@ -448,7 +627,7 @@ MTAwMDAw:YVOzClm7fB8a0sFYR/QtNrhLNzEL0qVMy/z+ouVZPu0=:49kbKWa1zSeKqaL6:+56pr+dal
 <pre class="code bash incremental line-above literal-block"><code>%<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string single">'$6$zElzjLsMqi36JXWG$FX2Br1/[...]. ↩︎
 RxAHnNCBsqiouWUz751crHodXxs0iqZfBt9j40l3G0'</span><span class="whitespace"> </span>&gt;<span class="whitespace"> </span>hash.txt</code></pre>
 <pre class="code bash incremental line-above literal-block"><code>%<span class="whitespace"> </span>hashcat<span class="whitespace"> </span>-m<span class="whitespace"> </span><span class="literal number">1800</span><span class="whitespace"> </span>hash.txt<span class="whitespace"> </span>-a<span class="whitespace"> </span><span class="literal number">3</span><span class="whitespace"> </span><span class="literal string single">'?d?d?d?d?d?d'</span></code></pre>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Finden eines Hashes</strong></p>
 <p>Im Falle von Linux Login Passworten ist genau spezifiziert wo die Passworte (<span class="docutils literal">/etc/shadow</span>) und in welcher Form die Passworte gespeichert werden. Nach dem Namen des Nutzers (im Beispiel <span class="docutils literal">john</span>) ist der verwendete Hashingalgorithmus vermerkt. Dieser unterscheidet sich zwischen den Distributionen. Aktuell setzen die meisten Distributionen auf <span class="docutils literal">yescrypt</span>. Danach folgen die Parameter. Insbesondere der Salt.</p>
 <table>
@@ -469,8 +648,7 @@ RxAHnNCBsqiouWUz751crHodXxs0iqZfBt9j40l3G0'</span><span class="whitespace"> </sp
 </tr>
 </tbody>
 </table>
-</div>
-</div><div class="ld-slide" id="systematisches-testen-aller-kandidaten">
+</div></div><div class="ld-slide" id="systematisches-testen-aller-kandidaten">
 <h2>Systematisches Testen aller Kandidaten</h2>
 <p>Konzeptionell führt die Software Hashcat die folgenden Schritte durch:</p>
 <div class="monospaced small docutils container">
@@ -486,7 +664,7 @@ RxAHnNCBsqiouWUz751crHodXxs0iqZfBt9j40l3G0'</span><span class="whitespace"> </sp
 <p class="incremental">...</p>
 <p class="incremental">&lt;extracted_hash&gt; == SHA512crypt(&quot;zElzjLsMqi36JXWG&quot;,&quot;123456&quot;) ✔︎</p>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Der folgende Code könnte als Grundlage genutzt werden, um das Passwort wiederherzustellen.</p>
 <p>(Linux nutzt standardmäßig 5000 Runden.)</p>
 <pre class="code python slightly-smaller literal-block"><code><span class="keyword namespace">from</span> <span class="name namespace">passlib.hash</span> <span class="keyword namespace">import</span> <span class="name">sha512_crypt</span><span class="whitespace">
@@ -495,8 +673,7 @@ RxAHnNCBsqiouWUz751crHodXxs0iqZfBt9j40l3G0'</span><span class="whitespace"> </sp
 </span>    <span class="literal string double">&quot;123456&quot;</span><span class="punctuation">,</span><span class="whitespace">
 </span>    <span class="name">salt</span><span class="operator">=</span><span class="literal string double">&quot;zElzjLsMqi36JXWG&quot;</span><span class="punctuation">,</span><span class="whitespace">
 </span>    <span class="name">rounds</span><span class="operator">=</span><span class="literal number integer">5000</span><span class="punctuation">)</span></code></pre>
-</div>
-</div><div class="new-section transition-scale ld-slide" id="passworte-verstehen">
+</div></div><div class="new-section transition-scale ld-slide" id="passworte-verstehen">
 <h2>Passworte Verstehen</h2>
 </div><div class="ld-slide" id="aufbau-von-passworten">
 <h2>Aufbau von Passworten</h2>
@@ -508,11 +685,18 @@ RxAHnNCBsqiouWUz751crHodXxs0iqZfBt9j40l3G0'</span><span class="whitespace"> </sp
 <li><p>Reguläre Wörter aus Wörterbüchern: Duden, Webster, …</p></li>
 <li><p>Kontextinformationen:</p>
 <ul>
-<li><p>Szenespezifisch: <span class="docutils literal">acab</span>, szenetypischen Marken (z. B. Gucci, Ferrari), …</p></li>
+<li><p>Szenespezifisch: <span class="docutils literal">acab</span>, <span class="docutils literal">1888</span>, <span class="docutils literal">1488</span><a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> szenetypischen Marken (z. B. Gucci, Ferrari), …</p></li>
 <li><p>Privates Umfeld: Namen von Kindern, Eltern, Hunden, Geburtsort, Adresse, …</p></li>
 </ul>
 </li>
 </ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p><span class="docutils literal">14</span> oder <span class="docutils literal">1488</span> ist ein numerischer Code für die vierzehn Worte des David Eden Lane.
+(Er war ein Mitbegründer der Terrororganisation <em>The Order</em>, die für die Vorherrschaft der weißen Rasse in den USA kämpfte.)</p>
+</aside>
+</aside>
 </div><div class="ld-slide" id="haufige-passworte">
 <h2>Häufige Passworte</h2>
 <p>Eine gute Quelle für das Studium von Passwörtern sind sogenannte <em>Leaks</em> oder auch Listen mit gängigen Passwörtern. Zum Beispiel <a class="reference external" href="https://www.beckershospitalreview.com/cybersecurity/30-most-common-passwords-of-2023.html">Becker's Health IT 2023</a>:</p>
@@ -658,10 +842,16 @@ MTAwMDAw:G15ZUrWM2dSyX12+i1Y4HwAiwWDco47dA/WXZddrR+4=:KOXKYctlQIreyH4D:Qj9z+/0WW
 <p class="rubric">Verstehen des Suchraums</p>
 <p>Sie haben <span class="ger-quote">ganz viele</span> Grafikkarten und einen sehr schnellen Hash. Sie kommen auf eine Hashrate von 1 THash/Sekunde (<span class="math">\(1 \times 10^{12}\)</span>). Sie haben einen Monat Zeit für das Knacken des Passworts.
 Gehen Sie vereinfacht davon aus, dass Ihr Zeichensatz 100 Zeichen umfasst.</p>
-<p>Berechnen Sie den Anteil des Suchraums, den Sie abgesucht haben, wenn das Passwort 32 Zeichen lang sein sollte und Sie dies wissen. Drücken Sie den Anteil des abgesuchten Raums in Relation zu der Anzahl der Sandkörner der Sahara aus. Gehen Sie davon aus, dass die Sahara ca. 70 Trilliarden (<span class="math">\(70 \times 10^{21}\)</span>) Sandkörner hat.</p>
+<p>Berechnen Sie den Anteil des Suchraums, den Sie abgesucht haben, wenn das Passwort 32 Zeichen lang sein sollte und Sie dies wissen. Drücken Sie den Anteil des abgesuchten Raums in Relation zu der Anzahl der Sandkörner der Sahara aus. Gehen Sie davon aus, dass die Sahara ca. 70 Trilliarden (<span class="math">\(70 \times 10^{21}\)</span>) Sandkörner hat.<a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:GUcXZe9o8jdIEXW+UPoJzBk0lY4kgGHn4Nce5OJ9cZs=:1JkS6NQRe9vTnKnt:UK+rHU6ieRUmfCuioZZylpFRTKYO3ZZ9hRdWeRoxe5m4eTS737IMP0YhOU0BhA9RAP0TGKaMfL+0nlscoKfhaXcVAZ3Xz8hRvxx1uJRS8J/JIFHOhL7uiSeSSQcyYC8D/6845WFclrpt4JbxOZCjoq4Msj2Y+u/1U1sraFJpmRNkMdfnI6YbVHGSOsal4GqbhRDy4HqckxNyFkOMlsITysmepWkJrEIGAy+tnIWBNgmjJEBJ3geovqwI7ebyz3hnjn6DHpep5mzE75mJjIdYlkQV0v4cV4vzvJRIRRtpNhJ924wsMcNIRuy1nviuPb2JjJwOmbEYAaE24DpPpCKsODtd62lLIuW2OXzJi7J6aRvL1Jlo5I7oIJN6Y8ECX/p3b6zJK5O8AG1piLPRzV+pDZ2nkiWMkx51DCAG3SMso1ea7/bx/ySfgVyMMTt4lpoyUVufO7++2UxRKehM8+XZomiRxEt10JZGcWu0PMghD1vDcnr0J+X14uBoAEbNw8gLEKFBCHyNlZ38afkbsoVm+hKPZBOUNqO0wEM4Nr00YUghDBsJsy7qpCoUT7lMvINEsaemIg3Ww0D8C+e1cqLRnMjbZAbvMZAduIczaPSX0/zP9/TWVJBSppy0O585HZQYlGUCv9ayqEoCnF1jkW4X6TRbMlKJeq5S1mwr/QyP8f6JTv2pU7uOoKU+Uw06EcXRnfGlNNs+hZZvtdJHXikuMVP05Bvm9p0lG8GhShLEbeIbCoDQtAAApSa7Ax8H1/sEttb1Fz4lFei0ODtvxc7NqB3gDzju1WIq2Br/C8Fk8zVkG2IQ5XkgtQFLxPvOuk1+ZHzGiku/3wfBn2kIeuk6ewaPf56Kc1HjdH0Znb2mR8M95L+HgtMzbxQLKJaO3DztNV4LQgfA1tcZUYoQdmSgbU7EyDPaOryXUC2GL3mbfvDvouqjBIuJn4chljdY6W8OkP++KB1hYejy0Mr1k3rHuWlMckia2rpFsjy0WwYmgzOaCYIeN8AE4doYKweVV+vy5uEtWdIXzylfBh8TcY0mTVn6lJUZDXgbuCdqM95HN5oIlMiW+UkXNjaNyRP4cj5i/IRSJjI85BjGkETvI34AfvCCLj1LNF6Bxj0yRcA27XTDOpTil82+Mpo07F58nYgadQS9DwSVdP+LxEFu2tuNX5AEK1vkXixqvYkfeseyyR9ZYM40HJFatTDHTGShtaKLIExwVk9wve8kF5ILtMntS9XYyp1ENb3ayL9rhqsveG04Yk8fygc0WRdgGc9w0vkV5/zWcGN6lz/W40qDaaNpsDT17xN5Ube1mxtQ0agzmBwC0afegOCeEwgicrOlb6Nd04faptZ0HurB+ivUAO+A8uZQ3dyn4rQJgQcDN0NR5s1MeQDoYksTeoH16/ey8k0g2dVfPttXAr+PsP9htREgoIuv3wuIHoE6NC3Q0kCqeJUHaoqtvuwFY/bcfCZ4rQ0QSo0GzlHLfRVBoMGfzDZugq/ZME/SYXWI87mUonAtuiP9rjTTFDNox09eEVlJG9vHymoCYbosUt1ugZs1l++1pAskxgpETTFpyZtaQBO7i8ZxxGI5VMQnwpKlIPcXsdTPd9jtOHNS81NR2XLRm22ODmVAqDZqSZ6JFCFF3VUw1kWH39o5xhjJQWNTA/j3N7JCpZzdozgZJ/o2L6PBqUQ/7JLNyZBOZ2Dxi4lb00y5fLE5RZyr/aWaPrEghMVW28dE</div>
 </div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.welt.de/wissenschaft/weltraum/article7068474/Hobby-Astronom-widerlegt-die-Sandkorn-These.html">Astronom widerlegt die Sandkorn These (Welt.de)</a></p>
+</aside>
+</aside>
 </div><div class="ld-slide" id="herausforderung-passwortrichtlinien">
 <h2>Herausforderung: Passwortrichtlinien</h2>
 <p>Moderne Passwortrichtlinien (<span class="eng">Password Policies</span>) machen es unmöglich, ältere Leaks <em>direkt</em> zu nutzen.</p>
@@ -673,15 +863,14 @@ MTAwMDAw:GUcXZe9o8jdIEXW+UPoJzBk0lY4kgGHn4Nce5OJ9cZs=:1JkS6NQRe9vTnKnt:UK+rHU6ie
 <li><p>einige Passwörter (z. B. aus bekannten Leaks und Wörterbüchern) sind verboten</p></li>
 <li><p>...</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Passwortrichtlinien extrem: <a class="reference external" href="https://neal.fun/password-game/">Password Game</a></p>
 <p>Die wichtigsten <a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63b.pdf">NIST-Richtlinien</a> für Passwörter:</p>
 <ul class="simple">
 <li><p>Mindestlänge von 8 Zeichen.</p></li>
 <li><p>Keine Komplexitätsanforderung. Benutzer sollten auch die Möglichkeit haben, Leerzeichen einzufügen, um die Verwendung von Phrasen zu ermöglichen. Für die Benutzerfreundlichkeit [...] kann es von Vorteil sein, wiederholte Leerzeichen in getippten Passwörtern vor der Überprüfung zu entfernen.</p></li>
 </ul>
-</div>
-</div><div class="ld-slide" id="die-struktur-von-passwortern-verstehen">
+</div></div><div class="ld-slide" id="die-struktur-von-passwortern-verstehen">
 <h2>Die Struktur von Passwörtern verstehen</h2>
 <div class="scriptsize docutils container">
 <p>Analyse auf Grundlage des <span class="ger-quote">berühmten</span> Rockyou-Lecks.</p>
@@ -838,7 +1027,7 @@ MTAwMDAw:GUcXZe9o8jdIEXW+UPoJzBk0lY4kgGHn4Nce5OJ9cZs=:1JkS6NQRe9vTnKnt:UK+rHU6ie
 </div><div class="ld-slide" id="die-zusammensetzung-von-passwortern-verstehen">
 <h2>Die Zusammensetzung von Passwörtern verstehen</h2>
 <div class="small docutils container">
-<p>Analyse des <em>rockyou</em> Leaks.</p>
+<p>Analyse des ersten/original <em>Rockyou</em> Leaks.</p>
 <table class="tiny no-table-borders no-inner-borders incremental">
 <thead>
 <tr><th class="head"><p>∑ Passworte</p></th>
@@ -998,11 +1187,13 @@ MTAwMDAw:GUcXZe9o8jdIEXW+UPoJzBk0lY4kgGHn4Nce5OJ9cZs=:1JkS6NQRe9vTnKnt:UK+rHU6ie
 <li><p>Auswahl/Generierung von <em>Passwörten in absteigender Wahrscheinlichkeit</em>.</p></li>
 <li><p><span class="minor">Die Auswahl/Generierung sollte effizient sein.</span></p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Technisch sinnvolle Passwörter sind solche, die die zu Grunde liegenden Passwortrichtlinien und auch weiteren technischen Anforderungen erfüllen. Zum Beispiel den von der Software verwendeten Zeichensatz (UTF-8, ASCII, ...) oder im Falle eines Smartphones/Krytosticks die eingebbaren Zeichen.</p>
+<blockquote>
+<p>Auf einer deutschen Standardtastatur für Macs können in Kombination mit <span class="ger-quote">Shift</span>, <span class="ger-quote">Alt</span> und <span class="ger-quote">Alt+Shift</span> zum Beispiel 192 verschiedene Zeichen eingegeben werden – ohne auf Unicode oder Zeichentabellen zurückgreifen zu müssen.</p>
+</blockquote>
 <p>Sollte der Algorithmus zum Generieren der Passwörter langsamer sein als die Zeit, die benötigt wird, um ein Passwort zu falsifizieren, dann beschränkt nicht mehr länger nur die Hashrate den Suchraum.</p>
-</div>
-</div><div class="ld-slide" id="ansatze-und-werkzeuge-zum-generieren-von-passwortlisten">
+</div></div><div class="ld-slide" id="ansatze-und-werkzeuge-zum-generieren-von-passwortlisten">
 <h2>Ansätze und Werkzeuge zum Generieren von Passwortlisten</h2>
 <ul class="simple">
 <li><dl class="simple">
@@ -1047,7 +1238,7 @@ MTAwMDAw:GUcXZe9o8jdIEXW+UPoJzBk0lY4kgGHn4Nce5OJ9cZs=:1JkS6NQRe9vTnKnt:UK+rHU6ie
 <dd><ol class="arabic">
 <li><p>Vorverarbeitung, um die Basisstrukturen und deren Wahrscheinlichkeiten zu identifizieren (z. B. zwei Ziffern gefolgt von einem Sonderzeichen und 8 Buchstaben.)</p></li>
 <li><p>Passwortkandidatengenerierung unter Beachtung der Wahrscheinlichkeiten der Basisstrukturen und der Wahrscheinlichkeiten der Worte, Ziffern und Sonderzeichen.</p>
-<p><span class="minor">(In der Originalversion wurden die Wahrscheinlichkeiten von Worten nicht beachtet; die auf GitHub verfügbare Version enthält jedoch zahlreiche Verbesserungen.)`</span></p>
+<p><span class="minor">(In der Originalversion wurden die Wahrscheinlichkeiten von Worten nicht beachtet; die auf GitHub verfügbare Version enthält jedoch zahlreiche Verbesserungen.)</span></p>
 </li>
 </ol>
 </dd>
@@ -1313,7 +1504,7 @@ MTAwMDAw:GUcXZe9o8jdIEXW+UPoJzBk0lY4kgGHn4Nce5OJ9cZs=:1JkS6NQRe9vTnKnt:UK+rHU6ie
 <dd><p>Nr. 1348 in Rockyou.</p>
 </dd>
 <dt>2wsx3edc4rfv<span class="colon">:</span></dt>
-<dd><p>So nicht in Rockyou, aber 1qaz2wsx3edc4rfv ist Nr. 143611 in Rockyou.</p>
+<dd><p>So nicht in Rockyou, aber 1qaz<em>2wsx3edc4rfv</em> ist Nr. 143611 in Rockyou.</p>
 </dd>
 <dt>Haus Maus<span class="colon">:</span></dt>
 <dd><p>In Rockyou ist lediglich hausmaus zu finden.</p>
@@ -1338,21 +1529,16 @@ MTAwMDAw:GUcXZe9o8jdIEXW+UPoJzBk0lY4kgGHn4Nce5OJ9cZs=:1JkS6NQRe9vTnKnt:UK+rHU6ie
 </dd>
 </dl>
 </div>
-<div class="supplemental docutils container">
-<div class="foundations the-blue-background docutils container">
-<p><strong>Diceware</strong></p>
+<div class="supplemental">
+<aside class="admonition admonition-diceware">
+<p class="admonition-title">Diceware</p>
 <p>Auch wenn dem Angreifer
 (a) bekannt ist, dass das Passwort mit Hilfe von Diceware generiert wurde,
 (b) die zugrundeliegende Wortliste vorliegt und
 (c) auch die Länge (hier 6 Worte) bekannt sein sollte, dann umfasst der Suchraum: <span class="math">\((6^5)^6 \approx 2,21\times 10^{23}\)</span> Passwortkandidaten. Sollte man also mit einer Geschwindigkeit von 1 Billion Hashes pro Sekunde angreifen können, dann brauch man noch immer über 7000  Jahre für das Absuchen des vollständigen Suchraums.</p>
 <p>Beim klassischen Dicewareansatz umfasst das Wörterbuch <span class="math">\(6^5\)</span> Worte, da man mit einem normalen Würfel fünfmal Würfelt und dann das entsprechende Wort nachschlägt. Würde man zum Beispiel die folgenden Zahlen würfeln: 1,4,2,5,2. Dann würde man das Wort zur Zahl: 14252 nachschlagen.</p>
-</div>
-<div class="foundations the-blue-background docutils container">
-<p><strong>Zeichensatz</strong></p>
-<p>Auf einer deutschen Standardtastatur für Macs können in Kombination mit <span class="ger-quote">Shift</span>, <span class="ger-quote">Alt</span> und <span class="ger-quote">Alt+Shift</span> zum Beispiel 192 verschiedene Zeichen eingegeben werden – ohne auf Unicode oder Zeichentabellen zurückgreifen zu müssen.</p>
-</div>
-</div>
-</div><div class="ld-slide" id="worterbuchgenerierung-evaluation-von-werkzeugen">
+</aside>
+</div></div><div class="ld-slide" id="worterbuchgenerierung-evaluation-von-werkzeugen">
 <h2>Wörterbuchgenerierung - Evaluation von Werkzeugen</h2>
 <img alt="Evaluation verschiedener Ansätze für die Passwortevaluation" class="align-center" src="passwortwiederherstellung-evaluation.png" style="width: 1200px;" />
 </div><div class="new-section transition-scale ld-slide" id="werkzeuge-und-methoden-zur-wiederherstellung-von-passwortern">
@@ -1360,23 +1546,70 @@ MTAwMDAw:GUcXZe9o8jdIEXW+UPoJzBk0lY4kgGHn4Nce5OJ9cZs=:1JkS6NQRe9vTnKnt:UK+rHU6ie
 </div><div class="new-subsection ld-slide" id="grundlegende-werkzeuge">
 <h2>Grundlegende Werkzeuge</h2>
 <ul class="simple">
-<li><p><a class="reference external" href="../lab-shell/folien.rst.html">Linux Shell</a></p></li>
-<li><p><a class="reference external" href="../lab-regexp/folien.rst.html">Reguläre Ausdrücke</a></p></li>
+<li><p><a class="reference external" href="../lab-shell/folien.de.rst.html">Linux Shell</a></p></li>
+<li><p><a class="reference external" href="../lab-regexp/folien.de.rst.html">Reguläre Ausdrücke</a></p></li>
 </ul>
 </div><div class="new-subsection transition-fade ld-slide" id="extraktion-von-hashes">
 <h2>Extraktion von Hashes</h2>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Hinweis</strong></p>
 <p>Im Folgenden diskutieren wir nur exemplarisch die Extraktion einiger Hashes, um das grundlegende Vorgehen zu besprechen. Im Allgemeinen gibt es für weit(er) verbreitete Software häufig bereits Lösungen zur Hashextraktion. Falls nicht, dann muss man Googeln und/oder Reverse Engineering betreiben.</p>
-</div>
-</div><div class="ld-slide" id="quellen-fur-werkzeuge-anleitungen">
+</div></div><div class="ld-slide" id="quellen-fur-werkzeuge-anleitungen">
 <h2>Quellen für Werkzeuge &amp; Anleitungen</h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/hashcat/hashcat/tree/master/tools">Hashcat Tools</a></p></li>
 <li><p><a class="reference external" href="https://github.com/openwall/john">John (the Ripper)</a></p></li>
 <li><p>Googeln</p></li>
+<li><p>KI Assistent (z. B.) ChatGPT</p></li>
 </ul>
-</div><div class="ld-slide" id="relevante-linux-kommandozeilenwerkzeuge">
+<div class="supplemental :class: far-smaller :class: far-smaller">
+<p class="rubric">Konversation mit ChatGPT (23. August 2024)</p>
+<div class="far-far-smaller docutils container">
+<p>Im Folgenden wurde Anpassungen der Formatierung vorgenommen, zwecks Integration in den Foliensatz. Die Inhalte sind jedoch vollständig von ChatGPT erstellt.</p>
+</div>
+<div class="text-align-right dhbw-light-gray-background italic padding-1em docutils container">
+<p><strong>Prompt</strong></p>
+<p>Wie extrahiere ich den Hash eines Passworts eines Nutzers unter Ubuntu Linux?</p>
+</div>
+<p><strong>Antwort</strong></p>
+<p>Um den Hash eines Passworts eines Nutzers unter Ubuntu Linux zu extrahieren, müssen Sie Zugriff auf die Datei /etc/shadow haben, da diese Datei die gehashten Passwörter enthält. Folgende Schritte sind notwendig:</p>
+<ol class="arabic">
+<li><p>Root-Rechte erlangen:</p>
+<blockquote>
+<p>Da die Datei /etc/shadow nur von root gelesen werden kann, müssen Sie entweder als root angemeldet sein oder sudo verwenden.</p>
+</blockquote>
+</li>
+<li><p>Öffnen der /etc/shadow Datei:</p>
+<blockquote>
+<p>Sie können die Datei mit einem Texteditor oder einem Kommandozeilen-Tool wie cat, less, oder grep öffnen.</p>
+<p>Beispiel mit cat:</p>
+<pre class="code bash literal-block"><code>sudo<span class="whitespace"> </span>cat<span class="whitespace"> </span>/etc/shadow</code></pre>
+</blockquote>
+</li>
+<li><p>Suchen des entsprechenden Benutzers:</p>
+<blockquote>
+<p>Suchen Sie nach der Zeile, die mit dem Benutzernamen beginnt, dessen Passwort-Hash Sie extrahieren möchten. Diese Zeile hat das folgende Format:</p>
+<pre class="code text literal-block"><code>benutzername:$id$salt$hash:weitere_felder</code></pre>
+<p>Der Hash des Passworts ist der Teil nach dem zweiten $ Zeichen. Hier ein Beispiel für eine Zeile aus der /etc/shadow Datei:</p>
+<pre class="code text literal-block"><code>username:$6$salt$hashed_password:date:0:99999:7:::</code></pre>
+<p>In diesem Fall ist hashed_password der Passwort-Hash des Benutzers.</p>
+</blockquote>
+</li>
+<li><p>Extraktion des Passwort-Hashes:</p>
+<blockquote>
+<p>Wenn Sie nur den Hash extrahieren möchten, können Sie den Befehl grep zusammen mit cut verwenden:</p>
+<pre class="code bash literal-block"><code>sudo<span class="whitespace"> </span>grep<span class="whitespace"> </span><span class="literal string single">'username'</span><span class="whitespace"> </span>/etc/shadow<span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>cut<span class="whitespace"> </span>-d:<span class="whitespace"> </span>-f2</code></pre>
+<p>Dieser Befehl extrahiert den gesamten Hash einschließlich des ID- und Salt-Teils, also z.B.:</p>
+<pre class="code text literal-block"><code>$6$salt$hashed_password</code></pre>
+<p>Falls Sie nur den Hash ohne den ID- und Salt-Teil [...]</p>
+</blockquote>
+</li>
+</ol>
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Der Zugriff auf und das Bearbeiten von /etc/shadow sollte sehr vorsichtig und verantwortungsbewusst durchgeführt werden, da unsachgemäße Änderungen zu Sicherheitsproblemen oder sogar zum Verlust des Zugangs zum System führen können.</p>
+</aside>
+</div></div><div class="ld-slide" id="relevante-linux-kommandozeilenwerkzeuge">
 <h2>Relevante Linux Kommandozeilenwerkzeuge</h2>
 <ul class="incremental">
 <li><p><span class="docutils literal">file</span> dient der Ermittlung des Typs einer Datei.</p></li>
@@ -1489,11 +1722,12 @@ Device      Start      End  Sectors  Size Type
 <p class="monospaced">?d = 0123456789</p>
 <p class="monospaced">?s = !&quot;$%&amp;'()*+,-./:;&lt;=&gt;?&#64;[]^_{|}~</p>
 <p class="monospaced">?a = ?l?u?d?s</p>
-<p>Definition von bis zu 4 eigenen Zeichensätzen ist möglich.</p>
+<p>Definition von bis zu 4 eigenen Zeichensätzen (?1,...,?4) ist möglich.</p>
 </div>
 </div>
-</div><div class="ld-slide" id="hashcat-ausgewahlte-regeln-teilweise-john-kompatibel">
-<h2><a class="reference external" href="https://hashcat.net/wiki/doku.php?id=rule_based_attack">Hashcat - Ausgewählte Regeln</a> (Teilweise John kompatibel)</h2>
+</div><div class="ld-slide" id="hashcat-ausgewahlte-regeln">
+<h2><a class="reference external" href="https://hashcat.net/wiki/doku.php?id=rule_based_attack">Hashcat - Ausgewählte Regeln</a></h2>
+<p>(Die Regeln sind teilweise John kompatibel.)</p>
 <table class="small incremental">
 <thead>
 <tr><th class="head"><p>Name</p></th>
@@ -1668,11 +1902,10 @@ Device      Start      End  Sectors  Size Type
 </span><span class="whitespace">  </span>&gt;<span class="whitespace"> </span>candidates.txt</code></pre>
 </li>
 </ol>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Zu Bedenken</strong></p>
 <p>Die gezeigte Operation löst die Ordnung in der Datei auf und sortiert diese alphabetisch. Dies ist aber häufig nicht gewünscht – insbesondere wenn der Leak nach Verwendungshäufigkeit sortiert ist!</p>
-</div>
-</div><div class="small ld-slide" id="szenario-5-kombination-von-worterbuch-mit-eigenem-regelsatz-2">
+</div></div><div class="small ld-slide" id="szenario-5-kombination-von-worterbuch-mit-eigenem-regelsatz-2">
 <h2>Szenario 5: Kombination von Wörterbuch mit eigenem Regelsatz</h2>
 <p><strong>Angriff</strong></p>
 <ol class="arabic">
@@ -1698,21 +1931,20 @@ Device      Start      End  Sectors  Size Type
 <pre class="code bash literal-block"><code>hashcat<span class="whitespace"> </span>-m<span class="whitespace"> </span><span class="literal number">1700</span><span class="whitespace"> </span>hash.sha125<span class="whitespace"> </span>candidates.txt<span class="whitespace"> </span>-r<span class="whitespace"> </span><span class="keyword">case</span>.rule</code></pre>
 </li>
 </ol>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Tips</strong></p>
 <p>Das beherrschen von regulären Ausdrücken ist bei der Passwortrekonstruktion sehr hilfreich.</p>
 <p>Der folgende Ausdruck liefert zum Beispiel alle 4stelligen Worte aus Rockyou mit Hilfe eines Lookheads, dass längere Worte filtert.</p>
 <pre class="code bash black literal-block"><code>$<span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string double">&quot;^[a-zA-Z]{3,4}(?=[^a-zA-Z])&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="whitespace">     </span>/usr/share/wordlists/rockyou.txt</code></pre>
 <p>Das Passwort <span class="docutils literal">TreeTree</span> würde sich damit erfolgreich wiederherstellen lassen.</p>
-</div>
-</div><div class="small ld-slide" id="szenario-6-kartesiche-produkt-von-zwei-worterbuchern">
+</div></div><div class="small ld-slide" id="szenario-6-kartesiche-produkt-von-zwei-worterbuchern">
 <h2>Szenario 6: Kartesiche Produkt von zwei Wörterbüchern</h2>
 <p><strong>Ausgangssituation</strong></p>
 <p>Aufgrund von Social Engineering/Ermittlungen wissen wir, dass die Person sehr gerne zwischen deutschen Großstädten pendelt. Nachdem andere Versuche nicht zum Erfolge geführt habe, wollen wir jetzt Passworte der Art: &quot;BerlinHamburg&quot; testen.</p>
 <p><strong>Angriff</strong></p>
 <ol class="arabic incremental">
-<li><p>Erstellen eines fokussierten Wörterbuchs durch &quot;Googeln&quot; von großen Städten.</p></li>
+<li><p>Erstellen eines fokussierten Wörterbuchs durch <em>Googeln</em> von großen Städten.</p></li>
 <li><p>Angriff durch Kombination des Wörterbuchs mit sich selbst.</p>
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span>hashcat<span class="whitespace"> </span>-m<span class="whitespace"> </span><span class="literal number">1400</span><span class="whitespace"> </span>hash.sha256<span class="whitespace"> </span>-a<span class="whitespace"> </span><span class="literal number">1</span><span class="whitespace"> </span>big_cities2.txt<span class="whitespace"> </span>big_cities2.txt</code></pre>
 </li>
@@ -1737,7 +1969,7 @@ Device      Start      End  Sectors  Size Type
 <p class="incremental">Angriff mit Hashcat:</p>
 <pre class="code bash incremental literal-block"><code>$<span class="whitespace"> </span>hashcat<span class="whitespace"> </span>-m<span class="whitespace"> </span><span class="literal number">1400</span><span class="whitespace"> </span>hash.sha256<span class="whitespace"> </span>candidates.txt<span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="whitespace">    </span>-a<span class="whitespace"> </span><span class="literal number">6</span><span class="whitespace"> </span>-1<span class="whitespace"> </span><span class="literal string single">'$.!'</span><span class="whitespace"> </span><span class="literal string single">'?d?d?d?d?1?1'</span></code></pre>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Beispiel</strong></p>
 <p>In diesem Falle verwenden wir einen Hybridangriff, der eine Wordliste mit einer Maske kombiniert. Hier definieren wir unseren eigenen <span class="ger-quote">Zeichensatz</span> mit dem Parameter <span class="docutils literal"><span class="pre">-1</span> <span class="pre">'$.!'</span></span> und referenzieren diesen in unserer Maske später mit <span class="docutils literal"><span class="pre">?1</span></span>.</p>
 <p>Ein Beispielpasswort, dass wir mit dem Ansatz ermitteln könnten, wäre:</p>
@@ -1758,8 +1990,7 @@ Device      Start      End  Sectors  Size Type
 </tr>
 </tbody>
 </table>
-</div>
-</div><div class="small ld-slide" id="szenario-8-passworter-mit-muster">
+</div></div><div class="small ld-slide" id="szenario-8-passworter-mit-muster">
 <h2>Szenario 8: Passwörter mit Muster</h2>
 <p><strong>Ausgangssituation</strong></p>
 <p>Wir möchten ein Wörterbuch erstellen mit <span class="ger-quote">Wörtern</span>, die Buchstabenvervielfältigungen enthalten, aber nicht länger als 16 Zeichen sind. Zum Beispiel: <span class="docutils literal">aaaaBBBBcccc</span> oder auch <span class="docutils literal">AFFFFFE</span>.
@@ -1775,11 +2006,10 @@ Weiterhin soll die Liste nach der Länge der gefundenen Einträge aufsteigend so
   </span><span class="punctuation">|</span><span class="whitespace"> </span>sort<span class="whitespace"> </span>-n<span class="whitespace">
   </span><span class="punctuation">|</span><span class="whitespace"> </span>sed<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string single">'s/^[0-9]+ //'</span></code></pre>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><em>Alternative Aufgabenstellung</em></p>
 <p>Sortierung der finalen Liste nach nach der Häufigkeit der Muster, angefangen mit dem häufigsten Mustern.</p>
-</div>
-</div><div class="small ld-slide" id="szenario-9-passworter-bestehend-aus-fragmenten">
+</div></div><div class="small ld-slide" id="szenario-9-passworter-bestehend-aus-fragmenten">
 <h2>Szenario 9: Passwörter bestehend aus Fragmenten</h2>
 <p><strong>Ausgangssituation</strong></p>
 <ul class="simple">
@@ -1804,7 +2034,7 @@ Weiterhin soll die Liste nach der Länge der gefundenen Einträge aufsteigend so
 </span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>hashcat<span class="whitespace"> </span>-m<span class="whitespace"> </span><span class="literal number">1400</span><span class="whitespace"> </span>hash.sha256<span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="whitespace">     </span>-r<span class="whitespace"> </span>number_prepend.rule<span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="whitespace">     </span>-r<span class="whitespace"> </span>sc_append.rule</code></pre>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><em>Aufbau von</em> <span class="docutils literal">number_prepend.rule</span>:</p>
 <pre class="code bash black literal-block"><code>^0<span class="whitespace">
 </span>^1<span class="whitespace">
@@ -1843,11 +2073,10 @@ $2$2
 $1:
 $2:</code></pre>
 <p>Wie zu erkennen ist, führen zum Beispiel die Regeln <span class="docutils literal">$1:</span> und <span class="docutils literal">:$1</span> jeweils zum gleichen Ergebnis und wären deswegen nicht effektiv.</p>
-</div>
-</div><div class="small ld-slide" id="szenario-10-hashcat-als-werkzeug-zur-worterbuchgenerierung">
+</div></div><div class="small ld-slide" id="szenario-10-hashcat-als-werkzeug-zur-worterbuchgenerierung">
 <h2>Szenario 10: Hashcat als Werkzeug zur Wörterbuchgenerierung</h2>
 <p><strong>Ausgangssituation</strong>
-Gegeben sein 3 Wörterbücher <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>: <span class="docutils literal">base1.txt</span>, <span class="docutils literal">base2.txt</span> und <span class="docutils literal">base3.txt</span>. Gesucht ist ein Wörterbuch, dass alle Kombinationen aus den drei Wörterbüchern enthält und bei dem alle Teilworte immer mit Sonderzeichen (-) voneinander getrennt sind.</p>
+Gegeben sein 3 Wörterbücher <a class="footnote-reference brackets" href="#footnote-4" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>: <span class="docutils literal">base1.txt</span>, <span class="docutils literal">base2.txt</span> und <span class="docutils literal">base3.txt</span>. Gesucht ist ein Wörterbuch, dass alle Kombinationen aus den drei Wörterbüchern enthält und bei dem alle Teilworte immer mit Sonderzeichen (-) voneinander getrennt sind.</p>
 <div class="incremental docutils container">
 <p><strong>Beispiel</strong>
 Sei <span class="docutils literal">base1.txt</span>: <em>Kuh</em>, <em>Schwein</em>; <span class="docutils literal">base2.txt</span>: <em>Haus</em>, <em>Villa</em> und <span class="docutils literal">base3.txt</span>: <em>Baum</em>, <em>Busch</em>. Dann wäre das gesuchte Wörterbuch: <em>Kuh-Haus-Baum</em>, <em>Kuh-Haus-Busch</em>, ..., <em>Schwein-Villa-Busch</em>.</p>
@@ -1867,12 +2096,11 @@ Sei <span class="docutils literal">base1.txt</span>: <em>Kuh</em>, <em>Schwein</
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span>hashcat<span class="whitespace"> </span>--stdout<span class="whitespace"> </span>base1-base2.txt<span class="whitespace"> </span>base3.txt<span class="whitespace"> </span>-j<span class="whitespace"> </span><span class="literal string single">'$-'</span><span class="whitespace"> </span>&gt;<span class="whitespace"> </span>final.txt</code></pre>
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Die Hashcat Utilities Bibliothek hat auch noch weitere Werkzeug zum Kombinieren von Wörterbüchern, die viele Fälle sehr effizient abdecken (auch den besprochenen). Jedoch ist es gerade in Fällen, in denen komplexere Regeln zur Anwendung kommen sollen, häufiger sinnvoller/nowendig direkt Hashcat im &quot;stdout&quot; Modus zu verwenden, um die Zwischenwörterbücher zu generieren.</p>
-</div>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+</div><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-4">4</a><span class="fn-bracket">]</span></span>
 <p>Die selbe Vorgehensweise lässt sich auch anwenden, wenn man ein Wörterbuch mit sich selber kombinieren möchte.</p>
 </aside>
 </aside>
@@ -1886,7 +2114,7 @@ Sei <span class="docutils literal">base1.txt</span>: <em>Kuh</em>, <em>Schwein</
 <li><p>Insbesondere wenn es um die semantische Anreicherung von Wörterbüchern geht, dann sind (bisher) keine etablierten Werkzeuge vorhanden.</p></li>
 <li><p>Häufig führen nur Kombinationen von etablierten und eigenen Werkzeugen zum gewünschten Ziel.</p></li>
 </ul>
-</div><div class="integrated-exercise transition-move-up ld-slide" id="wiederherstellung-eines-trivialen-passworts">
+</div><div class="integrated-exercise transition-move-to-top ld-slide" id="wiederherstellung-eines-trivialen-passworts">
 <h2>Wiederherstellung eines trivialen Passworts</h2>
 <div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Gegeben sei ein MD5 Hash" id="ld-exercise-4">
 <p class="rubric">Gegeben sei ein MD5 Hash</p>
@@ -1903,7 +2131,7 @@ verwenden:</p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:SqY3uVOCxbQlYS7DrKEfofviyl3h56QEc6J79+aB/nA=:DG4OtTISl2ZZkiq/:4cQwpT4GzGRH3xthsXM2h4IUsDvrgSe+FxDcRW9jNiULUKotU2aFOkKs0q0wnnt5+F2Pm0JESji08ZYIDsstu6uMsLZjYjWYkr2Hipj4zwejm//rZTQFMMvbugeIEjuUNMq0/ovoj65wLyolNCwGxAYPnqouRxqPljJxBJpTbEATDTbiFUDJOVeVrxpuwuVJaLnbkROwwxS9dgu03KdsmMrhO1GV3zJQ4oMYrtdXaSw6ePJje6GHwyMVjdyLbzUO0OkXZ3s9x/LQhlG2fdFqN95cahYwGihYro3SH+GAIwRLtqzYbrJrqT06aw9E5hosd/PPbW7bnJ3PQYvwdnq8jiwdj0pn7D0txFB6h+NTEgy2isIPgbCCWL80VmX2gOLWAKk4j0P9T8lap+PqNXiq20/kjHwXKyhKiRYx9cYH/QZ4BHRFTpmVjcEfS3HovefVlkvApsqILDXUXN6xvAbxUTfHOkn1w3nQY0w5krxIdvbFCGOTyrr8cuqvLmEv2InG/v/BWk2PWWbA7jOWG0zBIXoKjbcAviF3qKLBroZ8Q7MW6nqyFoeVzdDhjsfVedgZmsu/DeAFKZPoAJtTjQUdAclCtfsphPMzPUCaZxVSMV3chvqMzb6IK81kewdTGore8fM7KJyWS7ijs1GxeAjYBU5VcS8w9XTqjHM04qAgH27xpsQjsqsA9ADmTQSjaHj5y/eKXCjH/hntdD5OcxVOkYPWZN+0wxoD51hHpldmFP1zWg4ap1I9j/BxabSR/CYQ32Xg9J/K/me6eoLQUP7+geXRG5MLWzlzBjeLgo4QMZmGILFS4B+mlskbE8fKvWv0qnqb6jHIIvKxZE50qAU2sP6o9dqkFDTrmKoTOwafMwxHnoY5JCZK1licNU8Dnto8Oj3aiF+z7lYRTE2htqKVY7rZEm9T0z3SGbDYdRUPCmZ9HCoBlJEMV9hIYlH90x5shQWp2AwyBHOA6EIpkplYI/0NrlqJmCpQDoznGteCg91uiM5M+abDsxpcOUnFQL5z2bcUY1Y1V1slCVnr4dOflR1IXWGPW1m6ETd4uhlzHoJrgipNQTeTLGAJC7WontvCNkO1D2goFCjuyU9q4iCkx9BfYZqWNYso+15sWvLxzSm73tpVb08uXnceR5mpzzJvaaPk5cfx3ZpYGmPj1hcjsKZQsBSG1MS+waMjAkjd3XqGu0hDybVP0pIFkkEtJl3lz3xD10Z9yJZR10s+jxpDtNvHge4OdyuVlAHd4PT1/YATXFEAvz10d+MpRXHHzeA9IORG7wo5eoI+BSMos2UGOZztUeng+q0JepUwPBgUiVE459d8acykzWljtJfkx68W2xfE5bmjFyBIsjPkQgh9pjQD4I/UXqDI4uX54Psz3YaJsr2SEPTwMNqcbF3DhutMuPu6oHrd9/ZMtvZvu9IpvPPLTHUa+V2g/WesVDhjGSTNZlUDtuWCdjVMpChS7KOTiCwVnoC/edBuRMndXB+X066AB44Bw6aGpJtWF+pAPBnBOwPZhiR54KtfHWFxM40A4RaDqKclLrLzY5kczOUG88xBRltQs8h9czBa7wxZf4hFubjztnE18IEAUsQPWi+t0Z1EQCKorZaPN/17rczOGw5qh+asrxMULQF32vq6w+a6Y2A+Hb/I9lY79ps9VhwjBUczIk78s++YTRuHonXH54vQLwHUWEG05fCr1YhcU5AJlNwwpG/dBlDqhTkOqfqDz9L4lyj9+ZAOhra9hKDvjDPsC0JA9439+1H0/YNKK3YMuZNWTeuZwLS4fFrKW31wIdOHugyZltna4cztJeoQPXXa1RILyfdxJuv3PDdiI2DVrY61zMjpGJ5kecw/68F+0lAGANkFMRfgZgUlXk0+nu9VYxrlH+xcu4rYTLWIR870wACRN28bLTvb1naIhGsCVwneFgX7Q1Dg0OsW6bL0Bsx1izionhFihzAiv529ly+mgO7CSShgDT0P6WBT0Oi4KWIdi0d6ieAZaLFh8hDrFyH/sMZBHR2ViC0UDCgWkgnYbxpxys5ezf/84kyupLugkWNIyk0MdhrCy8Xkz0KC2sz/EiAZ5A/GfQpvniHisLCVCQd2QmOzBFDogDfzxLgfaXlR6eYtraCytcCcgnRkakICmdIbWWZ2XJfz8YUTW/lzWeafnuigjYwvtPidc5IkOQTrmgR2TTPEqlZfMYygO/pIXkHghpilAoL4WI6FCWODULgeOTYbmHiNL9aJclVdSuVvx/GM1iONbN8vcuJpZA6g0ElYQx2OGhjgJIM91RuhSY69Vnsg/XfYTK5d9ww0NQ31d8x8jX0ZoMrksDaKkdBiOL+3WVP7gAmgft9bVt1a/IazTjMJGjvpkpyQHekQ/wjcGndH86tZ8IoOOz1O2hzFabd7p9m9svS5XJxadQ2skKCQjA5lzwc2nMrbXOPCnh5/bNt9vZlI1VQiX5lc4AKqDyq0M7dd0LUVeyn62+f58lY5TU0zhec7FMh+kV74OEgjtajAPcOPThLgDOaYJnBPTUHJdywg61493pmf3Q/l9JDOJtgc353fyyqum+YHi9hZ/Gbyq/C0v7JatIR8B0RDZC7c7Jam2pT1WyiJTUsuRq8nzcIWAUUGkoTPfqTVVmcjgFMFC/9oQD90vAGXw5FSiEgnG8pMuMhqx52eAbIDObvh8e9cROOHue0BAApVF8WHLBTrbRqi1lnn2BUlYlQuSPsVU307YM+PtnZ3rtRbmvGvbDiHepJmrtW0FC+xL2MCi8K04Ft/NqWQ2dlwCPcA63VSc9JB+BnR4S8x3Tu88eLbQftk2gCmeq/u2MGqnv6VPcJ7bFV3JNqiMrehsQ90gOaQm944MOxIs0sqUcEoxvQQcybWpW01uRjPMIeAAAyTyPB2opoUTVsFI5p7Tz+k5Z6olxTRi4WCH0G7/kWSrRYbvCqBL+6Vm3TdWn5IoGPEwkTeX+yv9Q5Snr06z14+pSwhcyl1a1IObbZqVLNAJMwRDEcMXIsH18bloFSrgommdtIGdEy2FbfNfDkdtcGY1c2JGyOe2+f0Z2yVKAPIXojHW0mZStWX2mCMxEs93O2XooKjT8Ku2vH1nbTQ</div>
 </div>
-</div><div class="integrated-exercise transition-scale ld-slide" id="worterbuch-basierte-wiederherstellung-eines-passworts">
+</div><div class="integrated-exercise transition-move-to-top ld-slide" id="worterbuch-basierte-wiederherstellung-eines-passworts">
 <h2>Wörterbuch basierte Wiederherstellung eines Passworts</h2>
 <div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - MD5 Hash eines einfachen Passworts" id="ld-exercise-5">
 <p class="rubric">MD5 Hash eines einfachen Passworts</p>
@@ -1924,19 +2152,19 @@ MTAwMDAw:lveL96GnwGqei0JYTIc+DY1tIyJr4iWcn8zxZ2TGIME=:Qw1Tnc9C0N3nfQPI:1+W4zNgT3
 </ul>
 </div><div class="ld-slide" id="literaturverzeichnis">
 <h2>Literaturverzeichnis</h2>
-<div class="tiny docutils container">
+<div class="far-smaller docutils container">
 <div role="list" class="citation-list">
 <div class="citation" id="sepass" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-5">SePass</a><span class="fn-bracket">]</span></span>
-<p>SePass: Semantic Password Guessing Using k-nn Similarity Search in Word Embeddings; Maximilian Hünemörder, Levin Schäfer, Nadine-Sarah Schüler, Michael Eichberg &amp; Peer Kröger, ADMA 2022: Advanced Data Mining and ApplicationsSpringer LNAI, volume 13726</p>
+<p>SePass: Semantic Password Guessing Using k-nn Similarity Search in Word Embeddings; Maximilian Hünemörder, Levin Schäfer, Nadine-Sarah Schüler, Michael Eichberg &amp; Peer Kröger, ADMA 2022: Advanced Data Mining and Applications, Springer LNAI, volume 13726</p>
 </div>
 <div class="citation" id="pcfg-1" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-1">PCFG</a><span class="fn-bracket">]</span></span>
-<p>S. Aggarwal, M. Weir, B. Glodek and B. Medeiros, &quot;Password Cracking Using Probabilistic Context-Free Grammars,&quot; in 2009 30th IEEE Symposium on Security and Privacy (SP); doi: <a class="reference external" href="https://doi.ieeecomputersociety.org/10.1109/SP.2009.8">10.1109/SP.2009.8</a></p>
+<p>S. Aggarwal, M. Weir, B. Glodek and B. Medeiros, Password Cracking Using Probabilistic Context-Free Grammars, in 2009 30th IEEE Symposium on Security and Privacy (SP); doi: <a class="reference external" href="https://doi.ieeecomputersociety.org/10.1109/SP.2009.8">10.1109/SP.2009.8</a></p>
 </div>
 <div class="citation" id="ngpcfg" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-2">NGPCFG</a><span class="fn-bracket">]</span></span>
-<p>S.Houshmand, S. Aggarwal and R. Flood, &quot;Next Gen PCFG Password Cracking,&quot; in IEEE Transactions on Information Forensics and Security, vol. 10, no. 8, pp. 1776-1791, Aug. 2015, doi: 10.1109/TIFS.2015.2428671.</p>
+<p>S.Houshmand, S. Aggarwal and R. Flood, Next Gen PCFG Password Cracking, in IEEE Transactions on Information Forensics and Security, vol. 10, no. 8, pp. 1776-1791, Aug. 2015, doi: 10.1109/TIFS.2015.2428671.</p>
 </div>
 <div class="citation" id="paofpcfg" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-3">PAofPCFG</a><span class="fn-bracket">]</span></span>

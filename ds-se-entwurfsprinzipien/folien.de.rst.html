@@ -10,13 +10,17 @@
 <meta content="lecture-ds-design-principles" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <title>Entwurfsprinzipien für &lt;br&gt; Moderne Verteilte Anwendungen</title>
-    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
-    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
-    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
     <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
     <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    
 </head>
 <body>
 <template>
@@ -43,7 +47,7 @@
 <dd><p><a class="reference external" href="https://delors.github.io/ds-se-entwurfsprinzipien/folien.de.rst.html">https://delors.github.io/ds-se-entwurfsprinzipien/folien.de.rst.html</a></p>
 <p><a class="reference external" href="https://delors.github.io/ds-se-entwurfsprinzipien/folien.de.rst.html.pdf">https://delors.github.io/ds-se-entwurfsprinzipien/folien.de.rst.html.pdf</a></p>
 </dd>
-<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
@@ -64,10 +68,9 @@
 <p class="admonition-title">Hinweis</p>
 <p>Diese Kriterien erlauben es uns einen <span class="ger-quote">fertigen</span> Entwurf zu beurteilen ohne zu sagen, wie das Ziel erreicht werden kann.</p>
 </aside>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Die unabhängige Testbarkeit ersetzt aber nicht die Notwendigkeit von Integrationstests.</p>
-</div>
-</div><div class="center-child-elements ld-slide" id="section-1">
+</div></div><div class="center-child-elements ld-slide" id="section-1">
 <h2></h2>
 <div class="dhbw-red xxl docutils container">
 <p>Design benötigt Prinzipien!</p>
@@ -79,11 +82,10 @@
 <p><a class="citation-reference" href="#martin2017" id="citation-reference-1" role="doc-biblioref">[Martin2017]</a></p>
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Es muss Leitlinien geben, die uns helfen einen guten Entwurf zu erstellen, der die genannten Ziele erreicht. Weiterhin muss klar sein wie dieser beurteilt werden kann. d. h. Code darf nicht beliebig <span class="ger-quote">platziert</span> werden; Schnittstellen sollten nicht aus dem Bauch heraus entworfen werden.</p>
 <p>Die folgenden Prinzipien wurden (zumindest teilweise) im Kontext der objekt-orientierten Programmierung identifiziert und beschrieben; passen jedoch auf verschiedensten Abstraktionsgeraden, deswegen ist im Folgenden auch von Entitäten die Rede.</p>
-</div>
-</div><div class="ld-slide" id="kopplung-coupling">
+</div></div><div class="ld-slide" id="kopplung-coupling">
 <h2>Kopplung (<span class="eng">coupling</span>)</h2>
 <div class="foundations docutils container">
 <p>Kopplung beschreibt die Stärke der Abhängigkeit zwischen verschiedenen Entitäten<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
@@ -103,11 +105,10 @@
 <p>Eine Entität kann z. B. eine Methode, Klasse, Modul, Package, Komponente oder Service sein.</p>
 </aside>
 </aside>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><em>Dynamische Kopplung</em> entsteht zur Laufzeit durch den Austausch von Nachrichten, statische Kopplung zur Compilezeit.</p>
 <p>(<em>Temporale Kopplung</em> bezieht sich darauf, dass etwas gleichzeitig ausgeführt wird.)</p>
-</div>
-</div><div class="ld-slide" id="hohe-statische-kopplung-high-static-coupling">
+</div></div><div class="ld-slide" id="hohe-statische-kopplung-high-static-coupling">
 <h2>Hohe statische Kopplung (<span class="eng">high (static) coupling</span>)</h2>
 <p>Eine Entität mit hoher Kopplung ist nicht wünschenswert:</p>
 <ul class="simple">
@@ -115,21 +116,19 @@
 <li><p>sie sind schwerer zu verstehen</p></li>
 <li><p>sie sind schwerer wiederzuverwenden, da die Verwendung auch aller weiteren Entitäten notwendig ist von denen die Entität abhängt</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Hohe Kopplung ist aber nicht per-se schlecht! Eine hohe Kopplung an Dinge, die extrem stabil sind, ist im Allgemeinen unkritisch.</p>
-</div>
-</div><div class="ld-slide" id="niedrige-statische-kopplung-low-static-coupling">
+</div></div><div class="ld-slide" id="niedrige-statische-kopplung-low-static-coupling">
 <h2>Niedrige statische Kopplung (<span class="eng">low (static) coupling</span>)</h2>
 <ul class="simple">
 <li><p>Eine niedrige Kopplung unterstützt den Entwurf von vergleichsweise unabhängigen und deswegen besser wiederverwendbaren Entitäten.</p></li>
 <li><p><span class="ger-quote">generische</span> Entitäten mit einer hohen Wiederverwendungswahrscheinlichkeit sollten eine geringe Kopplung aufweisen.</p></li>
 </ul>
 <img alt="The Interface Segregation Principle applied to a class diagram" class="align-center" src="images/coupling/applied-isp.svg" style="width: 100%;" />
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Keine Kopplung ist (auch) nicht wünschenswert, da dies zu Entitäten führt, die alle Arbeit durchführen; weiterhin führt dies auch dazu, dass sich ggf. die Arbeit sehr viel schlechter aufteilen lässt und dann eine agile Entwicklung mit einem kleinen Team nicht mehr möglich ist.</p>
 <p>Relevante Frage: Wer ist/sollte der Eigentümer der Schnittstellen sein? D. h. aus welcher Perspektive sollte die Schnittstelle entworfen werden?</p>
-</div>
-</div><div class="vertical-title far-smaller ld-slide" id="niedrige-vs-hohe-dynamische-kopplung">
+</div></div><div class="vertical-title far-smaller ld-slide" id="niedrige-vs-hohe-dynamische-kopplung">
 <h2>Niedrige vs. hohe dynamische Kopplung</h2>
 <div class="width-100 larger docutils container">
 <div class="width-100 clearfix docutils container">
@@ -143,7 +142,7 @@
 <p>(<span class="eng">Publisher-subscriber</span>)</p>
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Beobachtungen:</p>
 <p>Die Skalierbarkeit der ersten Lösung hängt direkt von der Performance von Zahlung und Inventarisierung ab. Für die Verfügbarkeit der Gesamtlösung gilt das Gleiche.</p>
 <p>PubSub ist hier deutlich mächtiger; Nachteile von PubSub liegen im Bereich:</p>
@@ -153,8 +152,7 @@
 <li><p>verteilter Zustand bei Fehlern</p></li>
 </ul>
 <p>In diesem Fall führt lose Kopplung zu sehr viel höherer Komplexität bei der Fehlerbehandlung.</p>
-</div>
-</div><div class="ld-slide" id="zusammenhalt-kohasion-cohesion">
+</div></div><div class="ld-slide" id="zusammenhalt-kohasion-cohesion">
 <h2>Zusammenhalt / Kohäsion (<span class="eng">Cohesion</span>)</h2>
 <div class="foundations docutils container">
 <p>Der Zusammenhalt ist ein Maß der Stärke zwischen den Elementen einer Entität.</p>
@@ -172,11 +170,10 @@
 <p>Es gibt keine relevante Beziehung zwischen den Elementen.</p>
 </li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Eine wesentliche Frage ist: <span class="ger-quote">Worin besteht der abgeschlossene Kontext, um etwas auf einer entsprechenden Abstraktionsebene kohäsiv erscheinen zu lassen?</span></p>
 <p>Technische Kohäsion entsteht zum Beispiel an der Schnittstelle für den Zugriff auf die Datenbank.</p>
-</div>
-</div><div class="ld-slide" id="geringer-zusammenhalt-low-cohesion">
+</div></div><div class="ld-slide" id="geringer-zusammenhalt-low-cohesion">
 <h2>Geringer Zusammenhalt (<span class="eng">Low Cohesion</span>)</h2>
 <p>Entitäten mit geringem Zusammenhalt sind nicht wünschenswert!</p>
 <p>Sie sind:</p>
@@ -185,10 +182,9 @@
 <li><p>schwer wiederzuverwenden</p></li>
 <li><p>schwer zu warten und oft von Änderungen betroffen</p></li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Services mit einer geringen Kohäsion repräsentieren häufig Dinge auf sehr grober, abstrakter Ebene und haben Verantwortlichkeiten übernommen für Dinge, die sie bessere delegieren sollten.</p>
-</div>
-</div><div class="ld-slide" id="hoher-zusammenhalt-high-cohesion">
+</div></div><div class="ld-slide" id="hoher-zusammenhalt-high-cohesion">
 <h2>Hoher Zusammenhalt (<span class="eng">High Cohesion</span>)</h2>
 <p>Alle Funktionalität und alle Daten sollten <span class="ger-quote">natürlich</span> zum Konzept gehören, das von der Entität realisiert wird.</p>
 </div><div class="center-child-elements ld-slide" id="section-2">
@@ -211,10 +207,9 @@
 </div>
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Eine sehr niedrige Kopplung führt zwangsweise dazu, das man zu viel Funktionalität in ein Modul/einen Service/eine Klasse/eine Funktion packt. Eine hohe Kohäsion führt zwangsweise dazu, dass man (sehr) viele Module/Services/Klassen/Funktionen benötigt, die häufig viele (starke) Kopplungen haben. Es gilt also die richtige Balance zu finden.</p>
-</div>
-</div><div class="transition-fade center-child-elements thin ld-slide" id="zusammenfassung">
+</div></div><div class="transition-fade center-child-elements thin ld-slide" id="zusammenfassung">
 <h2>Zusammenfassung</h2>
 <div class="line-above padding-top-1em margin-top-1em far-far-larger docutils container">
 <p>Kopplung und Kohäsion erlauben es uns einen Entwurf auf allen (Abstraktions-)ebenen zu beurteilen.</p>
@@ -235,17 +230,16 @@
 </ul>
 </li>
 </ul>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Bei der Verteilung der Zuständigkeiten gibt es eine große Bandbreite in Hinblick darauf, wie die nicht-funktionalen - und die funktionalen Eigenschaften einer Software realisiert werden.</p>
-</div>
-</div><div class="center-child-elements no-title ld-slide" id="leitgedanke-bzgl-funktionaler-kohasion">
+</div></div><div class="center-child-elements no-title ld-slide" id="leitgedanke-bzgl-funktionaler-kohasion">
 <h2>Leitgedanke bzgl. funktionaler Kohäsion</h2>
 <p><strong>Leitgedanke bzgl. funktionaler Kohäsion:</strong></p>
 <p><span class="far-far-larger">Code, der sich gemeinsam ändert, bleibt zusammen.</span></p>
 </div><div class="ld-slide" id="fasse-die-dinge-zusammen-die-sich-aus-dem-gleichen-grund-und-zur-selben-zeit-andern">
 <h2>Fasse die Dinge zusammen, die sich aus dem gleichen Grund und zur selben Zeit ändern.</h2>
 <img alt="Anwendung des Common Closure Principle und des Single Responsibility Principle" src="images/ccp-and-srp.svg" style="width: 100%;" />
-<div class="supplemental docutils container">
+<div class="supplemental">
 <dl class="field-list simple">
 <dt>Single Responsibility Principle (SRP)<span class="colon">:</span></dt>
 <dd><p>Ein Modul sollte nur einem einzigen Akteur gegenüber verantwortlich sein. D. h. es sollte nur eine wohldefinierte Gruppe von Akteuren geben, die eine Veränderung veranlassen/verlangen können. Code, von dem verschiedene Akteure abhängen, sollte aufgeteilt werden.</p>
@@ -255,8 +249,7 @@
 </dd>
 </dl>
 <p>Die beiden Prinzipien sind eng miteinander verwandt. Das CCP ist ein Prinzip, das auf allen Abstraktionsgeraden angewendet werden kann. Das SRP ist - zumindest ursprünglich - ein Prinzip, das nur auf der Ebene von Klassen und Modulen angewendet wurde.</p>
-</div>
-</div><div class="center-child-elements ld-slide" id="section-3">
+</div></div><div class="center-child-elements ld-slide" id="section-3">
 <h2></h2>
 <div class="dhbw-red far-far-larger docutils container">
 <p>Dependency Inversion Principle (DIP)</p>
@@ -276,24 +269,22 @@
 </blockquote>
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Mögliche Interpretation</strong></p>
 <p>Je höher das Modul in einer Schichtenarchitektur positioniert ist, desto allgemeiner ist die Funktion, die es implementiert.</p>
 <p>Je niedriger das Modul, desto detaillierter ist die Funktion, die es implementiert.</p>
 <p><strong>Ein Klassendesign, dass das DIP verletzt:</strong></p>
 <img alt="images/dip-layers/traditionelle-schichtenabhaengigkeit.svg" class="align-center" src="images/dip-layers/traditionelle-schichtenabhaengigkeit.svg" style="width: 60%;" />
 <p><strong>Die Einhaltung des DIP sollte auf allen Ebenen der Architektur sichergestellt werden.</strong></p>
-</div>
-</div><div class="ld-slide" id="dependency-inversion-principle">
+</div></div><div class="ld-slide" id="dependency-inversion-principle">
 <h2>Dependency Inversion Principle</h2>
 <img alt="images/dip-layers/dip-konforme-schichtenabhaengigkeit.svg" class="align-center" src="images/dip-layers/dip-konforme-schichtenabhaengigkeit.svg" style="height: 1000px;" />
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p class="rubric">Begründung</p>
 <p>Gute Softwarekonzepte sind in Module gegliedert.</p>
 <p>High-Level-Module enthalten die wichtigen politischen Entscheidungen und Geschäftsmodelle einer Anwendung. Sie definieren die Identität der Anwendung.</p>
 <p>Low-Level-Module enthalten detaillierte Implementierungen einzelner Mechanismen, die zur Umsetzung der Richtlinie benötigt werden.</p>
-</div>
-</div><div class="center-child-elements no-title ld-slide" id="open-closed-principle-ocp">
+</div></div><div class="center-child-elements no-title ld-slide" id="open-closed-principle-ocp">
 <h2>Open-closed Principle (OCP)</h2>
 <div class="dhbw-red far-far-larger docutils container">
 <p>Open-closed Principle (OCP)</p>
@@ -302,10 +293,9 @@
 <p>Ein Softwareartefakt sollte offen für Erweiterungen, aber abgeschlossen gegenüber Veränderungen sein.</p>
 <p class="attribution">—Bertrand Meyer 1988, Robert C. Martin 1996</p>
 </blockquote>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>D. h. es sollte möglich sein neue Erweiterungen zu realisieren ohne dass man die Software verändern, rekompilieren, neu bereitstellen (<span class="eng">to deploy</span>) oder vergleichbares muss. Klassisches Beispiel ist ein Texteditor wie VS Code, welcher durch <em>Extensions</em>/<em>Plug-Ins</em> erweitert werden kann; d. h. es die Software is erweiterbar ohne das man diese neu kompilieren muss.</p>
-</div>
-</div><div class="smaller ld-slide" id="open-closed-principle-case-study">
+</div></div><div class="smaller ld-slide" id="open-closed-principle-case-study">
 <h2>Open-closed Principle - Case Study</h2>
 <figure class="align-center">
 <img alt="images/ocp-example/ocp-intended-subscriber_de.svg" src="images/ocp-example/ocp-intended-subscriber_de.svg" style="width: 1750px;" />
@@ -313,10 +303,9 @@
 <p>Ist dieses Design offen für Erweiterungen?</p>
 </figcaption>
 </figure>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>In diesem Fall haben wir eine Architektur, die auf “Services” aufbaut welche lose gekoppelt sind und über Nachrichten kommunizieren.</p>
-</div>
-<div class="footer-left tiny docutils container">
+</div><div class="footer-left tiny docutils container">
 <p><a class="reference external" href="https://dzone.com/articles/the-open-closed-principle-at-an-architectural-leve">Beispiel nach David Llobrega, 2019</a></p>
 </div>
 </div><div class="smaller transition-scale ld-slide" id="open-closed-principle-case-study-1">
@@ -327,12 +316,11 @@
 <p>Ist dieses Design <em>wirklich</em> offen für Erweiterungen?</p>
 </figcaption>
 </figure>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Das Problem ist, dass wir hier die Nachrichten - welche im Prinzip die Schnittstelle modellieren - relativ exakt an den Anforderungen des Services zur Bestimmung der Verfügbarkeit von Autos ausgerichtet haben.</p>
 <p>Wie sähe in diesem Fall z. B. eine Erweiterung um einen Dienst für Kundenprämienberechnung aus?</p>
 <p>Über die <span class="docutils literal">VereinbarungID</span> bekommen wir Zugriff auf die Daten des Kunden aber dies fordert dann mehr als einen <em>Lookup</em> in einer Datenbank und ggf. auch das Einbinden mehrerer Dienste, was es zu vermeiden gilt, da die Kopplung unnötig ansteigen würde.</p>
-</div>
-</div><div class="smaller transition-scale ld-slide" id="open-closed-principle-case-study-2">
+</div></div><div class="smaller transition-scale ld-slide" id="open-closed-principle-case-study-2">
 <h2>Open-closed Principle - Case Study</h2>
 <div class="stack docutils container">
 <div class="layer docutils container">
@@ -344,7 +332,7 @@
 </div>
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Eine Antwort darauf liefern ggf. <em>Bounded-Context</em> aus dem <em>Domain-driven Design</em></p>
 <p>Ein <em>Bounded Context</em> ist ein Gültigkeitsbereich eines Domänenmodells, einer <a class="reference external" href="https://leanpub.com/ddd-referenz/read#ubiquitous-language">Ubiquitous Language</a> und die Basis für die Organisation des Projekts.[...]</p>
 <blockquote>
@@ -352,8 +340,7 @@
 </blockquote>
 <p>Domain-driven Design behandelt Beziehungen zwischen <em>Bounded Contexts</em> im sogenannten <em>Strategic Design</em>.</p>
 <p><a class="reference external" href="https://www.heise.de/hintergrund/Domain-driven-Design-und-Bounded-Context-Eigentlich-ganz-einfach-oder-4634258.html?seite=all">https://www.heise.de/hintergrund/Domain-driven-Design-und-Bounded-Context-Eigentlich-ganz-einfach-oder-4634258.html?seite=all</a></p>
-</div>
-</div><div class="center-child-elements no-title ld-slide" id="liskov-substitution-principle-lsp">
+</div></div><div class="center-child-elements no-title ld-slide" id="liskov-substitution-principle-lsp">
 <h2>Liskov Substitution Principle (LSP)</h2>
 <div class="dhbw-red far-far-larger docutils container">
 <p>Liskov Substitution Principle (LSP)</p>
@@ -370,10 +357,9 @@
 <p>Die Implementierungen von Schnittstellen müssen austauschbar sein.</p>
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Im Original wird auf die Substituierbarkeit von Subtypen im Kontext der objekt-orientierten Programmierung eingegangen. Das Prinzip lässt sich aber auch auf andere Abstraktionsgeraden übertragen. Insbesondere auch auf die Ebene von Services deren Schnittstellen und Implementierungen.</p>
-</div>
-</div><div class="smaller ld-slide" id="interface-segregation-principle-common-reuse-principle">
+</div></div><div class="smaller ld-slide" id="interface-segregation-principle-common-reuse-principle">
 <h2>Interface Segregation Principle &amp; Common Reuse Principle</h2>
 <div class="stack docutils container">
 <div class="layer docutils container">
@@ -405,10 +391,9 @@
 <p class="admonition-title">Leitgedanke</p>
 <p>Hänge nicht von Dingen ab, die du nicht benötigst.</p>
 </aside>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Segregation (<span class="ger">Abtrennung</span>) bezeichnet hier die Aufspaltung eines bestehenden Interfaces bei dem die Teile abgespalten werden, die logisch zu einer anderen Funktionalität gehören. d. h. die von der Schnittstelle zur Verfügung gestellte Funktionalität ist nicht homogen und wird deswegen in verschiedene Teile aufgeteilt.</p>
-</div>
-</div><div class="center-child-elements no-title ld-slide" id="command-query-separation-cqs">
+</div></div><div class="center-child-elements no-title ld-slide" id="command-query-separation-cqs">
 <h2>Command-Query Separation (CQS)</h2>
 <div class="dhbw-red far-far-larger docutils container">
 <p>Command-Query Separation (CQS)</p>
@@ -426,10 +411,9 @@
 <p>Auf der Ebene von nachrichten- bzw. ereignisgetriebenen Systemen wird CQS zum CQRS erweitert (Command-Query Responsibility Segregation).</p>
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Ein Java Iterator mit seiner <span class="ger-quote">next</span> Methode verletzt ganz klar dieses Prinzip!</p>
-</div>
-</div><div class="ld-slide" id="traditionelle-interaktion-mit-informationssystemen-crud">
+</div></div><div class="ld-slide" id="traditionelle-interaktion-mit-informationssystemen-crud">
 <h2>Traditionelle Interaktion mit Informationssystemen (CRUD)</h2>
 <div class="two-columns docutils container">
 <div class="tiny docutils container">
@@ -451,10 +435,9 @@
 </ol>
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Darstellung einer Anwendung mit traditioneller Architektur.</p>
-</div>
-</div><div class="center-child-elements no-title ld-slide" id="command-query-responsibility-segregation-principle">
+</div></div><div class="center-child-elements no-title ld-slide" id="command-query-responsibility-segregation-principle">
 <h2>Command-Query Responsibility Segregation Principle</h2>
 <div class="dhbw-red far-far-larger docutils container">
 <p>Command-Query Responsibility Segregation Principle</p>
@@ -478,10 +461,9 @@
 <div class="text-align-right serif italic smaller margin-0-5em padding-right-1em docutils container">
 <p>⸺ Greg Young, 2010</p>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Command-Query-Responsibility-Segregation (CQRS) wendet das CQS-Prinzip an, indem es separate Abfrage- und Befehlsnachrichten zum Abrufen bzw. Ändern von Daten verwendet.</p>
-</div>
-</div><div class="smaller ld-slide" id="command-query-responsibility-segregation-principle-cqrs">
+</div></div><div class="smaller ld-slide" id="command-query-responsibility-segregation-principle-cqrs">
 <h2>Command-Query Responsibility Segregation Principle (CQRS)</h2>
 <p class="rubric">Einsatzszenarien</p>
 <ul class="incremental simple">
@@ -537,7 +519,7 @@
 <div class="foundations incremental docutils container">
 <p>Eine gute Anwendungsarchitektur erlaubt es Entscheidungen, die sich <em>nicht</em> aus den Geschäftsanforderungen ergeben, zu verzögern bzw. <span class="ger-quote">leicht</span> anpassbar zu machen.</p>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Entscheidungen, die nicht am Anfang final getroffen werden sollten, da sie ggf. die Architektur dominieren:</p>
 <ul class="simple">
 <li><p>Frameworks</p></li>
@@ -547,15 +529,13 @@
 <li><p>...</p></li>
 </ul>
 <p>Im RESTful-Beispiel hatten wir einen technischen Service for Augen - er implementiert keine wesentliche Geschäftslogik!</p>
-</div>
-</div><div class="ld-slide" id="traditionelle-n-schichten-architektur-wiederholung">
+</div></div><div class="ld-slide" id="traditionelle-n-schichten-architektur-wiederholung">
 <h2>Traditionelle n-Schichten Architektur (Wiederholung)</h2>
 <img alt="images/n-layer-architecture.svg" class="align-center" src="images/n-layer-architecture.svg" style="height: 950px;" />
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Codeabhängigkeiten ergeben sich zum Beispiel beim Verwenden eines Object-relational Mappers (ORM).</p>
 <p>Solch eine Architektur war Ende der 90er/Anfang der 2000er Standard und ist für einfache Programme auch heute noch akzeptabel, da diese häufig sehr schnell zu entwickeln sind und viel Erfahrung mit dieser Architektur vorhanden ist. Besser ist es jedoch gleich eine der folgenden Architekturen anzuwenden, um ggf. vorbereitet zu sein, wenn das System wächst.</p>
-</div>
-</div><div class="ld-slide" id="hexagonal-architecture-ports-adapters">
+</div></div><div class="ld-slide" id="hexagonal-architecture-ports-adapters">
 <h2>Hexagonal Architecture (Ports &amp; Adapters) <a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
 <div class="stack docutils container">
 <div class="layer docutils container">
@@ -577,7 +557,7 @@
 <p><a class="reference external" href="https://alistair.cockburn.us/hexagonal-architecture/">https://alistair.cockburn.us/hexagonal-architecture/</a> und <a class="reference external" href="https://www.thoughtworks.com/insights/blog/architecture/demystify-software-architecture-patterns">https://www.thoughtworks.com/insights/blog/architecture/demystify-software-architecture-patterns</a></p>
 </aside>
 </aside>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Ziel der hexagonalen Architektur ist es die Anwendungslogik unabhängig von der UI und den Datenbanken etc. zu machen. Die Anwendungslogik/die Anwendungskomponenten sollen lose gekoppelt sein und einfach mit Ihrer Umgebung verbunden werden können durch die Nutzung von <em>Ports &amp; Adapters</em>.</p>
 <p>Für die Implementierung von <em>Primary Ports</em> werden oft <em>Inversion of Control Frameworks</em> verwendet.
 Die Implementierung von <em>Secondary Ports</em> erfordert üblicherweise den Einsatz von <em>Dependency Inversion</em>.</p>
@@ -587,8 +567,7 @@ Die Implementierung von <em>Secondary Ports</em> erfordert üblicherweise den Ei
 <p>Meine Heransgehensweise für die Planung einer komplexen Geschäftsanwendung ist in der Regel eine Kombination aus Domain Driven Design, Microservices und hexagonaler Architektur: Einsatz von Strategic Design zur Planung von Core Domain, Sub Domains und Bounded Contexts. Aufteilung eines Bounded Contexts in einen oder mehrere Microservices. Ein Microservice kann ein oder mehrere Aggregates enthalten, aber auch den kompletten Bounded Context, sofern dieser nicht zu groß ist (und statt des gewünschten Microservices wieder ein Monolith entsteht).</p>
 <p class="attribution">—<a class="reference external" href="https://www.happycoders.eu/de/software-craftsmanship/hexagonale-architektur/">https://www.happycoders.eu/de/software-craftsmanship/hexagonale-architektur/</a></p>
 </blockquote>
-</div>
-</div><div class="ld-slide" id="onion-architecture">
+</div></div><div class="ld-slide" id="onion-architecture">
 <h2><em>Onion Architecture</em> <a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></h2>
 <div class="stack docutils container">
 <div class="layer docutils container">
@@ -601,7 +580,7 @@ Die Implementierung von <em>Secondary Ports</em> erfordert üblicherweise den Ei
 <div class="text-align-right serif italic smaller margin-0-5em docutils container">
 <p>⸺ Jeffrey Palermo, 2008</p>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Schlüssellehren der <em>Onion Architecture</em> (Zwiebelarchitektur):</p>
 <ul class="simple">
 <li><p>Die Anwendung ist rund um ein unabhängiges Objektmodel gebaut.</p></li>
@@ -610,8 +589,7 @@ Die Implementierung von <em>Secondary Ports</em> erfordert üblicherweise den Ei
 <li><p>Die Richtung der Kopplung ist immer in Richtung zum Zentrum!</p></li>
 <li><p>Der Anwendungskern (<em>Application Core</em>) kann immer ohne die Infrastruktur kompiliert und davon unabhängig ausgeführt werden.</p></li>
 </ul>
-</div>
-<aside class="footnote-list brackets">
+</div><aside class="footnote-list brackets">
 <aside class="footnote brackets" id="footnote-3" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
 <p><a class="reference external" href="https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/">https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/</a></p>
@@ -639,7 +617,7 @@ Die Implementierung von <em>Secondary Ports</em> erfordert üblicherweise den Ei
 <img alt="images/clean-architecture/legende.svg" src="images/clean-architecture/legende.svg" style="height: 800px;" />
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p class="rubric">Entities</p>
 <p>Entities (<span class="ger">Entitäten</span>) kapseln unternehmensweite kritische Geschäftsregeln.</p>
 <ul class="simple">
@@ -658,8 +636,7 @@ Die Implementierung von <em>Secondary Ports</em> erfordert üblicherweise den Ei
 <p>In diesem Ring befinden sich die externen Details, in der Regel gibt es hier keinen oder nur minimalen <em>Glue Code</em>.</p>
 <p class="rubric">Code Abhängigkeiten</p>
 <p>Wie bei den anderen Architekturen auch, gehen auch hier die Abhängigkeiten immer von außen nach innen. D. h. die Entitäten sind von nichts abhängig, die Anwendungsfälle von den Entitäten, die Schnittstellen von den Anwendungsfällen und die externen Details von den Schnittstellen.</p>
-</div>
-</div><div class="ld-slide" id="clean-architecture-prototypische-implementierung">
+</div></div><div class="ld-slide" id="clean-architecture-prototypische-implementierung">
 <h2><em>Clean Architecture</em> - Prototypische Implementierung</h2>
 <div class="stack docutils container">
 <div class="layer docutils container">
@@ -669,10 +646,9 @@ Die Implementierung von <em>Secondary Ports</em> erfordert üblicherweise den Ei
 <img alt="images/clean-architecture/uml-kontrollfluss.svg" class="align-center" src="images/clean-architecture/uml-kontrollfluss.svg" style="height: 800px;" />
 </div>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>Mit einer solchen Implementierung sind auch echte initiale Kosten verbunden - mehrere Interfaces müssen implementiert und gewartet werden. Partielle Lösungen sind denkbar, müssen aber wohl überlegt sein, um ungewünschte Abhängigkeiten zu vermeiden, die häufig zu einer schlechten Wartbarkeit und langfristigen bzw. verzögerten Kosten führen.</p>
-</div>
-</div><div class="ld-slide" id="gemeinsamkeiten-aktueller-architekturen">
+</div></div><div class="ld-slide" id="gemeinsamkeiten-aktueller-architekturen">
 <h2>Gemeinsamkeiten aktueller Architekturen</h2>
 <ul class="incremental simple">
 <li><p>Unabhängig von Frameworks</p></li>

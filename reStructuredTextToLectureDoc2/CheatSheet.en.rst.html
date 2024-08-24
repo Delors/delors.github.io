@@ -9,20 +9,25 @@
 <meta content="Cheat Sheet für die Generierung von Vorlesungsunterlagen mit LectureDoc2 im DHBW Corporate Design." lang="de" name="description" xml:lang="de" />
 <meta content="ld2-dhbw-cheat-sheet" name="id" />
 <meta content="2560x1440" name="slide-dimensions" />
-<title>LectureDoc2 Cheat Sheet for DHBW Corporate Design</title>
-    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
-    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
-    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+<title>LectureDoc2 Cheat Sheet (DHBW Corporate Design)</title>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
     <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
     <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    
 </head>
 <body>
 <template>
-<div class="cheat-sheet-8-columns ld-slide" id="lecturedoc2-cheat-sheet-for-dhbw-corporate-design">
-<h1 class="title">LectureDoc2 Cheat Sheet for DHBW Corporate Design</h1>
+<div class="cheat-sheet-8-columns ld-slide" id="lecturedoc2-cheat-sheet-dhbw-corporate-design">
+<h1 class="title">LectureDoc2 Cheat Sheet (DHBW Corporate Design)</h1>
 
+<!-- THE FOLLOWING CHANGES THE OVERALL SLIDE LAYOUT -->
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Information</p>
 <dl class="field-list simple">
@@ -30,11 +35,10 @@
 <dd><p>Michael Eichberg</p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>1.0</p>
+<dd><p>August 2024</p>
 </dd>
 </dl>
 </div>
-<!-- CHANGING THE OVERALL SLIDE LAYOUT -->
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Vertical Titles</p>
 <p>Add the class <span class="docutils literal"><span class="pre">vertical-title</span></span> to rotate the title and to change the layout of the slide to a column-based layout. To get back to a row based layout add a container with the class <span class="docutils literal"><span class="pre">width-100</span></span>.</p>
@@ -72,22 +76,20 @@
 </div>
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Exercises and Solutions</p>
-<p>Use <span class="docutils literal"><span class="pre">integrated-exercise</span></span> for slides with exercises. Solutions can be added by using the custom directive <span class="docutils literal"><span class="pre">protected-exercise-solution</span></span></p>
+<p>Associate the class <span class="docutils literal"><span class="pre">integrated-exercise</span></span> with a slide to indicate that the slide contains an exercise.</p>
+<p>Use the directive <span class="docutils literal">.. exercise::</span> to add an exercise. To add a solution use the custom directive <span class="docutils literal">.. solution::</span> inside of an exercise block and specify the password (optional) using the attribute <span class="docutils literal">:pwd:</span>.</p>
 <p class="rubric">Example (Solution in supplemental information)</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">admonition</span><span class="punctuation">::</span> Solution<span class="whitespace">
-</span>   <span class="name class">:class:</span> supplemental<span class="whitespace">
-</span>           exercise-solution</code></pre>
-<p class="rubric">Example (Solution requires password.)</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> integrated-exercise<span class="whitespace">
+<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">exercise</span><span class="punctuation">::</span> <span class="name tag">&lt;Title&gt;</span><span class="whitespace">
 
-</span><span class="generic heading">Exercise: XYZ</span>
-<span class="generic heading">--------------</span>
-<span class="whitespace">
-</span><span class="name tag">&lt;Exercise Description&gt;</span><span class="whitespace">
+</span>   &lt;Description of the exercise.&gt;<span class="whitespace">
 
-</span><span class="punctuation">..</span> <span class="operator word">protected-exercise-solution</span><span class="punctuation">::</span> A<span class="whitespace">
+</span><span class="punctuation">   ..</span> <span class="operator word">solution</span><span class="punctuation">::</span> <span class="name tag">&lt;Title&gt;</span><span class="whitespace">
+</span>      <span class="name class">:pwd:</span> 1234<span class="whitespace">
 
-</span>   &lt;Protected Solution&gt;</code></pre>
+</span>      &lt;Solution&gt;</code></pre>
+<p>You can configure a master-password using meta information:</p>
+<pre class="code rst literal-block"><code><span class="punctuation">..</span> <span class="operator word">meta</span><span class="punctuation">::</span><span class="whitespace">
+</span>   <span class="name class">:exercises-master-password:</span> <span class="name tag">&lt;Master-password&gt;</span></code></pre>
 </div>
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Table of Contents</p>
@@ -101,7 +103,7 @@
 </div>
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Footnotes</p>
-<p><span class="docutils literal">.. [#]</span> and <span class="docutils literal"><span class="pre">[#]_</span></span> create footnotes.</p>
+<p><span class="docutils literal"><span class="pre">[#]_</span></span> and <span class="docutils literal">.. [#]</span> create footnotes.</p>
 <pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="generic heading">Test\ [#]_</span>
 <span class="generic heading">-----------------</span>
 <span class="whitespace">
@@ -136,14 +138,6 @@
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Fade-out Content</p>
 <p>Add the class <span class="docutils literal"><span class="pre">faded-to-white</span></span> to a container to whiten the content.</p>
-</div>
-<div class="cheat-sheet-block docutils container">
-<p class="rubric">Boxes with Supplemental Information on the Slide</p>
-<p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">admonition</span><span class="punctuation">::</span> TBD<span class="whitespace">
-</span>   <span class="name class">:class:</span> note<span class="whitespace">
-
-</span>   Some text in a box.</code></pre>
 </div>
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Supplemental Information</p>
@@ -310,11 +304,11 @@
 <span class="generic heading">-----------------</span></code></pre>
 </div>
 <div class="cheat-sheet-block docutils container">
-<p class="rubric">Meta-Information</p>
+<p class="rubric">Configuration</p>
 <p>LectureDoc meta information:</p>
-<p><span class="docutils literal">id</span> A unique identifier for the slide set. Required to store the current state of the presentation.</p>
-<p><span class="docutils literal"><span class="pre">slide-dimensions</span></span> The dimensions of the slides (default: &quot;1920x1200&quot;).</p>
-<p><span class="docutils literal"><span class="pre">first-slide</span></span> The first slide that is shown when the presentation is started (e.g., &lt;Slide Number&gt; or &quot;last-viewed&quot;).</p>
+<p><span class="docutils literal">id</span> The unique identifier for the slide set. Required to store the current state of the presentation.</p>
+<p><span class="docutils literal"><span class="pre">slide-dimensions</span></span> the slides dimension (default: &quot;1920x1200&quot;).</p>
+<p><span class="docutils literal"><span class="pre">first-slide</span></span> Determines the first slide that is shown (e.g., &lt;Slide Number&gt; or &quot;last-viewed&quot;).</p>
 <p class="rubric">Example</p>
 <pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">meta</span><span class="punctuation">::</span><span class="whitespace">
 </span>  <span class="name class">:id:</span> <span class="name tag">&lt;unique id&gt;</span><span class="whitespace">

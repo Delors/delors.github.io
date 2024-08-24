@@ -13,13 +13,17 @@
 <meta content="last-viewed" name="first-slide" />
 <title>Kryptografische Hash Funktionen</title>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
-    <script src="../LectureDoc2/ld-crypto.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-lib.js" type="text/javascript"></script>
-    <script src="../LectureDoc2/ld-animations.js" type="text/javascript"></script>    
-    <script src="../LectureDoc2/ld-help.js" type="text/javascript"></script>
-    <script defer src="../LectureDoc2/ld-core.js" type="text/javascript"></script>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
     <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
     <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    
 </head>
 <body>
 <template>
@@ -38,18 +42,12 @@
 <dd class="version">1.0</dd>
 </dl>
 <div class="supplemental">
-<dl class="field-list simple">
+<dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
-<dd><dl class="field-list simple">
-<dt>HTML<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io/sec-hashfunktionen/folien.de.rst.html">https://delors.github.io/sec-hashfunktionen/folien.de.rst.html</a></p>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/sec-hashfunktionen/folien.de.rst.html">https://delors.github.io/sec-hashfunktionen/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/sec-hashfunktionen/folien.de.rst.html.pdf">https://delors.github.io/sec-hashfunktionen/folien.de.rst.html.pdf</a></p>
 </dd>
-<dt>PDF<span class="colon">:</span></dt>
-<dd><p><a class="reference external" href="https://delors.github.io/sec-hashfunktionen/folien.de.rst.html.pdf">https://delors.github.io/sec-hashfunktionen/folien.de.rst.html.pdf</a></p>
-</dd>
-</dl>
-</dd>
-<dt>Fehler auf Folien melden<span class="colon">:</span></dt>
+<dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
@@ -112,12 +110,11 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 <p>(<span class="eng">Collision resistant; strong collision resistant</span>)</p>
 </dd>
 </dl>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Hintergrund</strong></p>
 <p>Im Deutschen wird auch von Urbild-Angriffen gesprochen. In dem Fall ist <em>preimage resistance</em> (d. h. die Einweg Eigenschaft) gleichbedeutend damit, dass man nicht effektiv einen <span class="ger-quote">Erstes-Urbild-Angriff</span> durchführen kann. Hierbei ist das Urbild die ursprüngliche Nachricht <span class="math">\(M\)</span>, die <em>gehasht</em> wurde.</p>
 <p><em>Second preimage resistance</em> ist dann gleichbedeutend damit, dass man nicht effektiv einen <span class="ger-quote">Zweites-Urbild-Angriff</span> durchführen kann. Es ist nicht möglich zu einer Nachricht M eine zweite Nachricht N (d. h. ein zweites Urbild) zu finden, die für eine gegebene Hashfunktion den gleich Hash aufweist.</p>
-</div>
-</div><div class="ld-slide" id="beziehung-zwischen-den-sicherheitsanforderungen-an-hashfunktionen">
+</div></div><div class="ld-slide" id="beziehung-zwischen-den-sicherheitsanforderungen-an-hashfunktionen">
 <h2>Beziehung zwischen den Sicherheitsanforderungen an Hashfunktionen</h2>
 <img alt="Beziehung zwischen den Eigenschaften von Hashfunktionen" class="align-center" src="drawings/hash_functions/properties.svg" style="width: 1200px;" />
 </div><div class="ld-slide" id="nachrichtenauthentifizierung-vereinfacht">
@@ -311,12 +308,11 @@ K' &amp; = &amp;\begin{cases}
 <h2></h2>
 <img alt="Schlüsselableitung für den inneren und äußeren Schlüssel K'" class="align-left" src="drawings/hmac/hmac_i_o_key_derivation.svg" style="width: 1400px;" />
 <img alt="Schlüsselableitung für den inneren und äußeren Schlüssel K'" class="incremental margin-top-1em padding-top-1em align-right" src="drawings/hmac/hmac_message_hashing.svg" style="width: 1300px;" />
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p><strong>Padding und Hashing</strong></p>
 <p>Im Rahmen der Speicherung von Passwörtern und <em>Secret Keys</em> ist die Verwendung von Padding Operationen bzw. das Hashing von Passwörtern, um Eingaben in einer wohl-definierten Länge zu bekommen, üblich. Neben dem hier gesehenen Padding, bei dem 0x00 Werte angefügt werden, ist zum Beispiel auch das einfache Wiederholen des ursprünglichen Wertes, bis man auf die notwendige Länge kommt, ein Ansatz.</p>
 <p>Diese Art Padding darf jedoch nicht verwechselt werden mit dem Padding, dass ggf. im Rahmen der Verschlüsselung von Nachrichten notwendig ist, um diese ggf. auf eine bestimmte Blockgröße zu bringen (zum Beispiel bei ECB bzw. CBC Block Mode Operations.)</p>
-</div>
-</div><div class="ld-slide" id="hmac-berechnung-in-python">
+</div></div><div class="ld-slide" id="hmac-berechnung-in-python">
 <h2>HMAC Berechnung in Python</h2>
 <p><strong>Implementierung</strong></p>
 <pre class="code python small literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">hashlib</span><span class="whitespace">
@@ -332,7 +328,7 @@ K' &amp; = &amp;\begin{cases}
 </span><span class="literal string affix">b</span><span class="literal string single">'h</span><span class="literal string escape">\x88\xc2\xb6</span><span class="literal string single">X</span><span class="literal string escape">\xb7\xcb\x9c\x90\xc2</span><span class="literal string single">R...</span><span class="whitespace">
 </span>  \<span class="name">x16</span>\<span class="name">x87</span>\<span class="name">x87</span>\<span class="name">x0e</span>\<span class="name">xad</span>\<span class="name">xa1</span>\<span class="name">xe1</span><span class="punctuation">:</span><span class="literal number integer">9</span>\<span class="name">xca</span><span class="literal string single">'</span></code></pre>
 </div>
-<div class="supplemental docutils container">
+<div class="supplemental">
 <p>HMAC ist auch direkt als Bibliotheksfunktion verfügbar.</p>
 <pre class="code python black literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">hashlib</span><span class="whitespace">
 </span><span class="keyword namespace">import</span> <span class="name namespace">hmac</span><span class="whitespace">
@@ -345,8 +341,7 @@ K' &amp; = &amp;\begin{cases}
 </span><span class="name">hash_hmac</span> <span class="operator">=</span><span class="whitespace">
 </span>    <span class="literal string affix">b</span><span class="literal string single">'h</span><span class="literal string escape">\x88\xc2\xb6</span><span class="literal string single">X</span><span class="literal string escape">\xb7\xcb\x9c\x90\xc2</span><span class="literal string single">R...</span><span class="whitespace">
 </span>      \<span class="name">x16</span>\<span class="name">x87</span>\<span class="name">x87</span>\<span class="name">x0e</span>\<span class="name">xad</span>\<span class="name">xa1</span>\<span class="name">xe1</span><span class="punctuation">:</span><span class="literal number integer">9</span>\<span class="name">xca</span><span class="literal string single">'</span></code></pre>
-</div>
-</div><div class="ld-slide" id="gcm-glaois-counter-mode">
+</div></div><div class="ld-slide" id="gcm-glaois-counter-mode">
 <h2>GCM - Glaois Counter Mode</h2>
 <p>TODO</p>
 </div>
