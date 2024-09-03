@@ -67,6 +67,24 @@ div.ld-slide.no-title h2:first-child {
 
 div.ld-slide.new-section {
 
+    &::before {
+        content: var(--author);
+        position: absolute;
+        color: var(--dhbw-gray);
+        font-size: 24px;
+        font-variant: normal;
+        font-weight: 200;
+    }
+
+    &::after {
+        content: var(--dhbw-logo);
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        scale: 0.50;
+        translate: 100px -55px;
+    }
+
     >h2 {
         margin-top: 350px;
         padding-top: 150px;
@@ -83,57 +101,43 @@ div.ld-slide.new-section {
         width: 98%;
         margin-left: auto;
         margin-right: auto;
-        /*box-shadow: 4px 4px 8px black;*/
+    }
+}
 
-        /* Dropped for performance reasons (for now) &::after,*/
-        &::before {
-            content: "";
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: calc(var(--slide-border-radius) * 0.75);
-        }
+:not(#ld-main-pane)> .ld-slide.new-section > h2 {
+    box-shadow: 4px 4px 8px black;
+}
 
-        /*&::after {
+#ld-main-pane .ld-slide.new-section > h2 {
+
+    /* Dropped for performance reasons (for now) &::after,*/
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: calc(var(--slide-border-radius) * 0.75);
+    }
+
+    /*&::after {
             padding: 15px;
             background-image: conic-gradient(
                 var(--dhbw-dark-gray), var(--dhbw-light-gray), var(--dhbw-red), var(--dhbw-light-gray), var(--dhbw-dark-gray), var(--dhbw-dark-gray));
             filter: opacity(0.35) blur(15px);
             z-index: -2;
         }*/
-        &::before {
-            padding: 10px;
-            background-image: conic-gradient(
-                from var(--section-title-shadow-angle), 
-                var(--dhbw-dark-gray), var(--dhbw-light-gray), var(--dhbw-red), var(--dhbw-light-gray), var(--dhbw-dark-gray), var(--dhbw-dark-gray));
-            filter: opacity(0.5);
-            animation: rotate-section-title-shadow 15s infinite linear;
-            z-index: -1;
-        }
-    }
-
     &::before {
-        content: var(--author);
-        position: absolute;
-        color: var(--dhbw-gray);
-        font-size: 24px;
-        font-variant: normal;
-        font-weight: 200;
+        padding: 10px;
+        background-image: conic-gradient(from var(--section-title-shadow-angle),
+                var(--dhbw-dark-gray), var(--dhbw-light-gray), var(--dhbw-red), var(--dhbw-light-gray), var(--dhbw-dark-gray), var(--dhbw-dark-gray));
+        filter: opacity(0.5) blur(12px);
+        animation: rotate-section-title-shadow 15s infinite linear;
+        z-index: -1;
     }
-
-        &::after {
-            content: var(--dhbw-logo);
-            position: absolute;
-            top: 0px;
-            right: 0px;
-            scale: 0.50;
-            translate: 100px -55px;
-        }
-    
 }
 
 @keyframes rotate-section-title-shadow {

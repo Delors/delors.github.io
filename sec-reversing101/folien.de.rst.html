@@ -218,21 +218,21 @@
 </div>
 </div><div class="ld-slide" id="rechtliche-aspekte-des-reverse-engineering">
 <h2>Rechtliche Aspekte des Reverse Engineering</h2>
-<ul class="incremental">
-<li><p></p>
 <aside class="admonition caution">
 <p class="admonition-title">Vorsicht!</p>
 <p>Die Gesetzgebungen unterscheiden sich von Land zu Land teils signifikant.</p>
 </aside>
-</li>
+<ul class="incremental simple">
 <li><p>Die Rechtslage hat sich in Deutschland mehrfach geändert.</p></li>
 <li><p>Umgehung von Kopierschutzmechanismen ist im Allgemeinen verboten.</p></li>
-<li><p>Lizenz verbietet das Reverse Engineering häufig!</p></li>
+<li><p>Lizenzen verbieten das Reverse Engineering häufig; es stellt sich aber die Frage nach der Rechtmäßigkeit der Klauseln.</p></li>
 </ul>
+<div class="center-child-elements docutils container">
 <aside class="admonition incremental warning">
 <p class="admonition-title">Warnung</p>
 <p>Bevor Sie Reverse Engineering von Systemen betreiben, erkundigen sie sich erst über mögliche rechtliche Konsequenzen.</p>
 </aside>
+</div>
 </div><div class="new-section transition-scale ld-slide" id="software-reverse-engineering">
 <h2>Software Reverse Engineering</h2>
 </div><div class="ld-slide" id="ansatze">
@@ -330,8 +330,10 @@
 <p>Mittels solcher Werkzeuge ist es möglich die Ausführung von Hardware Schritt für Schritt (<span class="eng">single step mode`</span>) zu verfolgen und den Zustand der Hardware (Speicher und Register) zu inspizieren. Dies erfordert jedoch häufig eine JTAG Schnittstelle oder etwas vergleichbares.</p>
 </div></div><div class="new-section transition-fade ld-slide" id="erschwerung-des-reverse-engineering">
 <h2>Erschwerung des Reverse Engineering</h2>
-</div><div class="ld-slide" id="obfuscation-verschleierung">
+</div><div class="new-subsection ld-slide" id="obfuscation-verschleierung">
 <h2>Obfuscation (<span class="ger">Verschleierung</span>)</h2>
+</div><div class="ld-slide" id="obfuscation-fur-menschen-unverstandlich-code">
+<h2>Obfuscation → für Menschen unverständlich Code</h2>
 <ul class="incremental scrollable simple">
 <li><p>Techniken, die dazu dienen das Reverse Engineering zu erschweren.</p></li>
 <li><p>Häufig eingesetzt ...</p>
@@ -366,12 +368,12 @@
 <li><p>Das Kürzen aller möglichen Namen (insbesondere Methoden und Klassennamen).</p></li>
 <li><p>Das Verschleiern von Konstanten durch den Einsatz vermeintlich komplexer Berechnungen zu deren Initialisierung.</p>
 <blockquote>
-<pre class="code java literal-block"><code><span class="operator">~</span><span class="punctuation">(((</span><span class="keyword type">int</span><span class="punctuation">)</span><span class="name">Math</span><span class="punctuation">.</span><span class="name attribute">PI</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">^</span><span class="whitespace"> </span><span class="name">Integer</span><span class="punctuation">.</span><span class="name attribute">MAX_VALUE</span><span class="whitespace"> </span><span class="operator">&gt;&gt;</span><span class="whitespace"> </span><span class="literal number integer">16</span><span class="punctuation">)</span><span class="operator">+</span><span class="name">Short</span><span class="punctuation">.</span><span class="name attribute">MAX_VALUE</span></code></pre>
+<pre class="code java copy-to-clipboard literal-block"><code><span class="operator">~</span><span class="punctuation">(((</span><span class="keyword type">int</span><span class="punctuation">)</span><span class="name">Math</span><span class="punctuation">.</span><span class="name attribute">PI</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">^</span><span class="whitespace"> </span><span class="name">Integer</span><span class="punctuation">.</span><span class="name attribute">MAX_VALUE</span><span class="whitespace"> </span><span class="operator">&gt;&gt;</span><span class="whitespace"> </span><span class="literal number integer">16</span><span class="punctuation">)</span><span class="operator">+</span><span class="name">Short</span><span class="punctuation">.</span><span class="name attribute">MAX_VALUE</span></code></pre>
 <pre class="code java incremental literal-block"><code><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">2</span></code></pre>
 </blockquote>
 </li>
 <li><p>Die Verwendung von Unicode Codepoints für Strings oder die Verschleierung von Strings mittels <a class="reference external" href="https://cryptii.com/pipes/rot13-decoder">rot13</a> Verschlüsselung.</p>
-<pre class="code C literal-block"><code><span class="comment multiline">/* ??? */</span><span class="whitespace"> </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;</span><span class="literal string escape">\x48</span><span class="literal string">&quot;&quot;e</span><span class="literal string escape">\154</span><span class="literal string">l</span><span class="literal string escape">\x6F</span><span class="literal string">&quot;&quot; </span><span class="literal string escape">\127</span><span class="literal string">o</span><span class="literal string escape">\x72</span><span class="literal string">&quot;&quot;l</span><span class="literal string escape">\144</span><span class="literal string">!&quot;</span><span class="punctuation">);</span></code></pre>
+<pre class="code C copy-to-clipboard literal-block"><code><span class="whitespace"> </span><span class="comment multiline">/* ??? */</span><span class="whitespace"> </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;</span><span class="literal string escape">\x48</span><span class="literal string">&quot;&quot;e</span><span class="literal string escape">\154</span><span class="literal string">l</span><span class="literal string escape">\x6F</span><span class="literal string">&quot;&quot; </span><span class="literal string escape">\127</span><span class="literal string">o</span><span class="literal string escape">\x72</span><span class="literal string">&quot;&quot;l</span><span class="literal string escape">\144</span><span class="literal string">!&quot;</span><span class="punctuation">);</span></code></pre>
 <pre class="code C incremental literal-block"><code><span class="comment multiline">/*  =  */</span><span class="whitespace"> </span><span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Hello World!&quot;</span><span class="punctuation">);</span></code></pre>
 </li>
 <li><p>Das Umstellen von Instruktionen, um das Dekompilieren zu erschweren.</p></li>
@@ -387,7 +389,100 @@
 <p><strong>Verschleierung von Strings</strong></p>
 <p>Das Verschleiern von Strings kann insbesondere das Reversen von Binärcode erschweren, da ein Angreifer häufig <span class="ger-quote">nur</span> an einer ganz bestimmten Funktionalität interessiert ist und dann Strings ggf. einen sehr guten Einstiegspunkt für die weitergehende Analyse bieten.</p>
 <p>Stellen Sie sich eine komplexe Java Anwendung vor, in der alle Namen von Klassen, Methoden und Attributen durch einzelne oder kurze Sequenzen von Buchstaben ersetzt wurden und sie suchen danach wie von der Anwendung Passworte verarbeitet werden. Handelt es sich um eine GUI Anwendung, dann wäre zum Beispiel die Suche nach Text, der in den Dialogen vorkommt (z. B. <span class="docutils literal">&quot;Password&quot;</span>) z. B. ein sehr guter Einstiegspunkt.</p>
-</div></div><div class="new-section transition-fade ld-slide" id="eine-sehr-kurz-einfuhrung-in-java-bytecode">
+</div></div><div class="new-subsection ld-slide" id="verschlusselung-von-bytecode-und-java-class-loader">
+<h2>Verschlüsselung von Bytecode und Java Class Loader</h2>
+</div><div class="ld-slide" id="classloader">
+<h2><span class="docutils literal">ClassLoader</span></h2>
+<ul class="incremental list-with-explanations">
+<li><p><span class="docutils literal">ClassLoader</span> dienen dazu Klassen dynamisch zu laden. D. h. eine Klasse wird erst dann von der JVM geladen, wenn sie benötigt bzw. angefordert wird.</p></li>
+<li><p>Jeder <span class="docutils literal">ClassLoader</span> spannt seinen eigenen Namensraum auf.</p>
+<p>Zwei Instanzen der gleichen Klasse (d. h. mit dem selben Bytecode) sind nicht gleich (Referenzgleichheit), wenn zwei verschiedene <span class="docutils literal">ClassLoader</span> genutzt wurden.</p>
+</li>
+<li><p><span class="docutils literal">ClassLoader</span> stehen in einer Hierarchie.</p></li>
+<li><p><span class="docutils literal">ClassLoader</span> können genutzt werden, um:</p>
+<ul class="simple">
+<li><p>ein Programm dynamisch zu erweitern (Plug-ins</p></li>
+<li><p>um Klassen zu laden, die zur Laufzeit generiert wurden</p></li>
+<li><p>um den Bytecode zu manipulieren, bevor er von der JVM ausgeführt wird.</p></li>
+</ul>
+</li>
+</ul>
+</div><div class="ld-slide" id="ein-eigener-classloader">
+<h2>Ein eigener ClassLoader</h2>
+<pre class="code Java copy-to-clipboard far-smaller literal-block"><code><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">MyClassLoader</span><span class="whitespace"> </span><span class="keyword declaration">extends</span><span class="whitespace"> </span><span class="name">ClassLoader</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">MyClassLoader</span><span class="punctuation">(</span><span class="name">ClassLoader</span><span class="whitespace"> </span><span class="name">parent</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword declaration">super</span><span class="punctuation">(</span><span class="name">parent</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+
+  </span><span class="name decorator">&#64;Override</span><span class="whitespace">
+  </span><span class="keyword declaration">protected</span><span class="whitespace"> </span><span class="name">Class</span><span class="operator">&lt;?&gt;</span><span class="whitespace"> </span><span class="name">findClass</span><span class="punctuation">(</span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="name">String</span><span class="whitespace"> </span><span class="name">name</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">ClassNotFoundException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+    </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">in</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword declaration">super</span><span class="punctuation">.</span><span class="name attribute">getResourceAsStream</span><span class="punctuation">(</span><span class="name">name</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+      </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">classBytes</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="keyword type">byte</span><span class="operator">[</span><span class="name">in</span><span class="punctuation">.</span><span class="name attribute">available</span><span class="punctuation">()</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
+      </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">readBytes</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">in</span><span class="punctuation">.</span><span class="name attribute">read</span><span class="punctuation">(</span><span class="name">classBytes</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">readBytes</span><span class="whitespace"> </span><span class="operator">!=</span><span class="whitespace"> </span><span class="name">classBytes</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+         </span><span class="keyword">throw</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">IOException</span><span class="punctuation">(</span><span class="literal string">&quot;failed reading class file: &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">name</span><span class="punctuation">);</span><span class="whitespace">
+      </span><span class="punctuation">}</span><span class="whitespace">
+      </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">defineClass</span><span class="punctuation">(</span><span class="name">name</span><span class="punctuation">,</span><span class="name">classBytes</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">classBytes</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">catch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">IOException</span><span class="whitespace"> </span><span class="name">ioe</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+       </span><span class="keyword">throw</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">ClassNotFoundException</span><span class="punctuation">(</span><span class="literal string">&quot;failed loading &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">name</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">ioe</span><span class="punctuation">);</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace">
+  </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div><div class="ld-slide" id="classloading-example">
+<h2>ClassLoading - Example</h2>
+<div class="scrollable docutils container">
+<p class="rubric">Ein Singleton</p>
+<pre class="code Java copy-to-clipboard smaller literal-block"><code><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">MySingleton</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+
+    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="name">MySingleton</span><span class="whitespace"> </span><span class="name">instance</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name function">MySingleton</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{}</span><span class="whitespace">
+
+    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword declaration">synchronized</span><span class="whitespace"> </span><span class="name">MySingleton</span><span class="whitespace"> </span><span class="name function">instance</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">instance</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">instance</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">MySingleton</span><span class="punctuation">();</span><span class="whitespace">
+        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">instance</span><span class="punctuation">;</span><span class="whitespace">
+    </span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+<div class="incremental docutils container">
+<p class="rubric">Gleichheit von Instanzen</p>
+<pre class="code Java copy-to-clipboard smaller literal-block"><code><span class="name">Object</span><span class="whitespace"> </span><span class="name">a</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">MySingleton</span><span class="punctuation">.</span><span class="name attribute">instance</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="name">Object</span><span class="whitespace"> </span><span class="name">b</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">MySingleton</span><span class="punctuation">.</span><span class="name attribute">instance</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">a</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">b</span><span class="punctuation">);</span></code></pre>
+<pre class="code Text literal-block"><code>Ergebnis: true</code></pre>
+</div>
+<div class="incremental docutils container">
+<p class="rubric">Verwendung des SystemClassLoader</p>
+<pre class="code Java copy-to-clipboard smaller literal-block"><code><span class="name">ClassLoader</span><span class="whitespace"> </span><span class="name">cl1</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">ClassLoader</span><span class="punctuation">.</span><span class="name attribute">getSystemClassLoader</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="name">Class</span><span class="operator">&lt;?&gt;</span><span class="whitespace"> </span><span class="name">clazz1</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">cl1</span><span class="punctuation">.</span><span class="name attribute">loadClass</span><span class="punctuation">(</span><span class="literal string">&quot;demo.MySingleton&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">Object</span><span class="whitespace"> </span><span class="name">a</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">clazz1</span><span class="whitespace">
+    </span><span class="punctuation">.</span><span class="name attribute">getDeclaredMethod</span><span class="punctuation">(</span><span class="literal string">&quot;instance&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Class</span><span class="operator">&lt;?&gt;[]</span><span class="whitespace"> </span><span class="punctuation">{})</span><span class="whitespace">
+    </span><span class="punctuation">.</span><span class="name attribute">invoke</span><span class="punctuation">(</span><span class="keyword constant">null</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">ClassLoader</span><span class="whitespace"> </span><span class="name">cl2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">ClassLoader</span><span class="punctuation">.</span><span class="name attribute">getSystemClassLoader</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="name">Class</span><span class="operator">&lt;?&gt;</span><span class="whitespace"> </span><span class="name">clazz2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">cl2</span><span class="punctuation">.</span><span class="name attribute">loadClass</span><span class="punctuation">(</span><span class="literal string">&quot;demo.MySingleton&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">Object</span><span class="whitespace"> </span><span class="name">b</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">clazz2</span><span class="whitespace">
+    </span><span class="punctuation">.</span><span class="name attribute">getDeclaredMethod</span><span class="punctuation">(</span><span class="literal string">&quot;instance&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Class</span><span class="operator">&lt;?&gt;[]</span><span class="whitespace"> </span><span class="punctuation">{})</span><span class="whitespace">
+    </span><span class="punctuation">.</span><span class="name attribute">invoke</span><span class="punctuation">(</span><span class="keyword constant">null</span><span class="punctuation">);</span><span class="whitespace">
+
+</span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">a</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">b</span><span class="punctuation">);</span></code></pre>
+<pre class="code Text literal-block"><code>Ergebnis: true</code></pre>
+</div>
+<div class="incremental docutils container">
+<p class="rubric">Verwendung von zwei Instanzen von MyClassLoader</p>
+<pre class="code Java copy-to-clipboard smaller literal-block"><code><span class="name">ClassLoader</span><span class="whitespace"> </span><span class="name">cl1</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">MyClassLoader</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="name">Class</span><span class="operator">&lt;?&gt;</span><span class="whitespace"> </span><span class="name">clazz1</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">cl1</span><span class="punctuation">.</span><span class="name attribute">loadClass</span><span class="punctuation">(</span><span class="literal string">&quot;demo.MySingleton&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">Object</span><span class="whitespace"> </span><span class="name">a</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">clazz1</span><span class="whitespace">
+    </span><span class="punctuation">.</span><span class="name attribute">getDeclaredMethod</span><span class="punctuation">(</span><span class="literal string">&quot;instance&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Class</span><span class="operator">&lt;?&gt;[]</span><span class="whitespace"> </span><span class="punctuation">{})</span><span class="whitespace">
+        </span><span class="punctuation">.</span><span class="name attribute">invoke</span><span class="punctuation">(</span><span class="keyword constant">null</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">ClassLoaderacl2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">MyClassLoader</span><span class="punctuation">();</span><span class="whitespace">
+</span><span class="name">Class</span><span class="operator">&lt;?&gt;</span><span class="whitespace"> </span><span class="name">clazz2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">cl2</span><span class="punctuation">.</span><span class="name attribute">loadClass</span><span class="punctuation">(</span><span class="literal string">&quot;demo.MySingleton&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span><span class="name">Object</span><span class="whitespace"> </span><span class="name">b</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">clazz2</span><span class="whitespace">
+    </span><span class="punctuation">.</span><span class="name attribute">getDeclaredMethod</span><span class="punctuation">(</span><span class="literal string">&quot;instance&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Class</span><span class="operator">&lt;?&gt;[]</span><span class="whitespace"> </span><span class="punctuation">{})</span><span class="whitespace">
+        </span><span class="punctuation">.</span><span class="name attribute">invoke</span><span class="punctuation">(</span><span class="keyword constant">null</span><span class="punctuation">);</span><span class="whitespace">
+
+</span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">a</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">b</span><span class="punctuation">);</span></code></pre>
+<div class="incremental docutils container">
+<pre class="code Text literal-block"><code>Ergebnis: False</code></pre>
+</div>
+</div>
+</div>
+</div><div class="new-section transition-fade ld-slide" id="eine-sehr-kurz-einfuhrung-in-java-bytecode">
 <h2>Eine sehr kurz Einführung in Java Bytecode</h2>
 </div><div class="ld-slide" id="die-java-virtual-machine">
 <h2>Die Java Virtual Machine</h2>
@@ -456,7 +551,7 @@ Anschließend werden alle Parameter in aufeinanderfolgenden lokalen Variablen ü
     </span><span class="literal number integer">0</span><span class="whitespace">  </span><span class="name">aload_0</span><span class="whitespace"> </span><span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span><span class="whitespace">
     </span><span class="literal number integer">1</span><span class="whitespace">  </span><span class="name">invokespecial</span><span class="whitespace"> </span><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">Object</span><span class="punctuation">()</span><span class="whitespace">
     </span><span class="literal number integer">4</span><span class="whitespace">  </span><span class="keyword">return</span></code></pre>
-<p>Die Zeilennummern und die Informationen über die lokalen Variablen ist optional und wird nur für Debugging Zwecke benötigt.</p>
+<p>Die Zeilennummern und die Informationen über die lokalen Variablen sind optional und werden nur für Debugging Zwecke benötigt.</p>
 <pre class="code java literal-block"><code><span class="name">Line</span><span class="whitespace"> </span><span class="name">numbers</span><span class="punctuation">:</span><span class="whitespace">         </span><span class="operator">[</span><span class="name">pc</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">line</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">9</span><span class="operator">]</span><span class="whitespace">
 </span><span class="name">Local</span><span class="whitespace"> </span><span class="name">variable</span><span class="whitespace"> </span><span class="name">table</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="operator">[</span><span class="name">pc</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">pc</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">5</span><span class="operator">]</span><span class="whitespace">  </span><span class="name">local</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="keyword">this</span><span class="whitespace">
                                       </span><span class="name">index</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace">
