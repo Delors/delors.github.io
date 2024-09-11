@@ -34,22 +34,18 @@
 <dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.0</dd>
+<dd class="version">1.1</dd>
 <dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
 </dl>
 <div class="supplemental">
 <dl class="field-list simple">
-<dt>Folien<span class="colon">:</span></dt>
-<dd><dl class="field-list simple">
-<dt>HTML<span class="colon">:</span></dt>
+<dt>HTML [normativ]<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://delors.github.io/sec-blockchiffre/folien.de.rst.html">https://delors.github.io/sec-blockchiffre/folien.de.rst.html</a></p>
 </dd>
 <dt>PDF<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://delors.github.io/sec-blockchiffre/folien.de.rst.html.pdf">https://delors.github.io/sec-blockchiffre/folien.de.rst.html.pdf</a></p>
-</dd>
-</dl>
 </dd>
 <dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
@@ -100,9 +96,9 @@
 <h2>Blockchiffre</h2>
 <ul class="incremental simple">
 <li><p>Ein Klartextblock wird als Ganzes behandelt und verwendet, um einen gleich langen Chiffretextblock zu erzeugen.</p></li>
-<li><p>In der Regel wird eine Blockgröße von 64 oder 128 Bit verwendet.</p></li>
-<li><p>Wie bei einer Stromchiffre teilen sich die beiden Benutzer einen symmetrischen Chiffrierschlüssel.</p></li>
-<li><p>Die meisten netzbasierten Anwendungen, die auf symmetrische Verschlüsselung setzen, verwenden Blockchiffren.</p></li>
+<li><p>In der Regel wird eine Blockgröße von 64 (8 Byte) oder 128 Bit (16 Byte) verwendet.</p></li>
+<li><p>Wie bei einer Stromchiffre <em>teilen sich die beiden Benutzer einen symmetrischen Chiffrierschlüssel</em>.</p></li>
+<li><p>Viele netzbasierte Anwendungen, die auf symmetrische Verschlüsselung setzen, verwenden Blockchiffren.</p></li>
 </ul>
 </div><div class="ld-slide" id="stromchiffre-vs-blockchiffre">
 <h2>Stromchiffre vs. Blockchiffre</h2>
@@ -111,7 +107,9 @@
 </div><div class="ld-slide" id="allgemeine-n-bit-n-bit-blocksubstitution-n-4">
 <h2>Allgemeine n-Bit-n-Bit-Blocksubstitution (n = 4)</h2>
 <img alt="drawings/chiffren/4-bit_block_substitution.svg" class="align-center" src="drawings/chiffren/4-bit_block_substitution.svg" style="width: 1400px;" />
-</div><div class="ld-slide" id="verschlusselungs-und-entschlusselungstabelle-fur-eine-substitutions-chiffre">
+<div class="supplemental">
+<p>Mittels 4 Bit können <span class="math">\(16\)</span> verschiedene Werte dargestellt werden (<span class="math">\([0,15]\)</span>). Je nach Wert der Eingabe wird ein anderer Wert ausgegeben. Die Zuordnung ist der Grafik zu entnehmen.</p>
+</div></div><div class="ld-slide" id="verschlusselungs-und-entschlusselungstabelle-fur-eine-substitutions-chiffre">
 <h2>Verschlüsselungs- und Entschlüsselungstabelle für eine Substitutions-Chiffre</h2>
 <p><strong>Verschlüsselungstabelle</strong></p>
 <table class="align-center smallest highlight-cell-on-hover">
@@ -227,7 +225,7 @@
 <li><p>Die statistische Struktur des Klartextes wird in weitreichende Statistiken des Chiffretextes überführt, d. h. die statistische Beziehung zwischen Klartext und Chiffretext wird so komplex wie möglich.</p></li>
 </ul>
 <ul class="incremental list-with-explanations">
-<li><p>Dies wird dadurch erreicht, dass jede Klartextziffer <em>den Wert</em> <strong>vieler</strong> <em>Chiffretextziffern</em> beeinflusst.</p>
+<li><p>Dies wird dadurch erreicht, dass jede Klartextziffer(bzw. -zeichen) den Wert vieler Chiffretextziffern (bzw. -zeichen) beeinflusst.</p>
 <p>(<span class="ger-quote">Lawineneffekt</span>)</p>
 </li>
 <li><p>Die Diffusion kann z. B. durch <em>Permutationen</em> erreicht werden.</p></li>
@@ -245,16 +243,37 @@
 <h2>Feistel-Chiffre - Verschlüsselung und Entschlüsselung</h2>
 <div class="two-columns no-default-width docutils container">
 <div class="column no-separator docutils container">
-<p><span class="bold">Feistel-Chiffre</span></p>
-<p><span class="smaller">Verschlüsselung und Entschlüsselung</span></p>
+<p class="rubric">Feistel-Chiffre</p>
+<p>Verschlüsselung und Entschlüsselung</p>
+<!-- TODO add concept of admonition::Legende -->
+<div class="far-far-smaller dhbw-gray-background white padding-1em rounded-corners docutils container">
+<p><strong>Legende</strong></p>
+<p><span class="math">\(K_x\)</span> - Schlüssel der <span class="math">\(x\)</span>-ten Runde</p>
+<p><span class="math">\(L_{x-1}\)</span> - linke Hälfte des Eingabeblocks der <span class="math">\(x\)</span>-ten Runde</p>
+<p><span class="math">\(R_{x-1}\)</span> - rechte Hälfte des Eingabeblocks der <span class="math">\(x\)</span>-ten Runde</p>
+<p><span class="math">\(f\)</span> - Rundenfunktion</p>
+<p><span class="math">\(\oplus\)</span> - XOR-Operation</p>
+</div>
 </div>
 <div class="width-100 docutils container">
 <img alt="drawings/feistel/design.svg" class="align-center" src="drawings/feistel/design.svg" style="height: 1150px;" />
 </div>
 </div>
-</div><div class="ld-slide" id="feistel-chiffre-beispiel">
+<div class="supplemental">
+<p class="rubric">Swap</p>
+<p>Die Verwendung des Swaps am Ende ist notwendig, damit die Verschlüsselung und Entschlüsselung identisch sind; d. h. der selbe Algorithmus kann verwendet werden.</p>
+<img alt="drawings/feistel/one_round_and_swap.svg" class="align-center" src="drawings/feistel/one_round_and_swap.svg" style="width: 90%;" />
+<p>Wird der Swap am Ende nicht durchgeführt, würde die Entschlüsselung nicht funktionieren, wie am folgenden Beispiel mit nur einer Runde zu sehen ist:</p>
+<img alt="drawings/feistel/one_round_no_swap.svg" class="align-center" src="drawings/feistel/one_round_no_swap.svg" style="width: 90%;" />
+<p>Ein alternatives Design wäre es beim Verschlüsseln auf den finalen Tausch zu verzichten und stattdessen beim Entschlüsseln initial einen Tausch durchzuführen — zusätzlich zum finalen Tausch. Dieses Design wird jedoch nicht verwendet, da es die Implementierung komplizierter macht.</p>
+</div></div><div class="ld-slide" id="feistel-chiffre-beispiel">
 <h2>Feistel Chiffre - Beispiel</h2>
 <img alt="drawings/feistel/example.svg" class="align-center" src="drawings/feistel/example.svg" style="width: 100%;" />
+<div class="far-smaller docutils container">
+<p class="rubric">Zur Erinnerung</p>
+<pre class="literal-block">[F(03A6,12DE52) ⊕ DE7F] ⊕ F(03A6,12DE52) =
+ F(03A6,12DE52) ⊕ F(03A6,12DE52) ⊕ DE7F  = DE7F</pre>
+</div>
 </div><div class="ld-slide" id="feistel-chiffre-eigenschaften">
 <h2>Feistel Chiffre - Eigenschaften</h2>
 <div class="stack">
@@ -302,30 +321,229 @@
 </li>
 </ul>
 <div class="supplemental">
-<p>Bei DES enthält ein 64 Bit langer Schlüssel 8 Paritätsbits, die zur Überprüfung der Schlüsselübertragung verwendet werden.
-Die 8 Paritätsbits werden dann aus dem 64-Bit-Schlüssel entfernt. Somit ist die effektive Schlüssellänge 56 Bit.</p>
+<p>Bei DES enthält ein 64 Bit langer Schlüssel 8 Paritätsbits, die zur Überprüfung der Schlüsselübertragung verwendet werden.</p>
+<p>Die 8 Paritätsbits werden dann aus dem 64-Bit-Schlüssel entfernt. Somit ist die effektive Schlüssellänge 56 Bit. Diese Operation wurde oft als explizite Schwächung des Algorithmus kritisiert, da die Sinnhaftigkeit der Paritätsbits in Frage gestellt wurde.</p>
+<p>Diese Verkürzung hat dazu geführt, dass bereits im Jahre 1998 die <a class="reference external" href="https://de.wikipedia.org/wiki/Electronic_Frontier_Foundation">EFF</a> einen DES-Schlüssel in weniger als 3 Tagen durch einfachen <em>Brute Force</em> ermitteln konnte. D. h. der Algorithmus an sich wurde nicht gebrochen!</p>
 </div></div><div class="ld-slide" id="des-design">
-<h2>DES - Design</h2>
+<h2>DES: Design</h2>
 <img alt="drawings/des/design.svg" class="align-center" src="drawings/des/design.svg" style="width: 1200px;" />
-</div><div class="ld-slide" id="des-rundenfunktion-f">
-<h2>DES Rundenfunktion (<span class="ger-quote">F</span>)</h2>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Permuted Choice 1<span class="colon">:</span></dt>
+<dd><p>Permutation und Selektion (d. h. Entfernung der Paritätsbits) der 56 (Schlüssel-)bits</p>
+<table class="monospaced far-far-smaller">
+<tbody>
+<tr><td><p>57</p></td>
+<td><p>49</p></td>
+<td><p>41</p></td>
+<td><p>33</p></td>
+<td><p>25</p></td>
+<td><p>17</p></td>
+<td><p>9</p></td>
+</tr>
+<tr><td><p>1</p></td>
+<td><p>58</p></td>
+<td><p>50</p></td>
+<td><p>42</p></td>
+<td><p>34</p></td>
+<td><p>26</p></td>
+<td><p>18</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>2</p></td>
+<td><p>59</p></td>
+<td><p>51</p></td>
+<td><p>43</p></td>
+<td><p>35</p></td>
+<td><p>27</p></td>
+</tr>
+<tr><td><p>19</p></td>
+<td><p>11</p></td>
+<td><p>3</p></td>
+<td><p>60</p></td>
+<td><p>52</p></td>
+<td><p>44</p></td>
+<td><p>36</p></td>
+</tr>
+<tr><td><p>63</p></td>
+<td><p>55</p></td>
+<td><p>47</p></td>
+<td><p>39</p></td>
+<td><p>31</p></td>
+<td><p>23</p></td>
+<td><p>15</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>62</p></td>
+<td><p>54</p></td>
+<td><p>46</p></td>
+<td><p>38</p></td>
+<td><p>30</p></td>
+<td><p>22</p></td>
+</tr>
+<tr><td><p>14</p></td>
+<td><p>6</p></td>
+<td><p>61</p></td>
+<td><p>53</p></td>
+<td><p>45</p></td>
+<td><p>37</p></td>
+<td><p>29</p></td>
+</tr>
+<tr><td><p>21</p></td>
+<td><p>13</p></td>
+<td><p>5</p></td>
+<td><p>28</p></td>
+<td><p>20</p></td>
+<td><p>12</p></td>
+<td><p>4</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>&lt;&lt;&lt;<span class="colon">:</span></dt>
+<dd><p>Rotation der Schlüsselbits</p>
+<table class="monospaced far-far-smaller">
+<thead>
+<tr><th class="head"><p>Iteration</p></th>
+<th class="head"><p>Anzahl der Linksverschiebungen</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>1</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>1</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>11</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>12</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>13</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>14</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>15</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>16</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Permuted Choice 2<span class="colon">:</span></dt>
+<dd><p>Auswahl der 48 zur Verschlüsselung zu verwendenden Bits aus den 56 Eingabebits</p>
+<table class="monospaced far-far-smaller">
+<tbody>
+<tr><td><p>14</p></td>
+<td><p>17</p></td>
+<td><p>11</p></td>
+<td><p>24</p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>28</p></td>
+<td><p>15</p></td>
+<td><p>6</p></td>
+<td><p>21</p></td>
+<td><p>10</p></td>
+</tr>
+<tr><td><p>23</p></td>
+<td><p>19</p></td>
+<td><p>12</p></td>
+<td><p>4</p></td>
+<td><p>26</p></td>
+<td><p>8</p></td>
+</tr>
+<tr><td><p>16</p></td>
+<td><p>7</p></td>
+<td><p>27</p></td>
+<td><p>20</p></td>
+<td><p>13</p></td>
+<td><p>2</p></td>
+</tr>
+<tr><td><p>41</p></td>
+<td><p>52</p></td>
+<td><p>31</p></td>
+<td><p>37</p></td>
+<td><p>47</p></td>
+<td><p>55</p></td>
+</tr>
+<tr><td><p>30</p></td>
+<td><p>40</p></td>
+<td><p>51</p></td>
+<td><p>45</p></td>
+<td><p>33</p></td>
+<td><p>48</p></td>
+</tr>
+<tr><td><p>44</p></td>
+<td><p>49</p></td>
+<td><p>39</p></td>
+<td><p>56</p></td>
+<td><p>34</p></td>
+<td><p>53</p></td>
+</tr>
+<tr><td><p>46</p></td>
+<td><p>42</p></td>
+<td><p>50</p></td>
+<td><p>36</p></td>
+<td><p>29</p></td>
+<td><p>32</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div></div><div class="ld-slide" id="des-rundenfunktion-f">
+<h2>DES: Rundenfunktion (<span class="ger-quote">F</span>)</h2>
+<!-- TODO add .. caption :: (dt. Legende) -->
 <div class="note small width-40 docutils container">
 <p><strong>Legende</strong></p>
-<p>R ist die rechte Hälfte der Nachricht.</p>
-<p>E ist eine Expansionsfunktion.</p>
-<p>S sind Substitutionsboxen.</p>
-<p>P ist eine Permutation.</p>
+<p>R - rechte Hälfte der Nachricht</p>
+<p>E - Expansionsfunktion</p>
+<p>S - Substitutionsboxen</p>
+<p>P - Permutation.</p>
 </div>
 <img alt="drawings/des/round_function.svg" class="align-left" src="drawings/des/round_function.svg" style="width: 840px;" />
 </div><div class="vertical-title ld-slide" id="des-beispiel">
-<h2>DES Beispiel</h2>
+<h2>DES: Beispiel</h2>
 <div class="width-100 docutils container">
-<table class="align-center footnotesize monospaced highlight-line-on-hover">
+<table class="align-center far-smaller monospaced highlight-line-on-hover">
 <tbody>
 <tr><td><p>Round</p></td>
-<td><p>Ki</p></td>
-<td><p>Li</p></td>
-<td><p>Ri</p></td>
+<td><p><span class="math">\(Ki\)</span></p></td>
+<td><p><span class="math">\(Li\)</span></p></td>
+<td><p><span class="math">\(Ri\)</span></p></td>
 </tr>
 <tr><td><p>IP</p></td>
 <td></td>
@@ -420,8 +638,36 @@ Die 8 Paritätsbits werden dann aus dem 64-Bit-Schlüssel entfernt. Somit ist di
 </tbody>
 </table>
 </div>
-<div class="margin-left-1em docutils container">
-<p>DES-Unterschlüssel werden als acht 6-Bit-Werte im Hexadezimalformat angezeigt (der Höchstwert für <span class="math">\(k_i\)</span> ist <span class="math">\(2^6-1=63=0x3F\)</span>)</p>
+<div class="margin-left-1em far-smaller docutils container">
+<p>DES-Unterschlüssel werden als acht 6-Bit-Werte im Hexadezimalformat angezeigt.</p>
+<p>Der Höchstwert für einen Wert von <span class="math">\(k_i\)</span> ist somit <span class="math">\(2^6-1=63=0x3F\)</span>.</p>
+<p class="rubric">Beispiel - <span class="math">\(k_1\)</span></p>
+<table class="align-center far-smaller monospaced highlight-cell-on-hover">
+<thead>
+<tr><th class="head"><p>Index</p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>2</p></th>
+<th class="head"><p>3</p></th>
+<th class="head"><p>4</p></th>
+<th class="head"><p>5</p></th>
+<th class="head"><p>6</p></th>
+<th class="head"><p>7</p></th>
+<th class="head"><p>8</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Wert</p></td>
+<td><p>1e</p></td>
+<td><p>03</p></td>
+<td><p>0f</p></td>
+<td><p>03</p></td>
+<td><p>08</p></td>
+<td><p>0d</p></td>
+<td><p>29</p></td>
+<td><p>30</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div><div class="vertical-title smaller ld-slide" id="lawineneffekt-in-des">
 <h2>Lawineneffekt in DES</h2>
@@ -434,6 +680,7 @@ Die 8 Paritätsbits werden dann aus dem 64-Bit-Schlüssel entfernt. Somit ist di
 <tr><th class="head"><p>Round</p></th>
 <th class="head"></th>
 <th class="head"><p>δ</p></th>
+<th class="head"></th>
 <th class="head"><p>Round</p></th>
 <th class="head"></th>
 <th class="head"><p>δ</p></th>
@@ -444,6 +691,7 @@ Die 8 Paritätsbits werden dann aus dem 64-Bit-Schlüssel entfernt. Somit ist di
 <td><p>02468aceeca86420
 12468aceeca86420</p></td>
 <td><p>1</p></td>
+<td></td>
 <td><p>9</p></td>
 <td><p>c11bfc09887fbc6c
 996911532eed7d94</p></td>
@@ -453,6 +701,7 @@ Die 8 Paritätsbits werden dann aus dem 64-Bit-Schlüssel entfernt. Somit ist di
 <td><p>3cf03c0fbad22845
 3cf03c0fbad32845</p></td>
 <td><p>1</p></td>
+<td></td>
 <td><p>10</p></td>
 <td><p>887fbc6c60017e8b
 2eed7d94d0f23094</p></td>
@@ -462,6 +711,7 @@ Die 8 Paritätsbits werden dann aus dem 64-Bit-Schlüssel entfernt. Somit ist di
 <td><p>bad2284599e9b723
 bad3284539a9b7a3</p></td>
 <td><p>5</p></td>
+<td></td>
 <td><p>11</p></td>
 <td><p>600f7e8bf596506e
 d0f23094455da9c4</p></td>
@@ -471,6 +721,7 @@ d0f23094455da9c4</p></td>
 <td><p>99e9b7230bae3b9e
 39a9b7a3171cb8b3</p></td>
 <td><p>18</p></td>
+<td></td>
 <td><p>12</p></td>
 <td><p>1596506e738538b8
 455da9c47f6e3cf3</p></td>
@@ -480,6 +731,7 @@ d0f23094455da9c4</p></td>
 <td><p>Obae3b9e42415649
 171cb8b3ccaca55e</p></td>
 <td><p>34</p></td>
+<td></td>
 <td><p>13</p></td>
 <td><p>738538b8c6a62c4e
 7f6e3cf34bc1a8d9</p></td>
@@ -489,6 +741,7 @@ d0f23094455da9c4</p></td>
 <td><p>4241564918b3fa41
 ccaca55ed16c3653</p></td>
 <td><p>37</p></td>
+<td></td>
 <td><p>14</p></td>
 <td><p>c6a62c4e56b0bd75
 4bc1a8d91e07d409</p></td>
@@ -498,6 +751,7 @@ ccaca55ed16c3653</p></td>
 <td><p>18b3fa419616fe23
 d16c3653cf402c68</p></td>
 <td><p>33</p></td>
+<td></td>
 <td><p>15</p></td>
 <td><p>56b0bd7575e8fd81
 1e07d4091ce2e6dc</p></td>
@@ -507,6 +761,7 @@ d16c3653cf402c68</p></td>
 <td><p>9616fe2367117cf2
 cf402c682b2cefbc</p></td>
 <td><p>32</p></td>
+<td></td>
 <td><p>16</p></td>
 <td><p>75e8fd8625896490
 1ce2e6dc365e5f59</p></td>
@@ -516,6 +771,7 @@ cf402c682b2cefbc</p></td>
 <td><p>67117cf2c11bfc09
 2b2cefbc99191153</p></td>
 <td><p>33</p></td>
+<td></td>
 <td><p>IP-1</p></td>
 <td><p>da02ce3a89ecac3b
 057cde97d7683f2a</p></td>
@@ -535,6 +791,7 @@ cf402c682b2cefbc</p></td>
 <tr><th class="head"><p>Round</p></th>
 <th class="head"></th>
 <th class="head"><p>δ</p></th>
+<th class="head"></th>
 <th class="head"><p>Round</p></th>
 <th class="head"></th>
 <th class="head"><p>δ</p></th>
@@ -545,6 +802,7 @@ cf402c682b2cefbc</p></td>
 <td><p>02468aceeca86420
 02468aceeca86420</p></td>
 <td><p>0</p></td>
+<td></td>
 <td><p>9</p></td>
 <td><p>c11bfe09887fbe6c
 548f1de471f64dfd</p></td>
@@ -554,6 +812,7 @@ cf402c682b2cefbc</p></td>
 <td><p>3cf03c0fbad22845
 3cf03c0f9ad628c5</p></td>
 <td><p>3</p></td>
+<td></td>
 <td><p>10</p></td>
 <td><p>8876be6c60067e8b
 71664dfd4279876c</p></td>
@@ -563,6 +822,7 @@ cf402c682b2cefbc</p></td>
 <td><p>bad2284599e9b723
 9ad628c59939136b</p></td>
 <td><p>11</p></td>
+<td></td>
 <td><p>11</p></td>
 <td><p>60017e8bf596506e
 4279876c399fdc0d</p></td>
@@ -572,6 +832,7 @@ cf402c682b2cefbc</p></td>
 <td><p>99e9b7230bae3b9e
 9939136676806767</p></td>
 <td><p>25</p></td>
+<td></td>
 <td><p>12</p></td>
 <td><p>f596506e738538b8
 399fde0d6d208dbb</p></td>
@@ -581,6 +842,7 @@ cf402c682b2cefbc</p></td>
 <td><p>Obae3b9e42415649
 768067b75a8807c5</p></td>
 <td><p>29</p></td>
+<td></td>
 <td><p>13</p></td>
 <td><p>738538b8c6a62c4e
 6d208dbbb9bdeeaa</p></td>
@@ -590,6 +852,7 @@ cf402c682b2cefbc</p></td>
 <td><p>4241564918b3fa41
 5a8807c5488bde94</p></td>
 <td><p>26</p></td>
+<td></td>
 <td><p>14</p></td>
 <td><p>c6a62c4e56b0bd75
 b9bdeeaad2c3a56f</p></td>
@@ -599,6 +862,7 @@ b9bdeeaad2c3a56f</p></td>
 <td><p>18b3fa419616fe23
 488dbe94aba7fe53</p></td>
 <td><p>26</p></td>
+<td></td>
 <td><p>15</p></td>
 <td><p>56b0bd7575e8fd8f
 d2c3a5612765c1fb</p></td>
@@ -608,6 +872,7 @@ d2c3a5612765c1fb</p></td>
 <td><p>9616fe2367117cf2
 aba7fe53177d21e4</p></td>
 <td><p>27</p></td>
+<td></td>
 <td><p>16</p></td>
 <td><p>75e8fd8f25896490
 2765c1fb01263dc4</p></td>
@@ -617,6 +882,7 @@ aba7fe53177d21e4</p></td>
 <td><p>67117cf2c11bfc09
 177d21e4548f1de4</p></td>
 <td><p>32</p></td>
+<td></td>
 <td><p>IP-1</p></td>
 <td><p>da02ce3a89ecac3b
 ee92b50606b6260b</p></td>
@@ -683,15 +949,15 @@ Entschlüsselungen/s</p></td>
 <li><p>Dabei wird die Tatsache ausgenutzt, dass ein Verschlüsselungs- oder Entschlüsselungsalgorithmus für verschiedene Eingaben oft leicht unterschiedliche Zeit benötigt.</p></li>
 <li><p>Bislang scheint es unwahrscheinlich, dass diese Technik jemals gegen DES oder leistungsfähigere symmetrische Chiffren wie Triple DES und AES erfolgreich sein wird.</p></li>
 </ul>
-</div><div class="ld-slide" id="entwurfsprinzipien-fur-blockchiffre-anzahl-der-runden">
-<h2>Entwurfsprinzipien für Blockchiffre - Anzahl der Runden</h2>
+</div><div class="ld-slide" id="entwurfsprinzipien-fur-blockchiffren-anzahl-der-runden">
+<h2>Entwurfsprinzipien für Blockchiffren - Anzahl der Runden</h2>
 <ul class="incremental simple">
 <li><p>Je größer die Anzahl der Runden ist, desto schwieriger ist es, eine Kryptoanalyse durchzuführen.</p></li>
 <li><p>Im Allgemeinen sollte das Kriterium sein, dass die Anzahl der Runden so gewählt wird, dass bekannte kryptoanalytische Bemühungen mehr Aufwand erfordern als ein einfacher Brute-Force-Schlüsselsuchangriff.</p></li>
 <li><p>Hätte DES 15 oder weniger Runden, würde die differentielle Kryptoanalyse weniger Aufwand erfordern als eine Brute-Force-Schlüsselsuche.</p></li>
 </ul>
-</div><div class="ld-slide" id="entwurfsprinzipien-fur-blockchiffre-funktion-f">
-<h2>Entwurfsprinzipien für Blockchiffre - Funktion F</h2>
+</div><div class="ld-slide" id="entwurfsprinzipien-fur-blockchiffren-funktion-f">
+<h2>Entwurfsprinzipien für Blockchiffren - Funktion F</h2>
 <ul class="incremental simple">
 <li><p>Das Herzstück einer Feistel-Blockchiffre ist die Funktion F.</p></li>
 <li><p>Je nichtlinearer F ist, desto schwieriger wird jede Art von Kryptoanalyse sein.</p></li>
@@ -790,7 +1056,7 @@ MTAwMDAw:swwzvP328oemu0C8ouaDFCfxaxCDqgEUuwuGNprkjzw=:ea5pSos6RlroicZP:LWcecyBBS
 <div class="supplemental">
 <p><strong>Hinweise</strong></p>
 <p>Kümmern Sie sich nicht um Nachrichten, die größer oder kleiner als die Blockgröße sind. Dies ist nicht notwendig, um die Auswirkungen von <span class="math">\(f\)</span> oder der Verwendung eines Rundenschlüssels zu verstehen. Kümmern Sie sich nicht um einen Schlüssel, der nicht die richtige Größe hat. D. h. verwenden Sie eine Nachricht und einen Schlüssel mit der entsprechenden Größe.</p>
-<p>Um die Austauschbarkeit der Funktion f zu erreichen können Sie je nach Sprache z. B. native Funktionen höherer Ordnung, einen Funktionszeiger oder ein Interface verwenden.</p>
+<p>Um die Austauschbarkeit der Funktion f zu erreichen, können Sie je nach Sprache z. B. native Funktionen höherer Ordnung, einen Funktionszeiger oder ein Interface verwenden.</p>
 </div></div><div class="integrated-exercise ld-slide" id="ubung-1">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Feistelchiffre Evaluieren" id="ld-exercise-2">
@@ -798,8 +1064,8 @@ MTAwMDAw:swwzvP328oemu0C8ouaDFCfxaxCDqgEUuwuGNprkjzw=:ea5pSos6RlroicZP:LWcecyBBS
 <ol class="arabic simple">
 <li><p>Was passiert, wenn f nur 0x00-Werte zurückgibt (unabhängig vom Rundenschlüssel)?</p></li>
 <li><p>Was passiert, wenn f nur 0x01-Werte zurückgibt (unabhängig vom Rundenschlüssel)?</p></li>
-<li><p>Was passiert, wenn f einfach die entsprechende Hälfte mit dem Ergebnis der Verschiebung des Schlüssels xor?</p></li>
-<li><p>Was passiert, wenn du deine Nachricht änderst? Testen Sie insbesondere, was passiert wenn die Nachricht nur aus 0x00 besteht (und Sie eine <span class="ger-quote">vernünftigere</span> f-Funktion verwenden.)</p></li>
+<li><p>Was passiert, wenn f einfach ein <em>xor</em> der entsprechende Hälfte mit dem Ergebnis der Verschiebung des Schlüssels durchführt?</p></li>
+<li><p>Was passiert, wenn man eine Nachricht ändert? Testen Sie insbesondere, was passiert wenn die Nachricht nur aus 0x00 besteht (und Sie eine <span class="ger-quote">vernünftigere</span> f-Funktion verwenden.)</p></li>
 <li><p>Was passiert, wenn du deinen Schlüssel änderst? Was passiert in extremen Fällen (z. B. wenn das Passwort nur aus &quot;0 &quot;s besteht?</p></li>
 </ol>
 <div class="ld-exercise-solution" data-encrypted="true">
