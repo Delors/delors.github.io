@@ -29,9 +29,13 @@ lectureDoc2.ldEvents.addEventListener(
                 timeline.replaceChildren(timelineElement);
                 console.log("timeline preprocessing completed: " + cssClass);
             } catch (error) {
-                console.error("Error processing timeline: " + error + " ( " + timeline.textContent + " )");
+                console.error(
+                    "processing timeline failed: " + 
+                    error + " ( " + timeline.textContent + " )"
+                );
             }
         });
-    });
+    }
+);
 
 
