@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-<meta name="exercises-passwords" content="MTAwMDAw:I25/XMNUjBx87lL9ysMUsKZFu5Yr8SrTf41sb3HUHeU=:CnAfj2dJs08PhD41:dE5liiEVjkS6oo+4/O/2LSs5522WU/NHv+gy+3fwHIF4A3lYtrooQ3YbzyFDuVnIc0SCJXrt0yAlhNuJD3Lk2RtYAwm5kdnOoOkq2Sn4AW8kXahFTr4Ro+HkFjUmBa7bvxZuVA3iTDxs/HFrIqIt9hId1Znf9sbdV2K/a3jLcMyfXAPu7BdUjOzLCMb6rbY9GFXc+MWbO53H2h/YgRUndGD9TrBT5M7Z1Br7IPDLMMcmToxA3OMuL07C4ljqbLXqQwDpphJzMrjEWxg0qOjAVuCQlUo/4kz0isSe6UmZvjcqiuYoCxSdFKsmsBLk5H84fJa53RL9iuEtLcOKKW0Db2j3aLAmQuUFY49lmwqHiZqW9a0PWoyd9drLZyjXDhrRngY=" />
+<meta name="exercises-passwords" content="MTAwMDAw:69nwqlvvH0ZfX7n+fhzKCO9GPpdi3dsF4HTsTjIrWa4=:/JXYmqDrC3Ox0G8q:26UeugUp0NdEMDCQ2fSuTvvOoo9RITMaaq9JUwRTHih/BiVBCXn2ZvTdOLeOkb9imtBVLWIsblBm9un0k+9z1Q2CNP+/94OQb8YdYrUKOAPR0/BMjTmVXDM/0kJ909N+QwFzipMny3GbI0AUvj6S08A/0pwBQIXaQQeLjzThsaWzk4VxSFVxm0zN9R4G95XPM6CX1VXYetf4Yfr1SwMrlVho1GcZ51RxhM6SHy+7TIyWzClbfTzxfcCZv4s8IqxClSAyPkkmMk6hwVlupZCJ2LlPPNb2x88dTCdHVw+nx7mG1UahpWnscV3Qwk65e1TTgaiVW3bFJ3glBGMxwQ8vh88uISS1kZ8RTKAdmyB50kvqJ4pvR86g6X97piDMqE0Pne7BXlUIoZtbZVKqPwXjHkTM7fi4tFshsN/nEzE888v8k6XVn4dQO/n1BZYLF4dkIHcdh0xbotKIKj3i+xR5zoNZUw8dsnYnGBkGaY+RmUcQp8TH" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="version" content="LD2 0.1" />
@@ -293,25 +293,38 @@
 <li><p>Universeller Ansatz zur Verschlüsselung mit öffentlichen Schlüsseln.</p></li>
 <li><p>Ist eine Chiffre, bei der Klartext und Chiffretext ganze Zahlen zwischen <span class="math">\(0\)</span> und <span class="math">\(n - 1\)</span> für ein bestimmtes <span class="math">\(n\)</span> sind.</p></li>
 <li><p>Eine typische Größe für <span class="math">\(n\)</span> waren 1024 Bits oder 309 Dezimalziffern.</p>
-<p>Solch kleine Zahlen werden heute als äußerst unsicher angesehen, insbesondere angesichts der bevorstehenden Quantencomputer und der Entwicklung von Quantenalgorithmen (vgl. <a class="reference external" href="https://en.wikipedia.org/wiki/Shor's_algorithm">Shors Algorithmus</a>), die Zahlen effizient faktorisieren können.</p>
+<p>Solch kleine Zahlen werden heute als äußerst unsicher angesehen, insbesondere angesichts der bevorstehenden Quantencomputer und der Entwicklung von Quantenalgorithmen (vgl. <a class="reference external" href="https://en.wikipedia.org/wiki/Shor%27s_algorithm">Shors Algorithmus (1994)</a>), die Zahlen effizient faktorisieren können, wenn genügend QBits in hinreichender Qualität<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> zur Verfügung stehen.</p>
 </li>
 </ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Aktuell sind Quantencomputer nicht in der Lage, die für RSA verwendeten Schlüssel zu brechen und es ist auch (noch) nicht geklärt ob die aktuellen Technologien entsprechend skaliert werden können. Es besteht aber die Möglichkeit!</p>
+</aside>
+</aside>
 </div><div class="ld-slide" id="rsa-algorithmus">
 <h2>RSA Algorithmus</h2>
 <ul class="incremental">
 <li><p>RSA verwendet einen Ausdruck mit Exponentialen</p></li>
-<li><p>Der Klartext wird in Blöcken verschlüsselt, wobei jeder Block einen Binärwert hat, der kleiner als eine bestimmte Zahl <span class="math">\(n\)</span> ist .</p></li>
+<li><p>Der Klartext wird in Blöcken verschlüsselt, wobei jeder Block einen Binärwert hat, der kleiner als eine bestimmte Zahl <span class="math">\(n\)</span> ist<a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p></li>
 <li><p>Die Ver- und Entschlüsselung erfolgt für einen Klartextblock <span class="math">\(M\)</span> und einen Chiffretextblock <span class="math">\(C\)</span> in der folgenden Form:</p>
 <blockquote>
-<p><span class="math">\(C = M^e\; mod\; n\)</span></p>
-<p><span class="math">\(M = C^d\; mod\; n = (M^e)^d\; mod\; n = M^{ed}\; mod\; n\)</span></p>
+<p><span class="math">\(C = M^e\; mod\; n \qquad M = C^d\; mod\; n  \qquad (M^e)^d\; mod\; n = M^{ed}\; mod\; n\)</span></p>
 </blockquote>
 </li>
 <li><p>Sowohl der Sender als auch der Empfänger müssen den Wert von <span class="math">\(n\)</span> kennen.</p></li>
 <li><p>Der Absender kennt den Wert von <span class="math">\(e\)</span>, und nur der Empfänger kennt den Wert von <span class="math">\(d\)</span></p></li>
 <li><p>Dies ist ein Public-Key-Verschlüsselungsalgorithmus mit dem öffentlichen Schlüssel <span class="math">\(PU=\lbrace e,n \rbrace\)</span> und dem privaten Schlüssel <span class="math">\(PR=\lbrace d,n \rbrace\)</span>.</p></li>
 </ul>
-</div><div class="ld-slide" id="anforderungen-an-den-rsa-algorithmus">
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p>Basierend auf der Zahl n ergibt sich die maximale Größe des Blocks in Bit. Sei, hypothetisch, <span class="math">\(n = 4.294.967.296+1\)</span>, dann kann der Block maximal 32 Bit groß sein (<span class="math">\(2^{32} = 4.294.967.296\)</span>).</p>
+</aside>
+</aside>
+<div class="supplemental">
+<p><span class="math">\(M = C^d\; mod\; n  \Rightarrow M = (M^e\; mod\; n)^d\; mod\; n = (M^e)^d\; mod\; n\)</span></p>
+</div></div><div class="ld-slide" id="anforderungen-an-den-rsa-algorithmus">
 <h2>Anforderungen an den RSA Algorithmus</h2>
 <p>Damit dieser Algorithmus für die Verschlüsselung mit öffentlichen Schlüsseln geeignet ist, müssen die folgenden Anforderungen erfüllt sein:</p>
 <ol class="arabic simple incremental">
@@ -326,19 +339,19 @@
 <p><strong>Schlüsselgenerierung von Alice</strong></p>
 <table class="align-left no-table-borders no-inner-borders incremental">
 <tbody>
-<tr><td><p>Wähle p, q</p></td>
+<tr><td><p>Wähle <span class="math">\(p, q\)</span></p></td>
 <td><p><span class="math">\(p\)</span> und <span class="math">\(b\)</span> beide prim, <span class="math">\(p \neq q\)</span></p></td>
 </tr>
-<tr><td><p>Berechne n</p></td>
+<tr><td><p>Berechne <span class="math">\(n\)</span></p></td>
 <td><p><span class="math">\(n = p \times q\)</span></p></td>
 </tr>
-<tr><td><p>Berechne 𝜙(n)</p></td>
+<tr><td><p>Berechne <span class="math">\(\phi (n)\)</span></p></td>
 <td><p><span class="math">\(\phi(n) = (p - 1)(q - 1)\)</span></p></td>
 </tr>
-<tr><td><p>Wähle e</p></td>
+<tr><td><p>Wähle <span class="math">\(e\)</span></p></td>
 <td><p><span class="math">\(GGT(\phi(n),e) = 1; \qquad 1 &lt; e &lt; \phi(n)\)</span></p></td>
 </tr>
-<tr><td><p>Berechne d</p></td>
+<tr><td><p>Berechne <span class="math">\(d\)</span></p></td>
 <td><p><span class="math">\(d \equiv e^{-1}\; (mod\; \phi(n)) \Leftrightarrow ed\; mod\; \phi(n)= 1\)</span></p></td>
 </tr>
 <tr><td><p>Public-Key</p></td>
@@ -379,14 +392,44 @@
 </div>
 </div>
 </div>
-</div><div class="ld-slide" id="beispiel-fur-den-rsa-algorithmus">
+</div><div class="ld-slide" id="berechnung-von-d">
+<h2>Berechnung von <span class="math">\(d\)</span></h2>
+<p>Der Wert von <span class="math">\(d\)</span> wird mit Hilfe des erweiterten Euklidischen Algorithmus<a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> berechnet.</p>
+<p>Wir wissen dass <span class="math">\(GGT(\phi(n),e) = 1\)</span> gilt; d. h. <span class="math">\(e\)</span> und <span class="math">\(\phi(n)\)</span> sind teilerfremd/<em>coprime</em>.</p>
+<div class="smaller math">
+\begin{equation*}
+\begin{matrix}
+ex + \phi(n)y &amp; = &amp; GGT(e,\phi(n)) \\
+                &amp; = &amp; 1 \\
+\text{Umgestellt:} \\
+ex &amp; = &amp; - \phi(n)y +1 \\
+\Rightarrow  \\
+ex\; mod\; \phi(n) &amp; = &amp; 1
+\end{matrix}
+\end{equation*}
+</div>
+<div class="smaller incremental margin-top-2em math">
+\begin{equation*}
+\text{somit}\;  x\; \hat{=}\; d
+\end{equation*}
+</div>
+<!-- ex & \equiv & 1\; (mod\; \phi(n)) -->
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
+<p>Zur Erinnerung: der erweiterte Euklidische Algorithmus berechnet den größten gemeinsamen Teiler von zwei Zahlen (<span class="math">\(a\)</span>, <span class="math">\(b\)</span>) und zusätzlich zwei Koeffizienten (<span class="math">\(x\)</span>, <span class="math">\(y\)</span>), so dass gilt:  <span class="math">\(ax + by = gcd(a,b)\)</span>.</p>
+</aside>
+</aside>
+<div class="supplemental">
+<p><a class="reference external" href="./resources/extended_gcd.ipynb">Jupyter Notebook zur Berechnung</a></p>
+</div></div><div class="ld-slide" id="beispiel-fur-den-rsa-algorithmus">
 <h2>Beispiel für den RSA-Algorithmus</h2>
 <dl class="field-list">
 <dt>p und q<span class="colon">:</span></dt>
-<dd><p><span class="math">\(p = 11; q = 17; n = 187\)</span></p>
+<dd><p><span class="math">\(p = 11;\quad q = 17;\quad n = 187\qquad\qquad (\phi(n) = 10 \times 16 = 160)\)</span></p>
 </dd>
 <dt>Klartext<span class="colon">:</span></dt>
-<dd><p>88</p>
+<dd><p><span class="math">\(88\)</span></p>
 </dd>
 <dt>Verschlüsselung<span class="colon">:</span></dt>
 <dd><p><span class="math">\(PU =\lbrace e= 7, n= 187 \rbrace\)</span>:</p>
@@ -395,6 +438,10 @@
 <dt>Entschlüsselung<span class="colon">:</span></dt>
 <dd><p><span class="math">\(PR =\lbrace d= 23, n = 187 \rbrace\)</span>:</p>
 <p><span class="math">\(11^{23}\; mod\; 187 = 88 = P\)</span></p>
+</dd>
+<dt>Alternativer Exponent<span class="colon">:</span></dt>
+<dd><p><span class="math">\(e = 137 \Rightarrow d = 153\)</span></p>
+<p><span class="math">\(\qquad 88^{137}\; mod\; 187 = 99 C\qquad 88^{153}\; mod\; 187 = 88\)</span></p>
 </dd>
 </dl>
 </div><div class="ld-slide" id="potenzierung-in-der-modularen-arithmetik">
@@ -405,8 +452,8 @@
 <p><span class="math">\([(a\; mod\; n) \times (b\; mod\; n)]\; mod\; n =(a \times b)\; mod\; n\)</span></p>
 <blockquote>
 <p>Beispiel:</p>
-<p><span class="math">\(2^{11} = 2^1 \times 2^2 \times 2^8 = 2  \times  4  \times  256\)</span></p>
-<p><span class="math">\(2^9\; mod\; 13 = [(2^1\; mod\; 13) \times (2^8 \; mod\; 13)]\; mod\; 13\)</span></p>
+<p><span class="math">\([11 = 1011_b]\qquad 2^{11} = 2^1 \times 2^2 \times 2^8 = 2 \times 4 \times  256\)</span></p>
+<p><span class="math">\([09 = 1001_b] \qquad 2^9\; mod\; 13 = [(2^1\; mod\; 13) \times (2^8 \; mod\; 13)]\; mod\; 13\)</span></p>
 </blockquote>
 </li>
 <li><p>Bei RSA haben Sie es mit potenziell großen Exponenten zu tun, so dass die Effizienz der Potenzierung eine wichtige Rolle spielt.</p></li>
@@ -414,7 +461,16 @@
 <div class="block-footer white dhbw-gray-background text-align-center docutils container">
 <p>Wiederholung</p>
 </div>
-</div><div class="ld-slide" id="algorithmus-zur-berechnung-von-a-b-mod-n">
+<div class="supplemental">
+<div class="math">
+\begin{equation*}
+\begin{matrix}
+   &amp; 2^3 =8 &amp; 2^2 = 4 &amp; 2^1 = 2 &amp; 2^0 = 1 \\
+   11 = &amp; 1_b &amp; 0_b &amp; 1_b &amp; 1_b \\
+\end{matrix}
+\end{equation*}
+</div>
+</div></div><div class="ld-slide" id="algorithmus-zur-berechnung-von-a-b-mod-n">
 <h2>Algorithmus zur Berechnung von <span class="math">\(a^b\; mod\; n\)</span></h2>
 <p class="rubric">Quadrieren und Multiplizieren (<span class="eng">Square and Multiply</span>)</p>
 <p>Die Ganzzahl <span class="math">\(b\)</span> wird als Binärzahl <span class="docutils literal"><span class="pre">b[k]b[k-1]...b[0]</span></span> ausgedrückt:</p>
@@ -430,7 +486,9 @@
         <span class="name variable">then</span> <span class="name variable">c</span> <span class="punctuation">:</span><span class="operator">=</span> <span class="name variable">c</span> <span class="operator">+</span> <span class="literal number integer">1</span>
              <span class="name variable">f</span> <span class="punctuation">:</span><span class="operator">=</span> <span class="punctuation">(</span><span class="name variable">f</span> <span class="operator">*</span> <span class="name variable">a</span><span class="punctuation">)</span> <span class="operator">mod</span> <span class="name variable">n</span>
 <span class="name variable">return</span> <span class="name variable">f</span></code></pre>
-</div><div class="ld-slide" id="ergebnis-des-schnellen-modularen-exponierungsalgorithmus-fur-a-b-mod-n">
+<div class="supplemental">
+<p><a class="reference external" href="./resources/extended_gcd.ipynb">Jupyter Notebook mit Implementierung</a></p>
+</div></div><div class="ld-slide" id="ergebnis-des-schnellen-modularen-exponierungsalgorithmus-fur-a-b-mod-n">
 <h2>Ergebnis des schnellen modularen Exponierungsalgorithmus für <span class="math">\(a^b\;mod\;n\)</span></h2>
 <p><span class="math">\(a=7; b = 560 = 1000110000_b\)</span>, und <span class="math">\(n=561\)</span></p>
 <table style="width: 100%;">
@@ -618,25 +676,53 @@
 </li>
 <li><p>Um solche Angriffe abzuwehren, empfiehlt RSA Security Inc., den Klartext mit einem Verfahren zu modifizieren, das als optimales asymmetrisches Verschlüsselungs-Padding (OAEP) bekannt ist</p></li>
 </ul>
-</div><div class="integrated-exercise ld-slide" id="ubung">
+</div><div class="integrated-exercise transition-fade ld-slide" id="ubung">
 <h2>Übung</h2>
 <ol class="arabic">
 <li><p></p>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1" id="ld-exercise-1">
 <p class="rubric">Führen Sie den Square-and-Multiply Algorithmus für <span class="math">\(3^{17}\, mod\, 23\)</span> aus.</p>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:w1RTt/MSn9ybGNo9KaWAmpo7xVhlFF4zFGfSX9bm+i0=:SCWefVcfkhhBJ2Fu:SB87Z+sJF63e5K8wkVGsFBfdxuwXX2HG87zEaggXIOnODVaBRsiy2f57grrImyy4dCGeWrahrjGw8GAV6OxrdM2kJcbr2hDXWoMB7Zifzl104EXLSk3ZOX4eYwCoKxxrkcFW/fiF8bGHdv8cqA4DnMOYAmm53EYipP3MrBmZp0cM6CZ4DcTfYF9sHfCGHQxxHk6TVVrXxVolZWJPvejUQRw+KRHJNxn7k9/aHVvpUicnkcKG30cBcaLDU3jakZ8PwaS0rAdLHUiGeWEeb/ugYZPy4DpqfU8UIpA=</div>
+MTAwMDAw:+JlRaoxGKnYqAD6hA3tWdwr2izuFRwZh8lgO6lFeB44=:ZE2971IeoEYGeCbR:QhJ9hNMYim02KBfFgP8kwRKxJFmhpwkQooFCtW0VNbblK9Fv/emt12KVIT6+lR95CQgql8MNTd1b5vEJPGOe4OPn+wcn/rG47204SOte1d669/ENQMHZMdc4EWW9/oLTc2A6KZT9hcGeRdeAcGXm0NAKyjWY3jt5ZMbc/EMUKAxNFNtvckP7PoRpYE5W8vnSST+z0doaRmdPV5DNLkA2C2F7RcYhl0w3LMIdX1pCTD5YRJ+/bhiswpLesFPElATwhnHjNkRFB385csVZxLMv8gZpeHjA6Ntn8Mo=</div>
 </div>
 </li>
 <li><p></p>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2" id="ld-exercise-2">
-<p class="rubric">Verschlüsseln Sie eine Nachricht mit RSA.</p>
-<p>D. h., wählen Sie 2 kleine Primzahlen, berechnen Sie dann <span class="math">\(e\)</span>, <span class="math">\(d\)</span>, <span class="math">\(n\)</span>. Verschlüsseln Sie dann die Nachricht (d. h. einen (eher) kleinen Wert) mit dem öffentlichen Schlüssel einer anderen Person und senden Sie der Person die verschlüsselte Nachricht. Die Zielperson soll Ihre Nachricht entschlüsseln. Überprüfen Sie anschließend, ob die Verschlüsselung erfolgreich war.</p>
+<p class="rubric">Entschlüsseln sie die folgende Nachricht</p>
+<div class="math">
+\begin{equation*}
+C = 70789294130501 \text{(Verschlüsselte Nachricht)}
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+n = 2000557908870247; \quad \phi(n) = 2000557818857736
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+e = 65537
+\end{equation*}
+</div>
+<p>Berechnen Sie d und wandeln Sie die (Klartext)zahl in Text (ASCII 7-Bit pro Zeichen) um.</p>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:RlsQu8MwJzCBx6Ia4V4cuJxmE4NaobZKbuHMuFqUAHk=:ji03zQa65uVuPPj5:G/0YjLYw5b5/UhWGWYWfz3jz954Sftm1E8ffRxT3LueoL/Ybu40grFcw/cyfJFOIsHzhdD7VDK+HqJOYIzprfIAkIqj76A59oLw59vPxVoKhTgdz8wmjDoEGm7SRd8eASXigDQ7y9mbDfurpscq0tosq2r+/rMrCZqwPm84AG9FXOvI5Cq/Wut0dynOVpJmeGXnWWWv6UvlvoyJWA3Sp6VNEV8VMOrYe9WjS1yaWmf1eUEYhyChxPGZ53ZrTLbylP8btWTf0gNQWV+Yf/2NAbzZj/TEJs7v3eamjd4P9Gq7/n9klsPormILI+ITLGK8622b6sn2/xnMUTcxGqWcNJUPgGHK+UQAZ/Xuj1n5SXKem7CGNIvfkSu4gEaGUVkiB/pXLCI75gZBdZ2yuxTBwaBCvMnQSfrT3+P6QQpOiOMfC7+DHY+i2Jcbr0iJ5Qn303NJ8uxxgsCRqAj3ZFUMrHTj0gxLvSSxlcNA4r02SpTN4BZkeKvcEPPd9WFY+Fdd/5zSwRKVupHfim9Wt5zKYsWV+TvJxUctXmnCTSbpjbBqK55nvbRHVg33dpPUr/6DT7t/keYiiTVo8YPtlZVYSqbR+jppBJlTwNZZkwJaU7kSr2igI1f7vjy07fIQ8dln/Q6PdglDVSC413IdeMcuW+aJ9GTWRSAVstLJJyqGuRqL2e6FKZCwAgKSA4iGlEiY5LqNa8rDe/hFUoDbhdETY77mqtvl1rXN4vwiVGYBqt3tnJA5p4djdUCfxDnVe511OJzvXEBpGs2xlWOOkx/IQ0fmfhFFi0VjjhQPD+olgHXIwExfI+C1/90oSCHb82ufezsRAABKUtHNf74F2XdKnc7p5jaktHgAzsWr833J1pUH2YItMEYxRMrvXM3KLi300vS3pO+geHq/I2UzvHuU+nfHWdAkSZgSOH2qjR5MXpsPPSt9hEdlVcFIx1pfZTqljqAhb1nICBNxu3DCTeh3YcjfylnU037MFlCJuzDZbDmpv0XSclwFJ4nxlXhyNNMx1Rx4XOGsmv4oYPvaNjVBYMANEo7tEzwjRjWbcpB5bwrwAq3xatCNQxDqfzmZqh4o0Ut3GoE9BpGQSLG2ZL/oAlb4lp49jr+XwUHBVNy8GzcRo5QhfCSf8C7IYiZZjKzI8sXCClaXC1SsR5wBLCXDDGkWz/jYbZOmLaNRUOCik1KGw8U1rXcYAo1teJ4mbwNF0ADe+91uU7dnLfN05bFFJnnTy68zE5vAduyHfN+Jer5YAQSeFZ9Cbp6WbuxRPnJ85j4KnkEEgGRQ1YckIXjsKVaDxqpdMtwTh4IvYDKV4SS4eonVYY/s+cF+zZja5fbIpWwMka91MrQmq6NrUfjyFCkVGN/mkz9iSvcjNUzdNYtw0CvlnqJSSFEgjZqH1uAT0hzh2Lg92gU6nttlFTpAIrPsU4j2Rg2tsc41Fj/e2k4/a1hjg9hHPtiW2rwwpE0lopeKw6y8PFvKcLqcTtZ7+R3KpOuXSmC2SbZV8/nzSTRKtFoHGasgedAJEy5yWGNDnm0h0SlyJoYouMudU1wSwHXEiYdcBveMKbOOAal5RPYKEXtxbdtvelXSbWA==</div>
+MTAwMDAw:2hbbJuJzaFM1LrDqdJxH/8XH3a2J9fqQL1ehfs9y4rw=:givMyYuDrQYF4TBg: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</div>
 </div>
 </li>
 </ol>
+<div class="supplemental">
+<p>Um einen Integer-Wert (<span class="docutils literal">m</span>) in einen String umzuwandeln, können Sie den folgenden Pyhton-Code verwenden:</p>
+<pre class="code python copy-to-clipboard far-smaller literal-block"><code><span class="name">bstr</span> <span class="operator">=</span> <span class="name builtin">bin</span><span class="punctuation">(</span><span class="name">m</span><span class="punctuation">)</span> <span class="comment single"># the string will start with '0b'</span><span class="whitespace">
+</span><span class="name">chars</span> <span class="operator">=</span> <span class="punctuation">[</span><span class="name">bstr</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">:</span><span class="name">i</span><span class="operator">+</span><span class="literal number integer">7</span><span class="punctuation">]</span> <span class="keyword">for</span> <span class="name">i</span> <span class="operator word">in</span> <span class="name builtin">range</span><span class="punctuation">(</span><span class="literal number integer">2</span><span class="punctuation">,</span> <span class="name builtin">len</span><span class="punctuation">(</span><span class="name">bstr</span><span class="punctuation">)</span><span class="operator">-</span><span class="literal number integer">1</span><span class="punctuation">,</span> <span class="literal number integer">7</span><span class="punctuation">)]</span> <span class="comment single"># Segmentierung in 7-Bit-Blöcke</span><span class="whitespace">
+</span><span class="literal string double">&quot;&quot;</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">(</span><span class="name builtin">list</span><span class="punctuation">(</span><span class="name builtin">map</span><span class="punctuation">(</span><span class="keyword">lambda</span> <span class="name">x</span> <span class="punctuation">:</span> <span class="name builtin">chr</span><span class="punctuation">(</span><span class="name builtin">int</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">,</span><span class="literal number integer">2</span><span class="punctuation">)),</span> <span class="name">chars</span><span class="punctuation">)))</span> <span class="comment single"># Umwandlung in ASCII-Zeichen und Konkatenation</span></code></pre>
+</div></div><div class="integrated-exercise transition-fade ld-slide" id="ubung-1">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3" id="ld-exercise-3">
+<p class="rubric">Verschlüsseln Sie eine Nachricht mit RSA mit selber gewählten Parametern</p>
+<p>D. h., wählen Sie 2 kleine Primzahlen, berechnen Sie dann <span class="math">\(e\)</span>, <span class="math">\(d\)</span>, <span class="math">\(n\)</span>. Verschlüsseln Sie dann die Nachricht (d. h. einen (eher) kleinen Wert) mit dem öffentlichen Schlüssel einer anderen Person und senden Sie der Person die verschlüsselte Nachricht. Die Zielperson soll Ihre Nachricht entschlüsseln. Überprüfen Sie anschließend, ob die Verschlüsselung erfolgreich war.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:88+wCmWjPp3NQ2S5B/6oz7vR19Tg0F6u1BaAUfdRWP4=:W1zlxre3Guhr0bhF:zKi56WYYrJLtdtggqHbYD4fm4PalthA/R7zKlsWlVlrgTK2UrjH940b8EEdSIyl4dHqHHWEJ5lj08NgvPirf0ioBCTj6RFojnnxexGO+efhbAKEPxmk+hNXZPsek1tUtnMrOgfZ/xZ3BUtdwIhI0H1aH5q5UISKKJhCk2A/1xEtErMFgZBYKMOd2Lz+F91u9426x2EFHIFD62eZUYvr1W+qIPKV1HMLfBvUVQ8CzwJelr7e7Dr8rZi6t1/KgQP2oL/FgOEbpf0PWf61utEKqFzhsWkzkj3XYsrH/62HSjAxn2blR6qOREMuv59sMI0qdQ8uhDu49Y1dCXRpH06Kmv8UjF7ayZcoGzJczLscxtyAdiRmyBntMChOEalgiHil55Nsw2xaCWez2mWQdI2YEkTzDRQTOtwRa/1vc6kRCr+HzwNtb6wwA5BkCN7GVpSY05kEQy6jstc/YSbZDke0rHYlXB3GJXMEHGQnvGK1qvC84Ul8H2G8fCNOLiqfvjaan/+Lv3iidQ46zuQn1LL7dvB3wKBqJ5Cu0iIIlbsRwlXfCTXJuWfmfwEdkoHwMTOZIjCCZJHKnFo50yAmGDidttWEcVNVByOGwJYRT+gxjhIry5II6qStOITkDRRmp3Ai3UjCrkZMRgAwcjFSJw9ugQlPWEqUZFDEqtNJccZ4X9Ur5XCJtS/MFd2gRdw2MvopGRLiCLEM/bVTe3cYPfTMbiRff+teAJERyVwrthcynxEWjnlNv3v6XpI2I0FJHscWJuwpKDIB7LTMJxDtopSl+0D4Wc7WG+hnLCeN31nwYm0+Hvy+r5S5U8R5+iZRa9YABm+kg8f5+3D0KOfjwxS2iB65uDoipw/s3xa7uGI+5FewjG65WVIu8gtX9Odl1pJWMs1pWHczPCZiWifL26OxlZGBdn8apVL/KHJWWVuaOLtyXGJrXgzQlWZmbDI5jkrr3q8BGXYVcGRWBmSBC+0fbOhWhWsEJVHMECMkhLYDPyebrmlYk1WRsh77Ohe1t0VScU5oOlJKxxkKdYYqbHxVG7ltapsKUJ/Ulhozq4VVT0dkwUetuXxTqMURvFJYzrM+meUs/VY2EaFii0EMKcQhKwLqWLVG+Y/kfSPN0aMXeRy89IvBxFoieZv0hW5FeXlHoySdl4pTIrbmKYQHQ09JxohzodLseQniQBtpc7E5Jry8yl3+/mwPil1ciBIewG9cfUlbU/L7DrJV4Au+xsCvMgzP/8Yhyf1zmyVo3Zg3j0t8xU3K2at7dZD9wIK6IRodwa0Wqxinb4hB6drxBCgWvd66P1ijjRLu9IiG/gcGzbBsnmak9NZZM3qzOGmXBsesZ+VqVrOMAgTjDC0bFMdP08fOOp8o/KMWqCgRPsIX+lrc0njMOvNzibNF/4mjkV5+pDd0xd/KUBtSVGB51CnjFB0gQxOXJf0PFs7LIqgVK76U8W7+77oMyuqxSM/3VxW8uInRhfmyJxYhn5CSLl4HL5W5PFPJvy0jpl2NnAoS2ged7FJDk+pIWKjKBCtg0OrM//go7B6gnEKywl+6pngCZhllJGsaVOlsQEdtCzsPVuIJUyuiPi5Yn</div>
+</div>
 </div>
 </template>
 </body>
