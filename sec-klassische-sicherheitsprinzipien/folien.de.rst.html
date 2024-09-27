@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
+<meta name="exercises-passwords" content="MTAwMDAw:WLmK4Xa8bg4c19VuvpDiZXm85FMPrKknmM24s25+O/s=:WxRsFYLp3NhqHeqy:LVLeVagG0I8LDc/ryfjYix2yHK7Q76avpp/dEpou5zI3lQlB6VcwtH45wjlDsVivnBMKaxnMQ+iDc+w3AloW2R3qWKExQeBR9YEmepGjGs0sQetl30VbP66afMqX7q+SlGWJ4gaIM+nm+NOqDJS9u9izeAuJtIl78Jjlpywle+VkllNQ4afz42iItYkBN4pE/P8aovp+/v6CU98J/xDrOGrRqZMvvu7OHq8paBSNKH0fZG4YFs0dkE1E4xcqAao2UXE8tXRGwLGQtWcal1M/fDywwArBHjsPoYdQLJeImI7cF+AC7hlvs0ggsnAOGuqWsa4tbUcpvpMMTOfBzb9VUtPyvDImKBBV9tO91WtfS2PgudKXTngvscv0r4gVypXxgGBu5pL53lyEi7YFODCepb7rgGWieSvugmQTCe+X7Tfb3RiFfcxrAG3eIwu1GAidnnF5CIN5Y2EZSpwv5SUakpaB7CRT0VaqRgHXl+BZmAVSYYL55G7Jw5h21AX4nondOmg2jhBaU7pcYvRisgVdw7rwblqUOcdEFvaW7clump4YJyyT82c3cpbVdRvyTVO+hUolYCLwjlEnYytWWVK9MPKkRLAlykQZuOGL63zVvIFHbWS6bxuXsteJomVKdk1TWtA0m1nVrGjuTCHx+aAxISq44BmL2D3EmlbehIbtZg11p+f6pFajdeyx8wI5DOYtk6ivM1DN2iFqTRWaCBmdZmKtBT5fCmtnfwF5gAOFsxNm2ImBEB0Vj0RyD/PrwfSCGdbdFd9nRgLwM/11OHVf70OqTR4bzLpRhZLNZQIXi16+MUaTuMxlOv1lzz0f6Rw5MGw0PnbRKf5QBkTxWgjXcp2vs5laLB3d49aPvDwri74IP7J6VQ/h0ANGSiswuwG4WddgsFPUe+cGm1g61lYJekfubxlE649cRMFEDvY7vWHDLFRpb6GHCryB5Q==" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="version" content="LD2 0.1" />
@@ -34,7 +35,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.0</dd>
+<dd class="version">1.1</dd>
 </dl>
 <div class="supplemental">
 <dl class="field-list">
@@ -62,19 +63,29 @@
 </dl>
 <dl class="incremental field-list simple">
 <dt>Principle of Complete Mediation<span class="colon">:</span></dt>
-<dd><p>Jeder Zugriff auf eine Ressource sollte überprüft werden.</p>
+<dd><p>Zugriffsanfragen eines Subjekts auf ein Objekt werden jedes Mal vollständig auf ihre Zulässigkeit hin überprüft.</p>
 </dd>
 </dl>
-</div><div class="ld-slide" id="klassische-sicherheitsprinzipien-2">
+<div class="supplemental">
+<dl class="field-list simple">
+<dt>Principle of Economy of Mechanism (aka Principle of Simplicity)<span class="colon">:</span></dt>
+<dd><p>dies fördert zum Beispiel die Korrektheit der Implementierung/Anwendung, da diese schneller verstanden wird und auch einfacher getestet werden kann. Weiterhin reduziert es die Angriffsfläche.</p>
+</dd>
+<dt>Principle of Complete Mediation<span class="colon">:</span></dt>
+<dd><p>Bei der Entwicklung einer Serveranwendung besagt das <em>Principle of Complete Mediation</em> somit, dass bei jeder Anfrage zu überprüfen ist, ober der Nutzer die entsprechenden Rechte besitzt.</p>
+</dd>
+</dl>
+</div></div><div class="ld-slide" id="klassische-sicherheitsprinzipien-2">
 <h2>Klassische Sicherheitsprinzipien</h2>
 <dl class="field-list simple">
 <dt>Principle of Least Authority (aka POLA)/ Principle of Least Privilege<span class="colon">:</span></dt>
 <dd><p>Jedes Programm und jeder Benutzer sollte nur die für seine Aufgabe unbedingt notwendigen Rechte besitzen.</p>
 </dd>
 </dl>
-<dl class="incremental field-list simple">
+<dl class="incremental field-list">
 <dt>Principle of Separation of Privilege<span class="colon">:</span></dt>
-<dd><p>Ein System sollte in mehrere POLA konforme Komponenten unterteilt sein. Sollte eine Komponente kompromittiert sein, dann sind die Möglichkeiten des Angreifers dennoch begrenzt. (Eng verwandt mit dem POLA.)</p>
+<dd><p>Ein System sollte in mehrere POLA konforme Komponenten unterteilt sein. Sollte eine Komponente kompromittiert sein, dann sind die Möglichkeiten des Angreifers dennoch begrenzt.</p>
+<p>(Eng verwandt mit dem POLA.)</p>
 </dd>
 </dl>
 </div><div class="ld-slide" id="klassische-sicherheitsprinzipien-3">
@@ -91,10 +102,15 @@
 </dl>
 <div class="supplemental">
 <p><strong>Beispiel - Principle of Least Common Mechanism</strong></p>
-<p>z. B. sollten keine gemeinsamen Speicherbereiche verwendet werden und es ist deswegen sinnvoll - wenn möglich - auf Implementierungen im Kernel zu verzichten und statt dessen auf User-Space-Implementierungen zu setzen.</p>
+<p>Das Prinzip kann/sollte auf ganz verschiedenen Ebenen angewendet werden:</p>
+<ul>
+<li><p>Z. B. sollten keine gemeinsamen Speicherbereiche verwendet werden in denen möglicherweise Sicherheitsrelevantes Material vorgehalten wird,  und es ist deswegen sinnvoll - wenn möglich - auf Implementierungen im Kernel zu verzichten und statt dessen auf User-Space-Implementierungen zu setzen.</p>
 <blockquote>
-<p>TCP Connection Hijacking Angriffe wird bzw. wurden z. B. durch die Implementierung des TCP Stacks im Kernel ermöglicht (<span class="math">\(\Leftrightarrow\)</span> <span class="ger-quote">Principle of Least Common Mechanism</span>).</p>
+<p>TCP Connection Hijacking Angriffe werden bzw. wurden z. B. durch die Implementierung des TCP Stacks im Kernel ermöglicht (<span class="math">\(\Leftrightarrow\)</span> <span class="ger-quote">Principle of Least Common Mechanism</span>).</p>
 </blockquote>
+</li>
+<li><p>Z. B. sollten keine geteilten Passworte verwendet werden, um sich gegenüber einem System zu authentifizieren. (Dies bezieht sich sowohl auf die Passwörter einer Person als auch auf Passwörter über Personen und Systemgrenzen hinweg!)</p></li>
+</ul>
 </div></div><div class="ld-slide" id="wiederholung-klassische-sicherheitsprinzipien">
 <h2>Wiederholung: Klassische Sicherheitsprinzipien</h2>
 <dl class="field-list simple">
@@ -134,7 +150,56 @@
 <li><p>einfache (und effiziente) Paketfilter auf unterster Ebene</p></li>
 <li><p>zustandsbehaftete Paketfilter auf der nächsten bzw. der Anwendungsebene</p></li>
 </ul>
-</div></div>
+</div></div><div class="integrated-exercise ld-slide" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Principle of Open Design" id="ld-exercise-1">
+<p class="rubric">Principle of Open Design</p>
+<p>Benennen Sie ein historisches Verschlüsselungsverfahren, das gegen das <em>Principle of Open Design</em> verstoßen hat.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:yNtSnvVarlWlGmRlDbY/km9lw8dcvdNdUbVr4yuJFpU=:R9a9pquwgLSCmcz8:kqeZv0T7g4b0W4P3XypEyTqovGRK+CK8MEds/LUA59FNQhhcZwS28USLrv63FpD6g+6pr0a25Y2MBTeI31Z9TD2sQ/sRfnUHD8v7GXrxeeIOZx5HDI1kY1MkzcWfJ3qbqTBf3SEUhO5INHTBFxOLfCOots2JR47yPOLg3lvv0uo6o2MwjJgkIxDhkYxxovN7Cs1piBsze2Hs73gwlu7iOL9uIXtYgq8LbyR//obRsaSm3okAQYCI+aHBh2Ii8b6X6Z8Gra9KyRLC04XytYIEdVOE9pzWMVhVwRokEjArZkceSESv1WiLNOiNmOvHeFG4Loye2e1jQuynM7JhpTRD59BNRa9HKL2v984sObgceXotwg==</div>
+</div>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Verletzung" id="ld-exercise-2">
+<p class="rubric">Verletzung</p>
+<p>Stellen Sie sich vor, dass Sie als Pin (z. B. für ein Tablet), folgende Zahl verwenden wollen (Leerzeichen dienen nur der besseren Lesbarkeit):</p>
+<blockquote>
+<p><span class="docutils literal">3671 1197 4769</span></p>
+</blockquote>
+<p>Während als Pin das folgende Passwort akzeptiert wird:</p>
+<blockquote>
+<p><span class="docutils literal">1364 7964 1364</span></p>
+</blockquote>
+<p>Welches Prinzip ist verletzt?</p>
+<div class="minor far-smaller docutils container">
+<p>Hinweis: Schauen Sie sich ggf. ein Pinpad an.</p>
+</div>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:rjjkvKLLbdX/cfqpoN+I8rx8tV9+YiL1c8w8qgWUZQQ=:YAbeObD3Jn5n70db:wumQlUDBwgiFOvPKvz2ETBaQxkcSFPoTEssNtW02Wu9n0f12vMIIzB4ozimr0CDigest6HxBq7fxRuxlztd+Ny03r4EtoGO3k0WrRNh1/6P7oltMLk1XwMLkcKt+QKszXlnZwGeqIjofy9fGjLeQf0dztXYQKtTakj/lKJqMXhsskvX4Mb4qlnzZd9Iek5st6C/NNtW+oawOiwlYaAIhHe12sSb63NGZlUcliPsF0ughP4HsiTtmXwp0S7wjKQW6FiYAbyrbo85dJi1ullXSqNUwMfj4VVkN1HB0y1L5PeycUQR5PTEYxsOUaYCR0u7ONitTYylX9qAe5DWTps7Q7SYVixONraV3XO96qdEKUo4POLpB+/uGT2v88ntgS3s4YNAMiySgQ8mSeUKT6ARHWgEHgmjVo2L4aPuU8ODBAyElNCjcYK/40oSEYgIvoT6LdoNu29HCP1P718l3hm3Q7F2UoySxm89GVZC/KHw=</div>
+</div>
+</div><div class="integrated-exercise ld-slide" id="ubung-1">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Browser" id="ld-exercise-3">
+<p class="rubric">Browser</p>
+<p>Der Chrome-Browser (zum Beispiel) unterstützt die so genannten <a class="reference external" href="https://support.google.com/chrome/a/answer/7581529?hl=en">Isolierung von besuchten Webseiten</a>.
+Bei dieser werden Seiten von verschiedenen Websites in unterschiedliche Prozesse aufgeteilt.</p>
+<p>Welches Prinzip bzw. welche Prinzipien wird/werden hier umgesetzt?</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:eXVqu2m+OupIJtSZEyO0wcdE7cwuz6JHOx4DPpoJlDs=:jqpcuYk/Q5Ii5cdQ:sv48q4aU5Yn6LN8pGQdZGWktjQYRbPWRc0tSNorzcUH5m2pdhQRhMJmQyLx6UO5t6YvPL8TQHAsaE4BPp0c9H8/FIomvmfnEoPEWjpqS+R6lWGGHq2bUZtwjgqePpQGcUY/FYus4YR1AhIeSHdMvJZ127Ob/YG428YdYHB0GTMeUsIYQaEop6Ae0ObCe3apE69oy1WYKs2kQXLi4IQAa/3UsMV9nzDlX8Hhw82Ve5mu4sfc+BvOiX34byI2itFqQUSZNWY61/mfdAfYr18bBit/NmSgscYz7Btb+n+P9HuLp+aBCluqOkKCKzBrgyTvrerz/2nRo2JvaS07SyU4vz0zjXW+QP5eNNwabXQnk51C8Yq1WcI/nhud8wE8yUMOZbqjeJD4LBQyiXrZCkyJSGUE7FJ8blAHvW0qLI0aOq8D6mSz8/yLO312fiH13bB4SSoyYsmB1uxRQNcLK6TMoMQWJtFsgsChX9H261XZCquPsAhGM8xtSysuxrdDPaOMmQA0=</div>
+</div>
+<div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Quantum Algorithmen für die Verschlüsselung" id="ld-exercise-4">
+<p class="rubric">Quantum Algorithmen für die Verschlüsselung</p>
+<p>Zukünftige Verschlüsselungsalgorithmen, z. B. solche die auch im Zeitalter der Quantencomputer noch sicher sein sollen, werden häufig im Rahmen von offenen Wettbewerben entwickelt bzw. ausgesucht. Wie bewerten Sie dieses Vorgehen?</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:XI8xwwzwvWBQOc9wWZKr0VVRB974WoaG1Pc40YPQxsM=:W6v3pQeGg6NzeWdW:iMCexYX4vtxKZtYOAbDsluZgzQ7X2ccmvYuThXGevA+TXVB118XCUukurJCkw8YEsbCFb7K/k2oFytcZkpEGd9sAAeg0pKz79NyBzE8zSUBrF0sXvGdLo24xQlb21DtnZMwzwqSyDQyLI0O/dffWJdcVTFXRqAzlWH8O+xQQie6aRUQWLlclBChkUoO9XNF1XYKXCyCbkJiS6HcDakXW4TTnkdxjKLrT0mdZwTEhgv/dymqEiUn5HIEO7u5ijl/A38ZUca6ElCW1Tqq6lzpGT8Ep79QbRmDWshYLqjvIaIKCks71v3gcu4dzeFVOecU8U0iI+TKPZZDlFY03/UL17fx9k/jYkCplQSldQznXx4h0KINHHvnhOpV8DK+yzWGA/WQN4Whf1pveV2vmXTuz8LKzfyJqYUAOPcZtr7tjj5Z3Jkz+sDw37t68UupqIwk=</div>
+</div>
+</div><div class="integrated-exercise ld-slide" id="ubung-2">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - Rechte von im Hintergrund laufenden Prozessen auf Servern" id="ld-exercise-5">
+<p class="rubric">Rechte von im Hintergrund laufenden Prozessen auf Servern</p>
+<p>Es ist üblich, dass für Prozesse, die auf Servern im Hintergrund laufen, extra Nutzerkonten eingerichtet werden. Warum ist dies so? Welche Rechte sollten diese <span class="ger-quote">Nutzer</span> bekommen? Was sollte weiterhin beachtet werden?</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:0QiSmpucVs+R0Tcc6e1I0ds6GO9REXsdoMNKq6O0CcY=:28DcsuFDVOpGsYeo:rkt1vQ+L7nITMNUPhPtigayY+kykPvzSvr8OTg/AdEaUGKsLOuZukHE7Y9YuEKHLhzjNL9m4Z13+YIXNrWda49vK3xXZXP+XM0TsWaiv9aP6xakgH5/7u7mvN6S0HJi86xsm5gbPrt3Pxh6fiNb7hAizmLNYpPMOt3aRHTv1njJdaSFJ4CpUOztQ5oGR4vhrTpfCfReTMzJgqif7M+tuqURi+h4QL8kHEb0Vdx5Q/+2p8Gq7aqBsRqBnzTwqdb5Nbt+r+g/69Y9qHhWkP2alcliGC/tKTPtWBs63i/kxilKB2WVygF4wW/PCpS6azKpMREMQ3F+A5Axiu16eon/w80T8yyxKNbAOHo8pJ+wpoTafp7m8GR/A/bIOktdGO0J5vmHDXxt/pbJJ37wEaUMbUkKdyFExENPI5Ff5ds/PjMljppxGWSblKnRFMl/0xC2k3BCIT5bCzJnNVasYWmGKeqruQg4PQ9nVj5GfeBUQIEGVKnV4LG1VKdPsx+ERcBghNRNpYqJbrxKDyFTUkw8qLH6xm3Y/8POsBd83JjOWleiIMyXOtcwhQbyxKWpgWcnw1e8hZhw1tMpxao9/1nmScRbhOhInBmYrI2ddgJxywFIMUC8NxGdOR08zryzyENukxWRmjd+QDlvSnGHvDWjfNtLsfFZxvXcnDWdZAGfDK/U=</div>
+</div>
+</div>
 </template>
 </body>
 </html>
