@@ -8,17 +8,15 @@ let y = "yyy";
 // Eine Änderung des Wertes ist nicht möglich.
 const z = "zzz";
 
-ilog("y, z:", y, z);
+log("y, z:", y, z);
 
-function change() {
+function doIt() {
+  const y = "---";
   log("y, z:", y, z);
-  {
-    const y = "ohno";
-    log("y, z:", y, z);
-  }
   return "";
 }
 
-ilog('"changed done"', change());
+ilog('"doIt done"', doIt());
+log("y, z:", y, z);
 
 done();

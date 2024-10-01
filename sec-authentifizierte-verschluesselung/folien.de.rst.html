@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta name="exercises-passwords" content="MTAwMDAw:Wc0ZOL02XNe2ou502wNSSfLlDw6pSsFzPf23FggKa4Y=:RQOM4lZqkjQT1gjn:9WuWpHu46K1j70mB97GLNcm0JA3y42HZGbWFoFO0Tg+yWWcxswGHjekg/JGs+i5N1Yv1BVNSzwTbX9ZZrD4zJPIIAOAxXE0HblREulPhjrsaJorQ3wLvMc6lj89SWrK1H/Hs7xnJOB8mJGo9p+yVBBCbgdf4pqvrqGTYfOiKgUB+OESv/Sd6C9pyUzbPr1znCKoEjrMVMQrdz63UyLD/A7+usLahmj5+0XnpdCKHtW42jGPUbP1izUZu3fMYZ5zX9r3Gv52KutPvl0xkLtOSc6JmrpDMhHnsjHdQWS6TRUQ=" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Authentifizierte Verschlüsselung&quot;, AES-GCM" name="keywords" />
+<meta content="Authenticated Encryption" lang="en" name="description" xml:lang="en" />
+<meta content="Authentifizierte Verschlüsselung" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-security-authentifizierte-verschlüsselung" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Authentifizierte Verschlüsselung</title>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    
+</head>
+<body>
+<template>
+<div class="ld-slide" id="authentifizierte-verschlusselung">
+<h1 class="title">Authentifizierte Verschlüsselung</h1>
+<dl class="docinfo simple">
+<dt class="dozent">Dozent<span class="colon">:</span></dt>
+<dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">0.1</dd>
+<dt class="teilweise-basierend-auf">Teilweise basierend auf<span class="colon">:</span></dt>
+<dd class="teilweise-basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
+</dd>
+</dl>
+<div class="supplemental">
+<dl class="field-list simple">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><dl class="field-list simple">
+<dt>HTML<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/sec-authentifizierte-verschluesselung/folien.de.rst.html">https://delors.github.io/sec-authentifizierte-verschluesselung/folien.de.rst.html</a></p>
+</dd>
+<dt>PDF<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/sec-authentifizierte-verschluesselung/folien.de.rst.html.pdf">https://delors.github.io/sec-authentifizierte-verschluesselung/folien.de.rst.html.pdf</a></p>
+</dd>
+</dl>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></div>
+<div class="ld-slide" id="drei-ansatze-in-hinblick-auf-authenticated-encryption">
+<h2>Drei Ansätze in Hinblick auf <em>Authenticated Encryption</em></h2>
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
+<p><strong>Encrypt-then-MAC</strong></p>
+<img alt="drawings/authentifizierte-verschluesselung/encrypt_then_mac.svg" class="align-center" src="drawings/authentifizierte-verschluesselung/encrypt_then_mac.svg" style="width: 675px;" />
+<div class="incremental margin-top-1em docutils container">
+<p><strong>Encrypt-and-MAC</strong></p>
+<img alt="drawings/authentifizierte-verschluesselung/encrypt_and_mac.svg" class="align-center" src="drawings/authentifizierte-verschluesselung/encrypt_and_mac.svg" style="width: 675px;" />
+</div>
+</div>
+<div class="column incremental docutils container">
+<p><strong>MAC-then-Encrypt</strong></p>
+<img alt="drawings/authentifizierte-verschluesselung/mac_then_encrypt.svg" class="align-center" src="drawings/authentifizierte-verschluesselung/mac_then_encrypt.svg" style="width: 675px;" />
+</div>
+</div>
+<div class="supplemental">
+<p class="rubric">Modi</p>
+<ul class="simple">
+<li><p><strong>Encrypt-then-MAC</strong>: Der Klartext wird verschlüsselt und dann wird ein MAC über den Chiffretext berechnet. Dieser Ansatz wird von IPSec und TLS 1.3 verwendet.</p></li>
+<li><p><strong>Encrypt-and-MAC</strong>: Der Klartext wird verschlüsselt und ein MAC über den Klartext berechnet. Beides wird versendet. Dieser Ansatz wird von SSH verwendet. Es wurde gezeigt, dass kleinere Änderungen die Sicherheit weiter verbessern können.</p></li>
+<li><p><strong>MAC-then-Encrypt</strong>: Ein MAC wird über den Klartext berechnet und dann wird der Klartext und der MAC verschlüsselt. Dies war bis TLS 1.2 der Standard. Aufgrund von erfolgreichen Angriffen insbesondere gegen das Padding wird dieser Ansatz nicht mehr verwendet/empfohlen.</p></li>
+</ul>
+<p class="rubric">Integrität und Authentizität</p>
+<p>Es ist möglich Integrität ohne Authentizität zu gewährleisten. Durch einen einfachen MAC kann gewährleistet werden, dass die Daten während der Übertragung nicht verändert wurden (insbesondere durch einen Fehler). Wenn ich jedoch Authentizität gewährleisten möchte, dann muss ich einen MAC verwenden, der auf einem Schlüssel basiert, der nur dem Sender und dem Empfänger bekannt ist. Dies verhindert, dass ein Angreifer einfach die Daten verändert und den MAC neu berechnet.</p>
+<p>Authentizität ohne Integrität ist nicht sinnvoll. Der Nutzen zu wissen, dass eine Nachricht von einer bestimmten Person kam, aber nicht zu wissen ob die Nachricht verändert wurde, ist sehr gering.</p>
+</div></div><div class="ld-slide" id="aes-gcm-modus-galois-counter-mode">
+<h2>AES-GCM Modus (Galois/Counter Mode)</h2>
+<img alt="drawings/authentifizierte-verschluesselung/aes_gcm.svg" class="align-center" src="drawings/authentifizierte-verschluesselung/aes_gcm.svg" style="height: 975px;" />
+<div class="footer far-far-smaller docutils container">
+<p>Die Visualisierung stellt nur zwei Schritte dar; eine Erweiterung auf n-Blöcke ist jedoch offensichtlich.</p>
+</div>
+<div class="supplemental">
+<ul class="simple">
+<li><p>Standardisiert durch NIST in SP 800-38D.</p></li>
+<li><p>Es handelt sich um eine Verknüpfung des CTR-Modus und Galois-Modus. Ziel ist eine hohe Parallelisierung und Effizienz.</p></li>
+<li><p>Der Algorithmus ist in der Lage, Authentizität (+ Integrität) und Vertraulichkeit zu gewährleisten.</p></li>
+<li><p>Die Eingabe in den Algorithmus ist der Klartext (<span class="eng">Plaintext</span>), der Schlüssel, ein Initialisierungsvektor (IV) und zusätzliche (optionale) authentifizierte Daten A.</p></li>
+<li><p>Das Authentication Tag wird mittels Arithmetik über dem Körper <span class="math">\(GF(2^{128})\)</span> berechnet und wird am Ende des Chiffretextes angehängt. Es wird das bekannte Polynom: <span class="math">\(x^128 + x^7 + x^2 + x + 1\)</span> verwendet.</p></li>
+<li><p>Die Blockgröße ist 128Bit (d. h. die AES-Blockgröße).</p></li>
+<li><p><span class="math">\(H\)</span> ist der Hash Key und <span class="math">\(mult\)</span> ist Multiplikation im Körper <span class="math">\(GF(2^128)\)</span>. <span class="math">\(H = E(K,0^{128})\)</span></p></li>
+<li><p>Die optionalen authentifizierten Daten A werden zum Beispiel benötigt, um den Kontext einer Nachricht zu erfassen (und zum Beispiel Replay-attacken vorzubeugen). Ein konkretes Beispiel könnte die Ziel-IP-Adresse sein, wenn die Nachricht über das Internet übertragen wird.</p></li>
+</ul>
+</div></div><div class="integrated-exercise transition-scale ld-slide" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - AES-GCM" id="ld-exercise-1">
+<p class="rubric">AES-GCM</p>
+<p>Warum ist es wichtig, dass der IV bei AES-GCM nur einmal verwendet wird?</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:Rz1tXQBzUSDdS5uDhVihMtTZDiAZjqOZQs+QBj4mQFI=:5olS6QiFjVP/9i8O:se7jWap7/iw+UvU4DhOmkmPbIbbLgckapTiCUOGnnkSVAgHLr1EVif98MQxXQteyae7vZ0f7Yvbt/exOELSLKMOqkWeyjoV8qqMK4YFzgTlQBIu2p2rxL/7sPMC26+JMfa8GJ8m3uSB2+PtyVu4zOXwIsZWmlfnXjbp+MFXJbzYcwhc6L1TPcHBxsZDlpH74t7kS//XUbG00sI9Y7kZfyZJU3XP5ybk2OubA8qZ5/te3YsFYljyZK50+ozg2X6z56gpSCotLFD2aTZ8DM7/ixxY=</div>
+</div>
+</div>
+</template>
+</body>
+</html>

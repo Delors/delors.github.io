@@ -26,10 +26,11 @@ function f(c) {
     return this === that;
   };
 
-  log(" globalThis === that: " + (globalThis === this));
+  log(" globalThis === this: " + (globalThis === this));
   log(" this === that (function): " + f());
   log(" f.bind({}); this === that (function): " + f.bind({})());
   log(" this === that (function expression): " + fExpr());
+  //log()
 }
 f();
 

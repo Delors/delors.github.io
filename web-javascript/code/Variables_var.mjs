@@ -5,14 +5,12 @@ const z = "zzz";
 
 // Der Gültigkeitsbereich von var ist die umgebende Funktion oder der
 // globale Gültigkeitsbereich.
-// Die Definition ist ("hoisted") hochgezogen (initialisiert mit undefined);
-// In modernem JavaScript sollte var nicht mehr verwendet werden.
+// Die Definition ist hochgezogen (eng. "hoisted") (initialisiert mit undefined);
 var x = "xxx";
 
 function sumIfDefined(a, b) {
   // ⚠️ Der folgende Code ist NICHT empfehlenswert!
-  //    Er dient der Visualisierung des Verhaltens
-  //    von var.
+  //   Er dient der Visualisierung des Verhaltens von var.
   if (parseInt(a)) {
     var result = parseInt(a);
   } else {
