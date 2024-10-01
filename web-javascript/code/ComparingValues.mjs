@@ -3,7 +3,6 @@ import {log as show, ilog as log, done} from "./log.mjs";
 // Gleichheit       ==      // mit Typumwandlung (auch bei <, >, <=, >=)
 // Ungleichheit     !==
 // strikt gleich    ===     // ohne Typumwandlung
-// strikt ungleich  !===
 
 log('1 == "1": ', 1 == "1");
 log('1 === "1": ', 1 === "1");
