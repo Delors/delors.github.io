@@ -1,5 +1,5 @@
-/* requires node.js */
-import { Queue } from "./Queue.mjs";
+import { Queue } from "./Queue.mjs"; // import des Moduls Queue
+
 const messages = new Queue();
 
 export function log(...message) {

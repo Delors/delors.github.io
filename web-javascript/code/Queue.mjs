@@ -1,8 +1,8 @@
-/* requires node.js */
+/* Module für den Datentyp Warteschlange (Queue). */
 export class Queue {
-  #last = null;
+  #last = null; // private field
   #first = null;
-  constructor() {}
+  constructor() {} // "default constructor"
   enqueue(elem) {
     if (this.#first === null) {
       const c = { e: elem, next: null };
