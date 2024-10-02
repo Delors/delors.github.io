@@ -1,0 +1,32 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Eventhandling</title>
+    </head>
+    <body>
+        <script>
+            /* Using Promises:
+            function getUsers() {
+                fetch('http://127.0.0.1:4080/users')
+                    .then(response => response.json())
+                    .then(users => {
+                        const usersElement = document.getElementById('users');
+                        usersElement.innerText = JSON.stringify(users);
+                    });
+                    }
+            */
+
+            /* Using async/await: */
+            async function getUsers() {
+                let response = await fetch("http://127.0.0.1:4080/users");
+                let users = await response.json();
+                const usersElement = document.getElementById("users");
+                usersElement.innerText = JSON.stringify(users);
+            }
+        </script>
+
+        <div id="users"></div>
+        <button onclick="getUsers()">Get Users</button>
+    </body>
+</html>
