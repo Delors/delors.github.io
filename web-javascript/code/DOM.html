@@ -1,0 +1,54 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DOM Manipulation with JavaScript</title>
+        <script>
+            function makeScriptsEditable() {
+                const scripts = document.getElementsByTagName("script");
+                for (const scriptElement of scripts) {
+                    scriptElement.contentEditable = false;
+                    const style = scriptElement.style;
+                    style.display = "block";
+                    style.whiteSpace = "preserve";
+                    style.padding = "1em";
+                    style.backgroundColor = "yellow";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h1>DOM Manipulation with JavaScript</h1>
+        <p id="demo">This is a paragraph.</p>
+        <button
+            type="button"
+            onclick="
+                            document.getElementById('demo').style.color = 'red';
+                            makeScriptsEditable();
+                            document.querySelector('button').style.display = 'none';"
+        >
+            Magic!
+        </button>
+
+        <script>
+            const demoElement = document.getElementById("demo");
+            const style = demoElement.style;
+            demoElement.addEventListener(
+                "mouseover",
+                () => (style.color = "green"),
+            );
+            demoElement.addEventListener(
+                "mouseout",
+                () => (style.color = "unset"),
+            );
+        </script>
+
+        <p>Position der Mouse: <span id="position"></span></p>
+        <script>
+            window.addEventListener("mousemove", () => {
+                document.getElementById("position").innerHTML =
+                    `(${event.clientX}, ${event.clientY})`;
+            });
+        </script>
+    </body>
+</html>

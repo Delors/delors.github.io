@@ -1,4 +1,4 @@
-/* Module für den Datentyp Warteschlange (Queue). */
+/* Modul für den Datentyp Warteschlange (Queue). */
 export class Queue {
   #last = null; // private field
   #first = null;

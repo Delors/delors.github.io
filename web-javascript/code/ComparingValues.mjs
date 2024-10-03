@@ -1,8 +1,9 @@
 import {log as show, ilog as log, done} from "./log.mjs";
 
 // Gleichheit       ==      // mit Typumwandlung (auch bei <, >, <=, >=)
-// Ungleichheit     !==
-// strikt gleich    ===     // ohne Typumwandlung
+
+// strikt gleich        === // ohne Typumwandlung
+// strike Ungleichheit  !== // ohne Typumwandlung
 
 log('1 == "1": ', 1 == "1");
 log('1 === "1": ', 1 === "1");

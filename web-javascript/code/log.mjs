@@ -1,4 +1,4 @@
-import { Queue } from "./Queue.mjs"; // import des Moduls Queue
+import { Queue } from "./Queue.mjs"; // import des Moduls "Queue.mjs"
 
 const messages = new Queue();
 
