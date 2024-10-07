@@ -94,7 +94,7 @@
 <p><strong>Verbindungsaufbau - Ablauf</strong>:</p>
 <ol class="arabic simple">
 <li><p>Client sendet SYN Paket mit initialer Sequenznummer (hier) 1000 an den Server.</p></li>
-<li><p>Server sendet ein SYN-ACK Paket em SYN mit seiner initialen Sequenznummer (hier) 2000 und ein ACK mit der Sequenznummer 1001 (initiale Sequenznummer des Clients +1) an den Client</p></li>
+<li><p>Server sendet ein SYN-ACK Paket mit seiner initialen Sequenznummer (hier) 2000 und ein ACK mit der Sequenznummer 1001 (initiale Sequenznummer des Clients +1) an den Client</p></li>
 <li><p>Client sendet ein ACK Paket mit Sequenznummer 2001 (initiale Sequenznummer des Servers +1) an den Server; danach ist die Verbindung aufgebaut.</p></li>
 </ol>
 <p>Das Betriebssystem sollte die initialen Sequenznummern zufällig wählen, so dass ein Angreifer diese nicht leicht vorhersagen kann. Beide Seiten haben eigene Sequenznummern, die unabhängig voneinander sind.</p>
@@ -256,7 +256,7 @@
 <li><p>Netzwerkprogrammierung mit TCP ist relativ komfortabel.</p></li>
 <li><p>Viele Dienste sind mit TCP implementiert.</p></li>
 <li><p>Angreifer nutzen Schwachstellen in TCP Diensten aus.</p></li>
-<li><p>Server haben heutzutage i. Allg. alle nicht verwendeten Dienste geschlossen. Angreifer muss verwundbare Dienste zum Beispiel durch Port Scans finden.</p></li>
+<li><p>Server haben heutzutage im Allgemeinen alle nicht verwendeten Dienste geschlossen. Ein Angreifer muss verwundbare Dienste zum Beispiel erst durch Port Scans finden.</p></li>
 </ul>
 </div><div class="ld-slide" id="port-scans-tcp-connect-scan">
 <h2>Port Scans: TCP Connect Scan</h2>
@@ -684,15 +684,16 @@
 </ul>
 </div><div class="ld-slide" id="password-sniffing">
 <h2>Password Sniffing</h2>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt>In der Anfangszeit<span class="colon">:</span></dt>
 <dd><p>unverschlüsselte Übertragung von Passwörtern (telnet, ftp, ...)</p>
 </dd>
-<dt>In der Übergangszeit (bzw. in bestimmten Szenarien auch heute)<span class="colon">:</span></dt>
-<dd><p>Verwendung von Einmal-Passwörtern (S/Key, TOTP, ...)</p>
+<dt>In der Übergangszeit<span class="colon">:</span></dt>
+<dd><p>Verwendung von Einmal-Passwörtern (S/Key, ...)</p>
 </dd>
 <dt>Heute<span class="colon">:</span></dt>
 <dd><p>Passwörter werden verschlüsselt übertragen (ssh, https, ...)</p>
+<p>Zusätzliche Absicherung durch Zwei-Faktor-Authentifizierung (basierend auf Einmalpassworten: TOTP, ...)</p>
 </dd>
 </dl>
 <div class="supplemental">
@@ -703,7 +704,7 @@
 <ul class="simple">
 <li><p>Tokens (z. B. RSA SecurID)</p></li>
 <li><p>Codebuch: Liste von Einmal-Passwörtern, die das gemeinsame Geheimnis sind.</p></li>
-<li><p>S/Key: Passwort <span class="ger-quote">wird em Zähler kombiniert</span> und dann gehasht.</p></li>
+<li><p>S/Key: Passwort <span class="ger-quote">wird mit einem Zähler kombiniert</span> und dann gehasht.</p></li>
 </ul>
 </div><div class="ld-slide" id="das-s-key-verfahren">
 <h2>Das S/Key Verfahren</h2>
@@ -711,16 +712,18 @@
 <div class="stack">
 <div class="layer">
 <p><strong>Initialisierung</strong></p>
-<ol class="arabic simple incremental smaller">
-<li><p>Der Nutzer gibt sein Passwort W ein; dies ist der geheime Schlüssel. (Sollte W bekannt werden, dann ist die Sicherheit des Verfahrens nicht mehr gewährleistet.)</p></li>
-<li><p>Eine kryptografische Hash-Funktion H wird n-mal auf W angewandt, wodurch eine Hash-Kette von n einmaligen Passwörtern entsteht. <span class="math">\(H(W), H(H(W)), \dots, H^{n}(W)\)</span></p></li>
+<ol class="arabic incremental smaller list-with-explanations">
+<li><p>Der Nutzer gibt sein Passwort <span class="math">\(W\)</span> ein; dies ist der geheime Schlüssel.</p>
+<p>(Sollte <span class="math">\(W\)</span> bekannt werden, dann ist die Sicherheit des Verfahrens nicht mehr gewährleistet.)</p>
+</li>
+<li><p>Eine kryptografische Hash-Funktion <span class="math">\(H\)</span> wird n-mal auf <span class="math">\(W\)</span> angewandt, wodurch eine Hash-Kette von n einmaligen Passwörtern entsteht. <span class="math">\(H(W), H(H(W)), \dots, H^{n}(W)\)</span></p></li>
 <li><p>Das initiale Passwort wird verworfen.</p></li>
 <li><p>Der Benutzer erhält die <span class="math">\(n\)</span> Passwörter, die in umgekehrter Reihenfolge ausgedruckt werden: <span class="math">\(H^n(W), H^{n-1}(W), ..., H(H(W)), H(W)\)</span>.</p></li>
 <li><p>Nur das Passwort <span class="math">\(H^n(W)\)</span>, das an erster Stelle der Liste des Benutzers steht, der Wert von <span class="math">\(n\)</span> und ggf. ein Salt, wird auf dem Server gespeichert.</p></li>
 </ol>
 </div><div class="layer incremental">
 <p><strong>Anmeldung</strong></p>
-<p>Identifiziere <span class="math">\(n\)</span> das letzte verwendete Passwort.</p>
+<p>Identifiziere das letzte verwendete Passwort <span class="math">\(n\)</span>.</p>
 <ul class="incremental smaller simple">
 <li><p>Der Server fragt den Nutzer nach dem Passwort <span class="math">\(n-1\)</span> (d. h. <span class="math">\(H^{n-1}(W)\)</span>) und übermittelt ggf. auch den Salt.</p></li>
 <li><p>Der Server hasht das Passwort und vergleicht es dann mit dem gespeicherten Passwort <span class="math">\(H^n(W)\)</span>.</p></li>
@@ -729,9 +732,9 @@
 </div></div><div class="supplemental">
 <p>Intern verwendet S/KEY 64-bit Zahlen. Für die Benutzbarkeit werden diese Zahlen auf sechs kurze Wörter, von ein bis vier Zeichen, aus einem öffentlich zugänglichen 2048-Wörter-Wörterbuch (<span class="math">\(2048 = 2^{11}\)</span>) abgebildet. Zum Beispiel wird eine 64-Bit-Zahl auf &quot;ROY HURT SKI FAIL GRIM KNEE&quot; abgebildet.</p>
 </div></div><div class="ld-slide" id="hmac-based-one-time-password-hotp">
-<h2>HMAC-based one-time password (HOTP)</h2>
+<h2>HMAC-based one-time password (HOTP)<a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></h2>
 <ul>
-<li><p>ermöglicht die Erzeugung von Einmal-Passwörtern auf Basis eines geheimen Schlüssels und eines Zählers. Parameter:</p>
+<li><p>ermöglicht die Erzeugung von Einmal-Passwörtern auf Basis eines geheimen Schlüssels und eines Zählers; Parameter:</p>
 <blockquote>
 <ul class="incremental far-smaller simple">
 <li><p>Ein kryptografisches Hash-Verfahren <span class="math">\(H\)</span> (Standard ist SHA-1)</p></li>
@@ -743,7 +746,7 @@
 </li>
 </ul>
 <ul class="incremental">
-<li><p>Zur Authentifizierung berechnen beide das Einmalpasswort (HOTP) und dann vergleicht der Server den Wert mit dem vom Client übermittelten Wert.</p>
+<li><p>Zur Authentifizierung berechnen beide das Einmalpasswort (HOTP) und dann vergleicht der Server den Wert mit dem vom Client übermittelten Wert:</p>
 <div class="far-smaller docutils container">
 <p>Berechnung aus dem Schlüssel <span class="math">\(K\)</span> und dem Zähler <span class="math">\(C\)</span>:</p>
 <blockquote>
@@ -751,7 +754,7 @@
 <div class="incremental docutils container">
 <p><span class="math">\(truncate(MAC) = extract31(MAC, MAC[(19 \times  8 + 4):(19 \times  8 + 7)])\)</span></p>
 </div>
-<p class="incremental"><span class="math">\(HOTP\; value = HOTP(K, C)\; mod\; 10^d\)</span>.</p>
+<p class="incremental"><span class="math">\(HOTP\; value = HOTP(K, C)\; mod\; 10^d\qquad\)</span> (führende Nullen werden nicht abgeschnitten)</p>
 </blockquote>
 </div>
 </li>
@@ -763,11 +766,11 @@
 </aside>
 </aside>
 <div class="supplemental">
-<p><span class="math">\(truncate\)</span> verwendet die 4 niederwertigsten Bits des MAC als Byte-Offset i in den MAC.</p>
-<p>Der Wert <span class="math">\(19\)</span> kommt daher, dass ein SHA-1 <span class="math">\(160\)</span> Bit hat und <span class="math">\(160/8 = 20\)</span> Byte.</p>
+<p><span class="math">\(truncate\)</span> verwendet die 4 niederwertigsten Bits des MAC als Byte-Offset i in den MAC.
+Der Wert <span class="math">\(19\)</span> kommt daher, dass ein SHA-1 <span class="math">\(160\)</span> Bit hat und <span class="math">\(160/8 = 20\)</span> Byte.</p>
 <p>Eine Schwäche des Algorithmus ist, dass beide Seiten den Zähler erhöhen müssen und, falls die Zähler aus dem Tritt geraten, ggf. eine Resynchronisation notwendig ist.</p>
 </div></div><div class="ld-slide" id="time-based-one-time-password-totp">
-<h2>Time-based one-time password (TOTP)<a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></h2>
+<h2>Time-based one-time password (TOTP)<a class="footnote-reference brackets" href="#footnote-4" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></h2>
 <ul class="simple">
 <li><p>Erzeugung von zeitlich limitierten Einmal-Passwörtern (z. B. 30 Sekunden)</p></li>
 </ul>
@@ -775,20 +778,19 @@
 <li><p>Basierend auf einem vorher ausgetauschten geheimen Schlüssel und der aktuellen Zeit</p>
 <p>Z. B. Unix-Zeit in Sekunden (ganzzahlig) und danach gerundet auf 30 Sekunden.</p>
 </li>
-<li><p>Es wird das HOTP Verfahren mit der Zeit als Zähler verwendet. TOTP <span class="math">\(value(K)\)</span> = HOTP <span class="math">\(value(K, C_T)\)</span>, wobei <span class="math">\(C_T\)</span> die aktuelle Zeit ist.</p>
-<p><span class="math">\(C_T = \lfloor { T - T_0 \over T_X } \rfloor\)</span>, wobei <span class="math">\(T_X\)</span> die Länge eines Zeitintervalls (z. B. 30 Sekunden) ist.</p>
-<dl class="simple">
-<dt><span class="math">\(C_T\)</span> ist die Anzahl der Dauern <span class="math">\(T_X\)</span> zwischen <span class="math">\(T_0\)</span> und <span class="math">\(T\)</span> is the count of the number of durations T_X between T_0 and T,</dt>
-<dd><p><span class="math">\(T\)</span> ist die aktuelle Zeit in Sekunden seit einer bestimmten Epoche,
-<span class="math">\(T_0\)</span> ist die in Sekunden angegebene Epoche seit der Unix-Epoche (z. B. ist T0 bei Verwendung der Unix-Zeit 0),
-<span class="math">\(T_X\)</span> ist die Länge einer Zeitspanne (z. B. 30 Sekunden).</p>
-</dd>
-</dl>
+<li><p>Es wird das HOTP Verfahren mit der Zeit als Zähler verwendet und entweder SHA-256 oder SHA-512 als Hashverfahren, d. h. TOTP <span class="math">\(value(K)\)</span> = HOTP <span class="math">\(value(K, C_T)\)</span>, wobei <span class="math">\(T\)</span> die <span class="ger-quote">aktuelle Zeit</span> ist.</p>
+<p><span class="math">\(C_T = \lfloor { T - T_0 \over T_X } \rfloor\)</span></p>
+<ul class="simple">
+<li><p><span class="math">\(T_X\)</span> ist die Länge eines Zeitintervalls (z. B. 30 Sekunden)</p></li>
+<li><p><span class="math">\(T\)</span> ist die aktuelle Zeit in Sekunden seit einer bestimmten Epoche</p></li>
+<li><p><span class="math">\(T_0\)</span> ist bei Verwendung der Unix-Zeit <span class="math">\(0\)</span></p></li>
+<li><p><span class="math">\(C_T\)</span> ist somit die Anzahl der Dauern <span class="math">\(T_X\)</span> zwischen <span class="math">\(T_0\)</span> und <span class="math">\(T\)</span></p></li>
+</ul>
 </li>
 </ul>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="footnote-4" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-4">4</a><span class="fn-bracket">]</span></span>
 <p><a class="reference external" href="https://www.rfc-editor.org/rfc/rfc6238">https://www.rfc-editor.org/rfc/rfc6238</a></p>
 </aside>
 </aside>
@@ -813,7 +815,7 @@
 </ol>
 </div>
 <div class="supplemental">
-<p>Die Authentifizierung mittels eines Schlüsselpaars dient primäre der Automatisierung (dann wird auch keine <span class="ger-quote">Schlüsselphrase</span> zum Schutz des Passworts verwendet). Auf jeden Fall ist effektives Schlüsselmanagement erforderlich:</p>
+<p>Die Authentifizierung mittels eines Schlüsselpaars dient primär der Automatisierung (dann wird auch keine <span class="ger-quote">Schlüsselphrase</span> zum Schutz des Passworts verwendet). Auf jeden Fall ist effektives Schlüsselmanagement erforderlich:</p>
 <blockquote class="epigraph">
 <p>[...] In einigen Fällen haben wir mehrere Millionen SSH-Schlüssel gefunden, die den Zugang zu Produktionsservern in Kundenumgebungen autorisieren, wobei 90 % der Schlüssel tatsächlich ungenutzt sind und für einen Zugang stehen, der zwar bereitgestellt, aber nie gekündigt wurde.</p>
 <p class="attribution">—<a class="reference external" href="https://www.ssh.com/academy/ssh/protocol">SSH.com (Dez. 2023)</a></p>
@@ -826,15 +828,15 @@
 <dl class="field-list simple">
 <dt>User Keys<span class="colon">:</span></dt>
 <dd><ul class="simple">
-<li><p><span class="docutils literal">Authorized keys</span> - Datei mit den öffentlichen Schlüsseln der Nutzer, gespeichert auf Serverseite</p></li>
-<li><p><span class="docutils literal">Identity keys</span> private Schlüssel der Nutzer</p></li>
+<li><p><span class="docutils literal">Authorized keys</span> - Serverseitige Datei mit den öffentlichen Schlüsseln der Nutzer</p></li>
+<li><p><span class="docutils literal">Identity keys</span> - private Schlüssel der Nutzer</p></li>
 </ul>
 </dd>
 <dt>Host keys<span class="colon">:</span></dt>
-<dd><p>benötigt für die Authentifizierung von Servern, um Man-in-the-Middle-Angriffe zu verhindern.</p>
+<dd><p>dienen der Authentifizierung von Servern (verhindern Man-in-the-Middle-Angriffe)</p>
 </dd>
 <dt>Session Keys<span class="colon">:</span></dt>
-<dd><p>werden für die symmetrische Verschlüsselung der Daten in einer Verbindung verwendet. Session Keys (<span class="ger">Sitzungsschlüssel</span>) werden während des  Verbindungsaufbaus ausgehandelt.</p>
+<dd><p>werden für die symmetrische Verschlüsselung der Daten in einer Verbindung verwendet. Session Keys (<span class="ger">Sitzungsschlüssel</span>) werden während des Verbindungsaufbaus ausgehandelt.</p>
 </dd>
 </dl>
 </div>
@@ -843,7 +845,7 @@
 </div></div><div class="ld-slide" id="secure-shell-ssh-verbindungsaufbau-beispiel">
 <h2>Secure Shell (SSH) - Verbindungsaufbau - Beispiel</h2>
 <div class="scrollable docutils container">
-<pre class="code text smallest literal-block"><code>debug1: Reading configuration data /etc/ssh/ssh_config
+<pre class="code text far-far-smaller literal-block"><code>debug1: Reading configuration data /etc/ssh/ssh_config
 debug1: Applying options for *
 debug1: Connecting to example.org [1.2.3.4] port 22.
 debug1: Connection established.
@@ -902,15 +904,17 @@ debug1: Sending env LANG = en_US.UTF-8</code></pre>
 </ul>
 </div><div class="ld-slide" id="ssh-tunneling">
 <h2>SSH Tunneling</h2>
-<ul class="simple">
-<li><p>ermöglicht die Übertragung beliebiger Netzwerkdaten über eine verschlüsselte SSH-Verbindung. z. B.</p>
 <ul>
+<li><p>ermöglicht die Übertragung beliebiger Netzwerkdaten über eine verschlüsselte SSH-Verbindung. z. B.</p>
+<ul class="simple">
 <li><p>um ältere Anwendungen zu verschlüsseln.</p></li>
-<li><p>um VPNs (Virtual Private Networks) zu implementieren</p></li>
+<li><p>um VPNs (Virtual Private Networks) zu implementieren.</p></li>
 <li><p>um über Firewalls hinweg auf Intranetdienste zuzugreifen.</p></li>
 </ul>
 </li>
-<li><p>ermöglicht auch Port-forwarding (lokale Ports werden auf entfernten Rechner weitergeleitet)</p></li>
+<li><p>ermöglicht auch Port-forwarding</p>
+<p><span class="far-smaller">(Lokale Ports werden auf entfernten Rechner weitergeleitet.)</span></p>
+</li>
 </ul>
 <img alt="SSH Protokoll" class="align-center" src="images/ssh/tunneling.svg" style="width: 1450px;" />
 </div><div class="ld-slide" id="ssh-und-back-tunneling">
@@ -938,11 +942,11 @@ It [The Terrapin attack] manipulates sequence numbers during the handshake proce
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Port Scans - IDLE Scan" id="ld-exercise-1">
 <p class="rubric">Port Scans - IDLE Scan</p>
 <ul class="simple">
-<li><p>Warum kann em IDLE Scan nicht festgestellt werden warum ein Port geschlossen oder gefiltert ist?</p></li>
-<li><p>Welchen Wert hat die IP ID des Zombies, der einem IDLE Scan durchführt, wenn der Zielport offen bzw. geschlossen ist wenn der Scanner diesen wieder abfragt?</p></li>
+<li><p>Warum kann bei einem IDLE Scan nicht festgestellt werden warum ein Port geschlossen oder gefiltert ist?</p></li>
+<li><p>Welchen Wert hat die IP ID des Zombies, der einem IDLE Scan durchführt, wenn der Zielport offen bzw. geschlossen ist, wenn der Scanner diesen wieder abfragt?</p></li>
 </ul>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:/zWBj1frQHh36LRjUiclKFFgpg0a6cmCP4rxCtd1Iy0=:qvGg9ua07VHDEqfR:Lq5LMIs2J1OfobE9sgnu6Xx/zosjGgzBTFA2BPelQ2VwNDIqYQdG43XaKAyJrONlucoAx6U8mbuS3VkyUN74sUcH70PGlJc43Hhv/29ogNpPVG2noW34xGanmHql8/57AV2H4PCrsRTJWNdwV82wu9yfBbm711j2GZbbO53cQdTJ4eHblLvKTaWbt407YGUwyOHRrz8/kZDWJ935S0bCNDCD+rPVsHF/88a3yD8LRFiWMP8Pk+ug7aoCXGFztQuq/D1ntuj7CNgYx5wJmf90QqwMWr6DyXy8u16yx1GiwhYDSihTb5pdCZkraiVY1CiJI6hW4yGp+27FlxMYrLH3rGR9xJueR8fH+Go+/c3Qi/g1aWBMaFzUlW1bzeOEcrEKzkI2XLP6XumcsOKVkTgpDc8V7YoglfyMV+yD6Kkf5IcvzkKMPP4tbAXMd0ZMDemPGT4I1FRiQae7T1WjDt37c65qLYZwft9aZJlPSCozsVl/Weh1WSMyv9YNjA5XLGUR8eWlGe5+WZNQ5qPRyCYJoMm+P6D9Zk/kEOIF/vf+8ML+8SLbyFMjUDwplAepmRFEXB7hS6/i7oJded1hYizRjDSzZtI6mA9mAyIV6q3DbZ5IRh9X1ohS3ETGFx75anmAwogcZ0ewPQ68LqMf+p9Fo4DnErc5jYMCvSKDWQ==</div>
+MTAwMDAw:gKjd0x2hxHD1Re3kTYdpNybK9r+IwF0CDjiKcMcJBr4=:ZE5aQVnks7T3Yks0:3oq10YBTlOu+KM7FGcCTjb+dbpg2/Ny6SjO27ZNoM663XQ78C53uWms7AqnJWtULsy5hvd6aeztCkCCQweuE+BmdpY97Ngbv3BaaQONLq5PPCvPJsf2+1jKA2Pb6DxJK14x/P5HUy+gDTQuvJE1Vww0UcBv51VQAuysqjTF+WZL+RnUSlAzX7YFyA3+jyBUitathL7XX+gn3a8hSZmK6ZfN0zwVeIjGLV000o7ysWxJq0caYcDzLJl/wEQxcULDBJUcK+q6ayYzFjfg3kR1ZKbzer2YS7CbtUXn5JWlI41qnYrsBijgnS2ByCmoP/h5ShfjKKVleBz6hSVk2H88wlW0eSdNMttzOzXeKbiOcsiOaYbs134r/aCH4/PCZSzzQVkUS14QtQIK+Bwcqt3PU6wGwM6hotEjZbBgBXQ16QQIcuyQ3KvNnbsGmwOQMw2BnmiruOhv3m/E9ClyR0egwCuZWbLRL2uifkIdtfbwC+gWDTVpOtj76c9ZQtZTVG5imHefZ0Ky1Nr9HEHs01mMyaT3kFTYLdYz3VMNrrbaZwKnnZdT8a36+M/0V/4n2hVu5dtaNZexOzvh9xaYs6Xo79wArp07WnpKtFZH/Wm1YQOE95fdb2KkbAA/WLojf2ksDbC0xdMr96jZdlbhuFntGKbjhrOMlwcAQpvkc561p2lu2JV87mICpQVtoc7D8GnG+yonnez6v0A==</div>
 </div>
 </div><div class="integrated-exercise transition-move-left ld-slide" id="ubung-1">
 <h2>Übung</h2>
@@ -964,11 +968,10 @@ MTAwMDAw:ZmgvZiHCitv9FxOV0TjrZHVdzLtclBpLCKLyVPfYfzw=:PZS1oaSscxhYGBMS:6vFg2Jgai
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - TOTP" id="ld-exercise-3">
 <p class="rubric">TOTP</p>
-<blockquote>
 <p>Identifizieren Sie die Vor- und Nachteile von TOTP gegenüber S/Key und fragen Sie sich an welcher Stelle es (aus Sicherheitsperspektive) mögliche Schwächen gibt?</p>
-</blockquote>
+<p>Die Standardzeitspanne ist 30 Sekunden. Welcher Konsequenzen hätte eine deutliche Verlängerung bzg. Verkürzung der Zeitspanne?</p>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:V26BybxCim9o+9Jax8nUTWCXSdmLrlGZM+7TMwlXpl4=:Cs6Yrn5XG4nhcU31:qYpZ5Uhb/vgTCjg8uCc8ivyIZo9Q8CBtu9J6QSaQTH3sfTTVwF7PNizADgeEt+6gSu2QbeSE9s5qUHoi4B/vU5RvLEPLZVIldjd4qwf4DgmjozG9eILJqER3TjE3dBebsml1pwa68m8KqAMyhy24/I9YKDkbbOmKbZL55/nJ1BbGqg0K0JGSv4qAh/0W9SKrkK9tHQ4HLGCB/s5hhTBnWPQX9Xk9afteYD2HB9Jy+iiSV2tfV/PvJe1BiErpU709g2FbmNAD+zk1etf5y0b9DeaVR71WJvQ1jnDjKUjzvZ6ts25XIOIqkdy4Qd52HFHnmJwFpHCIpUnoYp67hq6Ha1GLEXgVvzT+ymo8qbU8bV3yN3gzguy5dXmD/V5xxS1DuE4EXtQ6PbmISLy2v/22t/E+1LxGu5rT7Z1zrD0AxFqPArxSTuYyTYPmUkm4FpFfCXwcUhn4MkWUyE5aHXHFy+9HO3N1Myz1JTznl16Hub+ZJoeAeHPOJtvfseW0vcytmt1dlDPILHQ8KE+3x2TPRhzKrKuFMFTfSVAKms6Wcy2Ldo7+DyQ1lXL02BaXulzC+rSv6Z+QaKbbWHp1XjvSShRk9W5kaOzhD7pSzQxOEQRbt7jcuvEgpPYez7lrw/NpaqYsG/q5uNxMYmjnCWB6mhvMdWiNe2YDlFbFNxoiIEKbfwwlz6bksKn2ywVJe79oWjPxoaNNXBxZZkzgFNDWsbf8Sp8zZOuwrnUkuAbZYIUYfwjWyo+iHz5mBHLLBl2GBNjc6dBAhuxOvgHsIRVk1fG5hLXa3gX+6zT1UNLBfFDtaIR2ZXqYlgWmSQLnBhWT6dbJqlPOke4qEkHTmeHYWaWMi+5lFPtV4v5ivN6Gu3XnwpanQkV4QwH+kTPvPtmDfJ0tGn9Xw4EJBiekMgsvg7+kwMZVciOsVqh/X3RIwTHWGO9ibrbTTYSCJRXXil9D9Z3g1n6fkkXms5MddPGcEDM5OhKPLoUquhURe0HzXcQEgvwWVCLlFztYFt8rr8dZMX7UgeuiLAYDZ/l8OvHJyU48X2W/3rkFiJcI3HFX0LRQm+gr1qv8ClGqC9Eqxc8iNoPajNb1VGzxQ7D7zQY3QG4rnta0iKjmx3weL3QzEobpJPIhvy85iqbr85X1CJ5Zq+pndC+uZOSwtiHTC0lDNG4S8FZ559SdMb1LeDyNNY69nGh4inIP72Fw8+ncL0vHD05ATyla28fd64DiVggBdCqL5QWlEjSR044K/r0YFvXJ2tUyO+jmPD2Ia45Wrktz7r8B1T8MjTi/ecBYnVPdl0rgi9I69+zq5JXA8krqacWLeM3LZ+1P4G00vnu7Ctz0RXYsQ9jrFnuYFQBaWfkZ1nbyL7lV/PGf7aQkz/KcRzGodw8crrDzmVUcRYL2KgjbBKhGq5rprtZ7KNUayTBJW2WQ/MNFW9xMajxwMUQ=</div>
+MTAwMDAw:3NAjvStjM3Cc7moeyIsEoEWsxRyjse4T6LJAS/GRsPg=:HInKlAVPFlrZ6+oq:veZFL2+v0O9MMTmngafIn/ayM+9UMQbeV2dGs0iuBMOIxixDueJQZdZB6Zviv8ivhz0nzodT2bDnbJbYrS3Ut8/3Sa2JK6kJA063su0VWMLIPTCS0sYLeymeL0m0xQ9ETBrCuTOF/tnmh1UQW/Aks8qVK/DmU+NvpIQNhi8leiHzJ+reu2ZqugYmeBJo53pYMYXpuM6NpQogw/Ofp0seYTQGMYEWkkN4BiNKXXzmMubyUZGqRJX7D5eS5cCQhdFHNf+tA3kKra31njQoPIU+BMfQ0AGghBXZSmT4nRqN4cg7IYK6MCLjXUENuWba5aGky5BGznYmvT/Qvb0SpcspwC1/nnZwfn0+uGYrzkeS/o2w+KNtknuOYyEksDKyLifk9O2lsif30s6kOJEWppRRcKf/Zhh14BKr2l+QTKjNp5izqPav512TbF5zLhV7ReiBneIlwkFH8RRXHFtnZsgtVQ7ixcPz7uYIHxZ9k3FB5X5XRbGKMPiMyI8O0dEys636Oatm8HWfKxLGCPb9XQGjKyGxSnnvdnQVBbYeDdiOuck8Pj0Gn+1wkaH4Mqs2a8F4ynWA2LTbzpkPRlwnKvKLOf7O0WGn0MFM2qWydlpay8Qo4m1riSZKAfnCpvVCeoEW+9/wAwn6j+q+FEHByWeT066gukTtcQioq8bTjb/9LHl0OpqXzM/3fmnilHx+vX+9NjkXKmHTzgT5lWUzzUdPFLQdbjKAtrTdNfHfPkaKNgy7EiZyOjRKureHu/5UXe3qkKLbhiqBhCfhD5OPbdgueX6okb/5L1K1r279MnM2CHwKb8lB+wNs02VBqZ9HRvMwA5CnSiu8hBNY0dFhkXLwwdaeULXepk9AIN9J3C4zqApZ1ZqENEbRQuUTZPZQZAobN+Qpq9GYpviJflEygqMcE00IvBkjEjvYz94EyBx+1WHs4kHt32Cm8QdDsKweIRWVLarUFjtQOCsAd719atczCaqVH/M5mnniFR1ZhWhDGRPOjR/igsPbpp2jNUs4gUSfflaV2BHj6GqnKXEqwK8aw8XbUM83RnqvWManOoNOdb4u+153yBaQYsj8bXNek4+pU+PkQ8JBHxPCYUTYjBAt1tj32fWEqrCk7uQZ7MaLImxoCIWhMsh1JqJJgrqTOaIMyuX8b/5RXVyt+VkbiOw75kkXHNdrYFvJ1oFNbw4wl6LWT3CXFKRKi9QQvtVEldI8cppYGzwpatzXtI3Ye7WQFjEzNqjSYyxGsomwMHOc6ztOwNFR1ue4FPDPeJdGtNqVn7XouxQ/t5obiAIQ2rbH9N0gokIYRCyk1UoULHIYJhgOYjRsz8HPVpeR7v8KxX0rDe2Y9sRt4fTrKkUgnH0xuXoMDQcDBlw4AkvWKeifknje18J3aXHhHY4kTSAyKk0sbi4S/DnejNohrtP9DCHg4gzlmG5vOSbx+ez+/G8I6hpYVUQ8nV77r3QzR1zQQyOk0pZltZ/Kltz0BqSSBupCt33W7pQjvTX91gItPLX9DsBBc4408vgY6HnWnpZpJbYfARGA26g3iXlyBH/vmtbV/94/u61XzaHDFWW33mFpAN8FmBvI0Tt2M+kqMsF4MSMpm4SKM2NAcjrOJNn0HuxwRIO5U6Wyuh3ZSG5QqYLH</div>
 </div>
 </div><div class="integrated-exercise transition-move-left ld-slide" id="ubung-3">
 <h2>Übung</h2>
@@ -980,7 +983,7 @@ MTAwMDAw:V26BybxCim9o+9Jax8nUTWCXSdmLrlGZM+7TMwlXpl4=:Cs6Yrn5XG4nhcU31:qYpZ5Uhb/
 <li><p>Wo kann überall <span class="ger-quote">Egress filtering</span> statt finden.</p></li>
 </ol>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:5cmTakM5jrGCMZLnfIRASuGydMpZd8rMXTc1D/JgDKo=:YORxgiJf06FrKqmg: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</div>
+MTAwMDAw:+QhQkXtElp3bCVvdspU8D86KnQC93SEhaDEQAN1vJT0=:7cY7oMI0w/GB6mc+:RIGWImZXX2xXVdbwMxCucikE+Eh/I8LDjPuiJe7KRxie9xdStY6usaCon8rJNliDEXnFkJph42CCuV7+uxg8/cVpL5Q/SfCr/MGAkD2Zn+q8qo0CarrV33+PsjVTqdNw8KzDynfTm14YEHpoM99FKZO3bNNH6GAV2Ln2NUKgeBwO7hHXX1Er4XVGEXFsQS9E9WosdIyyPwWvPJ3jl9AEtusEjH8ZtN1JWgulXEjTVak8gRjo1jtPfwfW1VUREc1AA3ZthLLY73+h4Z7mZeHB+aFrBf0EcPwDNsegdLmcrzeO1qBGXX5GbEnK71SdEBoz2AonBgJSXnwst3VhV99R28gtNpnPzNluEoB6Flm24PglU61lkMGmvtuj8YNH+Chfl02up9Ao2P7PtUNl57YWyu+wIiIv4mrE4OLXDoW3owAhn+gIDODe9ZCa5+d2Jy55E1VcZCaMUczO4vUnHphdeg+DAcKU44H5ia3+HEBQvOCCV36nTb49dwDy6iQRTlxZEZPxDKasi+p0t9AoXckfx4TN2/ttB5Bh/v51gfgqP7tZ47Fgo7XmUmxS1i8SsgoRyicUz0T0mcyHBmig5iTEv+ml0B7zD0VNKhQsO955pbFGGC1MzAfGyYhvGkDDiXJgswyjk0K82LqXflJ+97+OL9wr3G0fDhKLur4wxvbmdhdPYe5qRF1oVuxsXunM3L/Yk4cGLKhC/GNrFO8YpYHZfjnz4SvgCN9tnj1znV1I7yyY5yd4BaYMY8oJ8xMqzI4qoEvDHFevqqwuKnLH41xTFPKkk3E+urdQ05rwCxLeKQHVPNXp3/89YKlG+XTuojsCbLvlZMYKb+m9dEEc/Z4VQIaK/PzZtfxq9nsDi6SkXjDwJVORojdUCz0a6dt2T06gA+lWrZJG+7X/ueNeFQIWpLR5cHpSfg5TZ9qBr6WbFi2usTEm3NLcCw7L1MVgSYVl4xWItlKZ2f99HaTUGsKcC/xqlJSDssOckG1+srLYeKxZNd36KMwD2IWTNaRq5mJo4d9bGtygAbyGr+NgwPN6tPqz9tsbnk7VuP6n1YrfS6ACi/ZKIre8OK/naFfk0DXlju4cjWIIObTze34d5Tdk5gNiBqB+UDaM6n0IhxJI7btHkTX/oiCQ2j9zFlvV+jjhoapluzKh5gsxaBOcNBrECkDrOQW6DKhdJn074556n+LyVksvgLEYB3AfWPLScWbEjnl3YnHPdKryeSZIbmo3UJYKJ8cLJCqCQ+izHe+qNX1Svfa+1ygHPJ8uwoE4UN19KrEwLHs+3ujktbeMETA+uoW4nvA7spnBxc3/AF0/BDZtOucEKEAdxl7v8LtpWvoSnMmDdNfmEVRdFtduO9gWdBOw5SnBF9jjfb/TWiCNE22b/Dp5JP4SRmAgluht6Wms0+R47WLLVVPpDYNLhg2kjo79FIn7KtThourO6fewJO4V32SRT+qx9v5SE01lXfrBeDOQqp+A6oH63DtjlAXCOhAcQRMevvbD1FpxlVIlf7i3b0B7e9Xwt9ki7jGK/QKjncZ77ta8Wrqhmq63sNY2jnQ2jYzyw5m8hoXB8LqzGXbiQhmmMg+rjWKzu1TBsw2evq2WPlRMHqAEiqbOQHB6K91UEQea8Gdksw56TKiLAbuy1PhJBu+Lw8s91pYtdc8c9XUk3ll8x3G78F4kGSi3s5VMPqkt9dwXEy9O0uGb4EHZBbXjqsyKgdzZgH60tJGD/Uh1r9YcSov+oIHN61mTMhFZ+fK5781zVZuUc/U9EIwfz78icLuVW9/Q3DTm2QtCvNqKOuICKlGukR5xmJ+Ro+taq2aVN65ebnR+M9oDXDbAeAywXl1VD+O6pN0mb111B5o+m0hgwwmn47OQ+glp8PA9kugkxXHz9Ynpz4rNx3CFqxSKhatjZCaJ73wdkg8iczlkHDBHrl9P6mZ7gV7FJG9TcITClpGRwYOLbOiuPN6WabNxlcmgAaEdl7ynmLAADDU55rjFW9VOkyODY2jg487/miqBdI8Ma4ifquPFMu89/bxx+ogfIPwHSNt4FnlXpuutBIRofKTu9yyCVPAITX0U1zqVZaSbb7DpsMvlCMczIDIcd+mK37B6y/IpIZ561nMJcE32r7hqmR4th4ogL3uMZfDBnHqK646931C1Ie6+O+tZkA3uswhZ8CLSKLaHop33Y3RrRL3lVWZNpi7KcyoKs8KWZ5KYVOp1Gt5U0/wIvrGTRV0lRtDn4HEzYB4Ha7o5FGBEj/+KVcGwPO919vpAa/gds6DSykxvRGyUC2X50Cr4fTHTauOpXCy4PcS06MxGhT1lujtx5py2sx55msQi3rri9siyFrDI2NHbeb78LpVZXqUSdxVt6TTWugMLT7IIsEWJolcJPX0EodJStX+sjeq7zvJfSgOI/JQgModBNP19ECX3012ejsuS1yQ+2h0Q3hdnAc4gB1y55LZBYXTPTQxM7JrPQY/qxEroAkKrBqbHrCY1RSnTFb0NdpqMAVVfxpF/Oein4YFbsQ5FGS7RwHm4Spn53IL6ezFOHu5gQDXSZyCXJd5CX7mEaeognzfJNZyJVKP1V1TJiwc82eCBJzk9qYyK1gs59zk0gSwoO81LaKNWjgYZ4+w9ejM+wssh5tsnbK+y46VHaNEkoUzouaPiggnYhsyfTbzlSocft/TYH9798tdSvsIiRmx+A2di3hBFuiUS+4yM+LTlhYdZaW7KReXSdvV/jGrchoFDAhdKaOZaQ+FFh01um/HIYYdNAj6X1I0NDkna75GGfdToSGM0wBK3LaQiZSgjpRCTfDMw81gmgGNNRoOEW0qtEVnCFkJ7rGiG0IQWoouhvG2f/Z5206fGfWXEVK3Aj9w1fVH0lqTS8tpVFuk5E8S7jZYHgeLfjq0ypdqPfYBiA44+pOk5+KmCd1USAw+GCDilDqUpB9j84pXmrYN5jgE+vEo63zkm9n9+V0c8qbmMRbL2atKFdMoPiDB8CDUtjeMT1n4rwBhgs8G250LKW124271gYRpcIOjgmTL0B2Ry0Am4E6FLn6TPeZtvPdR9t39oSkTr+1ackgsgS5xljf56sc4C8rkvOVwUQZNSbvZcEmvRbkdwGyfVIaddEEtVnZDSwDtN5aX4cxqBXi9HzQIL2+sHooVYBLQNhUhP7114SL84RcCi7WbnkwSxBhNJXV0VLoS6QIT9suFDszqRhiu77SstsuVKh2iYje5WB5cr1LZwqWU2aSqa8ubm4kYiO9PYO/OjLGPWa1etERvYrRL0jGeIwqFsoWzEkEst9zPLdy8Dapc78wQ2KmOf/ttZie8dWO3uYPH6UvlFm/o+nmCakyIeURI14Qp1qXdYP371N5/rGMpee8/1GwQhaZ0j5iSNFcSSZK0Gq5uBDebyabAT/IKr7njjvk4rWbYJST+SmQNMU+v3cK06lZpWZJgQm8V85L3i2GKeF+8KkfWk8OGO9ucyzyvWoPccSLF/qffp38TEe/jRkBaUjEq7GzOq4PVexcWkq3szd6G1ApfcPgmckD8ymEPXofOSB7LS3Ub2l78g9nBbaRoBwIJtvZ8eXES34suwR4+2WfVTAuUUMhypCGvm1Afiv5grtSfOBOmfHjHmgT8Vg6nzcq1xwNBQaYEKLRZVTTd93KfE1/lF7maSzgLsMhrljm0fWbbwh+aSiGT21c3CkwS1p2iArU484DiDfqFfr7FexWvk1SqMZhw2kmyPAdTICRgSsyX7AZWIM/79GK0IeTDSsS91Jbg4E4JR3coNiNojEkWHdnIH2OrldHOLAxxA6c4E+xhQTBRXZ9QgHnR/VkynLUqRel4W1t4fB+Fr16l0CHD9jlOQOyNphqN8vgF6o2C2wVpeier8MqayRLQLQikotaZ0J+KYWpiapDXy9MAFeyUPWBEKaD5SLUFmyxiCIFGfYU4qfmZp5D1YO6T6bUUWCFsP6PXPObNLN9iI01nvEOCGJpMPyET0H8xe+15v9iEmeo1RDYWYdxELZO0slcg6Q1z7rqIpdCXj/iugXweya+IyqtFA+8zN/FJQAR+JOuiF3kuLxVKPsCsDjtQ1Of5GaXiR6cg8MGWPcI5FuwRftjU3o4e/XeL5zAwDEGkk28en0FHhR2E014WpRivIgV9a4ZzlFR0R36K9iGP/4Ox8QB5RBARBAkHAjnR8kW/yk36edbPRCOeQZRuI2Zde4DGX/q69H5ac9Z5TVQeAHL2Apm5l8fHu8KR14mC+SEr0mLfuE6JgjLgaRSOm44U7NHDiJoayLWuwa9PLacKBVTbg4YKc+VLpX8rqVK0LCUBHYXkBVCctn1sVXKvn/ahfkhKHbLR1LVjsU1QnRTEHasLO/IqDa9qtA701TyCavqJGDVeNN761fI5C407mNg1zEkV8hkQdkc71nl9KKGr7ecAWMrMdJXBRPjDNVDnmKe7a37hhXE2KBms2KQu+jC6Guqj65yHba5FFf1ncpfgr6ZAkVFJwBYGeVNuePPLYBg7yFMZrDilOI/5hFyIhVUOtqaSz7Jk+w9LOb6ARD0tMRpnz9cuvdAP8qqzstrg5sISarA5ZoAVv0apimSi3cHjA0RQkyxQEHMmyW04M2ZWhYbVMT4OWiBnn44dRjBktrrI2H6WAxXwY7WaaHIOE0pqCO+flItdmS/G7mGrrv+Oc65iIMU89gO+UCitf9YhGU1E2xuFie6FDFEBY1ovkZbM3QEXAW/85hfzDfWixVkFpkwcF6RPsELIhP5M04+OtOYot5eyNdViCdPmBOohMhX9rfy4h322PLhsD/Yma3uflgsnU5GW4+nShf21JPkq8cQvmS5gIbPNdDS6JU3fjKZFZRm6v5drbFaRcAw2+gaDCcJt1elV9hndbcxqy6ZWnYHKKC7LBCXH7KGZrwUfpl81YmfV/6J/sTgA5jsUB1oFTbvg570Vit4/Epx0m/106TWvrl8sfTCgC2JNsYCyfMG61+RdIyy2eV5PT0y3K5XuVpnGpybAbOKNh0DD+7L3oAujUbn/IqDdbb2izc8uFz6wGwhL41HB+cuSFdFw=</div>
 </div>
 </div><div class="new-section transition-fade ld-slide" id="firewalls">
 <h2>Firewalls</h2>
@@ -1000,7 +1003,9 @@ MTAwMDAw:5cmTakM5jrGCMZLnfIRASuGydMpZd8rMXTc1D/JgDKo=:YORxgiJf06FrKqmg:ZfmqlTUTr
 </ul>
 </dd>
 </dl>
-</div><div class="ld-slide" id="von-der-notwendigkeit-des-schutzes-von-rechnern">
+<div class="supplemental">
+<p>Wie bereits diskutiert gibt es auch Angriffsmuster gegen Air-Gapped-Systeme. Ein Beispiel ist der Stuxnet-Wurm, der sich initial über USB-Sticks verbreitet.</p>
+</div></div><div class="ld-slide" id="von-der-notwendigkeit-des-schutzes-von-rechnern">
 <h2>Von der Notwendigkeit des Schutzes von Rechnern</h2>
 <blockquote class="epigraph">
 <p>[...] Züger und sein Team hätten [...] erst kürzlich ein Experiment durchgeführt, [...]. Sie hätten einen Computer &quot;ohne jeglichen Schutz&quot; mit dem Internet verbunden, um zu sehen, wie lange es dauere, bis er befallen sei. Konkrete Details zur Konfiguration dieses Systems werden zwar nicht genannt, angeblich war der Rechner aber schon nach 20 Minuten infiltriert.</p>
@@ -1067,7 +1072,7 @@ Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Info
 <blockquote class="epigraph">
 <p>[...]</p>
 <p>Angriff auf die Kleinen</p>
-<p>Waren bei früheren Spamangriffen massenhaft Accounts auf der größten Mastodon-Instanz mastodon.social angelegt worden, die dann von dort ihre Inhalte verbreiteten, trifft es nun nicht die größte, sondern die kleinsten. Automatisiert werden dabei Instanzen ausgesucht, auf denen eine Registrierung ohne Überprüfung und sogar ohne ein Captcha möglich ist. Das können etwa solche mit wenigen Accounts sein, die von Enthusiasten etwa für eine Gemeinde betrieben werden. Waren die Verantwortlichen in den vergangenen Tagen nicht aufmerksam, wurden diese Instanzen dann regelrecht überrannt. Die Spam-Accounts verschickten massenhaft Nachrichten em Bild des namensgebenden Frühstücksfleischs und Links zu Discord-Servern, die wohl lahmgelegt werden sollten.</p>
+<p>Waren bei früheren Spamangriffen massenhaft Accounts auf der größten Mastodon-Instanz <span class="docutils literal">mastodon.social</span> angelegt worden, die dann von dort ihre Inhalte verbreiteten, trifft es nun nicht die größte, sondern die kleinsten. Automatisiert werden dabei Instanzen ausgesucht, auf denen eine Registrierung ohne Überprüfung und sogar ohne ein Captcha möglich ist. Das können etwa solche mit wenigen Accounts sein, die von Enthusiasten etwa für eine Gemeinde betrieben werden. Waren die Verantwortlichen in den vergangenen Tagen nicht aufmerksam, wurden diese Instanzen dann regelrecht überrannt. Die Spam-Accounts verschickten massenhaft Nachrichten mit einem Bild des namensgebenden Frühstücksfleischs und Links zu Discord-Servern, die wohl lahmgelegt werden sollten.</p>
 <p class="attribution">—<a class="reference external" href="https://www.heise.de/news/Mastodon-Spamwelle-zeigt-Schwaechen-auf-und-weckt-Sorge-vor-schlimmerer-Methode-9632055.html">Mastodon: Spamwelle zeigt Schwächen auf [...]</a></p>
 </blockquote>
 </div><div class="ld-slide" id="realisierungsmoglichkeiten-von-firewalls">
@@ -1114,8 +1119,8 @@ Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Info
 <li><p>Realisierung eines Packet Filters</p></li>
 </ul>
 <p><strong>Bewertung</strong></p>
-<div class="two-columns width-60 docutils container">
-<div class="column docutils container">
+<div class="two-columns docutils container">
+<div class="column no-separator docutils container">
 <ul class="positive-list simple">
 <li><p>einfach und billig</p></li>
 <li><p>flexibel</p></li>
@@ -1241,7 +1246,7 @@ Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Info
 <li><p>Sie werden beauftragt die Firewall so einzurichten, dass Mails mit Schadsoftware nicht durchgelassen werden. Wie reagieren Sie?</p></li>
 </ol>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:jhBGBzQqkoDkzb9H073erNn6dy7xzr+PVgTu3uRZS8o=:ayO+EXQHZD2xFAqu:FVTaZHNcI6JUW/Y/o1twD9fsZ8e7lRf0nKv5zUX7gwrYkKk8W8IV7DwQCvGl1GjZnCCeBZJRPcwiMggIy6F7L2xzfhVcKh25BiEtW2xJ2Qr1kOMhLGVFasoC80iNIDGlWVrhs7acoZnYspd1GH19oCZzHbpGeB2lXwM2jg7cEBgEbVMbkIRkJlfAul6sYijiEatkWBgk8SxWJnfJVt0AOtNe8uUaPjSaykrtIpkhqhB+PLKg3EGAeuEK6+mQRRaDq1OaOhL4xr+MMMB7QZi1VcWw17JuoXFkKVEnRDEpty8inrY8+ZCsIeJazsuho2MibHL0xRQaBtE8PiLQstC2hC3L/V9BXAxG3K4mgdcRRSLxIAg5nBz/GkxP/WZyklx+7oNNtzQSLFt6s4yhifGdzvklJSvIwe4EylPfcAjAkfgPYI/pZXc5yif5bbQSoX6CsGX6+jMpx5wBHnaVypbpZm/Pay9RmewTBo+KGQiWQg1V+AWiMbhEmmj59/WzkPZOKSOMA0Gio4XRxKJm6SHxeCZDpfbxZsB1UHSJXU4CuUaUCFd0B0IGnihCO9aj9BpzefzAgnq4aak+gaxFB5VrjBNiAUaP2fRf/8Lpwc6pneUkF4P8/uM+sB1JrUg1YZPhMCefcu2qQaydsc55Kqtei1aO/wiYjDcEbwzgGtZl8LsXh0T/H2l9NK1d9HdpLRdPHrm7uA1EyEwnQF8PqyvXpnzLSfIj+RUffMMAVJFEkb55XrJ5n8i8v9l4+TodY1NChRZ0ZX9koaIRGf4I0U61Chd2TUgI1jjKu0aK+/NGQvoabj6lXpJKlvlcnR8wOXobNHZ4EXUp2ZV/7IFiRLqokYU3YkC/JYw4lVcO2esOYiPbPpQo4apGnJDIPLv7CqRWPb+NkvZakdkndep5CJrAdauU7W69PZBEDX0BIim/Hf1Kmm/rxWD4UaK6rlI0KKOmRZf2x8ElMj66y4a9jMOi0vPggAHxzBm0KuZMeca6TgCndWUjDMPDzG9Acqf+fawBRbi1bhBseXE01lQm2C/31w5zX/0tUzhYTF6ebmWweY5Y1uVtIp6qIuAWrcjWGlu18iVlBdZ5M7lygWdQnJ+x+cbC0VJekIrSggyDoVaeh7iGNw4IJToq4gpEyyHQZ8zz0PHA90BI2kQCOwUIdRyMaSLxY+X+Qb6loZXGLuRtsfZZzVzA2gkqJYppNEpOOTH5D40ftqYh0bcn4B/H1pkHGguHMxhO4Njfk/RBaX4Qb/Hy4gUK5CtEdztUtDRAtzEDykd/MsJowsK5p6c2YVn2PU6mqPVMYyTBw5tF7jGU7CejKiwJ7z4W0OfdmFxX9ew4jZzK5t2ECauNPz3FKKuynu2Le8aAUUCofNELaJAkk6evl8xU/+QwC3leVIjfmt782dMYzFbnmgYWkqjudqHeiaywZtJBsHrTB0Rsh0TJcvTD1vJSKXE2WYBGVYtjzyTJxQL8jUS2tmIRssKngMV/jS12gusv6rQaxpyspWHIMFwUyLqDh6izvA7UJ43JojWvpe3D3lyqSI17FkDxr3V2h9/CSvYPgZyPDHaBALScJUkKFewITmAho+Kf1AKgQ0sJ68S1gMwd7Jat/tAskxGkBtuWaKhlBig+7hP0v8vGwG1zmPQRiSMu9yPMSFHiKVwoTkPjLIXoXYsEYJwzubX5/9rE2Z8CU1SHowfR75ORs4Eqp76bNf4N5w4CiSyneLnoGdF+ZtpVMihBmV1Cvy8+y5KLHQbCUoRLyHbSsiyBUcu51UMkvwoyxnVzxieVyWZ9z3gZ9buEvdZF3gjhIV8WA2YvZKiLdyURkZISP5HN2qGuUgwktMpv2QJpzPydHVI3CL58UP80YEatUMIQnQNrRAG45g0wVKAX+VFTFyCsBVyAdmcAgv0MHmdqmBLiIVuAM+bAYokc/3UO4nCWzBtVkLfhI6+pEisJCIfx2yag1NJF1Bg+kVD/MBzoFIHwD0eASNDqNvggibm1b5s7C60V1LS2Yq8J1whxFGa8J2r0lUnxqRkXyHZSQs1upQn1Htu/stbmYsLUW7OmWghMTshB9RRF5IUTMlQn/CX025ru6fIF9ik1TMG3ffR7AwoMPYEd9AaUSzH8xNGs9dUMzkhTW03agUreZyCYua/DF0FvOXJWUAcvmtTNjrQ4KtmKPeORr7eIJjAt1eAKJr5DFCTtkhj/3a6wzS66AWb+ElOWkLqvEszzqyovnbjbc+Su5vNs5N6pMiuu8v/SsTR8UOuT9UxHVnVJ13tjs1QFX/62+OgjyId5ty/Jpzxeyscjs8Oz2IXI0tu6GobUg6GI2Ruq/CcX+LgDJ1eskXqzS0oeBlJWPEAUoPYaNVAAtQ2pzu8IejacU594E08/4oZnB9te9sewX8er3zQYYANWSZD3MKOZbTnl3Q5rkOSw8CKX72Oi02pqajgemJJB7HA+NzbL4Ou7VuCYMfA2/I/b6L49mCnzAoP83+NyWXNh99vmkRrJEpQTzhiahHRZLXscMDRdBIxX5OOtOHUNd50kJ6MFtiJgUeXIbtVInHwX1entBlRO58y6AXLK/V0xzsvMwMptLLjtRIhS3LnSZZS2C8Jlnl1P1j9OhHsuj74dxdVTRXCpgBtrtetSB4/o6TyrSWWrLv+6vUnPX7Wm5O8Dz+lziZpvUNLFKDJI5fNuzNOV+heRZBrdF/W1gyGavO1jw/9rkhtBTAyfxgzuGctCC82+RsmjNM+CxztYKgvdcwr5pdGgN/MvlkshB43B7d+QGgtGaTM25gCd2XFW4GWxLolXb5RAnsNEZQMMrWe5U3QYdck+hFh1PJxWgVD+yG1d9hZ0zH9+D5Y32+sJMbrHu6gROcRhLdvMcH3wARn84tYPe0TCJP/1xb/x4zlM4XsV7LhdDxlebUNlUnKiK9FXP5aYzdWyoARTdjAXz0Mh4AdCVUYGLtUGWiORX54tBDRCDw==</div>
+MTAwMDAw:Kh7lNq7EFVTrowf7br86PbqT2MJ9/qa5WW1Lhm2UU48=:8gc5/QkFVMjZIkKw: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</div>
 </div>
 </div>
 </template>
