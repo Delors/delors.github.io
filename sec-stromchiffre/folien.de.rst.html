@@ -836,9 +836,28 @@ MTAwMDAw:64090XVf5r6BPVUk1F9dAi3E3kcT1Vdf1oj9Hwj3ABQ=:2B55KgAP0REokaXp:gaKtYY5Sn
     QUARTERROUND(3, 4, 9, 14)
 }</code></pre>
 </div><div class="layer incremental">
-<p>Nach den 20 Runden wird der Zustand mit dem initialen Zustand addiert. Auf diese Weise erhält man den Schlüsselstrom. Dieser wird dann zum Verschlüsseln des Klartexts mittels XOR verwendet.</p>
+<p>Nach den 20 Runden wird der Zustand mit dem initialen Zustand addiert. Auf diese Weise erhält man den Schlüsselstrom.</p>
+<p>Dieser wird dann zum Verschlüsseln des Klartexts mittels XOR verwendet. Somit muss der Klartext somit kein vielfaches der Blockgröße sein.</p>
 </div></div><div class="supplemental">
-<p>Es gibt auch eine Variante von ChaCha20, die einen 64-Bit-Blockzähler und eine 64-Bit Nonce verwendet. Diese Variante</p>
+<p>Es gibt auch eine Variante von ChaCha20, die einen 64-Bit-Blockzähler und eine 64-Bit Nonce verwendet. Hier wird jedoch dei IETF Variante diskutiert.</p>
+<p class="rubric">Little-endian</p>
+<p>Bei der Verwendung von <em>little-endian</em> (wörtlich etwa: „kleinendigen“) Format wird das niedrigstwertige Byte an der Anfangsadresse gespeichert.</p>
+<p>D. h. die 32-Bit-Zahl <span class="docutils literal">1</span> wird als:</p>
+<table class="align-center monospaced highlight-cell-on-hover no-table-borders far-far-smaller">
+<tbody>
+<tr><td><p>(kleinste Adresse) 0xXX</p></td>
+<td><p>0xXX+1</p></td>
+<td><p>0xXX+2</p></td>
+<td><p>(größte Adresse) 0xXX+3</p></td>
+</tr>
+<tr><td><p>01</p></td>
+<td><p>00</p></td>
+<td><p>00</p></td>
+<td><p>00</p></td>
+</tr>
+</tbody>
+</table>
+<p>gespeichert.</p>
 </div></div>
 </template>
 </body>
