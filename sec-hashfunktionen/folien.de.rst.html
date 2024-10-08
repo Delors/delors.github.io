@@ -39,7 +39,7 @@
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.0</dd>
+<dd class="version">2.0</dd>
 </dl>
 <div class="supplemental">
 <dl class="field-list">
@@ -341,6 +341,82 @@ K' &amp; = &amp;\begin{cases}
 </span><span class="name">hash_hmac</span> <span class="operator">=</span><span class="whitespace">
 </span>    <span class="literal string affix">b</span><span class="literal string single">'h</span><span class="literal string escape">\x88\xc2\xb6</span><span class="literal string single">X</span><span class="literal string escape">\xb7\xcb\x9c\x90\xc2</span><span class="literal string single">R...</span><span class="whitespace">
 </span>      \<span class="name">x16</span>\<span class="name">x87</span>\<span class="name">x87</span>\<span class="name">x0e</span>\<span class="name">xad</span>\<span class="name">xa1</span>\<span class="name">xe1</span><span class="punctuation">:</span><span class="literal number integer">9</span>\<span class="name">xca</span><span class="literal string single">'</span></code></pre>
+</div></div><div class="ld-slide" id="poly-1305">
+<h2><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc8439#section-2.5">Poly 1305</a></h2>
+<div class="stack">
+<div class="layer">
+<ul class="simple">
+<li><p>Ein MAC Algorithmus für die Einmalauthentifizierung von Nachrichten</p></li>
+<li><p>Entwickelt von Daniel J. Bernstein</p></li>
+<li><p>Basierend auf einem 256-Bit-Schlüssel und einer Nachricht wird ein 128-Bit-Tag berechnet</p></li>
+<li><p>In Verbindung mit <em>ChaCha20</em> in einer Reihe von Protokollen verwendet</p></li>
+</ul>
+</div><div class="layer incremental">
+<img alt="Poly 1305 - Verwendung des Schlüssels" class="align-center" src="drawings/poly1305.svg" style="width: 1775px;" />
+<p class="rubric">Aufteilung des Schlüssels</p>
+</div><div class="layer incremental">
+<p class="rubric">Verarbeitung der Nachricht</p>
+<ul class="incremental list-with-explanations">
+<li><p>initialisiere den Akkumulator <span class="math">\(a\)</span> mit 0</p></li>
+<li><p>die Nachricht wird in Blöcke von 16 Byte aufgeteilt und als <em>little-endian</em> Zahl verarbeitet; d. h. ein Block hat 16 Oktette (<span class="math">\(16 \times 8\)</span> Bit)</p></li>
+<li><p>Füge dem Block <span class="math">\(n\)</span> ein Bit jenseits der Anzahl der Oktette des aktuellen Blocks hinzu <span class="math">\(= n'\)</span>; d. h. im Falle eines 16-Byte-Blocks wird die Zahl <span class="math">\(2^{128}\)</span> addiert</p></li>
+<li><p>Addiere <span class="math">\(n'\)</span> aus dem letzten Schritt zum Akkumulator <span class="math">\(a\)</span></p></li>
+<li><p>Multipliziere den Wert aus dem letzten Schritt mit <span class="math">\(\text{clamped r}\)</span></p></li>
+<li><p>Aktualisiere den Akkumulator mit dem Ergebnis modulo <span class="math">\(P = 2^{130} - 5\)</span>:</p>
+<p><span class="math">\(a = ((a + n') \times \text{clamped r}) \mod\, P\)</span></p>
+</li>
+</ul>
+</div><div class="layer incremental">
+<p><span class="far-smaller">Beispiel</span></p>
+<pre class="code text far-far-smaller literal-block"><code>000  43 72 79 70 74 6f 67 72 61 70 68 69 63 20 46 6f  Cryptographic Fo
+016  72 75 6d 20 52 65 73 65 61 72 63 68 20 47 72 6f  rum Research Gro
+032  75 70                                            up</code></pre>
+<div class="far-far-smaller margin-bottom-1em margin-top-1em docutils container">
+<p>Sei <span class="math">\(s = 1bf54941aff6bf4afdb20dfb8a800301\)</span></p>
+<p>Sei <span class="math">\(\text{clamped r} = 806d5400e52447c036d555408bed685\)</span></p>
+</div>
+<div class="stack smaller incremental smaller incremental">
+<div class="layer">
+<p class="rubric">Verarbeitung des ersten Blocks</p>
+<div class="far-far-smaller math">
+\begin{equation*}
+\begin{array}{rl}
+    a      &amp; = &amp; 00 \\
+    n      &amp; = &amp;   6f4620636968706172676f7470797243 \\
+    n'    &amp; = &amp; 016f4620636968706172676f7470797243 \\
+    a + n' &amp; = &amp; 016f4620636968706172676f7470797243 \\
+    (a + n') \times \text{clamped r} &amp; = &amp;
+            b83fe991ca66800489155dcd69e8426ba2779453994ac90ed284034da565ecf \\
+    a = ((a + n') \times \text{clamped r})\, mod\, P &amp; = &amp;
+            2c88c77849d64ae9147ddeb88e69c83fc \\
+\end{array}
+\end{equation*}
+</div>
+</div><div class="layer incremental">
+<p class="rubric">Verarbeitung des letzten Blocks</p>
+<div class="far-far-smaller math">
+\begin{equation*}
+\begin{array}{rl}
+    a      &amp; = &amp; 2d8adaf23b0337fa7cccfb4ea344b30de \\
+    n      &amp; = &amp;   7075 \\
+    n'    &amp; = &amp; 017075 \\
+    a + n' &amp; = &amp; 2d8adaf23b0337fa7cccfb4ea344ca153 \\
+    (a + n') \times \text{clamped r} &amp; = &amp;
+            16d8e08a0f3fe1de4fe4a15486aca7a270a29f1e6c849221e4a6798b8e45321f \\
+    a = ((a + n') \times \text{clamped r})\, mod\, P &amp; = &amp;
+            28d31b7caff946c77c8844335369d03a7 \\
+\end{array}
+\end{equation*}
+</div>
+</div><div class="layer incremental far-smaller incremental far-smaller">
+<p class="rubric">Abschuss</p>
+<p>Addiere auf den Wert des Akkumulators <span class="math">\(a\)</span> den Wert <span class="math">\(s\)</span>.</p>
+<p>Und somit ist der Tag <span class="math">\(2a927010caf8b2bc2c6365130c11d06a8\)</span> (als Zahl im little-endian Format)</p>
+</div></div></div></div><div class="supplemental">
+<p class="rubric">Hinweise</p>
+<p>In dieser Diskussion betrachten wir jeden Block der Nachricht als <span class="ger-quote">große Zahl</span>.</p>
+<p><span class="math">\(P = 2^{130} - 5 = 3fffffffffffffffffffffffffffffffb\)</span></p>
+<p>Dadurch, dass wir den Block als Zahl in <em>little-endian</em> Reihenfolge interpretieren, ist das hinzufügen des Bits jenseits der Anzahl der Oktette gleichbedeutend damit, dass wir den Wert 0x01 am Ende des Blocks hinzufügen.</p>
 </div><!-- TODO discuss CBC-MAC -->
 </div>
 </template>
