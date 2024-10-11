@@ -39,7 +39,7 @@
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2.0</dd>
+<dd class="version">2.2</dd>
 </dl>
 <div class="supplemental">
 <dl class="field-list">
@@ -136,10 +136,35 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 </aside>
 </aside>
 <div class="supplemental">
+<p><strong>Szenarien</strong></p>
 <p>Im ersten Szenario wird der Hash an die Nachricht angehängt und als ganzes verschlüsselt. Wir erhalten Vertraulichkeit und Authentizität.</p>
 <p>Im zweiten Szenario wird der Hash der Nachricht berechnet und dann verschlüsselt. Der Empfänger kann den Hash berechnen und mit dem entschlüsselten Hash vergleichen. Wir erhalten Authentizität, aber keine Vertraulichkeit.</p>
 <p>Im dritten Szenario wird an die Nachricht ein geteiltes Secret angehängt und  alles zusammen gehasht. Die Nachricht wird dann mit dem Ergebnis der vorhergehenden Operation zusammen verschickt.</p>
-<p>Im letzten Szenario werden alle Ansätze</p>
+<p>Im letzten Szenario werden alle Ansätze kombiniert.</p>
+<p><strong>Legende</strong></p>
+<dl class="field-list simple">
+<dt>M<span class="colon">:</span></dt>
+<dd><p>die Nachricht</p>
+</dd>
+<dt>H<span class="colon">:</span></dt>
+<dd><p>die Hashfunktion</p>
+</dd>
+<dt>E<span class="colon">:</span></dt>
+<dd><p>der Verschlüsselungsalgorithmus</p>
+</dd>
+<dt>D<span class="colon">:</span></dt>
+<dd><p>der Entschlüsselungsalgorithmus</p>
+</dd>
+<dt>K<span class="colon">:</span></dt>
+<dd><p>ein geheimer Schlüssel</p>
+</dd>
+<dt>S<span class="colon">:</span></dt>
+<dd><p>eine geheime Zeichenkette</p>
+</dd>
+<dt>||<span class="colon">:</span></dt>
+<dd><p>die Konkatenation von zwei Werten (d. h. das Aneinanderhängen von zwei Werten)</p>
+</dd>
+</dl>
 <aside class="admonition admonition-hinweis">
 <p class="admonition-title">Hinweis</p>
 <p>Bei <em>Man-in-the-Middle-Angriffen</em> handelt es sich um einen Fachbegriff und häufig wird zum Beispiel Eve oder Mallory verwendet, um die Person zu bezeichnen, die den Angriff durchführt. Gelegentlich wird auch <em>Adversary-in-the-Middle</em> oder <em>Person-in-the-Middle</em> verwendet.</p>
@@ -156,7 +181,32 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 <img alt="drawings/signatures/just_authentication.svg" class="align-center" src="drawings/signatures/just_authentication.svg" style="width: 1582px;" />
 </div><div class="layer incremental">
 <img alt="drawings/signatures/authentication_and_encryption.svg" class="align-center" src="drawings/signatures/authentication_and_encryption.svg" style="width: 1775px;" />
-</div></div></div><div class="ld-slide" id="anforderungen-an-die-resistenz-von-hashfunktionen">
+</div></div><div class="supplemental">
+<p><strong>Legende</strong></p>
+<dl class="field-list simple">
+<dt>M<span class="colon">:</span></dt>
+<dd><p>die Nachricht</p>
+</dd>
+<dt>H<span class="colon">:</span></dt>
+<dd><p>die Hashfunktion</p>
+</dd>
+<dt>E<span class="colon">:</span></dt>
+<dd><p>der Verschlüsselungsalgorithmus</p>
+</dd>
+<dt>D<span class="colon">:</span></dt>
+<dd><p>der Entschlüsselungsalgorithmus</p>
+</dd>
+<dt><span class="math">\(PR_a\)</span><span class="colon">:</span></dt>
+<dd><p>der private Schlüssel von a</p>
+</dd>
+<dt><span class="math">\(PU_a\)</span><span class="colon">:</span></dt>
+<dd><p>der öffentliche Schlüssel von a</p>
+</dd>
+<dt>||<span class="colon">:</span></dt>
+<dd><p>die Konkatenation von zwei Werten (d. h. das Aneinanderhängen von zwei Werten)</p>
+</dd>
+</dl>
+</div></div><div class="ld-slide" id="anforderungen-an-die-resistenz-von-hashfunktionen">
 <h2>Anforderungen an die Resistenz von Hashfunktionen</h2>
 <table class="smaller highlight-line-on-hover incremental">
 <colgroup>
@@ -230,23 +280,33 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 </div>
 </div><div class="ld-slide" id="struktur-eines-sicheren-hash-codes">
 <h2>Struktur eines sicheren Hash-Codes</h2>
+<p>(Vorgeschlagen von Merkle.)</p>
 <img alt="drawings/hash_functions/structure_of_secure_hash_codes.svg" class="align-center" src="drawings/hash_functions/structure_of_secure_hash_codes.svg" style="width: 1400px;" />
 <div class="two-columns smaller docutils container">
+<div class="column no-separator docutils container">
 <p><span class="math">\(IV\)</span> = Initialer Wert (Algorithmus-abhängig)</p>
 <p><span class="math">\(CV_i\)</span> = Verkettungsvariable</p>
-<p><span class="math">\(Y_i\)</span> = ier Eingabeblock</p>
-<p><span class="math">\(f\)</span> = Kompressions-funktion</p>
+<p><span class="math">\(Y_i\)</span> = i-er Eingabeblock</p>
+<p><span class="math">\(f\)</span> = Kompressionsfunktion</p>
+</div>
+<div class="column docutils container">
 <p><span class="math">\(n\)</span> = Länge des Blocks</p>
 <p><span class="math">\(L\)</span> = Anzahl der Eingabeblöcke</p>
 <p><span class="math">\(b\)</span> = Länge des Eingabeblocks</p>
 </div>
-</div><div class="integrated-exercise ld-slide" id="ubung">
+</div>
+<div class="supplemental">
+<p>Diese Struktur liegt insbesondere den Hashfunktionen der SHA-2 Familie zugrunde.</p>
+</div></div><div class="integrated-exercise ld-slide" id="ubung">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - XOR als Hashfunktion" id="ld-exercise-1">
 <p class="rubric">XOR als Hashfunktion</p>
-<p>Warum ist eine einfache <span class="ger-quote">Hash-Funktion</span>, die einen 256-Bit-Hash-Wert berechnet, indem sie ein XOR über alle Blöcke einer Nachricht durchführt, im Allgemeinen ungeeignet?</p>
+<p>Warum ist eine einfache <span class="ger-quote">Hash-Funktion</span>, die einen 256-Bit-Hash-Wert berechnet, indem sie ein XOR über alle 256-Bit Blöcke einer Nachricht durchführt, im Allgemeinen ungeeignet?</p>
+<div class="minor docutils container">
+<p>Wir nehmen hier an, dass die Nachricht ein Vielfaches von 256 Bit lang ist. Falls nicht, dann wenden wir Padding an.</p>
+</div>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:De/lba18laNIM2EqIfQeewOvHgigKfBwdqtrQY+D2eE=:Mlu92VhhZwNr/vGd:lGbchAASXBw34twYyWreQri20VSc/76Fa7nZGn15ekeaDK8iof6yGsmHTuETow3n4oE3R6/DyyeXxsUPzqdglzlFBg2Ct7O4OEBhQRfzBVv+/Hb/4rABoEVY83JmVxvpGXblfpnaJPWtQLFh3jFUPt9CT7IjvZ9rnvDwA8Dl58pHpFky2htR096v3dKJ3msvMh47z7KyoOMP/mPvD5IN7jJ7wvmmP4YBpR8qibXWi5FVyt9I+qtvpgtFmGsey78ZEkEc689jY/jmJr4zR1XwK7nG3lnQAaACcy9g+pEXZEU5Wyg1bGRbz8woIwzEM6I/mDKyXSksny541GwWF7WYJ5zeIW3hjKllv0AM8WCHleCqzBIaNeiXnGsvm62/dkqy1jwA58Wcn5gfrIsq3nlsrO2MNgWHBCdTpCrqfwNNTX/riAM+RIYsk2nCYUM/Q6M12LvCEnH8og==</div>
+MTAwMDAw:nG7+UoPMpXVVIeDWRfi8HW72QnYEgcPtv04+p5b85+o=:Uvy9f07tkI2X4XnP:UEQg7gsKy7I4zy1ZI+NO6OQagS9byUF+RcjKXUuU+rPGWOHqB+EqBPHSzUnni8Xc2uNwzv+jIEedcSQoyDkhaLsYk9k+K5gXeNC7Vha3Q3KwByLnRD99CFba5XIn7u6E6bvHXB0IpDsJEbEc8otiAF2d3inz9tIaZ+VVNZ5GHqHq1Wel8/srNaU6L1WLoImV6PvoUbTjYQOT3BxGfmCt+czgOkvbKUfz/0y9LCtO1JAFpjaWXKZ4JIH4rLb589k3AgqIaJa0y8HOHPy87HwDZkIluFBfqCyslMkn/HcdRfIPQu8bml62Vdseuz5dXerihqxkDfy8M/uHu31u2b7bXtCMKPoPsBXVm/qQBjn6jKqya3RkY0UBi8zoX55dJor2wcGQsuCPmZYouXIkS5vhH69uCLcyvicI4MaXm7EiHFNtzAuCk0jzckFP8MQOjsw+2AKnoatCGEGyrUJj9iM/rAUoviU3nck73Z4OEX655GbCINv/X/OBh5vzZaBrfmt6lfrOMYwzbrah0YBGk5vGWYCTbpo+fa5mgauP031tR+DyRNbZ3LtIv+kQsAImIltXwZyOdaMKlYbINQ3CyPYAiN2JkNShncaHxspg14tJ0/LU6XVSjxUheK1eBgMljIQvX+4rDzrnmL9hR8uToPOHm1uxV+LMJKqG+3OKA14QU7TD5G5Go9JRRi9FikhmWsrC0R4bgPC0/ZNMV1amOPtqzS62yaONiDkk15mzautxmHpD+XOKOI/7ZgwvzHdjb7cnzdr9L6KbV1Tz/+7DSvMigyy6ylJVKn3Fu23QEgEf7oKb5UVU2iuPySFQzdy0znHfCaNn9fFBWwa9v5dsW1ECMU56kaeHNy4S56DysFybL9KUaKJngMNoerBBK7ZlZa9W5LoQqzimkXoJocflDYYtLfO8YJvwMi65pMI3eob1RqRupLK9MfYrivHLf5eGYq+VtqWreDq03MmrCWQ8LRsPLsyPXdG8OMV47hEHYvd5En0eC19Qo04=</div>
 </div>
 </div><div class="integrated-exercise ld-slide" id="ubung-1">
 <h2>Übung</h2>
@@ -271,14 +331,210 @@ MTAwMDAw:/ZGWPhnNIr6ESQwu+8HKkokehUYYKFURvhmzeTuLbPs=:Ho1vxOY5E6cgliGZ:vLRdYS7wv
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:jUGDoPcO2YABl/QfqpZ1pcKK1GXKnJvycZXHzmQM92o=:OOtvZlmIYGLiHr+t:fHY7YJUmjHLuK35yPZ+4m9ysOTHvP1BgvRGb0WPJ5wz38IjWIgnkwLWLcyJwWZX8J9CnYGQHXtMvUnC9Ltn/YwiDMT2tTCW+PAkZKTpd0vXoOB/AETtv50swidSsX7we7qnTBDajRlhb7m47QtHJw5yCw8A1YgpCZ8WGXcuAeBUgoglKarwhj9uSr/HbOxQhX4gP95Xu9UNZRUgqyvKOkFznrccOQzgky+GUiDNdgaT4brtstnR9Xh10XVKKenuUEU6hvEv/ojhdyZrTgmIzTu9bh8obruTbenINfGhHfv2qyEOjJC5b4jTySPB0kP4Yvc9Jio9486E8uHZFIuiKgt3mqx5PapV9jL3QzWCbLRNkIrRQdInGl5hp/tM0c7wAVWCFnyXe4TXBSQLIn2o7vRGwbHYJfuL9WYg8V3lmA5Lpap93K0/BZmmGixmSj0mr5Xg4f1e/GGqN7hsVmwPUbcOudB0mwLQfGDIAAg==</div>
 </div>
-</div><div class="new-section transition-move-left ld-slide" id="message-authentication-codes-macs">
+</div><div class="ld-slide" id="sha-512-ubersicht">
+<h2><a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">SHA 512 - Übersicht</a></h2>
+<div class="stack">
+<div class="layer">
+<img alt="Nachricht" class="align-center" src="drawings/sha512/sha512-main.svg" style="width: 1400px;" />
+</div><div class="layer incremental overlay incremental overlay">
+<img alt="Nachricht" class="align-center" src="drawings/sha512/sha512-blocks.svg" style="width: 1400px;" />
+</div><div class="layer incremental overlay incremental overlay">
+<img alt="Nachricht" class="align-center" src="drawings/sha512/sha512-nth-block.svg" style="width: 1400px;" />
+</div><div class="layer incremental overlay incremental overlay">
+<img alt="Nachricht" class="align-center" src="drawings/sha512/sha512-padding.svg" style="width: 1400px;" />
+</div></div><div class="supplemental">
+<ul>
+<li><p>SHA-512 nimmt eine Nachricht beliebiger Größe und gibt einen 512-Bit-Hashwert zurück.</p></li>
+<li><p>Der IV von SHA-512 besteht aus den folgenden acht 64-Bit-Zahlen:</p>
+<pre class="literal-block">6a09e667f3bcc908
+bb67ae8584caa73b
+3c6ef372fe94f82b
+a54ff53a5f1d36f1
+510e527fade682d1
+9b05688c2b3e6c1f
+1f83d9abfb41bd6b
+5be0cd19137e2179</pre>
+</li>
+<li><p>Die Addition erfolgt Wortweise modulo <span class="math">\(2^{64}\)</span>.</p></li>
+<li><p>Die Nachricht wird in 1024-Bit-Blöcke unterteilt. Die Nachricht wird - unabhängig von der tatsächlichen Länge - <em>immer</em> aufgefüllt (<span class="eng">padded</span>) und auf eine Länge  <span class="math">\(l \equiv 896 (mod\, 1024)\)</span> Bits gebracht.</p></li>
+<li><p>Das Padding besteht aus einem Bit mit Wert 1, gefolgt von der notwendigen Anzahl Nullen.</p></li>
+<li><p>Am Ende wird die Länge der Nachricht als 128-Bit-Wert angehängt, um ein Vielfaches von 1024 zu erhalten.</p></li>
+</ul>
+</div></div><div class="ld-slide" id="sha-512-verarbeitung-eines-1024-bit-blocks">
+<h2>SHA-512 Verarbeitung eines 1024-Bit-Blocks</h2>
+<div class="stack">
+<div class="layer">
+<img alt="Nachricht" class="align-center" src="drawings/sha512-processing_a_block/main.svg" style="width: 1600px;" />
+</div><div class="layer incremental overlay incremental overlay">
+<img alt="Nachricht" class="align-center" src="drawings/sha512-processing_a_block/block.svg" style="width: 1600px;" />
+</div><div class="layer incremental overlay incremental overlay">
+<img alt="Nachricht" class="align-center" src="drawings/sha512-processing_a_block/wi.svg" style="width: 1600px;" />
+</div><div class="layer incremental overlay incremental overlay">
+<img alt="Nachricht" class="align-center" src="drawings/sha512-processing_a_block/constants.svg" style="width: 1600px;" />
+</div></div><div class="supplemental">
+<p>Die Additionen erfolgen Modulo <span class="math">\(2^{64}\)</span>.</p>
+<p class="rubric">Berechnung der <span class="math">\(W_i\)</span></p>
+<p><span class="math">\(W_0\)</span> bis <span class="math">\(W_{15}\)</span> sind die ersten 16 Wörter des 1024-Bit-Blocks. Die restlichen 64 Wörter werden wie folgt berechnet.</p>
+<p><span class="math">\(w_t = \sigma_1(w_{t-2}) + w_{t-7} + \sigma_0(w_{t-15}) + w_{t-16}\)</span></p>
+<p>Mit:</p>
+<p><span class="math">\(\sigma_0(x) = (x \ggg 1) \oplus (x \ggg 8) \oplus (x \gg 7)\)</span></p>
+<p><span class="math">\(\sigma_1(x) = (x \ggg 19) \oplus (x \ggg 61) \oplus (x \gg 6)\)</span></p>
+<aside class="admonition legend far-smaller">
+<p class="admonition-title">Legende</p>
+<p><span class="math">\(\gg\)</span> ist die Rechtsverschiebung bei der die linke Seite mit Nullen aufgefüllt wird.</p>
+<p><span class="math">\(\ggg\)</span> ist die zyklische Rechtsverschiebung.</p>
+<p><span class="math">\(\oplus\)</span> steht für die bitweise XOR-Operation.</p>
+</aside>
+<p class="rubric">Rundenfunktion</p>
+<div class="math">
+\begin{equation*}
+T_1 = h + Ch(e,f,g) + ( \sum\nolimits_{1}^{512} e ) + K_t + W_t
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+T_2 = (\sum\nolimits_{0}^{512} a ) + Maj(a,b,c)
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+h = g
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+g = f
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+f = e
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+e = d + T_1
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+d = c
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+c = b
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+b = a
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+a = T_1 + T_2
+\end{equation*}
+</div>
+<p>Weiterhin gilt:</p>
+<p><span class="math">\(t\)</span> ist die Schrittnummer</p>
+<p><span class="math">\(Ch(e,f,g) = (e \land f) \oplus (\neg e \land g)\)</span></p>
+<p><span class="math">\(Maj(a,b,c) = (a \land b) \oplus (a \land c) \oplus (b \land c)\)</span></p>
+<p><span class="math">\(\sum\nolimits_{0}^{512} a = a \ggg 28 \oplus a \ggg 34 \oplus a \ggg 39\)</span></p>
+<p><span class="math">\(\sum\nolimits_{1}^{512} e = e \ggg 14 \oplus e \ggg 18 \oplus e \ggg 41\)</span></p>
+<p class="rubric">Berechnung der Konstanten</p>
+<p>Die Konstanten <span class="math">\(K\)</span> sind die ersten 64 Bits der Bruchteile der Kubikwurzeln der ersten 80 Primzahlen.</p>
+<p>Konzeptionell: <span class="math">\(((\sqrt[3]{n_{te}\, Primzahl} - \lfloor \sqrt[3]{n_{te}\, Primzahl} \rfloor) &lt;&lt; 64)\)</span><code>.toInt().toString(16)</code></p>
+<p><strong>Die SHA-512 Konstanten</strong></p>
+<div class="far-far-smaller monospaced docutils container">
+<p>428a2f98d728ae22 7137449123ef65cd b5c0fbcfec4d3b2f e9b5dba58189dbbc
+3956c25bf348b538 59f111f1b605d019 923f82a4af194f9b ab1c5ed5da6d8118
+d807aa98a3030242 12835b0145706fbe 243185be4ee4b28c 550c7dc3d5ffb4e2
+72be5d74f27b896f 80deb1fe3b1696b1 9bdc06a725c71235 c19bf174cf692694
+e49b69c19ef14ad2 efbe4786384f25e3 0fc19dc68b8cd5b5 240ca1cc77ac9c65
+2de92c6f592b0275 4a7484aa6ea6e483 5cb0a9dcbd41fbd4 76f988da831153b5
+983e5152ee66dfab a831c66d2db43210 b00327c898fb213f bf597fc7beef0ee4
+c6e00bf33da88fc2 d5a79147930aa725 06ca6351e003826f 142929670a0e6e70
+27b70a8546d22ffc 2e1b21385c26c926 4d2c6dfc5ac42aed 53380d139d95b3df
+650a73548baf63de 766a0abb3c77b2a8 81c2c92e47edaee6 92722c851482353b
+a2bfe8a14cf10364 a81a664bbc423001 c24b8b70d0f89791 c76c51a30654be30
+d192e819d6ef5218 d69906245565a910 f40e35855771202a 106aa07032bbd1b8
+19a4c116b8d2d0c8 1e376c085141ab53 2748774cdf8eeb99 34b0bcb5e19b48a8
+391c0cb3c5c95a63 4ed8aa4ae3418acb 5b9cca4f7763e373 682e6ff3d6b2b8a3
+748f82ee5defb2fc 78a5636f43172f60 84c87814a1f0ab72 8cc702081a6439ec
+90befffa23631e28 a4506cebde82bde9 bef9a3f7b2c67915 c67178f2e372532b
+ca273eceea26619c d186b8c721c0c207 eada7dd6cde0eb1e f57d4f7fee6ed178
+06f067aa72176fba 0a637dc5a2c898a6 113f9804bef90dae 1b710b35131c471b
+28db77f523047d84 32caab7b40c72493 3c9ebe0a15c9bebc 431d67c49c100d4c
+4cc5d4becb3e42b6 597f299cfc657e2a 5fcb6fab3ad6faec 6c44198c4a475817</p>
+</div>
+<p><strong>Exemplarischer Code zur Berechnung der Konstanten</strong></p>
+<p>Der folgende JavaScript Code demonstriert, wie die Konstanten für SHA-512 berechnet werden bzw. wurden. Die Präzision von Standard JavaScript Gleitkommazahlen (64-Bit Double) ist jedoch nicht ganz ausreichend, um die Konstanten vollständig zu berechnen.</p>
+<pre class="code javascript far-far-smaller literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword declaration">const</span><span class="whitespace"> </span><span class="name other">primes</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">[</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">    </span><span class="literal number float">2</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">3</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">5</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">7</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">11</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">13</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">17</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">19</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">23</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">29</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">31</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">37</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">41</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">43</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">47</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">53</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">59</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="literal number float">61</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">67</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">71</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">73</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">79</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">83</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">89</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">97</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">101</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">103</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">107</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">109</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">113</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">127</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="literal number float">131</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">137</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">139</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">149</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">151</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">157</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">163</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">167</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">173</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">179</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">181</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">191</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">193</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="literal number float">197</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">199</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">211</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">223</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">227</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">229</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">233</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">239</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">241</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">251</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">257</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">263</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">269</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="literal number float">271</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">277</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">281</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">283</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">293</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">307</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">311</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">313</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">317</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">331</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">337</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">347</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">349</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="literal number float">353</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">359</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">367</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">373</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">379</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">383</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">389</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">397</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">401</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">409</span><span class="whitespace"> </span><span class="punctuation">];</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="keyword declaration">function</span><span class="operator">*</span><span class="whitespace"> </span><span class="name other">genSHA512Constants</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="keyword declaration">let</span><span class="whitespace"> </span><span class="name other">i</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number float">0</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="keyword">while</span><span class="punctuation">(</span><span class="name other">i</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number float">80</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">        </span><span class="keyword declaration">const</span><span class="whitespace"> </span><span class="name other">p</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name other">primes</span><span class="punctuation">[</span><span class="name other">i</span><span class="punctuation">];</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">        </span><span class="keyword declaration">const</span><span class="whitespace"> </span><span class="name other">cubeRootP</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name builtin">Math</span><span class="punctuation">.</span><span class="name other">cbrt</span><span class="punctuation">(</span><span class="name other">p</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// == p ** (1/3);</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">        </span><span class="keyword">yield</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name other">cubeRootP</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name builtin">Math</span><span class="punctuation">.</span><span class="name other">floor</span><span class="punctuation">(</span><span class="name other">cubeRootP</span><span class="punctuation">));</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">        </span><span class="operator">++</span><span class="name other">i</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace"></span><span class="keyword">for</span><span class="punctuation">(</span><span class="keyword declaration">const</span><span class="whitespace"> </span><span class="name other">c</span><span class="whitespace"> </span><span class="keyword">of</span><span class="whitespace"> </span><span class="name other">genSHA512Constants</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace">    </span><span class="name other">console</span><span class="punctuation">.</span><span class="name other">log</span><span class="punctuation">(</span><span class="name other">c</span><span class="punctuation">.</span><span class="name other">toString</span><span class="punctuation">(</span><span class="literal number float">16</span><span class="punctuation">));</span><span class="whitespace">
+</span></code><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<p>Der folgenden Java Code demonstriert, wie die Konstanten für SHA-512 berechnet werden können. Wir verwenden hier die Klasse <cite>BigDecimal</cite>, um die Konstanten zu berechnen, da Java keinen <span class="docutils literal">long double</span> Typ (mit 128 Bit) kennt.</p>
+<pre class="code java far-far-smaller literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment multiline">/**
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="comment multiline"> * Compute the cube root using BigDecimals and the Newton-Raphson
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="comment multiline"> * algorithm.
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="comment multiline"> *
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="comment multiline"> * &#64;param n the number for which the cube root should be computed.
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="comment multiline"> * &#64;param guess the current/initial guess. Can be BigDecimal.ONE.
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="comment multiline"> * &#64;param the number of steps to be executed. The algorithm is
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="comment multiline"> *        iterative and the number of steps determines the
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="comment multiline"> *        precision of the result.
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="comment multiline"> */</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="name">BigDecimal</span><span class="whitespace"> </span><span class="name function">cbrt</span><span class="punctuation">(</span><span class="name">BigDecimal</span><span class="whitespace"> </span><span class="name">n</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">BigDecimal</span><span class="whitespace"> </span><span class="name">guess</span><span class="punctuation">,</span><span class="whitespace">  </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">steps</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">steps</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">guess</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">    </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">newGuess</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">        </span><span class="name">guess</span><span class="punctuation">.</span><span class="name attribute">add</span><span class="punctuation">(</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">            </span><span class="name">guess</span><span class="punctuation">.</span><span class="name attribute">pow</span><span class="punctuation">(</span><span class="literal number integer">3</span><span class="punctuation">).</span><span class="name attribute">add</span><span class="punctuation">(</span><span class="name">n</span><span class="punctuation">.</span><span class="name attribute">negate</span><span class="punctuation">()).</span><span class="name attribute">divide</span><span class="punctuation">(</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">                </span><span class="name">guess</span><span class="punctuation">.</span><span class="name attribute">pow</span><span class="punctuation">(</span><span class="literal number integer">2</span><span class="punctuation">).</span><span class="name attribute">multiply</span><span class="punctuation">(</span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">BigDecimal</span><span class="punctuation">(</span><span class="literal number integer">3</span><span class="punctuation">)),</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">                </span><span class="name">MathContext</span><span class="punctuation">.</span><span class="name attribute">DECIMAL128</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace">            </span><span class="punctuation">).</span><span class="name attribute">negate</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace">        </span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">cbrt</span><span class="punctuation">(</span><span class="name">n</span><span class="punctuation">,</span><span class="name">newGuess</span><span class="punctuation">,</span><span class="name">steps</span><span class="whitespace"> </span><span class="operator">-</span><span class="literal number integer">1</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">21 </small><code data-lineno="21 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">22 </small><code data-lineno="22 "><span class="whitespace"></span><span class="comment multiline">/**
+</span></code><small class="ln">23 </small><code data-lineno="23 "><span class="comment multiline"> * Given a prime number get the first 64 bits of the fractional
+</span></code><small class="ln">24 </small><code data-lineno="24 "><span class="comment multiline"> * part of the cube root.
+</span></code><small class="ln">25 </small><code data-lineno="25 "><span class="comment multiline"> */</span><span class="whitespace">
+</span></code><small class="ln">26 </small><code data-lineno="26 "><span class="whitespace"></span><span class="name">String</span><span class="whitespace"> </span><span class="name function">shaConstant</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">prime</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">27 </small><code data-lineno="27 "><span class="whitespace">    </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">cubeRoot</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">cbrt</span><span class="punctuation">(</span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">BigDecimal</span><span class="punctuation">(</span><span class="name">prime</span><span class="punctuation">),</span><span class="name">BigDecimal</span><span class="punctuation">.</span><span class="name attribute">ONE</span><span class="punctuation">,</span><span class="literal number integer">16</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">28 </small><code data-lineno="28 "><span class="whitespace">    </span><span class="comment single">// &quot;extract&quot; the fractional by computing modulo 1</span><span class="whitespace">
+</span></code><small class="ln">29 </small><code data-lineno="29 "><span class="whitespace">    </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">fractionalPart</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">cubeRoot</span><span class="punctuation">.</span><span class="name attribute">remainder</span><span class="punctuation">(</span><span class="name">BigDecimal</span><span class="punctuation">.</span><span class="name attribute">ONE</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">30 </small><code data-lineno="30 "><span class="whitespace">    </span><span class="comment single">// To extract the first 64 bits we effectively do a shift-left</span><span class="whitespace">
+</span></code><small class="ln">31 </small><code data-lineno="31 "><span class="whitespace">    </span><span class="comment single">// by 64 which we simulate by multiplying with 2^64</span><span class="whitespace">
+</span></code><small class="ln">32 </small><code data-lineno="32 "><span class="whitespace">    </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">bits</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">fractionalPart</span><span class="punctuation">.</span><span class="name attribute">multiply</span><span class="punctuation">(</span><span class="name">BigDecimal</span><span class="punctuation">.</span><span class="name attribute">TWO</span><span class="punctuation">.</span><span class="name attribute">pow</span><span class="punctuation">(</span><span class="literal number integer">64</span><span class="punctuation">));</span><span class="whitespace">
+</span></code><small class="ln">33 </small><code data-lineno="33 "><span class="whitespace">    </span><span class="comment single">// to get the HEX representation we use BigInteger's toString</span><span class="whitespace">
+</span></code><small class="ln">34 </small><code data-lineno="34 "><span class="whitespace">    </span><span class="comment single">// method as a convenience method</span><span class="whitespace">
+</span></code><small class="ln">35 </small><code data-lineno="35 "><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">bits</span><span class="punctuation">.</span><span class="name attribute">toBigInteger</span><span class="punctuation">().</span><span class="name attribute">toString</span><span class="punctuation">(</span><span class="literal number integer">16</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">36 </small><code data-lineno="36 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</div></div><div class="new-section transition-move-left ld-slide" id="message-authentication-codes-macs">
 <h2><em>Message Authentication Codes</em> (MACs)</h2>
 <div class="supplemental">
 <aside class="admonition admonition-hinweis">
 <p class="admonition-title">Hinweis</p>
 <p><em>Message Authentication Codes</em> könnte ins Deutsche mit
 Nachrichtenauthentifizierungscodes übersetzt werden, dies ist aber nicht üblich.</p>
-<p>Im allgemeinen Sprachgebrauch wird von <em>MAC</em>s gesprochen.</p>
+<p>Im allgemeinen (IT-)Sprachgebrauch wird von <em>MAC</em>s gesprochen.</p>
 </aside>
 </div></div><div class="ld-slide" id="hmac-hash-based-message-authentication-code">
 <h2>HMAC (Hash-based Message Authentication Code)</h2>
@@ -341,8 +597,8 @@ K' &amp; = &amp;\begin{cases}
 </span><span class="name">hash_hmac</span> <span class="operator">=</span><span class="whitespace">
 </span>    <span class="literal string affix">b</span><span class="literal string single">'h</span><span class="literal string escape">\x88\xc2\xb6</span><span class="literal string single">X</span><span class="literal string escape">\xb7\xcb\x9c\x90\xc2</span><span class="literal string single">R...</span><span class="whitespace">
 </span>      \<span class="name">x16</span>\<span class="name">x87</span>\<span class="name">x87</span>\<span class="name">x0e</span>\<span class="name">xad</span>\<span class="name">xa1</span>\<span class="name">xe1</span><span class="punctuation">:</span><span class="literal number integer">9</span>\<span class="name">xca</span><span class="literal string single">'</span></code></pre>
-</div></div><div class="ld-slide" id="poly-1305">
-<h2><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc8439#section-2.5">Poly 1305</a></h2>
+</div></div><div class="ld-slide" id="mac-poly-1305">
+<h2>MAC: <a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc8439#section-2.5">Poly 1305</a></h2>
 <div class="stack">
 <div class="layer">
 <ul class="simple">
@@ -353,18 +609,20 @@ K' &amp; = &amp;\begin{cases}
 </ul>
 </div><div class="layer incremental">
 <img alt="Poly 1305 - Verwendung des Schlüssels" class="align-center" src="drawings/poly1305.svg" style="width: 1775px;" />
+<div class="align-center docutils container">
 <p class="rubric">Aufteilung des Schlüssels</p>
+</div>
 </div><div class="layer incremental">
 <p class="rubric">Verarbeitung der Nachricht</p>
 <ul class="incremental list-with-explanations">
 <li><p>initialisiere den Akkumulator <span class="math">\(a\)</span> mit 0</p></li>
 <li><p>die Nachricht wird in Blöcke von 16 Byte aufgeteilt und als <em>little-endian</em> Zahl verarbeitet; d. h. ein Block hat 16 Oktette (<span class="math">\(16 \times 8\)</span> Bit)</p></li>
-<li><p>Füge dem Block <span class="math">\(n\)</span> ein Bit jenseits der Anzahl der Oktette des aktuellen Blocks hinzu <span class="math">\(= n'\)</span>; d. h. im Falle eines 16-Byte-Blocks wird die Zahl <span class="math">\(2^{128}\)</span> addiert</p></li>
-<li><p>Addiere <span class="math">\(n'\)</span> aus dem letzten Schritt zum Akkumulator <span class="math">\(a\)</span></p></li>
-<li><p>Multipliziere den Wert aus dem letzten Schritt mit <span class="math">\(\text{clamped r}\)</span></p></li>
-<li><p>Aktualisiere den Akkumulator mit dem Ergebnis modulo <span class="math">\(P = 2^{130} - 5\)</span>:</p>
-<p><span class="math">\(a = ((a + n') \times \text{clamped r}) \mod\, P\)</span></p>
+<li><p>Füge dem Block <span class="math">\(n\)</span> ein Bit jenseits der Anzahl der Oktette des aktuellen Blocks hinzu <span class="math">\(= n'\)</span>; d. h. im Falle eines 16-Byte-Blocks wird die Zahl <span class="math">\(2^{128}\)</span> addiert</p>
+<p>(Danach haben wir ggf. eine 17-Byte-Zahl.)</p>
 </li>
+<li><p>Addiere <span class="math">\(n'\)</span> aus dem letzten Schritt zum Akkumulator <span class="math">\(a\)</span> und multipliziere mit <span class="math">\(\text{clamped r}\)</span></p></li>
+<li><p>Aktualisiere den Akkumulator mit dem Ergebnis <span class="math">\(modulo\, P\)</span> mit <span class="math">\(P = 2^{130} - 5\)</span>:
+<span class="math">\(a = ((a + n') \times \text{clamped r}) \mod\, P\)</span></p></li>
 </ul>
 </div><div class="layer incremental">
 <p><span class="far-smaller">Beispiel</span></p>
@@ -372,8 +630,8 @@ K' &amp; = &amp;\begin{cases}
 016  72 75 6d 20 52 65 73 65 61 72 63 68 20 47 72 6f  rum Research Gro
 032  75 70                                            up</code></pre>
 <div class="far-far-smaller margin-bottom-1em margin-top-1em docutils container">
-<p>Sei <span class="math">\(s = 1bf54941aff6bf4afdb20dfb8a800301\)</span></p>
 <p>Sei <span class="math">\(\text{clamped r} = 806d5400e52447c036d555408bed685\)</span></p>
+<p>Sei <span class="math">\(s = 1bf54941aff6bf4afdb20dfb8a800301\)</span></p>
 </div>
 <div class="stack smaller incremental smaller incremental">
 <div class="layer">
@@ -418,6 +676,19 @@ K' &amp; = &amp;\begin{cases}
 <p><span class="math">\(P = 2^{130} - 5 = 3fffffffffffffffffffffffffffffffb\)</span></p>
 <p>Dadurch, dass wir den Block als Zahl in <em>little-endian</em> Reihenfolge interpretieren, ist das hinzufügen des Bits jenseits der Anzahl der Oktette gleichbedeutend damit, dass wir den Wert 0x01 am Ende des Blocks hinzufügen.</p>
 </div><!-- TODO discuss CBC-MAC -->
+</div><div class="ld-slide" id="zusammenfassung">
+<h2>Zusammenfassung</h2>
+<ul class="incremental list-with-explanations">
+<li><p>Ein Hashwert dient der Integritätssicherung von Nachrichten.</p></li>
+<li><p>Ein Mac dient der Authentifizierung von Nachrichten.</p></li>
+<li><p>Ein Mac sichert auch immer die Integrität der Nachricht.</p>
+<p>Es ist somit möglich die Integrität einer Nachricht zu sichern ohne Authentizität zu gewährleisten, aber nicht umgekehrt.</p>
+</li>
+<li><p>Ein Mac erlaubt es dem Empfänger eine gefälschte Nachricht zu erkennen aber ggf. auch zu erstellen (<span class="eng">to forge a message</span>).</p></li>
+<li><p>Eine Signatur basiert auf einem Hashwert und einem privaten Schlüssel.</p></li>
+<li><p>Der Empfänger kann bei einer signierten Nachricht, diese nicht verändern und als eine Nachricht des Senders ausgeben.</p></li>
+<li><p>Nur für Nachrichten, die signiert sind, gilt somit die Nichtabstreitbarkeit (<span class="eng">non-repudation</span>).</p></li>
+</ul>
 </div>
 </template>
 </body>
