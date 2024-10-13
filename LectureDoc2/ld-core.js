@@ -1801,18 +1801,17 @@ function registerScrollableElementListener() {
 
         // We want to collapse multiple events into one, but ensure that we
         // never miss an event.
-        let handled = false 
+        let handled = false
         scrollable.addEventListener("scroll", (event) => {
             if (handled) {
                 return;
             }
             handled = true;
             setTimeout(() => {
-                postMessage("scrolling", [ id, event.target.scrollTop ]);
-                console.log("scrolling"+id +" " + event.target.scrollTop);
+                postMessage("elementScrolled", [id, event.target.scrollTop]);
+                console.log("elementScrolled" + id + " " + event.target.scrollTop);
                 handled = false;
-
-             }, 500);
+            }, 500);
         });
     });
 }
