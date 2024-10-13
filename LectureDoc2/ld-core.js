@@ -1731,6 +1731,20 @@ function jumpToId(id) {
     }
 }
 
+
+/**
+ * Called when a scrollable element in a different, but connected window, has
+ * been scrolled.
+ * 
+ * @param {*} scrollableId 
+ * @param {*} scrollTop 
+ */
+function localScrollElement(scrollableId, scrollTop) {
+    document.querySelector(
+        `#ld-main-pane .scrollable[data-scrollable-id="${scrollableId}"]`).
+        scrollTo(0, scrollTop);
+}
+
 function registerInternalLinkClickListener(a,f) {
     a.addEventListener("click", (event) => {
         event.stopPropagation();
@@ -1776,6 +1790,31 @@ function registerSlideInternalLinkClickedListener() {
     //             jumpToSlideWithElementWithId(target);
     //         })
     //     });
+}
+
+
+function registerScrollableElementListener() {
+    let scrollableId = 1;
+    document.querySelectorAll("#ld-main-pane .scrollable").forEach((scrollable) => {
+        const id = scrollableId++;
+        scrollable.dataset.scrollableId = id;
+
+        // We want to collapse multiple events into one, but ensure that we
+        // never miss an event.
+        let handled = false 
+        scrollable.addEventListener("scroll", (event) => {
+            if (handled) {
+                return;
+            }
+            handled = true;
+            setTimeout(() => {
+                postMessage("scrolling", [ id, event.target.scrollTop ]);
+                console.log("scrolling"+id +" " + event.target.scrollTop);
+                handled = false;
+
+             }, 500);
+        });
+    });
 }
 
 function registerLightTableZoomListener() {
@@ -2023,6 +2062,7 @@ window.addEventListener("load", () => {
     registerHelpCloseListener();
     registerMenuClickListener();
     registerSwipeListener();
+    registerScrollableElementListener();
     
     ldEvents.afterLDListenerRegistrations.forEach((f) => f());  
 
@@ -2054,7 +2094,11 @@ window.addEventListener("load", () => {
                     break;
                 }
                 case "hideLaserPointer": localHideLaserPointer(); break;
-
+                case "elementScrolled": {
+                    const [scrollableId, scrollTop] = data;
+                    localScrollElement(scrollableId, scrollTop);
+                    break;
+                }
                 //case "reset": ; break;
                 default:
                     console.warn("unknown message: " + event.data);

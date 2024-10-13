@@ -560,8 +560,8 @@ K' &amp; = &amp;\begin{cases}
 <p><span class="math">\(opad\)</span> ist das äußere Padding bestehend aus Wiederholungen von 0x5c in Blockgröße.</p>
 <p><span class="math">\(ipad\)</span> ist das innere Padding bestehend aus Wiederholungen von 0x36 in Blockgröße.</p>
 </div>
-</div><div class="ld-slide" id="section-1">
-<h2></h2>
+</div><div class="no-title ld-slide" id="hmac-berechnung-visualisiert">
+<h2>HMAC Berechnung visualisiert</h2>
 <img alt="Schlüsselableitung für den inneren und äußeren Schlüssel K'" class="align-left" src="drawings/hmac/hmac_i_o_key_derivation.svg" style="width: 1400px;" />
 <img alt="Schlüsselableitung für den inneren und äußeren Schlüssel K'" class="incremental margin-top-1em padding-top-1em align-right" src="drawings/hmac/hmac_message_hashing.svg" style="width: 1300px;" />
 <div class="supplemental">
@@ -574,16 +574,16 @@ K' &amp; = &amp;\begin{cases}
 <pre class="code python small literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">hashlib</span><span class="whitespace">
 </span><span class="name">pwd</span> <span class="operator">=</span> <span class="literal string affix">b</span><span class="literal string double">&quot;MyPassword&quot;</span><span class="whitespace">
 </span><span class="name">stretched_pwd</span> <span class="operator">=</span> <span class="name">pwd</span> <span class="operator">+</span> <span class="punctuation">(</span><span class="literal number integer">64</span><span class="operator">-</span><span class="name builtin">len</span><span class="punctuation">(</span><span class="name">pwd</span><span class="punctuation">))</span> <span class="operator">*</span> <span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00</span><span class="literal string double">&quot;</span><span class="whitespace">
+
 </span><span class="name">ikeypad</span> <span class="operator">=</span> <span class="name builtin">bytes</span><span class="punctuation">(</span><span class="name builtin">map</span><span class="punctuation">(</span><span class="keyword">lambda</span> <span class="name">x</span> <span class="punctuation">:</span> <span class="name">x</span> <span class="operator">^</span> <span class="literal number hex">0x36</span> <span class="punctuation">,</span> <span class="name">stretched_pwd</span><span class="punctuation">))</span> <span class="comment single"># xor with ipad</span><span class="whitespace">
 </span><span class="name">okeypad</span> <span class="operator">=</span> <span class="name builtin">bytes</span><span class="punctuation">(</span><span class="name builtin">map</span><span class="punctuation">(</span><span class="keyword">lambda</span> <span class="name">x</span> <span class="punctuation">:</span> <span class="name">x</span> <span class="operator">^</span> <span class="literal number hex">0x5c</span> <span class="punctuation">,</span> <span class="name">stretched_pwd</span><span class="punctuation">))</span> <span class="comment single"># xor with opad</span><span class="whitespace">
-</span><span class="name">hash1</span> <span class="operator">=</span> <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">(</span><span class="name">ikeypad</span><span class="operator">+</span><span class="literal string affix">b</span><span class="literal string double">&quot;JustASalt&quot;</span><span class="operator">+</span><span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00\x00\x00\x01</span><span class="literal string double">&quot;</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span><span class="whitespace">
-</span><span class="name">hmac</span>  <span class="operator">=</span> <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">(</span><span class="name">okeypad</span><span class="operator">+</span><span class="name">hash1</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span></code></pre>
-<div class="incremental small docutils container">
-<p><strong>Ausführung</strong></p>
-<pre class="code python literal-block"><code><span class="name">hmac</span> <span class="operator">=</span><span class="whitespace">
-</span><span class="literal string affix">b</span><span class="literal string single">'h</span><span class="literal string escape">\x88\xc2\xb6</span><span class="literal string single">X</span><span class="literal string escape">\xb7\xcb\x9c\x90\xc2</span><span class="literal string single">R...</span><span class="whitespace">
-</span>  \<span class="name">x16</span>\<span class="name">x87</span>\<span class="name">x87</span>\<span class="name">x0e</span>\<span class="name">xad</span>\<span class="name">xa1</span>\<span class="name">xe1</span><span class="punctuation">:</span><span class="literal number integer">9</span>\<span class="name">xca</span><span class="literal string single">'</span></code></pre>
-</div>
+
+</span><span class="name">hash1</span> <span class="operator">=</span> <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">(</span><span class="name">ikeypad</span><span class="operator">+</span><span class="literal string affix">b</span><span class="literal string double">&quot;JustAMessage&quot;</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span><span class="whitespace">
+</span><span class="name">hmac</span>  <span class="operator">=</span> <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">(</span><span class="name">okeypad</span><span class="operator">+</span><span class="name">hash1</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span><span class="whitespace">
+
+</span><span class="comment single"># hmac =</span><span class="whitespace">
+</span><span class="comment single">#        b'\xab\xa0\xd9\xe2\x8ar\xc8\x081\x8e\x1b\x1d,</span><span class="whitespace">
+</span><span class="comment single">#        \x8f\xa6\xd6L\x94\xab\x89\x9a\x89*\xc7\x0f_no\xc1\xdc6\xfc'</span></code></pre>
 <div class="supplemental">
 <p>HMAC ist auch direkt als Bibliotheksfunktion verfügbar.</p>
 <pre class="code python black literal-block"><code><span class="keyword namespace">import</span> <span class="name namespace">hashlib</span><span class="whitespace">
@@ -591,21 +591,21 @@ K' &amp; = &amp;\begin{cases}
 
 </span><span class="name">hash_hmac</span> <span class="operator">=</span> <span class="name">hmac</span><span class="operator">.</span><span class="name">new</span><span class="punctuation">(</span><span class="whitespace">
 </span>    <span class="literal string affix">b</span><span class="literal string double">&quot;MyPassword&quot;</span><span class="punctuation">,</span><span class="whitespace">
-</span>    <span class="literal string affix">b</span><span class="literal string double">&quot;JustASalt&quot;</span><span class="operator">+</span><span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00\x00\x00\x01</span><span class="literal string double">&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span>    <span class="literal string affix">b</span><span class="literal string double">&quot;JustAMessage&quot;</span><span class="punctuation">,</span><span class="whitespace">
 </span>    <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span><span class="whitespace">
 
 </span><span class="name">hash_hmac</span> <span class="operator">=</span><span class="whitespace">
-</span>    <span class="literal string affix">b</span><span class="literal string single">'h</span><span class="literal string escape">\x88\xc2\xb6</span><span class="literal string single">X</span><span class="literal string escape">\xb7\xcb\x9c\x90\xc2</span><span class="literal string single">R...</span><span class="whitespace">
-</span>      \<span class="name">x16</span>\<span class="name">x87</span>\<span class="name">x87</span>\<span class="name">x0e</span>\<span class="name">xad</span>\<span class="name">xa1</span>\<span class="name">xe1</span><span class="punctuation">:</span><span class="literal number integer">9</span>\<span class="name">xca</span><span class="literal string single">'</span></code></pre>
+</span>    <span class="literal string affix">b</span><span class="literal string single">'</span><span class="literal string escape">\xab\xa0\xd9\xe2\x8a</span><span class="literal string single">r</span><span class="literal string escape">\xc8\x08</span><span class="literal string single">1</span><span class="literal string escape">\x8e\x1b\x1d</span><span class="literal string single">,</span><span class="whitespace">
+</span>    \<span class="name">x8f</span>\<span class="name">xa6</span>\<span class="name">xd6L</span>\<span class="name">x94</span>\<span class="name">xab</span>\<span class="name">x89</span>\<span class="name">x9a</span>\<span class="name">x89</span><span class="operator">*</span>\<span class="name">xc7</span>\<span class="name">x0f_no</span>\<span class="name">xc1</span>\<span class="name">xdc6</span>\<span class="name">xfc</span><span class="literal string single">'</span></code></pre>
 </div></div><div class="ld-slide" id="mac-poly-1305">
 <h2>MAC: <a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc8439#section-2.5">Poly 1305</a></h2>
 <div class="stack">
 <div class="layer">
 <ul class="simple">
-<li><p>Ein MAC Algorithmus für die Einmalauthentifizierung von Nachrichten</p></li>
-<li><p>Entwickelt von Daniel J. Bernstein</p></li>
-<li><p>Basierend auf einem 256-Bit-Schlüssel und einer Nachricht wird ein 128-Bit-Tag berechnet</p></li>
-<li><p>In Verbindung mit <em>ChaCha20</em> in einer Reihe von Protokollen verwendet</p></li>
+<li><p>Ein MAC Algorithmus für die Einmalauthentifizierung von Nachrichten.</p></li>
+<li><p>Entwickelt von Daniel J. Bernstein.</p></li>
+<li><p>Basierend auf einem 256-Bit-Schlüssel und einer Nachricht wird ein 128-Bit-Tag berechnet.</p></li>
+<li><p>In Verbindung mit <em>ChaCha20</em> in einer Reihe von Protokollen verwendet.</p></li>
 </ul>
 </div><div class="layer incremental">
 <img alt="Poly 1305 - Verwendung des Schlüssels" class="align-center" src="drawings/poly1305.svg" style="width: 1775px;" />
@@ -622,7 +622,7 @@ K' &amp; = &amp;\begin{cases}
 </li>
 <li><p>Addiere <span class="math">\(n'\)</span> aus dem letzten Schritt zum Akkumulator <span class="math">\(a\)</span> und multipliziere mit <span class="math">\(\text{clamped r}\)</span></p></li>
 <li><p>Aktualisiere den Akkumulator mit dem Ergebnis <span class="math">\(modulo\, P\)</span> mit <span class="math">\(P = 2^{130} - 5\)</span>:
-<span class="math">\(a = ((a + n') \times \text{clamped r}) \mod\, P\)</span></p></li>
+<span class="math">\(a = ((a + n') \times \text{clamped r})\mod P\)</span></p></li>
 </ul>
 </div><div class="layer incremental">
 <p><span class="far-smaller">Beispiel</span></p>

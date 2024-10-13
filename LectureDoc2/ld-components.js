@@ -220,7 +220,7 @@ function adaptHeightOfSlideToScrollable(scrollable) {
 }
 
 /**
- * Handles the rendering of a ".scrollable" element in the standard slides 
+ * Handles the rendering of a ".scrollable" element in the standard slides view
  * and the light-table view.
  * 
  * Currently, we only support ".scrollable" elements that are direct child
@@ -400,7 +400,7 @@ function afterLDListenerRegistrations() {
 /**
  * Register with LectureDoc's basic events.
  */
-const ldEvents =  lectureDoc2.ldEvents
+const ldEvents = lectureDoc2.ldEvents
 ldEvents.addEventListener("beforeLDDOMManipulations", beforeLDDOMManipulations);
 ldEvents.addEventListener("afterLDDOMManipulations", afterLDDOMManipulations);
 ldEvents.addEventListener("afterLDListenerRegistrations", afterLDListenerRegistrations);
