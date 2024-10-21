@@ -36,12 +36,12 @@ import * as ld from './ld-lib.js';
  * @author Michael Eichberg
  * @license BSD-3-Clause
  */
-    
+
 /* We load the crypto module on demand. */
 let ldCryptoModule = undefined
 async function ldCrypto() {
     if (!ldCryptoModule) {
-        ldCryptoModule = await import ("./ld-crypto.js");
+        ldCryptoModule = await import("./ld-crypto.js");
     }
     return ldCryptoModule;
 }
@@ -50,12 +50,12 @@ async function ldCrypto() {
  * Central registry for all events related to the setup/configuration phase
  * that are triggered by LectureDoc.
  */
-const ldEvents = {  
+const ldEvents = {
     beforeLDDOMManipulations: [],
     afterLDDOMManipulations: [],
     afterLDListenerRegistrations: [],
-    addEventListener : function (event, listener) {
-        switch(event) {
+    addEventListener: function (event, listener) {
+        switch (event) {
             case "beforeLDDOMManipulations":
                 this.beforeLDDOMManipulations.push(listener);
                 break;
@@ -66,7 +66,7 @@ const ldEvents = {
                 this.afterLDListenerRegistrations.push(listener);
                 break;
             default:
-                console.error("Unknown event: "+event);
+                console.error("Unknown event: " + event);
         }
     }
 };
@@ -281,9 +281,9 @@ function loadState() {
 
     // Check if the user wants to start the presentation at a specific slide.
     const params = new URL(document.location).searchParams;
-    const ldSlideNo = params.get("ld-slide-no"); 
+    const ldSlideNo = params.get("ld-slide-no");
     if (ldSlideNo) {
-        state.currentSlideNo = Number(ldSlideNo)-1;
+        state.currentSlideNo = Number(ldSlideNo) - 1;
     }
     const ldView = params.get("ld-view");
     if (ldView) {
@@ -498,7 +498,7 @@ function getEncryptedExercisesPasswords() {
     const exercisesPasswords = document.querySelector('meta[name="exercises-passwords"]');
     if (exercisesPasswords) {
         return exercisesPasswords.content;
-}else {
+    } else {
         console.info("no exercises specified or no master password set");
         return undefined;
     }
@@ -544,7 +544,7 @@ function setupLightTable() {
             <button type="button" class="ld-dialog-close-button" id="ld-light-table-close-button" ></button>
         `});
 
-    const lightTableSlides = ld.create("section", { 
+    const lightTableSlides = ld.create("section", {
         parent: lightTableDialog,
         id: "ld-light-table-slides"
     });
@@ -584,7 +584,7 @@ function setupLightTable() {
 
 function setupHelp() {
     const helpDialog = ld.dialog({ id: "ld-help-dialog" });
-    
+
     helpDialog.innerHTML = `
         <div class="ld-dialog-header">
             <span class="ld-dialog-title">Help</span>
@@ -592,26 +592,26 @@ function setupHelp() {
                 <div id="ld-help-close-button" class="ld-dialog-close-button"></div>
             </div>
         </div>`
-    
-    const helpFrag =   import.meta.resolve("./ld-help.frag.html");
+
+    const helpFrag = import.meta.resolve("./ld-help.frag.html");
     fetch(helpFrag)
-        .then((response) => { 
+        .then((response) => {
             return response.text()
         })
         .then((htmlFrag) => {
-            const helpTemplate = ld.create("template",{id: "ld-help-template"});
+            const helpTemplate = ld.create("template", { id: "ld-help-template" });
             helpTemplate.innerHTML = htmlFrag;
-            helpDialog.appendChild(helpTemplate.content); 
+            helpDialog.appendChild(helpTemplate.content);
         })
-        .catch((error) => { 
-            helpDialog.innerHTML = `<p>Help not found: ${error}</p>`; 
+        .catch((error) => {
+            helpDialog.innerHTML = `<p>Help not found: ${error}</p>`;
         });
 
     document.querySelector("body").prepend(helpDialog);
 }
 
 function setupTableOfContents() {
-    const topics = 
+    const topics =
         slideTemplates.querySelectorAll(".ld-slide:where(.new-section,.new-subsection)");
     let level = 1;
     let s = "<ol>"
@@ -624,7 +624,7 @@ function setupTableOfContents() {
             s += "</ol>";
         }
         s += `<li><a href="#${topic.id}">`
-        s += topic.querySelector("h1,h2").innerHTML 
+        s += topic.querySelector("h1,h2").innerHTML
         s += "</a></li>";
         level = newLevel;
     }
@@ -661,7 +661,7 @@ function createPasswordInput() {
     // However, to make it possible to just press "return" to submit the "old"
     // password; we simply fake an input event.
     passwordInput.addEventListener("keydown", () => {
-        passwordInput.dispatchEvent(new Event('input',{ target: passwordInput }));
+        passwordInput.dispatchEvent(new Event('input', { target: passwordInput }));
     });
     return passwordInput
 }
@@ -677,10 +677,10 @@ function setupExercisesPasswordsDialog() {
             </div>`
     const encryptedExercisesPasswords = getEncryptedExercisesPasswords();
     if (encryptedExercisesPasswords) {
-        const passwordInput = createPasswordInput();            
-        if(state.exercisesMasterPassword) {
+        const passwordInput = createPasswordInput();
+        if (state.exercisesMasterPassword) {
             passwordInput.value = state.exercisesMasterPassword;
-        } 
+        }
         const contentArea = ld.div({
             id: 'ld-exercises-passwords-content',
             parent: exercisesPasswordsDialog,
@@ -754,7 +754,7 @@ function setupSlideNumberPane() {
     document.getElementsByTagName("BODY")[0].prepend(slideNumberPane);
 }
 
-function showsSlide() { 
+function showsSlide() {
     return !state.showContinuousView && !state.showLightTable && !state.showHelp;
 }
 
@@ -772,7 +772,7 @@ function localShowLaserPointer(slideX, slideY) {
     const laserPointerStyle = laserPointer.style;
     laserPointerStyle.left = (currentSlide.offsetLeft + slideX) + "px";
     laserPointerStyle.top = (currentSlide.offsetTop + slideY) + "px";
-    laserPointer.style.scale = "initial";    
+    laserPointer.style.scale = "initial";
 }
 
 function hideLaserPointer() {
@@ -785,10 +785,11 @@ function localHideLaserPointer() {
 }
 
 function setupMainPane() {
-    const mainPane = ld.div({ 
-        id: "ld-main-pane", 
+    const mainPane = ld.div({
+        id: "ld-main-pane",
         classes: ["ld-slide-context"],
-        children: [ld.div({ id: "ld-laser-pointer" })]});
+        children: [ld.div({ id: "ld-laser-pointer" })]
+    });
 
     mainPane.addEventListener(
         'mousemove',
@@ -848,16 +849,16 @@ function setupMainPane() {
     document.querySelector("BODY").prepend(mainPane);
 }
 
-function decryptExercise(id,password) {
+function decryptExercise(id, password) {
     postMessage("decryptExercise", [id, password]);
-    localDecryptExercise(id,password);
+    localDecryptExercise(id, password);
 }
 
 function localDecryptExercise(id, password) {
-    console.log("decryptExercise: "+id+"; password: "+password);
+    console.log("decryptExercise: " + id + "; password: " + password);
     const solutionWrapper = document.querySelector(`.ld-extracted-exercise[data-exercise-id='${id}'] .ld-exercise-solution-wrapper`);
     const solution = solutionWrapper.querySelector(':scope .ld-exercise-solution');
-    tryDecryptExercise(password,solutionWrapper,solution);
+    tryDecryptExercise(password, solutionWrapper, solution);
 }
 
 /**
@@ -905,18 +906,18 @@ function setupContinuousView() {
         const slidePane = ld.div({
             classes: ["ld-continuous-view-slide-pane", "ld-slide-context"],
             id: "ld-continuous-view-slide-no-" + i,
-            innerHTML : `<span class="ld-continuous-view-slide-number">${i + 1}</span>`
+            innerHTML: `<span class="ld-continuous-view-slide-number">${i + 1}</span>`
         });
         slidePane.prepend(slideScaler);
-        
+
 
         continuousViewPane.appendChild(slidePane);
 
         // Move DIVs and ASIDEs with supplemental infos below the slide:
-        const aside = slide.querySelector(":scope .supplemental");
-        if (aside) {
-            aside.parentElement.removeChild(aside);
-            continuousViewPane.appendChild(aside);
+        const supplemental = slide.querySelector(":scope .supplemental");
+        if (supplemental) {
+            supplemental.parentElement.removeChild(supplemental);
+            continuousViewPane.appendChild(supplemental);
         }
 
         // Move exercises below the slide:
@@ -928,7 +929,7 @@ function setupContinuousView() {
                 task.classList.add("ld-extracted-exercise");
 
                 const passwordField = createPasswordInput();
-                const solutionWrapper = ld.div({ 
+                const solutionWrapper = ld.div({
                     classes: ["ld-exercise-solution-wrapper"],
                     parent: task,
                     children: [passwordField, solution]
@@ -1072,9 +1073,9 @@ function showSlide(ldSlide, setNewMarker = false) {
     // Update the URL to reflect the current slide number. (To make it 
     // possible to share the URL with others.)
     const url = new URL(location);
-    url.searchParams.set("ld-slide-no", slideNo+1);
+    url.searchParams.set("ld-slide-no", slideNo + 1);
     history.pushState({}, "", url);
-    
+
     return ldSlide;
 }
 
@@ -1104,6 +1105,8 @@ function hideSlideWithNo(slideNo, setOldMarker = false) {
         ephemeral.previousSlide = undefined;
     }
 }
+
+// TODO MAKE MORE RESILIENT AGAINST ERRORS WHEN THE SYNCRONIZATION FAILED
 
 /**
  * Advances the presentation by moving to the next slide.
@@ -1177,13 +1180,14 @@ function localAdvancePresentation() {
     const elements = getElementsToAnimate(slide)
     const elementsCount = elements.length;
     for (let i = 0; i < elementsCount; i++) {
-        if (elements[i].style.visibility == "hidden") {
-            elements[i].style.visibility = "visible";
-            elements[i].scrollIntoView({ // needed by scrollable containers
-                block: "end", 
-                inline: "nearest", 
+        const element = elements[i];
+        if (element.style.visibility == "hidden") {
+            element.style.visibility = "visible";
+            element.scrollIntoView({ // needed by scrollable containers
+                block: "end",
+                inline: "nearest",
                 behavior: "smooth"
-            }); 
+            });
             setSlideProgress(slide, i + 1)
             return;
         }
@@ -1210,10 +1214,10 @@ function localRetrogressPresentation() {
             i--;
             if (i > 0) {
                 elementsToAnimate[i].scrollIntoView({ // needed by scrollable containers
-                    block: "end", 
-                    inline: "nearest", 
+                    block: "end",
+                    inline: "nearest",
                     behavior: "smooth"
-                }); 
+                });
             } else {
                 slide.querySelectorAll(":scope .scrollable").forEach((e) => {
                     e.scrollTo({ top: 0, left: 0, behavior: "smooth", });
@@ -1408,7 +1412,7 @@ function showMainSlideNumber(show) {
 
 function showContinuousViewSlideNumber(show) {
     state.showContinuousViewSlideNumber = show;
-    const slideNumbers = 
+    const slideNumbers =
         document.querySelectorAll(".ld-continuous-view-slide-number");
     if (show && state.showContinuousView) {
         slideNumbers.forEach((e) => { e.style.display = "block"; });
@@ -1656,7 +1660,7 @@ function registerSlideClickedListener() {
     document.querySelectorAll("#ld-main-pane :is(a,button,div.ld-copy-to-clipboard-button,video)").forEach((e) => {
         e.addEventListener(
             "click",
-            (event) => {event["interactive_element_clicked"] = true;},
+            (event) => { event["interactive_element_clicked"] = true; },
             { capture: true }
         )
     });
@@ -1733,19 +1737,31 @@ function jumpToId(id) {
 
 
 /**
- * Called when a scrollable element in a different, but connected window, has
- * been scrolled.
+ * Called when a scrollable element in a different, but connected window (i.e., 
+ * a secondary window), has been scrolled.
  * 
  * @param {*} scrollableId 
  * @param {*} scrollTop 
  */
-function localScrollElement(scrollableId, scrollTop) {
-    document.querySelector(
-        `#ld-main-pane .scrollable[data-scrollable-id="${scrollableId}"]`).
-        scrollTo(0, scrollTop);
+function localScrollScrollable(scrollableId, scrollTop) {
+    const scrollable = document.querySelector(
+        `#ld-main-pane .scrollable[data-scrollable-id="${scrollableId}"]`);
+
+    if (scrollable.scrollTop !== scrollTop) {
+        scrollable.scrollTo(0, scrollTop);
+    }
 }
 
-function registerInternalLinkClickListener(a,f) {
+function localScrollSupplemental(supplementalId, scrollTop) {
+    const supplemental = document.querySelector(
+        `#ld-main-pane .supplemental[data-supplemental-id="${supplementalId}"]`);
+
+    if (supplemental.scrollTop !== scrollTop) {
+        supplemental.scrollTo(0, scrollTop);
+    }
+}
+
+function registerInternalLinkClickListener(a, f) {
     a.addEventListener("click", (event) => {
         event.stopPropagation();
         const target = a.getAttribute("href").substring(1);
@@ -1793,26 +1809,73 @@ function registerSlideInternalLinkClickedListener() {
 }
 
 
+function addScrollingEventListener(eventTitle, scrollableElement, id) {
+    // We will relay a scroll event to a secondary window, when there was no
+    // more scrolling for at least TIMEOUTms. Additionally, if there is already an
+    // event handler scheduled, we will not schedule another one. 
+    //
+    // If we would directly relay the event, it may be possible that it will 
+    // result in all kinds of strange behaviors, because we cannot easily 
+    // distinguish between a programmatic and a user initiated scroll event. 
+    // This could result in a nasty ping-pong effect where scrolling between
+    // two different position would happen indefinitely.
+    const TIMEOUT = 50;
+    let lastEvent = undefined;
+    let eventHandlerScheduled = false;
+    scrollableElement.addEventListener("scroll", (event) => {
+        lastEvent = new Date().getTime();
+        function scheduleEventHandler(timeout) {
+            setTimeout(() => {
+                const currentTime = new Date().getTime();
+                if (currentTime - lastEvent < TIMEOUT) {
+                    scheduleEventHandler(TIMEOUT - (currentTime - lastEvent));
+                    return;
+                }
+                postMessage(eventTitle, [id, event.target.scrollTop]);
+                console.log(eventTitle + id + " " + event.target.scrollTop);
+                eventHandlerScheduled = false;
+            }, timeout);
+        };
+        if(!eventHandlerScheduled) {
+            eventHandlerScheduled = true;
+            scheduleEventHandler(TIMEOUT);
+        }
+    },{passive: true});
+}
+
+
 function registerScrollableElementListener() {
     let scrollableId = 1;
     document.querySelectorAll("#ld-main-pane .scrollable").forEach((scrollable) => {
         const id = scrollableId++;
         scrollable.dataset.scrollableId = id;
-
         // We want to collapse multiple events into one, but ensure that we
-        // never miss an event.
-        let handled = false
-        scrollable.addEventListener("scroll", (event) => {
-            if (handled) {
-                return;
+        // never miss the "final" event.
+        addScrollingEventListener("scrollableScrolled",scrollable, id);
+    });
+}
+
+function registerHoverSupplementalListener() {
+    let supplementalId = 1;
+    document.querySelectorAll("#ld-main-pane .supplemental").forEach((supplemental) => {
+        const id = supplementalId++;
+        supplemental.dataset.supplementalId = id;
+        const addHoverSupplemental = (event) => {
+            if (event.ctrlKey) {
+                postMessage("addHoverSupplemental", id);
             }
-            handled = true;
-            setTimeout(() => {
-                postMessage("elementScrolled", [id, event.target.scrollTop]);
-                console.log("elementScrolled" + id + " " + event.target.scrollTop);
-                handled = false;
-            }, 500);
-        });
+            supplemental.classList.add("hover:supplemental");
+        }
+        const removeHoverSupplemental = () => {
+            // We always send the message to remove the hover class.
+            // The effect is idempotent, i.e., it can be applied multiple times
+            // and this way, we don't have to keep track of the state.
+            postMessage("removeHoverSupplemental", id);
+            supplemental.classList.remove("hover:supplemental");
+        }
+        supplemental.addEventListener("mouseenter", addHoverSupplemental);
+        supplemental.addEventListener("mouseleave", removeHoverSupplemental);
+        addScrollingEventListener("supplementalScrolled",supplemental, id);
     });
 }
 
@@ -1897,7 +1960,7 @@ function registerMenuClickListener() {
             showMainSlideNumber(false);
         });
     document.
-    getElementById("ld-slides-with-nr-button").
+        getElementById("ld-slides-with-nr-button").
         addEventListener("click", () => {
             if (state.showContinuousView) {
                 toggleContinuousView();
@@ -1906,7 +1969,7 @@ function registerMenuClickListener() {
         });
 
     document.
-    getElementById("ld-continuous-view-button").
+        getElementById("ld-continuous-view-button").
         addEventListener("click", () => {
             if (!state.showContinuousView) {
                 toggleContinuousView();
@@ -1989,7 +2052,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initSlideDimensions();
 
     ldEvents.beforeLDDOMManipulations.forEach(f => f());
-    
+
     initSlideCount();   // We need to do this here, because the animations 
     initCurrentSlide(); // package may add slides!
     initShowLightTable();
@@ -2062,8 +2125,9 @@ window.addEventListener("load", () => {
     registerMenuClickListener();
     registerSwipeListener();
     registerScrollableElementListener();
-    
-    ldEvents.afterLDListenerRegistrations.forEach((f) => f());  
+    registerHoverSupplementalListener();
+
+    ldEvents.afterLDListenerRegistrations.forEach((f) => f());
 
     if (ephemeral.ldPerDocumentChannel) {
         ephemeral.ldPerDocumentChannel.addEventListener("message", (event) => {
@@ -2087,15 +2151,33 @@ window.addEventListener("load", () => {
                     localDecryptExercise(id, password);
                     break;
                 }
+
                 case "showLaserPointer": {
                     const [slideX, slideY] = data;
                     localShowLaserPointer(slideX, slideY);
                     break;
                 }
                 case "hideLaserPointer": localHideLaserPointer(); break;
-                case "elementScrolled": {
+
+                case "scrollableScrolled": {
                     const [scrollableId, scrollTop] = data;
-                    localScrollElement(scrollableId, scrollTop);
+                    localScrollScrollable(scrollableId, scrollTop);
+                    break;
+                }
+
+                case "addHoverSupplemental": {
+                    const id = data;
+                    document.querySelector(`#ld-main-pane .supplemental[data-supplemental-id="${id}"]`).classList.add("hover:supplemental");
+                    break;
+                }
+                case "removeHoverSupplemental": {
+                    const id = data;
+                    document.querySelector(`#ld-main-pane .supplemental[data-supplemental-id="${id}"]`).classList.remove("hover:supplemental");
+                    break;
+                }
+                case "supplementalScrolled": {
+                    const [supplementalId, scrollTop] = data;
+                    localScrollSupplemental(supplementalId, scrollTop);
                     break;
                 }
                 //case "reset": ; break;
@@ -2112,7 +2194,7 @@ window.addEventListener("load", () => {
 const lectureDoc2 = {
     'lib': ld,
     'crypto': ldCrypto,
-    'ldEvents' : ldEvents,
+    'ldEvents': ldEvents,
     'presentation': presentation, // "constant state"
     'getState': function () { return state; }, // the state object as a whole may change
     'getEphemeral': function () { return ephemeral; },
