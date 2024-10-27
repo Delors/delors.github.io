@@ -38,13 +38,8 @@
     counter-reset: stack-layer 0;
 
     >.layer {
-        margin-bottom: 0.5em;
         /* All layers must have the same margin! */
-        border-radius: var(--slide-border-radius);
-        padding: 0.5em;
-
-        background-color: var(--slide-background-color);
-        box-shadow: var(--br-shadow);
+        margin-bottom: 0.5em;
 
         &.overlay {
             background-color: transparent;
@@ -72,6 +67,15 @@
     }
 }
 
+.stack:not(.invisible) > .layer {
+    border-radius: var(--slide-border-radius);
+    padding: 0.5em;
+
+    background-color: var(--slide-background-color);
+    box-shadow: var(--br-shadow);
+
+}
+
 #ld-continuous-view-pane .stack {
 
     /* Unfortunately, the final positioning needs to be done in JavaScript! 
@@ -84,8 +88,8 @@
     display: flex;
     flex-direction: column;
 
-        .layer {
-            @media print {
+    .layer {
+        @media print {
             page-break-inside: avoid;
         }
     }
