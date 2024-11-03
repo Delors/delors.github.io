@@ -707,13 +707,13 @@ function setupExercisesPasswordsDialog() {
                                     const div = ld.div({ classes: ["ld-unlock-global"] });
                                     div.addEventListener(
                                         "click",
-                                        () => decryptExercise(i + 1, exercisesPasswords[i][1]));
+                                        () => decryptExercise(exercisesPasswords[i][0], exercisesPasswords[i][1]));
                                     const td = ld.create("td", { children: [div] });
                                     return [td];
                                 }
                             );
                         for (let i = 0; i < exercisesPasswords.length; i++) {
-                            localDecryptExercise(i + 1, exercisesPasswords[i][1]);
+                            localDecryptExercise(exercisesPasswords[i][0], exercisesPasswords[i][1]);
                         }
                         contentArea.removeChild(passwordInput);
                         contentArea.appendChild(passwordsTable);
@@ -849,14 +849,18 @@ function setupMainPane() {
     document.querySelector("BODY").prepend(mainPane);
 }
 
-function decryptExercise(id, password) {
-    postMessage("decryptExercise", [id, password]);
-    localDecryptExercise(id, password);
+function decryptExercise(title, password) {
+    postMessage("decryptExercise", [title, password]);
+    localDecryptExercise(title, password);
 }
 
-function localDecryptExercise(id, password) {
-    console.log("decryptExercise: " + id + "; password: " + password);
-    const solutionWrapper = document.querySelector(`.ld-extracted-exercise[data-exercise-id='${id}'] .ld-exercise-solution-wrapper`);
+function localDecryptExercise(title, password) {
+    console.log("decryptExercise: " + title + "; password: " + password);
+    const solutionWrapper = document.querySelector(`.ld-extracted-exercise[data-exercise-title='${title}'] .ld-exercise-solution-wrapper`);
+    if (!solutionWrapper) {
+        console.error("No solution wrapper found for exercise: " + title);
+        return;
+    }
     const solution = solutionWrapper.querySelector(':scope .ld-exercise-solution');
     tryDecryptExercise(password, solutionWrapper, solution);
 }
@@ -882,6 +886,7 @@ function tryDecryptExercise(password, solutionWrapper, solution) {
             solution.innerHTML = decrypted;
             setupCopyToClipboard(solution);
             typesetMath(solution);
+
             // The first child is the input field!
             solutionWrapper.firstElementChild.remove(); //Child(passwordField);
             delete solution.dataset.encrypted;
@@ -2147,8 +2152,8 @@ window.addEventListener("load", () => {
                 case "hideLectureDoc": localHideLectureDoc(); break;
                 case "ensureLectureDocIsVisible": localEnsureLectureDocIsVisible(); break;
                 case "decryptExercise": {
-                    const [id, password] = data;
-                    localDecryptExercise(id, password);
+                    const [title, password] = data;
+                    localDecryptExercise(title, password);
                     break;
                 }
 

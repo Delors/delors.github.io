@@ -1,4 +1,4 @@
-/* Theming of LectureDoc controls and configuration of the most basic assumptions. */
+/* Theming of LectureDoc controls. */
 
 :root {
     /* Primarily for debugging purposes!*/
@@ -129,9 +129,6 @@ input.passwords {
 }
 
 
-
-
-
 /*  ----------------------------------------------------------------------------
 
     Styling of the exercises passwords dialog.
@@ -140,14 +137,33 @@ input.passwords {
 #ld-exercises-passwords-dialog {
     min-width: 400px;
     min-height: 200px;
+    max-height: 90vh;
+
+    &[open] { 
+        display: flex; 
+        flex-direction: column;
+    }
+
+    input.passwords {
+        box-shadow: none;
+    }
 
     #ld-exercises-passwords-content {
-        padding: 1em;
+        margin: 0.5em;
+        padding: 0;
         color: whitesmoke;
+        overflow-y: scroll; 
 
-        td {
-            margin: 1em;
-            padding: 0.5em;
+        table {
+            width: 100%;
+            height: fit-content;
+            box-shadow: none;
+            margin: 0;
+
+            td {
+                margin: 1em;
+                padding: 0.5em;
+            }
         }
 
         .ld-unlock-global {
@@ -273,18 +289,20 @@ input.passwords {
     Styling the table of contents dialog.
 */
 
-#ld-table-of-contents-dialog ol {
-    margin: 0.5em;
-    border-top: 0px;
-    border-bottom: 0px;
-    border-radius: 0.5em;
-    padding: 0.5em;
+#ld-table-of-contents-dialog {
 
-    list-style-position: inside;
-    background-color: white;
+    &[open] { 
+        display: flex; 
+        flex-direction: column;
+    }
 
     ol {
-        padding-top: 0;
-        padding-bottom: 0;
+        padding: 0 0.5em 0 0.5em;
+        margin: 0;
+        overflow-y: scroll ;
+        
+        list-style-position: inside;
+        background-color: white;    
+        border-radius: 10px;   
     }
 }
