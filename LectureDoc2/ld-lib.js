@@ -120,3 +120,47 @@ export function capitalizeCSSName(str, separator = "-") {
 
 
 export function getBody() { return document.getElementsByTagName("BODY")[0]; }
+
+
+export function getParent(element, className) {
+    if (!element) return null;
+    return getParentOrThis(element.parentNode, className);
+}
+
+export function getParentOrThis(element, className) {
+    if (!element) return null;
+
+    const classList = element.classList;
+    if (classList && classList.contains(className)) {
+        return element;
+    } else {
+        return getParentOrThis(element.parentNode, className);
+    }
+}
+
+
+export function isElementFullyVisibleInContainer(element, scrollableContainer) {
+    const elementRect = element.getBoundingClientRect();
+    const containerRect = scrollableContainer.getBoundingClientRect();
+
+    return (
+        elementRect.top >= containerRect.top &&
+        elementRect.left >= containerRect.left &&
+        elementRect.bottom <= containerRect.bottom &&
+        elementRect.right <= containerRect.right
+    );
+}
+
+export function isElementFullyVisible(element) {
+    const rect = element.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+    //console.log(rect.top, rect.left, rect.bottom, rect.right);
+    //console.log(windowHeight, windowWidth);
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= windowHeight &&
+        rect.right <= windowWidth
+    );
+}

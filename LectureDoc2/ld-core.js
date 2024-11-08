@@ -1188,11 +1188,15 @@ function localAdvancePresentation() {
         const element = elements[i];
         if (element.style.visibility == "hidden") {
             element.style.visibility = "visible";
-            element.scrollIntoView({ // needed by scrollable containers
-                block: "end",
-                inline: "nearest",
-                behavior: "smooth"
-            });
+            //if (!ld.isElementFullyVisible(element)) {
+            const scrollableParent = ld.getParent(element, "scrollable");
+            if (!scrollableParent || !ld.isElementFullyVisibleInContainer(element,scrollableParent)) {
+                element.scrollIntoView({ // needed by scrollable containers
+                    block: "end",
+                    inline: "nearest",
+                    behavior: "smooth"
+                });
+            }
             setSlideProgress(slide, i + 1)
             return;
         }
@@ -1218,11 +1222,14 @@ function localRetrogressPresentation() {
             setSlideProgress(slide, i);
             i--;
             if (i > 0) {
-                elementsToAnimate[i].scrollIntoView({ // needed by scrollable containers
-                    block: "end",
-                    inline: "nearest",
-                    behavior: "smooth"
-                });
+                const scrollableParent = ld.getParent(elementsToAnimate[i], "scrollable");
+                if (!scrollableParent || !ld.isElementFullyVisibleInContainer(elementsToAnimate[i],scrollableParent)) {
+                    elementsToAnimate[i].scrollIntoView({ // needed by scrollable containers
+                        block: "start",
+                        inline: "nearest",
+                        behavior: "smooth"
+                    });
+                }
             } else {
                 slide.querySelectorAll(":scope .scrollable").forEach((e) => {
                     e.scrollTo({ top: 0, left: 0, behavior: "smooth", });

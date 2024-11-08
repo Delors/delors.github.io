@@ -7,6 +7,7 @@
  *      - Highlighting the "row" and "column" headers of a cell
  */
 import lectureDoc2 from "./ld-core.js";
+import * as ld from './ld-lib.js';
 
 function getSlide(element) {
     // Originally, we used the following code to get the parent slide:
@@ -24,21 +25,6 @@ function getSlide(element) {
         return element;
     } else {
         return getSlide(element.parentNode);
-    }
-}
-
-function getParent(element, className) {
-    if (!element) return null;
-    return getParentOrThis(element.parentNode, className);
-}
-
-function getParentOrThis(element, className) {
-    if (!element) return null;
-
-    if (element.classList.contains(className)) {
-        return element;
-    } else {
-        return getParentOrThis(element.parentNode, className);
     }
 }
 
@@ -151,7 +137,7 @@ function adaptHeightOfSlideToStack(stack) {
     //const slidePaneHeight = (oldSlideHeight + extraHeight);
     slide.style.height = newHeight + "px";
 
-    const slidePane = getParent(stack, "ld-continuous-view-slide-pane");
+    const slidePane = ld.getParent(stack, "ld-continuous-view-slide-pane");
     const slidePaneStyle = slidePane.style;
     slidePaneStyle.height = slidePaneStyle.maxHeight = (newHeight * zoomFactor) + "px";
 }
@@ -210,7 +196,7 @@ function adaptHeightOfSlideToScrollable(scrollable) {
 
         slide.style.height = slide.style.maxheight = (slideHeight + additionalHeight) + "px";
 
-        const slidePaneStyle = getParent(scrollable, "ld-continuous-view-slide-pane").style;
+        const slidePaneStyle = ld.getParent(scrollable, "ld-continuous-view-slide-pane").style;
         slidePaneStyle.height = slidePaneStyle.maxHeight =
             Math.ceil((slideHeight + additionalHeight) * zoomFactor) + "px";
 
