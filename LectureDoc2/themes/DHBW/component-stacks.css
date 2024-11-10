@@ -56,7 +56,7 @@
     /*  We only add numbers when we have a stack with more than one layer that
         is not an overlay layer.
     */
-    &:has(.layer:not(.overlay, .no-number, :first-child)) .layer:not(.overlay, .no-number)::before {
+    &:not(.invisible,.no-numbers):has(.layer:not(.overlay, .no-number, :first-child)) > .layer:not(.overlay, .no-number)::before {
         position: absolute;
         right: 0.6em;
         bottom: 0.35em;
@@ -65,17 +65,17 @@
         counter-increment: stack-layer;
         content: counter(stack-layer);
     }
-}
 
-.stack:not(.invisible) > .layer {
-    border-radius: var(--slide-border-radius);
-    padding: 0.5em;
+    &:not(.invisible)>.layer {
+        border-radius: var(--slide-border-radius);
+        padding: 0.5em;
 
-    background-color: var(--slide-background-color);
-    box-shadow: var(--br-shadow);
+        background-color: var(--slide-background-color);
+        box-shadow: var(--br-shadow);
 
-    &.overlay {
-        background-color: transparent;
+        &.overlay {
+            background-color: transparent;
+        }
     }
 }
 
@@ -96,9 +96,9 @@
             page-break-inside: avoid;
         }
     }
-} 
+}
 
-:where(#ld-main-pane, #ld-light-table-dialog) .stack > .layer {
+:where(#ld-main-pane, #ld-light-table-dialog) .stack>.layer {
     width: 100%;
     /* DON'T ADD: height: 100%; !!! */
 
@@ -169,4 +169,3 @@
     }
 
 }
-
