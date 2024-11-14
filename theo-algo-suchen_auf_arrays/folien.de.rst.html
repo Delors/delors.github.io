@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="version" content="LD2 0.1" />
+<meta content="de" name="lang" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Suche&quot;, &quot;Arrays&quot;, &quot;Algorithmen&quot;, &quot;Datenstrukturen&quot;" name="keywords" />
+<meta content="Suchen auf Arrays" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-theo-algo-suchen_auf_arrays" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<title>Suchen auf Arrays</title>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
+
+    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+
+    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+
+    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
+    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+
+    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+
+    <!-- When we make better use of HTML Components for LectureDoc's UI we can remove the following line -->
+    <link rel="stylesheet" href="../LectureDoc2/ld-ui.css" type="text/css" />
+
+    
+    <script src="../LectureDoc2/themes/DHBW/logo.js" type="module"></script>
+</head>
+<body>
+<template>
+<div class="animated-symbol ld-slide" id="suchen-auf-arrays">
+<h1 class="title">Suchen auf Arrays</h1>
+
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+<div class="minor docutils container">
+<dl class="field-list simple">
+<dt>Quelle<span class="colon">:</span></dt>
+<dd><p>Die Folien sind teilweise inspiriert von oder basierend auf Lehrmaterial von Prof. Dr. Ritterbusch</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/theo-algo-suchen_auf_arrays/folien.de.rst.html">https://delors.github.io/theo-algo-suchen_auf_arrays/folien.de.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/theo-algo-suchen_auf_arrays/folien.de.rst.html.pdf">https://delors.github.io/theo-algo-suchen_auf_arrays/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></div>
+<div class="new-section transition-move-to-top ld-slide" id="einfuhrung">
+<h2>Einführung</h2>
+</div><div class="ld-slide" id="skalierung-von-daten">
+<h2>Skalierung von Daten</h2>
+<p>Welche Skalierung haben gesuchte Daten sind im Array?</p>
+<dl class="field-list simple">
+<dt>nominal<span class="colon">:</span></dt>
+<dd><p>Nur Vergleich auf Gleichheit, keine natürliche Ordnung oder Zahlbegriff.</p>
+</dd>
+<dt>ordinal<span class="colon">:</span></dt>
+<dd><p>Es gibt Größenvergleiche und damit eine Sortierung, aber kein Zahlbegriff.</p>
+</dd>
+<dt>kardinal<span class="colon">:</span></dt>
+<dd><p>Es gibt Größenvergleiche und Zahlbegriff.</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p><em>Unsortiert oder nominal</em> führt (zunächst) zur linearen Suche.</p></li>
+<li><p><em>Ordinale und kardinale Werte</em> können sortiert werden für binäre Suche.</p></li>
+<li><p><em>Kardinale Größen</em> können modelliert werden für interpolierende Suche.</p></li>
+</ul>
+<p>Hier erfolgen Vergleiche vereinfacht auf Anzahl Elementzugriffe.</p>
+</div><div class="repetition ld-slide" id="lineare-suche">
+<h2>Lineare Suche</h2>
+<pre class="code pascal smaller literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">Algorithmus</span><span class="whitespace"> </span><span class="name">linear_search</span><span class="punctuation">(</span><span class="name">A</span><span class="operator">,</span><span class="name">n</span><span class="operator">,</span><span class="name">needle</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword">for</span><span class="whitespace"> </span><span class="name">i</span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="operator">,...,</span><span class="name">n</span><span class="whitespace"> </span><span class="keyword">do</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="name">A</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">needle</span><span class="whitespace"> </span><span class="keyword">then</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">            </span><span class="name">return</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace">    </span><span class="name">return</span><span class="whitespace"> </span><span class="keyword">nil</span></code></pre>
+<p>Laufzeit kann asymptotisch durch <span class="math">\(O(n)\)</span> abgeschätzt werden.</p>
+</div><div class="repetition ld-slide" id="lineare-suche-1">
+<h2>Lineare Suche</h2>
+<pre class="code pascal smaller literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="name">Algorithmus</span><span class="whitespace"> </span><span class="name">binary</span><span class="operator">-</span><span class="name">search</span><span class="punctuation">(</span><span class="name">A</span><span class="operator">,</span><span class="name">l</span><span class="operator">,</span><span class="name">u</span><span class="operator">,</span><span class="name">needle</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">    </span><span class="name">upper</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">u</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="name">lower</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">l</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="keyword">repeat</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">        </span><span class="name builtin">pos</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name builtin">round</span><span class="punctuation">((</span><span class="name">upper</span><span class="operator">+</span><span class="name">lower</span><span class="punctuation">)</span><span class="operator">/</span><span class="literal number integer">2</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">        </span><span class="name">value</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">A</span><span class="punctuation">[</span><span class="name builtin">pos</span><span class="punctuation">]</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="name">value</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">needle</span><span class="whitespace"> </span><span class="keyword">then</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">            </span><span class="name">return</span><span class="whitespace"> </span><span class="name builtin">pos</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">        </span><span class="keyword">else</span><span class="whitespace"> </span><span class="keyword">if</span><span class="whitespace"> </span><span class="name">value</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">needle</span><span class="whitespace"> </span><span class="keyword">then</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">            </span><span class="name">upper</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name builtin">pos</span><span class="error">−</span><span class="literal number integer">1</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">        </span><span class="keyword">else</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">            </span><span class="name">lower</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name builtin">pos</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">    </span><span class="keyword">until</span><span class="whitespace"> </span><span class="name">upper</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="name">lower</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="name">return</span><span class="whitespace"> </span><span class="keyword">nil</span></code></pre>
+<p>Laufzeit ist <span class="math">\(O(\log(n))\)</span>, genauer im Schnitt <span class="math">\(\log_2(n)-1\)</span> Zugriffe.</p>
+</div>
+</template>
+</body>
+</html>
