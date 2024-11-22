@@ -100,7 +100,7 @@
 <h2>Modularisierungsebenen in Java</h2>
 <img alt="Modularisierungsebenen in Java" class="align-center" src="images/modularisierungsebenen.svg" style="width: 1600px;" />
 <div class="supplemental">
-<p>Einzelnen Methoden erlauben zwar bereits eine Modularisierung des Codes, da diese aber für sich nicht wiederverwendbar sind, ist es notwendig, diese in Klassen zu organisieren. Klassen, welche in einzelnen Dateien gespeichert werden, erlauben dann eine Wiederverwendung des Codes.</p>
+<p>Einzelnen Methoden erlauben zwar bereits eine Modularisierung des Codes, da diese aber für sich nicht wiederverwendbar sind (es ist nicht möglich eine Methode alleine in einer Datei zu speichern und in einem anderen Kontext zu nutzen), ist es notwendig, diese in Klassen zu organisieren. Klassen, welche in einzelnen Dateien gespeichert werden, erlauben dann eine Wiederverwendung des Codes.</p>
 </div></div><div class="new-subsection ld-slide" id="einfuhrung-in-java-imports-packages-und-sichtbarkeiten">
 <h2>Einführung in Java: Imports, Packages und Sichtbarkeiten</h2>
 </div><div class="ld-slide" id="grundlegende-konzepte-und-mechanismen-zur-modularisierung-von-java-programmen">
@@ -134,10 +134,8 @@
 <ol class="arabic simple">
 <li><p>Klassen sind die grundlegenden Bausteine von Java Programmen.</p></li>
 </ol>
-<ol class="arabic simple incremental" start="3">
+<ol class="arabic simple incremental" start="2">
 <li><p>Eine Klasse wird mit dem Schlüsselwort <cite>class</cite> deklariert.</p></li>
-</ol>
-<ol class="arabic simple" start="2">
 <li><p>Eine Klasse kann Felder (Variablen) und Methoden enthalten.</p></li>
 <li><p>Eine Klasse wird in einer Datei mit dem Namen der Klasse (+<em>.java</em>) gespeichert.</p></li>
 </ol>
@@ -208,9 +206,13 @@
 <p><code class="java"><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">type</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">name</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">value</span><span class="operator">&gt;</span><span class="punctuation">;</span></code></p>
 </dd>
 </dl>
-<div class="incremental docutils container">
-<p>Das Java Development Kit (JDK) enthält viele Klassen mit statischen Methoden und Attributen, z. B. <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">Math</span></code>, <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">System</span></code>, <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">io</span><span class="punctuation">.</span><span class="name attribute">File</span></code>, <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">io</span><span class="punctuation">.</span><span class="name attribute">IO</span></code> etc..</p>
+<div class="incremental smaller docutils container">
+<p>Das Java Development Kit (JDK) enthält viele Klassen – z. B. <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">Math</span></code>, <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">System</span></code>, <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">io</span><span class="punctuation">.</span><span class="name attribute">File</span></code>, <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">io</span><span class="punctuation">.</span><span class="name attribute">IO</span></code>, <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">util</span><span class="punctuation">.</span><span class="name attribute">Arrays</span></code> etc. – mit statischen Methoden - z. B. <code class="java"><span class="name">parseDouble</span><span class="punctuation">(...)</span></code> – und Attributen.</p>
 </div>
+<aside class="admonition far-smaller incremental hint">
+<p class="admonition-title">Hinweis</p>
+<p>Wenn Sie das <code class="java"><span class="keyword declaration">static</span></code> Schlüsselwort vergessen, dann haben Sie Instanzmethoden und Instanzattribute. Diese können Sie nur nutzen, nachdem Sie basierend auf der Klasse ein Objekt instantiiert haben.</p>
+</aside>
 </div><div class="integrated-exercise ld-slide" id="ubung">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Erste Refaktorisierung des Codes" id="ld-exercise-1">
@@ -286,7 +288,7 @@ MTAwMDAw:KzRK1do+gO/6qLgT6eI1b3jsLVU+c1REU1q524NEgac=:kvsVuULpe9aNFcft:Pwap57+mD
 </div><div class="layer incremental">
 <dl class="field-list simple">
 <dt><code class="java"><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">module</span></code><span class="colon">:</span></dt>
-<dd><p>(Seit Java 23) ermöglicht den Import alles Klassen eine Moduls.</p>
+<dd><p>(Seit Java 23) ermöglicht den Import aller Klassen eine Moduls.</p>
 </dd>
 <dt>Syntax<span class="colon">:</span></dt>
 <dd><p><code class="java"><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">modul</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">moduleName</span><span class="operator">&gt;</span><span class="punctuation">;</span></code></p>
@@ -327,10 +329,10 @@ MTAwMDAw:KzRK1do+gO/6qLgT6eI1b3jsLVU+c1REU1q524NEgac=:kvsVuULpe9aNFcft:Pwap57+mD
 </span><span class="punctuation">}</span></code></pre>
 </div><div class="layer incremental">
 <p class="rubric">Hinweis</p>
-<p>Ein Java-Script importiert immer implizit:</p>
+<p>Ein Java-Skript importiert immer implizit:</p>
 <pre class="code java literal-block"><code><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">module</span><span class="whitespace"> </span><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">base</span><span class="punctuation">;</span><span class="whitespace">
 </span><span class="keyword namespace">import static</span><span class="whitespace"> </span><span class="name namespace">java.io.IO.*</span><span class="punctuation">;</span></code></pre>
-<p>Wenn Sie in der JShell also auch <code class="java"><span class="name">println</span></code> und <code class="java"><span class="name">readln</span></code> direkt verwenden wollen, dann müssen Sie lediglich <cite>import static java.io.IO.*;</cite> hinzufügen.</p>
+<p>Wenn Sie in der JShell also auch <code class="java"><span class="name">println</span></code> und <code class="java"><span class="name">readln</span></code> direkt verwenden wollen, dann müssen Sie lediglich <code class="java"><span class="keyword namespace">import static</span><span class="whitespace"> </span><span class="name namespace">java.io.IO.*</span><span class="punctuation">;</span></code> hinzufügen.</p>
 </div></div></div><div class="ld-slide" id="sichtbarkeiten-access-modifiers">
 <h2>Sichtbarkeiten (Access Modifiers)</h2>
 <p>Um festzulegen, wer auf Klassen, Methoden und Variablen zugreifen kann, verwendet Java <strong>Sichtbarkeiten</strong> (Access Modifiers). Dies ist ein Konzept aus dem Bereich <em>Programming-in-the-Large</em>. Für kleinere Projekte, bei denen alle Klassen im selben Package sind, ist dies nicht relevant.</p>
@@ -338,7 +340,7 @@ MTAwMDAw:KzRK1do+gO/6qLgT6eI1b3jsLVU+c1REU1q524NEgac=:kvsVuULpe9aNFcft:Pwap57+mD
 <ol class="arabic simple incremental">
 <li><p><code class="java"><span class="keyword declaration">public</span></code>: Zugriff von überall</p></li>
 <li><p><code class="java"><span class="keyword declaration">protected</span></code>: Zugriff innerhalb des gleichen Packages und von Subklassen</p></li>
-<li><p>&lt;default&gt; (package-private)**: Zugriff nur innerhalb des gleichen Packages</p></li>
+<li><p><em>&lt;default&gt; (package-private)</em>: Zugriff nur innerhalb des gleichen Packages</p></li>
 <li><p><code class="java"><span class="keyword declaration">private</span></code>: Zugriff nur innerhalb der gleichen Klasse</p></li>
 </ol>
 </div><div class="ld-slide" id="sichtbarkeiten-und-deren-verwendung">
