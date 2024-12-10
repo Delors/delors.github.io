@@ -21,7 +21,7 @@ from abc import ABC, abstractmethod
 T = TypeVar('T', bound='Chromosome') # for returning self
 
 
-# Base class for all chromosomes; all methods must be overridden
+# Base class for all chromosomes
 class Chromosome(ABC):
     @abstractmethod
     def fitness(self) -> float:

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# 2024: Typehints adapted for Python 3.13 
+# 2024: Typehints adapted for Python 3.13
 from typing import TypeVar, Generic, Callable
 from enum import Enum
 from random import choices, random
@@ -22,12 +22,21 @@ from heapq import nlargest
 from statistics import mean
 from lib.chromosome import Chromosome
 
-C = TypeVar('C', bound=Chromosome) # type of the chromosomes
+C = TypeVar("C", bound=Chromosome)  # type of the chromosomes
+
 
 class GeneticAlgorithm(Generic[C]):
     SelectionType = Enum("SelectionType", "ROULETTE TOURNAMENT")
 
-    def __init__(self, initial_population: list[C], threshold: float, max_generations: int = 100, mutation_chance: float = 0.01, crossover_chance: float = 0.7, selection_type: SelectionType = SelectionType.TOURNAMENT) -> None:
+    def __init__(
+        self,
+        initial_population: list[C],
+        threshold: float,
+        max_generations: int = 100,
+        mutation_chance: float = 0.01,
+        crossover_chance: float = 0.7,
+        selection_type: SelectionType = SelectionType.TOURNAMENT,
+    ) -> None:
         self._population: list[C] = initial_population
         self._threshold: float = threshold
         self._max_generations: int = max_generations
@@ -38,14 +47,23 @@ class GeneticAlgorithm(Generic[C]):
 
     # Use the probability distribution wheel to pick 2 parents
     # Note: will not work with negative fitness results
-    def _pick_roulette(self, wheel: list[float]) -> tuple[C, C]:
-        c: tuple[C,C] = tuple(choices(self._population, weights=wheel, k=2)) # type: ignore
+    def _pick_roulette(
+            self, wheel: list[float]) -> tuple[C, C]:
+        c: tuple[C, C] = \
+            tuple(choices(
+                    self._population, 
+                    weights=wheel, k=2))
         return c
 
     # Choose num_participants at random and take the best 2
-    def _pick_tournament(self, num_participants: int) -> tuple[C, C]:
-        participants: list[C] = choices(self._population, k=num_participants)
-        return tuple(nlargest(2, participants, key=self._fitness_key)) # type: ignore
+    def _pick_tournament(
+            self, num_participants: int) -> tuple[C, C]:
+        participants: list[C] = \
+            choices(self._population, k=num_participants)
+        return tuple(
+            nlargest(
+                2, 
+                participants, key=self._fitness_key)) # type: ignore
 
     # Replace the population with a new generation of individuals
     def _reproduce_and_replace(self) -> None:
@@ -54,7 +72,9 @@ class GeneticAlgorithm(Generic[C]):
         while len(new_population) < len(self._population):
             # pick the 2 parents
             if self._selection_type == GeneticAlgorithm.SelectionType.ROULETTE:
-                parents: tuple[C, C] = self._pick_roulette([x.fitness() for x in self._population])
+                parents: tuple[C, C] = self._pick_roulette(
+                    [x.fitness() for x in self._population]
+                )
             else:
                 parents = self._pick_tournament(len(self._population) // 2)
             # potentially crossover the 2 parents
@@ -65,7 +85,7 @@ class GeneticAlgorithm(Generic[C]):
         # if we had an odd number, we'll have 1 extra, so we remove it
         if len(new_population) > len(self._population):
             new_population.pop()
-        self._population = new_population # replace reference
+        self._population = new_population  # replace reference
 
     # With _mutation_chance probability mutate each individual
     def _mutate(self) -> None:
@@ -81,11 +101,13 @@ class GeneticAlgorithm(Generic[C]):
             # early exit if we beat threshold
             if best.fitness() >= self._threshold:
                 return best
-            print(f"Generation {generation} Best {best.fitness()} Avg {mean(map(self._fitness_key, self._population))}")
-            self._reproduce_and_replace()
+            print(
+                f"Generation {generation} Best {best.fitness()} Avg {
+                    mean(map(self._fitness_key, self._population))
+                }")
+            self._reproduce_and_replace() # selection and crossover
             self._mutate()
             highest: C = max(self._population, key=self._fitness_key)
             if highest.fitness() > best.fitness():
-                best = highest # found a new best
-        return best # best we found in _max_generations
-
+                best = highest  # found a new best
+        return best  # best we found in _max_generations
