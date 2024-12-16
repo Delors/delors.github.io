@@ -266,7 +266,46 @@
 </span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span>            <span class="keyword">if</span> <span class="name">highest</span><span class="operator">.</span><span class="name">fitness</span><span class="punctuation">()</span> <span class="operator">&gt;</span> <span class="name">best</span><span class="operator">.</span><span class="name">fitness</span><span class="punctuation">():</span><span class="whitespace">
 </span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span>                <span class="name">best</span> <span class="operator">=</span> <span class="name">highest</span>  <span class="comment single"># found a new best</span><span class="whitespace">
 </span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span>        <span class="keyword">return</span> <span class="name">best</span>  <span class="comment single"># best we found in _max_generations</span></code></pre>
-</div><div class="no-title center-child-elements ld-slide" id="herausforderungen-bei-der-entwicklung-genetischer-algorithmen">
+<div class="supplemental">
+<p><code class="java"><span class="name">fitness_key</span></code> ist eine Referenz auf die Methode, die die Fitness eines Chromosoms berechnet.</p>
+</div></div><div class="ld-slide" id="durchfuhrung-der-mutationen">
+<h2>Durchführung der Mutationen</h2>
+<pre class="code python slightly-more-smaller literal-block"><small class="ln"> 94 </small><code data-lineno=" 94 ">    <span class="keyword">def</span> <span class="name function">_mutate</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">)</span> <span class="operator">-&gt;</span> <span class="keyword constant">None</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 95 </small><code data-lineno=" 95 "><span class="whitespace"></span>        <span class="keyword">for</span> <span class="name">individual</span> <span class="operator word">in</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_population</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 96 </small><code data-lineno=" 96 "><span class="whitespace"></span>            <span class="keyword">if</span> <span class="name">random</span><span class="punctuation">()</span> <span class="operator">&lt;</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_mutation_chance</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 97 </small><code data-lineno=" 97 "><span class="whitespace"></span>                <span class="name">individual</span><span class="operator">.</span><span class="name">mutate</span><span class="punctuation">()</span></code></pre>
+</div><div class="ld-slide" id="durchfuhrung-der-selektion-und-vererbung">
+<h2>Durchführung der Selektion und Vererbung</h2>
+<div class="stack invisible">
+<div class="layer">
+<pre class="code python slightly-more-smaller literal-block"><small class="ln">69 </small><code data-lineno="69 ">    <span class="keyword">def</span> <span class="name function">_reproduce_and_replace</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">)</span> <span class="operator">-&gt;</span> <span class="keyword constant">None</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">70 </small><code data-lineno="70 "><span class="whitespace"></span>        <span class="name">new_population</span><span class="punctuation">:</span> <span class="name builtin">list</span><span class="punctuation">[</span><span class="name">C</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="punctuation">[]</span><span class="whitespace">
+</span></code><small class="ln">71 </small><code data-lineno="71 "><span class="whitespace"></span>        <span class="comment single"># Selektiere und Kreuze Individuen, bis die neue Population steht</span><span class="whitespace">
+</span></code><small class="ln">72 </small><code data-lineno="72 "><span class="whitespace"></span>        <span class="keyword">while</span> <span class="name builtin">len</span><span class="punctuation">(</span><span class="name">new_population</span><span class="punctuation">)</span> <span class="operator">&lt;</span> <span class="name builtin">len</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_population</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln">73 </small><code data-lineno="73 "><span class="whitespace"></span>            <span class="comment single"># Wahl der zwei Eltern gemäß Selektionsmethode</span><span class="whitespace">
+</span></code><small class="ln">74 </small><code data-lineno="74 "><span class="whitespace"></span>            <span class="comment single"># (Roulette oder Turnier)</span></code></pre>
+<pre class="code python slightly-more-smaller literal-block"><small class="ln">82 </small><code data-lineno="82 ">            <span class="comment single"># Kreuze ggf. die Eltern</span><span class="whitespace">
+</span></code><small class="ln">83 </small><code data-lineno="83 "><span class="whitespace"></span>            <span class="keyword">if</span> <span class="name">random</span><span class="punctuation">()</span> <span class="operator">&lt;</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_crossover_chance</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">84 </small><code data-lineno="84 "><span class="whitespace"></span>                <span class="name">new_population</span><span class="operator">.</span><span class="name">extend</span><span class="punctuation">(</span><span class="name">parents</span><span class="punctuation">[</span><span class="literal number integer">0</span><span class="punctuation">]</span><span class="operator">.</span><span class="name">crossover</span><span class="punctuation">(</span><span class="name">parents</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]))</span><span class="whitespace">
+</span></code><small class="ln">85 </small><code data-lineno="85 "><span class="whitespace"></span>            <span class="keyword">else</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">86 </small><code data-lineno="86 "><span class="whitespace"></span>                <span class="name">new_population</span><span class="operator">.</span><span class="name">extend</span><span class="punctuation">(</span><span class="name">parents</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">87 </small><code data-lineno="87 "><span class="whitespace"></span>        <span class="comment single"># Falls die Populationsgröße ungerade ist,</span><span class="whitespace">
+</span></code><small class="ln">88 </small><code data-lineno="88 "><span class="whitespace"></span>        <span class="comment single"># entferne das letzte Individuum</span><span class="whitespace">
+</span></code><small class="ln">89 </small><code data-lineno="89 "><span class="whitespace"></span>        <span class="keyword">if</span> <span class="name builtin">len</span><span class="punctuation">(</span><span class="name">new_population</span><span class="punctuation">)</span> <span class="operator">&gt;</span> <span class="name builtin">len</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_population</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln">90 </small><code data-lineno="90 "><span class="whitespace"></span>            <span class="name">new_population</span><span class="operator">.</span><span class="name">pop</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">91 </small><code data-lineno="91 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_population</span> <span class="operator">=</span> <span class="name">new_population</span>  <span class="comment single"># replace reference</span></code></pre>
+</div><div class="layer incremental">
+<pre class="code python slightly-more-smaller literal-block"><small class="ln">73 </small><code data-lineno="73 ">            <span class="comment single"># Wahl der zwei Eltern gemäß Selektionsmethode</span><span class="whitespace">
+</span></code><small class="ln">74 </small><code data-lineno="74 "><span class="whitespace"></span>            <span class="comment single"># (Roulette oder Turnier)</span><span class="whitespace">
+</span></code><small class="ln">75 </small><code data-lineno="75 "><span class="whitespace"></span>            <span class="keyword">if</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_selection_type</span> <span class="operator">==</span> \
+</code><small class="ln">76 </small><code data-lineno="76 ">                <span class="name">GeneticAlgorithm</span><span class="operator">.</span><span class="name">SelectionType</span><span class="operator">.</span><span class="name">ROULETTE</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">77 </small><code data-lineno="77 "><span class="whitespace"></span>                <span class="name">parents</span><span class="punctuation">:</span> <span class="name builtin">tuple</span><span class="punctuation">[</span><span class="name">C</span><span class="punctuation">,</span> <span class="name">C</span><span class="punctuation">]</span> <span class="operator">=</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_pick_roulette</span><span class="punctuation">(</span><span class="whitespace">
+</span></code><small class="ln">78 </small><code data-lineno="78 "><span class="whitespace"></span>                    <span class="punctuation">[</span><span class="name">x</span><span class="operator">.</span><span class="name">fitness</span><span class="punctuation">()</span> <span class="keyword">for</span> <span class="name">x</span> <span class="operator word">in</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_population</span><span class="punctuation">]</span><span class="whitespace">
+</span></code><small class="ln">79 </small><code data-lineno="79 "><span class="whitespace"></span>                <span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">80 </small><code data-lineno="80 "><span class="whitespace"></span>            <span class="keyword">else</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">81 </small><code data-lineno="81 "><span class="whitespace"></span>                <span class="name">parents</span> <span class="operator">=</span> \
+</code><small class="ln">82 </small><code data-lineno="82 ">                    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_pick_tournament</span><span class="punctuation">(</span><span class="name builtin">len</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_population</span><span class="punctuation">)</span> <span class="operator">//</span> <span class="literal number integer">2</span><span class="punctuation">)</span></code></pre>
+</div></div></div><div class="no-title center-child-elements ld-slide" id="herausforderungen-bei-der-entwicklung-genetischer-algorithmen">
 <h2>Herausforderungen bei der Entwicklung genetischer Algorithmen</h2>
 <div class="box-shadow rounded-corners padding-1em docutils container">
 <p>Die <strong>Herausforderung bei der Entwicklung von genetischen Algorithmen</strong> ist somit zweigeteilt:</p>
@@ -349,7 +388,7 @@ M O N E Y</pre>
 </tr>
 </tbody>
 </table>
-<div class="minor docutils container">
+<div class="minor smaller line-above docutils container">
 <p><em>Für die Lösung würde sich ergeben:</em></p>
 <table class="no-table-borders">
 <colgroup>
@@ -455,7 +494,7 @@ Nachkomme 2 = [a,c,b,e,d]  # im Wesentlichen Elternteil 2,
 <p class="rubric">Fitness-Funktion</p>
 <p><strong>Idee</strong>: Eine Lösung ist besser, je näher die Summe der Ziffern von SEND und MORE an MONEY ist. D. h.:</p>
 <div class="incremental docutils container">
-<div class="math">
+<div class="smaller math">
 \begin{equation*}
 \text{minimiere}(|money - (send + more)|)
 \end{equation*}
@@ -463,7 +502,7 @@ Nachkomme 2 = [a,c,b,e,d]  # im Wesentlichen Elternteil 2,
 </div>
 <div class="incremental docutils container">
 <p><strong>Feststellung</strong>: Das Ziel des generischen genetischen Algorithmus ist es, die Fitness-Funktion zu maximieren. Wir müssen somit unser Minimierungsproblem in ein Maximierungsproblem umwandeln:</p>
-<div class="math">
+<div class="smaller math">
 \begin{align*}
 \text{maximiere}\left(\frac{1} { |money - (send + more)| + 1 }\right)\\
 \end{align*}
@@ -543,10 +582,10 @@ MTAwMDAw:aXuet41ltBQoAwsv5+B1Y129K1D9z1Xy2oJglRAfwOQ=:pgfpVk6XNVnMDtNQ:PcADPW604
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Ausgeglichene Gruppenzuteilung" id="ld-exercise-2">
 <p class="rubric">Ausgeglichene Gruppenzuteilung</p>
-<p>Passen Sie Ihren genetischen Algorithmus aus der vorherigen Übung so an, dass die Gruppen alle in etwa die gleiche Glücklichkeit aufweisen.</p>
-<p>Sie können das Problem zum Beispiel über die Abweichung vom Durchschnitt berechnen.</p>
-<aside class="admonition hint">
+<p>Passen Sie Ihren genetischen Algorithmus aus der vorherigen Übung so an, dass die Gruppen alle in etwa die gleiche Glücklichkeit aufweisen. D. h. eine Zuteilung, bei der die  Gruppenglücklichkeiten z. B. 92 + 91 + 73 + 89 = 345 sind, die aber größere Unterschiede zwischen den Gruppen hat, sollte vermieden werden. Eine Verteilung z. B. mit den Gruppenglücklichkeiten: 80, 84, 80, 80 = 324 sollte bevorzugt werden.</p>
+<aside class="admonition smaller hint">
 <p class="admonition-title">Hinweis</p>
+<p>Sie können den bisher errechneten Wert zum Beispiel dadurch anpassen, dass Sie von dem Wert die Summe der absoluten Abweichungen vom Durchschnitt abziehen. Ggf. ist es erforderlich den Wert auch noch zu skalieren, damit steigende Abweichungen stärker ins Gewicht fallen.</p>
 <p>Bedenken sie, dass sie ggf. den Threshold anpassen müssen.</p>
 </aside>
 <div class="ld-exercise-solution" data-encrypted="true">

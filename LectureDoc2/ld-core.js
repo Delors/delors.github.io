@@ -89,6 +89,7 @@ function typesetMath(element) {
     return mathJaxPromise;
 }
 
+
 /**
  * The meta-information about the document.
  * 
@@ -1111,7 +1112,7 @@ function hideSlideWithNo(slideNo, setOldMarker = false) {
     }
 }
 
-// TODO MAKE MORE RESILIENT AGAINST ERRORS WHEN THE SYNCRONIZATION FAILED
+// TODO MAKE MORE RESILIENT AGAINST ERRORS WHEN THE SYNCHRONIZATION FAILED
 
 /**
  * Advances the presentation by moving to the next slide.
