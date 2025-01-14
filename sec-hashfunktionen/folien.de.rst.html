@@ -1,30 +1,36 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-<meta name="exercises-passwords" content="MTAwMDAw:zenPlmU1NaSRyLOTJrJhcjjYK5PTMV9h86VArcP8T3c=:mY/2OJFA0jJU6s+3:GPqaX98dkZyPJvXk9wbituSZdClA8d/Naxgc7iRMNQEUtZNi4JjmEmGS9wdIHn2C9ZpmXLcPnwM/Gmpt5+XDFe/V+GzbBu3K9jqxaXoRpyWTZ4GSXePA8ZhXYT5GO0Um23ujy0BgMbUgA1j4w10D7ba/LkKaKvhktVpSpj0aXaobOYvOacIHy+u21x5BbLSs4D+eGqCFN49RscfnKishAdpTwYurxw2farUG7RUCrP3IUEKR5/5m/cRkbhb7ovraZuAJGPPXM9BaAabVZSybN1HBwn+/ljVCp+Ngf3yT0R3YY23ng8liKl0gWlBrp7UOAdADz7Y9w0cVG7O8sfgfg4vsfTWDqbBiYIttshXC7kEsKPvakeJiAK+yJPA/vEOU09eYXbiqOgtspVaKTBa/rDsSMDNZ9mTQDAkxxX8m5FB2zv9vdPzO466Jk5XJ0DZepvIRdZGWs6QG3IywwwZOxwSKY7OxHBOi3+kSiQclmh5srhlgUsjerGgXV0uZ00uzl28RUOWJh2tj9aUpbyxOeJPNm8oso5qgHk9oX9rvc3NBVrXWMXXlu3ExFy2f/038YTSqu1i4BzM1IQkyQ3pocSSw91JhMcoduhv2ZHrqsFLLvC+VsIEPdqFmtrMqNGfzjAD3fFBw" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="version" content="LD2 0.1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta content="Michael Eichberg" name="author" />
 <meta content="hash functions" name="keywords" />
 <meta content="Cryptographic Hash Functions" lang="en" name="description" xml:lang="en" />
 <meta content="Kryptografische Hashfunktionen" lang="de" name="description" xml:lang="de" />
 <meta content="lecture-security-hash_functions" name="id" />
 <meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 GENESIS" />
+<meta name="exercises-passwords" content="MTAwMDAw:zenPlmU1NaSRyLOTJrJhcjjYK5PTMV9h86VArcP8T3c=:mY/2OJFA0jJU6s+3:GPqaX98dkZyPJvXk9wbituSZdClA8d/Naxgc7iRMNQEUtZNi4JjmEmGS9wdIHn2C9ZpmXLcPnwM/Gmpt5+XDFe/V+GzbBu3K9jqxaXoRpyWTZ4GSXePA8ZhXYT5GO0Um23ujy0BgMbUgA1j4w10D7ba/LkKaKvhktVpSpj0aXaobOYvOacIHy+u21x5BbLSs4D+eGqCFN49RscfnKishAdpTwYurxw2farUG7RUCrP3IUEKR5/5m/cRkbhb7ovraZuAJGPPXM9BaAabVZSybN1HBwn+/ljVCp+Ngf3yT0R3YY23ng8liKl0gWlBrp7UOAdADz7Y9w0cVG7O8sfgfg4vsfTWDqbBiYIttshXC7kEsKPvakeJiAK+yJPA/vEOU09eYXbiqOgtspVaKTBa/rDsSMDNZ9mTQDAkxxX8m5FB2zv9vdPzO466Jk5XJ0DZepvIRdZGWs6QG3IywwwZOxwSKY7OxHBOi3+kSiQclmh5srhlgUsjerGgXV0uZ00uzl28RUOWJh2tj9aUpbyxOeJPNm8oso5qgHk9oX9rvc3NBVrXWMXXlu3ExFy2f/038YTSqu1i4BzM1IQkyQ3pocSSw91JhMcoduhv2ZHrqsFLLvC+VsIEPdqFmtrMqNGfzjAD3fFBw" />
 <title>Kryptografische Hash Funktionen</title>
+<script>
+    window.MathJax = {
+        tex: { tags: 'ams', },
+        chtml: { displayAlign: 'center' /*left or center*/ }
+    };
+</script>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
 
-    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+    <script src="../LectureDoc2/genesis/ld-core.js" type="module"></script>
 
-    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+    <script src="../LectureDoc2/genesis/ld-components.js" type="module"></script>
 
     <!-- Additional scripts that interact with LectureDoc have to be added below. -->
-    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/genesis/ld.css" type="text/css" />
 
-    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/genesis/themes/DHBW/theme.css" type="text/css" />
 
     <!-- When we make better use of HTML Components for LectureDoc's UI we can remove the following line -->
-    <link rel="stylesheet" href="../LectureDoc2/ld-ui.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/genesis/ld-ui.css" type="text/css" />
 
     
 </head>

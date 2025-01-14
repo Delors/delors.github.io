@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-<meta name="exercises-passwords" content="MTAwMDAw:tHZU9Pdv1UW2TBH1jjP1HPnECWZeoLiiasq1Y2FzIIY=:73NXECdgkf4w5Bvr:+9YyE6cYtKISSUDfa9VSvx5+x9D5tratPUMk6YNXu9HgNhER40GSg4H8tPe0TBGMzOr8fvyDwAlkXafd1yVWflCSCR+6EGg1awzA2KyIDFhuWlvflt50K68IWGtiHkltry+A9qygRD7+AtqTxNFYDJt7QHTBbAGWpozrbR680Av96oGDLAyekqVvrUDGvJv0SQGeN39QfIZGAEUKS+YvVYpXAct0gLe7M1BZMNcMJfNZ/7eoATzzu97137nl4oJ4FZKrFcsb/QhCvUc1p0LcPFApEeHps6u6GhG9s63+JYoBOspjw+kzqoOGO69WV/8zSGRJrzvqoCDeFf3weuSfLjKQeYciqkgZ1l+tPGYA9TSPgmAfp+ukCLj6uX1Uy6QQwNIqnffGMuRTWfwO7NcGbB9xFy/89MxPUlaf9zzRlJjrh1RPIra0WgpVIfhMWI/FrVP+L2ciEOPAtoTY9ioLwJFA5WynGFNH3jlglekHkePBifyYUYhCDXKZ9mM4TaUM904+Vk+ZX5uYi8VJ4EUM28hrpRpTexlSQPxb1SxxjhlUiikXekxfjODxpLlCssn7op1aFgMSP9WKax4bwtKyVo6opJQNwT8fFc0Dliy4tTQJGQaPBH4uWxhZGK2bUmGJ+4V75ZhYtbnlGH3ksr4RsS+O7a/lJY9bkBWZg3zI3VvMZu+UTN5fYksf8JwfXvB9ZCpe1qexnTGXcvsuRU2iq6EZWous6jK3yJHkqJaL35CHBudtvPXC3GlRN0r+ij0rbSgwfNOWuB2dK69BSFk8dk+WDmzqOSPSG6OYphpnoUnZDN7NzH+0UBzCajhRJ1r1o/oitQXBVVWJuEjZ40kxCo/JElCOD+0fbVvCJ8vQ7pRITJL2PjChGKVD0h4oGzk/ClPf3jw9kA1y2h7ObExk7odzPp4BapEHbZKUy7JQ3yiu" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="version" content="LD2 0.1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta content="Michael Eichberg" name="author" />
 <meta content="Verschlüsselung, Vernam, Vigenère, Caesar, Hill, Playfair, Steganographie" name="keywords" />
 <meta content="Classical Encryption Techniques" lang="en" name="description" xml:lang="en" />
 <meta content="Klassische Verschlüsselungsmethoden" lang="de" name="description" xml:lang="de" />
 <meta content="lecture-security-klassische-verschluesselungsverfahren" name="id" />
 <meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 GENESIS" />
+<meta name="exercises-passwords" content="MTAwMDAw:tHZU9Pdv1UW2TBH1jjP1HPnECWZeoLiiasq1Y2FzIIY=:73NXECdgkf4w5Bvr:+9YyE6cYtKISSUDfa9VSvx5+x9D5tratPUMk6YNXu9HgNhER40GSg4H8tPe0TBGMzOr8fvyDwAlkXafd1yVWflCSCR+6EGg1awzA2KyIDFhuWlvflt50K68IWGtiHkltry+A9qygRD7+AtqTxNFYDJt7QHTBbAGWpozrbR680Av96oGDLAyekqVvrUDGvJv0SQGeN39QfIZGAEUKS+YvVYpXAct0gLe7M1BZMNcMJfNZ/7eoATzzu97137nl4oJ4FZKrFcsb/QhCvUc1p0LcPFApEeHps6u6GhG9s63+JYoBOspjw+kzqoOGO69WV/8zSGRJrzvqoCDeFf3weuSfLjKQeYciqkgZ1l+tPGYA9TSPgmAfp+ukCLj6uX1Uy6QQwNIqnffGMuRTWfwO7NcGbB9xFy/89MxPUlaf9zzRlJjrh1RPIra0WgpVIfhMWI/FrVP+L2ciEOPAtoTY9ioLwJFA5WynGFNH3jlglekHkePBifyYUYhCDXKZ9mM4TaUM904+Vk+ZX5uYi8VJ4EUM28hrpRpTexlSQPxb1SxxjhlUiikXekxfjODxpLlCssn7op1aFgMSP9WKax4bwtKyVo6opJQNwT8fFc0Dliy4tTQJGQaPBH4uWxhZGK2bUmGJ+4V75ZhYtbnlGH3ksr4RsS+O7a/lJY9bkBWZg3zI3VvMZu+UTN5fYksf8JwfXvB9ZCpe1qexnTGXcvsuRU2iq6EZWous6jK3yJHkqJaL35CHBudtvPXC3GlRN0r+ij0rbSgwfNOWuB2dK69BSFk8dk+WDmzqOSPSG6OYphpnoUnZDN7NzH+0UBzCajhRJ1r1o/oitQXBVVWJuEjZ40kxCo/JElCOD+0fbVvCJ8vQ7pRITJL2PjChGKVD0h4oGzk/ClPf3jw9kA1y2h7ObExk7odzPp4BapEHbZKUy7JQ3yiu" />
 <title>Klassische Verschlüsselungsmethoden</title>
+<script>
+    window.MathJax = {
+        tex: { tags: 'ams', },
+        chtml: { displayAlign: 'center' /*left or center*/ }
+    };
+</script>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
 
-    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+    <script src="../LectureDoc2/genesis/ld-core.js" type="module"></script>
 
-    <script src="../LectureDoc2/ld-components.js" type="module"></script>
+    <script src="../LectureDoc2/genesis/ld-components.js" type="module"></script>
 
     <!-- Additional scripts that interact with LectureDoc have to be added below. -->
-    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/genesis/ld.css" type="text/css" />
 
-    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/genesis/themes/DHBW/theme.css" type="text/css" />
 
     <!-- When we make better use of HTML Components for LectureDoc's UI we can remove the following line -->
-    <link rel="stylesheet" href="../LectureDoc2/ld-ui.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/genesis/ld-ui.css" type="text/css" />
 
     
-    <script src="../LectureDoc2/themes/DHBW/logo.js" type="module"></script>
+    <script src="../LectureDoc2/genesis/themes/DHBW/logo.js" type="module"></script>
 </head>
 <body>
 <template>

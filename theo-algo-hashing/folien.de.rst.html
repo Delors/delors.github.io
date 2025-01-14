@@ -1,37 +1,42 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="version" content="LD2 0.1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta content="de" name="lang" />
 <meta content="Michael Eichberg" name="author" />
 <meta content="&quot;Hashing&quot;, &quot;Hashmaps&quot;, &quot;Algorithmen&quot;, &quot;Datenstrukturen&quot;" name="keywords" />
 <meta content="Hashing und Hashmaps" lang="de" name="description" xml:lang="de" />
 <meta content="lecture-theo-algo-hashing-and-applications" name="id" />
 <meta content="last-viewed" name="first-slide" />
-<title>Algorithmen und Datenstrukturen: Hashing und Hashmaps</title>
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:7Xf4PcEz66TjkmMGe0SYadNexRvcOZppbT1PonLRzyI=:PCUzgK+8ONL4/F9Y:xHKiOg0/MNfed2r6RotF3dYswfj/uKUhwAkLnBk2pmsq9Ganx7SQYp9U8r2EPrd1f2lr8/HZKxo4/xdW15QP40LqzfOzJG1NK0red2hT+HDz77QYhQjwrTxozaoP/A0nQfu3mnhyZogr42o/mR/VvHDyst0AGjuwFUSfJh64sdLebbrs7Pe9b8AF0b/6NAfO8omBBEUReYbrslQ541poOuOUrjb7rGh46r3QVbisaitwau0VXNP6gaRn3jrVkevhzmeQ9zbBzi6QdB9ZoohN8b9J8ogcGYIRz3t2cbQqZbdI0X3bH7H0bXmgg9N5v4eiARa6oiSKHnKDJG2prmLt7inQ/ZX7KHECXqb0212xC+bHDjNO28wg1UCHNgvjujHVTMdPrRgQ3TNviKtG8j8eh/UU53RcngXMemictKbNPY2VMpvMNEuwbYoPxQjbOm/CWGyuBu1K5hRySbaVnXqR/r9JO0lVjvMBODd1u+3hO4uYENjhB0mNNJXukW3ND31j0ZHD65ibh08XWjQwpfWZLDkWIZ0A/6DT0vYeK9Dqz9O2NX4FTVB7eoWm2v2vdRh9Xmjb0zkup0zdG5QW61erU7KFtm3MWrQ39JmQDY2v+tngzorLhJxOQTPi88fNuGrb74WyudJ+s37fioStI45EU0JC4btifxku6Fc+zDrJa+bz64BiS3edG3QpJOxR+58jFKd0y082bJRFLDW4/q1vPH3Ug/G2V6ayMzAnfbOVHz1O7cdesuoUXholJ8vzAF6GwgkCpqz9W4AGE0LQHWfI8iz6nHIPqlvYI25lOwmL6kEoOsmQ+Yg8cBcmY2XlcvKr4rH8F/t2MLlnjzflIPsglI04nhkU9w/q9PNK3RfNIoz8JqJmQb/Pischg4Q7E2v5AemEhRMjYGc83EayHYcythxnHuBgyllfPvdYsg/MXsMmWhp9F1hd3Jt7zag6tTYlur7f0bAsvqLJlWoN8eCXDo8=" />
+<title>Hashing und Hashmaps</title>
+<script>
+    window.MathJax = {
+        tex: { tags: 'ams', },
+        chtml: { displayAlign: 'center' /*left or center*/ }
+    };
+</script>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
 
-    <script src="../LectureDoc2/ld-core.js" type="module"></script>
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
 
-    <script src="../LectureDoc2/ld-components.js" type="module"></script>
-
-    <!-- Additional scripts that interact with LectureDoc have to be added below. -->
-    <link rel="stylesheet" href="../LectureDoc2/ld.css" type="text/css" />
-
-    <link rel="stylesheet" href="../LectureDoc2/themes/DHBW/theme.css" type="text/css" />
-
-    <!-- When we make better use of HTML Components for LectureDoc's UI we can remove the following line -->
-    <link rel="stylesheet" href="../LectureDoc2/ld-ui.css" type="text/css" />
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
 
     
-    <script src="../LectureDoc2/themes/DHBW/logo.js" type="module"></script>
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
 </head>
 <body>
 <template>
-<div class="animated-symbol ld-slide" id="algorithmen-und-datenstrukturen-hashing-und-hashmaps">
-<h1 class="title">Algorithmen und Datenstrukturen: Hashing und Hashmaps</h1>
+<div class="ld-slide" id="hashing-und-hashmaps">
+<h1 class="title">Hashing und Hashmaps</h1>
 
+<!-- class .. :: animated-symbol -->
 <hr class="docutils" />
 <dl class="field-list simple">
 <dt>Dozent<span class="colon">:</span></dt>
@@ -64,6 +69,526 @@
 </div></div>
 <div class="new-section transition-move-to-top ld-slide" id="einfuhrung">
 <h2>Einführung</h2>
+</div><div class="ld-slide" id="suchen-in-einer-liste">
+<h2>Suchen in einer Liste</h2>
+<div class="sl-font-size-70 docutils container">
+<table>
+<thead>
+<tr><th class="head" rowspan="2"><p>Implementation</p></th>
+<th class="head" colspan="3"><p>Garantie</p></th>
+<th class="head" colspan="3"><p>Durchschnittlicher Fall</p></th>
+<th class="head" rowspan="2"><p>Operationen auf den Schlüsseln</p></th>
+</tr>
+<tr><th class="head"><p>Suchen</p></th>
+<th class="head"><p>Einfügen</p></th>
+<th class="head"><p>Löschen</p></th>
+<th class="head"><p>Suchen</p></th>
+<th class="head"><p>Einfügen</p></th>
+<th class="head"><p>Löschen</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>sequentielle Suche (unsortierte Liste)</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>½ N</p></td>
+<td><p>N</p></td>
+<td><p>½ N</p></td>
+<td><p>equals()</p></td>
+</tr>
+<tr><td><p>binäre Suche (geordnetes Array)</p></td>
+<td><p>lg N</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>lg N</p></td>
+<td><p>½ N</p></td>
+<td><p>½ N</p></td>
+<td><p>compareTo()</p></td>
+</tr>
+<tr><td><p>BST <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>N</p></td>
+<td><p>1.39 lg N</p></td>
+<td><p>1.39 lg N</p></td>
+<td><p>√ N</p></td>
+<td><p>compareTo()</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="question incremental docutils container">
+<p>Können wir effizienter suchen?</p>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Binary Search Tree</p>
+</aside>
+</aside>
+<!-- container.. block-footer text-align-center dhbw-light-gray-background dhbw-dark-gray
+Wiederholung -->
+</div><div class="ld-slide" id="hashing-grundidee">
+<h2>Hashing - Grundidee</h2>
+<div class="stack invisible">
+<div class="layer">
+<img alt="Hashmap" class="align-right" src="images/Hashkollision.svg" />
+<ul class="incremental list-with-explanations">
+<li><p>Die Elemente werden über den Schlüssel indexiert in einer Tabelle gespeichert.</p>
+<p>Der Index ist eine Funktion des Schlüssels.</p>
+</li>
+<li><p>Hash-Funktion:  Methode zur Berechnung des Array-Index aus dem Schlüssel.</p></li>
+</ul>
+</div><div class="layer incremental">
+<div class="challenges docutils container">
+<p class="rubric">Herausforderungen</p>
+<ol class="arabic simple">
+<li><p>Berechnung der Hash-Funktion.</p></li>
+<li><p>Gleichheitstest: Methode zur Überprüfung, ob zwei Schlüssel gleich sind.</p></li>
+<li><p>Kollisionsauflösung: Algorithmus und Datenstruktur zur Behandlung von zwei Schlüsseln, die auf denselben Array-Index hindeuten.</p></li>
+</ol>
+</div>
+</div><div class="layer incremental">
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p class="rubric">Klassischer Kompromiss zwischen Raum und Zeit!</p>
+<ul class="simple">
+<li><p>Keine Platzbeschränkung: triviale Hash-Funktion mit Schlüssel als Index.</p></li>
+<li><p>Keine Zeitbeschränkung: triviale Kollisionsauflösung mit sequentieller Suche.</p></li>
+<li><p>Raum- und Zeitbeschränkung: Hashing (die reale Welt).</p></li>
+</ul>
+</aside>
+</div></div></div><div class="ld-slide" id="berechnung-der-hash-funktion">
+<h2>Berechnung der Hash-Funktion</h2>
+<dl class="field-list">
+<dt>Idealistisches Ziel<span class="colon">:</span></dt>
+<dd><p>Die Schlüssel gleichmäßig verwürfeln, um einen Tabellenindex zu erzeugen.</p>
+<ul class="simple">
+<li><p>Effizient berechenbar.</p></li>
+<li><p>Jeder Tabellenindex ist für jeden Schlüssel gleich wahrscheinlich.</p></li>
+</ul>
+<div class="supplemental">
+<p>Die Frage, wie man gute Schlüssel berechnet, ist ein gründlich erforschtes Problem, dass in der Praxis immer noch problematisch ist.</p>
+</div></dd>
+</dl>
+<div class="example incremental docutils container">
+<p class="rubric">Beispiel 1.  Telefonnummern.</p>
+<dl class="field-list simple">
+<dt>Schlecht<span class="colon">:</span></dt>
+<dd><p>die ersten drei bis fünf Ziffern.</p>
+</dd>
+<dt>Besser<span class="colon">:</span></dt>
+<dd><p>die letzten drei Ziffern.</p>
+</dd>
+</dl>
+</div>
+<div class="example incremental docutils container">
+<p class="rubric">Beispiel 2.  Sozialversicherungsnummer</p>
+<dl class="field-list simple">
+<dt>Schlecht<span class="colon">:</span></dt>
+<dd><p>die ersten beiden Ziffern.</p>
+</dd>
+<dt>Besser<span class="colon">:</span></dt>
+<dd><p>die letzten Ziffern.</p>
+</dd>
+</dl>
+<div class="supplemental">
+<p>Die ersten beiden Stellen bei der Sozialversicherungsnummer identifizieren den Rentenversicherungsträger.</p>
+</div></div>
+<div class="challenge incremental docutils container">
+<p>Praktische Herausforderung: für jeden Schlüsseltyp ist ein anderer Ansatz erforderlich.</p>
+</div>
+</div><div class="ld-slide" id="hashfunktionen">
+<h2>Hashfunktionen</h2>
+<div class="stack invisible">
+<div class="layer">
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Eine Hashfunktion <span class="math">\(h : M \rightarrow \mathbb{Z}_n\)</span> bildet eine Menge <span class="math">\(M\)</span> mit <span class="math">\(|M|\geq |\mathbb{Z}_n|\)</span> auf die Zahlen <span class="math">\(0,...,n-1\)</span> ab. Eine Hashfunktion ist <em>surjektiv</em>, also für jedes <span class="math">\(y \in Z_n\)</span> gibt es ein <span class="math">\(x \in M\)</span> mit <span class="math">\(h(x) = y\)</span>. Eine Hashfunktion ist <em>gleichverteilt</em>, wenn zwei Bilder <span class="math">\(y1,y2 \in  \mathbb{Z}_n\)</span> immer ungefähr gleich viele Urbilder haben <span class="math">\(|h^{-1}({y1})|\approx |h^{-1}({y2})|\)</span>.</p>
+</aside>
+</div><div class="layer incremental">
+<p class="rubric">Hashes für unterschiedliche Anwendungen</p>
+<ul class="incremental">
+<li><p><strong>Hashes für Datenstrukturen</strong> müssen <em>sehr effizient</em> sein.</p></li>
+<li><p><strong>Hashes verwendet im Rahmen von Verschlüsselung und Signaturen</strong> (kryptographische Hashfunktion) sind besonders:
+Es muss sehr schwer sein:</p>
+<ul class="simple">
+<li><p>ein Urbild zu finden</p></li>
+<li><p>zwei kollidierende Werte zu finden.</p></li>
+</ul>
+<div class="supplemental">
+<p>MD5 ist seit 2008 und SHA1 seit 2017 „geknackt“.</p>
+</div><ul class="simple">
+<li><p>kryptographische Hashes <em>sollten effizient berechenbar</em> sein.</p></li>
+</ul>
+</li>
+<li><p><strong>Hashes für Passwortspeicherung</strong> müssen die selben Anf. erfüllen wie Hashes für Signaturen und Verschlüsselungszwecke, dürfen aber <em>nicht effizient berechenbar</em> sein.</p></li>
+</ul>
+<div class="incremental">
+<p>Im Folgenden konzentrieren wir uns auf Hashes für Datenstrukturen.</p>
+</div></div><div class="layer incremental">
+<p>Wenn das Ziel ist, hash Werte mit einer bestimmten Länge (zum Beispiel 32Bit) zu berechnen, dann wären folgende Hashfunktionen denkbar:</p>
+<p class="rubric">Exemplarische Hashfunktionen</p>
+<div class="stack invisible">
+<div class="layer">
+<p><strong>Ganze Zahlen</strong></p>
+<pre class="code rust literal-block"><code><span class="name">hash</span><span class="punctuation">(</span><span class="name">x</span>: <span class="keyword type">u32</span><span class="punctuation">)</span><span class="whitespace"> </span>: <span class="keyword type">u32</span> <span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="comment single">// u32 == 32-Bit unsigned integer</span></code></pre>
+</div><div class="layer incremental">
+<p><strong>Gleitkommazahlen</strong></p>
+<pre class="code rust literal-block"><code><span class="name">hash</span><span class="punctuation">(</span><span class="name">x</span>: <span class="keyword type">f64</span><span class="punctuation">)</span><span class="whitespace"> </span>: <span class="keyword type">u32</span> <span class="punctuation">{</span><span class="whitespace"> </span><span class="comment single">// f64 == 64-Bit (IEEE) floating point number
+</span><span class="whitespace">    </span><span class="name">bits</span><span class="whitespace"> </span>: <span class="keyword type">u64</span> <span class="operator">=</span><span class="whitespace"> </span><span class="name">f64ToBits</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// u64 = 64-Bit (signed) integer
+</span><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">u32</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bits</span><span class="whitespace"> </span><span class="operator">^</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bits</span><span class="whitespace"> </span><span class="operator">&gt;&gt;&gt;</span><span class="whitespace"> </span><span class="literal number integer">32</span><span class="punctuation">));</span><span class="whitespace">
+</span><span class="punctuation">}</span></code></pre>
+</div><div class="layer incremental">
+<p><strong>Zeichenketten</strong></p>
+<aside class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<table>
+<thead>
+<tr><th class="head"><p>char</p></th>
+<th class="head"><p>unicode</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>'a'</p></td>
+<td><p>97</p></td>
+</tr>
+<tr><td><p>'b'</p></td>
+<td><p>98</p></td>
+</tr>
+<tr><td><p>'c'</p></td>
+<td><p>99</p></td>
+</tr>
+<tr><td><p>︙</p></td>
+<td><p>︙</p></td>
+</tr>
+<tr><td><p>'l'</p></td>
+<td><p>108</p></td>
+</tr>
+</tbody>
+</table>
+</aside>
+<p>Horners Methode für Zeichenketten der Länge L:</p>
+<p><span class="math">\(h = s[0] · 31^{L–1} + \ldots   + s[L – 2] · 31^1  +  s[L – 1] · 31^0\)</span>.</p>
+<pre class="code rust literal-block"><code><span class="name">hash</span><span class="punctuation">(</span><span class="name">s</span>: <span class="punctuation">[</span><span class="keyword type">char</span><span class="punctuation">,</span><span class="literal number integer">4</span><span class="punctuation">])</span><span class="whitespace"> </span>: <span class="keyword type">u32</span> <span class="punctuation">{</span><span class="whitespace">
+    </span><span class="name">hash</span>: <span class="keyword type">u32</span> <span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace">
+    </span><span class="keyword">for</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="keyword">in</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="operator">..</span><span class="literal number integer">4</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">hash</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">s</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">hash</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="literal number integer">31</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">hash</span><span class="punctuation">;</span><span class="whitespace">
+</span><span class="punctuation">}</span><span class="whitespace">
+
+</span><span class="comment single">// hash(['c','a','l','l']) = // ≘ hash(&quot;call&quot;)
+//    99 · 31·31·31 + 97 · 31·31 + 108 · 31 + 108 =
+//    108 + 31 · ( 108 + 31 · (97 + 31 · (99)))</span></code></pre>
+</div></div></div></div></div><div class="new-section transition-move-to-top ld-slide" id="hashing-in-python">
+<h2>Hashing in Python</h2>
+</div><div class="ld-slide" id="verwendung-von-hashes-in-python">
+<h2>Verwendung von Hashes in Python</h2>
+<div class="stack invisible">
+<div class="layer">
+<ul class="incremental simple">
+<li><p>Bei der Speicherung von Objekten in Sets und Dictionaries verwendet Python Hashes.</p></li>
+<li><p>Sobald ein Objekt in einem Set oder Dictionary gespeichert wird, darf der Objektzustand (zumindest im Hinblick auf die Hashfunktion) nicht mehr verändert werden!</p></li>
+<li><p>Der Hashwert eines (nicht veränderlichen) Objekts kann mit der Funktion <span class="docutils literal">hash()</span> berechnet werden.</p></li>
+<li><p>Eigene Objekte in Sets und Dictionaries speichern:</p>
+<ul class="incremental">
+<li><p>Um benutzerdefinierte Objekte in einer Hashmap zu speichern, müssen wir die Methoden <span class="docutils literal">__hash__</span> und <span class="docutils literal">__eq__</span> implementieren.</p></li>
+<li><p>Zu beachten:</p>
+<ul>
+<li><p>Hashwerte <em>müssen für gleiche Objekte gleich sein</em>.</p></li>
+<li><p>Hashwerte <em>für unterschiedliche Objekte sollten unterschiedlich sein</em>.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><div class="layer incremental">
+<p class="rubric">Beispielklasse <code class="java"><span class="name">Person</span></code></p>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword">class</span> <span class="name class">Person</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">name</span><span class="punctuation">,</span> <span class="name">age</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">name</span> <span class="operator">=</span> <span class="name">name</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">age</span> <span class="operator">=</span> <span class="name">age</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__eq__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">other</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span>        <span class="keyword">if</span> <span class="name builtin">isinstance</span><span class="punctuation">(</span><span class="name">other</span><span class="punctuation">,</span> <span class="name">Person</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span>            <span class="keyword">return</span>  <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">name</span> <span class="operator">==</span> <span class="name">other</span><span class="operator">.</span><span class="name">name</span> <span class="operator word">and</span> \
+</code><small class="ln"> 9 </small><code data-lineno=" 9 ">                    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">age</span> <span class="operator">==</span> <span class="name">other</span><span class="operator">.</span><span class="name">age</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span>        <span class="keyword">return</span> <span class="keyword constant">False</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__hash__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>        <span class="keyword">return</span> <span class="name builtin">hash</span><span class="punctuation">((</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">name</span><span class="punctuation">,</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">age</span><span class="punctuation">))</span></code></pre>
+</div><div class="layer incremental">
+<p class="rubric">Verwendung der Klasse <code class="java"><span class="name">Person</span></code></p>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">person1</span> <span class="operator">=</span> <span class="name">Person</span><span class="punctuation">(</span><span class="literal string double">&quot;Alice&quot;</span><span class="punctuation">,</span> <span class="literal number integer">30</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name">person2</span> <span class="operator">=</span> <span class="name">Person</span><span class="punctuation">(</span><span class="literal string double">&quot;Bob&quot;</span><span class="punctuation">,</span> <span class="literal number integer">25</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="name">person3</span> <span class="operator">=</span> <span class="name">Person</span><span class="punctuation">(</span><span class="literal string double">&quot;Alice&quot;</span><span class="punctuation">,</span> <span class="literal number integer">30</span><span class="punctuation">)</span> <span class="comment single"># gleiche Werten wie &quot;person1&quot;</span></code></pre>
+<p><strong>Beispielausgabe</strong></p>
+<pre class="code python incremental literal-block"><code><span class="operator">&gt;&gt;&gt;</span> <span class="name">person1</span><span class="whitespace">
+</span><span class="operator">&lt;</span><span class="name">__main__</span><span class="operator">.</span><span class="name">Person</span> <span class="name builtin">object</span> <span class="name">at</span> <span class="literal number hex">0x101474c20</span><span class="operator">&gt;</span><span class="whitespace">
+</span><span class="operator">&gt;&gt;&gt;</span> <span class="name">person2</span><span class="whitespace">
+</span><span class="operator">&lt;</span><span class="name">__main__</span><span class="operator">.</span><span class="name">Person</span> <span class="name builtin">object</span> <span class="name">at</span> <span class="literal number hex">0x1013daad0</span><span class="operator">&gt;</span><span class="whitespace">
+</span><span class="operator">&gt;&gt;&gt;</span> <span class="name">person3</span><span class="whitespace">
+</span><span class="operator">&lt;</span><span class="name">__main__</span><span class="operator">.</span><span class="name">Person</span> <span class="name builtin">object</span> <span class="name">at</span> <span class="literal number hex">0x1013db110</span><span class="operator">&gt;</span></code></pre>
+</div><div class="layer incremental">
+<p class="rubric">Speicherung von <code class="java"><span class="name">Person</span></code>-Objekten in einem Set</p>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">people</span> <span class="operator">=</span> <span class="punctuation">{</span><span class="name">person1</span><span class="punctuation">,</span> <span class="name">person2</span><span class="punctuation">,</span> <span class="name">person3</span><span class="punctuation">}</span></code></pre>
+<div class="incremental">
+<p class="rubric">Ausgabe des Sets</p>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword">for</span> <span class="name">p</span> <span class="operator word">in</span> <span class="name">people</span><span class="punctuation">:</span> <span class="name builtin">print</span><span class="punctuation">(</span><span class="name">p</span><span class="operator">.</span><span class="name">name</span><span class="punctuation">)</span></code></pre>
+<p><strong>Ausgabe</strong></p>
+<pre class="code python incremental literal-block"><code><span class="name">Bob</span><span class="whitespace">
+</span><span class="name">Alice</span></code></pre>
+</div></div><div class="layer incremental">
+<p class="rubric">Verwendung der <code class="java"><span class="name">hash</span></code>-Funktion</p>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">hash</span><span class="punctuation">(</span><span class="name">person1</span><span class="punctuation">))</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">hash</span><span class="punctuation">(</span><span class="name">person2</span><span class="punctuation">))</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">hash</span><span class="punctuation">(</span><span class="name">person3</span><span class="punctuation">))</span></code></pre>
+<p><strong>Beispielausgabe</strong></p>
+<pre class="code python incremental literal-block"><code><span class="literal number integer">3529483511948588452</span><span class="whitespace">
+</span><span class="operator">-</span><span class="literal number integer">9048922068811934735</span><span class="whitespace">
+</span><span class="literal number integer">3529483511948588452</span></code></pre>
+<div class="supplemental">
+<p>In Python ist die Ausgabe der Funktion <span class="docutils literal">hash()</span> nach jedem Neustart der Pythonumgebung unterschiedlich, da die Hashfunktion einen Zufallswert enthält, der bei jedem Neustart neu generiert wird.</p>
+</div></div><div class="layer incremental">
+<p class="rubric">Beispielklasse <code class="java"><span class="name">Person</span></code> mit konstantem Hashwert</p>
+<pre class="code python literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword">class</span> <span class="name class">PersonWithBadHash</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">name</span><span class="punctuation">,</span> <span class="name">age</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">name</span> <span class="operator">=</span> <span class="name">name</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">age</span> <span class="operator">=</span> <span class="name">age</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__eq__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">other</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span>        <span class="keyword">if</span> <span class="name builtin">isinstance</span><span class="punctuation">(</span><span class="name">other</span><span class="punctuation">,</span> <span class="name">Person</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span>            <span class="keyword">return</span>  <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">name</span> <span class="operator">==</span> <span class="name">other</span><span class="operator">.</span><span class="name">name</span> <span class="operator word">and</span> \
+</code><small class="ln"> 9 </small><code data-lineno=" 9 ">                    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">age</span> <span class="operator">==</span> <span class="name">other</span><span class="operator">.</span><span class="name">age</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span>        <span class="keyword">return</span> <span class="keyword constant">False</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__hash__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>        <span class="keyword">return</span> <span class="literal number integer">1</span> <span class="comment single"># immer der gleiche Hashwert</span></code></pre>
+<div class="supplemental">
+<p>Die Verwendung des Alters der Person als Hashwert wäre in den allermeisten Fällen auch keine gute Idee, da es (vermutlich) viele Hashkollisionen geben würde.</p>
+</div></div><div class="layer incremental">
+<p class="rubric">Verwendung einer Klasse mit einer schlechten/konstanten Hashfunktion</p>
+<pre class="code python literal-block"><code><span class="name">person1</span> <span class="operator">=</span> <span class="name">Person</span><span class="punctuation">(</span><span class="literal string double">&quot;Alice&quot;</span><span class="punctuation">,</span> <span class="literal number integer">30</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name">person2</span> <span class="operator">=</span> <span class="name">Person</span><span class="punctuation">(</span><span class="literal string double">&quot;Bob&quot;</span><span class="punctuation">,</span> <span class="literal number integer">25</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name">person3</span> <span class="operator">=</span> <span class="name">Person</span><span class="punctuation">(</span><span class="literal string double">&quot;Alice&quot;</span><span class="punctuation">,</span> <span class="literal number integer">30</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name">people</span> <span class="operator">=</span> <span class="punctuation">{</span><span class="name">person1</span><span class="punctuation">,</span> <span class="name">person2</span><span class="punctuation">,</span> <span class="name">person3</span><span class="punctuation">}</span><span class="whitespace">
+</span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">hash</span><span class="punctuation">(</span><span class="name">person1</span><span class="punctuation">))</span><span class="whitespace">
+</span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">hash</span><span class="punctuation">(</span><span class="name">person2</span><span class="punctuation">))</span><span class="whitespace">
+</span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">hash</span><span class="punctuation">(</span><span class="name">person3</span><span class="punctuation">))</span><span class="whitespace">
+</span><span class="keyword">for</span> <span class="name">p</span> <span class="operator word">in</span> <span class="name">people</span><span class="punctuation">:</span> <span class="name builtin">print</span><span class="punctuation">(</span><span class="name">p</span><span class="operator">.</span><span class="name">name</span><span class="punctuation">)</span></code></pre>
+<p><strong>Beispielausgabe</strong></p>
+<pre class="code python literal-block"><code><span class="literal number integer">1</span><span class="whitespace">
+</span><span class="literal number integer">1</span><span class="whitespace">
+</span><span class="literal number integer">1</span><span class="whitespace">
+</span><span class="name">Alice</span><span class="whitespace">
+</span><span class="name">Bob</span></code></pre>
+</div></div></div><div class="exercises transition-fade ld-slide" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Eine Klasse zur Repräsentation von Studierenden." id="ld-exercise-1">
+<p class="rubric">Eine Klasse zur Repräsentation von Studierenden.</p>
+<p>Die Klasse <span class="docutils literal">Student</span> soll:</p>
+<ul class="simple">
+<li><p>die Attribute <span class="docutils literal">name</span> und <span class="docutils literal">matriculation_number</span> haben.</p></li>
+<li><p>die Methoden <span class="docutils literal">__eq__</span> und <span class="docutils literal">__hash__</span> definieren</p></li>
+</ul>
+<p>Erzeugen Sie drei <code class="java"><span class="name">Student</span></code>-Objekte und speichern Sie diese in einem Set.</p>
+<p><em>Fragen Sie sich wie sie effizient den Hashwert berechnen können.</em></p>
+<p>Geben Sie die Namen der Studierenden aus.</p>
+<div class="supplemental">
+<p class="rubric">Rumpfimplementierung</p>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword">class</span> <span class="name class">Student</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="operator">...</span> <span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span>        <span class="keyword">raise</span> <span class="name exception">NotImplementedError</span><span class="punctuation">(</span><span class="literal string double">&quot;TODO&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__eq__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">other</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>        <span class="keyword">raise</span> <span class="name exception">NotImplementedError</span><span class="punctuation">(</span><span class="literal string double">&quot;TODO&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__hash__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span>        <span class="keyword">raise</span> <span class="name exception">NotImplementedError</span><span class="punctuation">(</span><span class="literal string double">&quot;TODO&quot;</span><span class="punctuation">)</span></code></pre>
+</div><div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:4XVOJ+/vZh67NV+ruDIscvTkyDDT+CQKsaJvnDl0JfY=:8KLIw2K+WPoe1wyP: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</div>
+</div>
+</div><div class="new-section transition-move-to-top ld-slide" id="hashfunktionen-1">
+<h2>Hashfunktionen</h2>
+</div><div class="ld-slide" id="gangige-ansatze-fur-hashfunktionen">
+<h2>Gängige Ansätze für Hashfunktionen</h2>
+<div class="stack invisible">
+<div class="layer">
+<dl class="field-list">
+<dt>Modulo-Hashfunktion<span class="colon">:</span></dt>
+<dd><p>Sei <span class="math">\(n\)</span> möglichst eine Primzahl:</p>
+<p><span class="math">\(h^{mod}_n(x) = x\; mod\; n\)</span></p>
+</dd>
+</dl>
+<p><strong>Bewertung</strong></p>
+<ul class="simple">
+<li><p>einfach zu berechnen/sehr effizient</p></li>
+<li><p>surjektiv</p></li>
+<li><p>gleichverteilt</p></li>
+<li><p>wenn <span class="math">\(n\)</span> keine Primzahl ist, dann kann es (leicht) passieren, dass bestimmte (Teil-)daten weniger oder keinen Einfluss auf den Hashwert haben:</p>
+<ul>
+<li><p><span class="math">\(x \cdot 10^3 \mod 40 = 0\)</span></p></li>
+<li><p><span class="math">\(x \cdot 10^3 \mod 42 \in \{0,2,4,...,40\}\)</span> Anm.: <code class="java"><span class="name">GGT</span><span class="punctuation">(</span><span class="literal number integer">42</span><span class="punctuation">,</span><span class="literal number integer">1000</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">2</span></code></p></li>
+<li><p><span class="math">\(x \cdot 10^3 \mod 41 \in \{0,1,2,3,...,40\}\)</span> Anm.: <code class="java"><span class="name">GGT</span><span class="punctuation">(</span><span class="literal number integer">41</span><span class="punctuation">,</span><span class="literal number integer">1000</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">1</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div><div class="layer incremental">
+<dl class="field-list">
+<dt>Multiplikations-Hashfunktion<span class="colon">:</span></dt>
+<dd><p>Sei <span class="math">\(c\)</span> fest, oft <span class="math">\(c = {\sqrt{5}-1 \over 2} \approx 0,6180339887498949\)</span>:</p>
+<p><span class="math">\(h^{mul}_n (x) = \lfloor n·(c·x -\lfloor c·x\rfloor )\rfloor \)</span></p>
+</dd>
+</dl>
+<p><strong>Bewertung</strong></p>
+<ul class="list-with-explanations">
+<li><p>nicht beweisbar surjektiv</p></li>
+<li><p>nur asymptotisch gleichverteilt</p></li>
+<li><p>Das verwendete <span class="math">\(c\)</span> sollte eine gute Durchmischung der Key-Bits fördern.</p>
+<p>Andere irrationale Zahlen sind ggf. auch sinnvoll/möglich.</p>
+</li>
+<li><p>Berechnung benötigt eine effiziente Fließkomma-Verarbeitung</p></li>
+</ul>
+</div></div></div><div class="exercises ld-slide" id="ubung-1">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Hashwerte berechnen I" id="ld-exercise-2">
+<p class="rubric">Hashwerte berechnen I</p>
+<p>Berechnen Sie:</p>
+<ol class="arabic simple">
+<li><p><span class="math">\(h^{mod}_{257}(1 000)\)</span></p></li>
+<li><p><span class="math">\(h^{mul}_{257}(1 000)\)</span></p></li>
+</ol>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:ExRAl/i2DwbSgV62W27W7LJzmK4ZmdlZKJ5kSUsISYU=:rMdr/rUwWsRKUSAJ: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</div>
+</div>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Hashwerte berechnen II" id="ld-exercise-3">
+<p class="rubric">Hashwerte berechnen II</p>
+<p>Berechnen Sie:</p>
+<ol class="arabic simple">
+<li><p><span class="math">\(h^{mod}_{263}(10 000)\)</span></p></li>
+<li><p><span class="math">\(h^{mul}_{263}(10 000)\)</span></p></li>
+</ol>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:iSjrtxfQOBpXhaFioe4M3UeotpX0PPHXwcK2ZRFLsUs=:hkVuf6rhKBb6p4d4:gPK6HBAgxGOriuIshgWkCWDmKP9503Y747xgLIJKqaj34RI1WirQRHJRyICYY6QjgtZoAUiaiVC7Hcy59bmak7dri99IftbIqfaRPQ672NhDUCesEVaLj4A9d6G7Gp2D5LVqMpEhY4zyU4ik5BdFFula9lLEFU1gCyDppTu9SId1P62d3HOwn054BhLb+GBAIWCLDGHI+pzpgMc2mkQ3fDwVQwJ1JEoPT1TjxHQmCpMJDoYiSRncrzZ2//IO2vORjbwR0R/idoFSuRw6NHI8N7H1iFn3wBcWlkRWJcoMDxV41aA/JJrWPeQHJy3Eqg2pvl+zF5AWfMGcTPGe+xjb4v8UyNdG9wXexNDvZKAx4F58LnykE5RnD2o4c4kH+r6hW7xVH/99H0bX+YcTfOly8xRlHTkjDNfRKze3t1IOrwxSfbijZh0IF5fwKORjSiqFWd23NunBJpK4BnLttBINFrzPY9gTmoaJUpwetIVIE380KO1ZLLW9bwToRlTJwTYBDZIHS80Zsg4l9/a+5e0WBw==</div>
+</div>
+</div><div class="new-section transition-move-to-top ld-slide" id="hashtabellen-hashmaps-oder-dictionaries">
+<h2>Hashtabellen (<span class="eng">Hashmaps</span> oder <span class="eng">Dictionaries</span>)</h2>
+</div><div class="ld-slide" id="grundlagen-von-hashtabellen">
+<h2>Grundlagen von Hashtabellen</h2>
+<p>Das Grundprinzip von Hashtabellen ist einfach:</p>
+<ul class="incremental list-with-explanations">
+<li><p>Im Vorfeld wird ein Array <code class="java"><span class="name">A</span></code> einer Größe <code class="java"><span class="name">n</span></code> angelegt,</p>
+<p>Die Größe des Arrays übersteigt die erwartete Belegung deutlich.</p>
+</li>
+<li><p>Daten mit einem Schlüssel <code class="java"><span class="name">k</span></code> werden dann an der Position <code class="java"><span class="name">A</span><span class="operator">[</span><span class="name">h</span><span class="punctuation">(</span><span class="name">k</span><span class="punctuation">)</span><span class="operator">]</span></code> gespeichert - oder an einer Ersatzposition.</p></li>
+<li><p>Sollte die Belegung zu groß werden, wird das Array vergrößert und die Elemente werden (ggf.) neu bzw. wieder gehasht.</p></li>
+<li><p>Sollten zwei Schlüssel den gleichen Hash haben (d. h. <span class="math">\(h(x1) = h(x2)\)</span>), dann wird eine Kollisionsauflösung benötigt.</p></li>
+</ul>
+</div><div class="ld-slide" id="belegung-von-hashtabellen">
+<h2>Belegung von Hashtabellen</h2>
+<p>Die Belegung von Hashtabllen ist für die Effizienz entscheidend.</p>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Ein Array <span class="math">\(A\)</span> der Kapazität <span class="math">\(n\)</span> mit einer Hashfunktion <span class="math">\(h_n\)</span> wird <span class="math">\(Hashtabelle(A,h_n)\)</span> genannt.</p>
+<p>Sind zu einem Zeitpunkt <span class="math">\(m\)</span> (erste) Felder belegt, so hat die <span class="math">\(Hashtabelle(A,h_n)\)</span> eine Belegung von <span class="math">\(\alpha  = \frac{m}{n}\)</span>.</p>
+</aside>
+</div><div class="ld-slide" id="verkettete-hashtabellen">
+<h2>Verkettete Hashtabellen</h2>
+<div class="stack invisible">
+<div class="layer">
+<p class="rubric">Direkte Verkettung</p>
+<img alt="Hashtabelle mit direkter Verkettung" class="align-center" src="images/hashtables/direkte_verkettung.svg" />
+<div class="supplemental">
+<p>Die <em>direkte Verkettung</em> von Überläufern verwendet eine <span class="math">\(Hashtabelle(A,h_n)\)</span>, mit einem Array <span class="math">\(A\)</span>, das aus Zeigern auf einfach verkettete Listen besteht, dessen Schlüssel der Einträge alle den gleichen Hashwert besitzen, oder die nil sind, wenn kein Eintrag bisher mit dem jeweiligen Hashwert vorhanden ist.</p>
+</div></div><div class="layer incremental">
+<p class="rubric">Separate Verkettung</p>
+<img alt="Hashtabelle mit separater Verkettung" class="align-center" src="images/hashtables/separate_verkettung.svg" />
+<div class="supplemental">
+<p>Die <em>separate Verkettung</em> von Überläufern verwendet eine <span class="math">\(Hashtabelle(A,h_n)\)</span>, bei der das Array <span class="math">\(A\)</span> aus Knoten einer einfach verketteten Liste besteht, dessen Wert <span class="math">\(nil\)</span> ist, wenn unter dem Hashwert noch nichts gespeichert wurde.</p>
+<p>Ein Eintrag mit Schlüssel <span class="math">\(k\)</span> wird der verketteten Liste zugeordnet, die in <span class="math">\(A[h_n(k)]\)</span> verlinkt ist oder startet, und kann entsprechend hinzugefügt, gelöscht und gefunden werden.</p>
+</div></div></div></div><div class="ld-slide" id="offene-adressierung">
+<h2>Offene Adressierung</h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Soll der <span class="math">\(Hashtabelle(A,h_n)\)</span> mit einem Array <span class="math">\(A\)</span> ein Datensatz mit Schlüssel <span class="math">\(k\)</span> hinzugefügt werden soll, so erfolgt dies in <span class="math">\(A[h_n(k)]\)</span>, wenn dieser Eintrag noch nicht belegt ist. Ansonsten werden  <span class="math">\(i= 1,...,n-1\)</span> weitere Positionen <span class="math">\(A[g_n(k,i)]\)</span> geprüft.</p>
+</aside>
+<p class="rubric">Strategien</p>
+<div class="stack invisible">
+<div class="layer">
+<dl class="field-list">
+<dt>Lineares-Sondieren<span class="colon">:</span></dt>
+<dd><p>Das Array wird linear durchsucht.</p>
+<p><span class="math">\(g^{lin}_n(k,i) = (h_n(k) + i)\; mod\; n\)</span></p>
+</dd>
+</dl>
+</div><div class="layer incremental">
+<dl class="field-list">
+<dt>Quadratisches-Sondieren<span class="colon">:</span></dt>
+<dd><p>Das Array wird quadratisch steigend durchsucht.</p>
+<p><span class="math">\(g^{quad}_n(k,i) = (h_n(k) + i^2)\; mod\; n\)</span></p>
+</dd>
+</dl>
+</div><div class="layer incremental">
+<dl class="field-list">
+<dt>Doppeltes-Hashing<span class="colon">:</span></dt>
+<dd><p>Das Array wird mit Hilfe einer zweiten Hashfunktion:</p>
+<blockquote>
+<p><span class="math">\(h^{'}_n(k) = (k\; mod\; (n-2)) +1\)</span></p>
+</blockquote>
+<p>durchsucht.</p>
+<p><span class="math">\(g^{doppel}_n(k,i) = (h_n(k) + i \cdot h^{'}_n(k))\; mod\; n\)</span></p>
+</dd>
+</dl>
+</div></div></div><div class="ld-slide" id="beispiel-offene-adressierung-hashing-mit-modulo-7">
+<h2>Beispiel Offene Adressierung (Hashing mit Modulo 7)</h2>
+<div class="stack invisible">
+<div class="layer">
+<img alt="Offene Adressierung mit linearem Sondieren" class="align-right" src="images/open_addressing/linear_probing.svg" />
+<p><strong>Lineare Sondierung</strong></p>
+<p>Hinzufügen von (17, 5, 3, 21, 9, 10, 12)</p>
+</div><div class="layer incremental">
+<img alt="Offene Adressierung mit doppeltem Hashing" class="align-right" src="images/open_addressing/double_hashing.svg" />
+<p><strong>Doppeltes-Hashing</strong></p>
+<p>Hinzufügen von (17, 5, 3, 21, 9, 10, 12)</p>
+</div><div class="layer incremental">
+<img alt="Offene Adressierung mit quadratischem Sondieren" class="align-right" src="images/open_addressing/quadratic_probing.svg" />
+<p><strong>Quadratische Sondierung</strong></p>
+<p>Hinzufügen von (17, 5, 3, 21, 9, 10, 12)</p>
+<div class="incremental">
+<p>Für den Wert 10 wird kein Platz gefunden!</p>
+<p><span class="math">\((10\; mod\; 7 = 3)\)</span></p>
+<ol class="arabic simple">
+<li><p><span class="math">\(3 + 0^2\; mod\; 7 = 3\)</span></p></li>
+<li><p><span class="math">\(3 + 1^2\; mod\; 7 = 4\)</span></p></li>
+<li><p><span class="math">\(3 + 2^2\; mod\; 7 = 0\)</span></p></li>
+<li><p><span class="math">\(3 + 3^2\; mod\; 7 = 5\)</span></p></li>
+<li><p><span class="math">\(3 + 4^2\; mod\; 7 = 5\)</span></p></li>
+<li><p><span class="math">\(3 + 5^2\; mod\; 7 = 0\)</span></p></li>
+<li><p><span class="math">\(3 + 6^2\; mod\; 7 = 4\)</span></p></li>
+</ol>
+</div></div></div></div><div class="exercises ld-slide" id="ubung-2">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Werte in kleine Hashtabelle einfügen" id="ld-exercise-4">
+<p class="rubric">Werte in kleine Hashtabelle einfügen</p>
+<p>Belegen Sie eine Hashtabelle mit <span class="math">\(n = 5\)</span> Feldern mit den Werten 37, 18, 32 und 24 auf Basis von <span class="math">\(h^{mod}_5(x)\)</span> mit linearer Sondierung, quadratischer Sondierung und doppeltem Hashing mit <span class="math">\(h^{'}_5(x) = (x\; mod\; 3) + 1\)</span>.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:HAe58SZjjF10sCiRcsxkxvrSC7siMHSP4rk8jtJF62s=:OiJhysljtmJ3xobc:SrSLYFu7I6MvrcIa8ghOJe0jfR6ig+cWTV1Iv8Dm4zOVwCT1swyiwkX0lcKuy4e3BOY4oMmlQY1yeg==</div>
+</div>
+<div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - Werte in größere Hashtabelle einfügen" id="ld-exercise-5">
+<p class="rubric">Werte in größere Hashtabelle einfügen</p>
+<p>Belegen Sie eine Hashtabelle mit <span class="math">\(n = 11\)</span> Feldern mit den Werten 37, 49, 26 und 39 auf Basis von <span class="math">\(h^{mod}_{11}(x)\)</span> mit linearer Sondierung, quadratischer Sondierung und doppeltem Hashing mit <span class="math">\(h^{'}_{11}(x) = (x\; mod\; 9) + 1\)</span>.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:HAe58SZjjF10sCiRcsxkxvrSC7siMHSP4rk8jtJF62s=:OiJhysljtmJ3xobc:63ZHm1UbTv0PGYC9a/ELENYE4aPXsdbmYjWleABX/gRZXkl+tG4MuEAyCuRnz7STDFChwUx9UMYvww==</div>
+</div>
+</div><div class="ld-slide" id="angriffe-auf-algorithmische-komplexitat">
+<h2>Angriffe auf algorithmische Komplexität</h2>
+<blockquote class="epigraph">
+<p>Julian Wälde and Alexander Klink reported that the String.hashCode() hash function is not sufficiently collision resistant.</p>
+<p>hashCode() value is used in the implementations of [Java 6] HashMap and Hashtable classes. A specially-crafted set of keys could trigger hash function collisions, which can degrade performance of HashMap or Hashtable by changing hash table operations complexity from an expected/average O(1) to the worst case O(n).
+Reporters were able to find colliding strings efficiently using equivalent substrings and meet in the middle techniques.
+This problem can be used to start a denial of service attack against  applications that use untrusted inputs as HashMap or Hashtable keys. An example is a web application server that may fill hash tables with data from HTTP request. A remote attack could use that to make JVM use excessive amount of CPU time by sending a POST request with large amount of parameters which hash to the same value.</p>
+<p class="attribution">—[Abbreviated Version] Jan Lieskovsky 2011-11-01 10:13:47 EDT</p>
+</blockquote>
 </div>
 </template>
 </body>
