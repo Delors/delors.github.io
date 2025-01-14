@@ -1,0 +1,167 @@
+/* LAYER: theme.DHBW */
+
+a:link,
+a:visited {
+    color: var(--dhbw-dark-red);
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/*
+ * Styling of lists where the content is shown in a table-like manner. The
+ * first column is the counter, the second column is the content. The styling
+ * is inspired by the DHBW corporate design. The counter uses a red background
+ * and white text color. The content uses a light gray background and black
+ * text.
+ */
+ ol.arabic.dhbw {
+    --item-counter-width: 3ch;
+    --item-counter-offset: calc(var(--item-counter-width) + 0.5ch);
+
+    list-style-type: none;
+
+    padding-left: var(--item-counter-offset);
+
+    counter-reset: item;
+    
+    > li {
+        position: relative;
+        padding: 0.25em;
+        margin: 0.25em;
+
+        background-color: var(--dhbw-light-gray);
+        
+        counter-increment: item;
+
+        &::before {
+            content: counter(item);
+
+            box-sizing: border-box;
+            display: inline-block;
+            padding: 0.25em;
+            position: absolute;
+            top: 0;
+            left: calc(var(--item-counter-offset) * -1);
+            width: var(--item-counter-width);
+            height: 100%;
+
+            text-align: center;
+            font-family: menlo, monospace;
+            font-weight: 600;
+            background-color: var(--dhbw-red);
+            border-radius: 0.2em 0 0 0.2em;
+            color: white;
+        }
+
+        &:nth-child(-n+9)::before {
+            content: "0" counter(item);
+        }
+
+        &:hover {
+            box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+
+            &::before {
+                background-color: var(--dhbw-dark-red);
+                box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+            }
+        }
+    }
+}
+
+/*************************** LEGACY ***************************/
+/*************************** LEGACY ***************************/
+/*************************** LEGACY ***************************/
+/*************************** LEGACY ***************************/
+/*************************** LEGACY ***************************/
+
+
+ul.columns {
+    width: 100%;
+    padding: 0;
+    
+    list-style-type: none;
+
+    display: flex;
+    flex-direction: row;
+    gap: 0.25em;
+    justify-content: space-between;
+
+    >li {
+        flex-grow: 1;
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+
+        >p {
+            margin: 0;
+            padding: 0.25em;
+            background-color: var(--dhbw-light-gray);
+            color: black;
+        }
+        > p:first-child { /* the "Header" */
+            margin-bottom: 0.25em;
+            background-color: var(--dhbw-red);
+            color: white;
+            font-family: menlo, monospace;
+            font-weight: 600;
+            border-radius: 0.2em 0.2em 0 0;
+        }
+        > p:last-child {
+            border-radius: 0 0 0.2em 0.2em;
+            flex-grow: 1;
+        }
+    }
+}
+
+
+
+
+
+
+/*
+
+Styling of impressive lists (whatever "impressive" means in this case).
+
+*/
+ol.impressive {
+    list-style-position: outside;
+    margin-left: 1em;
+    padding-left: 0;
+
+
+    li {
+
+        &::marker {
+            color: black;
+        }
+
+        color: black;
+        background-color: white;
+        margin-top: 1em;
+        box-shadow: 4px 4px 8px black;
+        border-radius: 0.33em;
+        align-items: center;
+        min-height: 4em;
+        padding: 0.75em;
+    }
+}
+
+ul.impressive {
+    list-style-type: none;
+    font-weight: bolder;
+    margin-left: 0;
+    padding-left: 0;
+    display: grid;
+    grid-auto-rows: 1fr;
+
+    >li {
+        text-align: center;
+        background-color: var(--dhbw-light-gray);
+        border-radius: 0.5em;
+        margin-top: 0.5em;
+        padding: 0.5em;
+    }
+}

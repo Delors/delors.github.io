@@ -1,0 +1,175 @@
+/* 
+    This is LectureDoc's core CSS file. It primarily defines css properties 
+    directly related to the core functionality of LectureDoc. I.e., how slides 
+    are rendered in the different modes. The CSS classes defined in this file 
+    are (often) used by LectureDoc. Hence, any changes here, may require code
+    changes in other CSS and/or JavaScript files.
+    
+    All styling information related to LectureDoc's widgets is found in 
+    ld-theme.css.
+
+    Styling related to slides is defined in user defined css file.
+
+    ____________________________________________________________________________
+
+    _______       Any changes here, will likely break LectureDoc!        _______
+
+    ____________________________________________________________________________
+*/
+
+@import url("../../ext/fonts/ld-fonts.css");
+
+:root {
+    /*  Specifies the width and height of slides in pixels. This has proven
+        to be very helpful when adding pictures and drawings as it enables a
+        common reference frame. Besides that, only the ratio is relevant.
+
+        These value are always set by JavaScript when the document is
+        loaded; either to the default values defined in JavaScript (as shown
+        next) or to the values specified in the document. 
+        */
+    --ld-slide-width: 1920px; /* cf. lectureDoc2.presentation.slide.width */
+    --ld-slide-height: 1200px; /* cf. lectureDoc2.presentation.slide.height */
+
+    /*  The default zoom levels. */
+    --ld-light-table-zoom-level: 0.2; /* may be overridden from within LectureDoc */
+    --ld-continuous-view-zoom-level: 0.5; /* hard coded - cannot be changed by the user */
+
+    --ld-rel-max-supplemental-area-width: 75%;
+    --ld-rel-max-supplemental-area-height: 70%;
+
+    /* Primarily for debugging purposes!*/
+    background-color: black; 
+    --ld-body-background-color: rgb(25, 25, 30);
+
+    --ld-font-size: 14px;
+    --ld-font-family: "Noto Sans Display",Helvetica, sans-serif;
+    --ld-headings-font-family: "Noto Serif Display",Helvetica, sans-serif; /* for (larger) headings */
+    --ld-text-font-family: "Noto Serif",Helvetica, sans-serif; /* for (smaller) text */
+    --ld-monospaced-font-family: "Monospace", "Courier New", monospace;
+    --ld-code-font-family: "Victor Mono", "Fira Code", "Monospace", monospace;
+    --ld-font-weight: 300;
+}
+
+/*  We need a fixed size for slides to make the content as a whole 
+    scalable using the scale property. The scale property is set/updated 
+    using Javascript. 
+
+    Conceptually, - for the slides view - we would like to have some CSS like:
+    
+        scale: min(calc(100vh/1080px),calc(100vw/1920px)); 
+    
+    But such CSS computations are not yet supported at least until 2024.
+
+    The actual (fixed) size, however, doesn't really matter, because the content
+    is scaled anyway. Nevertheless, when external content is embededd (in 
+    particular images) it makes sense to have a size that resembles a "natural"
+    screen resolution to avoid having the creator to scale everything up or down
+    when adding media content. 
+    Nevertheless, in the end all that matters is the aspect ratio.
+*/
+.ld-slide {
+    width: var(--ld-slide-width);
+    height: var(--ld-slide-height);
+
+    overflow: hidden;
+}
+
+
+html {
+    /* The following is the definition used by the LectureDoc UI / 
+            all UI content that is not found on the slides. */
+    font-size: var(--ld-font-size);
+    font-family: var(--ld-font-family);
+    font-weight: var(--ld-font-weight);
+}
+
+
+body {
+    background-color: var(--ld-body-background-color); 
+}
+
+
+@media print { /* At least Safari seems to honor this setting... */
+    :root {
+        background-color: white;
+        --ld-body-background-color: white;
+    }
+
+    body {
+        background-color: white;
+    }
+}
+
+
+
+
+
+/*  ----------------------------------------------------------------------------
+
+    Classes with special meaning for LectureDoc. 
+*/
+
+/*  
+
+.incremental
+_______________
+
+Elements marked with the class "incremental" are rendered one-step-after-another.
+
+*/
+
+
+/*
+
+.code.copy-to-clipboard div.ld-copy-to-clipboard-button 
+___________________________________
+
+LectureDoc has special support for enabling copy to clipboard functionality. 
+If a code block (i.e., a DIV or PRE element with the class "code" and also 
+"copy-to-clipboard") is found, LectureDoc will add a copy "button" to the code
+block by means of a div with the class ld-copy-to-clipboard-button.
+
+Example:
+<div class="code copy-to-clipboard">
+    <div class="ld-copy-to-clipboard-button">Copy</div> <!-- added by LectureDoc -->
+    <pre><code>...</code></pre>
+</div>
+
+or
+
+<pre class="code copy-to-clipboard">
+    <div class="ld-copy-to-clipboard-button">Copy</div> <!-- added by LectureDoc -->
+    <code>...</code>
+</pre>
+
+.code.copy-to-clipboard div.ld-copy-to-clipboard-button 
+
+*/
+
+
+/*
+
+.stack and .layer (.overlay) 
+_______________________________
+
+LectureDoc has special support for creating stack based layouts.
+
+*/
+
+
+/*  
+
+.scrollable
+_________________
+
+Styling of scrollable elements. In general, it is necessary to put the content which should be scrollable in a div with the class "scrollable".  
+
+*/
+
+.scrollable {
+    /* The user "class". */
+    overflow-y: scroll;
+    /* The height will be computed by JavaScript depending on the mode. */
+}
+

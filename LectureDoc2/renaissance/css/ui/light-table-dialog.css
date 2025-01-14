@@ -1,0 +1,123 @@
+/* LAYER: ui.element */
+
+#ld-light-table-dialog {
+    height: 90vh;
+    width: 90vw;
+
+    position: fixed;
+    
+    .ld-dialog-header {
+        max-width: initial;
+        
+        justify-content: space-between;
+        align-items: center;
+
+        #ld-light-table-slides-count {
+            color: var(--ld-ui-color);
+        }
+        
+        #ld-light-table-search-input {
+            flex-grow: 1;
+            flex-shrink: 1;
+
+            max-width: 60ch;
+            min-width: 20ch;
+            margin-right: 10px;
+
+            border-radius: 0.2em;
+            padding: 3px 4px 3px 4px;
+        }
+    }
+
+    #ld-light-table-slides {
+        flex-grow: 1;
+        
+        margin: 5px;
+        overflow-y: scroll;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        align-content: flex-start;
+        scroll-snap-type: y mandatory;
+        /* facilitates saving the scroll-position */
+
+        .ld-light-table-slide-pane {
+            width: calc(var(--ld-slide-width) * var(--ld-lt-zoom-level));
+            height: calc(var(--ld-slide-height) * var(--ld-lt-zoom-level));
+            position: relative;
+            margin: 3px;
+            overflow: hidden;
+            scroll-snap-align: start;
+    
+            /*  The class .hide is programmatically associated with slides when the user 
+                searches for slides. */
+            &.ld-light-table-slide-pane-hide {
+                width: 0;
+                margin: 0;
+                scale: 0;
+                transition: width 0ms 750ms, scale 750ms ease-out;
+            }
+
+            .ld-light-table-slide-scaler {
+                position: absolute;
+                scale: var(--ld-lt-zoom-level);
+
+                .ld-slide {
+                    position: absolute;
+                }
+            }
+        
+            .ld-light-table-slide-overlay {
+                width: calc(var(--ld-slide-width) * var(--ld-lt-zoom-level));
+                height: calc(var(--ld-slide-height) * var(--ld-lt-zoom-level));
+
+                position: absolute;
+                top: 0px;
+                left: 0px;
+            
+                background-color: rgba(0, 0, 0, 0.2);
+                opacity: 1;
+                &:hover {
+                    opacity: 0;
+                }
+                transition: opacity 333ms ease-in;
+
+                /* We use flex here, to make it easy to align slide number: */
+                display: flex; 
+                align-items: end; 
+                justify-content: right;
+
+                > .ld-light-table-slide-number {
+                    display: block; 
+                    color: rgba(0,0,0,0.5); 
+                    text-shadow: 1px 2px 1px rgba(255,255,255,0.25); 
+                    font-size: 16px;
+                    margin-right: 0.25em;
+                }
+            }
+        }
+    }
+
+    .ld-dialog-footer {
+        justify-content: right;
+
+        #ld-light-table-zoom {
+            flex-grow: 0;
+
+            display: flex;
+            align-items: center;
+
+            label {
+                margin-right: 0.5em;
+
+                color: var(--ld-ui-color)
+            }   
+        }
+    }
+}
+
+
+

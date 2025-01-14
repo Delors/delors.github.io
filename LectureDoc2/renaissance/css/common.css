@@ -1,0 +1,281 @@
+/* LAYER: common */
+
+/* LectureDoc2's "common.css"
+
+   It defines some defaults that are generally useful in the context of 
+   LectureDoc2 to achieve a consistent look and feel.
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  scrollbar-color: #999 #333; /* Foreground, Background */
+}
+
+/* The following background-color definitions primarily serve debugging 
+   purposes! Slides are required to set a background-color.
+*/ 
+html {
+  font-family: var(--default-font-family);
+  background-color: black; 
+}
+
+body {
+  background-color: rgb(25, 20, 20); 
+}
+
+@media print { /* At least Safari seems to honor this setting... */
+  html {
+      background-color: white;
+  }
+
+  body {
+      background-color: white;
+  }
+}
+
+h1 {
+  font-family: var(--large-text-font-family);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+dd,
+details>p:last-child {
+  text-wrap: balance;
+  margin-bottom: 0.5em;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+pre,
+samp {
+  font-family: var(--pre-font-family);
+  font-size: 0.9em;
+}
+
+:not(pre)>code,
+:not(pre)>kbd {
+  font-family: var(--code-font-family);
+  font-size: 0.9em;
+}
+
+a {
+  margin-left: auto;
+  margin-right: auto;
+
+  user-select: initial;
+
+  text-decoration: none;
+
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+p,
+ol,
+ul,
+dl,
+div.line-block,
+.footnote,
+.citation,
+div>math,
+table {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd>ul:only-child,
+dd>ol:only-child {
+    padding-left: 1em;
+}
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+    display: flow-root;
+}
+
+dl.description>dt {
+    font-weight: bold;
+    clear: left;
+    float: left;
+    margin: 0;
+    padding: 0;
+    padding-right: 0.3em;
+}
+
+dl.description>dd:after {
+    display: table;
+    content: "";
+    clear: left;
+    /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list>dd,
+dl.docinfo>dd {
+    margin-left: var(--field-indent);
+    /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow>dd {
+    --field-indent: 5em;
+}
+
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in>dd p {
+    display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+    text-align: center;
+}
+
+div.dedication {
+    margin: 2em 5em;
+    text-align: center;
+    font-style: italic;
+}
+
+div.dedication p.topic-title {
+    font-style: normal;
+}
+
+/* disclosures */
+details {
+    padding-left: 1em;
+}
+
+summary {
+    margin-left: -1em;
+}
+
+
+/* Block Quotes and Topics */
+bockquote {
+  margin: 1em 2em;
+}
+
+blockquote p.attribution,
+.topic p.attribution {
+    text-align: right;
+    margin-left: 20%;
+}
+
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+
+table.booktabs * {
+  border: 0;
+}
+
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered>caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+    clear: left;
+    float: left;
+    margin-right: 1em;
+}
+
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+    clear: right;
+    float: right;
+    margin-left: 1em;
+}
+
+h1,
+h2,
+h3,
+h4,
+footer,
+header {
+    clear: both;
+}
+
+/* Code */
+pre.code {
+  padding: 0.7ex
+}
+
+pre.code,
+code {
+  background-color: var(--code-background-color);
+}
+
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment,
+code .comment {
+    color: #5C6576
+}
+
+pre.code .keyword,
+code .keyword {
+    color: #3B0D06;
+    font-weight: bold
+}
+
+pre.code .literal.string,
+code .literal.string {
+    color: #0C5404
+}
+
+pre.code .name.builtin,
+code .name.builtin {
+    color: #352B84
+}
+
+pre.code .deleted,
+code .deleted {
+    background-color: #DEB0A1
+}
+
+pre.code .inserted,
+code .inserted {
+    background-color: #A3D289
+}

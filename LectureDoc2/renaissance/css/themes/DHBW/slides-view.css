@@ -1,0 +1,145 @@
+.block-footer {
+    &::after {
+        position: absolute;
+        bottom: -45px;
+        right: -35px;
+        content: var(--dhbw-symbol);
+        scale: 0.5
+    }
+}
+
+
+/* 
+    Adds the DHBW logo to the title-slide (i.e., the only slide with an h1 element).
+
+    If the slide has the class `animated-symbol`, only the text part of the logo
+    is statically added. The script `logo.js` will add the symbol part of the 
+    logo.
+
+    @author Michael Eichberg
+    @version 2024-07-18
+*/
+#ld-slides-pane .ld-slide:has(h1) {
+
+    &:not(.animated-symbol)::before {
+        position: absolute;
+        right: 48px;
+        bottom: 32px;
+        content: var(--dhbw-logo);
+        mix-blend-mode: multiply;
+    }
+
+    &.animated-symbol::before {
+        position: absolute;
+        right: 48px;
+        bottom: 32px;
+        content: var(--dhbw-text);
+        /* the symbol is added programmatically */
+        mix-blend-mode: multiply;
+    }
+}
+
+
+.exercises::before {
+    content: var(--dhbw-logo);
+    display: block;
+    position: absolute;
+    top: 28px;
+    right: var(--slide-lr-padding);
+    mix-blend-mode: multiply;
+    /* makes it easier to use it on various backgrounds */
+    transform: translateX(30%) translateY(-35%) scale(0.4);
+}
+
+
+/*************************** LEGACY ***************************/
+/*************************** LEGACY ***************************/
+/*************************** LEGACY ***************************/
+/*************************** LEGACY ***************************/
+/*************************** LEGACY ***************************/
+
+/*
+
+    Styling of Slides with content that is not covered.
+
+*/
+
+#ld-slides-pane, #ld-light-table-dialog {
+
+    .ld-slide.not-covered-topics {
+        background-color: black;
+        color: var(--dhbw-gray);
+        
+        
+        &::before {
+            position: absolute;
+            content: var(--dhbw-symbol-sharp);
+            filter: blur(2px) opacity(0.25);
+            scale: 2.75;
+            top: 200px;
+            right: 250px;
+        }
+    }
+}
+
+
+
+/*
+    Styling of slides which act as section headers.
+
+    <code>div class="ld-slide new-section"...</code>
+
+    We add a counter to the first (and only) h2 element on the slide.
+*/
+
+@property --section-title-shadow-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
+div.ld-slide.new-section {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &::before {
+        content: var(--author);
+        position: absolute;
+        top:1em;
+        color: var(--dhbw-gray);
+        font-size: 24px;
+        font-variant: normal;
+        font-weight: 200;
+    }
+
+    &::after {
+        content: var(--dhbw-logo);
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        scale: 0.50;
+        translate: 100px -55px;
+    }
+
+    >h2 {
+        border: 0;
+        width: 100%;
+        margin-left: calc(-2 * var(--slide-lr-padding));
+        /*position: relative;
+        margin-top: 350px;
+        padding-top: 1em;
+        padding-bottom: 1em;*/
+        padding: 0.8em 0.8em 0.8em 1.6em;
+        border-radius: 0 calc(var(--slide-border-radius) * 0.95) calc(var(--slide-border-radius) * 0.95) 0;
+        background-color: var(--dhbw-dark-gray);
+        color: white;
+        font-size: 2.25em;
+        font-family: var(--slide-large-serif-font-family);
+        /*font-variant: small-caps;*/
+        font-weight: 300;
+        text-align: center;
+        text-shadow: 1px 1px 1px white;   
+    }
+}

@@ -1,0 +1,99 @@
+#ld-document-view {
+
+    font-size: var(--dv-font-size);
+
+    overflow: hidden;
+
+    >ld-section {
+        display: block;
+        margin-bottom: calc(var(--dv-font-size) * 0.5);
+        padding: var(--dv-font-size);
+        border-radius: 0.25em;
+        background-color: var(--white);
+
+        >footer {
+            border-bottom: 1px solid var(--gray);
+            border-top: 1px solid var(--red);
+        }
+
+        &.new-section {
+            >h2 {
+                padding: 0.25em;
+
+                font-family: var(--large-text-font-family);
+                font-size: 2em;
+                text-align: center;
+
+                border-radius: 0.25em;
+                background-color: var(--dark-gray);
+                color: var(--white);
+            }
+        }
+
+
+        >footer>.ld-dv-section-number {
+            width: 100%;
+            text-align: right;
+        }
+
+
+        .supplemental {
+            margin-top: 1em;
+            border-top: 1px dashed #333;
+            padding: calc(var(--dv-font-size) * 0.5) 0 calc(var(--dv-font-size) * 0.5) 0;
+            font-size: var(--dv-supplemental-font-size);
+            line-height: var(--dv-supplemental-line-height);
+
+            &+.supplemental {
+                margin-top: 0em;
+            }
+        }
+    }
+}
+
+
+#ld-document-view .ld-exercise-solution[data-encrypted] {
+    display: none;
+}
+
+.ld-extracted-exercise {
+    margin-bottom: 0.5em;
+
+   + .ld-extracted-exercise {
+        border-top: solid 1px var(--dhbw-light-gray);
+        padding-top: 0.5em;
+   } 
+}
+
+@media print {
+    .ld-extracted-exercise + .ld-extracted-exercise {
+        page-break-before: always;
+    }
+
+    .ld-extracted-exercise .ld-exercise-solution-wrapper {
+        display: none;
+    }
+}
+
+.ld-extracted-exercise input {
+    width: 100%;
+
+    margin-bottom: 0.5em;
+    border: 1px solid var(--dhbw-light-gray);
+    border-radius: 0.5em;
+    padding: 0.5em;
+    
+    box-shadow: var(--br-shadow);    
+}
+
+#ld-document-view .stack {
+
+    display: flex;
+    flex-direction: column;
+
+    .layer {
+        @media print {
+            page-break-inside: avoid;
+        }
+    }
+}
