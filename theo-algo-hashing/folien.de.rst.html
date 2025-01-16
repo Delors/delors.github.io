@@ -131,8 +131,8 @@
 Wiederholung -->
 </div><div class="ld-slide" id="hashing-grundidee">
 <h2>Hashing - Grundidee</h2>
-<div class="stack invisible">
-<div class="layer">
+<ld-deck>
+<ld-card>
 <img alt="Hashmap" class="align-right" src="images/Hashkollision.svg" />
 <ul class="incremental list-with-explanations">
 <li><p>Die Elemente werden über den Schlüssel indexiert in einer Tabelle gespeichert.</p>
@@ -140,7 +140,7 @@ Wiederholung -->
 </li>
 <li><p>Hash-Funktion:  Methode zur Berechnung des Array-Index aus dem Schlüssel.</p></li>
 </ul>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <div class="challenges docutils container">
 <p class="rubric">Herausforderungen</p>
 <ol class="arabic simple">
@@ -149,7 +149,7 @@ Wiederholung -->
 <li><p>Kollisionsauflösung: Algorithmus und Datenstruktur zur Behandlung von zwei Schlüsseln, die auf denselben Array-Index hindeuten.</p></li>
 </ol>
 </div>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <aside class="admonition hint">
 <p class="admonition-title">Hinweis</p>
 <p class="rubric">Klassischer Kompromiss zwischen Raum und Zeit!</p>
@@ -159,7 +159,7 @@ Wiederholung -->
 <li><p>Raum- und Zeitbeschränkung: Hashing (die reale Welt).</p></li>
 </ul>
 </aside>
-</div></div></div><div class="ld-slide" id="berechnung-der-hash-funktion">
+</ld-card></ld-deck></div><div class="ld-slide" id="berechnung-der-hash-funktion">
 <h2>Berechnung der Hash-Funktion</h2>
 <dl class="field-list">
 <dt>Idealistisches Ziel<span class="colon">:</span></dt>
@@ -201,18 +201,26 @@ Wiederholung -->
 </div>
 </div><div class="ld-slide" id="hashfunktionen">
 <h2>Hashfunktionen</h2>
-<div class="stack invisible">
-<div class="layer">
+<ld-deck>
+<ld-card>
 <aside class="admonition admonition-definition">
 <p class="admonition-title">Definition</p>
-<p>Eine Hashfunktion <span class="math">\(h : M \rightarrow \mathbb{Z}_n\)</span> bildet eine Menge <span class="math">\(M\)</span> mit <span class="math">\(|M|\geq |\mathbb{Z}_n|\)</span> auf die Zahlen <span class="math">\(0,...,n-1\)</span> ab. Eine Hashfunktion ist <em>surjektiv</em>, also für jedes <span class="math">\(y \in Z_n\)</span> gibt es ein <span class="math">\(x \in M\)</span> mit <span class="math">\(h(x) = y\)</span>. Eine Hashfunktion ist <em>gleichverteilt</em>, wenn zwei Bilder <span class="math">\(y1,y2 \in  \mathbb{Z}_n\)</span> immer ungefähr gleich viele Urbilder haben <span class="math">\(|h^{-1}({y1})|\approx |h^{-1}({y2})|\)</span>.</p>
+<p>Eine Hashfunktion <span class="math">\(h : M \rightarrow \mathbb{Z}_n\)</span> bildet eine Menge <span class="math">\(M\)</span> mit <span class="math">\(|M|\geq |\mathbb{Z}_n|\)</span> auf die Zahlen <span class="math">\(0,...,n-1\)</span> ab.</p>
+<p>Eine Hashfunktion ist <em>surjektiv</em> <a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>: für jedes <span class="math">\(y \in Z_n\)</span> gibt es ein <span class="math">\(x \in M\)</span> mit <span class="math">\(h(x) = y\)</span>.</p>
+<p>Eine Hashfunktion ist <em>gleichverteilt</em>, wenn zwei Bilder <span class="math">\(y1,y2 \in  \mathbb{Z}_n\)</span> immer ungefähr gleich viele Urbilder haben <span class="math">\(|h^{-1}({y1})|\approx |h^{-1}({y2})|\)</span>.</p>
 </aside>
-</div><div class="layer incremental">
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p>In machen Fällen ist der Nachweis nicht möglich, aber es wird vermutet.</p>
+</aside>
+</aside>
+</ld-card><ld-card class="incremental">
 <p class="rubric">Hashes für unterschiedliche Anwendungen</p>
 <ul class="incremental">
-<li><p><strong>Hashes für Datenstrukturen</strong> müssen <em>sehr effizient</em> sein.</p></li>
-<li><p><strong>Hashes verwendet im Rahmen von Verschlüsselung und Signaturen</strong> (kryptographische Hashfunktion) sind besonders:
-Es muss sehr schwer sein:</p>
+<li><p><strong>Hashes für Datenstrukturen</strong> <em>müssen sehr effizient</em> sein.</p></li>
+<li><p>Für <strong>Hashes, welche verwendet werden im Rahmen von Verschlüsselung und Signaturen,</strong>
+muss es schwer sein:</p>
 <ul class="simple">
 <li><p>ein Urbild zu finden</p></li>
 <li><p>zwei kollidierende Werte zu finden.</p></li>
@@ -225,22 +233,24 @@ Es muss sehr schwer sein:</p>
 </li>
 <li><p><strong>Hashes für Passwortspeicherung</strong> müssen die selben Anf. erfüllen wie Hashes für Signaturen und Verschlüsselungszwecke, dürfen aber <em>nicht effizient berechenbar</em> sein.</p></li>
 </ul>
-<div class="incremental">
+<aside class="admonition incremental important">
+<p class="admonition-title">Wichtig</p>
 <p>Im Folgenden konzentrieren wir uns auf Hashes für Datenstrukturen.</p>
-</div></div><div class="layer incremental">
+</aside>
+</ld-card><ld-card class="incremental">
 <p>Wenn das Ziel ist, hash Werte mit einer bestimmten Länge (zum Beispiel 32Bit) zu berechnen, dann wären folgende Hashfunktionen denkbar:</p>
 <p class="rubric">Exemplarische Hashfunktionen</p>
-<div class="stack invisible">
-<div class="layer">
+<ld-deck>
+<ld-card>
 <p><strong>Ganze Zahlen</strong></p>
 <pre class="code rust literal-block"><code><span class="name">hash</span><span class="punctuation">(</span><span class="name">x</span>: <span class="keyword type">u32</span><span class="punctuation">)</span><span class="whitespace"> </span>: <span class="keyword type">u32</span> <span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="comment single">// u32 == 32-Bit unsigned integer</span></code></pre>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <p><strong>Gleitkommazahlen</strong></p>
 <pre class="code rust literal-block"><code><span class="name">hash</span><span class="punctuation">(</span><span class="name">x</span>: <span class="keyword type">f64</span><span class="punctuation">)</span><span class="whitespace"> </span>: <span class="keyword type">u32</span> <span class="punctuation">{</span><span class="whitespace"> </span><span class="comment single">// f64 == 64-Bit (IEEE) floating point number
 </span><span class="whitespace">    </span><span class="name">bits</span><span class="whitespace"> </span>: <span class="keyword type">u64</span> <span class="operator">=</span><span class="whitespace"> </span><span class="name">f64ToBits</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// u64 = 64-Bit (signed) integer
 </span><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">u32</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bits</span><span class="whitespace"> </span><span class="operator">^</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bits</span><span class="whitespace"> </span><span class="operator">&gt;&gt;&gt;</span><span class="whitespace"> </span><span class="literal number integer">32</span><span class="punctuation">));</span><span class="whitespace">
 </span><span class="punctuation">}</span></code></pre>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <p><strong>Zeichenketten</strong></p>
 <aside class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -271,21 +281,20 @@ Es muss sehr schwer sein:</p>
 </aside>
 <p>Horners Methode für Zeichenketten der Länge L:</p>
 <p><span class="math">\(h = s[0] · 31^{L–1} + \ldots   + s[L – 2] · 31^1  +  s[L – 1] · 31^0\)</span>.</p>
-<pre class="code rust literal-block"><code><span class="name">hash</span><span class="punctuation">(</span><span class="name">s</span>: <span class="punctuation">[</span><span class="keyword type">char</span><span class="punctuation">,</span><span class="literal number integer">4</span><span class="punctuation">])</span><span class="whitespace"> </span>: <span class="keyword type">u32</span> <span class="punctuation">{</span><span class="whitespace">
+<pre class="code rust literal-block"><code><span class="keyword">fn</span> <span class="name function">hash</span><span class="punctuation">(</span><span class="name">s</span>: <span class="punctuation">[</span><span class="keyword type">char</span><span class="punctuation">,</span><span class="literal number integer">4</span><span class="punctuation">])</span><span class="whitespace"> </span>: <span class="keyword type">u32</span> <span class="punctuation">{</span><span class="whitespace">
     </span><span class="name">hash</span>: <span class="keyword type">u32</span> <span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace">
     </span><span class="keyword">for</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="keyword">in</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="operator">..</span><span class="literal number integer">4</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">hash</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">s</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">hash</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="literal number integer">31</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
     </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">hash</span><span class="punctuation">;</span><span class="whitespace">
 </span><span class="punctuation">}</span><span class="whitespace">
-
 </span><span class="comment single">// hash(['c','a','l','l']) = // ≘ hash(&quot;call&quot;)
 //    99 · 31·31·31 + 97 · 31·31 + 108 · 31 + 108 =
 //    108 + 31 · ( 108 + 31 · (97 + 31 · (99)))</span></code></pre>
-</div></div></div></div></div><div class="new-section transition-move-to-top ld-slide" id="hashing-in-python">
+</ld-card></ld-deck></ld-card></ld-deck></div><div class="new-section transition-move-to-top ld-slide" id="hashing-in-python">
 <h2>Hashing in Python</h2>
 </div><div class="ld-slide" id="verwendung-von-hashes-in-python">
 <h2>Verwendung von Hashes in Python</h2>
-<div class="stack invisible">
-<div class="layer">
+<ld-deck>
+<ld-card>
 <ul class="incremental simple">
 <li><p>Bei der Speicherung von Objekten in Sets und Dictionaries verwendet Python Hashes.</p></li>
 <li><p>Sobald ein Objekt in einem Set oder Dictionary gespeichert wird, darf der Objektzustand (zumindest im Hinblick auf die Hashfunktion) nicht mehr verändert werden!</p></li>
@@ -302,7 +311,7 @@ Es muss sehr schwer sein:</p>
 </ul>
 </li>
 </ul>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <p class="rubric">Beispielklasse <code class="java"><span class="name">Person</span></code></p>
 <pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword">class</span> <span class="name class">Person</span><span class="punctuation">:</span><span class="whitespace">
 </span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">name</span><span class="punctuation">,</span> <span class="name">age</span><span class="punctuation">):</span><span class="whitespace">
@@ -317,7 +326,7 @@ Es muss sehr schwer sein:</p>
 </span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">
 </span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__hash__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
 </span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>        <span class="keyword">return</span> <span class="name builtin">hash</span><span class="punctuation">((</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">name</span><span class="punctuation">,</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">age</span><span class="punctuation">))</span></code></pre>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <p class="rubric">Verwendung der Klasse <code class="java"><span class="name">Person</span></code></p>
 <pre class="code python copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">person1</span> <span class="operator">=</span> <span class="name">Person</span><span class="punctuation">(</span><span class="literal string double">&quot;Alice&quot;</span><span class="punctuation">,</span> <span class="literal number integer">30</span><span class="punctuation">)</span><span class="whitespace">
 </span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name">person2</span> <span class="operator">=</span> <span class="name">Person</span><span class="punctuation">(</span><span class="literal string double">&quot;Bob&quot;</span><span class="punctuation">,</span> <span class="literal number integer">25</span><span class="punctuation">)</span><span class="whitespace">
@@ -329,7 +338,7 @@ Es muss sehr schwer sein:</p>
 </span><span class="operator">&lt;</span><span class="name">__main__</span><span class="operator">.</span><span class="name">Person</span> <span class="name builtin">object</span> <span class="name">at</span> <span class="literal number hex">0x1013daad0</span><span class="operator">&gt;</span><span class="whitespace">
 </span><span class="operator">&gt;&gt;&gt;</span> <span class="name">person3</span><span class="whitespace">
 </span><span class="operator">&lt;</span><span class="name">__main__</span><span class="operator">.</span><span class="name">Person</span> <span class="name builtin">object</span> <span class="name">at</span> <span class="literal number hex">0x1013db110</span><span class="operator">&gt;</span></code></pre>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <p class="rubric">Speicherung von <code class="java"><span class="name">Person</span></code>-Objekten in einem Set</p>
 <pre class="code python copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">people</span> <span class="operator">=</span> <span class="punctuation">{</span><span class="name">person1</span><span class="punctuation">,</span> <span class="name">person2</span><span class="punctuation">,</span> <span class="name">person3</span><span class="punctuation">}</span></code></pre>
 <div class="incremental">
@@ -338,7 +347,7 @@ Es muss sehr schwer sein:</p>
 <p><strong>Ausgabe</strong></p>
 <pre class="code python incremental literal-block"><code><span class="name">Bob</span><span class="whitespace">
 </span><span class="name">Alice</span></code></pre>
-</div></div><div class="layer incremental">
+</div></ld-card><ld-card class="incremental">
 <p class="rubric">Verwendung der <code class="java"><span class="name">hash</span></code>-Funktion</p>
 <pre class="code python copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">hash</span><span class="punctuation">(</span><span class="name">person1</span><span class="punctuation">))</span><span class="whitespace">
 </span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">hash</span><span class="punctuation">(</span><span class="name">person2</span><span class="punctuation">))</span><span class="whitespace">
@@ -349,7 +358,7 @@ Es muss sehr schwer sein:</p>
 </span><span class="literal number integer">3529483511948588452</span></code></pre>
 <div class="supplemental">
 <p>In Python ist die Ausgabe der Funktion <span class="docutils literal">hash()</span> nach jedem Neustart der Pythonumgebung unterschiedlich, da die Hashfunktion einen Zufallswert enthält, der bei jedem Neustart neu generiert wird.</p>
-</div></div><div class="layer incremental">
+</div></ld-card><ld-card class="incremental">
 <p class="rubric">Beispielklasse <code class="java"><span class="name">Person</span></code> mit konstantem Hashwert</p>
 <pre class="code python literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword">class</span> <span class="name class">PersonWithBadHash</span><span class="punctuation">:</span><span class="whitespace">
 </span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">name</span><span class="punctuation">,</span> <span class="name">age</span><span class="punctuation">):</span><span class="whitespace">
@@ -366,7 +375,7 @@ Es muss sehr schwer sein:</p>
 </span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>        <span class="keyword">return</span> <span class="literal number integer">1</span> <span class="comment single"># immer der gleiche Hashwert</span></code></pre>
 <div class="supplemental">
 <p>Die Verwendung des Alters der Person als Hashwert wäre in den allermeisten Fällen auch keine gute Idee, da es (vermutlich) viele Hashkollisionen geben würde.</p>
-</div></div><div class="layer incremental">
+</div></ld-card><ld-card class="incremental">
 <p class="rubric">Verwendung einer Klasse mit einer schlechten/konstanten Hashfunktion</p>
 <pre class="code python literal-block"><code><span class="name">person1</span> <span class="operator">=</span> <span class="name">Person</span><span class="punctuation">(</span><span class="literal string double">&quot;Alice&quot;</span><span class="punctuation">,</span> <span class="literal number integer">30</span><span class="punctuation">)</span><span class="whitespace">
 </span><span class="name">person2</span> <span class="operator">=</span> <span class="name">Person</span><span class="punctuation">(</span><span class="literal string double">&quot;Bob&quot;</span><span class="punctuation">,</span> <span class="literal number integer">25</span><span class="punctuation">)</span><span class="whitespace">
@@ -375,18 +384,17 @@ Es muss sehr schwer sein:</p>
 </span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">hash</span><span class="punctuation">(</span><span class="name">person1</span><span class="punctuation">))</span><span class="whitespace">
 </span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">hash</span><span class="punctuation">(</span><span class="name">person2</span><span class="punctuation">))</span><span class="whitespace">
 </span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name builtin">hash</span><span class="punctuation">(</span><span class="name">person3</span><span class="punctuation">))</span><span class="whitespace">
-</span><span class="keyword">for</span> <span class="name">p</span> <span class="operator word">in</span> <span class="name">people</span><span class="punctuation">:</span> <span class="name builtin">print</span><span class="punctuation">(</span><span class="name">p</span><span class="operator">.</span><span class="name">name</span><span class="punctuation">)</span></code></pre>
+</span><span class="name builtin">print</span><span class="punctuation">(</span><span class="literal string double">&quot; &quot;</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">(</span><span class="name builtin">map</span><span class="punctuation">(</span><span class="keyword">lambda</span> <span class="name">p</span><span class="punctuation">:</span> <span class="name">p</span><span class="operator">.</span><span class="name">name</span><span class="punctuation">,</span> <span class="name">people</span><span class="punctuation">)))</span></code></pre>
 <p><strong>Beispielausgabe</strong></p>
 <pre class="code python literal-block"><code><span class="literal number integer">1</span><span class="whitespace">
 </span><span class="literal number integer">1</span><span class="whitespace">
 </span><span class="literal number integer">1</span><span class="whitespace">
-</span><span class="name">Alice</span><span class="whitespace">
-</span><span class="name">Bob</span></code></pre>
-</div></div></div><div class="exercises transition-fade ld-slide" id="ubung">
+</span><span class="name">Alice</span> <span class="name">Bob</span></code></pre>
+</ld-card></ld-deck></div><div class="exercises transition-fade ld-slide" id="ubung">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Eine Klasse zur Repräsentation von Studierenden." id="ld-exercise-1">
 <p class="rubric">Eine Klasse zur Repräsentation von Studierenden.</p>
-<p>Die Klasse <span class="docutils literal">Student</span> soll:</p>
+<p>Die Klasse <code class="java"><span class="name">Student</span></code> soll:</p>
 <ul class="simple">
 <li><p>die Attribute <span class="docutils literal">name</span> und <span class="docutils literal">matriculation_number</span> haben.</p></li>
 <li><p>die Methoden <span class="docutils literal">__eq__</span> und <span class="docutils literal">__hash__</span> definieren</p></li>
@@ -412,8 +420,8 @@ MTAwMDAw:4XVOJ+/vZh67NV+ruDIscvTkyDDT+CQKsaJvnDl0JfY=:8KLIw2K+WPoe1wyP:uJoh2OBxg
 <h2>Hashfunktionen</h2>
 </div><div class="ld-slide" id="gangige-ansatze-fur-hashfunktionen">
 <h2>Gängige Ansätze für Hashfunktionen</h2>
-<div class="stack invisible">
-<div class="layer">
+<ld-deck>
+<ld-card>
 <dl class="field-list">
 <dt>Modulo-Hashfunktion<span class="colon">:</span></dt>
 <dd><p>Sei <span class="math">\(n\)</span> möglichst eine Primzahl:</p>
@@ -433,7 +441,7 @@ MTAwMDAw:4XVOJ+/vZh67NV+ruDIscvTkyDDT+CQKsaJvnDl0JfY=:8KLIw2K+WPoe1wyP:uJoh2OBxg
 </ul>
 </li>
 </ul>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <dl class="field-list">
 <dt>Multiplikations-Hashfunktion<span class="colon">:</span></dt>
 <dd><p>Sei <span class="math">\(c\)</span> fest, oft <span class="math">\(c = {\sqrt{5}-1 \over 2} \approx 0,6180339887498949\)</span>:</p>
@@ -449,7 +457,7 @@ MTAwMDAw:4XVOJ+/vZh67NV+ruDIscvTkyDDT+CQKsaJvnDl0JfY=:8KLIw2K+WPoe1wyP:uJoh2OBxg
 </li>
 <li><p>Berechnung benötigt eine effiziente Fließkomma-Verarbeitung</p></li>
 </ul>
-</div></div></div><div class="exercises ld-slide" id="ubung-1">
+</ld-card></ld-deck></div><div class="exercises ld-slide" id="ubung-1">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Hashwerte berechnen I" id="ld-exercise-2">
 <p class="rubric">Hashwerte berechnen I</p>
@@ -494,41 +502,41 @@ MTAwMDAw:iSjrtxfQOBpXhaFioe4M3UeotpX0PPHXwcK2ZRFLsUs=:hkVuf6rhKBb6p4d4:gPK6HBAgx
 </aside>
 </div><div class="ld-slide" id="verkettete-hashtabellen">
 <h2>Verkettete Hashtabellen</h2>
-<div class="stack invisible">
-<div class="layer">
+<ld-deck>
+<ld-card>
 <p class="rubric">Direkte Verkettung</p>
 <img alt="Hashtabelle mit direkter Verkettung" class="align-center" src="images/hashtables/direkte_verkettung.svg" />
 <div class="supplemental">
 <p>Die <em>direkte Verkettung</em> von Überläufern verwendet eine <span class="math">\(Hashtabelle(A,h_n)\)</span>, mit einem Array <span class="math">\(A\)</span>, das aus Zeigern auf einfach verkettete Listen besteht, dessen Schlüssel der Einträge alle den gleichen Hashwert besitzen, oder die nil sind, wenn kein Eintrag bisher mit dem jeweiligen Hashwert vorhanden ist.</p>
-</div></div><div class="layer incremental">
+</div></ld-card><ld-card class="incremental">
 <p class="rubric">Separate Verkettung</p>
 <img alt="Hashtabelle mit separater Verkettung" class="align-center" src="images/hashtables/separate_verkettung.svg" />
 <div class="supplemental">
 <p>Die <em>separate Verkettung</em> von Überläufern verwendet eine <span class="math">\(Hashtabelle(A,h_n)\)</span>, bei der das Array <span class="math">\(A\)</span> aus Knoten einer einfach verketteten Liste besteht, dessen Wert <span class="math">\(nil\)</span> ist, wenn unter dem Hashwert noch nichts gespeichert wurde.</p>
 <p>Ein Eintrag mit Schlüssel <span class="math">\(k\)</span> wird der verketteten Liste zugeordnet, die in <span class="math">\(A[h_n(k)]\)</span> verlinkt ist oder startet, und kann entsprechend hinzugefügt, gelöscht und gefunden werden.</p>
-</div></div></div></div><div class="ld-slide" id="offene-adressierung">
+</div></ld-card></ld-deck></div><div class="ld-slide" id="offene-adressierung">
 <h2>Offene Adressierung</h2>
 <aside class="admonition admonition-definition">
 <p class="admonition-title">Definition</p>
 <p>Soll der <span class="math">\(Hashtabelle(A,h_n)\)</span> mit einem Array <span class="math">\(A\)</span> ein Datensatz mit Schlüssel <span class="math">\(k\)</span> hinzugefügt werden soll, so erfolgt dies in <span class="math">\(A[h_n(k)]\)</span>, wenn dieser Eintrag noch nicht belegt ist. Ansonsten werden  <span class="math">\(i= 1,...,n-1\)</span> weitere Positionen <span class="math">\(A[g_n(k,i)]\)</span> geprüft.</p>
 </aside>
 <p class="rubric">Strategien</p>
-<div class="stack invisible">
-<div class="layer">
+<ld-deck>
+<ld-card>
 <dl class="field-list">
 <dt>Lineares-Sondieren<span class="colon">:</span></dt>
 <dd><p>Das Array wird linear durchsucht.</p>
 <p><span class="math">\(g^{lin}_n(k,i) = (h_n(k) + i)\; mod\; n\)</span></p>
 </dd>
 </dl>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <dl class="field-list">
 <dt>Quadratisches-Sondieren<span class="colon">:</span></dt>
 <dd><p>Das Array wird quadratisch steigend durchsucht.</p>
 <p><span class="math">\(g^{quad}_n(k,i) = (h_n(k) + i^2)\; mod\; n\)</span></p>
 </dd>
 </dl>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <dl class="field-list">
 <dt>Doppeltes-Hashing<span class="colon">:</span></dt>
 <dd><p>Das Array wird mit Hilfe einer zweiten Hashfunktion:</p>
@@ -539,18 +547,18 @@ MTAwMDAw:iSjrtxfQOBpXhaFioe4M3UeotpX0PPHXwcK2ZRFLsUs=:hkVuf6rhKBb6p4d4:gPK6HBAgx
 <p><span class="math">\(g^{doppel}_n(k,i) = (h_n(k) + i \cdot h^{'}_n(k))\; mod\; n\)</span></p>
 </dd>
 </dl>
-</div></div></div><div class="ld-slide" id="beispiel-offene-adressierung-hashing-mit-modulo-7">
+</ld-card></ld-deck></div><div class="ld-slide" id="beispiel-offene-adressierung-hashing-mit-modulo-7">
 <h2>Beispiel Offene Adressierung (Hashing mit Modulo 7)</h2>
-<div class="stack invisible">
-<div class="layer">
+<ld-deck>
+<ld-card>
 <img alt="Offene Adressierung mit linearem Sondieren" class="align-right" src="images/open_addressing/linear_probing.svg" />
 <p><strong>Lineare Sondierung</strong></p>
 <p>Hinzufügen von (17, 5, 3, 21, 9, 10, 12)</p>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <img alt="Offene Adressierung mit doppeltem Hashing" class="align-right" src="images/open_addressing/double_hashing.svg" />
 <p><strong>Doppeltes-Hashing</strong></p>
 <p>Hinzufügen von (17, 5, 3, 21, 9, 10, 12)</p>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <img alt="Offene Adressierung mit quadratischem Sondieren" class="align-right" src="images/open_addressing/quadratic_probing.svg" />
 <p><strong>Quadratische Sondierung</strong></p>
 <p>Hinzufügen von (17, 5, 3, 21, 9, 10, 12)</p>
@@ -566,7 +574,7 @@ MTAwMDAw:iSjrtxfQOBpXhaFioe4M3UeotpX0PPHXwcK2ZRFLsUs=:hkVuf6rhKBb6p4d4:gPK6HBAgx
 <li><p><span class="math">\(3 + 5^2\; mod\; 7 = 0\)</span></p></li>
 <li><p><span class="math">\(3 + 6^2\; mod\; 7 = 4\)</span></p></li>
 </ol>
-</div></div></div></div><div class="exercises ld-slide" id="ubung-2">
+</div></ld-card></ld-deck></div><div class="exercises ld-slide" id="ubung-2">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Werte in kleine Hashtabelle einfügen" id="ld-exercise-4">
 <p class="rubric">Werte in kleine Hashtabelle einfügen</p>
@@ -587,8 +595,9 @@ MTAwMDAw:HAe58SZjjF10sCiRcsxkxvrSC7siMHSP4rk8jtJF62s=:OiJhysljtmJ3xobc:63ZHm1UbT
 <p>hashCode() value is used in the implementations of [Java 6] HashMap and Hashtable classes. A specially-crafted set of keys could trigger hash function collisions, which can degrade performance of HashMap or Hashtable by changing hash table operations complexity from an expected/average O(1) to the worst case O(n).
 Reporters were able to find colliding strings efficiently using equivalent substrings and meet in the middle techniques.
 This problem can be used to start a denial of service attack against  applications that use untrusted inputs as HashMap or Hashtable keys. An example is a web application server that may fill hash tables with data from HTTP request. A remote attack could use that to make JVM use excessive amount of CPU time by sending a POST request with large amount of parameters which hash to the same value.</p>
-<p class="attribution">—[Abbreviated Version] Jan Lieskovsky 2011-11-01 10:13:47 EDT</p>
+<p class="attribution">—[Abbreviated Version] Jan Lieskovsky 2011-11-01</p>
 </blockquote>
+<!-- TODO: Discuss https://en.wikipedia.org/wiki/MurmurHash -->
 </div>
 </template>
 </body>
