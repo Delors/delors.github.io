@@ -950,12 +950,14 @@ function setupDocumentView() {
         template.classList.remove("ld-slide"); // not needed anymore
         setupCopyToClipboard(template);
 
-        let options = { id: "ld-dv-slide-no-" + i };
+        let options = { id: "ld-section-no-" + i };
         if (template.classList.length > 0)
             options.classList = template.classList;
         
         const section = ld.create("ld-section", options);
         if (template.classList.contains("exercises")) {
+            section.appendChild(template.querySelector("h2"));
+
             // Just extract the exercises and their solutions.
             // Keep supplemental infos where they are!
             template.querySelectorAll(":scope .ld-exercise").forEach((e) => {
@@ -1382,7 +1384,7 @@ function jumpToSlide() {
         const targetSlideNo = slideNo > lastSlideNo() ? lastSlideNo() : slideNo;
 
         if (state.showDocumentView) {
-            window.scrollTo(0, document.getElementById("ld-dv-slide-no-" + targetSlideNo).offsetTop);
+            window.scrollTo(0, document.getElementById("ld-section-no-" + targetSlideNo).offsetTop);
         } else {
             goToSlideWithNo(targetSlideNo);
         }

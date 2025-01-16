@@ -1,0 +1,42 @@
+.block-footer {
+    &::after {
+        position: absolute;
+        bottom: -45px;
+        right: -35px;
+        content: var(--dhbw-symbol);
+        scale: 0.5
+    }
+}
+
+
+/* 
+    Adds the DHBW logo to the title-slide (i.e., the only slide with an h1 element).
+
+    If the slide has the class `animated-symbol`, only the text part of the logo
+    is statically added. The script `logo.js` will add the symbol part of the 
+    logo.
+
+    @author Michael Eichberg
+    @version 2024-07-18
+*/
+#ld-slides-pane .ld-slide:has(h1) {
+
+    &:not(.animated-symbol)::before {
+        position: absolute;
+        right: 48px;
+        bottom: 32px;
+        content: var(--dhbw-logo);
+        mix-blend-mode: multiply;
+    }
+
+    &.animated-symbol::before {
+        position: absolute;
+        right: 48px;
+        bottom: 32px;
+        content: var(--dhbw-text);
+        /* the symbol is added programmatically */
+        mix-blend-mode: multiply;
+    }
+}
+
+
