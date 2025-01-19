@@ -1,21 +1,28 @@
 /* LAYER: behavior */
 
 #ld-document-view {
+    /* "display" is controlled by JavaScript: */
     display: none;
-    /* changed by JavaScript */
+
 
     min-width: calc(var(--ld-slide-width) / 3);
     /* 60px to ensure that the nav-bar is fully visible: */
     margin: 0px 60px 0px 60px;
+
+    overflow: hidden;
 
     /* for symmetry reasons*/
     @media print {
         margin: 0;
     }
 
-    >ld-section:has(+ld-section) {
-        @media print {
-            break-after: page;
+    >ld-section{
+        overflow: hidden;
+
+            &:has(+ld-section) {
+            @media print {
+                break-after: page;
+            }
         }
     }
 
@@ -32,12 +39,16 @@
 
     ld-card {
         display: block;
-        /* width and height must not be set! */        
+        /* width and height must not be set! */
 
         /*position: relative / absolute is done by JavaScript*/
         top: 0;
         left: 0;
 
         clear: both;
+    }
+
+    ld-presenter-note {
+        display: none;
     }
 }

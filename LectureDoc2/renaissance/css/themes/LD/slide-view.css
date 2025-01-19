@@ -18,51 +18,168 @@
 */
 #ld-slides-pane {
 
-    /*  Done by Javascript: Aggregation of all supplemental information in one 
-        ld-supplemental element: */
-    .ld-slide ld-supplementals {
-        display: block;
-        max-width: var(--ld-rel-max-supplemental-area-width);
-        max-height: var(--ld-rel-max-supplemental-area-height);
-        margin: 0;
-        border-radius: var(--slide-border-radius) 0 0 var(--slide-border-radius);
-        padding: calc(var(--slide-tb-padding) * 0.75) calc(var(--slide-lr-padding) * 0.75);
-        /* the factor has to be larger than the factor used by translate (see below) */
 
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 1;
+    .ld-slide {
 
-        overflow-y: scroll;
+        /*  Done by Javascript: 
+            Aggregation of all supplemental information in one 
+            ld-supplemental element: 
+        */
+        ld-supplementals {
+            display: block;
+            max-width: var(--ld-rel-max-supplemental-area-width);
+            max-height: var(--ld-rel-max-supplemental-area-height);
+            margin: 0;
+            border-radius: var(--slide-border-radius) 0 0 var(--slide-border-radius);
+            padding: calc(var(--slide-tb-padding) * 0.75) calc(var(--slide-lr-padding) * 0.75);
+            /* the factor has to be larger than the factor used by translate (see below) */
 
-        background-color: rgb(from var(--slide-background-color) r g b / 0.5);
-        -webkit-backdrop-filter: blur(25px);
-        backdrop-filter: blur(25px);
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1;
 
-        transform:
-            translateX(calc(100% - var(--slide-lr-padding) * 0.5)) translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
-        box-shadow: var(--trbl-shadow);
-        transition: 0.75s;
+            overflow-y: scroll;
 
+            background-color: rgb(from var(--slide-background-color) r g b / 0.5);
+            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(25px);
 
-        /*  We can't use the :hover pseudo class here, because we want to be able to 
-        apply the styling in the non-primary window. */
-        &.hover\:ld-supplementals {
-            /* the selector needs to be more specific than the general .supplemental selector. */
             transform:
-                translateX(0%) translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
+                translateX(calc(100% - var(--slide-lr-padding) * 0.5)) translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
+            box-shadow: var(--trbl-shadow);
             transition: 0.75s;
-            box-shadow: var(--trbl-shadow-dark);
+
+
+            /*  We can't use the :hover pseudo class here, because we want to be 
+                able to apply the styling in the non-primary window. */
+            &.hover\:ld-supplementals {
+                /* the selector needs to be more specific than the general .supplemental selector. */
+                transform:
+                    translateX(0%) translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
+                transition: 0.75s;
+                box-shadow: var(--trbl-shadow-dark);
+            }
+
+            .supplemental+.supplemental {
+                margin-top: 0.5em;
+                border-top: 1px dashed var(--dhbw-dark-gray);
+                padding-top: 0.5em;
+            }
         }
 
-        .supplemental + .supplemental {
-            margin-top: 0.5em;
-            border-top: 1px dashed var(--dhbw-dark-gray);
-            padding-top: 0.5em;
+        ld-presenter-note-marker {
+            >div {
+                display: block;
+                position: absolute;
+                translate: 0 -1.33lh;
+                font-size: 24px;
+                /* We don't want to have it dependent on the current font-size that is "accidentally" in effect. */
+                font-weight: bolder;
+                width: 1.5em;
+                height: 1.5em;
+                text-align: center;
+                border-radius: 25% 25%;
+                background-color: rgba(200, 200, 200, 0.5);
+                mix-blend-mode: multiply;
+                color: black;
+                text-shadow: 1px 1px 2px white;
+            }
         }
+        /* The custom class .hover is added programmatically. */
+        ld-presenter-notes {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+
+            >ld-presenter-note {
+                padding: 0.25em 0.5em;
+
+                font-size: 38px;
+                background-color: rgba(200, 200, 200, 0.5);
+                color: black;
+                text-shadow: 1px 1px 2px white;
+
+                &::before {
+                    content: attr(data-presenter-note-id);
+                    display: block;
+                    width:100%;
+                    padding-bottom: 0.1em;
+                    margin-bottom: 0.1em;
+                    border-bottom: thin solid var(--dark-gray);
+
+                    text-align: center;
+                    font-size: smaller;
+                }
+
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+
+                &.hover\:ld-presenter-note {
+                    display: block;
+                }
+
+                &:not(.hover\:ld-presenter-note) {
+                    display: none;
+                }
+            }
+        }
+
+        &.new-subsection {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration-color: var(--dhbw-light-gray);
+
+            &::after {
+                content: var(--dhbw-logo);
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                scale: 0.50;
+                translate: 60px -25px;
+            }
+
+            >h2 {
+                width: 100%;
+                padding: var(--slide-padding);
+                /*border: 1px solid var(--dhbw-gray);*/
+                border-radius: 0 calc(var(--slide-border-radius) * 0.75) calc(var(--slide-border-radius) * 0.75) 0;
+                margin-left: calc(-2 * var(--slide-lr-padding));
+                color: whitesmoke;
+                background-color: var(--dhbw-gray);
+                font-size: 1.666em;
+                text-align: center;
+                position: relative;
+            }
+        }
+
+
+        /*
+        &.excursion { 
+            border-top: 15px solid darkgray;
+            padding-top: calc(var(--slide-tb-padding) - 15px);
+            border-bottom: 15px solid darkgray;
+            padding-bottom: calc(var(--slide-tb-padding) - 15px);
+        
+            &::before {
+                content: "📝";
+                display: block;
+                position: absolute;
+                top: 0px;
+                right: 15px;
+                font-size: 80px;
+                text-shadow: 2px 2px 4px var(--dhbw-dark-gray);
+                mix-blend-mode: multiply;        
+            }
+        }
+        */
     }
 }
+
 
 
 
@@ -335,28 +452,8 @@ with other classes to style the block footer.
 
 
 
-/*
 
-*/
-.ld-slide.excursion {
-    border-top: 15px solid darkgray;
-    padding-top: calc(var(--slide-tb-padding) - 15px);
-    border-bottom: 15px solid darkgray;
-    padding-bottom: calc(var(--slide-tb-padding) - 15px);
 
-    &::before {
-        content: "📝";
-        display: block;
-        position: absolute;
-        top: 0px;
-        right: 15px;
-        font-size: 80px;
-        text-shadow: 2px 2px 4px var(--dhbw-dark-gray);
-        mix-blend-mode: multiply;
-        /* makes it easier to use it on various backgrounds */
-
-    }
-}
 
 
 /*
@@ -433,175 +530,4 @@ with other classes to style the block footer.
 }
 
 
-/*  Styling of stacked elements.
 
-    To create elements which stack on top of each other on a single slide 
-    (e.g., to create some animation) use a div with the class stack as the 
-    parent of the elements in the stack. 
-    Each element in the stack is represented by an element (div) with the class 
-    layer. 
-    
-    Use the class overlay to make the background of the layer transparent. 
-    
-    The first layer must not be an overlay layer.
-
-    Example:
-
-        <div class="stack">
-            <div class="layer">...</div>
-            <div class="layer overlay incremental">...</div>
-            <div class="layer incremental">...</div>
-        </div>
-    
-    The first element in the stack is the bottom most element and rendered 
-    first. All other elements are rendered on top of the previous element and
-    will hide the underyling elements.
-    Add the additional css class overlay to layers that should have a 
-    transparent background.
-
-    In general, stack based layouts are most often only useful if the class 
-    incremental is added to the layers.
-*/
-
-
-.stack {
-    width: 100%;
-    /* DON'T SET HEIGHT! */
-
-    position: relative;
-
-    counter-reset: stack-layer 0;
-
-    >.layer {
-        /* All layers must have the same margin! */
-        margin-bottom: 0.5em;
-
-        &.overlay {
-            background-color: transparent;
-        }
-
-        &.warning {
-            text-align: center;
-
-            background-color: var(--dhbw-red);
-            color: white;
-        }
-    }
-
-    /*  We only add numbers when we have a stack with more than one layer that
-        is not an overlay layer.
-    */
-    &:not(.invisible, .no-numbers):has(.layer:not(.overlay, .no-number, :first-child))>.layer:not(.overlay, .no-number)::before {
-        position: absolute;
-        right: 0.6em;
-        bottom: 0.35em;
-
-        font-size: 0.75em;
-        counter-increment: stack-layer;
-        content: counter(stack-layer);
-    }
-
-    &:not(.invisible)>.layer {
-        border-radius: var(--slide-border-radius);
-        padding: 0.5em;
-
-        background-color: var(--slide-background-color);
-        box-shadow: var(--br-shadow);
-
-        &.overlay {
-            background-color: transparent;
-        }
-    }
-}
-
-:where(#ld-slides-pane, #ld-light-table-dialog) .stack>.layer {
-    width: 100%;
-    /* DON'T ADD: height: 100%; !!! */
-
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    background-color: var(--slide-background-color);
-}
-
-
-
-
-/*
-    Styling of slides which act as sub section headers.
-
-    <code>div class="ld-slide new-subsection"...</code>
-*/
-
-@property --subsection-title-shadow-angle {
-    syntax: '<angle>';
-    inherits: false;
-    initial-value: 0deg;
-}
-
-div.ld-slide.new-subsection {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-decoration-color: var(--dhbw-light-gray);
-
-    &::after {
-        content: var(--dhbw-logo);
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        scale: 0.50;
-        translate: 60px -25px;
-    }
-
-    >h2 {
-        width: 100%;
-        padding: var(--slide-padding);
-        /*border: 1px solid var(--dhbw-gray);*/
-        border-radius: 0 calc(var(--slide-border-radius) * 0.75) calc(var(--slide-border-radius) * 0.75) 0;
-        margin-left: calc(-2 * var(--slide-lr-padding));
-        color: whitesmoke;
-        background-color: var(--dhbw-gray);
-        font-size: 1.666em;
-        text-align: center;
-        position: relative;
-        /*box-shadow: var(--br-shadow);*/
-
-        /*&::after,
-        &::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: calc(var(--slide-border-radius) * 0.5);
-            background-image: conic-gradient(from var(--subsection-title-shadow-angle), var(--dhbw-gray), var(--dhbw-red), var(--dhbw-gray));
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 10px;
-            z-index: -1;
-            / *animation: rotate-subsection-title-shadow 5s   
-              infinite linear;* /
-        }
-        &::after {
-            padding: 3px;
-            filter: opacity(0.35) blur(2px);
-        }
-        &::before {
-            filter: blur(15px) opacity(0.5);
-        }
-        */
-    }
-}
-
-@keyframes rotate-subsection-title-shadow {
-    0% {
-        --subsection-title-shadow-angle: 0deg;
-    }
-
-    100% {
-        --subsection-title-shadow-angle: 360deg;
-    }
-}

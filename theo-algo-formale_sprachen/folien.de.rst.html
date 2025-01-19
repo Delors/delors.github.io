@@ -10,7 +10,15 @@
 <meta content="lecture-theo-algo-hashing-and-applications" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:UQjV5/5wVA7NRFrazxNgQhvhpmXdKObsr7ZWFfK1MQI=:nm2UZHme/6A2FOH9:7p4mO3dUgq0G1GykuQjg/k6bODkjArOFUc3Mrs5nrKWA2n5dYl83HnB4NZnN1wX99PD3FlIKeDcWfL/jKve8p4sjseYlubxu0TQGxRSi5L5OUsyJwFQ3nF9BmLmU1q/cABvT+CBwL3N4D3FNZbQ6RmBZn3pxieIqkUxorke6Dd55RUi1vlqaRG/mkwB5JBenCeR4ynkxjOsvH6K9QaGMnYNAUoPR83iQXMxEYJ7jeu1f1tKyyUkTEOLDlGLyp58Chxozc+Rma4IgQLfnT8nib8JGJvEAw/2UwKoqOY9oewSriiWYVbCYUMqu50OCOEiVseXve1qnrsXZM4t6OyTm0mf7XBdnJAcBpuNZF0dOxABhjAYQpCvgwJfTz4jcZNvb2V733O6jREisGf0pUiHsFQGnMv+142HktLRK7tretrpSN7tVViM2mpQw8CSBXtYUmT/iakcFVl0j53n0T894PAhiy1Z8oBe4TNBGNlMU/yQDlVf4Kc8VscofslrYwkwB54H4A19BKmmNDXSQQUIts0t3PQCPUbmHsyDa3ZHxofTsx8Yef3zH3SdiWxItFBdHVzu79vS3PxPjcAzAo2cW/B0U46JNZ7FR3uW1L5ozEWE+9gCgc887qiuMj+rHzwWq5jRIwfOZRC1cFw2u4AMRSTZhoa5/q8Is178DBrHfW3vnG/dYy7y1o57zCLrWY6iSvrAXiH6BPIztllZoJlaYLFABPN4L9vRy5Exv1bwX5CQFrSv089ZqDRuuroInVNJeMDbs3hUBLKQDunNL9MbwikthMGE4woVeWkyG1Rph5lYoRFBX2AmzMWiR9ebnkRjBoQUc2J7Xba2XYhn4dBSbwwaWS1HU+UZRq6MxJ4habKdXe4sbqtgt6wNtjSd9P9zOdjcvWz6omkTAjXo3NbjZhMjYmcOmTjoyruKXdwmGyd/M" />
 <title>Formale Sprachen</title>
+<script>
+    window.MathJax = {
+        tex: { tags: 'ams', },
+        chtml: { displayAlign: 'center' /*left or center*/ }
+    };
+</script>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
 
     <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
 
@@ -60,7 +68,514 @@
 </div></div>
 <div class="new-section transition-move-to-top ld-slide" id="einfuhrung">
 <h2>Einführung</h2>
+</div><div class="ld-slide" id="alphabete-und-sprachen">
+<h2>Alphabete und Sprachen</h2>
+<p>Formale Sprachen sind ein zentraler Aspekt der theoretischen Informatik.</p>
+<ld-deck>
+<ld-card>
+<ul class="simple">
+<li><p>Nutzungsinterface zwischen Computer und Mensch</p></li>
+<li><p>Grundlage für Programmiersprachen</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p>Es gibt unterschiedliche Klassen und Modelle formaler Sprachen:</p>
+<ul class="simple">
+<li><p>Erkennbarkeit und Ausdruckskraft</p></li>
+<li><p>Anforderungen an Computermodelle zur Erkennbarkeit</p></li>
+<li><p>Komplexität von Verfahren zur Erkennung</p></li>
+</ul>
+</ld-card></ld-deck></div><div class="ld-slide" id="alphabete">
+<h2>Alphabete</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Ein Alphabet <span class="math">\(\Sigma  = \{\alpha _1,\alpha _2,...,\alpha _n\}\)</span> ist eine endliche Menge von Zeichen / Symbolen.</p>
+</aside>
+<aside class="admonition incremental example">
+<p class="admonition-title">Beispiel</p>
+<p>Abzählbare Mengen</p>
+<ul class="simple">
+<li><p><span class="math">\(\Sigma _{lat} = \{a,b,c,...,z\}\)</span></p></li>
+<li><p><span class="math">\(\Sigma _{ziffer} = \{0,1,2,3,4,5,6,7,8,9\}\)</span></p></li>
+<li><p><span class="math">\(\Sigma _{unicode} = \{x |x\; \text{ist ein Unicode-Zeichen}\}\)</span></p></li>
+<li><p><span class="math">\(\Sigma _{logik} = \{0,1,(,),\wedge ,\vee ,\neg ,(,)\}\cup  \Sigma _{lat}\)</span></p></li>
+</ul>
+</aside>
+</div><div class="wiederholung ld-slide" id="kartesisches-produkt">
+<h2>Kartesisches Produkt</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Ein kartesisches Produkt wie <span class="math">\(A \times  B\)</span> oder <span class="math">\(A^n\)</span> für <span class="math">\(n \in  \mathbb{N}\)</span> von Mengen oder Alphabeten bezeichnet die Menge der Tupel <span class="math">\((a,b)\)</span> oder <span class="math">\((a_1,...,a_n)\)</span> von Elementen der Mengen:</p>
+<div class="math">
+\begin{equation*}
+\begin{array}{rccll}
+    A \times  B &amp; := &amp; &amp; &amp; \{(a,b) | a \in  A, b \in  B\} \\
+    A^n &amp; := &amp; \underbrace{A \times  ... \times  A}_{n\; \text{Faktoren}} &amp; = &amp; \{(a1,...,an) |a1,...,an \in  A\}
+\end{array}
+\end{equation*}
 </div>
+</aside>
+<aside class="admonition incremental example">
+<p class="admonition-title">Beispiel</p>
+<ul class="simple">
+<li><p><span class="math">\(\Sigma _{lat} \times  \Sigma _{lat} = \{(a,a),(a,b),...,(z,z)\}\)</span></p></li>
+</ul>
+<ul class="incremental simple">
+<li><p><span class="math">\(\Sigma _{lat}^3 = \{(a,a,a),(a,a,b),...,(z,z,z)\}\)</span></p></li>
+</ul>
+</aside>
+</div><div class="ld-slide" id="kleene-abschluss">
+<h2>Kleene-Abschluss</h2>
+<ld-deck>
+<ld-card>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Ein Wort <span class="math">\(\omega \)</span> ist ein endliches — ggf. leeres — Tupel <span class="math">\((w_1,w_2,...,w_n) \in  \Sigma ^n\)</span> von Zeichen <span class="math">\(w_k \in  \Sigma \)</span> eines Alphabets mit Länge <span class="math">\(|\omega | = n\)</span> der Anzahl der Zeichen.</p>
+<ld-deck>
+<ld-card>
+<ul class="simple">
+<li><p>Wörter werden meist ohne Klammern geschrieben; d. h. <span class="math">\(\omega  = w_1w_2...w_n\)</span>.</p></li>
+<li><p>Das leere Wort (das Wort ohne Zeichen) wird mit <span class="math">\(\varepsilon \)</span> bezeichnet.</p></li>
+<li><p>Besondere Wortmengen:</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p><span class="math">\(\Sigma ^0 = \{\varepsilon \}\)</span></p></li>
+<li><p><span class="math">\(\Sigma ^* = \bigcup_{n=0}^\infty  \Sigma ^n\)</span></p></li>
+<li><p><span class="math">\(\Sigma ^+ = \bigcup_{n=1}^\infty  \Sigma ^n\)</span></p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p>Die Operationen <span class="math">\(M^\ast \)</span> und <span class="math">\(M^+\)</span> auf einer Menge <span class="math">\(M\)</span> werden als</p>
+<ul class="simple">
+<li><p>Kleene-<span class="math">\(*\)</span>-Abschluss oder</p></li>
+<li><p>Kleene-<span class="math">\(+\)</span>-Abschluss bezeichnet.</p></li>
+</ul>
+</ld-card></ld-deck></aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<ul class="simple">
+<li><p><span class="math">\(\Sigma _{lat}^* = \{\varepsilon ,a,b,...,z,aa,ab,...,zz,aaa,...\}\)</span></p></li>
+<li><p><span class="math">\(\Sigma _{lat}^+ = \{a,b,...,z,aa,ab,...,zz,aaa,...\}\)</span></p></li>
+</ul>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>Sei <span class="math">\(M = \{01, 2\}\)</span>, so ergeben sich u.a. diese Wortmengen:</p>
+<div class="s-font-size-90 math">
+\begin{equation*}
+\begin{array}{lcl}
+    M^0 &amp; = &amp; {\varepsilon } \\
+    M^1 &amp; = &amp; {01,2} \\
+    M^2 &amp; = &amp; {0101,012,201,22} \\
+    M^3 &amp; = &amp; {010101,01012,01201,0122,20101,2012,2201,222} \\
+    &amp; \ldots &amp; \\
+    M^+ &amp; = &amp; M^1 \cup  M^2 \cup  \ldots = {01,2,0101,012,201,22,010101,01012,...} \\
+    M^* &amp; = &amp; M^0 \cup  M^+ = {\varepsilon ,01,2,0101,012,201,22,010101,01012,...}
+\end{array}
+\end{equation*}
+</div>
+<aside class="admonition observation">
+<p class="admonition-title">Beobachtung</p>
+<p>Die Wortlänge <span class="math">\(|\omega |\)</span> für ein <span class="math">\(\omega  \in  L^*\)</span> hängt von der Definition des Alphabets ab. So ist in diesem Beispiel <span class="math">\(|222| = 3\)</span> während <span class="math">\(|0101| = 2\)</span> ist.</p>
+</aside>
+</aside>
+</ld-card></ld-deck></div><div class="ld-slide" id="produkt-und-konkatenation">
+<h2>Produkt und Konkatenation</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Die Konkatenation von zwei Wörtern <span class="math">\(\omega  = (\omega _{1},...,\omega _{n})\)</span> und <span class="math">\(\upsilon  = (\upsilon _{1},...,\upsilon _{m})\)</span> ist definiert als das Wort, das durch ein aneinanderreihen der beiden Wörter entsteht:</p>
+<div class="math">
+\begin{equation*}
+\omega  \cdot \upsilon  =  \omega \upsilon  = (\omega _1,...,\omega _n)\cdot (\upsilon _{1},...,\upsilon _{m}) = w_1...w_n\upsilon _{1}...\upsilon _{m}
+\end{equation*}
+</div>
+<p>Das leere Wort ist <span class="math">\(\omega ^0 = \varepsilon \)</span> und die n-te Potenz von <span class="math">\(\omega \)</span> ist:</p>
+<div class="math">
+\begin{equation*}
+\omega ^n = \underbrace{\omega  \cdot ... \cdot \omega }_{n\; \text{Faktoren}}\; \text{für}\; n &gt; 0
+\end{equation*}
+</div>
+</aside>
+<aside class="admonition incremental example">
+<p class="admonition-title">Beispiel</p>
+<p>Sei <span class="math">\(\Sigma  = {a,e,n,r}\)</span>, sowie <span class="math">\(\omega  = \text{na} \in \Sigma ^\ast \)</span> und <span class="math">\(\upsilon  = \text{er} \in  \Sigma ^\ast \)</span>.</p>
+<p><span class="math">\(\omega ^2 = \text{nana}\)</span>, <span class="math">\(\upsilon \omega  = \text{erna}\)</span> und <span class="math">\(\upsilon \omega ^2\upsilon  = \text{ernanaer}\)</span></p>
+</aside>
+</div><div class="ld-slide" id="abschluss-eigenschaften">
+<h2>Abschluss-Eigenschaften</h2>
+<ld-deck>
+<ld-card>
+<aside class="admonition remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Der Begriff <em>Abschluss in obiger Definition</em> bedeutet:</p>
+<p>Auf einer Menge mit einer Verknüpfung liefert jede Anwendung der Operation mit Elementen wieder ein Element aus der Menge.</p>
+</aside>
+<aside class="admonition incremental example">
+<p class="admonition-title">Beispiel</p>
+<ul class="simple">
+<li><p>die Subtraktion ist auf den natürlichen Zahlen nicht abgeschlossen,</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>der Abschluss der natürlichen Zahlen bezüglich der Subtraktion sind die ganzen Zahlen.</p></li>
+</ul>
+</aside>
+</ld-card><ld-card class="incremental">
+<p>Die Kleene-Abschlüsse und Multiplikationen werden später in regulären Ausdrücken auf Wörtern verwendet, damit ist dann der Abschluss oder das kartesische Produkt der Menge mit genau diesem Wort gemeint.</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<div class="math">
+\begin{equation*}
+\begin{array}{rclcl}
+    (ab)^+ &amp; = &amp; \{ab\}^+ &amp; = &amp; \{ab, abab, ababab, ...\} \\
+    cd^*e  &amp; = &amp; \{c\}\times \{d\}^*\times \{e\} &amp; = &amp; \{ce, cde, cdde, cddde, ...\}
+\end{array}
+\end{equation*}
+</div>
+</aside>
+</ld-card></ld-deck></div><div class="exercises ld-slide" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Alphabet Σ = {a,el,en,g,l,ste}" id="ld-exercise-1">
+<p class="rubric">Alphabet Σ = {a,el,en,g,l,ste}</p>
+<p>Gegeben sei das Alphabet <span class="math">\(\Sigma  = \{a,el,en,g,l,ste\}\)</span>. Welche der folgenden Worte liegen in <span class="math">\(\Sigma ^4\)</span>?</p>
+<p><span class="math">\(\omega _1\)</span> = galgen, <span class="math">\(\omega _2\)</span> = stelle, <span class="math">\(\omega _3\)</span> = sagen, <span class="math">\(\omega _4\)</span> = lagen, <span class="math">\(\omega _5\)</span> = allen, <span class="math">\(\omega _6\)</span> = aalen</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:MasY7yCvJApnQfJys6mMlovYSRwmjgoXnbSoWd40/k8=:RXk1bCE7Ognuo5qH:1IOUjk18UipAjGU9PzdAQyxWUwJbiS+jxQ/55mosb0fyJWB6S/cqxI+s0W99MDEyDltny4TR/MPaVcCHq6UdtgaiGSQCCCo43oylFJxjfk0XlQxqMtw48iBipEE7vbaZhoC711Xe4BxKdwsho867fvUOrmVK6soCHXvY3edt1f2gtpWnfSHHONGHHwA3/3G34mpCkRm6upbY0FaJrFMAKAcVNhOwXFSL1hPO2PEJt+D43zIEhiax85YpcXo17NLVpxrey1r5</div>
+</div>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Alphabet Σ = {e,en,in,r,t,u}" id="ld-exercise-2">
+<p class="rubric">Alphabet Σ = {e,en,in,r,t,u}</p>
+<p>Gegeben sei das Alphabet <span class="math">\(\Sigma  = {e,en,in,r,t,u}\)</span>. Welche der folgenden Worte liegen in <span class="math">\(\Sigma ^5\)</span>?</p>
+<p><span class="math">\(\omega _1\)</span> = reiner, <span class="math">\(\omega _2\)</span> = teurer, <span class="math">\(\omega _3\)</span> = treuer, <span class="math">\(\omega _4\)</span> = teuren, <span class="math">\(\omega _5\)</span> = retten, <span class="math">\(\omega _6\)</span> = teuer</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:GXAJ8COErfQ8ZQhHwXbZfJRhZ3qDYaKj3NlaJEk7pQk=:NN6J/MgYud2C7pTA:lsWnwArso0Dk3BLWWBldg2eQ5xm/Lt1cHup60Nq/DSJHlD+DwlJqo+EIh5s87qyert1PAx6B77E/ZRKu6gJ0QMeebPhHhJ+jcXOn14+KeBBaEeNoSPjqrrOdp9xDArYJBhK2BBcJ+GW5JAk4xrLU/k3OdAOmooBFbdt0kSMgJQ16UX6wWRGLD0NBxO9oeoCryzKX0x/ux7Mlxta3lVB+oBUK4GKD7lyhk+jwmA6bOMcsmpqRVSlrjUIAgFOmH1UykA7kOLSA</div>
+</div>
+</div><div class="exercises ld-slide" id="ubung-1">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Alphabet Σ = {e,g,in,l,s,ter}" id="ld-exercise-3">
+<p class="rubric">Alphabet Σ = {e,g,in,l,s,ter}</p>
+<p>Gegeben sei das Alphabet <span class="math">\(\Sigma  = {e,g,in,l,s,ter}\)</span>. Welche der folgenden Worte liegen in <span class="math">\(\Sigma ^*\)</span>?</p>
+<p><span class="math">\(\omega _1\)</span> = tester, <span class="math">\(\omega _2\)</span> = seile, <span class="math">\(\omega _3\)</span> = lines, <span class="math">\(\omega _4\)</span> = segel, <span class="math">\(\omega _5\)</span> = seinen, <span class="math">\(\omega _6\)</span> = erster</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:+AC4duRnO8q0gHJqDsLtZ4sp3qWiliw46X6OHviUf9o=:8v3hQl5oki6E+ssl:AZ4iQh9RTqb6f41FxkdjE4tTB+NFIgKSfVY0xMhX4NNypS0S7OcrtNS7Ycw/ugUIyDEzElEO9oYjtarxtKQ+8rj/2TewIqFxjle9uJ9TRsnskg7fkQscxKmULtmXTtoWP4EbvUtmpk7mnHMQGyYTIfUwo0CL6qV7OW4vmpMhvo4CLtWLzCH4dD15DrW71qqYd26wvIjDh5yj8eE86+U9pkq1UhIoyvbjLIRVqNBzRZ2Fzf3gXFGoYARXGYRcZ/OwI8J+usbP</div>
+</div>
+</div><div class="ld-slide" id="formale-sprachen-1">
+<h2>Formale Sprachen</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Jede Teilmenge <span class="math">\(L \subseteq  \Sigma ^*\)</span> ist eine formale Sprache über dem Alphabet <span class="math">\(\Sigma \)</span>.</p>
+</aside>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>Sei <span class="math">\(\Sigma  = \{0,1,2\}\)</span>, dann ist <span class="math">\(\Sigma ^*\)</span> die Menge oder Sprache von Wörtern aus den Ziffern <span class="math">\(0\)</span>, <span class="math">\(1\)</span> oder <span class="math">\(2\)</span> beliebiger Länge wie <span class="math">\(101\)</span> oder auch <span class="math">\(0001\)</span>.</p>
+<ld-deck class="numbered incremental numbered incremental">
+<ld-card>
+<p>Die Menge <span class="math">\(M \subset  \Sigma ^*\)</span> der binären Zahlen ohne führende Nullen:</p>
+<p><span class="math">\(M = \{0\}\cup \{1\}\times \{0,1\}^* = \{0,1,10,11,100,101,110,111,1000,...\}\)</span></p>
+</ld-card><ld-card class="incremental">
+<p>Die Menge <span class="math">\(M \subset  \Sigma ^\ast \)</span> von einer gleichen Anzahl von 0 und 1 in dieser Reihenfolge:</p>
+<p><span class="math">\(M = \{0^n1^n |n \in  \mathbb{N}\}= \{01,0011,000111,00001111,0000011111,...\}\)</span></p>
+</ld-card><ld-card class="incremental">
+<p>Die Wörter <span class="math">\(M \subset  \Sigma ^*\)</span> mit gleicher Anzahl von 0, 1 und 2 in dieser Reihenfolge:</p>
+<p><span class="math">\(M = \{0^n1^n2^n |n \in  \mathbb{N}\}= \{012,001122,000111222,000011112222,...\}\)</span></p>
+</ld-card><ld-card class="incremental">
+<p>Die Menge <span class="math">\(M \subset  \Sigma ^\ast \)</span> mit Wörtern der Länge von Zweierpotenzen:</p>
+<p><span class="math">\(M = \{w \in \Sigma ^\ast | |w| = 2^n, n \in  \mathbb{N}\}= \{0,1,2,00,01,\ldots,21,22,0000,...\}\)</span></p>
+</ld-card></ld-deck></aside>
+</div><div class="exercises ld-slide" id="ubung-2">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Wörter bestimmen" id="ld-exercise-4">
+<p class="rubric">Wörter bestimmen</p>
+<p>Bestimmen Sie die Wörter der folgenden Sprache:</p>
+<p><span class="math">\(L= \{acx^m (zq)^n | n \in  \{0,1\}, m \in  \{1,2\}\}\)</span></p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:G6gUhpIEfOTN+XT+XVjb1wfvR9AHBV+Vqo+m73vzLN4=:uu45kQi6rcvXTGKX:JoF2xrijKLzenSSc2j47oKVdMEp3cJnbfwmPUWWz7aQun98gZ7BL/41nbKG4Fg3a9l5heszH5BoI3XtT93ZO/YadvFmU+5AZZNYffFbHE2ux+GkbDSlfpRaHN5DTEcsBG4ARL1GC/6E7UWnyIWP4ikVjA2g1KNP5/fS0dJp2cM+nCT//YfkZ</div>
+</div>
+<div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - Wörter bestimmen" id="ld-exercise-5">
+<p class="rubric">Wörter bestimmen</p>
+<p>Bestimmen Sie die Wörter der folgenden Sprache:</p>
+<p><span class="math">\(L = \{ (b^ma)^lza | m \in \{0,1\}, l \in  \{1,2,3\}\}\)</span></p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:PmG0gqMkCDIOtbzqHG4mKsxNbcwDAtFqC8YWIO82y6I=:j39khZyRnIKHPnfz:YlnBf8Rs0ezkgfajwTwt2daxCVeOVZnMlouZodTX4lavZAa0JVjhTHUxvBDXHBCqn7WdDZZCuWAbkWqS1NZ+jK+aiMinmnRdaCngiDWbwBv6h4v+TKwUlesjE5zjRUM+UOaxibCNDIn95fiWraE93LDxmniDXa4g4l/tnuRTEFM9tbGkSOo0fgZ+Jg+geC+jGgBF6LE=</div>
+</div>
+</div><div class="new-section transition-move-to-top ld-slide" id="abzahlbarkeit-und-godelnummern">
+<h2>Abzählbarkeit und Gödelnummern</h2>
+</div><div class="ld-slide" id="abzahlbar-und-uberabzahlbar-unendlich">
+<h2>Abzählbar und überabzählbar unendlich</h2>
+<ld-deck>
+<ld-card>
+<aside class="admonition observation">
+<p class="admonition-title">Beobachtung</p>
+<p>Selbst mit endlichen Alphabeten können formale Sprachen unendlich groß sein.</p>
+</aside>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Eine Menge M ist <em>abzählbar</em>, wenn die einzelnen Elemente abzählbar sind, es also eine bijektive Funktion <span class="math">\(f : N \rightarrow M\)</span> von den natürlichen Zahlen <span class="math">\(N = \mathbb{N}\)</span> oder einer Teilmenge der natürlichen Zahlen <span class="math">\(N \subset  \mathbb{N}\)</span> auf <span class="math">\(M\)</span> gibt.</p>
+<p>Wenn es keine solche Funktion geben kann, so ist die Menge <em>überabzählbar unendlich</em>.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition theorem">
+<p class="admonition-title">Satz</p>
+<p>Jede endliche Menge ist abzählbar.</p>
+</aside>
+<aside class="admonition proof">
+<p class="admonition-title">Beweis</p>
+<p>Eine endliche Menge <span class="math">\(M\)</span> hat eine endliche Anzahl <span class="math">\(n = |M|\)</span> von Elementen.</p>
+<p>Wird nun beginnend von <span class="math">\(M_0 = M\)</span> und <span class="math">\(k= 1\)</span> in <span class="math">\(n\)</span> Schritten jeweils ein Element <span class="math">\(m_k\)</span> der Menge <span class="math">\(M_{k-1}\)</span> entnommen mit <span class="math">\(M_k = M_{k-1}\{m_k\}\)</span>, so ist induktiv <span class="math">\(|M_k| = |M_{k-1}| - 1 = n-k\)</span> und es ist <span class="math">\(M_n = \emptyset \)</span>.</p>
+<ld-presenter-note>
+<p><span class="math">\(M_{k-1}\)</span> ist die Menge, die noch <em>ein Element mehr enthält</em> als <span class="math">\(M_k\)</span>. D. h. die Kardinalität der Menge <span class="math">\(M_l\)</span> mit <span class="math">\(l &gt; k\)</span> ist kleiner als die Kardinalität von <span class="math">\(M_k\)</span>.</p>
+</ld-presenter-note><p>Die Bijektion lautet dann <span class="math">\(f : N \rightarrow  M\)</span> mit <span class="math">\(f(k) = m_k\)</span> mit <span class="math">\(N = \{1,...,n\}\)</span>.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition theorem">
+<p class="admonition-title">Satz</p>
+<p>Jede Teilmenge <span class="math">\(M \subseteq  N\)</span> einer abzählbaren Menge <span class="math">\(N= \{n_1,n_2,...\}\)</span> ist abzählbar.</p>
+</aside>
+<aside class="admonition proof">
+<p class="admonition-title">Beweis</p>
+<p>Sei <span class="math">\(f(k) = n_k\)</span> die Abzählung der Menge N. Sei <span class="math">\(R = \{k \in  \mathbb{N} | n_k \in  M \}\)</span>; d. h. die Menge der Indizes der Elemente aus <span class="math">\(N\)</span>, die in <span class="math">\(M\)</span> sind. Dann ist die Einschränkung <span class="math">\(f_{|R} : R \rightarrow  M\)</span> von <span class="math">\(f\)</span> genau die Abzählung, die die Abzählbarkeit von <span class="math">\(M\)</span> beweist.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>Eine abzählbar unendliche Menge sind — zum Beispiel:</p>
+<ul class="incremental">
+<li><p>die geraden Zahlen <span class="math">\(\{2n |n \in \mathbb{N}\}\)</span></p></li>
+<li><p>die Quadratzahlen <span class="math">\(\{n^2 |n \in \mathbb{N}\}\)</span></p></li>
+<li><p>die Menge der Fakultäten <span class="math">\(\{n! |n \in \mathbb{N}\}\)</span></p></li>
+<li><p>die ganzen Zahlen <span class="math">\(\mathbb{Z}\)</span> mit der Funktion:</p>
+<div class="math">
+\begin{equation*}
+f(n) = \left\{ \begin{array}{ll}
+    n/2 &amp; \text{für}\; n\; \text{gerade} \\
+    -(n+1)/2 &amp; \text{für}\; n\; \text{ungerade}
+\end{array} \right.
+\end{equation*}
+</div>
+<div class="peripheral s-font-size-90 docutils container">
+<p><span class="math">\(f(1) = 0,\; f(2) = 1,\; f(3) = -1,\; f(4) = 2,\; f(5) = -2,\; ...\)</span></p>
+</div>
+</li>
+</ul>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>Die rationalen Zahlen <span class="math">\(\mathbb{Q}\)</span> sind abzählbar unendlich.</p>
+<img alt="Diagonalisierungsverfahren von Cantor" class="align-center" src="images/cantor.svg" />
+<div class="supplemental">
+<p>Rationale Zahlen können als Brüche dargestellt werden und mit Hilfe des Diagonalisierungsverfahren von Cantor in eine Bijektion zu den natürlichen Zahlen gebracht werden.</p>
+<p>Die 0 und alle negativen Brüche können wie zuvor eingeschoben werden. Auch alle rationalen Vektoren <span class="math">\(\mathbb{Q}^n\)</span> in beliebiger Dimension <span class="math">\(n \in  \mathbb{N}\)</span> sind so abzählbar.</p>
+</div></aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition theorem">
+<p class="admonition-title">Satz</p>
+<p>Für jede endliche Menge oder Alphabet <span class="math">\(\Sigma \)</span> ist deren Kleene-Abschluss <span class="math">\(\Sigma ^*\)</span> abzählbar.</p>
+</aside>
+<aside class="admonition proof">
+<p class="admonition-title">Beweis</p>
+<p>Ist das Alphabet <span class="math">\(\Sigma \)</span> leer, so ist auch <span class="math">\(\Sigma ^*\)</span> leer, und damit für <span class="math">\(N = \emptyset \)</span> trivial abzählbar.</p>
+<p>Ist <span class="math">\(\Sigma \)</span> nicht leer, dann besitzt <span class="math">\(\Sigma \)</span> mit Größe <span class="math">\(n = |\Sigma |\)</span> eine Aufzählung <span class="math">\(m_k\)</span> mit <span class="math">\(k= 1,...,n\)</span>.</p>
+<ld-deck>
+<ld-card>
+<p>Jedes Wort <span class="math">\(w = m_{k_1} m_{k_2}...m_{k_l}\)</span> kann dann im Stellenwertsystem zur Basis <span class="math">\(n + 1\)</span> dargestellt werden:</p>
+<div class="math">
+\begin{equation*}
+1 + k_1·(n + 1)^{l-1} + k_2(n + 1)^{l-2} +...+ k_l(n + 1)^0
+\end{equation*}
+</div>
+<p>und somit der Zahl <span class="math">\(1 + (k_1k_2...k_l)_{(n+1)}\)</span><a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> zugeordnet werden.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Die Darstellung <span class="math">\((k_1k_2...k_l)_{(n+1)}\)</span> ist die Stellenwertdarstellung zur Basis <span class="math">\(n + 1\)</span> des Wortes <span class="math">\(w\)</span>.</p>
+</aside>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<img alt="Kleene-Abschluss abzählbar" class="align-center" src="images/kleene-abschluss-abz.svg" />
+</aside>
+</ld-card><ld-card class="incremental">
+<p>Die Abbildung <span class="math">\(f : N \rightarrow \Sigma ^*\)</span> mit <span class="math">\(N \subseteq \mathbb{N}\)</span> ergibt sich für <span class="math">\(f(x)\)</span> aus der Stellenwertdarstellung von <span class="math">\(x- 1 &gt;0\)</span> zur Basis <span class="math">\(n + 1\)</span> beginnend mit der höchstwertigen Ziffer <span class="math">\(k_1\)</span> bis zur letzten Stelle <span class="math">\(k_l\)</span>.</p>
+<p>Das Bild <span class="math">\(f(x)\)</span> ist dann das Wort <span class="math">\(m_{k_1} m_{k_2}...m_{k_l}\)</span>.</p>
+<p>Das leere Wort <span class="math">\(\varepsilon \)</span> wird von <span class="math">\(1\)</span> abgebildet und entsprechend ist <span class="math">\(f(1) = \varepsilon \)</span>.</p>
+</ld-card></ld-deck></aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>Sei <span class="math">\(\Sigma  = \{e,i,rn,st\}\)</span> mit Aufzählung <span class="math">\(m_1 = e\)</span>, <span class="math">\(m_2 = i\)</span>, <span class="math">\(m_3 = rn\)</span>, <span class="math">\(m_4 = st\)</span>, dann haben die folgenden Wörter diese Abzählung nach Stellenwert:</p>
+<ld-deck>
+<ld-card>
+<table class="s-font-size-70 align-content-in-data-cells-top" style="width: 100%;">
+<colgroup>
+<col style="width: 7.7%" />
+<col style="width: 18.5%" />
+<col style="width: 18.5%" />
+<col style="width: 18.5%" />
+<col style="width: 18.5%" />
+<col style="width: 18.5%" />
+</colgroup>
+<thead>
+<tr><th class="head stub"><p><span class="math">\(x\)</span></p></th>
+<th class="head"><p><span class="math">\(1\)</span></p></th>
+<th class="head"><p><span class="math">\(2\)</span></p></th>
+<th class="head"><p><span class="math">\(3\)</span></p></th>
+<th class="head"><p><span class="math">\(4\)</span></p></th>
+<th class="head"><p><span class="math">\(5\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr><th class="stub"></th>
+<td><div class="math">
+\begin{equation*}
+1
+\end{equation*}
+</div>
+</td>
+<td><div class="math">
+\begin{equation*}
+\begin{array}{lcl}
+    1 &amp; + &amp; 1\\
+    1_5 &amp; + &amp; 1_5
+\end{array}
+\end{equation*}
+</div>
+<p><a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+</td>
+<td><div class="math">
+\begin{equation*}
+\begin{array}{lcl}
+    1 &amp; + &amp; 2\\
+    1_5 &amp; + &amp; 2_5
+\end{array}
+\end{equation*}
+</div>
+</td>
+<td><div class="math">
+\begin{equation*}
+\begin{array}{lcl}
+    1 &amp; + &amp; 3\\
+    1_5 &amp; + &amp; 3_5
+\end{array}
+\end{equation*}
+</div>
+</td>
+<td><div class="math">
+\begin{equation*}
+\begin{array}{lcl}
+    1 &amp; + &amp; 4\\
+    1_5 &amp; + &amp; 4_5
+\end{array}
+\end{equation*}
+</div>
+</td>
+</tr>
+<tr><th class="stub"><p>Wort</p></th>
+<td><p><span class="math">\(\epsilon\)</span></p></td>
+<td><p>e</p></td>
+<td><p>i</p></td>
+<td><p>rn</p></td>
+<td><p>st</p></td>
+</tr>
+<tr><th class="stub"><p><span class="math">\(f(x)\)</span></p></th>
+<td><p><span class="math">\(f(1) = \epsilon\)</span></p></td>
+<td><p><span class="math">\(f(2) = e\)</span></p></td>
+<td><p><span class="math">\(f(3) = i\)</span></p></td>
+<td><p><span class="math">\(f(4) = rn\)</span></p></td>
+<td><p><span class="math">\(f(5) = st\)</span></p>
+<p><em>(Anm.: k ist 4 für st)</em></p>
+</td>
+</tr>
+</tbody>
+</table>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p>Wir haben immer <span class="math">\(1 + ...\)</span>, da wir noch das leere Wort <span class="math">\(\varepsilon \)</span> haben.</p>
+</aside>
+</aside>
+</ld-card><ld-card class="incremental">
+<table class="s-font-size-70" style="width: 100%;">
+<colgroup>
+<col style="width: 7.7%" />
+<col style="width: 7.7%" />
+<col style="width: 23.1%" />
+<col style="width: 23.1%" />
+<col style="width: 7.7%" />
+<col style="width: 23.1%" />
+<col style="width: 7.7%" />
+</colgroup>
+<thead>
+<tr><th class="head stub"><p><span class="math">\(x\)</span></p></th>
+<th class="head"><p>...</p></th>
+<th class="head"><p><span class="math">\(7 = 1 + 6\)</span></p>
+<p><span class="math">\(12_5 = 1_5 + 11_5\)</span></p>
+</th>
+<th class="head"><p><span class="math">\(8 = 1 + 7\)</span></p>
+<p><span class="math">\(13_5 = 1_5 + 12_5\)</span></p>
+</th>
+<th class="head"><p>...</p></th>
+<th class="head"><p><span class="math">\(45 = 1 + 44\)</span></p>
+<p><span class="math">\(140_5 = 1_5 + 134_5\)</span></p>
+</th>
+<th class="head"><p>...</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><th class="stub"></th>
+<td><p>...</p></td>
+<td><div class="math">
+\begin{equation*}
+\begin{array}{lcl}
+    1 &amp; + &amp; 1 \cdot 5 + 1\\
+    1 &amp; + &amp; 11_5
+\end{array}
+\end{equation*}
+</div>
+</td>
+<td><div class="math">
+\begin{equation*}
+\begin{array}{lcl}
+    1 &amp; + &amp; 1\cdot 5 + 2\\
+    1 &amp; + &amp; 12_5
+\end{array}
+\end{equation*}
+</div>
+</td>
+<td><p>...</p></td>
+<td><div class="math">
+\begin{equation*}
+\begin{array}{lcl}
+    1 &amp; + &amp; 1 \cdot 25 + 3 \cdot 5 + 4\\
+    1 &amp; + &amp; 134_5
+\end{array}
+\end{equation*}
+</div>
+</td>
+<td><p>...</p></td>
+</tr>
+<tr><th class="stub"><p>Wort</p></th>
+<td><p>...</p></td>
+<td><p>ee</p></td>
+<td><p>ei</p></td>
+<td><p>...</p></td>
+<td><p>ernst</p></td>
+<td><p>...</p></td>
+</tr>
+</tbody>
+</table>
+</ld-card></ld-deck><div class="incremental">
+<p>Unbesetzt bleibt, wo eine 0 in der Stellenwertdarstellung vorliegt. Zum Beispiel ist <span class="math">\(f(6) = 1 + 1 \cdot 5^1 + 0 \cdot 5^0 = 1_5 + 10_5\)</span>.</p>
+</div></aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition theorem">
+<p class="admonition-title">Satz</p>
+<p>Jede formale Sprache is abzählbar.</p>
+</aside>
+<aside class="admonition proof">
+<p class="admonition-title">Beweis</p>
+<p>Da jede formale Sprache <span class="math">\(L\)</span> über einem endlichen Alphabet <span class="math">\(\Sigma \)</span> definiert ist, ist das eine direkte Folge aus vorherigem Satz, dass <span class="math">\(\Sigma ^*\)</span> abzählbar ist, und wie zuvor gezeigt damit auch die Teilmenge <span class="math">\(L \subseteq  \Sigma ^*\)</span> abzählbar ist.</p>
+</aside>
+</ld-card></ld-deck></div>
 </template>
 </body>
 </html>

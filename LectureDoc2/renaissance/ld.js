@@ -772,12 +772,6 @@ function setupJumpTargetDialog() {
     document.getElementsByTagName("BODY")[0].prepend(jumpTargetDialog);
 }
 
-function setupSlideNumberPane() {
-    const slideNumberPane = ld.div({ id: "ld-slide-number-pane" });
-    slideNumberPane.innerHTML = `<span id="ld-slide-number">/</span>`
-
-    document.getElementsByTagName("BODY")[0].prepend(slideNumberPane);
-}
 
 function showsSlide() {
     return !state.showDocumentView && !state.showLightTable && !state.showHelp;
@@ -793,7 +787,7 @@ function localShowLaserPointer(slideX, slideY) {
     if (!showsSlide()) return;
 
     const currentSlide = getCurrentSlide();
-    const laserPointer = document.getElementById("ld-laser-pointer");
+    const laserPointer = document.querySelector("ld-laser-pointer");
     const laserPointerStyle = laserPointer.style;
     laserPointerStyle.left = (currentSlide.offsetLeft + slideX) + "px";
     laserPointerStyle.top = (currentSlide.offsetTop + slideY) + "px";
@@ -806,22 +800,24 @@ function hideLaserPointer() {
 }
 
 function localHideLaserPointer() {
-    document.getElementById("ld-laser-pointer").style.scale = 0;
+    document.querySelector("ld-laser-pointer").style.scale = 0;
 }
 
 function setupMainPane() {
-    const mainPane = ld.div({
+    const slidesPane = ld.div({
         id: "ld-slides-pane",
         classes: ["ld-slide-context"],
-        children: [ld.div({ id: "ld-laser-pointer" })]
+        children: [
+            ld.create("ld-laser-pointer",{ })
+        ]
     });
 
-    mainPane.addEventListener(
+    slidesPane.addEventListener(
         'mousemove',
         (event) => {
             // By default, the laser pointer is positioned in the center and 
             // also relative to the main pane.
-            const s = mainPane.style.scale
+            const s = slidesPane.style.scale
             const innerW = window.innerWidth;
             const innerH = window.innerHeight;
             const w = presentation.slide.width;
@@ -865,10 +861,29 @@ function setupMainPane() {
         if (allSupplementals.length > 0) {
             const ldSupplementals = ld.create("ld-supplementals",{});
             for (const supplemental of allSupplementals) {
-                //            supplemental.parentElement.removeChild(supplemental);
                 ldSupplementals.appendChild(supplemental);
             }
             slide.appendChild(ldSupplementals);
+        }
+
+        // Collect and move presenter notes as a whole at the end.
+        const presenterNotes = slide.querySelectorAll(":scope ld-presenter-note");
+        if (presenterNotes.length > 0) {
+            let presenterNoteId = 0;
+            const ldPresenterNotes = ld.create("ld-presenter-notes", {});
+            for (const presenterNote of presenterNotes) {
+                const clonedPresenterNote = presenterNote.cloneNode(true);
+                clonedPresenterNote.id = "ld-presenter-note-" + ++presenterNoteId;
+                clonedPresenterNote.dataset.presenterNoteId = presenterNoteId;
+                ldPresenterNotes.appendChild(clonedPresenterNote);
+
+                // Create a marker element instead of the "full" presenter note.
+                const presenterNoteMarker = ld.create("ld-presenter-note-marker", {});
+                presenterNoteMarker.dataset.presenterNoteId = presenterNoteId;
+                presenterNoteMarker.innerHTML = `<div>${presenterNoteId}</div>`;
+                presenterNote.parentElement.replaceChild(presenterNoteMarker, presenterNote);
+            }
+            slide.appendChild(ldPresenterNotes);
         }
 
         const orig_slide_id = slide.id;
@@ -879,11 +894,13 @@ function setupMainPane() {
         // this is down to get all (new) slides to a well-defined state.
         hideAllAnimatedElements(slide);
         slide.style.display = "none";
-        mainPane.appendChild(slide);
+        slidesPane.appendChild(slide);
     })
 
-    typesetMath(mainPane);
-    document.querySelector("BODY").prepend(mainPane);
+    typesetMath(slidesPane);
+    const body = document.querySelector("BODY");
+    body.prepend(ld.create("ld-slide-number",{ }))    
+    body.prepend(slidesPane);
 }
 
 function decryptExercise(title, password) {
@@ -937,9 +954,8 @@ function setupDocumentView() {
     /* The documents will be rearranged in a continuous view as follows:
      * <section>
      *   Content
-     *   [div class="supplemental"]?
      *   <footer>
-     *    <div class="ld-exercise-solution-wrapper">
+     *    <div class="ld-dv-section-number">...</div>
      *   </footer>
      * </sectiosn>
      */
@@ -965,6 +981,7 @@ function setupDocumentView() {
                 if (solution) {
                     solution.parentElement.removeChild(solution);
                     const task = e.cloneNode(true);
+                    section.appendChild(task);
                     task.classList.add("ld-extracted-exercise");
 
                     const passwordField = createPasswordInput();
@@ -973,7 +990,6 @@ function setupDocumentView() {
                         parent: task,
                         children: [passwordField, solution]
                     });
-                    section.appendChild(task);
 
                     passwordField.addEventListener("input", (e) => {
                         const currentPassword = e.target.value
@@ -981,17 +997,15 @@ function setupDocumentView() {
                             tryDecryptExercise(currentPassword, solutionWrapper, solution);
                         }
                     });
+                } else{
+                    const task = e.cloneNode(true);
+                    task.classList.add("ld-extracted-exercise");
+                    section.appendChild(task);
                 }
             });
         } else {
             const children = template.children;
             section.append(...children);
-    
-            // Move supplemental infos at the end.
-            /* for (const supplemental of section.querySelectorAll(":scope .supplemental")) {
-                supplemental.parentElement.removeChild(supplemental);
-                section.appendChild(supplemental);
-            }*/
         }
 
         const footer = ld.create("footer", {
@@ -1136,7 +1150,7 @@ function showSlide(ldSlide, setNewMarker = false) {
         ldSlide.classList.add("ld-current-slide");
     const slideNo = Number(ldSlide.dataset.ldSlideNo)
     state.currentSlideNo = slideNo;
-    document.getElementById("ld-slide-number").innerText = slideNo + 1;
+    document.querySelector("ld-slide-number").innerText = slideNo + 1;
 
     // Update the URL to reflect the current slide number. (To make it 
     // possible to share the URL with others.)
@@ -1483,9 +1497,9 @@ function showMainSlideNumber(show) {
     state.showMainSlideNumber = show;
 
     if (show && !state.showDocumentView) {
-        document.getElementById("ld-slide-number-pane").style.display = "table";
+        document.querySelector("ld-slide-number").style.display = "block";
     } else {
-        document.getElementById("ld-slide-number-pane").style.display = "none";
+        document.querySelector("ld-slide-number").style.display = "none";
     }
 }
 
@@ -1819,7 +1833,7 @@ function localScrollScrollable(scrollableId, scrollTop) {
 
 function localScrollSupplemental(supplementalId, scrollTop) {
     const supplemental = document.querySelector(
-        `#ld-slides-pane .supplemental[data-supplemental-id="${supplementalId}"]`);
+        `#ld-slides-pane ld-supplementals[data-supplementals-id="${supplementalId}"]`);
 
     if (supplemental.scrollTop !== scrollTop) {
         supplemental.scrollTo(0, scrollTop);
@@ -1921,26 +1935,46 @@ function registerScrollableElementListener() {
 }
 
 function registerHoverSupplementalListener() {
-    let supplementalId = 1;
+    let supplementalsId = 1;
     document.querySelectorAll("#ld-slides-pane ld-supplementals").forEach((supplemental) => {
-        const id = supplementalId++;
-        supplemental.dataset.supplementalId = id;
-        const addHoverSupplemental = (event) => {
+        console.log("registering hover listener for supplemental",supplemental);
+        const id = supplementalsId++;
+        supplemental.dataset.supplementalsId = id;
+        const addHover = (event) => {
             if (event.ctrlKey) {
                 postMessage("addHoverSupplemental", id);
             }
             supplemental.classList.add("hover:ld-supplementals");
         }
-        const removeHoverSupplemental = () => {
+        const removeHover = () => {
             // We always send the message to remove the hover class.
             // The effect is idempotent, i.e., it can be applied multiple times
             // and this way, we don't have to keep track of the state.
             postMessage("removeHoverSupplemental", id);
             supplemental.classList.remove("hover:ld-supplementals");
         }
-        supplemental.addEventListener("mouseenter", addHoverSupplemental);
-        supplemental.addEventListener("mouseleave", removeHoverSupplemental);
+        supplemental.addEventListener("mouseenter", addHover);
+        supplemental.addEventListener("mouseleave", removeHover);
         addScrollingEventListener("supplementalScrolled",supplemental, id);
+    });
+}
+
+function registerHoverPresenterNoteListener() {
+    document.querySelectorAll("#ld-slides-pane ld-presenter-note-marker").forEach((note) => {
+        console.log("registering hover listener for presenter note",note);
+
+        const noteId = note.dataset.presenterNoteId;
+
+        const ldSlide = note.closest(".ld-slide");
+        const ldPresenterNote = ldSlide.querySelector(`:scope #ld-presenter-note-${noteId}`)
+        function addHover(){
+            ldPresenterNote.classList.add("hover:ld-presenter-note");
+        }
+        function removeHover(){
+            ldPresenterNote.classList.remove("hover:ld-presenter-note");
+        }
+        note.addEventListener("mouseenter", addHover);
+        note.addEventListener("mouseleave", removeHover);
     });
 }
 
@@ -2140,7 +2174,6 @@ const onDOMContentLoaded = async () => {
     setupHelp();
     setupJumpTargetDialog();
     setupDocumentView();
-    setupSlideNumberPane();
     setupMainPane();
     setupMenu();
 
@@ -2188,6 +2221,7 @@ const onLoad = () => {
     registerSwipeListener();
     registerScrollableElementListener();
     registerHoverSupplementalListener();
+    registerHoverPresenterNoteListener();
 
     ldEvents.afterLDListenerRegistrations.forEach((f) => f());
 
@@ -2229,12 +2263,12 @@ const onLoad = () => {
 
                 case "addHoverSupplemental": {
                     const id = data;
-                    document.querySelector(`#ld-slides-pane .supplemental[data-supplemental-id="${id}"]`).classList.add("hover:supplemental");
+                    document.querySelector(`#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`).classList.add("hover:ld-supplementals");
                     break;
                 }
                 case "removeHoverSupplemental": {
                     const id = data;
-                    document.querySelector(`#ld-slides-pane .supplemental[data-supplemental-id="${id}"]`).classList.remove("hover:supplemental");
+                    document.querySelector(`#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`).classList.remove("hover:ld-supplementals");
                     break;
                 }
                 case "supplementalScrolled": {

@@ -1,33 +1,14 @@
 /* LAYER: theme.ld */
 
-/* This style sheet is based on:
+/* This style sheet is partially based on:
 
    Minimal style sheet for the HTML output of Docutils.                    
    Created by Günter Milde (2022-06-19) based on html4css1.css by 
-   David Goodger (2015, 2021) */
+   David Goodger (2015, 2021) 
+*/
 
 ul {
     list-style-type: "▫️";
-}
-
-.ger {
-    color: var(--dhbw-gray);
-    font-style: italic;
-}
-
-.ger::before {
-    content: "🇩🇪 ";
-    mix-blend-mode: luminosity;
-}
-
-.eng {
-    color: var(--dhbw-gray);
-    font-style: italic;
-}
-
-.eng::before {
-    content: "🇺🇸 ";
-    mix-blend-mode: luminosity;
 }
 
 .epigraph {
@@ -36,27 +17,51 @@ ul {
     font-variant-ligatures: additional-ligatures;
 }
 
+ld-deck.numbered {
+    counter-reset: deck;
+
+    > ld-card {
+        counter-increment: deck;
+
+        position: relative;
+        margin-top: 1em;
+
+        border-top: thin solid var(--dhbw-gray);
+        padding-top: 0.75em;
+
+        &::before {
+            display: inline-block;
+            position: absolute;
+            top: 0em;
+            right: 0em;
+            padding: 0.05em 0.25em;
+            content: counter(deck);
+            border-right: thin solid var(--dhbw-gray);
+        }
+    }
+}
 
 /*  ----------------------------------------------------------------------------
     Adds the styling for the functionality to copy code to the clipboard.
 
-    This base functionality is implemented in LectureDoc.
+    The base functionality is implemented in LectureDoc.
 */
 .code.copy-to-clipboard {
     position: relative;
 
     /*  The DIV with the class ".ld-copy-to-clipboard-button" is added by 
-        JavaScript; i.e., the copy-to-clipboard class is explicitly supported 
-        by LectureDoc. */
+        programmatically by LectureDoc. */
     .ld-copy-to-clipboard-button {
         content: url(copy_to_clipboard.svg);
-        opacity: 0;
+        width: 27px;
+        height: 27px;
+        
         position: absolute;
         right: 18px;
         top: 18px;
-        width: 27px;
-        height: 27px;
         scale: 1.5;
+        
+        opacity: 0;
         transition: 500ms;
     }
 
@@ -347,12 +352,17 @@ span.option {
 }
 
 
-aside.admonition.tip {
+.admonition{
+    margin: 0.75em 0;
+    position: relative;
+} 
+
+.admonition.tip {
 
     padding: 0;
     margin: 0;
     border-radius: 0.2em;
-    background-color: white;
+    background-color: var(--white);
 
     /* The first two elements ("p"s) markup the generic title (e.g., "Tip")
        and the user chosen Title; we markup both in a section title. */
@@ -396,6 +406,19 @@ aside.admonition.tip {
 }
 
 
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+    font-weight: bold;
+}
+
+p.admonition-title {
+    position: absolute;
+    top: -0.75em;
+    left: 0.25em;
+    padding: 0 0.25em;
+    background-color: white;
+}
 
 .admonition.hint {
     code {
@@ -409,20 +432,15 @@ aside.admonition.tip {
 }
 
 
-p.topic-title,
-p.admonition-title,
-p.system-message-title {
-    font-weight: bold;
-}
 
 p.sidebar-title,
 p.rubric {
-    font-weight: bold;
+    font-weight: bolder;
     font-size: larger;
 }
 
 p.rubric {
-    color: var(--dark-red);
+    color: var(--dark-gray);
 }
 
 p.subtitle,
@@ -522,8 +540,10 @@ table.align-right {
 .sidebar,
 .admonition,
 .system-message {
+    margin-bottom: 0.5em;
+    padding: 0.35em 0.6em;
     border: thin solid;
-    padding: 0.5em 0.75em;
+    border-radius: 0.2em;
 }
 
 div.line-block {

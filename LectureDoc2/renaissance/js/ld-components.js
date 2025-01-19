@@ -92,12 +92,19 @@ function layoutDeckInDocumentView(deck) {
  */
 function layoutDecksInSlideView(slide) {
 
-    
+    // Given that there is no standard method to get the height of an
+    // element including its margin, we have to query the element to get its
+    // margin...
+    function getTopAndBottomMargin(e) {
+        const style = window.getComputedStyle(e);
+        return parseInt(style.marginTop) + parseInt(style.marginBottom);
+    }
+
     slide.querySelectorAll(":scope ld-deck").forEach((deck) => {
-        deck.offsetHeight;
+        deck.offsetHeight; // force reflow
         const deckWidth = window.getComputedStyle(deck).width;
         deck.querySelectorAll(":scope >ld-card").forEach((card) => {
-            card.offsetHeight;
+            card.offsetHeight; // force reflow
             card.style.width = deckWidth;
         });
     });
@@ -106,16 +113,17 @@ function layoutDecksInSlideView(slide) {
         const deckWidth = window.getComputedStyle(deck).width;
         // 1. query all cards for the necessary height
         var maxHeight = 0
+        var maxMargin = 0
         deck.querySelectorAll(":scope >ld-card").forEach((card) => {
-            maxHeight = Math.max(maxHeight, card.offsetHeight);
+            maxMargin = Math.max(maxMargin, getTopAndBottomMargin(card)); 
+            maxHeight = Math.max(maxHeight, card.offsetHeight );
         });
         // 2. set the height of all cards and the deck to maxHeight
         deck.querySelectorAll(":scope >ld-card").forEach((card) => {
             card.style.height = maxHeight + "px";
             card.style.width = deckWidth;
         });
-        deck.style.height = maxHeight + "px";
-        console.log("deck: " + deck + " height: " + maxHeight);
+        deck.style.height = maxHeight + maxMargin + "px";
     });
 }
 
