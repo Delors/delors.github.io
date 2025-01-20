@@ -374,17 +374,40 @@ function localResetLectureDoc() {
 
 
 function scaleSlideImages() {
-    const slideImages = document.querySelectorAll(".ld-slide img");
-    for (const img of slideImages) {
+    const imgs = document.querySelectorAll(".ld-slide img");
+    for (const img of imgs) {
         if (img.complete) {
-            console.log("image" + img.naturalWidth + "x" + img.naturalHeight);
+            console.info("image " + img.src + " is already loaded: " + img.naturalWidth + "x" + img.naturalHeight);
         } else {
-            console.log("waiting for image " + img.src+ " to load");
+            console.info("waiting for image " + img.src + " to load");
             img.addEventListener("load", () => {
-                console.log(img.src +": " + img.naturalWidth + "x" + img.naturalHeight);
+                console.info("image " + img.src + " has been loaded: " + img.naturalWidth + "x" + img.naturalHeight);
                 img.style.width = (img.naturalWidth * 3) + "px";
                 img.style.height = (img.naturalHeight * 3) + "px";
             });
+        }
+    }
+
+    const objects = document.querySelectorAll(".ld-slide object[role='img'][type='image/svg+xml']");
+    for (const obj of objects) {
+        const loadListener =
+            () => {
+                const svg = obj.contentDocument.querySelector("svg");
+                svg.style.overflow = "visible";
+                const width = svg.scrollWidth;
+                const height = svg.scrollHeight;
+                console.info("svg " + obj.data + " has been loaded: " + width + "x" + height);
+                obj.style.width = width * 3 + "px";
+                obj.style.height = height * 3 + "px";
+                obj.removeEventListener("load", loadListener);
+            }
+        if (obj.contentDocument) {
+            console.log("svg " + obj.data + " is already loaded");
+            loadListener();
+        } else {
+            console.info("waiting for svg " + obj.data + " to load");
+
+            obj.addEventListener("load", loadListener);
         }
     }
 }
@@ -2178,7 +2201,6 @@ const onDOMContentLoaded = async () => {
     setupMenu();
 
     scaleSlideImages();
-
 
     /*
     Update rendering related information.

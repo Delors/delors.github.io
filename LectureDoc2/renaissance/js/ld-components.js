@@ -48,7 +48,7 @@ function layoutDeckInDocumentView(deck) {
         }
     }
 
-    // 2.   Regroup the cards in a ld-card-group element
+    // 2.   Regroup the cards in an ld-card-group element
     //      if the group contains overlay cards. The ld-card-group uses 
     //      relative positioning.
     for (const group of groupedCards) {
@@ -92,39 +92,65 @@ function layoutDeckInDocumentView(deck) {
  */
 function layoutDecksInSlideView(slide) {
 
-    // Given that there is no standard method to get the height of an
-    // element including its margin, we have to query the element to get its
-    // margin...
-    function getTopAndBottomMargin(e) {
-        const style = window.getComputedStyle(e);
-        return parseInt(style.marginTop) + parseInt(style.marginBottom);
+    const performLayout = () => {
+
+        // Given that there is no standard method to get the height of an
+        // element including its margin, we have to query the element to get its
+        // margin...
+        function getTopAndBottomMargin(e) {
+            const style = window.getComputedStyle(e);
+            return parseInt(style.marginTop) + parseInt(style.marginBottom);
+        }
+
+        // TODO add support for floating elements on cards/the slide.
+        slide.querySelectorAll(":scope ld-deck").forEach((deck) => {
+            deck.offsetWidth; // force reflow
+            deck.offsetHeight; // force reflow
+            const deckWidth = window.getComputedStyle(deck).width;
+            deck.querySelectorAll(":scope >ld-card").forEach((card) => {
+                card.offsetHeight; // force reflow
+                card.style.width = deckWidth;
+            });
+        });
+
+        Array.from(slide.querySelectorAll(":scope ld-deck")).reverse().forEach((deck) => {
+            const deckWidth = window.getComputedStyle(deck).width;
+            // 1. query all cards for the necessary height
+            var maxHeight = 0
+            var maxMargin = 0
+            deck.querySelectorAll(":scope >ld-card").forEach((card) => {
+                maxMargin = Math.max(maxMargin, getTopAndBottomMargin(card));
+                maxHeight = Math.max(maxHeight, card.offsetHeight);
+            });
+            // 2. set the height of all cards and the deck to maxHeight
+            deck.querySelectorAll(":scope >ld-card").forEach((card) => {
+                card.style.height = maxHeight + "px";
+                card.style.width = deckWidth;
+            });
+            deck.style.height = maxHeight + maxMargin + "px";
+        });
     }
 
-    slide.querySelectorAll(":scope ld-deck").forEach((deck) => {
-        deck.offsetHeight; // force reflow
-        const deckWidth = window.getComputedStyle(deck).width;
-        deck.querySelectorAll(":scope >ld-card").forEach((card) => {
-            card.offsetHeight; // force reflow
-            card.style.width = deckWidth;
-        });
-    });
+    const layoutWhenReady = (objs) => {
+        for (const obj of objs) {
+            if (!obj.contentDocument) {
+                obj.addEventListener("load", () => layoutWhenReady(objs));
+                return;
+            }
+            if (!obj.style.width || !obj.style.height) {
+                setTimeout(() => layoutWhenReady(objs));
+                return;
+            }
+        }
+        performLayout();
+    }
 
-    Array.from(slide.querySelectorAll(":scope ld-deck")).reverse().forEach((deck) => {
-        const deckWidth = window.getComputedStyle(deck).width;
-        // 1. query all cards for the necessary height
-        var maxHeight = 0
-        var maxMargin = 0
-        deck.querySelectorAll(":scope >ld-card").forEach((card) => {
-            maxMargin = Math.max(maxMargin, getTopAndBottomMargin(card)); 
-            maxHeight = Math.max(maxHeight, card.offsetHeight );
-        });
-        // 2. set the height of all cards and the deck to maxHeight
-        deck.querySelectorAll(":scope >ld-card").forEach((card) => {
-            card.style.height = maxHeight + "px";
-            card.style.width = deckWidth;
-        });
-        deck.style.height = maxHeight + maxMargin + "px";
-    });
+    const objs = slide.querySelectorAll(":scope object[type='image/svg+xml']");
+    if (objs.length === 0) {
+        performLayout();
+    } else {
+        layoutWhenReady(objs);
+    }
 }
 
 

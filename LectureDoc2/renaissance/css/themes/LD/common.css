@@ -7,6 +7,10 @@
    David Goodger (2015, 2021) 
 */
 
+object[role="img"] {
+    display: block;
+}
+
 ul {
     list-style-type: "▫️";
 }
@@ -26,7 +30,7 @@ ld-deck.numbered {
         position: relative;
         margin-top: 1em;
 
-        border-top: thin solid var(--dhbw-gray);
+        border-top: thin solid var(--dark-gray);
         padding-top: 0.75em;
 
         &::before {
@@ -36,10 +40,19 @@ ld-deck.numbered {
             right: 0em;
             padding: 0.05em 0.25em;
             content: counter(deck);
-            border-right: thin solid var(--dhbw-gray);
+            border-right: thin solid var(--dark-gray);
         }
     }
 }
+
+/*  Depending on how the table is created, we may only be able to add
+    the class "highlight-cell-on-hover" to the surrounding div. 
+    TODO Add functionality to reply in secondary browser(s).
+*/
+:is(div:has(>table),table).highlight-cell-on-hover td:hover {
+    background-color: var(--light-gray);
+}
+
 
 /*  ----------------------------------------------------------------------------
     Adds the styling for the functionality to copy code to the clipboard.

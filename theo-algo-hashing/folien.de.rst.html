@@ -71,7 +71,7 @@
 <h2>Einführung</h2>
 </div><div class="ld-slide" id="suchen-in-einer-liste">
 <h2>Suchen in einer Liste</h2>
-<div class="sl-font-size-70 docutils container">
+<div class="s-font-size-70 highlight-cell-on-hover docutils container">
 <table>
 <thead>
 <tr><th class="head" rowspan="2"><p>Implementation</p></th>
@@ -88,7 +88,9 @@
 </tr>
 </thead>
 <tbody>
-<tr><td><p>sequentielle Suche (unsortierte Liste)</p></td>
+<tr><td><p>sequentielle Suche</p>
+<p>(unsortierte Liste)</p>
+</td>
 <td><p>N</p></td>
 <td><p>N</p></td>
 <td><p>N</p></td>
@@ -133,8 +135,8 @@ Wiederholung -->
 <h2>Hashing - Grundidee</h2>
 <ld-deck>
 <ld-card>
-<img alt="Hashmap" class="align-right" src="images/Hashkollision.svg" />
-<ul class="incremental list-with-explanations">
+<object aria-label="Hashmap" class="align-right" data="images/Hashkollision.svg" role="img" type="image/svg+xml">
+</object><ul class="incremental list-with-explanations">
 <li><p>Die Elemente werden über den Schlüssel indexiert in einer Tabelle gespeichert.</p>
 <p>Der Index ist eine Funktion des Schlüssels.</p>
 </li>
@@ -159,7 +161,9 @@ Wiederholung -->
 <li><p>Raum- und Zeitbeschränkung: Hashing (die reale Welt).</p></li>
 </ul>
 </aside>
-</ld-card></ld-deck></div><div class="ld-slide" id="berechnung-der-hash-funktion">
+</ld-card></ld-deck><div class="supplemental">
+<p>In dem Beispiel ist der Schlüssel das Wort <span class="docutils literal">it</span>.</p>
+</div></div><div class="ld-slide" id="berechnung-der-hash-funktion">
 <h2>Berechnung der Hash-Funktion</h2>
 <dl class="field-list">
 <dt>Idealistisches Ziel<span class="colon">:</span></dt>
@@ -179,7 +183,7 @@ Wiederholung -->
 <dd><p>die ersten drei bis fünf Ziffern.</p>
 </dd>
 <dt>Besser<span class="colon">:</span></dt>
-<dd><p>die letzten drei Ziffern.</p>
+<dd><p>die letzten vier Ziffern.</p>
 </dd>
 </dl>
 </div>
@@ -207,7 +211,10 @@ Wiederholung -->
 <p class="admonition-title">Definition</p>
 <p>Eine Hashfunktion <span class="math">\(h : M \rightarrow \mathbb{Z}_n\)</span> bildet eine Menge <span class="math">\(M\)</span> mit <span class="math">\(|M|\geq |\mathbb{Z}_n|\)</span> auf die Zahlen <span class="math">\(0,...,n-1\)</span> ab.</p>
 <p>Eine Hashfunktion ist <em>surjektiv</em> <a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>: für jedes <span class="math">\(y \in Z_n\)</span> gibt es ein <span class="math">\(x \in M\)</span> mit <span class="math">\(h(x) = y\)</span>.</p>
-<p>Eine Hashfunktion ist <em>gleichverteilt</em>, wenn zwei Bilder <span class="math">\(y1,y2 \in  \mathbb{Z}_n\)</span> immer ungefähr gleich viele Urbilder haben <span class="math">\(|h^{-1}({y1})|\approx |h^{-1}({y2})|\)</span>.</p>
+<ld-presenter-note>
+<p>Surjektiv bedeutet, dass jeder Wert aus dem Wertebereich mindestens einmal von der Funktion berechnet wird.</p>
+<p>Sollte die Funktion nicht-surjektiv sein, dann führt das ggf. zu unnötigen Kollisionen und verschlechtert die Effizienz der Hashtabelle.</p>
+</ld-presenter-note><p>Eine Hashfunktion ist <em>gleichverteilt</em>, wenn zwei Bilder <span class="math">\(y1,y2 \in  \mathbb{Z}_n\)</span> immer ungefähr gleich viele Urbilder haben <span class="math">\(|h^{-1}({y1})|\approx |h^{-1}({y2})|\)</span>.</p>
 </aside>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="footnote-2" role="doc-footnote">
@@ -222,7 +229,7 @@ Wiederholung -->
 <li><p>Für <strong>Hashes, welche verwendet werden im Rahmen von Verschlüsselung und Signaturen,</strong>
 muss es schwer sein:</p>
 <ul class="simple">
-<li><p>ein Urbild zu finden</p></li>
+<li><p>ein Urbild zu finden (d. h. von Y auf X zu schließen)</p></li>
 <li><p>zwei kollidierende Werte zu finden.</p></li>
 </ul>
 <div class="supplemental">
@@ -238,7 +245,7 @@ muss es schwer sein:</p>
 <p>Im Folgenden konzentrieren wir uns auf Hashes für Datenstrukturen.</p>
 </aside>
 </ld-card><ld-card class="incremental">
-<p>Wenn das Ziel ist, hash Werte mit einer bestimmten Länge (zum Beispiel 32Bit) zu berechnen, dann wären folgende Hashfunktionen denkbar:</p>
+<p>Wenn das Ziel ist, Hash-Werte mit einer bestimmten Länge (zum Beispiel 32Bit) zu berechnen, dann wären folgende Hashfunktionen denkbar:</p>
 <p class="rubric">Exemplarische Hashfunktionen</p>
 <ld-deck>
 <ld-card>
@@ -250,7 +257,9 @@ muss es schwer sein:</p>
 </span><span class="whitespace">    </span><span class="name">bits</span><span class="whitespace"> </span>: <span class="keyword type">u64</span> <span class="operator">=</span><span class="whitespace"> </span><span class="name">f64ToBits</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// u64 = 64-Bit (signed) integer
 </span><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">u32</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bits</span><span class="whitespace"> </span><span class="operator">^</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bits</span><span class="whitespace"> </span><span class="operator">&gt;&gt;&gt;</span><span class="whitespace"> </span><span class="literal number integer">32</span><span class="punctuation">));</span><span class="whitespace">
 </span><span class="punctuation">}</span></code></pre>
-</ld-card><ld-card class="incremental">
+<div class="supplemental">
+<p><span class="docutils literal">&gt;&gt;&gt;</span> ist der <em>unsigned right shift</em> Operator.</p>
+</div></ld-card><ld-card class="incremental">
 <p><strong>Zeichenketten</strong></p>
 <aside class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -360,7 +369,7 @@ muss es schwer sein:</p>
 <p>In Python ist die Ausgabe der Funktion <span class="docutils literal">hash()</span> nach jedem Neustart der Pythonumgebung unterschiedlich, da die Hashfunktion einen Zufallswert enthält, der bei jedem Neustart neu generiert wird.</p>
 </div></ld-card><ld-card class="incremental">
 <p class="rubric">Beispielklasse <code class="java"><span class="name">Person</span></code> mit konstantem Hashwert</p>
-<pre class="code python literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword">class</span> <span class="name class">PersonWithBadHash</span><span class="punctuation">:</span><span class="whitespace">
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword">class</span> <span class="name class">PersonWithBadHash</span><span class="punctuation">:</span><span class="whitespace">
 </span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">name</span><span class="punctuation">,</span> <span class="name">age</span><span class="punctuation">):</span><span class="whitespace">
 </span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">name</span> <span class="operator">=</span> <span class="name">name</span><span class="whitespace">
 </span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">age</span> <span class="operator">=</span> <span class="name">age</span><span class="whitespace">
@@ -401,12 +410,18 @@ muss es schwer sein:</p>
 <p class="rubric">Eine Klasse zur Repräsentation von Studierenden.</p>
 <p>Die Klasse <code class="java"><span class="name">Student</span></code> soll:</p>
 <ul class="simple">
-<li><p>die Attribute <span class="docutils literal">name</span> und <span class="docutils literal">matriculation_number</span> haben.</p></li>
-<li><p>die Methoden <span class="docutils literal">__eq__</span> und <span class="docutils literal">__hash__</span> definieren</p></li>
+<li><p>die Attribute/Properties <span class="docutils literal">name</span> und <span class="docutils literal">matriculation_number</span> haben.</p></li>
+<li><p>die Methoden <span class="docutils literal">__eq__</span> und <span class="docutils literal">__hash__</span> sinnvoll/korrekt definieren</p></li>
 </ul>
-<p>Erzeugen Sie drei <code class="java"><span class="name">Student</span></code>-Objekte und speichern Sie diese in einem Set.</p>
-<p><em>Fragen Sie sich wie sie effizient den Hashwert berechnen können.</em></p>
-<p>Geben Sie die Namen der Studierenden aus.</p>
+<p>Aufgaben:</p>
+<ol class="arabic">
+<li><p>Erzeugen Sie drei <code class="java"><span class="name">Student</span></code>-Objekte und speichern Sie diese in einem Set.</p></li>
+<li><p><em>Fragen Sie sich wie sie effizient den Hashwert berechnen können.</em></p></li>
+<li><p>Geben Sie die Namen der Studierenden aus.</p></li>
+<li><p>Was passiert, wenn Sie — <em>nachdem Sie ein Student Objekt dem Dictionary hinzugefügt haben</em> — den Namen des Studenten ändern?</p>
+<p>Schreiben Sie entsprechenden Code, um Ihre Annahme zu überprüfen!</p>
+</li>
+</ol>
 <div class="supplemental">
 <p class="rubric">Rumpfimplementierung</p>
 <pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword">class</span> <span class="name class">Student</span><span class="punctuation">:</span><span class="whitespace">
@@ -419,7 +434,7 @@ muss es schwer sein:</p>
 </span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span>    <span class="keyword">def</span> <span class="name function magic">__hash__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
 </span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span>        <span class="keyword">raise</span> <span class="name exception">NotImplementedError</span><span class="punctuation">(</span><span class="literal string double">&quot;TODO&quot;</span><span class="punctuation">)</span></code></pre>
 </div><div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:4XVOJ+/vZh67NV+ruDIscvTkyDDT+CQKsaJvnDl0JfY=:8KLIw2K+WPoe1wyP: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</div>
+MTAwMDAw:KzMpm3enFgkO0lpjAXQP/kyzUckq8p9IbsmXHLytX70=:M3r5U6QZYLJvOYV1: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</div>
 </div>
 </div><div class="new-section transition-move-to-top ld-slide" id="hashfunktionen-1">
 <h2>Hashfunktionen</h2>
@@ -439,10 +454,10 @@ MTAwMDAw:4XVOJ+/vZh67NV+ruDIscvTkyDDT+CQKsaJvnDl0JfY=:8KLIw2K+WPoe1wyP:uJoh2OBxg
 <li><p>surjektiv</p></li>
 <li><p>gleichverteilt</p></li>
 <li><p>wenn <span class="math">\(n\)</span> keine Primzahl ist, dann kann es (leicht) passieren, dass bestimmte (Teil-)daten weniger oder keinen Einfluss auf den Hashwert haben:</p>
-<ul>
+<ul class="incremental">
 <li><p><span class="math">\(x \cdot 10^3 \mod 40 = 0\)</span></p></li>
-<li><p><span class="math">\(x \cdot 10^3 \mod 42 \in \{0,2,4,...,40\}\)</span> Anm.: <code class="java"><span class="name">GGT</span><span class="punctuation">(</span><span class="literal number integer">42</span><span class="punctuation">,</span><span class="literal number integer">1000</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">2</span></code></p></li>
-<li><p><span class="math">\(x \cdot 10^3 \mod 41 \in \{0,1,2,3,...,40\}\)</span> Anm.: <code class="java"><span class="name">GGT</span><span class="punctuation">(</span><span class="literal number integer">41</span><span class="punctuation">,</span><span class="literal number integer">1000</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">1</span></code></p></li>
+<li><p><span class="math">\(x \cdot 10^3 \mod 42 \in \{0,2,4,...,40\}\)</span> Anm.: <span class="math">\(ggt(42,1000) = 2\)</span></p></li>
+<li><p><span class="math">\(x \cdot 10^3 \mod 41 \in \{0,1,2,3,...,40\}\)</span> Anm.: <span class="math">\(ggt(41,1000) = 1\)</span></p></li>
 </ul>
 </li>
 </ul>
@@ -450,7 +465,9 @@ MTAwMDAw:4XVOJ+/vZh67NV+ruDIscvTkyDDT+CQKsaJvnDl0JfY=:8KLIw2K+WPoe1wyP:uJoh2OBxg
 <dl class="field-list">
 <dt>Multiplikations-Hashfunktion<span class="colon">:</span></dt>
 <dd><p>Sei <span class="math">\(c\)</span> fest, oft <span class="math">\(c = {\sqrt{5}-1 \over 2} \approx 0,6180339887498949\)</span>:</p>
-<p><span class="math">\(h^{mul}_n (x) = \lfloor n·(c·x -\lfloor c·x\rfloor )\rfloor \)</span></p>
+<ld-presenter-note>
+<p>C ist eine irrationale.</p>
+</ld-presenter-note><p><span class="math">\(h^{mul}_n (x) = \lfloor n·(c·x -\lfloor c·x\rfloor )\rfloor \)</span></p>
 </dd>
 </dl>
 <p><strong>Bewertung</strong></p>
@@ -495,7 +512,7 @@ MTAwMDAw:iSjrtxfQOBpXhaFioe4M3UeotpX0PPHXwcK2ZRFLsUs=:hkVuf6rhKBb6p4d4:gPK6HBAgx
 </li>
 <li><p>Daten mit einem Schlüssel <code class="java"><span class="name">k</span></code> werden dann an der Position <code class="java"><span class="name">A</span><span class="operator">[</span><span class="name">h</span><span class="punctuation">(</span><span class="name">k</span><span class="punctuation">)</span><span class="operator">]</span></code> gespeichert - oder an einer Ersatzposition.</p></li>
 <li><p>Sollte die Belegung zu groß werden, wird das Array vergrößert und die Elemente werden (ggf.) neu bzw. wieder gehasht.</p></li>
-<li><p>Sollten zwei Schlüssel den gleichen Hash haben (d. h. <span class="math">\(h(x1) = h(x2)\)</span>), dann wird eine Kollisionsauflösung benötigt.</p></li>
+<li><p>Sollten zwei Schlüssel den gleichen Hash haben (d. h. <span class="math">\(h(x_1) = h(x_2)\)</span>), dann wird eine Kollisionsauflösung benötigt.</p></li>
 </ul>
 </div><div class="ld-slide" id="belegung-von-hashtabellen">
 <h2>Belegung von Hashtabellen</h2>
@@ -510,13 +527,13 @@ MTAwMDAw:iSjrtxfQOBpXhaFioe4M3UeotpX0PPHXwcK2ZRFLsUs=:hkVuf6rhKBb6p4d4:gPK6HBAgx
 <ld-deck>
 <ld-card>
 <p class="rubric">Direkte Verkettung</p>
-<img alt="Hashtabelle mit direkter Verkettung" class="align-center" src="images/hashtables/direkte_verkettung.svg" />
-<div class="supplemental">
-<p>Die <em>direkte Verkettung</em> von Überläufern verwendet eine <span class="math">\(Hashtabelle(A,h_n)\)</span>, mit einem Array <span class="math">\(A\)</span>, das aus Zeigern auf einfach verkettete Listen besteht, dessen Schlüssel der Einträge alle den gleichen Hashwert besitzen, oder die nil sind, wenn kein Eintrag bisher mit dem jeweiligen Hashwert vorhanden ist.</p>
+<object aria-label="Hashtabelle mit direkter Verkettung" class="align-center" data="images/hashtables/direkte_verkettung.svg" role="img" type="image/svg+xml">
+</object><div class="supplemental">
+<p>Die <em>direkte Verkettung</em> von Überläufern verwendet eine <span class="math">\(Hashtabelle(A,h_n)\)</span>, mit einem Array <span class="math">\(A\)</span>, das aus Zeigern auf einfach verkettete Listen besteht, dessen Schlüssel der Einträge alle den gleichen Hashwert besitzen, oder die <span class="docutils literal">nil</span> sind, wenn kein Eintrag bisher mit dem jeweiligen Hashwert vorhanden ist.</p>
 </div></ld-card><ld-card class="incremental">
 <p class="rubric">Separate Verkettung</p>
-<img alt="Hashtabelle mit separater Verkettung" class="align-center" src="images/hashtables/separate_verkettung.svg" />
-<div class="supplemental">
+<object aria-label="Hashtabelle mit separater Verkettung" class="align-center" data="images/hashtables/separate_verkettung.svg" role="img" type="image/svg+xml">
+</object><div class="supplemental">
 <p>Die <em>separate Verkettung</em> von Überläufern verwendet eine <span class="math">\(Hashtabelle(A,h_n)\)</span>, bei der das Array <span class="math">\(A\)</span> aus Knoten einer einfach verketteten Liste besteht, dessen Wert <span class="math">\(nil\)</span> ist, wenn unter dem Hashwert noch nichts gespeichert wurde.</p>
 <p>Ein Eintrag mit Schlüssel <span class="math">\(k\)</span> wird der verketteten Liste zugeordnet, die in <span class="math">\(A[h_n(k)]\)</span> verlinkt ist oder startet, und kann entsprechend hinzugefügt, gelöscht und gefunden werden.</p>
 </div></ld-card></ld-deck></div><div class="ld-slide" id="offene-adressierung">
@@ -545,27 +562,25 @@ MTAwMDAw:iSjrtxfQOBpXhaFioe4M3UeotpX0PPHXwcK2ZRFLsUs=:hkVuf6rhKBb6p4d4:gPK6HBAgx
 <dl class="field-list">
 <dt>Doppeltes-Hashing<span class="colon">:</span></dt>
 <dd><p>Das Array wird mit Hilfe einer zweiten Hashfunktion:</p>
-<blockquote>
 <p><span class="math">\(h^{'}_n(k) = (k\; mod\; (n-2)) +1\)</span></p>
-</blockquote>
 <p>durchsucht.</p>
 <p><span class="math">\(g^{doppel}_n(k,i) = (h_n(k) + i \cdot h^{'}_n(k))\; mod\; n\)</span></p>
 </dd>
 </dl>
-</ld-card></ld-deck></div><div class="ld-slide" id="beispiel-offene-adressierung-hashing-mit-modulo-7">
-<h2>Beispiel Offene Adressierung (Hashing mit Modulo 7)</h2>
+</ld-card></ld-deck></div><div class="ld-slide" id="beispiel-offene-adressierung-hashing-x-mod-7">
+<h2>Beispiel Offene Adressierung (Hashing: <span class="math">\(x\; mod\; 7\)</span>)</h2>
 <ld-deck>
 <ld-card>
-<img alt="Offene Adressierung mit linearem Sondieren" class="align-right" src="images/open_addressing/linear_probing.svg" />
-<p><strong>Lineare Sondierung</strong></p>
+<object aria-label="Offene Adressierung mit linearem Sondieren" class="align-right" data="images/open_addressing/linear_probing.svg" role="img" type="image/svg+xml">
+</object><p><strong>Lineare Sondierung</strong></p>
 <p>Hinzufügen von (17, 5, 3, 21, 9, 10, 12)</p>
 </ld-card><ld-card class="incremental">
-<img alt="Offene Adressierung mit doppeltem Hashing" class="align-right" src="images/open_addressing/double_hashing.svg" />
-<p><strong>Doppeltes-Hashing</strong></p>
+<object aria-label="Offene Adressierung mit doppeltem Hashing" class="align-right" data="images/open_addressing/double_hashing.svg" role="img" type="image/svg+xml">
+</object><p><strong>Doppeltes-Hashing</strong></p>
 <p>Hinzufügen von (17, 5, 3, 21, 9, 10, 12)</p>
 </ld-card><ld-card class="incremental">
-<img alt="Offene Adressierung mit quadratischem Sondieren" class="align-right" src="images/open_addressing/quadratic_probing.svg" />
-<p><strong>Quadratische Sondierung</strong></p>
+<object aria-label="Offene Adressierung mit quadratischem Sondieren" class="align-right" data="images/open_addressing/quadratic_probing.svg" role="img" type="image/svg+xml">
+</object><p><strong>Quadratische Sondierung</strong></p>
 <p>Hinzufügen von (17, 5, 3, 21, 9, 10, 12)</p>
 <div class="incremental">
 <p>Für den Wert 10 wird kein Platz gefunden!</p>
