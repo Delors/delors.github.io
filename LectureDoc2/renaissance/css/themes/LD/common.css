@@ -41,16 +41,24 @@ ld-deck.numbered {
             padding: 0.05em 0.25em;
             content: counter(deck);
             border-right: thin solid var(--dark-gray);
+            background-color: var(--dark-gray);
+            color: var(--white);
+            text-shadow: -1px -1px 2px var(--light-gray);
+            border-radius: 0 0 0 0.5em;
         }
     }
 }
 
-/*  Depending on how the table is created, we may only be able to add
-    the class "highlight-cell-on-hover" to the surrounding div. 
+/*  Depending on how the table is created,  the class "highlight-cell-on-hover" 
+    may only be found on the surrounding div. 
     TODO Add functionality to reply in secondary browser(s).
+    TODO Check for duplication with ldcomponents...
 */
-:is(div:has(>table),table).highlight-cell-on-hover td:hover {
-    background-color: var(--light-gray);
+div:has(>table),
+table {
+    &.highlight-cell-on-hover td:hover {
+        background-color: var(--light-gray);
+    }
 }
 
 
@@ -72,7 +80,6 @@ ld-deck.numbered {
         position: absolute;
         right: 18px;
         top: 18px;
-        scale: 1.5;
         
         opacity: 0;
         transition: 500ms;
@@ -85,6 +92,28 @@ ld-deck.numbered {
 }
 
 /* Lists */
+
+/* Provides a very simple means to arrange content in columns. */
+ul.column-list {
+    list-style: none;
+
+    display: flex;
+    padding: 0;
+    margin: 0;
+    
+    gap: 1em;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    &.evenly-spaced-columns {
+        justify-content: space-evenly;
+    }
+    &.left-aligned-columns {
+        justify-content: flex-start;
+    }
+}
 
 /* compact and simple lists: no margin between items */
 li,
@@ -265,6 +294,12 @@ dl.option-list>dt {
     font-weight: normal;
 }
 
+
+.no-title h2:first-child {
+    display: none;
+}
+
+
 .footnote,
 .citation {
     margin: 1em 0;
@@ -365,10 +400,6 @@ span.option {
 }
 
 
-.admonition{
-    margin: 0.75em 0;
-    position: relative;
-} 
 
 .admonition.tip {
 
@@ -425,35 +456,72 @@ p.system-message-title {
     font-weight: bold;
 }
 
-p.admonition-title {
-    position: absolute;
-    top: -0.75em;
-    left: 0.25em;
-    padding: 0 0.25em;
-    background-color: white;
-}
+
 
 .admonition.hint {
     code {
         background-color: var(--dhbw-light-red);
     }
 }
+.admonition {
 
-.admonition.note {
-    background-color: var(--slide-background-color);
-    float: right;
+    margin: 0.75em 0;
+    position: relative;
+
+    >p:first-child.admonition-title {
+        position: absolute;
+        top: -0.75em;
+        left: 0.25em;
+        padding: 0 0.25em;
+        background-color: var(--current-background-color);
+        border-radius: var(--small-border-radius);
+    }
+    &.summary {
+        >p:first-child.admonition-title {
+            width: 20ch;
+            left: 0;
+            margin: 0 calc((100% - 20ch) / 2);
+            text-align: center;
+        }   
+    }
+
+    &.note {
+        float: right;
+        margin-left: 1em;
+
+        &:has(+) {
+            margin-bottom: 1em;
+        }
+
+        background-color: inherit;
+    }
+
+    &.proof {
+        position: relative;
+
+        &::after {
+            position: absolute;
+            bottom: 0.35em;
+            right: 0.3em;
+
+            /* End an end of proof marker at the end. */
+            content: "∎";
+        }
+    }
 }
-
-
 
 p.sidebar-title,
 p.rubric {
-    font-weight: bolder;
-    font-size: larger;
+    font-weight: normal;
+    font-size: 1.15em;
 }
 
 p.rubric {
-    color: var(--dark-gray);
+    color: var(--white);
+    text-shadow: 1px 1px 2px var(--black);
+    background-color: var(--semi-light-gray);
+    border-radius: var(--small-border-radius);
+    padding: 0.1em 0.2em;
 }
 
 p.subtitle,

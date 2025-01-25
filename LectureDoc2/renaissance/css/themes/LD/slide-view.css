@@ -41,7 +41,8 @@
 
             overflow-y: scroll;
 
-            background-color: rgb(from var(--slide-background-color) r g b / 0.5);
+            --current-background-color: rgb(from var(--slide-background-color) r g b / 0.5);
+            background-color: var(--current-background-color);
             -webkit-backdrop-filter: blur(25px);
             backdrop-filter: blur(25px);
 
@@ -98,7 +99,8 @@
                 padding: 0.25em 0.5em;
 
                 font-size: 38px;
-                background-color: rgba(200, 200, 200, 0.5);
+                --current-background-color: rgba(200, 200, 200, 0.5);
+                background-color: var(--current-background-color);
                 color: black;
                 text-shadow: 1px 1px 2px white;
 
@@ -127,56 +129,15 @@
             }
         }
 
-        &.new-subsection {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-decoration-color: var(--dhbw-light-gray);
 
-            &::after {
-                content: var(--dhbw-logo);
-                position: absolute;
-                top: 0px;
-                right: 0px;
-                scale: 0.50;
-                translate: 60px -25px;
-            }
-
-            >h2 {
-                width: 100%;
-                padding: var(--slide-padding);
-                /*border: 1px solid var(--dhbw-gray);*/
-                border-radius: 0 calc(var(--slide-border-radius) * 0.75) calc(var(--slide-border-radius) * 0.75) 0;
-                margin-left: calc(-2 * var(--slide-lr-padding));
-                color: whitesmoke;
-                background-color: var(--dhbw-gray);
-                font-size: 1.666em;
-                text-align: center;
-                position: relative;
-            }
-        }
-
-
-        /*
-        &.excursion { 
-            border-top: 15px solid darkgray;
-            padding-top: calc(var(--slide-tb-padding) - 15px);
-            border-bottom: 15px solid darkgray;
-            padding-bottom: calc(var(--slide-tb-padding) - 15px);
         
-            &::before {
-                content: "📝";
-                display: block;
-                position: absolute;
-                top: 0px;
-                right: 15px;
-                font-size: 80px;
-                text-shadow: 2px 2px 4px var(--dhbw-dark-gray);
-                mix-blend-mode: multiply;        
-            }
+        /*  The DIV with the class ".ld-copy-to-clipboard-button" is added by 
+            programmatically by LectureDoc. */
+        .ld-copy-to-clipboard-button {
+            scale: 3;
+            
+            transform-origin: top right;
         }
-        */
     }
 }
 
@@ -477,7 +438,7 @@ with other classes to style the block footer.
 
     &.ld-slide::before {
         /* to clear the default logo */
-        content: " ";
+        display:none;
     }
 
     div.cheat-sheet-block,

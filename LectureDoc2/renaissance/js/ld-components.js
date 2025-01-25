@@ -1,6 +1,6 @@
 /**
  * JavaScript module related to the core components of LectureDoc:
- * - Stacks
+ * - Decks
  * - Scrollables
  * - Tables
  *      - Highlighting identical cells
@@ -12,22 +12,8 @@ import * as ld from './ld-lib.js';
 console.log("loading ld-components.js");
 
 function getSlide(element) {
-    // Originally, we used the following code to get the parent slide:
-    // document.evaluate(
-    //     `*/ancestor::*[contains(@class,'ld-slide')]`,
-    //     scrollable,
-    //     null,
-    //     XPathResult.ANY_TYPE,
-    //     null).iterateNext()
-    // However, xPath expressions are evaluated differently by 
-    // different browsers. Hence, we have to do it on our own.
     if (!element) return null;
-
-    if (element.classList.contains("ld-slide")) {
-        return element;
-    } else {
-        return getSlide(element.parentNode);
-    }
+    return element = element.closest(".ld-slide");
 }
 
 /**
@@ -78,14 +64,27 @@ function layoutDeckInDocumentView(deck) {
     }
 }
 
+// Given that there is no standard method to get the height of an
+// element including its margin, we have to query the element to get its
+// margin...
+function getTopAndBottomMargin(e) {
+    const style = window.getComputedStyle(e);
+    return parseInt(style.marginTop) + parseInt(style.marginBottom);
+}
+function getLeftAndRightMargin(e) {
+    const style = window.getComputedStyle(e);
+    return parseInt(style.marginLeft) + parseInt(style.marginRight);
+}
+
 /**
  * Handles the rendering of a deck in the slide view.
  * 
  * In pure CSS it is not possible to adapt the height of an element to 
  * the height of its tallest child when all children are positioned 
- * absolutely. The later is necessary to enable the overlay effect.
+ * absolutely which is necessary to enable the overlay effect. Hence, we 
+ * have to do it in JavaScript.
  * 
- * Hence, we have to observe each deck and, when one 
+ * We have to observe each deck and, when one 
  * intersects with the viewport, we stop observing it and set the 
  * height of the deck and all its cards to the height of 
  * the tallest card. 
@@ -94,19 +93,33 @@ function layoutDecksInSlideView(slide) {
 
     const performLayout = () => {
 
-        // Given that there is no standard method to get the height of an
-        // element including its margin, we have to query the element to get its
-        // margin...
-        function getTopAndBottomMargin(e) {
-            const style = window.getComputedStyle(e);
-            return parseInt(style.marginTop) + parseInt(style.marginBottom);
-        }
-
-        // TODO add support for floating elements on cards/the slide.
         slide.querySelectorAll(":scope ld-deck").forEach((deck) => {
+
+            // Let's check if we have sibling floating elements that restrict
+            // the width of the deck.
+            let leftOffset = 0;
+            let rightOffset = 0;
+            for (const child of deck.parentNode.children){  
+                const style =  window.getComputedStyle(child)
+                switch( style.float) {
+                    case "left": leftOffset += child.offsetWidth + getLeftAndRightMargin(child); break;
+                    case "right": rightOffset += child.offsetWidth + getLeftAndRightMargin(child); break;
+                }
+                if (child === deck) { break; }
+            }
+
             deck.offsetWidth; // force reflow
             deck.offsetHeight; // force reflow
-            const deckWidth = window.getComputedStyle(deck).width;
+            const deckWidth = 
+                parseInt(window.getComputedStyle(deck).width) 
+                - leftOffset 
+                - rightOffset 
+                + "px";
+            if (leftOffset > 0) {
+                // we need space for the left floating element
+                deck.style.marginLeft = leftOffset + "px";
+            }
+            deck.style.width = deckWidth; 
             deck.querySelectorAll(":scope >ld-card").forEach((card) => {
                 card.offsetHeight; // force reflow
                 card.style.width = deckWidth;
@@ -138,10 +151,12 @@ function layoutDecksInSlideView(slide) {
                 return;
             }
             if (!obj.style.width || !obj.style.height) {
+                console.log("waiting for width and height of: ",obj);
                 setTimeout(() => layoutWhenReady(objs));
                 return;
             }
         }
+        // TODO Do we need support for normal images?
         performLayout();
     }
 
@@ -153,43 +168,6 @@ function layoutDecksInSlideView(slide) {
     }
 }
 
-
-
-function adaptHeightOfSlideToScrollable(scrollable) {
-    const root = getComputedStyle(document.querySelector(":root"));
-    const zoomFactor = root.getPropertyValue("--ld-dv-zoom-level");
-
-    const scrollableStyle = window.getComputedStyle(scrollable);
-    const requiredHeight =
-        parseInt(scrollableStyle.height, 10) +
-        // the following is a REAL hack to make sure that the last
-        // line of the scrollable is fully visible in Safari.
-        // Chrome and Firefox currently don't work at all...
-        parseInt(scrollableStyle.lineHeight);
-    const parentNodeStyle = window.getComputedStyle(scrollable.parentNode)
-    const parentHeight = parseInt(parentNodeStyle.height, 10);
-    const paddingBottom = parseInt(parentNodeStyle.paddingBottom, 10);
-    const offsetTop = scrollable.offsetTop
-
-    const availableHeight = parentHeight - offsetTop - paddingBottom;
-    const additionalHeight = requiredHeight - availableHeight;
-    if (additionalHeight > 0) {
-        const slide = getSlide(scrollable);
-        // We can either use the height of the computed style for the 
-        // slide or the value from the root.
-        // const slideHeight = parseInt(window.getComputedStyle(slide).height,10);
-        const slideHeight = parseInt(root.getPropertyValue("--ld-slide-height"), 10);
-
-        slide.style.height = slide.style.maxheight = (slideHeight + additionalHeight) + "px";
-
-        const slidePaneStyle = ld.getParent(scrollable, "ld-dv-slide-pane").style;
-        slidePaneStyle.height = slidePaneStyle.maxHeight =
-            Math.ceil((slideHeight + additionalHeight) * zoomFactor) + "px";
-
-        scrollable.style.height = requiredHeight + "px";
-        scrollable.classList.remove("scrollable");
-    }
-}
 
 /**
  * Handles the rendering of a ".scrollable" element in the slides view
@@ -241,6 +219,19 @@ function afterLDDOMManipulations() {
 function afterLDListenerRegistrations() {
     console.log("performing ld-components.afterLDListenerRegistrations");
 
+    function layoutOnIntersection(selector, layoutFunction) {
+        document.querySelectorAll(selector).forEach((element) => {
+            new IntersectionObserver((events, observer) => {
+                events.forEach((event) => {
+                    if (event.isIntersecting) {
+                        observer.unobserve(element);
+                        setTimeout(() => layoutFunction(element));
+                    }
+                });
+            }).observe(element);
+        });
+    }
+
     /**
      * Elements which are not visible because their parent has a 
      * display:none property will not be layed out and have no size. 
@@ -248,29 +239,8 @@ function afterLDListenerRegistrations() {
      * Hence, to compute the size of a deck with overlay cards we have to wait 
      * until it is visible.
      */
-    document.querySelectorAll(".ld-slide-context .ld-slide:has(ld-deck)").forEach((slide) => {
-        new IntersectionObserver((events, observer) => {
-            events.forEach((event) => {
-                if (event.isIntersecting) {
-                    const slide = event.target;
-                    observer.unobserve(slide);
-                    setTimeout(() => layoutDecksInSlideView(slide));
-                }
-            })
-        }).observe(slide);
-    });
-
-    document.querySelectorAll("#ld-document-view ld-deck").forEach((deck) => {
-        new IntersectionObserver((events, observer) => {
-            events.forEach((event) => {
-                if (event.isIntersecting) {
-                    const deck = event.target;
-                    observer.unobserve(deck);
-                    setTimeout(() => layoutDeckInDocumentView(deck));
-                }
-            });
-        }).observe(deck);
-    });
+    layoutOnIntersection(".ld-slide-context .ld-slide:has(ld-deck)", layoutDecksInSlideView);
+    layoutOnIntersection("#ld-document-view ld-deck", layoutDeckInDocumentView);
 
     const scrollableObserver = new IntersectionObserver((events) => {
         events.forEach((event) => {
@@ -278,20 +248,11 @@ function afterLDListenerRegistrations() {
                 const scrollable = event.target;
                 scrollableObserver.unobserve(scrollable);
                 // console.log("intersection with scrollable: " + scrollable);
-                if (document.evaluate(
-                    `*/ancestor::*[@id='ld-document-view']`,
-                    scrollable,
-                    null,
-                    XPathResult.ANY_TYPE,
-                    null).iterateNext()) {
-                    setTimeout(() => adaptHeightOfSlideToScrollable(scrollable));
-                } else {
-                    setTimeout(() => adaptHeightOfScrollableToRemainingSpace(scrollable));
-                }
+                setTimeout(() => adaptHeightOfScrollableToRemainingSpace(scrollable));
             }
         });
     });
-    document.querySelectorAll(":is(#ld-slides-pane, #ld-light-table-dialog, #ld-document-view) .scrollable").forEach((scrollable) => {
+    document.querySelectorAll(":is(#ld-slides-pane, #ld-light-table-dialog) .scrollable").forEach((scrollable) => {
         scrollableObserver.observe(scrollable);
     });
 

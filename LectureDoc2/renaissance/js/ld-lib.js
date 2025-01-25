@@ -72,7 +72,10 @@ export function div(
 /**
  * Converts a 2D array into an HTML table.
  * 
- * @param {Object[][]} data - The content of the cells. The first index identifies the row, the *         second the column. E.g., data[1][2] is the cell in the second row (1) and third *         column (2).
+ * @param {Object[][]} data - The content of the cells. The first index 
+ *                            identifies the row, the second the column. 
+ *                            E.g., data[1][2] is the cell in the second row 
+ *                            (1) and third column (2).
  * @param {generateCells} [rowExt] - The row will be extended by the
  *          cells (td elements) returned by the function. If the function is 
  *          defined and a list of cells is actually returned.
@@ -86,7 +89,7 @@ export function convertToTable(data, rowExt) {
         tbody.appendChild(row);
         for (let j = 0; j < data[i].length; j++) {
             const cell = document.createElement('td');
-            cell.textContent = data[i][j];
+            cell.innerHTML = data[i][j];
             row.appendChild(cell);
         }
         if (rowExt) {
@@ -101,7 +104,7 @@ export function convertToTable(data, rowExt) {
 
 /**
  * Converts a string in CSS notation into a variable name as used by
- * JavaScript except that also the first character is also capitalized.
+ * JavaScript except that also the first character is capitalized.
  * 
  * @param {string} str a string in css notation; e.g., "light-table". 
  * @param {string} separator a string which identifies the individual segments (default: "-").
@@ -121,6 +124,7 @@ export function capitalizeCSSName(str, separator = "-") {
 export function getBody() { return document.getElementsByTagName("BODY")[0]; }
 
 
+/** @deprecated Use closest()! */
 export function getParent(element, className) {
     if (!element) return null;
     return getParentOrThis(element.parentNode, className);
@@ -154,8 +158,6 @@ export function isElementFullyVisible(element) {
     const rect = element.getBoundingClientRect();
     const windowHeight = window.innerHeight || document.documentElement.clientHeight;
     const windowWidth = window.innerWidth || document.documentElement.clientWidth;
-    //console.log(rect.top, rect.left, rect.bottom, rect.right);
-    //console.log(windowHeight, windowWidth);
     return (
         rect.top >= 0 &&
         rect.left >= 0 &&
