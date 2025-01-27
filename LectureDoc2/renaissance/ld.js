@@ -667,7 +667,7 @@ function setupHelp() {
 
 function setupTableOfContents() {
     const topics =
-        topicTemplates.querySelectorAll(".ld-slide:where(.new-section,.new-subsection)");
+        topicTemplates.querySelectorAll("ld-topic:where(.new-section,.new-subsection)");
     let level = 1;
     let s = "<ol>"
     for (const topic of topics) {
@@ -2009,21 +2009,28 @@ function registerHoverSupplementalListener() {
 }
 
 function registerHoverPresenterNoteListener() {
-    document.querySelectorAll("#ld-slides-pane ld-presenter-note-marker").forEach((note) => {
-        console.log("registering hover listener for presenter note",note);
+    document.querySelectorAll("#ld-slides-pane ld-presenter-note-marker").forEach((marker) => {
+        console.log("registering hover listener for presenter note",marker);
 
-        const noteId = note.dataset.presenterNoteId;
+        const noteId = marker.dataset.presenterNoteId;
 
-        const ldSlide = note.closest(".ld-slide");
+        const ldSlide = marker.closest(".ld-slide");
         const ldPresenterNote = ldSlide.querySelector(`:scope #ld-presenter-note-${noteId}`)
         function addHover(){
             ldPresenterNote.classList.add("hover:ld-presenter-note");
         }
-        function removeHover(){
-            ldPresenterNote.classList.remove("hover:ld-presenter-note");
+        function removeHover(e){
+            // We have to handle the case where the mouse leaves the marker
+            // because the actual note is shown on top of the marker.
+            // In this case, we can't remove the hover class because this
+            // would lead to a nasty flickering effect.
+            if (e.relatedTarget !== ldPresenterNote) {
+                ldPresenterNote.classList.remove("hover:ld-presenter-note");
+            }
         }
-        note.addEventListener("mouseenter", addHover);
-        note.addEventListener("mouseleave", removeHover);
+        ldPresenterNote.addEventListener("mouseleave", removeHover);
+        marker.addEventListener("mouseenter", addHover);
+        marker.addEventListener("mouseleave", removeHover);
     });
 }
 

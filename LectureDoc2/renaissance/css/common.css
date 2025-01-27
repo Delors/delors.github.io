@@ -15,7 +15,7 @@
 }
 
 /* The following background-color definitions primarily serve debugging 
-   purposes! Slides are required to set a background-color.
+   purposes! Slides are expected/required to set a background-color.
 */ 
 html {
   font-family: var(--default-font-family);
@@ -37,11 +37,13 @@ body {
 }
 
 hr {
-  border-top: 1px solid var(--black);
+  height: 1px;
+  background-color: var(--black);
 }
 
-h1 {
+h1, h2 {
   font-family: var(--large-text-font-family);
+  text-wrap: balance;
 }
 
 h1,
@@ -52,7 +54,6 @@ h5,
 h6,
 dd,
 details>p:last-child {
-  text-wrap: balance;
   margin-bottom: 0.5em;
 }
 
@@ -60,17 +61,6 @@ p {
   text-wrap: pretty;
 }
 
-pre,
-samp {
-  font-family: var(--pre-font-family);
-  font-size: 0.9em;
-}
-
-:not(pre)>code,
-:not(pre)>kbd {
-  font-family: var(--code-font-family);
-  font-size: 0.9em;
-}
 
 a {
   margin-left: auto;
@@ -246,47 +236,54 @@ header {
     clear: both;
 }
 
+pre,
+samp {
+  font-family: var(--pre-font-family);
+  font-size: 0.9em;
+}
+
+code,
+kbd {
+  font-family: var(--code-font-family);
+  font-size: 0.9em;
+}
+
 /* Code */
 pre.code {
   padding: 0.7ex
 }
 
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
 pre.code,
 code {
   --current-background-color: var(--code-background-color);
+
   background-color: var(--current-background-color);
   border-radius: var(--small-border-radius);
-}
 
-/* basic highlighting: for a complete scheme, see */
-/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
-pre.code .comment,
-code .comment {
-    color: #5C6576
-}
-
-pre.code .keyword,
-code .keyword {
+  .keyword {
     color: #3B0D06;
     font-weight: bold
-}
+  }
 
-pre.code .literal.string,
-code .literal.string {
-    color: #0C5404
-}
+  .comment {
+    color: #5C6576
+  }
 
-pre.code .name.builtin,
-code .name.builtin {
-    color: #352B84
-}
-
-pre.code .deleted,
-code .deleted {
-    background-color: #DEB0A1
-}
-
-pre.code .inserted,
-code .inserted {
+  .inserted {
     background-color: #A3D289
+  }
+
+  .deleted {
+    background-color: #DEB0A1
+  }
+
+  .name.builtin {
+    color: #5d559b
+  }
+
+  .literal.string {
+    color: #0C5404
+  }
 }
