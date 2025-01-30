@@ -75,6 +75,13 @@ function getLeftAndRightMargin(e) {
     const style = window.getComputedStyle(e);
     return parseInt(style.marginLeft) + parseInt(style.marginRight);
 }
+function getLeftAndRightPadding(e) {
+    const style = window.getComputedStyle(e);
+    return parseInt(style.paddingLeft) + parseInt(style.paddingRight);
+}
+function getLeftAndRightMarginAndPadding(e) {
+    return getLeftAndRightMargin(e) + getLeftAndRightPadding(e);
+}
 
 /**
  * Handles the rendering of a deck in the slide view.
@@ -113,16 +120,16 @@ function layoutDecksInSlideView(slide) {
             const deckWidth = 
                 parseInt(window.getComputedStyle(deck).width) 
                 - leftOffset 
-                - rightOffset 
-                + "px";
+                - rightOffset;
+                
             if (leftOffset > 0) {
                 // we need space for the left floating element
                 deck.style.marginLeft = leftOffset + "px";
             }
-            deck.style.width = deckWidth; 
+            deck.style.width = deckWidth + "px";
             deck.querySelectorAll(":scope >ld-card").forEach((card) => {
                 card.offsetHeight; // force reflow
-                card.style.width = deckWidth;
+                card.style.width = deckWidth - getLeftAndRightMarginAndPadding(deck) + "px";
             });
         });
 
@@ -138,7 +145,7 @@ function layoutDecksInSlideView(slide) {
             // 2. set the height of all cards and the deck to maxHeight
             deck.querySelectorAll(":scope >ld-card").forEach((card) => {
                 card.style.height = maxHeight + "px";
-                card.style.width = deckWidth;
+                card.style.width = deckWidth - getLeftAndRightMarginAndPadding(deck) + "px";
             });
             deck.style.height = maxHeight + maxMargin + "px";
         });

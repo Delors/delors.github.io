@@ -662,7 +662,7 @@ function setupHelp() {
             helpDialog.innerHTML = `<p>Help not found: ${error}</p>`;
         });
 
-    document.querySelector("body").prepend(helpDialog);
+    document.body.prepend(helpDialog);
 }
 
 function setupTableOfContents() {
@@ -693,7 +693,7 @@ function setupTableOfContents() {
         </div>
         ${s}`
 
-    document.querySelector("body").prepend(tocDialog);
+    document.body.prepend(tocDialog);
     document.
         getElementById("ld-table-of-contents-close-button").
         addEventListener("click", toggleTableOfContents);
@@ -1074,7 +1074,7 @@ function setupDocumentView() {
     });
 
     typesetMath(documentView);
-    document.querySelector("body").prepend(documentView);
+    document.body.prepend(documentView);
 }
 
 
@@ -1141,7 +1141,7 @@ function setupMessageBox() {
     const message = document.createElement("DIALOG");
     message.id = "ld-message-box";
     message.className = "ld-ui";
-    document.querySelector("body").prepend(message);
+    document.body.prepend(message);
 }
 
 function showMessage(htmlMessage, ms = 3000) {
@@ -1654,6 +1654,22 @@ function localEnsureLectureDocIsVisible() {
     }
 }
 
+function redrawSlide() {
+    postMessage("redrawSlide", undefined);
+    localRedrawSlide();
+}
+function localRedrawSlide() {
+    if (!state.showDocumentView) {
+        console.log("forced rerendering of the current slide [" + state.currentSlideNo + "]");
+        // Sometimes the current slide is not shown properly after
+        // resetting the slide progress. This is a workaround to
+        // ensure that the current slide is shown properly.
+        const slideStyle = getCurrentSlide().style;
+        const slideState = slideStyle.display;
+        slideStyle.display = "none";
+        setTimeout(() => { slideStyle.display = slideState; });
+    }
+}
 
 /** 
  * Central keyboard event handler.
@@ -1751,6 +1767,10 @@ function registerKeyboardEventListener() {
 
                 case "t":
                     toggleTableOfContents();
+                    break;
+
+                case "d":
+                    redrawSlide();
                     break;
 
                 // for development purposes:
@@ -2310,6 +2330,8 @@ const onLoad = () => {
                 }
                 case "hideLaserPointer": localHideLaserPointer(); break;
 
+                case "redrawSlide": localRedrawSlide(); break;
+
                 case "scrollableScrolled": {
                     const [scrollableId, scrollTop] = data;
                     localScrollScrollable(scrollableId, scrollTop);
@@ -2331,7 +2353,7 @@ const onLoad = () => {
                     localScrollSupplemental(supplementalId, scrollTop);
                     break;
                 }
-                //case "reset": ; break;
+
                 default:
                     console.warn("unknown message: " + event.data);
                     console.dir(event);
