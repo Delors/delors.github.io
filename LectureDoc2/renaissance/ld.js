@@ -570,7 +570,10 @@ function setupCopyToClipboard(rootNode) {
         code.insertBefore(copyToClipboardButton, code.firstChild);
         copyToClipboardButton.addEventListener("click", (event) => {
             event.stopPropagation();
-            const textToCopy = code.innerText
+            const c = code.cloneNode(true);
+            const lns = c.querySelectorAll(":scope > small.ln");
+            lns.forEach((ln) => c.removeChild(ln));
+            const textToCopy = c.innerText
             navigator.clipboard.writeText(textToCopy).then(() => {
                 showMessage("Copied to clipboard.", 1000);
             });
