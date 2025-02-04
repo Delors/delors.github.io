@@ -1,38 +1,32 @@
 /* LAYER: theme.ld.slide-view */
 
-:root {
-    --ld-rel-max-supplemental-area-width: 85%;
-    --ld-rel-max-supplemental-area-height: 85%;
-}
-
-/*  Styling of supplemental information.
-
-    Each slide can only have one block with supplemental information. The 
-    supplemental information is placed differently in the DOM in the different 
-    views.
-    
-    In the slide view the element remains in the DOM at it is original place. 
-    
-    In the slide view the DIV with the supplemental information is positioned at the
-    right side in the slide mode.
-*/
 #ld-slides-pane {
-
-
+    
     .ld-slide {
 
-        /*  Done by Javascript: 
-            Aggregation of all supplemental information in one 
-            ld-supplemental element: 
+        --ld-rel-max-supplemental-area-width: 85%;
+        --ld-rel-max-supplemental-area-height: 85%;
+
+        /*  Styling of Supplemental Information
+            -----------------------------------
+
+            
+            Aggregation of all supplemental information on a slide in one 
+            ld-supplementals element is done by Javascript.
+
+            The aggregated supplemental information is then positioned on the
+            right side of the slide and can be expanded when necessary.
         */
         ld-supplementals {
             display: block;
             max-width: var(--ld-rel-max-supplemental-area-width);
             max-height: var(--ld-rel-max-supplemental-area-height);
             margin: 0;
-            border-radius: var(--slide-border-radius) 0 0 var(--slide-border-radius);
-            padding: calc(var(--slide-tb-padding) * 0.75) calc(var(--slide-lr-padding) * 0.75);
-            /* the factor has to be larger than the factor used by translate (see below) */
+            border-radius: var(--s-border-radius) 0 0 var(--s-border-radius);
+            padding: calc(var(--s-tb-padding) * 0.75) calc(var(--s-lr-padding) * 0.75);
+            /*  The factor has to be larger than the factor used by translate
+                (see below) to ensure that the content is never visible when 
+                the supplemental information is not expanded. */
 
             position: absolute;
             top: 0;
@@ -41,44 +35,52 @@
 
             overflow-y: scroll;
 
-            --current-background-color: rgb(from var(--slide-background-color) r g b / 0.5);
+            --current-background-color: rgb(from var(--s-background-color) r g b / 0.5);
             background-color: var(--current-background-color);
             -webkit-backdrop-filter: blur(25px);
             backdrop-filter: blur(25px);
 
             transform:
-                translateX(calc(100% - var(--slide-lr-padding) * 0.5)) translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
+                translateX(calc(100% - var(--s-lr-padding) * 0.5)) 
+                translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
             box-shadow: var(--trbl-shadow);
             transition: 0.75s;
-
 
             /*  We can't use the :hover pseudo class here, because we want to be 
                 able to apply the styling in the non-primary window. */
             &.hover\:ld-supplementals {
-                /* the selector needs to be more specific than the general .supplemental selector. */
                 transform:
-                    translateX(0%) translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
+                    translateX(0%) 
+                    translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
                 transition: 0.75s;
                 box-shadow: var(--trbl-shadow-dark);
             }
 
             .supplemental+.supplemental {
                 margin-top: 0.5em;
-                border-top: 1px dashed var(--dhbw-dark-gray);
+                border-top: 1px dashed var(--dark-gray);
                 padding-top: 0.5em;
             }
         }
 
+        /*  Styling of Presenter Notes
+            --------------------------
+
+            In the document we only show a marker and only if we hover over it,
+            the presenter notes are shown at the bottom.
+        */
         ld-presenter-note-marker {
             >div {
                 display: block;
                 position: absolute;
-                translate: 0 -1.33lh;
-                font-size: 24px;
-                /* We don't want to have it dependent on the current font-size that is "accidentally" in effect. */
-                font-weight: bolder;
                 width: 1.5em;
                 height: 1.5em;
+                /*  We don't want to make the size of the marker dependent on the
+                    current font-size that is "accidentally" in effect. */
+                font-size: 24px;
+                translate: 0 -1.33lh;
+
+                font-weight: bolder;
                 text-align: center;
                 border-radius: 25% 25%;
                 background-color: rgba(200, 200, 200, 0.5);
@@ -87,7 +89,7 @@
                 text-shadow: 1px 1px 2px white;
             }
         }
-        /* The custom class .hover is added programmatically. */
+
         ld-presenter-notes {
             position: absolute;
             width: 100%;
@@ -107,7 +109,7 @@
                 &::before {
                     content: attr(data-presenter-note-id);
                     display: block;
-                    width:100%;
+                    width: 100%;
                     padding-bottom: 0.1em;
                     margin-bottom: 0.1em;
                     border-bottom: thin solid var(--dark-gray);
@@ -119,6 +121,7 @@
                 backdrop-filter: blur(4px);
                 -webkit-backdrop-filter: blur(4px);
 
+                /* The custom class .hover is added/removed programmatically. */
                 &.hover\:ld-presenter-note {
                     display: block;
                 }
@@ -129,56 +132,15 @@
             }
         }
 
-
-        
         /*  The DIV with the class ".ld-copy-to-clipboard-button" is added by 
             programmatically by LectureDoc. */
         .ld-copy-to-clipboard-button {
             scale: 3;
-            
+
             transform-origin: top right;
         }
     }
 }
-
-
-
-
-
-/*
-    Generic styling for per-slide footer elements.
-*/
-.footer-left,
-.footer-right,
-.block-footer {
-    position: absolute;
-
-    font-size: var(--slide-footer-font-size);
-}
-
-.footer-left {
-    bottom: var(--slide-lr-padding);
-}
-
-.footer-right {
-    bottom: var(--slide-tb-padding);
-    right: var(--slide-lr-padding);
-}
-
-/*
-Converts a container into a generic footer element. Intended to be combined 
-with other classes to style the block footer.
-*/
-.block-footer {
-    bottom: 0;
-    left: 0;
-    width: var(--ld-slide-width);
-    height: var(--slide-footer-height);
-    padding-left: var(--slide-lr-padding);
-    padding-right: var(--slide-lr-padding);
-    padding-bottom: 1.5em;
-}
-
 
 
 

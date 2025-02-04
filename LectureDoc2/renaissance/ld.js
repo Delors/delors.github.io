@@ -891,15 +891,22 @@ function setupMainPane() {
         false);
 
     /* 
-    Copies all slide(-template)s found in the document to the main pane.
-    Additionally, associate every slide with a unique id based on the
+    Copies all slide(-template)s found in the document to the slide pane.
+    Additionally, associates every slide with a unique id based on the
     number of the slide (ld-slide-no-*). 
-    Internally the numbering of slides starts with 0. However, user-facing
+    Internally, the numbering of slides starts with 0. However, user-facing
     functions assume that the first slide has the id 1.
     */
     topicTemplates.querySelectorAll("ld-topic").forEach((t, i) => {
-        const slide = t.cloneNode(true);
+        const slide = ld.create(
+            "ld-slide", { 
+                id: "ld-slide-no-" + i,
+                classList : t.classList,
+                children: t.children
+            });
         slide.classList.add("ld-slide");
+        slide.dataset.ldSlideNo = i;
+        slide.dataset.id = t.id;
 
         setupCopyToClipboard(slide);
 
@@ -934,10 +941,6 @@ function setupMainPane() {
             slide.appendChild(ldPresenterNotes);
         }
 
-        const orig_slide_id = slide.id;
-        slide.id = "ld-slide-no-" + i;
-        slide.dataset.ldSlideNo = i;
-        slide.dataset.id = orig_slide_id;
         // Let's hide all elements that should be shown incrementally;
         // this is done to get all (new) slides to a well-defined state.
         hideAllAnimatedElements(slide);

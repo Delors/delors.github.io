@@ -6,15 +6,20 @@
 .ld-slide {
 
     color: var(--s-text-color);
-    background-color: var(--slide-background-color);
-    padding: var(--slide-padding);
-    border-radius: var(--slide-border-radius);
-    font-size: var(--sv-font-size);
-    font-weight: var(--sv-font-weight);
-    line-height: var(--sv-line-height);
+    background-color: var(--s-background-color);
+    padding: var(--s-padding);
+    border-radius: var(--s-border-radius);
+    font-size: var(--s-font-size);
+    font-weight: var(--s-font-weight);
+    line-height: var(--s-line-height);
 
     .supplemental {
-        font-size: var(--sv-supplemental-font-size);
+        font-size: var(--s-supplemental-font-size);
+    }
+
+    /* The solution will only be shown in the respective pane. */
+    .ld-exercise-solution {
+        display: none;
     }
 
     h2 {
@@ -23,16 +28,19 @@
 
     .footnote-list {
         font-size: 0.7em;
-    } 
+    }
+
     >.footnote-list {
         position: absolute;
         bottom: 0px;
     }
-    * > .footnote-list {
+
+    *>.footnote-list {
         margin-top: 0.75em;
         border-top: thin solid var(--dark-gray);
         padding-top: 0.2em;
-        > .footnote {
+
+        >.footnote {
             margin-bottom: 0;
 
             &:first-child {
@@ -47,25 +55,25 @@
     &.exercises {
 
         h2:first-child {
-            margin: calc(var(--slide-tb-padding) * -1) calc(var(--slide-lr-padding) * -1) var(--slide-tb-padding) calc(var(--slide-lr-padding) * -1);
-            padding: var(--slide-padding);
-            background: var(--dhbw-light-gray);
-            color: var(--dhbw-dark-red);
+            margin:
+                calc(var(--s-tb-padding) * -1) calc(var(--s-lr-padding) * -1) var(--s-tb-padding) calc(var(--s-lr-padding) * -1);
+            padding: var(--s-padding);
+            background: var(--light-gray);
+            color: var(--dark-red);
             text-shadow: 1px 1px 2px white;
         }
     }
 
-    /* The solution will only be shown in the respective pane. */
-    .ld-exercise-solution {
-        display: none;
-    }
 
-    &.repetition::before{
+
+    &.repetition::before {
         content: "Repetition";
     }
+
     &.wiederholung::before {
         content: "Wiederholung";
     }
+
     &.repetition::before,
     &.wiederholung::before {
         padding: 0.25em 2.5em;
@@ -73,13 +81,13 @@
         top: 0;
         right: 0;
         z-index: 1;
-        transform: translateX(28%) translateY(90%) rotate(45deg) ;
+        transform: translateX(28%) translateY(90%) rotate(45deg);
         color: var(--dark-red);
         border-bottom: 1px solid var(--dark-red);
-        background-color: rgba(var(--slide-background-color-rgb-values), 0.75);
+        background-color: rgba(var(--s-background-color-rgb-values), 0.75);
         backdrop-filter: blur(2px);
         --webkit-backdrop-filter: blur(2px);
-    } 
+    }
 
     .ld-exercise {
         padding: 0.25em 0.5em;
@@ -89,7 +97,7 @@
         >p.rubric {
             position: relative;
             overflow: hidden;
-    
+
             &::after {
                 content: " ";
                 display: inline-block;
@@ -114,10 +122,10 @@
 
         >h2 {
             width: 100%;
-            margin-left: calc(-2 * var(--slide-lr-padding));            
+            margin-left: calc(-2 * var(--s-lr-padding));
             padding: 0.4em 0;
-            border-radius: 0 var(--slide-border-radius) var(--slide-border-radius) 0;
-            
+            border-radius: 0 var(--s-border-radius) var(--s-border-radius) 0;
+
             color: var(--light-gray);
             background-color: var(--dark-gray);
 
@@ -132,4 +140,37 @@
         justify-content: center;
         align-items: center;
     }
+
+
+
+    /*  Generic styling for per-slide footer elements. */
+    .footer-left,
+    .footer-right,
+    .block-footer {
+        position: absolute;
+
+        font-size: var(--s-footer-font-size);
+    }
+
+    .footer-left {
+        bottom: var(--s-lr-padding);
+    }
+
+    .footer-right {
+        bottom: var(--s-tb-padding);
+        right: var(--s-lr-padding);
+    }
+
+    /*  Converts a container into a generic footer element. Intended to be combined 
+        with other classes to style the block footer. */
+    .block-footer {
+        bottom: 0;
+        left: 0;
+        width: var(--ld-slide-width);
+        height: var(--s-footer-height);
+        padding-left: var(--s-lr-padding);
+        padding-right: var(--s-lr-padding);
+        padding-bottom: 1.5em;
+    }
+
 }
