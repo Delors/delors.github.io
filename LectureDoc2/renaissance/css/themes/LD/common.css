@@ -57,6 +57,24 @@ ld-deck.numbered {
     }
 }
 
+ld-grid {
+
+    /*  The default layout is (at the moment) a flex based layout. */
+    &.default-layout {
+
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1em;
+
+        > ld-cell {
+            display: block;
+        }
+    }
+
+}
+
 /*  Depending on how the table is created,  the class "highlight-cell-on-hover" 
     may only be found on the surrounding div. 
     TODO Add functionality to reply in secondary browser(s).
@@ -644,6 +662,20 @@ table.align-right {
     text-align: inherit;
 }
 
+figcaption {
+    font-size: smaller;
+    font-style: italic;
+    color: var(--dark-gray);    
+    padding: 0.5em;
+
+    > .legend {
+        font-style: normal;
+        font-size: smaller;
+        color: var(--gray);   
+        text-align: left; 
+    }
+}
+
 
 .sidebar,
 .admonition,
@@ -677,109 +709,223 @@ blockquote {
     For the possible tokens.
 
 */
-pre.code.html {
-    color: var(--dhbw-gray);
+pre.code {
+    padding: 0;
+    margin: 0 0 0.75em 0;
 }
-
+code,
 pre.code {
 
-    /* Line numbers are dropped using JavaScript. */
+    --code-color: var(--black);
+
+    --attribute-color: #800000;
+
+    --builtin-color: #6383f8;   /* Strong Blue */
+
+    --class-color: #9A6324;  /* Brown */
+
+    --comment-color: #696969;  /* Dark Gray */
+    --comment-preprocfile-color: #FFE119;   /* Bright Yellow */
+    --comment-preproc-color: #BCF60C;   /* Lime Green */
+    --comment-shadow-color: #FFFAC8;  /* Pale Yellow */
+
+    --function-color: #494949;  /* Dark Gray */
+
+    --keyword-color: #4363D8;   /* Strong Blue */
+    --keyword-constant-color: #3232fc;   
+    --keyword-namespace-color: #31bcc9;   
+    --keyword-type-color: #0000ff;   /* Brilliant Blue */
+
+    --literal-color: #911EB4;   /* Purple */
+
+    --name-color: #008080;  /* Teal */
+    --namespace-color: #3CB44B;   /* Strong Green */
+    --number-color: #F032E6;   /* Magenta */
+
+    --operator-color: #F58231;   /* Orange */
+    
+    --variable-color: #3CB44B;   /* Strong Green */
+    
+    --punctuation-color: #E6194B;   /* Strong Red */
+        
+    /* RESERVED */
+    --color-XXX: #46F0F0; 
+    --color-YYY: #FABEBE;
+    --color-ZZZ: #E6BEFF;  
+    
+    
+        
+    
+    color: var(--code-color);
+
+    &.html {
+        color: var(--gray);
+    }
+
+    /*  styling line numbers */
     .ln {
-        color: gray;
+        color: var(--dark-gray);
+        font-size: inherit;
+        margin-right: 0.25em;
+        background-color: lavender;
+        padding-left: 0.25em;
+        display: inline-block;
+        border-right: thin solid var(--dark-gray);
+        text-shadow: 1px 1px 1px var(--white);
+
+        &:first-of-type {
+            border-radius: 0.33em 0 0 0;
+        }
+
+        &:last-of-type {
+            border-radius: 0 0 0 0.33em;
+        }
     }
 
-    span.name.tag {
-        color: var(--dhbw-red);
-    }
+    /*  styling the code (sorted alphabetically) */
 
-    span.name.attribute {
-        color: var(--the-orange);
-        font-style: italic;
-    }
-
-    span.name.function {
-        color: var(--the-orange);
-        font-style: italic;
-    }
-
-    span.name.variable {
-        color: var(--the-orange);
-        text-decoration-line: underline;
-    }
-
-    span.name.class {
-        color: #8f94fd;
-    }
-
-    span.name.builtin {
-        text-decoration: underline;
-    }
-
-    span.name.namespace {
-        color: var(--the-green);
-        font-weight: 900;
-        font-style: italic;
-    }
-
-    span.keyword.namespace {
-        color: var(--the-green);
-    }
-
-    span.literal.string {
-        color: var(--the-blue);
-    }
-
-    span.literal.string.affix {
-        color: var(--the-orange);
-        font-style: italic;
-        text-decoration: dotted underline;
-    }
-
-    span.literal.number {
-        color: var(--the-green);
-    }
-
-    span.operator {
-        color: black;
-        font-weight: 900;
-    }
-
-    span.operator.word {
-        color: black;
-        font-style: italic;
-    }
-
-
-    span.punctuation {
-        font-weight: bolder;
-        color: var(--dhbw-dark-gray);
-    }
-
-    span.comment {
-        font-weight: bolder;
-        color: white;
-        text-shadow: 2px 2px 4px black;
+    .comment {
+        font-weight: 100;
+        color: var(--comment-color);
+        text-shadow: 2px 2px 3px var(--comment-shadow-color), -1px -1px 4px var(--gray);
 
         &.preproc {
-            color: var(--the-green);
-            text-shadow: 2px 2px 4px white;
+            color: var(--comment-preproc-color);
         }
 
         &.preprocfile {
             font-weight: 600;
             font-style: italic;
-            color: var(--the-green);
+            color: var(--comment-preprocfile-color);
             text-decoration: dashed underline;
-            text-shadow: 2px 2px 4px white;
         }
     }
 
-    span.heading {
+    .deleted {
+        background-color: #DEB0A1
+    }
+
+    .heading {
         font-weight: bold;
         text-shadow: 2px 2px 4px white;
     }
-}
 
+    .inserted {
+        background-color: #A3D289
+    }
+
+    .keyword {
+        color: var(--keyword-color);
+        font-weight: 700;
+
+        &.type {
+            color: var(--keyword-type-color);
+        }
+
+        &.namespace {
+            color: var(--keyword-namespace-color);
+        }
+
+        &.constant {
+            color: var(--keyword-constant-color);
+        }
+    }
+
+    .name {
+
+        color: var(--name-color);
+        
+        &.attribute { 
+            color: var(--attribute-color);
+            font-style: italic;
+        }
+
+        &.builtin {
+            color: var(--builtin-color);
+
+            &.pseudo {
+                text-decoration-style: wavy;
+                text-decoration-line: underline;
+                text-decoration-color: var(--builtin-color);
+                text-decoration-thickness: 1px;
+            }
+        }
+
+        &.class {
+            color: var(--class-color);
+        }
+
+        &.function {
+            color: var(--function-color);
+            font-style: italic;
+        }
+
+        &.namespace {
+            color: var(--namespace-color);
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        &.tag { /* TODO */ 
+            color: var(--red);
+        }
+
+        &.variable {
+            color: var(--variable-color);
+            text-decoration-line: underline;
+        }
+    }
+
+    .literal {
+
+        &.string {
+            color: #0C5404;
+            font-weight: 200;
+    
+            color: var(--literal-color);
+
+            &.affix {
+                color: var(--literal-color);
+                font-style: italic;
+                text-decoration: dotted underline;
+            }
+        }
+
+        &.number {
+            color: var(--number-color);
+        }
+    }
+
+    .operator {
+        color: var(--operator-color);
+        font-weight: 700;
+
+        &.word {
+            font-style: italic;
+        }
+    }
+
+    .punctuation {
+        color: var(--punctuation-color);
+    }
+
+    /*  Whitespace is identified differently in different languages. 
+        Hence, decent support requires language dependent styling. 
+    .whitespace {
+        text-decoration-style: dashed;
+        text-decoration-line: underline;
+        text-decoration-color: var(--builtin-color);
+        text-decoration-thickness: 1px;
+
+        / *
+        &:not(:empty):not(:last-child)::before {
+            display: inline;
+            content: "␣";
+        }
+        * /
+    }
+    */
+}
 
 
 /* Tables */

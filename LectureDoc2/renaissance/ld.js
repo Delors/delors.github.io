@@ -1,6 +1,5 @@
 /*
-       
-   Core Ideas: 
+   Core Principles of LectureDoc2: 
    
     -   LectureDoc documents are always served by a server and only target 
         up-to-date browsers. This is enables us to use modern (HTML/CSS/)
@@ -15,23 +14,26 @@
         If no id is configured, no state information will be saved.
         Saved states always overrides information found in the document as it
         is considered to be more current.
+    
+    -   The id of the document is used to create a broadcast channel that is
+        used to communicate between different windows showing the same document.
 
     -   Meta information about the presentation is stored in the presentation 
         object. This object is - after initialization - not mutated.
 
     -   Information that does not need to be retained between two sessions is
         stored in the ephemeral object.
-
 */
 import * as ld from './js/ld-lib.js';
 
 /**
  * The main module of LectureDoc2.
  * 
- * LectureDoc2 defines a `lectureDoc2` object which enable easy access to
- * meta-information (e.g., about the presentation) and a function (getState) 
- * to return the current state. Furthermore, a function to optimize the view 
- * for printing is provided.
+ * LectureDoc2 defines the {@link lectureDoc2} object which enables access to
+ * meta-information (e.g., about the presentation) and several functions 
+ * to query and manipulate the current state. 
+ * 
+ * Furthermore, a function to optimize the view for printing is provided.
  * 
  * @author Michael Eichberg
  * @license BSD-3-Clause
@@ -47,13 +49,13 @@ async function ldCrypto() {
 }
 
 /**
- * Central registry for all events related to the setup/configuration phase
- * that are triggered by LectureDoc.
+ * Central registry for all events that are triggered by LectureDoc.
  */
 const ldEvents = {
     beforeLDDOMManipulations: [],
     afterLDDOMManipulations: [],
     afterLDListenerRegistrations: [],
+    resetSlideProgress: [],
     addEventListener: function (event, listener) {
         switch (event) {
             case "beforeLDDOMManipulations":
@@ -65,6 +67,9 @@ const ldEvents = {
             case "afterLDListenerRegistrations":
                 this.afterLDListenerRegistrations.push(listener);
                 break;
+            case "resetSlideProgress":
+                this.resetSlideProgress.push(listener);
+                break;    
             default:
                 console.error("Unknown event: " + event);
         }
@@ -217,7 +222,7 @@ let ephemeral = {
  */
 function postMessage(msg, data) {
     if (ephemeral.ldPerDocumentChannel) {
-        ephemeral.ldPerDocumentChannel.postMessage([msg, data]);
+        ld.postMessage(ephemeral.ldPerDocumentChannel, msg, data);
     }
 }
 
@@ -396,6 +401,10 @@ function scaleSlideImages() {
     for (const obj of objects) {
         const loadListener =
             () => {
+                if (obj.width) {
+                    console.error(obj.data + " has an explicit width: " + obj.width+"; no scaling performed");    
+                    return;
+                }
                 const svg = obj.contentDocument.querySelector("svg");
                 svg.style.overflow = "visible";
                 // const width = svg.scrollWidth; <== doesn't work with Firefox
@@ -581,6 +590,25 @@ function setupCopyToClipboard(rootNode) {
     });
 }
 
+function setupIncrementalElements(slide) {
+    slide.querySelectorAll(":scope .incremental-list").forEach((incrementalList) => {
+        const items = incrementalList.querySelectorAll(":scope > li");
+        items.forEach((item) => {
+            item.classList.add("incremental");  
+        });
+    });
+    slide.querySelectorAll(":scope .incremental-table-rows").forEach((incrementalTableRows) => {
+        const items = incrementalTableRows.querySelectorAll(":scope > tbody > tr");
+        items.forEach((item) => {
+            item.classList.add("incremental");  
+        });
+    });
+
+    // Bring everything to a well-defined state
+    slide.querySelectorAll(":scope .incremental").forEach((e) => {
+        e.style.visibility = "hidden"
+    });
+} 
 
 function setupLightTable() {
     const lightTableDialog = ld.dialog({ id: "ld-light-table-dialog", classes: ["ld-ui"] });
@@ -637,7 +665,7 @@ function setupLightTable() {
     });
 
     typesetMath(lightTableDialog);
-    ld.getBody().prepend(lightTableDialog);
+    document.body.prepend(lightTableDialog);
 }
 
 
@@ -784,8 +812,7 @@ function setupUnlockPresenterNotesAndSolutionsDialog() {
                         contentArea.appendChild(passwordsTable);
                         unlockDialog.querySelector(":scope .ld-dialog-title").innerHTML = "Exercises Passwords";
                     }).catch((error) => {
-                        console.trace();
-                        console.log("Decryption using: " + currentPassword + " failed - " + error);
+                        console.log("decryption using: " + currentPassword + " failed - " + error);
                     });
             }
         });
@@ -848,7 +875,7 @@ function localHideLaserPointer() {
     document.querySelector("ld-laser-pointer").style.scale = 0;
 }
 
-function setupMainPane() {
+function setupSlidePane() {
     const slidesPane = ld.div({
         id: "ld-slides-pane",
         classes: ["ld-slide-context"],
@@ -890,12 +917,11 @@ function setupMainPane() {
         },
         false);
 
-    /* 
-    Copies all slide(-template)s found in the document to the slide pane.
-    Additionally, associates every slide with a unique id based on the
-    number of the slide (ld-slide-no-*). 
-    Internally, the numbering of slides starts with 0. However, user-facing
-    functions assume that the first slide has the id 1.
+    /*  Creates slides (by means of ld-slide elements) from the defined topics.
+        Associates every slide with a unique id based on the number of the 
+        slide (data-ld-slide-no-*). Internally, the numbering of slides starts
+        with 0. However, user-facing functions assume that the first slide has
+        the id 1.
     */
     topicTemplates.querySelectorAll("ld-topic").forEach((t, i) => {
         const slide = ld.create(
@@ -906,7 +932,7 @@ function setupMainPane() {
             });
         slide.classList.add("ld-slide");
         slide.dataset.ldSlideNo = i;
-        slide.dataset.id = t.id;
+        slide.dataset.id = t.id; /* The original ID! */
 
         setupCopyToClipboard(slide);
 
@@ -943,7 +969,7 @@ function setupMainPane() {
 
         // Let's hide all elements that should be shown incrementally;
         // this is done to get all (new) slides to a well-defined state.
-        hideAllAnimatedElements(slide);
+        setupIncrementalElements(slide);
         slide.style.display = "none";
         slidesPane.appendChild(slide);
     })
@@ -1293,12 +1319,16 @@ function setSlideProgress(slide, i) {
 }
 
 function getElementsToAnimate(slide) {
+    /*
     const elementsToAnimate =
         ':scope :is(ul,ol).incremental>li, ' +
         ':scope :is(table).incremental>tbody>tr, ' +
         ':scope :not( :is(ul,ol,table)).incremental'
+    */
+    const elementsToAnimate = ':scope .incremental'
     return slide.querySelectorAll(elementsToAnimate);
 }
+
 /**
  * Advances the presentation by either showing the next element or going
  * to the next slide.
@@ -1320,15 +1350,6 @@ function localAdvancePresentation() {
         const element = elements[i];
         if (element.style.visibility == "hidden") {
             element.style.visibility = "visible";
-            //if (!ld.isElementFullyVisible(element)) {
-            const scrollableParent = ld.getParent(element, "scrollable");
-            if (!scrollableParent || !ld.isElementFullyVisibleInContainer(element,scrollableParent)) {
-                element.scrollIntoView({ // needed by scrollable containers
-                    block: "end",
-                    inline: "nearest",
-                    behavior: "smooth"
-                });
-            }
             setSlideProgress(slide, i + 1)
             return;
         }
@@ -1353,20 +1374,6 @@ function localRetrogressPresentation() {
             elementsToAnimate[i].style.visibility = "hidden";
             setSlideProgress(slide, i);
             i--;
-            if (i > 0) {
-                const scrollableParent = ld.getParent(elementsToAnimate[i], "scrollable");
-                if (!scrollableParent || !ld.isElementFullyVisibleInContainer(elementsToAnimate[i],scrollableParent)) {
-                    elementsToAnimate[i].scrollIntoView({ // needed by scrollable containers
-                        block: "start",
-                        inline: "nearest",
-                        behavior: "smooth"
-                    });
-                }
-            } else {
-                slide.querySelectorAll(":scope .scrollable").forEach((e) => {
-                    e.scrollTo({ top: 0, left: 0, behavior: "smooth", });
-                });
-            }
             return;
         }
     }
@@ -1374,9 +1381,11 @@ function localRetrogressPresentation() {
     localMoveToPreviousSlide();
 }
 function hideAllAnimatedElements(slide) {
-    getElementsToAnimate(slide).forEach((e) => e.style.visibility = "hidden");
-
-    slide.querySelectorAll(":scope .scrollable").forEach((e) => { e.scrollTo(0, 0); });
+    getElementsToAnimate(slide).forEach((e) => 
+        // We want to hide the elements in reverse order to ensure that 
+        // functions that rely on the order work smoothly.
+        setTimeout(() => e.style.visibility = "hidden")
+    );
 }
 
 function resetCurrentSlideProgress() {
@@ -1393,19 +1402,22 @@ function localResetSlideProgress(slide /* : element*/) {
         // ... when the last slide.id key is removed from the object, the 
         // object is actually deleted...
     }
+    ldEvents.resetSlideProgress.forEach((f) => f(slide));
 }
 function reapplySlideProgress() {
     if (!state.slideProgress) {
         state.slideProgress = {};
         return;
     }
-    document.querySelectorAll("#ld-slides-pane .ld-slide").forEach((slide) => {
+    //console.log("reapplying slide progress");
+    document.querySelectorAll("#ld-slides-pane ld-slide").forEach((slide) => {
         const visibleElements = getSlideProgress(slide);
         if (visibleElements > 0) {
             const elements = getElementsToAnimate(slide);
             const elementsCount = elements.length;
-            for (let i = 0; i < visibleElements && i < elementsCount; i++) {
-                elements[i].style.visibility = "visible";
+            for (let i = 0; i < elementsCount; i++) {
+                const visibility = i < visibleElements ? "visible" : "hidden";
+                elements[i].style.visibility = visibility
             }
         }
     });
@@ -1416,7 +1428,7 @@ function resetAllAnimations() {
     localResetAllAnimations();
 }
 function localResetAllAnimations() {
-    document.querySelectorAll("#ld-slides-pane .ld-slide").forEach((slide) => {
+    document.querySelectorAll("#ld-slides-pane ld-slide").forEach((slide) => {
         localResetSlideProgress(slide);
     });
     showMessage("Reset all animation progress.");
@@ -1889,29 +1901,12 @@ function jumpToId(id) {
     }
 }
 
-
-/**
- * Called when a scrollable element in a different, but connected window (i.e., 
- * a secondary window), has been scrolled.
- * 
- * @param {*} scrollableId 
- * @param {*} scrollTop 
- */
-function localScrollScrollable(scrollableId, scrollTop) {
-    const scrollable = document.querySelector(
-        `#ld-slides-pane .scrollable[data-scrollable-id="${scrollableId}"]`);
-
-    if (scrollable.scrollTop !== scrollTop) {
-        scrollable.scrollTo(0, scrollTop);
-    }
-}
-
 function localScrollSupplemental(supplementalId, scrollTop) {
     const supplemental = document.querySelector(
         `#ld-slides-pane ld-supplementals[data-supplementals-id="${supplementalId}"]`);
 
     if (supplemental.scrollTop !== scrollTop) {
-        supplemental.scrollTo(0, scrollTop);
+        supplemental.scrollTo({top:scrollTop, scrollTop, behavior:"smooth"});
     }
 }
 
@@ -1963,51 +1958,6 @@ function registerSlideInternalLinkClickedListener() {
 }
 
 
-function addScrollingEventListener(eventTitle, scrollableElement, id) {
-    // We will relay a scroll event to a secondary window, when there was no
-    // more scrolling for at least TIMEOUTms. Additionally, if there is already an
-    // event handler scheduled, we will not schedule another one. 
-    //
-    // If we would directly relay the event, it may be possible that it will 
-    // result in all kinds of strange behaviors, because we cannot easily 
-    // distinguish between a programmatic and a user initiated scroll event. 
-    // This could result in a nasty ping-pong effect where scrolling between
-    // two different position would happen indefinitely.
-    const TIMEOUT = 50;
-    let lastEvent = undefined;
-    let eventHandlerScheduled = false;
-    scrollableElement.addEventListener("scroll", (event) => {
-        lastEvent = new Date().getTime();
-        function scheduleEventHandler(timeout) {
-            setTimeout(() => {
-                const currentTime = new Date().getTime();
-                if (currentTime - lastEvent < TIMEOUT) {
-                    scheduleEventHandler(TIMEOUT - (currentTime - lastEvent));
-                    return;
-                }
-                postMessage(eventTitle, [id, event.target.scrollTop]);
-                console.log(eventTitle + id + " " + event.target.scrollTop);
-                eventHandlerScheduled = false;
-            }, timeout);
-        };
-        if(!eventHandlerScheduled) {
-            eventHandlerScheduled = true;
-            scheduleEventHandler(TIMEOUT);
-        }
-    },{passive: true});
-}
-
-
-function registerScrollableElementListener() {
-    let scrollableId = 1;
-    document.querySelectorAll("#ld-slides-pane .scrollable").forEach((scrollable) => {
-        const id = scrollableId++;
-        scrollable.dataset.scrollableId = id;
-        // We want to collapse multiple events into one, but ensure that we
-        // never miss the "final" event.
-        addScrollingEventListener("scrollableScrolled",scrollable, id);
-    });
-}
 
 function registerHoverSupplementalListener() {
     let supplementalsId = 1;
@@ -2030,7 +1980,13 @@ function registerHoverSupplementalListener() {
         }
         supplemental.addEventListener("mouseenter", addHover);
         supplemental.addEventListener("mouseleave", removeHover);
-        addScrollingEventListener("supplementalScrolled",supplemental, id);
+        if (ephemeral.ldPerDocumentChannel) {
+            ld.addScrollingEventListener(
+                ephemeral.ldPerDocumentChannel,
+                "supplementalScrolled",
+                supplemental, 
+                id);
+        }
     });
 }
 
@@ -2225,6 +2181,9 @@ const onDOMContentLoaded = async () => {
     initSlideDimensions();
 
     await import("./js/ld-components.js");
+    await import("./js/ld-decks.js");
+    await import("./js/ld-scrollables.js");
+    await import("./js/ld-stories.js");
 
     ldEvents.beforeLDDOMManipulations.forEach(f => f());
 
@@ -2256,7 +2215,7 @@ const onDOMContentLoaded = async () => {
     setupHelp();
     setupJumpTargetDialog();
     setupDocumentView();
-    setupMainPane();
+    setupSlidePane();
     setupMenu();
 
     scaleSlideImages();
@@ -2300,13 +2259,12 @@ const onLoad = () => {
     registerHelpCloseListener();
     registerMenuClickListener();
     registerSwipeListener();
-    registerScrollableElementListener();
     registerHoverSupplementalListener();
     registerHoverPresenterNoteListener();
 
     ldEvents.afterLDListenerRegistrations.forEach((f) => f());
 
-    if (ephemeral.ldPerDocumentChannel) {
+    if (ephemeral.ldPerDocumentChannel /* no document id - no channel */) {
         ephemeral.ldPerDocumentChannel.addEventListener("message", (event) => {
             const [msg, data] = event.data;
             switch (msg) {
@@ -2337,12 +2295,6 @@ const onLoad = () => {
                 case "hideLaserPointer": localHideLaserPointer(); break;
 
                 case "redrawSlide": localRedrawSlide(); break;
-
-                case "scrollableScrolled": {
-                    const [scrollableId, scrollTop] = data;
-                    localScrollScrollable(scrollableId, scrollTop);
-                    break;
-                }
 
                 case "addHoverSupplemental": {
                     const id = data;
@@ -2381,10 +2333,14 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch((e) => console.log("DOM transformations failed."+ e));
 });
 window.addEventListener("load", () => {
-    LDInitializationPromise = LDInitializationPromise
-        .then(() => onLoad())
-        .then(() => console.log("Event transformations finished."))
-        .catch((e) => console.log("Event transformations failed."+ e));
+    LDInitializationPromise = LDInitializationPromise.
+        then(() => 
+            onLoad()
+        ).then(() => 
+            console.log("Event transformations finished.")
+        ).catch((e) => 
+            console.log("Event transformations failed."+ e)
+        );
 });
 
 /* Finish initialization of the LectureDoc2 object. */
