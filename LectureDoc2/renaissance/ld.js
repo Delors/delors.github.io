@@ -23,6 +23,9 @@
 
     -   Information that does not need to be retained between two sessions is
         stored in the ephemeral object.
+    
+    -   Modules can register for core events to interact with LectureDoc2 in a
+        well-defined way.
 */
 import * as ld from './js/ld-lib.js';
 
@@ -50,6 +53,39 @@ async function ldCrypto() {
 
 /**
  * Central registry for all events that are triggered by LectureDoc.
+ * Use ldEvents.addEventListener(<event>,<listener>) to register a listener 
+ * for a specific event.
+ * 
+ * The prototypical code looks like this:
+ * 
+ * ```javascript
+ * console.log("loading ld-components.js");
+ * 
+ * // "beforeLDDOMManipulations" is called before the DOM is manipulated by 
+ * // LectureDoc. At this point in time the DOM is still in the original state. 
+ * // I.e., the slide templates are not yet copied to the respective views.
+ * function beforeLDDOMManipulations() {
+ *   console.log("performing ld-components.beforeLDDOMManipulations");
+ *  ...
+ * }
+ *
+ * function afterLDDOMManipulations() {
+ *   console.log("performing ld-components.afterLDDOMManipulations");
+ *   ...
+ * }
+ * 
+ * // "afterLDListenerRegistrations" is called after all listener registrations 
+ * // related to the core functionality of LectureDoc have been done.
+ * 
+ * function afterLDListenerRegistrations() {
+ *   console.log("performing ld-components.afterLDListenerRegistrations");
+ *   ...
+ * }
+ * // Register with LectureDoc's basic events.
+ * const ldEvents = lectureDoc2.ldEvents
+ * ldEvents.addEventListener("beforeLDDOMManipulations", beforeLDDOMManipulations);
+ * ldEvents.addEventListener("afterLDDOMManipulations", afterLDDOMManipulations);
+ * ldEvents.addEventListener("afterLDListenerRegistrations", afterLDListenerRegistrations);
  */
 const ldEvents = {
     beforeLDDOMManipulations: [],
@@ -167,17 +203,19 @@ const presentation = {
 
 
 /**
- * Captures the current state of the presentation.
+ * Captures the current state of the presentation. This state is used
+ * to restore the presentation state when the user returns to the document.
+ * 
+ * Modules are allowed to extend this object with additional information.
+ * However, modules are not expected to change any values that are already
+ * stored in the state object.
  */
 let state = { // the (default) state 
     // The overall progress.
     currentSlideNo: 0,
-    // stores for each slide the number of executed animation steps
-    slideProgress: {},
+    slideProgress: {}, // stores for each slide the number of executed animation steps
 
     showMainSlideNumber: false,
-
-    // Help dialog related state
     showHelp: false,
     showTableOfContents: false,
 
@@ -591,11 +629,39 @@ function setupCopyToClipboard(rootNode) {
 }
 
 function setupIncrementalElements(slide) {
-    slide.querySelectorAll(":scope .incremental-list").forEach((incrementalList) => {
-        const items = incrementalList.querySelectorAll(":scope > li");
-        items.forEach((item) => {
-            item.classList.add("incremental");  
-        });
+    slide.querySelectorAll(":scope .incremental-list").forEach((list) => {
+        if(list.tagName === "DL") {
+            /*  The following does not work, because a single "line" consists
+                of a dt and a dd element. 
+            
+                const items = list.querySelectorAll(":scope > dt");
+                items.forEach((item) => {
+                    item.classList.add("incremental");  
+                });
+
+                Therefore, we split up the list in multiple lists which are
+                then made incremental as a whole.
+             */
+            const div = ld.div({});
+            list.parentElement.replaceChild(div, list);
+            const items = list.querySelectorAll(":scope > *");
+            let currentList = undefined;
+            items.forEach((item) => {
+                if(item.tagName === "DT") {
+                    currentList = list.cloneNode(false);
+                    div.appendChild(currentList);
+                    currentList.classList.add("incremental");
+                } 
+                currentList.appendChild(item);
+            });
+            
+        } else {
+            // ul and ol lists
+            const items = list.querySelectorAll(":scope > li");
+            items.forEach((item) => {
+                item.classList.add("incremental");  
+            });
+        }
     });
     slide.querySelectorAll(":scope .incremental-table-rows").forEach((incrementalTableRows) => {
         const items = incrementalTableRows.querySelectorAll(":scope > tbody > tr");
@@ -604,7 +670,7 @@ function setupIncrementalElements(slide) {
         });
     });
 
-    // Bring everything to a well-defined state
+    // Bring everything to the base-state
     slide.querySelectorAll(":scope .incremental").forEach((e) => {
         e.style.visibility = "hidden"
     });
@@ -2180,7 +2246,7 @@ const onDOMContentLoaded = async () => {
     initDocumentId();
     initSlideDimensions();
 
-    await import("./js/ld-components.js");
+    await import("./js/ld-tables.js");
     await import("./js/ld-decks.js");
     await import("./js/ld-scrollables.js");
     await import("./js/ld-stories.js");

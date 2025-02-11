@@ -11,7 +11,6 @@ console.log("loading ld-stories.js");
 
 const scrollStack = {}
 
-
 /**
  * Initializes a story element. The height of the story element is set to the
  * remaining space in the parent element. Additionally, if the story was 

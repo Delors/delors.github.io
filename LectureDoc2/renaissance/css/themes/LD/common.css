@@ -278,7 +278,19 @@ dt .classifier:before {
 
 /* Field Lists and similar */
 /* bold field name, content starts on the same line */
-dl.field-list,
+dl.field-list {
+    display: flow-root;
+
+    /* There will be no extra-margin between two field-lists. */
+    
+    &:has(+dl.field-list) {
+        margin-bottom: 0;
+    }
+
+    + dl.field-list {
+        margin-top: 0;
+    }
+}
 dl.option-list,
 dl.docinfo {
     display: flow-root;
@@ -720,41 +732,38 @@ pre.code {
 
     --attribute-color: #800000;
 
-    --builtin-color: #6383f8;   /* Strong Blue */
+    --builtin-color: #6383f8;   
 
-    --class-color: #9A6324;  /* Brown */
+    --class-color: #9A6324;  
 
-    --comment-color: #696969;  /* Dark Gray */
+    --comment-color: #696969;  
     --comment-preprocfile-color: #FFE119;   /* Bright Yellow */
-    --comment-preproc-color: #BCF60C;   /* Lime Green */
-    --comment-shadow-color: #FFFAC8;  /* Pale Yellow */
+    --comment-preproc-color: #BCF60C;       /* Lime Green */
+    --comment-shadow-color: #FFFAC8;        /* Pale Yellow */
 
-    --function-color: #494949;  /* Dark Gray */
+    --function-color: #494949;              /* Dark Gray */
 
-    --keyword-color: #4363D8;   /* Strong Blue */
+    --keyword-color: #4363D8;               /* Strong Blue */
     --keyword-constant-color: #3232fc;   
     --keyword-namespace-color: #31bcc9;   
-    --keyword-type-color: #0000ff;   /* Brilliant Blue */
+    --keyword-type-color: #0000ff;  
 
-    --literal-color: #911EB4;   /* Purple */
+    --literal-color: #911EB4;               /* Purple */
 
-    --name-color: #008080;  /* Teal */
-    --namespace-color: #3CB44B;   /* Strong Green */
-    --number-color: #F032E6;   /* Magenta */
+    --name-color: #008080;                  /* Teal */
+    --namespace-color: #3CB44B;             /* Strong Green */
+    --number-color: #F032E6;                /* Magenta */
 
-    --operator-color: #F58231;   /* Orange */
+    --operator-color: #F58231;              /* Orange */
     
-    --variable-color: #3CB44B;   /* Strong Green */
+    --variable-color: #3CB44B;              /* Strong Green */
     
-    --punctuation-color: #E6194B;   /* Strong Red */
+    --punctuation-color: #E6194B;           /* Strong Red */
         
     /* RESERVED */
     --color-XXX: #46F0F0; 
     --color-YYY: #FABEBE;
     --color-ZZZ: #E6BEFF;  
-    
-    
-        
     
     color: var(--code-color);
 
@@ -930,32 +939,51 @@ pre.code {
 
 /* Tables */
 table {
+    
     border-collapse: collapse;
+
+    td,
+    th {
+        border: thin solid silver;
+        padding: 0 1ex;
+    }
+    
+    &.borderless td,
+    &.borderless th {
+        border: 0;
+        padding: 0;
+        padding-right: 0.5em
+            /* separate table cells */
+    }
+
+    >caption {
+        text-align: left;
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+    }
+
+    &.captionbelow {
+        caption-side: bottom;
+    }
+
+    &.highlight-row-on-hover,
+    &.highlight-identical-cells-on-hover {
+        th.\:hover-related {
+            background-color: var(--gray);
+            color: var(--white);
+        }
+        td.\:hover-related {
+            background-color: var(--very-light-gray);
+        }
+        th.\:hover {
+            background-color: var(--light-gray);
+        }
+        td.\:hover {
+            background-color: var(--light-gray);
+        }
+    }
 }
 
-td,
-th {
-    border: thin solid silver;
-    padding: 0 1ex;
-}
-
-.borderless td,
-.borderless th {
-    border: 0;
-    padding: 0;
-    padding-right: 0.5em
-        /* separate table cells */
-}
-
-table>caption {
-    text-align: left;
-    margin-top: 0.2em;
-    margin-bottom: 0.2em;
-}
-
-table.captionbelow {
-    caption-side: bottom;
-}
 
 
 /* Images are block-level by default in Docutils */

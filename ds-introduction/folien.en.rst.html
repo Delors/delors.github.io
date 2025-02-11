@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Distributed Systems&quot;" name="keywords" />
+<meta content="Introduction to Distributed Systems" lang="en" name="description" xml:lang="en" />
+<meta content="lecture-ds-introduction" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:Hb3pk/fYp4a7rFVRv2rT120RQvIj8BsCgsJhC85naA0=:9U8yKSjk7BbN6kBc:T49/OuzR3gs5l11bN7/Duja19woRt5xePnkVfN8evzVdAMBn2vmXtUQLyggwRdBbwWXgosyy92o7vVSiRf6bmAqIT5B2pCdD4xJQpGSNEsZGEfZnvw7mBYt/8YskT0Fiws1STyZ9NE23x9QA1yRxDrigiKW4Jv7AoKBsHoPNJj9OCmG4gN2Y+Q0mDhSPkM0SrNubAf7x7+8vheXRWp0L5vCM2RoZ6SMn/3s/gwL59noG0NNkSqTlqYO8g2rTUPOp3fqhl+5X49NTkZX7dlTdHwcNQDTlL5rpj1B0kxPsz4oMv2jvvFsA4qCJXBkqY6fH549VZeSZZBpo8h4a56mx8i+XZhq6zHio0MLYLuLk2iinV3Yt1gA9v4dqZHhUjJyBl/7IvFiifUTM8HEbHLo/+ZG+XTQejUnwbFCMWM32M3PElm5qbsFFfAvJYY6lNiUxW8nigjVC0fuDs5+OequWnQmolzCqKm0kVAD/DVLkpbn10bny8xO69JXRqeEFlzc1CYZttv3sIbtJSiaN9RfwzaEEvZ19BDfRfY/5REDZczZEwBiCSvI=" />
+<title>Introduction to Distributed Systems</title>
+<script>
+    window.MathJax = {
+        tex: { tags: 'ams' },
+        chtml: { displayAlign: 'center' /*left or center*/ }
+    };
+</script>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="introduction-to-distributed-systems">
+<h1 class="title">Introduction to Distributed Systems</h1>
+
+<p>A broad overview of distributed systems!</p>
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/ds-introduction/folien.en.rst.html">https://delors.github.io/ds-introduction/folien.en.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/ds-introduction/folien.en.rst.html.pdf">https://delors.github.io/ds-introduction/folien.en.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div><div class="footer-left incremental peripheral docutils container">
+<p>This slide set is based in parts on the following sources:</p>
+<ol class="loweralpha simple">
+<li><p>Maarten van Steen (material related to his book on <em>Distributed Systems</em>)</p></li>
+<li><p>Henning Pagnia (based on his lecture <em>Verteilte Systeme</em>).</p></li>
+</ol>
+<p>All errors are my own.</p>
+</div>
+</ld-topic>
+<ld-topic class="padding-none no-title transition-scale" id="basic-terminologioe-of-distributed-systems">
+<h2>Basic Terminologioe of Distributed Systems</h2>
+<img alt="images/modern_software_architecture-tag_cloud.png" class="align-center" src="images/modern_software_architecture-tag_cloud.png" style="width: 100%;" />
+</ld-topic><ld-topic id="recommended-literature">
+<h2>Recommended Literature</h2>
+<img alt="screenshots/distributed-systems.net.png" class="align-center" src="screenshots/distributed-systems.net.png" style="width: 75%;" />
+<div class="supplemental">
+<p>Supplemental material for interested students:</p>
+<img alt="screenshots/microservices.jpg" class="trbl-shadow align-center" src="screenshots/microservices.jpg" style="width: 70%;" />
+</div></ld-topic><ld-topic id="recommended-podcast-se-radio">
+<h2>Recommended Podcast: <a class="reference external" href="https://se-radio.net">SE-Radio</a></h2>
+<img alt="screenshots/se-radio.net.png" class="align-center" src="screenshots/se-radio.net.png" style="width: 75%;" />
+</ld-topic><ld-topic id="recommended-podcast-thoughtworks-technology-podcast">
+<h2>Recommended Podcast: <a class="reference external" href="https://www.thoughtworks.com/en-de/insights/podcasts/technology-podcasts">Thoughtworks Technology Podcast</a></h2>
+<img alt="screenshots/thoughtworks-technology-podcast.png" class="trbl-shadow align-center" src="screenshots/thoughtworks-technology-podcast.png" style="width: 70%;" />
+</ld-topic><ld-topic class="new-section transition-fade" id="distributed-systems-definition-and-properties">
+<h2>Distributed Systems - Definition and Properties</h2>
+</ld-topic><ld-topic id="distributed-vs-decentralized">
+<h2>Distributed vs. Decentralized</h2>
+<img alt="images/distributed-vs-decentralized.svg" class="icon align-center" src="images/distributed-vs-decentralized.svg" style="width: 100%;" />
+</object><div class="supplemental">
+<aside class="admonition admonition-zwei-ansichten-zur-realisierung-verteilter-systeme">
+<p class="admonition-title">Zwei Ansichten zur Realisierung verteilter Systeme</p>
+<ul class="simple">
+<li><p><strong>Integrative view</strong>: Connection of existing (locally) networked computer systems to form a larger system.</p></li>
+<li><p><strong>Expansive view</strong>: an existing networked computer system is expanded to include additional computers.</p></li>
+</ul>
+</aside>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<ul class="simple">
+<li><p>A <strong>decentralised system</strong> is a networked computer system in which processes and resources are <em>necessarily</em> distributed across multiple computers.</p></li>
+<li><p>A <strong>distributed system</strong> is a networked computer system in which processes and resources are <em>sufficiently</em> distributed across several computers.</p></li>
+</ul>
+</aside>
+</div></ld-topic><ld-topic id="common-misunderstandings-regarding-centralised-systems">
+<h2>Common misunderstandings regarding centralised systems</h2>
+<ol class="arabic incremental-list">
+<li><p><strong>Centralized solutions do not scale</strong></p>
+<p>A distinction must be made between logical and physical centralization.</p>
+<aside class="admonition example">
+<p class="admonition-title">Example</p>
+<p>The <em>Domain Name System (DNS)</em>:</p>
+<ul class="column-list simple">
+<li><p></p>
+<ul>
+<li><p>logisch zentralisiert</p></li>
+<li><p>physisch (massiv) verteilt</p></li>
+</ul>
+</li>
+<li><p></p>
+<ul>
+<li><p>dezentralisiert über mehrere Organisationen</p></li>
+</ul>
+</li>
+</ul>
+</aside>
+</li>
+<li><p><strong>Centralized solutions have a single point of failure</strong></p>
+<p>Generally not true (e.g. DNS).</p>
+<p>A single possible source of error is often...</p>
+<ul class="column-list simple">
+<li><p></p>
+<ul>
+<li><p>easier to manage</p></li>
+</ul>
+</li>
+<li><p></p>
+<ul>
+<li><p>easier to make more robust</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<div class="supplemental">
+<aside class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>There are many, poorly founded misconceptions about, for example, scalability, fault tolerance or security. We need to develop skills that make it easy to understand distributed systems in order to avoid such misunderstandings.</p>
+</aside>
+</div></ld-topic><ld-topic id="perspectives-on-distributed-systems">
+<h2>Perspectives on Distributed Systems</h2>
+<p><strong>Distributes systems are complex.</strong></p>
+<dl class="incremental-list field-list simple">
+<dt>Architectures<span class="colon">:</span></dt>
+<dd><p>What architectures and &quot;architectural styles&quot; are there?</p>
+</dd>
+<dt>Processes<span class="colon">:</span></dt>
+<dd><p>What kind of processes are there and what are their relationships?</p>
+</dd>
+<dt>Communication<span class="colon">:</span></dt>
+<dd><p>What options are there for exchanging data?</p>
+</dd>
+<dt>Coordination<span class="colon">:</span></dt>
+<dd><p>How are the involved systems coordinated?</p>
+</dd>
+<dt>Naming<span class="colon">:</span></dt>
+<dd><p>How do you identify resources?</p>
+</dd>
+<dt>Consistency and replication<span class="colon">:</span></dt>
+<dd><p>What trade-offs need to be made in terms of data consistency, replication and performance?</p>
+</dd>
+<dt>Fault tolerance<span class="colon">:</span></dt>
+<dd><p>How can operations be maintained even in the event of partial failures?</p>
+</dd>
+<dt>Security<span class="colon">:</span></dt>
+<dd><p>How can authorized access to resources be guaranteed?</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="design-goals-of-distributed-systems">
+<h2>Design-goals of Distributed Systems</h2>
+<ul class="incremental-list dhbw-list simple">
+<li><p><a class="reference internal" href="#shared-usage-of-resources">Shared Usage of Resources</a></p></li>
+<li><p><a class="reference internal" href="#distribution-transparency">Distribution Transparency</a></p></li>
+<li><p><a class="reference internal" href="#openness">Openness</a></p></li>
+<li><p><a class="reference internal" href="#scalability">Scalability</a></p></li>
+</ul>
+</ld-topic><ld-topic class="new-subsection transition-fade" id="shared-usage-of-resources">
+<h2>Shared Usage of Resources</h2>
+</ld-topic><ld-topic id="shared-usage-of-resources-examples">
+<h2>Shared Usage of Resources - Examples</h2>
+<ul class="incremental-list simple">
+<li><p>Cloud-based shared storage and files</p></li>
+<li><p>Peer-to-peer supported multimedia streaming</p></li>
+<li><p>Shared email services (e.g. outsourced email systems)</p></li>
+<li><p>Shared web hosting (e.g. <em>content distribution networks</em>)</p></li>
+</ul>
+</ld-topic><ld-topic class="new-subsection transition-fade" id="distribution-transparency">
+<h2>Distribution Transparency</h2>
+</ld-topic><ld-topic id="definition">
+<h2>Definition</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p class="rubric">Distribution Transparency</p>
+<p>Transparency describes the property that a distributed system attempts to hide the fact that its processes and resources are physically distributed across multiple computers that may be separated by large(r) distances.</p>
+</aside>
+<div class="incremental margin-top-2em docutils container">
+<p>The distribution transparency is realized by many different techniques of the so-called <em>middleware</em> - a layer between applications and operating systems.</p>
+</div>
+</ld-topic><ld-topic id="aspects-of-distribution-transparency">
+<h2>Aspects of Distribution Transparency</h2>
+<table class="incremental-table-rows booktabs">
+<tbody>
+<tr><th class="stub"><p>Data access</p></th>
+<td><p>hide differences in data representation and the type of access to a local or remote object</p></td>
+</tr>
+<tr><th class="stub"><p>Location of data storage</p></th>
+<td><p>hide where an object is located</p></td>
+</tr>
+<tr><th class="stub"><p>Relocation</p></th>
+<td><p>hide that an object may be moved to another location while in use</p></td>
+</tr>
+<tr><th class="stub"><p>Migration</p></th>
+<td><p>hide that an object may be moved to another location</p></td>
+</tr>
+<tr><th class="stub"><p>Replication</p></th>
+<td><p>hide that an object is replicated</p></td>
+</tr>
+<tr><th class="stub"><p>Concurrency</p></th>
+<td><p>hide that an object may be shared by several independent users</p></td>
+</tr>
+<tr><th class="stub"><p>Fault transparency</p></th>
+<td><p>hide the failure and recovery of an object</p></td>
+</tr>
+</tbody>
+</table>
+<div class="supplemental">
+<p>Datendarstellung: Big-Endian vs. Little-Endian; ASCII vs. Iso-Latin 8859-1 vs. UTF-8</p>
+</div></ld-topic><ld-topic id="degree-of-achievable-distribution-transparency">
+<h2>Degree of achievable Distribution Transparency</h2>
+<aside class="admonition observation">
+<p class="admonition-title">Observation</p>
+<p>Complete distribution transparency cannot be achieved.</p>
+</aside>
+<div class="incremental docutils container">
+<p>However, a high level of distribution transparency can result in high costs.</p>
+</div>
+<ul class="incremental-list simple">
+<li><p>There are communication latencies that cannot be hidden.</p></li>
+<li><p>It is (theoretically and practically) impossible to completely hide network and node failures.</p></li>
+<li><p>You cannot distinguish a slow computer from a failed computer.</p></li>
+<li><p>You can never be sure that a server was actually performing an operation before it crashed.</p></li>
+<li><p>&quot;Complete transparency&quot; costs performance and exposes the distribution of the system.</p>
+<ul>
+<li><p>Keeping the replicas exactly on the same level as the master takes time</p></li>
+<li><p>Write operations are immediately transferred to the hard drive for fault tolerance</p></li>
+</ul>
+</li>
+</ul>
+</ld-topic><ld-topic id="disclosing-distribution-can-bring-advantages">
+<h2>Disclosing Distribution can bring Advantages</h2>
+<ul class="incremental-list list-with-explanations">
+<li><p>Use of location-based services
+(E. g. to enable finding friends nearby.)</p></li>
+<li><p>When dealing with users in different time zones</p></li>
+<li><p>When it is easier for a user to understand what is going on</p>
+<p>(E.g. if a server does not respond for a long time, it can be reported as down).</p>
+</li>
+</ul>
+<aside class="admonition incremental observation">
+<p class="admonition-title">Observation</p>
+<p>Distribution transparency is a noble goal, but often difficult to achieve and frequently not worth striving for.</p>
+</aside>
+</ld-topic><ld-topic class="new-subsection transition-fade" id="open-distributed-systems">
+<h2>Open Distributed Systems</h2>
+<p id="openness"></p>
+</ld-topic><ld-topic id="open-distributed-systems-1">
+<h2>Open Distributed Systems</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>An open distributed system offers components that can easily be used by other systems or integrated into other systems.</p>
+<p>An open distributed system itself often consists of components that originate from elsewhere.</p>
+</aside>
+<div class="incremental docutils container">
+<p>Open distributed systems must be able to interact with services of other (open) systems, regardless of the underlying environment:</p>
+<ul class="incremental-list simple">
+<li><p>they should implement well-defined interfaces correctly</p></li>
+<li><p>they should be able to interact easily with other systems</p></li>
+<li><p>they should support the portability of applications</p></li>
+<li><p>they should be easily extensible</p></li>
+</ul>
+</div>
+<div class="supplemental">
+<p>Authentication services are one example. They can be used by many different applications.</p>
+</div></ld-topic><ld-topic id="policies-vs-mechanisms">
+<h2>Policies vs. Mechanisms</h2>
+<div class="supplemental">
+<p><span class="eng">Policies vs. Mechanisms</span> ≘ <span class="ger">Vorgaben/Richtlinien vs. Umsetzungen</span></p>
+</div><p class="rubric">Policies when implementing openness</p>
+<ul class="incremental-list simple">
+<li><p>What level of consistency do we need for data in the client cache?</p></li>
+<li><p>What operations do we allow downloaded code to perform?</p></li>
+<li><p>Which QoS requirements do we adapt in the presence of fluctuating bandwidths?</p></li>
+<li><p>What level of secrecy do we need for communication?</p></li>
+</ul>
+<p class="incremental rubric">Mechanisms to support openness</p>
+<ul class="incremental-list simple">
+<li><p>Enabling the (dynamic) setting of caching policies</p></li>
+<li><p>Support of different trust levels for mobile code</p></li>
+<li><p>Provisioning of adjustable QoS parameters per data stream</p></li>
+<li><p>Provisioning of various encryption algorithms</p></li>
+</ul>
+<div class="supplemental">
+<p>The hard coding of policies often simplifies administration and reduces the complexity of the system. However, it comes at the price of less flexibility.</p>
+</div></ld-topic><ld-topic id="security-in-distributed-systems-security-objectives">
+<h2>Security in Distributed Systems - Security Objectives</h2>
+<aside class="admonition observation">
+<p class="admonition-title">Observation</p>
+<p>A distributed system that is not secure is not reliable.</p>
+</aside>
+<div class="incremental docutils container">
+<p class="rubric">Foundational security objectives</p>
+<dl class="field-list simple">
+<dt><strong>Confidentiality</strong><span class="colon">:</span></dt>
+<dd><p>Information is only passed on to authorized parties.</p>
+</dd>
+<dt><strong>Integrity</strong><span class="colon">:</span></dt>
+<dd><p>Changes to the values of a system may only be made in an authorized manner.</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<p>Together with the third security objective: <strong>availability</strong>, these three protection objectives form the CIA triad of information security: Confidentiality, Integrity, and Availability.</p>
+</div></ld-topic><ld-topic id="security-in-distributed-systems-authorization-authentication-trust">
+<h2>Security in Distributed Systems - Authorization, Authentication, Trust</h2>
+<dl class="incremental-list field-list simple">
+<dt>Authentication<span class="colon">:</span></dt>
+<dd><p>Process for verifying the correctness of a claimed identity.</p>
+</dd>
+<dt>Authorization<span class="colon">:</span></dt>
+<dd><p>Does an identified unit have the correct access rights?</p>
+</dd>
+<dt>Trust<span class="colon">:</span></dt>
+<dd><p>A component can be certain that another component will perform certain actions in accordance with expectations.</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="security-encryption-and-signatures">
+<h2>Security - Encryption and Signatures</h2>
+<p>It is essentially about encrypting and decrypting data (<span class="math-i">X</span>) with the help of keys.</p>
+<ld-deck>
+<ld-card class="trbl-shadow padding-1em rounded-corners">
+<p><span class="math-i">E(K,X)</span> means that we <strong>e</strong>ncrypt the message <span class="math-i">X</span> with the key <span class="math-i">K</span>.</p>
+<p><span class="math-i">D(K,X)</span> denotes the inverse function that <strong>d</strong>ecrypts the data.</p>
+</ld-card><ld-card class="trbl-shadow padding-1em incremental">
+<p class="rubric">Symmetric Encryption</p>
+<p>The encryption key is identical to the decryption key; the same key <span class="math-i">K</span> is used for both operations.</p>
+<p><span class="math-i">X = D(K,E(K,X))</span></p>
+</ld-card><ld-card class="trbl-shadow padding-1em incremental">
+<p class="rubric">Asymmetric Encryption</p>
+<p>We distinguish between private (<span class="math-i">PR</span>) and public keys (<span class="math-i">PU</span>) (<span class="math-i">PU</span> <span class="math">\(\neq\)</span> <span class="math-i">PR</span>). A private and a public key always form a pair. The private key must always be kept secret.</p>
+<ld-deck class="incremental">
+<ld-card>
+<p><strong>Encrypting Messages</strong></p>
+<p>Alice sends a message to Bob using Bob's public key.</p>
+<div class="math">
+\begin{align*}
+Y = E(PU_{Bob},X) \\
+X = D(PR_{Bob},Y)
+\end{align*}
+</div>
+</ld-card><ld-card class="incremental">
+<p><strong>Signing Messages</strong></p>
+<p>Alice signs (<span class="math">\(S\)</span>) a message with her private key.</p>
+<div class="math">
+\begin{align*}
+Y = E(PR_{Alice},X) \\
+X = D(PU_{Alice},Y)
+\end{align*}
+</div>
+</ld-card></ld-deck></ld-card></ld-deck></ld-topic><ld-topic id="security-secure-hashing">
+<h2>Security - Secure Hashing</h2>
+<p>A secure hash function <span class="math-i">Digest(X)</span> returns a character string of fixed length (<span class="math-i">H</span>).</p>
+<ul class="simple">
+<li><p>Any change - no matter how small - to the input data results in a completely different character string.</p></li>
+<li><p>With a hash value, it is mathematically impossible to find the original message <span class="math-i">X</span> based on <span class="math-i">Digest(X)</span>.</p></li>
+</ul>
+<div class="incremental docutils container">
+<p class="rubric">Signing Messages</p>
+<ul class="column-list incremental-list">
+<li><p>Alice signs a message <span class="math-i">X</span> with her private key.</p>
+<div class="math">
+\begin{equation*}
+\text{Alice:} [E(PR_{\text{Alice}},H=Digest(X)),X]
+\end{equation*}
+</div>
+</li>
+<li><p>Bob checks the message <span class="math-i">X</span> for authenticity:</p>
+<div class="math">
+\begin{equation*}
+\text{Bob:} D(PU_{\text{Alice}},H) \stackrel{?}{=} Digest(X)
+\end{equation*}
+</div>
+</li>
+</ul>
+</div>
+<div class="supplemental">
+<p><span class="ger">Sicheres Hashing</span> ≘ <span class="eng">Secure Hashing</span></p>
+</div></ld-topic><ld-topic class="exercises" id="question">
+<h2>Question</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Encryption with Public-Private Keys/Asymmetric Encryption" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">Encryption with Public-Private Keys/Asymmetric Encryption</p>
+<p>If Alice sends Bob a message encrypted with Bob's public key, what security problem could arise?</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:2/LbXYz9wdI+KRoIkg+nrjDhJhb8bRiigYDaIpahpJI=:tizJuKrz9GZ2zlVv:2hoom8uliDBRPcIS/HF2A3FVSbk2ODeoIAFV8cxiYQdcRt0ugTkZC/h4ENo0UfNd/2vV5IOOfCbhNgyVHEEde/ILUoeWzielE/Iq5ORgEiP/jJdM1PT69mf8nUeZWiFz4cgu+B659cVqbOikUES1G8YJxGo64/0TqThGkAagOXazgb4TPV51Gew52FCVpa8oBLylh5nvLam1gI/PfA9WnlkDBLpD+Tn/hsrNtKEXlc4a9VP5WoGwQgdv9GUBfkxRtMFAoFwyrQtGTurEGSCOn3TlzSCPugkduenCR8vRJekEqFhCaCzupuNpuungwNmAiAli+adtW2gOj7ToRrYFy8+8AbTpx9lUiIGW8CdYN7vjSZz3Wt74mOacZBXiQg6a1s0yzmw+wslgLCQ6WDi/+bvAnjPANJrQFb5sT/zEimmHew06myvABtL9wUqX9j0faw/GfDFjjC6y+3h4W8d9DPwWPSKOrdb7pk/u</div>
+</div>
+</ld-topic><ld-topic class="new-subsection transition-fade" id="scalability">
+<h2>Scalability</h2>
+</ld-topic><ld-topic id="scalability-in-distributed-systems">
+<h2>Scalability in Distributed Systems</h2>
+<p>We can distinguish at least three types of scalability:</p>
+<ul class="incremental-list simple">
+<li><p>Number of users or processes (size scalability)</p></li>
+<li><p>Maximum distance between nodes (geographical scalability)</p></li>
+<li><p>Number of administrative domains (administrative scalability)</p></li>
+</ul>
+<div class="supplemental">
+<p>Scalability in terms of size can often be achieved by using more and more powerful servers that are operated in parallel.</p>
+<p>Geographical and administrative scalability is often a greater challenge.</p>
+</div></ld-topic><ld-topic id="analysis-of-the-scalability-of-centralized-systems">
+<h2>Analysis of the Scalability of Centralized Systems</h2>
+<ld-deck>
+<ld-card>
+<p>A centralized service can be modelled as a simple queuing system:</p>
+<object class="align-center" data="images/queuing-system.svg" role="img" type="image/svg+xml">
+</object><p class="rubric">Assumptions</p>
+<p>The queue has an infinite capacity, i.e. the arrival rate of requests is not influenced by the current length of the queue or by what is currently being processed.</p>
+</ld-card><ld-card class="incremental">
+<ld-grid class="default-layout">
+<ld-cell style="align-self:auto;">
+<ul>
+<li><p>Arrival rate of requests:</p>
+<p><span class="math">\(\lambda\)</span> <em>(requests per second)</em></p>
+</li>
+<li><p>Processing capacity of the service:</p>
+<p><span class="math">\(\mu\)</span> <em>(requests per second)</em></p>
+<p>Proportion of time with <span class="math-i">x</span> requests in the system:</p>
+<div class="math">
+\begin{equation*}
+p_x  = \bigl(1 - \frac{\lambda}{\mu}\bigr)\bigl(\frac{\lambda}{\mu}\bigr)^x
+\end{equation*}
+</div>
+</li>
+</ul>
+</ld-cell><ld-cell style="align-self:auto;">
+<figure class="align-center">
+<object data="images/number_of_requests_in_system.svg" role="img" type="image/svg+xml">
+</object><figcaption>
+<p># Requests in process and in queue</p>
+<div class="legend">
+<p>For example, the proportion of time in which the computer is <em>idle</em> (i. e. <span class="math">\(p_0\)</span>) is : 90 %, 60 % and 30 %.</p>
+<ld-presenter-note data-encrypted="true">
+MTAwMDAw:HXvnskxCPIpEXKM7vN/IPAj83JpNlMXDPR4q+tfbGec=:bY1XoWbfBHHgwrqR:dHfXUM9UpIxy0HIcvTAFP+DjiF4asHOF68c7af9uUy0+DFeUDgfbfT0GYjomTsxxHdtHOwEOGSyD5qkTHJvCxARNfUrm6R2HJCb0IsZZwdnD4Oy2CgAxAGGUeA==</ld-presenter-note>
+</div>
+</figcaption>
+</figure>
+</ld-cell></ld-grid><ld-presenter-note data-encrypted="true">
+MTAwMDAw:IDbp35qhxF1hMDeHbukN8MUeJAsiTMJgfko5H8A7i38=:mXeHB6kUxgOs6JC0:PPokR3V8Ym/QmcvPnBWBTdZb494qJSu0+7NxppQSs9zqLj3vg+7ryd03E3VPK59rQmneoAi4j866IDrMbT80EYMZaUcI4+UjSXTu6bknUHXAZj5fTUDrmPTqFNbYQqHxB8dvtLopq8xiMw6LW8FG4cI7p4FOrT3j6ONO41fWPhlvSMW+0f31bvMilu1tLeFAG1fTZinL7KeBozQKclPOhCIluiXYKxwlEMscXvQTJdYPMIacRcyNoGG/2ShBL/3m2BgIGvfUVBOqgxpl46GNKcREmlEMXU87rVYQ2krH3QQStg4JCuNPUfXMRRZr4B2AH8j6pnBfq234l0ED99am2qvnixswlXNiNg0ASsJto+otloWiiFUPRZ4Virao9z6RFDqpNQnmz2seA8JEyPH1v0TK/ipKui0TAwOGQm7yeziBlr9yvn26AYFaYjnql6HgzauI8IDaQja0FddGbiqyQfwzExr88Mk7mtT4F7XWJ39ZRbK7+LjbZtc2FwEkxUKueV4ativ2Lkcp1G8k7bB35BPspp3pLT3+SxbohvhoqBntFeMvAqU7rToIJK/mMfHtu5vdZls7tQKE6L5c2RIuvfnYPsCeZRwHO1KNTeukafUZU/TpLaazwQPqUDjtVBi9V5LHDz/EE0ZJ28IwqpFXgdnQ4dPjtq2r0eYUHQuS89zpIu7mamJDdewQoEbjvPRI4YUsuBI4zLgyomViAKNRr9Fe+wcjO409ok4fvC4OBXfA8GlL+p0Qmt/vRODShnvWGYy6T4ileHMmdgpExxivk9fA</ld-presenter-note>
+</ld-card><ld-card class="incremental">
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<p><span class="math-i">x</span> = # Anfragen im Sys.</p>
+<div class="math">
+\begin{equation*}
+p_x  = \bigl(1 - \frac{\lambda}{\mu}\bigr)\bigl(\frac{\lambda}{\mu}\bigr)^x
+\end{equation*}
+</div>
+</aside>
+<p><span class="math-i">U</span> is the proportion of time in which a service is utilized:</p>
+<div class="math">
+\begin{equation*}
+U = \sum_{x &gt; 0} p_x = 1 - p_0 = \frac{\lambda}{\mu} \Rightarrow p_x = (1-U) U^x
+\end{equation*}
+</div>
+<div class="incremental docutils container">
+<p>Average number of requests:</p>
+<div class="math">
+\begin{equation*}
+\begin{matrix}
+    \bar{N} &amp; = &amp; \sum_{x\geq 0} x \cdot p_x
+    = \sum_{x \geq 0} x \cdot (1-U)U^x \\
+    &amp; = &amp; (1-U)\sum_{x\geq 0} x\cdot U^x
+    = \frac{(1-U)U}{(1-U)^2} = \frac{U}{1-U}
+\end{matrix}
+\end{equation*}
+</div>
+</div>
+<div class="incremental docutils container">
+<ul class="column-list left-aligned-columns">
+<li><p>Average throughput:</p></li>
+<li><div class="math">
+\begin{equation*}
+X = \underbrace{U \cdot \mu}_{\mbox{utilized}} + \underbrace{(1-U) \cdot 0}_{\mbox{unused}} = \frac{\lambda}{\mu} \cdot \mu = \lambda
+\end{equation*}
+</div>
+</li>
+</ul>
+</div>
+<div class="supplemental">
+<p>For an <a class="reference external" href="https://de.wikipedia.org/wiki/Geometrische_Reihe#Konvergenz_und_Wert_der_geometrischen_Reihe">infinite geometric series</a> with the quotient <span class="math-i">U</span> applies:</p>
+<div class="math">
+\begin{equation*}
+\sum_{k\geq 0} k\cdot U^k  = \frac{U}{(1-U)^2}
+\end{equation*}
+</div>
+<p>Representation of the average number of requests in the system depending on the utilization <span class="math-i">U</span>:</p>
+<object class="align-center" data="images/average_number_of_requests_in_system.svg" role="img" type="image/svg+xml">
+</object></div></ld-card><ld-card class="incremental">
+<ul class="column-list">
+<li><p>The response time is the total time taken to process a request</p>
+<div class="math">
+\begin{equation*}
+\begin{matrix}
+    R &amp; = \frac{\bar{N}}{X} = \frac{S}{1-U} \\
+    &amp; \Rightarrow \frac{R}{S} = \frac{1}{1-U}
+\end{matrix}
+\end{equation*}
+</div>
+<p>with <span class="math">\(S = \frac{1}{\mu}\)</span> for the average service time.</p>
+</li>
+<li><p></p>
+<object aria-label="Response time w.r.t. utilization" data="images/response_time.svg" role="img" type="image/svg+xml">
+</object></li>
+</ul>
+<p class="incremental-list"></p>
+<ul class="simple">
+<li><p>If <span class="math-i">U</span> is small, the response time is close to <span class="math-r">1</span>, i.e. a request is processed immediately.</p></li>
+<li><p>If <span class="math-i">U</span> increases to <span class="math-r">1</span>, the system comes to a standstill.</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic id="problems-of-geographical-scalability">
+<h2>Problems of Geographical Scalability</h2>
+<ul class="simple">
+<li><p>Many distributed systems assume synchronous client-server interactions and this prevents a transition from LAN to WAN. Latency times can be prohibitive if the client has to wait a long time for a request.</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>WAN connections are often unreliable by nature.</p></li>
+</ul>
+</ld-topic><ld-topic id="problems-of-administrative-scalability">
+<h2>Problems of Administrative Scalability</h2>
+<aside class="admonition observation">
+<p class="admonition-title">Observation</p>
+<p>Conflicting guidelines in terms of usage (and therefore payment), administration and security.</p>
+</aside>
+<ld-deck class="incremental">
+<ld-card>
+<aside class="admonition example">
+<p class="admonition-title">Example</p>
+<ul class="simple">
+<li><p>Grid computing: shared use of expensive resources across different domains.</p></li>
+<li><p>Shared devices: How to control, manage and utilize a shared radio telescope designed as a large-scale shared sensor network?</p></li>
+</ul>
+</aside>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Exception</p>
+<p>Various peer-to-peer networks <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> where end users collaborate rather than administrative units:</p>
+<ul class="simple">
+<li><p>File sharing systems (e.g. based on BitTorrent)</p></li>
+<li><p>Peer-to-peer telephony (early versions of Skype)</p></li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Here, &quot;peer&quot; is to be understood as a network of equal computers.</p>
+</aside>
+</aside>
+</ld-card></ld-deck></ld-topic><ld-topic id="approaches-to-achieve-scaling">
+<h2>Approaches to achieve Scaling</h2>
+<ld-deck>
+<ld-card>
+<p><strong>Hiding communication latencies</strong> through:</p>
+<ul class="simple">
+<li><p>Use of asynchronous communication</p></li>
+<li><p>Use of separate <em>handlers</em> for incoming responses</p></li>
+</ul>
+<ld-presenter-note data-encrypted="true">
+MTAwMDAw:04A1aKom3qvsRg2uD1YJp7lyMdMriznf7mnhae2oKu4=:LToupyBk4XxGZRha:/a+GHeW6nfAuBMt2fM7mXw5H8g48pjTBWuU1GWetZDzIeTp8EAy//2qVD2Hab/b+F6o6OTHci4dFcbDDvG+8VT+5A9Xl0Q3Ex8k8/+u5Jdwpj8AFo1fkugyTUJ7FAAWMQcHlyOGmOWOB3xdLbaiYDUDxb5Ub/VcAJnaHFdDTmPF3eDblZkxJ+ZAAp8GjjssCJR8rDZTOPmUTIk6Vl7Rja/R5mGYcoBfITXGXz/aiwpm/ZZm4</ld-presenter-note>
+<aside class="admonition incremental observation">
+<p class="admonition-title">Observation</p>
+<p>However, this model is not always applicable.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p><strong>Partitioning of data and calculations across multiple computers.</strong></p>
+<ul class="simple">
+<li><p>Relocation of calculations to clients</p></li>
+<li><p>Decentralized naming services (e.g. DNS)</p></li>
+<li><p>Decentralized information systems (e.g. WWW)</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic id="shifting-calculations-to-clients">
+<h2>Shifting Calculations to Clients</h2>
+<object class="align-center" data="images/moving-computations.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="scaling-via-replication-and-caching">
+<h2>Scaling via Replication and Caching</h2>
+<p><strong>Use of replication and caching to make copies of data available on different computers.</strong></p>
+<ul class="incremental-list simple">
+<li><p>replicated file servers and databases</p></li>
+<li><p>mirrored websites</p></li>
+<li><p>Web caches (in browsers and proxies)</p></li>
+<li><p>File caching (on server and client)</p></li>
+</ul>
+</ld-topic><ld-topic id="challenges-of-replication">
+<h2>Challenges of Replication</h2>
+<ul class="incremental-list">
+<li><p>Multiple copies (cached or replicated) inevitably lead to inconsistencies. Changing one copy means that this copy differs from the others.</p></li>
+<li><p>To achieve consistency, global synchronization is required for every change.</p>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Attention!</p>
+<p>Global synchronization rules out solutions on a large scale.</p>
+</aside>
+</li>
+</ul>
+<div class="supplemental">
+<p>The extent to which inconsistencies can be tolerated is application-specific. However, if these can be tolerated, then the need for global synchronization can be reduced.</p>
+</div></ld-topic><ld-topic id="parallel-computing">
+<h2>Parallel Computing</h2>
+<ul class="column-list">
+<li><p>Multiprocessor</p>
+<object class="align-center" data="images/multiprocessor-vs-multicomputer/multiprocessor.svg" role="img" type="image/svg+xml">
+</object></li>
+<li><p>Multicomputer</p>
+<object class="align-center" data="images/multiprocessor-vs-multicomputer/multicomputer.svg" role="img" type="image/svg+xml">
+</object></li>
+</ul>
+<div class="supplemental">
+<p>Distributed high-performance computing began with parallel computing.</p>
+<p><strong>Distributed systems with shared memory</strong> (i. e. multi-computers with shared memory) as an alternative architecture did not fulfil the expectations and are therefore no longer relevant.</p>
+</div></ld-topic><ld-topic id="amdahl-s-law-limits-to-scalability">
+<h2>Amdahl's law - Limits to Scalability</h2>
+<ld-deck>
+<ld-card>
+<ul class="list-with-explanations">
+<li><p>Solving <strong>fixed problems</strong> in the shortest possible time</p>
+<p>Example: Booting a computer. To what extent can more CPUs/cores shorten the time?</p>
+</li>
+<li><p>It models the expected acceleration (<em>speedup</em>) of a partially parallelized/parallelizable program relative to the non-parallelized variant.</p></li>
+</ul>
+<aside class="admonition encapsulate-floats definition">
+<p class="admonition-title">Definition</p>
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<p><span class="math">\(C\)</span> = Number of CPUs</p>
+<p><span class="math">\(P\)</span> = Degree of parallelisation in percent</p>
+<p><span class="math">\(S\)</span> = Speedup</p>
+</aside>
+<p><span class="math">\(S(C) = \frac{1}{(1-P) + \frac{P}{C}}\)</span></p>
+</aside>
+</ld-card><ld-card class="incremental">
+<object aria-label="Amdahls Law visualized" class="align-center" data="images/amdahl.svg" role="img" type="image/svg+xml">
+</object></ld-card></ld-deck></ld-topic><ld-topic id="gustafson-s-law-limits-to-scalability">
+<h2>Gustafson's Law - Limits to Scalability</h2>
+<ld-deck>
+<ld-card>
+<ul class="list-with-explanations">
+<li><p>Solving problems with (very) large, structurally repetitive data sets in <strong>fixed time</strong>; the serial part of the programme is assumed to be constant.</p>
+<aside class="admonition margin-top-1em example">
+<p class="admonition-title">Example</p>
+<p>Create the weather forecast for the day after tomorrow within the next 24 hours. To what extent can the precision of the forecast be improved by using more CPUs/computers?</p>
+</aside>
+</li>
+</ul>
+</ld-card><ld-card class="incremental">
+<div class="encapsulate-floats docutils container">
+<aside class="admonition width-50 dd-margin-left-2em note">
+<p class="admonition-title">Note</p>
+<dl class="field-list simple">
+<dt><span class="math">\(C\)</span><span class="colon">:</span></dt>
+<dd><p>Number of CPUs</p>
+</dd>
+<dt><span class="math">\(P\)</span><span class="colon">:</span></dt>
+<dd><p>Degree of parallelisation as a function of the problem size <span class="math-i">n</span></p>
+</dd>
+<dt><span class="math">\(S\)</span><span class="colon">:</span></dt>
+<dd><p>Speedup</p>
+</dd>
+</dl>
+</aside>
+<ul>
+<li><p>Beschleunigung (Speedup) eines parallelisierten Programms relativ zu der nicht-parallelisierten Variante:</p>
+<p><span class="math-i">S(C)</span> <span class="math-r">= 1 +</span> <span class="math-i">P(n) · (C-1)</span></p>
+</li>
+</ul>
+</div>
+<aside class="admonition incremental example">
+<p class="admonition-title">Example</p>
+<p>Let the degree of parallelization for a relevant problem size <span class="math-i">n</span> be <span class="math-r">80 %</span>. This results in a speedup of <span class="math-r">(1 + 0.8 · 3) = 3.4</span> for <span class="math-r">4</span> CPUs, a speedup of <span class="math-r">6.6</span> for <span class="math-r">8</span> CPUs and a speedup of <span class="math-r">13</span> for <span class="math-r">16</span> CPUs.</p>
+</aside>
+</ld-card></ld-deck></ld-topic><ld-topic class="exercises" id="exercise">
+<h2>Exercise</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Compute Speedup" id="ld-exercise-2">
+<p class="ld-exercise-title rubric">Compute Speedup</p>
+<p>You are a pentester and you try to penetrate a system by attacking the passwords of the administrators. At the moment, you are using 2 graphics cards with 2048 compute units each. The serial part of the attack is 10 %. How high is the speedup you can expect, if you add two more comparable graphics cards with another 2048 compute units per GPU?</p>
+<aside class="admonition background">
+<p class="admonition-title">Background</p>
+<p>The attacks are highly parallelizable and effectively depend on the number of CUs. The graphics cards are able to accelerate the attacks effectively.</p>
+</aside>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:W3NAu3Nu2z4Znp/Zg0g93lSM0R4SzGHOXUrTJ/iHijk=:TdLoAJkZP29yW3cT:OtZUkvABfizuH4+aHMHJ6PHj2LHb53gwHZnt1M4UHLfHSwYAUBaECvq6Z5ptpw4MOkDaWyAR1xZ416ZQ0v8tSzZuxQyI+Ziq+NXrLcN2et8SwQkrmVfygZFsYqUTjaamaFowV7P9eBBdyAqVn+EL/p1SBpnTpnwPtzcqFhdo00aAIhfdhuy1FRnBpXAqcTbvfO7hHPLrZ5E5G6CJ5PNJFnRpSK56WhtuV73rdO/QvNNe7G42K2KvlkCjz1+Lw5mhemrHjKqHwT53akBanFC7nA07jYQQasIgAkZry2xdXfloq9frOxFXDhPvvt65Y5mkOzrYB67wRmdrEEQYdzNPjatkq8K6odhkFZZim1946p/Y1AaqsYW9QoHHv/LKwRliD0ffyYDLPTArQXw+MjhqI08uj4501/agz6UNc/ZvcQzzrBs2v1H3xQfZiocdSf6uIYSEXsUgdGv3ZBb3ItQw5I9mPe9drk2QY/o2zhQV+adNeu2eR33rCytbK2eYoZM6hNLY6YlINr0AwKSLRaEEYS2c26Gpcjp137HCfOkw3bYtdnhoTm401KTIEvNdf5hkgHurMK7OfLhwJ+tnSWXGpoSxUDSk5m/ExO0zruS9WDXzg/ywUgtbs7ZsQ7R4ZqS1thOu/WjLKKcAK9lvqofbDBD180CQifx9ZjVO0jMozX9F7LwqdJ0v0moVy4/iJNEC0iF2NFMXOJ5G10Zrf01ClTFtj5oM44baHEToOrki9Wx95GZlfjJ7iLlK7vI3fkEMFS6js4kh1940DZiHPI8SCIYUtGHICkx0HCaPoTKPHr+cQ56F7UsVRn7RPGBEyGdtKvGIwhEMm5lNE+lZmwt9iCKLfRoCI+vhig+POX/NLk3dU1pu14sRmNziFdxBXb9Mtdz/HnxI8GmHlFmWOTwJQaHoLIKgTZRty0+6szyJ7LIBtZEmsprrGrCRey1Ljdw7Pq/q8TBMqIXZzT03I0Wo/9uxyHlIit7olPBMLEw9xBZwJ3RZlDQrJbpgKlZeRCUCoUJiDslDsgyox9HHJepjwMBkxrvBdIbiQfK/e5mSfwv1QtxRW7GjlzDg0nOx6RR7n+IDzuQmxyii2Cat3EjWTW+ryzr4jcDqYnETfswoW9X2Pkoc68F/tBGhe+vlTCVSFOuRA0fNHwb0LonE7iRL+gQ9xA==</div>
+</div>
+</ld-topic><ld-topic class="new-section transition-fade" id="requirements-on-distributed-systems">
+<h2>Requirements on Distributed Systems</h2>
+</ld-topic><ld-topic id="dependability-of-distributed-systems">
+<h2>Dependability of Distributed Systems</h2>
+<aside class="admonition admonition-dependencies">
+<p class="admonition-title">Dependencies</p>
+<p>A <strong>component</strong><a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> provides <strong>services</strong> to its <strong>clients</strong>. For that, the component may in turn require services from other components and therefore the component is dependent on another component (<span class="eng">depend</span>).</p>
+</aside>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>A component <span class="math-i">C</span> depends on <span class="math">\(C^*\)</span> if the correctness of the behavior of <span class="math">\(C\)</span> depends on the correctness of the behavior of <span class="math">\(C^*\)</span>.</p>
+</aside>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p>Components are processes or channels.</p>
+</aside>
+</aside>
+<div class="supplemental">
+<p><span class="eng">Dependability</span> ≘ <span class="ger">Verlässlichkeit</span></p>
+</div></ld-topic><ld-topic id="requirements-on-the-reliability-of-distributed-systems">
+<h2>Requirements on the Reliability of Distributed Systems</h2>
+<table class="align-center incremental-table-rows booktabs">
+<thead>
+<tr><th class="head"><p>Requirement</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Availability</p></td>
+<td><p>The system is usable.</p></td>
+</tr>
+<tr><td><p>Reliability</p></td>
+<td><p>Continuity of correct service provision.</p></td>
+</tr>
+<tr><td><p>Safety</p></td>
+<td><p>Low probability of a catastrophic event.</p></td>
+</tr>
+<tr><td><p>Maintainability</p></td>
+<td><p>How easily can a failed system be recovered?</p></td>
+</tr>
+</tbody>
+</table>
+<div class="supplemental">
+<aside class="admonition attention">
+<p class="admonition-title">Attention!</p>
+<p><span class="eng">Security</span> ≘ <span class="ger">Sicherheit</span></p>
+<p><span class="eng">Safety</span> ≘ <span class="ger">Sicherheit</span></p>
+<p>Safety refers to the safety of people and property, while Security refers to the security of data and information.</p>
+</aside>
+</div></ld-topic><ld-topic id="reliability-vs-availability-in-distributed-systems">
+<h2>Reliability vs. Availability in Distributed Systems</h2>
+<p class="rubric">Reliability <span class="math-i">R(t)</span> of the component <span class="math-i">C</span></p>
+<p>Conditional probability that <span class="math-i">C</span> worked correctly during <span class="math">\([0,t)\)</span> if <span class="math-i">C</span> worked correctly at time <span class="math-i">T</span>  <span class="math-r">= 0</span>.</p>
+<div class="incremental compound">
+<p class="rubric">Traditional Metrics</p>
+<ul class="incremental-list">
+<li><p>Mean Time to Failure (<span class="math-r">MTTF</span>):</p>
+<p>The average time to failure of a component.</p>
+</li>
+<li><p>Mean Time to Repair (<span class="math-r">MTTR</span>):</p>
+<p>The average time it takes to repair a component.</p>
+</li>
+<li><p>Mean Time between Failures (<span class="math-r">MTBF</span>):</p>
+<p><span class="math-r">MTTF + MTTR = MTBF</span>.</p>
+</li>
+</ul>
+</div>
+<div class="supplemental">
+<dl class="field-list simple">
+<dt>Reliability<span class="colon">:</span></dt>
+<dd><p>How likely is it that a system will work <em>correctly</em>?</p>
+</dd>
+<dt>Availability<span class="colon">:</span></dt>
+<dd><p>How likely is it that a system will be available at a given time?</p>
+</dd>
+</dl>
+<p class="rubric"><span class="math-r">MTBF</span> vs. <span class="math-r">MTTR</span></p>
+<p>If the <span class="math-r">MTTF</span> of a component is <span class="math-r">100</span> hours and the <span class="math-r">MTTR</span> is <span class="math-r">10</span> hours, then the <span class="math-r">MTBF</span> is <span class="math-r">= MTTF + MTTR = 100 + 10 = 110</span> hours.</p>
+</div></ld-topic><ld-topic id="mapreduce-programming-model-and-middleware-for-parallel-computing">
+<h2>MapReduce - Programming model and Middleware for Parallel Computing</h2>
+<ul class="incremental-list list-with-explanations">
+<li><p>MapReduce is a programming model and a corresponding implementation (a framework originally developed by Google) for processing very large amounts of data (possibly TBytes).</p></li>
+<li><p>Programs implemented with the help of MapReduce are automatically parallelized and executed on a large cluster of commodity hardware.</p>
+<p>Responsibility of the runtime environment:</p>
+<ul class="simple">
+<li><p>Partitioning the input data and distributing it to the computers in the cluster.</p></li>
+<li><p>Scheduling and execution of the <span class="docutils literal">Map</span> and <span class="docutils literal">Reduce</span> functions on the computers of the cluster.</p></li>
+<li><p>Error handling and communication between the computers.</p></li>
+</ul>
+</li>
+</ul>
+<aside class="admonition incremental hint">
+<p class="admonition-title">Hint</p>
+<p>Not all kinds of computations can be performed with the help of MapReduce.</p>
+</aside>
+</ld-topic><ld-topic class="smaller-slide-title" id="mapreduce-visualization-of-an-example">
+<h2>MapReduce - Visualization of an Example</h2>
+<object class="align-center" data="images/mapreduce.svg" role="img" type="image/svg+xml" width="100%">
+</object><div class="supplemental">
+<p>Here it is the calculation of the frequency of words in a very large data set.</p>
+<p>Another canonical example is the calculation of an inverted index. I. e., the mapping of words to the documents/webpages in which they occur.</p>
+</div></ld-topic><ld-topic class="exercises" id="exercise-1">
+<h2>Exercise</h2>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Availability and Failure Probability" id="ld-exercise-3">
+<p class="ld-exercise-title rubric">Availability and Failure Probability</p>
+<p>Consider a large distributed system consisting of 500 independent computers which fail independently of each other. On average, each computer is unavailable for twelve hours within two days.</p>
+<ol class="loweralpha simple">
+<li><p>Determine the intact probability of a single computer.</p></li>
+<li><p>A data set is replicated on three computers for reasons of fault tolerance. What is its average availability when we try to access it?</p></li>
+<li><p>On how many computers do you have to store this data set so that the average availability is 99.999%?</p></li>
+<li><p>For how many minutes per year (with 365 days) is it <em>not possible to read the data set</em>, when we have an average availability of 99.999%?</p></li>
+</ol>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:0fMT9L4I0s6izJa1NkmpVuDI0XqsYt8zhsKcoT2OuL4=:Ud/E4vUWmdAFGO5j:Kb6VWCyC3zFeelGMCJuXpcvZ4P+zS2F5w4/box61wHTPOlIfcGhvTcrm1ceeSxcW/KEj2OdU05zlq+xBQh+LqKBTELtoFLeGPTvY1p2ZqRIPo20nWokxa/rVVfod88poi10pS0+0bkfbYeWpjR0oulZlKlXVUfv8FobNkp0c0BBkIrJ2s6ndWGjqxyR7SKHwGxDMiXhJjloEorikRLoLezYBF/N1y1a46OENCP+mCCHrKFmCNbpdkwcZTthcrmLPLdczLDUg7nEkNPF/PmJSwt5usQMy9zZ3hKOGlUup8b1xaXSnfhcti2yuNbwmjmIAKZE9d6Duuv3DU17ApOq6KTYVJF7miZfi12X7GvYkIt6SUnQfiohtDeaA+lkJmvXi/W/nPwvYHECwF+hS47cc9FnmU+Tz9cIi6T8Zpi5RckEQhANdJqdfCGLxuwpYlmKJ1WN8uxitMgOhnQGuGhPzPa6DnkPEdX4kBbr4Q/wnXd0aePeam4fOULGOFbTf9eG4rbowxxntRnL9tz8W3/u0thMtSp1QoCAauzxU6Mze3dDCtWfT/gq3E38g+2XGkdInhCCAgUD5eXKMdMfhMJ74ywZryu8amuiG2/NYQ1ElPMqTxrL4Qj/LHr53VoCTbRhniWHYOSfZ18N+7cXQW3Yk1zXkOLhTv1HqjcC6RC2VesIEdv7tlbb0VhX/R8XqX+sr7uLiPeePoMEHuAbudy/amJRaC6DE2UcC1wD1rZVR6du25vgy8fMYETardKlPhyw5v8tR1Lq/R6LYThwx4eLVdL/pPhKbDp6Z5k1gwmPPI6zsfeBQUaeeWtu47LFWTh7JcgYe3AANk2M3JVGugaewr8DofLymvueBrdLCTL6GIg3la5LzNIJyygGJVCHnTHLYLzRR9ogWvycvoRcmCbC3LcVAGO+KUllQwhAknt5R3y5aHJ//6D2DU8gK/gH6jqrTEO3zYEp8OTAvtjoWWzfL4uL9ryKG+hxffNrKL7NRixaVzrhm4IMkhO902/qVysECg846CzfowSE+pG5AUdQNx8x/kYwjvDpF8gXRrWZSL9jsxZec2zzQOq3oh8+yzLlld1TcGm11Ai3c8yQ6kEtKXwedSK9CpzP73SGaIMRQVnzxfGafI6dI2J/wV66HUeHGgU8r6oYSdNSpalg/T4bMvxjruRfNHRVCU/vQ6YfHNboP03Pf0S2ZJ1epGErqFrajkotfwPhmJgEYlT8ykwKcTAJCNtKIBvlpMLkQDynt6HPK1fiIGRk850111d5MK6VTD+TFDukRyXEAjk2Xspso+N1nalbrfgorCvuJCi55y/EE3xa9gGuaUqEAef0KV0rG69nuACF9pGGQkQUvqkdByueNiOkaokwKq4s0qXYzK+C7oL41hKMXhOkWS8eGH6uplgzHXQqU082AIB/1Bre7zAVOG4/vSO3XVgBU2KxM3nhyb2dx04gEfu25oogjkUnyOVfj+LRH+ht/I7lhLAB73z8ZxSBWZ1ctNW+tmudU07l4D+bU9lemYg==</div>
+</div>
+</ld-topic><ld-topic class="new-section transition-fade" id="classification-of-distributed-systems">
+<h2>Classification of Distributed Systems</h2>
+</ld-topic><ld-topic id="cluster-computing">
+<h2>Cluster Computing</h2>
+<p>A group of high-end systems connected via a LAN.</p>
+<object class="align-center" data="images/cluster-computing.svg" role="img" type="image/svg+xml">
+</object><div class="supplemental">
+<p>The individual computers/compute nodes are often identical (hardware and software) and are managed by a management node (<span class="eng">management node</span>).</p>
+</div></ld-topic><ld-topic id="grid-computing">
+<h2>Grid Computing</h2>
+<p>Continuation of cluster computing.</p>
+<ul class="simple">
+<li><p>Many heterogeneous nodes scattered over a wide area and across several organizations.</p></li>
+<li><p>The nodes are connected via the WAN.</p></li>
+<li><p>Collaboration takes place within the framework of a virtual organization.</p></li>
+</ul>
+<div class="supplemental">
+<p>(Volunteer) Grid Computing - Examples:</p>
+<p><a class="reference external" href="https://scienceunited.org">https://scienceunited.org</a></p>
+<p><a class="reference external" href="https://einsteinathome.org">https://einsteinathome.org</a></p>
+</div></ld-topic><ld-topic id="basic-architecture-for-grid-computing">
+<h2>Basic Architecture for Grid Computing</h2>
+<ul class="column-list dd-margin-left-2em">
+<li><object data="images/architecture-for-grid-computing.svg" role="img" type="image/svg+xml">
+</object></li>
+<li><dl class="no-margin field-list simple">
+<dt>Fabric layer<span class="colon">:</span></dt>
+<dd><p>Provides interfaces to local resources (for querying status and capabilities, locking, etc.)</p>
+</dd>
+<dt>Connectivity layer<span class="colon">:</span></dt>
+<dd><p>Communication / transaction / authentication protocols, e.g. for transferring data between resources.</p>
+</dd>
+<dt>Resource layer<span class="colon">:</span></dt>
+<dd><p>Manages a single resource, e.g. creating processes or reading data.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="no-margin field-list simple">
+<dt>Collective Layer<span class="colon">:</span></dt>
+<dd><p>Manages access to multiple resources: discovery, scheduling and replication.</p>
+</dd>
+<dt>Applications<span class="colon">:</span></dt>
+<dd><p>Contains actual grid applications in a single organisation.</p>
+</dd>
+</dl>
+<div class="supplemental">
+<p><span class="ger">Auffindung</span> ≘ <span class="eng">Discovery</span></p>
+<p><span class="ger">Einplanung</span> ≘ <span class="eng">Scheduling</span></p>
+</div></ld-topic><ld-topic id="peer-to-peer-systems">
+<h2>Peer-to-Peer-Systems</h2>
+<dl class="field-list">
+<dt>Vision<span class="colon">:</span></dt>
+<dd><p>&quot;The network is the computer.&quot; There is a database that is always accessible worldwide.</p>
+</dd>
+<dt>Idea<span class="colon">:</span></dt>
+<dd><p>No dedicated clients and servers, each participant (peer) is both provider and customer.</p>
+<p>Self-organising, without a central infrastructure (coordinator, database, directory of participants).</p>
+<p>Each peer is autonomous and can be offline at any time, network addresses can change at will.</p>
+</dd>
+<dt>Main Application<span class="colon">:</span></dt>
+<dd><p>File-Sharing-Systems (in particular BitTorrent)</p>
+</dd>
+</dl>
+<div class="supplemental">
+<p>The peak of classic peer-to-peer systems was in the 2000s.</p>
+<ul class="positive-list simple">
+<li><p>Advantages of P2P systems are: cheap, fault-tolerant, dynamic, self-configuring, immensely high storage capacity, high data access speed.</p></li>
+</ul>
+<ul class="negative-list simple">
+<li><p>Problems of P2P systems are: start-up, poorly connected, low performance peers; <em>free riders</em>; copyright problems.</p></li>
+</ul>
+</div></ld-topic><ld-topic id="cloud-computing">
+<h2>Cloud-Computing</h2>
+<aside class="admonition admonition-definition">
+<p class="admonition-title">Definition</p>
+<p>Cloud computing refers to the provision of computing power, storage and applications as a service. It is the continuation of grid computing.</p>
+</aside>
+<div class="incremental margin-top-1em docutils container">
+<p class="rubric">Variants</p>
+<ul class="list-with-explanations">
+<li><p>Public Cloud (z. B. Amazon EC2, Google Apps, Microsoft Azure, …)</p></li>
+<li><p>Private Cloud</p></li>
+<li><p>Hybrid Cloud</p>
+<p>(The private cloud is supplemented by a public cloud if required).</p>
+</li>
+<li><p>Virtual Private Cloud</p></li>
+</ul>
+</div>
+<div class="supplemental">
+<ul class="positive-list simple">
+<li><p>Advantages of cloud computing: costs, up-to-dateness of data and services, no in-house infrastructure required, support for mobile participants</p></li>
+</ul>
+<ul class="negative-list">
+<li><p>Problems of cloud computing: security and trust, loss of in-house expertise, handling of classified data.</p>
+<p>One way out could be <a class="reference external" href="https://de.wikipedia.org/wiki/Homomorphe_Verschlüsselung">homomorphic encryption</a>, which makes it possible to perform calculations on encrypted data.</p>
+</li>
+</ul>
+</div></ld-topic><ld-topic id="serverless-computing">
+<h2><em>Serverless Computing</em></h2>
+<p><em>Serverless Computing</em> enables developers to create applications faster, as they no longer have to worry about managing the Infrastructure.</p>
+<ul class="positive-list incremental simple">
+<li><p>The cloud service provider automatically provides, scales and manages the infrastructure required to run the code.</p></li>
+</ul>
+<ul class="negative-list incremental list-with-explanations">
+<li><p>Vendor-Lock-In</p></li>
+<li><p>Cold-boot latency</p>
+<p>Time until the first code is executed can be longer, as the serverless functions are only instantiated when required.</p>
+</li>
+<li><p>Debugging and Monitoring</p>
+<p>Traditional tools and methods can no longer be used.</p>
+</li>
+<li><p>Cost-transparency/-management</p>
+<p>The costs of serverless computing are difficult to predict and control.</p>
+</li>
+</ul>
+</ld-topic><ld-topic class="new-section transition-fade" id="challenges-in-developing-distributed-systems">
+<h2>Challenges in Developing Distributed Systems</h2>
+</ld-topic><ld-topic id="application-integration">
+<h2>Application Integration</h2>
+<div class="assessment docutils container">
+<p>Typical enterprise applications in companies are networked applications and establishing interoperability between these applications is a major challenge.</p>
+</div>
+<div class="incremental margin-top-1em docutils container">
+<p class="rubric">Basic Approach</p>
+<p><em>Clients</em> combine requests for (different) applications, send them, collect the responses and present a coherent result to the user.</p>
+</div>
+<div class="incremental margin-top-1em docutils container">
+<p class="rubric">Modern Approach</p>
+<p>Direct communication between applications leads to the integration of enterprise applications  (Enterprise Application Integration (EAI)).</p>
+</div>
+<div class="supplemental">
+<p>A networked application is an application that runs on a server and makes its services available to remote clients.</p>
+</div></ld-topic><ld-topic id="transactions-at-business-process-level">
+<h2>Transactions at Business Process Level</h2>
+<ld-grid class="default-layout">
+<ld-cell style="align-self:auto;">
+<object class="align-center" data="images/transactions/transaction.svg" role="img" type="image/svg+xml">
+</object><div class="text-align-center margin-top-1em docutils container">
+<p><strong>„All or nothing.“</strong></p>
+</div>
+</ld-cell><ld-cell class="width-60" style="align-self:auto;">
+<ld-deck>
+<ld-card>
+<table>
+<thead>
+<tr><th class="head"><p>Primitive</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>BEGIN OF TRANSACTION</p></td>
+<td><p>Indicates the start of a transaction.</p></td>
+</tr>
+<tr><td><p>END OF TRANSACTION</p></td>
+<td><p>Completes the transaction with an attempt to COMMIT.</p></td>
+</tr>
+<tr><td><p>ROLLBACK OF TRANSACTION</p></td>
+<td><p>terminate the transaction and restore the old status.</p></td>
+</tr>
+<tr><td><p>READ</p></td>
+<td><p>Reading data from (e.g.) a file or a table.</p></td>
+</tr>
+<tr><td><p>WRITE</p></td>
+<td><p>Writing data (e.g.) to a file or a table.</p></td>
+</tr>
+</tbody>
+</table>
+</ld-card><ld-card class="incremental">
+<p class="rubric">ACID-Properties:</p>
+<dl class="field-list simple">
+<dt>Atomic<span class="colon">:</span></dt>
+<dd><p>happens inseparably (seemingly)</p>
+</dd>
+<dt>Consistent<span class="colon">:</span></dt>
+<dd><p>no violation of system invariants</p>
+</dd>
+<dt>Isolated<span class="colon">:</span></dt>
+<dd><p>no mutual influence</p>
+</dd>
+<dt>Durable<span class="colon">:</span></dt>
+<dd><p>after a commit, the changes are permanent</p>
+</dd>
+</dl>
+</ld-card></ld-deck></ld-cell></ld-grid></ld-topic><ld-topic class="smaller" id="transaction-processing-monitor-tpm">
+<h2><em>Transaction Processing Monitor (TPM)</em></h2>
+<object class="align-center" data="images/transactions/tpm.svg" role="img" type="image/svg+xml">
+</object><div class="supplemental">
+<aside class="admonition observation">
+<p class="admonition-title">Observation</p>
+<p>The data required for a transaction is often distributed across several servers.</p>
+<p>A TPM is responsible for coordinating the execution of a transaction.</p>
+</aside>
+</div><div class="supplemental">
+<p>When you implement microservices, the use of TPMs and 2PC for the purpose of coordinating business processes is often not the first choice.</p>
+<p>Nevertheless, distributed transactions are an important part of distributed systems and Google, for example, has developed Spanner, a solution that enables transactions on a global scale (<em>Global Consistency</em>). (<a class="reference external" href="https://cloud.google.com/spanner?hl=en">https://cloud.google.com/spanner?hl=en</a> and <a class="reference external" href="https://www.youtube.com/watch?v=iKQhPwbzzxU">https://www.youtube.com/watch?v=iKQhPwbzzxU</a>).</p>
+</div></ld-topic><ld-topic id="middleware-and-enterprise-application-integration-eai">
+<h2><em>Middleware</em> and <em>Enterprise Application Integration (EAI)</em></h2>
+<p>Middleware enables communication between applications.</p>
+<object class="align-center" data="images/middleware.svg" role="img" type="image/svg+xml">
+</object><div class="supplemental">
+<dl class="field-list simple">
+<dt>Remote Procedure Call (RPC)<span class="colon">:</span></dt>
+<dd><p>Requests are sent via a local procedure call, packaged as a message, processed, answered by a message and the result is then the return value of the procedure call.</p>
+</dd>
+<dt>Message Oriented Middleware (MOM)<span class="colon">:</span></dt>
+<dd><p>Messages are sent (i. e. published) to a logical contact point (i. e. message broker) and forwarded to applications that subscribe to these messages.</p>
+</dd>
+</dl>
+</div></ld-topic><ld-topic id="how-can-application-integration-be-achieved">
+<h2>How can application integration be achieved?</h2>
+<dl class="incremental-list dd-margin-left-2em field-list simple">
+<dt>File transfer<span class="colon">:</span></dt>
+<dd><p>Technically simple, but not flexible:</p>
+<ul class="simple">
+<li><p>Determine the file format and layout</p></li>
+<li><p>Regulate file management</p></li>
+<li><p>Passing on updates and update notifications</p></li>
+</ul>
+</dd>
+<dt>Shared database<span class="colon">:</span></dt>
+<dd><p>Way more flexible, but still requires a common data schema in addition to the risk of a bottleneck.</p>
+</dd>
+<dt>Remote Procedure Call (RPC)<span class="colon">:</span></dt>
+<dd><p>Effective when execution of a series of actions is required.</p>
+</dd>
+<dt>Messaging<span class="colon">:</span></dt>
+<dd><p>Enables temporal and spatial decoupling compared to RPCs.</p>
+</dd>
+</dl>
+</ld-topic><ld-topic class="new-section transition-fade" id="modern-distributed-systems">
+<h2>Modern Distributed Systems</h2>
+</ld-topic><ld-topic id="distributed-pervasive-ubiquitous-systems">
+<h2><em>Distributed Pervasive/Ubiquitous Systems</em></h2>
+<div class="supplemental">
+<p><span class="eng">Distributed Pervasive/Ubiquitous Systems</span> ≘ <span class="ger">verteilte, allgegenwärtige/alles durchdringende Systeme</span></p>
+</div><div class="margin-bottom-1em docutils container">
+<p>Modern distributed systems are characterised by the fact that the nodes are small, mobile and often embedded in a larger system. The system embeds itself naturally in the user's environment. Networking is wireless.</p>
+</div>
+<div class="incremental margin-top-1em docutils container">
+<p class="rubric">Three (overlapping) subtypes</p>
+<dl class="field-list simple">
+<dt>Ubiquitous computing<span class="colon">:</span></dt>
+<dd><p><em>ubiquitous and always present</em>; i. e. there is constant interaction between the system and the user.</p>
+</dd>
+<dt>Mobile computing<span class="colon">:</span></dt>
+<dd><p><em>ubiquitous</em>; the focus is on the fact that devices are inherently mobile.</p>
+</dd>
+<dt>Sensor/Actuator Networks<span class="colon">:</span></dt>
+<dd><p><em>ubiquitous</em>; focus is on actual (collaborative) sensing and actuation.</p>
+</dd>
+</dl>
+</div>
+</ld-topic><ld-topic id="ubiquitous-systems-key-elements">
+<h2><em>Ubiquitous Systems</em> - Key Elements</h2>
+<dl class="incremental-list field-list simple">
+<dt>Distribution<span class="colon">:</span></dt>
+<dd><p>The devices are networked, distributed and accessible without barriers.</p>
+</dd>
+<dt>Interaction<span class="colon">:</span></dt>
+<dd><p>The interaction between users and devices is highly unobtrusive.</p>
+</dd>
+<dt>Context awareness<span class="colon">:</span></dt>
+<dd><p>the system knows the user's context in order to optimize the interaction.</p>
+</dd>
+<dt>Autonomy<span class="colon">:</span></dt>
+<dd><p>The devices work autonomously, without human intervention, and manage themselves independently to a high degree.</p>
+</dd>
+<dt>Intelligence<span class="colon">:</span></dt>
+<dd><p>The system as a whole can handle a wide range of dynamic actions and interactions.</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="mobile-computing-characterizing-features">
+<h2><em>Mobile Computing</em> - Characterizing features</h2>
+<ul class="incremental-list simple">
+<li><p>A variety of different mobile devices (smartphones, tablets, GPS devices, remote controls, active ID cards).</p></li>
+<li><p>Mobile means that the location of a device can change over time. This can, e. g., have an impact on local services or accessibility.</p></li>
+<li><p>Maintaining stable communication can lead to serious problems.</p></li>
+</ul>
+<aside class="admonition incremental margin-top-1em observation">
+<p class="admonition-title">Observation</p>
+<p>The current status is that mobile devices establish connections to stationary servers, making them in principle <em>clients</em> of cloud-based services.</p>
+</aside>
+</ld-topic><ld-topic id="mobile-cloud-computing">
+<h2><em>Mobile Cloud Computing</em></h2>
+<object class="align-center" data="images/mobile_computing/mobile_cloud_computing.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="mobile-edge-computing">
+<h2><em>Mobile Edge Computing</em></h2>
+<object class="align-center" data="images/mobile_computing/mobile_edge_computing.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="sensor-networks">
+<h2><em>Sensor Networks</em></h2>
+<p>The nodes to which sensors are attached:</p>
+<ul class="simple">
+<li><p>&quot;many&quot;</p></li>
+<li><p>simple (low memory / computing / communication capacity)</p></li>
+<li><p>often battery-operated (or even battery-free)</p></li>
+</ul>
+<object class="align-center" data="images/sensor_networks/operator_stores_and_processes_data.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="sensor-networks-as-distributed-databases">
+<h2><em>Sensor Networks</em> as Distributed Databases</h2>
+<object class="align-center" data="images/sensor_networks/nodes_store_and_process_data.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="the-cloud-edge-continuum">
+<h2>The <em>Cloud-Edge Continuum</em></h2>
+<object class="align-center" data="images/cloud_edge_continuum.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="pitfalls-in-developing-distributed-systems">
+<h2>Pitfalls in Developing Distributed Systems</h2>
+<aside class="admonition observation">
+<p class="admonition-title">Observation</p>
+<p>Many distributed systems are unnecessarily complex due to incorrect assumptions and architectural and design errors that have to be rectified later.</p>
+</aside>
+<div class="incremental docutils container">
+<p class="rubric">Incorrect (and often hidden) assumptions</p>
+<ul class="incremental-list simple">
+<li><p>The network is reliable</p></li>
+<li><p>The network is secure</p></li>
+<li><p>The network is homogeneous</p></li>
+<li><p>The topology does not change</p></li>
+<li><p>The latency is zero</p></li>
+<li><p>The bandwidth is infinite</p></li>
+<li><p>The transport costs are zero</p></li>
+<li><p>There is only one administrator</p></li>
+</ul>
+</div>
+</ld-topic>
+</template>
+</body>
+</html>
