@@ -4,35 +4,31 @@
 
    It defines some defaults that are generally useful in the context of 
    LectureDoc2 to achieve a consistent look and feel.
+
+   Michael Eichberg (LectureDoc2) (c) 2025 - www.michael-eichberg.de
 */
 
-* {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  box-sizing: border-box;
-  scrollbar-color: #999 #333; /* Foreground, Background */
-}
-
-/* The following background-color definitions primarily serve debugging 
-   purposes! Slides are expected/required to set a background-color.
-*/ 
 html {
   font-family: var(--default-font-family);
-  background-color: black; 
 }
 
 body {
-  background-color: rgb(25, 20, 20); 
+  /*  The following background-color definitions primarily serve debugging 
+      purposes! Slides are expected/required to set a background-color. */ 
+  --current-background-color: rgb(25, 20, 20);
+  background-color:  var(--current-background-color); 
 }
 
 @media print { /* At least Safari seems to honor this setting... */
+  
   html {
-      background-color: white;
+      --current-background-color: white;
+      background-color: var(--current-background-color);
   }
 
   body {
-      background-color: white;
+      --current-background-color: white;
+      background-color: var(--current-background-color);
   }
 }
 
@@ -153,10 +149,10 @@ div.dedication {
     margin: 2em 5em;
     text-align: center;
     font-style: italic;
-}
 
-div.dedication p.topic-title {
-    font-style: normal;
+    p.topic-title {
+        font-style: normal; 
+    }
 }
 
 /* disclosures */
@@ -185,22 +181,6 @@ blockquote p.attribution,
     color: var(--dark-gray);
 }
 
-
-/* "booktabs" style (no vertical lines) */
-table.booktabs {
-  border: 0;
-  border-top: 2px solid;
-  border-bottom: 2px solid;
-  border-collapse: collapse;
-}
-
-table.booktabs * {
-  border: 0;
-}
-
-table.booktabs th {
-  border-bottom: thin solid;
-}
 
 /* numbered tables (counter defined in div.document) */
 table.numbered>caption:before {
