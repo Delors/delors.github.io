@@ -38,14 +38,20 @@ function layoutDecksInDocumentView(deck) {
         deck.appendChild(ldCardGroup);
 
         function sizeGroupOfCards(group) {
+            // Core idea: we position all cards absolutely except of /
+            // the (first card) with the heighest high. This card 
+            // will implicitly determine the height of the group and 
+            // provide the "reference frame" for all other cards.
             const maxHeight = Math.max(...group.map(card => card.offsetHeight));
             let isFirst = true;
             for (const card of group) {
                 if (card.offsetHeight == maxHeight && isFirst ) {
                     card.style.position = "relative";
+                    // TODO Check what happens if the width of the heighest card is smaller than the width of some other card and the deck is placed inside some other container.
                     isFirst = false;
                 } else {
                     card.style.position = "absolute";
+                    card.style.width = "100%";
                 }
             }
         }

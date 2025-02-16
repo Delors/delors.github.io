@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Web Services&quot;, REST, HTTP, JSON" name="keywords" />
+<meta content="Einführung in RESTful Web Services" lang="de" name="description" xml:lang="de" />
+<meta content="Introduction to RESTful Web Services" lang="en" name="description" xml:lang="en" />
+<meta content="lecture-ds-introduction_to_rest" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
+<title>RESTful Web Services</title>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="restful-web-services">
+<h1 class="title">RESTful Web Services</h1>
+
+<p>A brief introduction.</p>
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+<dt>Quelle<span class="colon">:</span></dt>
+<dd><p>(teilweise) RESTful Web Services; Leonard Richardson &amp; Sam Ruby; O'Reilly</p>
+</dd>
+</dl>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/ds-introduction_to_rest/folien.en.rst.html">https://delors.github.io/ds-introduction_to_rest/folien.en.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/ds-introduction_to_rest/folien.en.rst.html.pdf">https://delors.github.io/ds-introduction_to_rest/folien.en.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></ld-topic>
+<ld-topic id="what-is-a-web-service-in-the-context-of-restful-web-services">
+<h2>What is a <em>Web Service</em> in the context of RESTful Web Services?</h2>
+<p class="rubric">Traditional view</p>
+<p>A <em>Web Service</em> is simply a web page that can be requested and processed by a computer.</p>
+<div class="incremental docutils container">
+<p>A <em>Web Service</em> is a &quot;web page&quot; that is to be consumed by an <em>autonomous programme</em> - as opposed to a web browser or similar UI tool.</p>
+</div>
+<div class="supplemental">
+<img alt="RESTful Web Services" class="box-shadow align-center" src="book-restful_web_services.png" />
+</div></ld-topic><ld-topic id="rest">
+<h2>REST<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<ul>
+<li><p>REST = Representational State Transfer</p>
+<p>(Essentially a set of design principles for judging architecture; <strong>an architectural style</strong>).</p>
+</li>
+<li><p>Resources are identified by uniform resource identifiers (URIs)</p></li>
+<li><p>Resources are manipulated by their representations</p></li>
+<li><p>Messages are self-describing and stateless</p></li>
+</ul>
+<div class="peripheral incremental docutils container">
+<p>Of secondary importance:</p>
+<ul class="simple">
+<li><p>Multiple representations are accepted or sent</p></li>
+<li><p>&quot;Hypertext&quot; represents the application state</p></li>
+</ul>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>REST was described by Roy Fielding in his dissertation.</p>
+</aside>
+</aside>
+</ld-topic><ld-topic id="a-possible-architecture-for-restful-web-services">
+<h2>A possible architecture for RESTful web services</h2>
+<div class="foundations docutils container">
+<p><strong>Resource-oriented Architecture (ROA)</strong></p>
+<ul>
+<li><p>Information about the method is included in the HTTP method.</p></li>
+<li><p>Scoping information is included in the URI.</p>
+<p>(I. e. which data is affected.)</p>
+</li>
+</ul>
+</div>
+<p class="rubric">REST-Style</p>
+<ul class="simple">
+<li><p>Client-server</p></li>
+<li><p>stateless</p></li>
+<li><p><span class="peripheral">Cached</span></p></li>
+<li><p>Uniform Interface (HTTP Methods)</p></li>
+<li><p>Multi-layered system</p></li>
+</ul>
+</ld-topic><ld-topic id="restful-web-services-foundations">
+<h2>RESTful Web Services - Foundations</h2>
+<dl class="incremental-list field-list">
+<dt>HTTP<span class="colon">:</span></dt>
+<dd><p>the underlying stateless transport protocol:</p>
+<p>Essential methods:</p>
+<dl class="field-list simple">
+<dt>GET<span class="colon">:</span></dt>
+<dd><p>sideeffect-free requests for information</p>
+</dd>
+<dt>POST<span class="colon">:</span></dt>
+<dd><p>adding new information (without specifying the target URI)</p>
+</dd>
+<dt>PUT<span class="colon">:</span></dt>
+<dd><p>idempotent update or creation of new information at the given URI</p>
+</dd>
+<dt>DELETE<span class="colon">:</span></dt>
+<dd><p>idempotent deletion of information</p>
+</dd>
+</dl>
+</dd>
+<dt>URI<span class="colon">:</span></dt>
+<dd><p>used to find resources</p>
+</dd>
+<dt>Representation<span class="colon">:</span></dt>
+<dd><p><strong>JSON</strong>, XML, SVG, WebP, XML, ...</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="two-types-of-state">
+<h2>Two Types of State</h2>
+<ld-deck class="numbered">
+<ld-card>
+<p class="rubric">Application State / Session State</p>
+<ul>
+<li><p>&quot;State&quot; refers to Application-/Session State</p>
+<p>The application state is the information necessary to understand the context of an interaction</p>
+</li>
+</ul>
+<p><span class="peripheral">Authorization and authentication information are examples of application state.</span></p>
+<ul class="simple">
+<li><p>Maintained as part of the content transmitted from the client to the server and back to the client. I. e. the client manages the application state.</p></li>
+<li><p>Thus, any server can potentially resume the transaction at the point where it was interrupted.</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Resource State</p>
+<ul class="simple">
+<li><p>The resource state is the type of state that the <em>S</em> in <em>REST</em> refers to.</p></li>
+<li><p>The <em>stateless</em> restriction means that all messages must contain the entire application state (i. e. we effectively have no sessions).</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic id="multiple-representations">
+<h2>Multiple representations</h2>
+<ul>
+<li><p>Most resources only have a single representation.</p></li>
+<li><p>REST can support any media type; JSON is the standard.</p>
+<p>(HTTP supports content negotiation.)</p>
+</li>
+<li><p><span class="peripheral">Links can be embedded and reflect the structure with which a user can navigate through an application.</span></p></li>
+</ul>
+</ld-topic><ld-topic id="simple-first-tests-for-restfulness">
+<h2>Simple/first tests for RESTfulness</h2>
+<ul class="simple">
+<li><p>Can I use a GET to retrieve the URLs I have POSTed to?</p></li>
+<li><p>Would the client notice if the server...</p>
+<ul>
+<li><p>is restarted at any point between requests</p></li>
+<li><p>is reinitialized when the client makes the next request.</p></li>
+</ul>
+</li>
+</ul>
+</ld-topic><ld-topic id="resource-modelling">
+<h2>Resource modelling</h2>
+<ul class="simple">
+<li><p>organize the application into URI-addressable resources (discrete resources should have their own stable URIs).</p></li>
+<li><p>use only the standard HTTP messages - GET, PUT, POST, DELETE and <span class="peripheral">PATCH</span> - to provide the full capabilities of the application</p></li>
+</ul>
+<div class="supplemental">
+<p class="rubric">HTTP methods</p>
+<p><strong>GET</strong> is used to query resources.</p>
+<p><strong>PUT</strong> is used to create a resource or update it if you know the URI.</p>
+<p><strong>POST</strong> is used to create a new resource. The response should then contain the URI of the created resource.</p>
+<p><strong>DELETE</strong> deletes the specified resource.</p>
+<p>The difference between <strong>PUT</strong> and <strong>POST</strong> is that <strong>PUT</strong> is idempotent: a single or repeated calls have the same effect (i. e. a repeated call has no side effect), while successive identical <strong>POST</strong> calls can have additional effects, such as the repeated transfer of an order/the repeated creation of a message.</p>
+<p>A <strong>PATCH</strong> request is regarded as a set of instructions for changing a resource. In contrast, a PUT request is a complete representation of a resource.</p>
+</div></ld-topic><ld-topic id="example-application-del-icio-us">
+<h2>Example Application del.icio.us</h2>
+<div class="supplemental">
+<dl class="field-list simple">
+<dt>Quelle<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://www.peej.co.uk/articles/restfully-delicious.html">https://www.peej.co.uk/articles/restfully-delicious.html</a></p>
+</dd>
+</dl>
+</div><p><strong>del.icio.us enables us:</strong></p>
+<ul class="simple">
+<li><p>to get a list of all our bookmarks and filter this list by tags or date and to limit the number of retrieved bookmarks</p></li>
+<li><p>to retrieve the number of bookmarks created on different days</p></li>
+<li><p>to retrieve when we last updated our bookmarks</p></li>
+<li><p>to retrieve a list of all our markers</p></li>
+<li><p>to add a bookmark</p></li>
+<li><p>to edit a bookmark</p></li>
+<li><p>to delete a bookmark</p></li>
+<li><p>to rename a bookmark</p></li>
+</ul>
+</ld-topic><ld-topic id="example-application-del-icio-us-resources">
+<h2>Example Application del.icio.us: Resources</h2>
+<dl class="field-list simple">
+<dt>Bookmarks<span class="colon">:</span></dt>
+<dd><p><cite>http://del.icio.us/api/[username]/bookmarks</cite></p>
+</dd>
+<dt>Tags<span class="colon">:</span></dt>
+<dd><p><cite>http://del.icio.us/api/[username]/tags</cite></p>
+</dd>
+<dt>[username]<span class="colon">:</span></dt>
+<dd><p>is the username of the user whose bookmarks we are interested in</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="example-application-del-icio-us-reprasentation-von-ressourcen">
+<h2>Example Application del.icio.us: Repräsentation von Ressourcen</h2>
+<p>We define (in this example) some XML document formats and media types to identify them:</p>
+<table class="highlight-line-on-hover">
+<thead>
+<tr><th class="head"><p>Mediatype</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>delicious/bookmarks+xml</p></td>
+<td><p>list of bookmarks</p></td>
+</tr>
+<tr><td><p>delicious/bookmark+xml</p></td>
+<td><p>one bookmark</p></td>
+</tr>
+<tr><td><p>delicious/bookmarkcount+xml</p></td>
+<td><p>number of bookmarks per tag</p></td>
+</tr>
+<tr><td><p>delicious/update+xml</p></td>
+<td><p>time at which the bookmarks were last updated</p></td>
+</tr>
+<tr><td><p>delicious/tags+xml</p></td>
+<td><p>list of tags</p></td>
+</tr>
+<tr><td><p>delicious/tag+xml</p></td>
+<td><p>a tag</p></td>
+</tr>
+</tbody>
+</table>
+</ld-topic><ld-topic id="example-application-del-icio-us-query-bookmarks">
+<h2>Example Application del.icio.us: Query Bookmarks</h2>
+<dl class="field-list">
+<dt>URL<span class="colon">:</span></dt>
+<dd><p><cite>http://del.icio.us/api/[username]/bookmarks/</cite></p>
+</dd>
+<dt>Method<span class="colon">:</span></dt>
+<dd><p>GET</p>
+</dd>
+<dt>Querystring<span class="colon">:</span></dt>
+<dd><p>tag =       Filter by tag</p>
+<p>dt =        Filter by date</p>
+<p>start =     The number of the first returned bookmark</p>
+<p>end =       The number of the last returned bookmark</p>
+</dd>
+<dt>Return value<span class="colon">:</span></dt>
+<dd><p>200 OK &amp; XML (delicious/bookmarks+xml)</p>
+<p>401 Unauthorized</p>
+<p>404 Not Found</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="example-application-del-icio-us-query-bookmarks-example-response">
+<h2>Example application del.icio.us: Query bookmarks - example response</h2>
+<p><span class="docutils literal">GET <span class="pre">http://del.icio.us/api/peej/bookmarks/?start=1&amp;end=2</span></span></p>
+<pre class="code xml literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment preproc">&lt;?xml version=&quot;1.0&quot;?&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="name tag">&lt;bookmarks</span><span class="whitespace"> </span><span class="name attribute">start=</span><span class="literal string">&quot;1&quot;</span><span class="whitespace"> </span><span class="name attribute">end=</span><span class="literal string">&quot;2&quot;</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="name attribute">next=</span><span class="literal string">&quot;http://del.icio.us/api/peej/bookmarks?start=3&amp;amp;end=4&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="name tag">&lt;bookmark</span><span class="whitespace"> </span><span class="name attribute">url=</span><span class="literal string">&quot;http://www.example.org/one&quot;</span><span class="whitespace"> </span><span class="name attribute">tags=</span><span class="literal string">&quot;example,test&quot;</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">        </span><span class="name attribute">href=</span><span class="literal string">&quot;http://del.icio.us/api/peej/bookmarks/a211528fb5108cddaa4b0d3aeccdbdcf&quot;</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">        </span><span class="name attribute">time=</span><span class="literal string">&quot;2005-10-21T19:07:30Z&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">        </span>Example<span class="whitespace"> </span>of<span class="whitespace"> </span>a<span class="whitespace"> </span>Delicious<span class="whitespace"> </span>bookmark<span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="name tag">&lt;/bookmark&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="name tag">&lt;bookmark</span><span class="whitespace"> </span><span class="name attribute">url=</span><span class="literal string">&quot;http://www.example.org/two&quot;</span><span class="whitespace"> </span><span class="name attribute">tags=</span><span class="literal string">&quot;example,test&quot;</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">        </span><span class="name attribute">href=</span><span class="literal string">&quot;http://del.icio.us/api/peej/bookmarks/e47d06a59309774edab56813438bd3ce&quot;</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">        </span><span class="name attribute">time=</span><span class="literal string">&quot;2005-10-21T19:34:16Z&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">        </span>Another<span class="whitespace"> </span>example<span class="whitespace"> </span>of<span class="whitespace"> </span>a<span class="whitespace"> </span>Delicious<span class="whitespace"> </span>bookmark<span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">    </span><span class="name tag">&lt;/bookmark&gt;</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span><span class="name tag">&lt;/bookmarks&gt;</span></code></pre>
+</ld-topic><ld-topic id="example-application-del-icio-us-information-about-a-bookmark">
+<h2>Example application del.icio.us: Information about a bookmark</h2>
+<dl class="field-list">
+<dt>URL<span class="colon">:</span></dt>
+<dd><p><cite>http://del.icio.us/api/[username]/bookmarks/[hash]`</cite></p>
+</dd>
+<dt>Method<span class="colon">:</span></dt>
+<dd><p><cite>GET</cite></p>
+</dd>
+<dt>Return value<span class="colon">:</span></dt>
+<dd><p>200 OK &amp; XML (delicious/bookmark+xml)</p>
+<p>401 Unauthorized</p>
+<p>404 Not Found</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="example-application-del-icio-us-information-about-a-bookmark-example-response">
+<h2>Example application del.icio.us: Information about a bookmark - Example response</h2>
+<p><span class="docutils literal">GET <span class="pre">http://del.icio.us/api/peej/bookmarks/a211528fb5108cdd</span></span></p>
+<pre class="code xml literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment preproc">&lt;?xml version=&quot;1.0&quot;?&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="name tag">&lt;bookmark</span><span class="whitespace"> </span><span class="name attribute">url=</span><span class="literal string">&quot;http://www.example.org/one&quot;</span><span class="whitespace"> </span><span class="name attribute">time=</span><span class="literal string">&quot;2005-10-21T19:07:30Z&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="name tag">&lt;description&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">        </span>Example<span class="whitespace"> </span>of<span class="whitespace"> </span>a<span class="whitespace"> </span>Delicious<span class="whitespace"> </span>bookmark<span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="name tag">&lt;/description&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="name tag">&lt;tags</span><span class="whitespace"> </span><span class="name attribute">count=</span><span class="literal string">&quot;2&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">        </span><span class="name tag">&lt;tag</span><span class="whitespace"> </span><span class="name attribute">name=</span><span class="literal string">&quot;example&quot;</span><span class="whitespace"> </span><span class="name attribute">href=</span><span class="literal string">&quot;http://del.icio.us/api/peej/tags/example&quot;</span><span class="name tag">/&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">        </span><span class="name tag">&lt;tag</span><span class="whitespace"> </span><span class="name attribute">name=</span><span class="literal string">&quot;test&quot;</span><span class="whitespace"> </span><span class="name attribute">href=</span><span class="literal string">&quot;http://del.icio.us/api/peej/tags/test&quot;</span><span class="name tag">/&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="name tag">&lt;/tags&gt;</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="name tag">&lt;/bookmark&gt;</span></code></pre>
+</ld-topic><ld-topic id="example-application-del-icio-us-query-the-number-of-bookmarks">
+<h2>Example application del.icio.us: Query the number of bookmarks</h2>
+<dl class="field-list">
+<dt>URL<span class="colon">:</span></dt>
+<dd><p><cite>http://del.icio.us/api/[username]/bookmarks/count</cite></p>
+</dd>
+<dt>Method<span class="colon">:</span></dt>
+<dd><p>GET</p>
+</dd>
+<dt>Query parameter<span class="colon">:</span></dt>
+<dd><p>tag =   Filter by tag</p>
+</dd>
+<dt>Return value<span class="colon">:</span></dt>
+<dd><p>200 OK &amp; XML (delicious/bookmark+xml)</p>
+<p>401 Unauthorized</p>
+<p>404 Not Found</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="example-application-del-icio-us-query-when-the-last-change-was-made">
+<h2>Example application del.icio.us: Query when the last change was made</h2>
+<dl class="field-list simple">
+<dt>URL<span class="colon">:</span></dt>
+<dd><p><cite>http://del.icio.us/api/[username]/bookmarks/update</cite></p>
+</dd>
+<dt>Method<span class="colon">:</span></dt>
+<dd><p>GET</p>
+</dd>
+<dt>Return value<span class="colon">:</span></dt>
+<dd><p>200 OK &amp; XML (delicious/bookmark+xml)
+401 Unauthorized
+404 Not Found</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="example-application-del-icio-us-adding-a-bookmark">
+<h2>Example application del.icio.us: Adding a bookmark</h2>
+<dl class="field-list">
+<dt>URL<span class="colon">:</span></dt>
+<dd><p><cite>http://del.icio.us/api/[username]/bookmarks/`</cite></p>
+</dd>
+<dt>Method<span class="colon">:</span></dt>
+<dd><p>POST</p>
+</dd>
+<dt>Query document<span class="colon">:</span></dt>
+<dd><p>XML (delicious/bookmark+xml)</p>
+</dd>
+<dt>Return value<span class="colon">:</span></dt>
+<dd><p>201 Created &amp; Location</p>
+<p>401 Unauthorized</p>
+<p>415 Unsupported Media Type(if the send document is not valid)</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="example-application-del-icio-us-adding-a-bookmark-example-document">
+<h2>Example application del.icio.us: Adding a bookmark - example document</h2>
+<p><span class="docutils literal">POST <span class="pre">http://del.icio.us/api/peej/bookmarks/</span></span></p>
+<pre class="code xml literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment preproc">&lt;?xml version=&quot;1.0&quot;?&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="name tag">&lt;bookmark</span><span class="whitespace"> </span><span class="name attribute">url=</span><span class="literal string">&quot;http://www.example.org/one&quot;</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="name attribute">time=</span><span class="literal string">&quot;2005-10-21T19:07:30Z&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="name tag">&lt;description&gt;</span>Example<span class="whitespace"> </span>of<span class="whitespace"> </span>a<span class="whitespace"> </span>Delicious<span class="whitespace"> </span>bookmark<span class="name tag">&lt;/description&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="name tag">&lt;tags&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">        </span><span class="name tag">&lt;tag</span><span class="whitespace"> </span><span class="name attribute">name=</span><span class="literal string">&quot;example&quot;</span><span class="whitespace"> </span><span class="name tag">/&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">        </span><span class="name tag">&lt;tag</span><span class="whitespace"> </span><span class="name attribute">name=</span><span class="literal string">&quot;test&quot;</span><span class="whitespace"> </span><span class="name tag">/&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="name tag">&lt;/tags&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="name tag">&lt;/bookmark&gt;</span></code></pre>
+</ld-topic><ld-topic id="example-application-del-icio-us-update-a-bookmark">
+<h2>Example application del.icio.us: Update a bookmark</h2>
+<dl class="field-list">
+<dt>URL<span class="colon">:</span></dt>
+<dd><p><cite>http://del.icio.us/api/[username]/bookmarks/[hash]`</cite></p>
+</dd>
+<dt>Method<span class="colon">:</span></dt>
+<dd><p>PUT</p>
+</dd>
+<dt>Query document<span class="colon">:</span></dt>
+<dd><p>XML (delicious/bookmark+xml)</p>
+</dd>
+<dt>Return value<span class="colon">:</span></dt>
+<dd><p>201 Created &amp; Location</p>
+<p>401 Unauthorized</p>
+<p>404 Not Found (new bookmarks cannot be created using put!)</p>
+<p>415 Unsupported Media Type (if the send document is not valid)</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="example-application-del-icio-us-delete-a-bookmark">
+<h2>Example application del.icio.us: Delete a bookmark</h2>
+<dl class="field-list">
+<dt>URL<span class="colon">:</span></dt>
+<dd><p><cite>http://del.icio.us/api/[username]/bookmarks/[hash]</cite></p>
+</dd>
+<dt>Method<span class="colon">:</span></dt>
+<dd><p>DELETE</p>
+</dd>
+<dt>Return value<span class="colon">:</span></dt>
+<dd><p>204 No Content</p>
+<p>401 Unauthorized</p>
+<p>404 Not Found</p>
+</dd>
+</dl>
+<!-- ideas: (JWT) Tokens in RESTful WebServices -->
+</ld-topic>
+</template>
+</body>
+</html>

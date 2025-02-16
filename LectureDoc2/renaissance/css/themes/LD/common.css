@@ -457,6 +457,7 @@ span.option {
 
 
 
+<<<<<<< HEAD
 .admonition.tip.dhbw {
 
     /* The first two elements ("p"s) markup the generic title (e.g., "Tip")
@@ -478,6 +479,8 @@ span.option {
         color: white;
     }
 }
+=======
+>>>>>>> c759b6e (updates)
 
 
 p.topic-title,
@@ -488,24 +491,31 @@ p.system-message-title {
 
 
 
-.admonition.hint {
-    code {
-        background-color: var(--dhbw-light-red);
-    }
-}
+
+
 .admonition {
+    position: relative;
 
     margin: 0.75em 0;
-    position: relative;
+    border: thin solid var(--dark-gray);
+    padding: 0.5em;
+
+    border-radius: var(--small-border-radius);
     background-color: var(--current-background-color);
 
     >p:first-child.admonition-title {
         position: absolute;
         top: -0.75em;
         left: 0.25em;
+
         padding: 0 0.25em;
+
         background-color: var(--current-background-color);
         border-radius: var(--small-border-radius);
+
+        & + * {
+            margin-top: 0.25em;
+        }
     }
     &.summary {
         >p:first-child.admonition-title {
@@ -539,7 +549,60 @@ p.system-message-title {
             content: "∎";
         }
     }
+
+    &.hint {
+        code {
+            background-color: var(--dhbw-light-red);
+        }
+    }
+
+    &.attention,
+    &.warning {
+        margin: 0;
+        border: none;
+        padding: 0 0.5em 0.5em 0.5em;
+        
+        border-radius: var(--small-border-radius);
+
+        >p:first-child.admonition-title {
+            position: initial;
+            width: calc(100% + 2 * 0.5em);
+            margin: 0 -0.5em;
+            padding: 0.1em 0.5em;
+
+            border-radius: var(--small-border-radius) var(--small-border-radius) 0 0;
+
+            & + * {
+                margin-top: 0.25em;
+            }
+        }
+    }
+    &.warning {
+        --current-background-color: var(--very-light-red);  
+        background-color: var(--current-background-color);
+
+        >p:first-child.admonition-title {
+            font-weight: 600;
+            --current-color: var(--white);
+            color: var(--current-color);
+            --current-background-color: var(--dark-red);
+            background-color: var(--current-background-color);
+        }
+    }
+    &.attention {
+        --current-background-color: var(--light-orange);  
+        background-color: var(--current-background-color);
+
+        >p:first-child.admonition-title {
+            font-weight: 500;
+            --current-color: var(--white);
+            color: var(--current-color);
+            --current-background-color: var(--dark-orange);
+            background-color: var(--current-background-color);
+        }
+    }
 }
+
 
 p.sidebar-title,
 p.rubric {
@@ -664,7 +727,6 @@ figcaption {
 
 
 .sidebar,
-.admonition,
 .system-message {
     margin-bottom: 0.5em;
     padding: 0.35em 0.6em;
@@ -975,7 +1037,105 @@ table {
     }
 }
 
+<<<<<<< HEAD
+=======
+/* Intended to be used with a container or container-like structure (e.g. a slide) */
+.center-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+
+/* 
+    Intended to be used with a container (e.g., a div) to signify that it contains an important message.
+*/
+.exclamation-mark {
+    position: relative;
+    min-height: 2.75lh;
+
+    padding: calc(0.5 * var(--current-base-font-size));
+    padding-left: calc(3 * var(--current-base-font-size));
+    
+    background-color: var(--light-gray);
+
+    border-radius: 0.5em;
+
+    &::before {
+        position: absolute;
+        left: 0;
+        top:0;
+        background-color: var(--dark-red);
+        height: 100%;
+        width: calc(2.5 * var(--current-base-font-size)) ;
+        text-align: center;
+        content: "!";
+        color: var(--white);
+        font-size: 2lh;
+        font-weight: bold;        
+    }
+}
+
+/*
+    Intended to be used with a container (e.g., a div) or a container like structure (e.g. a slide) to show that is done, completed of less importance. 
+*/
+.fade-out {
+    position: relative;
+
+    &::after {
+        content : " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        background-color: var(--current-background-color);
+        opacity: 0.5;
+    }
+}
+
+
+
+/* 
+    Intended to be used with a container (e.g., a div) to visually accentuate it.
+*/
+.accentuate {
+    border: thin solid var(--light-gray);
+    padding: 0.25em;
+
+    border-radius: var(--small-border-radius);
+    
+    font-weight: 600;
+    background-color: var(--very-light-gray);
+}
+>>>>>>> c759b6e (updates)
+
+ul.important {
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+
+    >li {
+        position: relative;
+        background-color: var(--very-light-red);
+        border-radius: 0.5em;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        padding-left: 1.5em;
+
+        &::before{
+            position:absolute;
+            content: " ";
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 1em;
+            background-color: var(--dark-red);
+        }
+    }
+}
 
 /* Images are block-level by default in Docutils */
 /* New HTML5 block elements: set display for older browsers */
