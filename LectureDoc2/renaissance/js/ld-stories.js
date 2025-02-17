@@ -11,6 +11,8 @@ console.log("loading ld-stories.js");
 
 const scrollStack = {}
 
+// FIXME Add support for SVG elements with incremental content. (In that case, we don't need to scroll when a single element appears... don't we?.)
+
 /**
  * Initializes a story element. The height of the story element is set to the
  * remaining space in the parent element. Additionally, if the story was 

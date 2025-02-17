@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Git&quot;, &quot;Versionskontrolle&quot;" name="keywords" />
+<meta content="Software Engineering - Versionskontrolle und Git" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-se-versionskontrolle" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
+<title>Software Engineering - Versionskontrolle (mit Git)</title>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="software-engineering-versionskontrolle-mit-git">
+<h1 class="title">Software Engineering - Versionskontrolle (mit Git)</h1>
+
+<p>Eine allererste Einführung</p>
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+<div class="footer-left tiny docutils container">
+<p>Die Folien basieren in Teilen auf Folien von Dr. Helm und Prof. Dr. Hermann.</p>
+<p>Alle Fehler sind meine eigenen.</p>
+</div>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/se-versionskontrolle/folien.de.rst.html">https://delors.github.io/se-versionskontrolle/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/se-versionskontrolle/folien.de.rst.html.pdf">https://delors.github.io/se-versionskontrolle/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></ld-topic>
+<ld-topic class="new-section transition-fade" id="versionsmanagement-und-versionskontrollsysteme">
+<h2>Versionsmanagement und Versionskontrollsysteme</h2>
+</ld-topic><ld-topic id="versionsmanagement">
+<h2>Versionsmanagement</h2>
+<ld-deck>
+<ld-card>
+<aside class="admonition observation">
+<p class="admonition-title">Beobachtung</p>
+<ld-deck class="numbered">
+<ld-card>
+<ul class="simple">
+<li><p>Softwareentwicklung ist Teamarbeit</p></li>
+<li><p>Viel (indirekte) Kommunikation nötig</p></li>
+<li><p>Entwicklungswissen muss dokumentiert werden</p></li>
+<li><p>Software besteht aus vielen Dokumenten:</p></li>
+<li><p>Lastenheft</p></li>
+<li><p>Pflichtenheft</p></li>
+<li><p>Analyse- und Designdokument</p></li>
+<li><p>Programmcode (Quellcode, Skripte, Konfigurationsdateien, ...)</p></li>
+<li><p>Testdokumentation</p></li>
+<li><p>Codedokumentation</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<ul class="simple">
+<li><p>Verschiedene Personen greifen (gleichzeitig) auf Dokumente zu</p></li>
+<li><p>Oft bearbeiten verschiedene Personen gleichzeitig (unabhängig voneinander) das selbe Dokument</p></li>
+</ul>
+</ld-card></ld-deck></aside>
+</ld-card><ld-card class="incremental">
+<div class="compound">
+<p class="rubric">Versionsmanagement</p>
+<ul class="list-with-explanations">
+<li><p>Wo ist die aktuelle Version?</p></li>
+<li><p>Was ist die zuletzt lauffähige Version?</p></li>
+<li><p>Wo ist die Implementierungsversion vom 01. April 2016?</p>
+<blockquote>
+<p>Und welche Dokumente beziehen sich auf diese Version?</p>
+</blockquote>
+</li>
+<li><p>Welche Version wurde dem Kunden präsentiert?</p></li>
+</ul>
+</div>
+<div class="incremental compound">
+<p class="rubric">Änderungsmanagement</p>
+<ul class="simple">
+<li><p>Was hat sich seit letzter Woche geändert?</p></li>
+<li><p>Wer hat diese Änderung gemacht?</p></li>
+<li><p>Warum wurde diese Änderung gemacht?</p></li>
+</ul>
+</div>
+</ld-card><ld-card class="incremental">
+<p>Einfache Lösungen, die oft verwendet werden:</p>
+<ul class="simple">
+<li><p>Austausch der Dokumente via USB-Stick / Festplatte</p></li>
+<li><p>Austausch der Dokumente via Mail</p></li>
+<li><p>Austausch über Netzwerkfestplatte</p></li>
+</ul>
+<p>Zusätzlich müssen dann noch Konventionen und Regeln im Team definiert werden.</p>
+<aside class="admonition incremental warning">
+<p class="admonition-title">Warnung</p>
+<p>Just, don't do it!</p>
+</aside>
+</ld-card></ld-deck></ld-topic><ld-topic id="unterstutztes-versionsmanagement-motivation">
+<h2>Unterstütztes Versionsmanagement - Motivation</h2>
+<aside class="admonition observation">
+<p class="admonition-title">Beobachtung</p>
+<ul class="simple">
+<li><p>„Einfache Lösungen“ um Versionen zu verwalten erzeugen neue Probleme</p></li>
+<li><p>Konventionen und Regeln werden nicht eingehalten</p></li>
+<li><p>Koordination ist aufwendig und führt zu Verzögerungen</p></li>
+<li><p>Varianten und Konfigurationen werden von Hand verwaltet</p></li>
+<li><p>Versions- und Änderungsfragen nicht bzw. nur schwer beantwortbar</p></li>
+<li><p>Geistige Kapazität wird mit „Kleinkram“ verschwendet</p></li>
+</ul>
+</aside>
+<aside class="admonition incremental conclusion">
+<p class="admonition-title">Schlussfolgerung</p>
+<p>Konventionen müssen technisch erzwungen werden!</p>
+</aside>
+</ld-topic><ld-topic id="versionskontrollsysteme-vcs-uberblick">
+<h2>Versionskontrollsysteme (VCS) - Überblick</h2>
+<ld-deck>
+<ld-card>
+<p class="rubric">Zweck</p>
+<p>Versionskontrollsysteme verwalten mehrere Versionen des Codes.</p>
+<ul class="simple">
+<li><p>Erlauben es mehreren Personen gleichzeitig am selben Projekt zu arbeiten</p></li>
+<li><p>Änderungen unterschiedlicher Personen werden teil-automatisch integriert</p></li>
+<li><p>Erhält Historie von Änderungen</p></li>
+</ul>
+</ld-card><ld-card class="dd-margin-left-6em incremental">
+<p class="rubric">Arten</p>
+<dl class="field-list">
+<dt>Zentralisierte VCS<span class="colon">:</span></dt>
+<dd><p>synchronisieren alle Änderungen in einem zentralen Repository (Subversion, . . . )</p>
+<ul class="negative-list simple">
+<li><p>Keine Offline-Nutzung möglich.</p></li>
+</ul>
+</dd>
+<dt>Dezentralisierte VCS<span class="colon">:</span></dt>
+<dd><p>können mehrere, unabhängige Repositories haben (Git, Mercurial, . . . )</p>
+<aside class="admonition incremental remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Dezentralisierte VCS (insbesondere Git) sind heute am weitesten verbreitet.</p>
+</aside>
+</dd>
+</dl>
+</ld-card><ld-card class="dd-margin-left-6em incremental">
+<p class="rubric">Konsistenzmechanismen</p>
+<dl class="field-list simple">
+<dt>Optimistische Mechanismen<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>System erlaubt gleichzeitiges Bearbeiten des Dokuments durch verschiedene Personen</p></li>
+<li><p>System erkennt und integriert die Änderungen (Merging)</p></li>
+<li><p>Evtl. funktioniert das nicht automatisch; dann muss der Konflikt manuell beseitigt werden</p></li>
+</ul>
+</dd>
+<dt>Pessimistische Mechanismen<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>System verbietet gleichzeitiges Bearbeiten des Dokuments durch verschiedene Personen (Sperrprotokolle)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Beide Mechanismen haben Vor- und Nachteile</p>
+<ul class="positive-list simple">
+<li><p>Sperren serialisiert die Arbeit</p></li>
+</ul>
+<ul class="negative-list simple">
+<li><p>Mergen kann in seltenen Fällen komplex werden und zu Fehlern führen</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic id="vcs-git-einfache-verwendung">
+<h2>VCS - Git - einfache Verwendung</h2>
+<ld-story>
+<div class="framed compound">
+<p class="rubric">Repository auf Server einrichten</p>
+<ol class="arabic simple">
+<li><p>Git repository einrichten (Beispielsweise über Web-Frontend wie <a class="reference external" href="https://github.com">https://github.com</a>)</p></li>
+<li><p>Lokale Kopie des Remote-repositories „Klonen”: <code class="console"><span class="generic output">git clone &lt;repo-URL&gt; [lokales Verzeichnis]</span></code></p></li>
+</ol>
+<p class="rubric">Repository lokal anlegen</p>
+<p>In einem beliebigen Verzeichnis: <code class="console"><span class="generic output">git init</span></code></p>
+</div>
+<div class="framed incremental compound">
+<p class="rubric">Datei neu versionieren</p>
+<ol class="arabic">
+<li><p>Dateien dem Repository hinzufügen</p>
+<p><code class="console"><span class="generic output">git add &lt;Dateipfade&gt;</span></code></p>
+<p>Dateien landen dann in der sogenannten „Staging Area“.</p>
+<div class="supplemental">
+<p>Die Staging Area (oder Index) hält alle Änderungen, Hinzufügungen und Löschungen von Dateien, die Teil des nächsten Commits werden sollen.</p>
+</div></li>
+<li><p>gestagete Änderungen committen</p>
+<p><code class="console"><span class="generic output">git ci</span></code></p>
+<p>Dies fügt die Änderungen dem lokalen Repository hinzu.</p>
+</li>
+</ol>
+</div>
+</ld-story></ld-topic><ld-topic id="vcs-git-prozess">
+<h2>VCS - Git - Prozess</h2>
+<div class="align-center"><svg width="57ch" height="13lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+
+    <g style="fill:white">
+        <rect width="10ch" height="3lh" x="0ch" y="0" rx="1ch" ry="1ch" style="fill:rgb(71, 65, 254)" />
+        <text x="1ch" y="1.5lh">Working</text>
+        <text x="1ch" y="2.5lh">Directory</text>
+        <line x1="5ch" y1="3lh" x2="5ch" y2="13lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch;" stroke-dasharray="1ch 1ch"/>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="10ch" height="3lh" x="15ch" y="0" rx="1ch" ry="1ch" style="fill:rgb(71, 65, 254)" />
+        <text x="16ch" y="2lh">Index</text>
+        <line x1="20ch" y1="3lh" x2="20ch" y2="13lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch;" stroke-dasharray="1ch 1ch"/>
+        <line x1="5ch" y1="4.5lh" x2="20ch" y2="4.5lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+        <text x="6ch" y="4.25lh" style="fill:black">add</text>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="10ch" height="3lh" x="30ch" y="0" rx="1ch" ry="1ch" style="fill:rgb(71, 65, 254)" />
+        <text x="31ch" y="1.5lh">Local</text>
+        <text x="31ch" y="2.5lh">Repo</text>
+        <line x1="35ch" y1="3lh" x2="35ch" y2="13lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch;" stroke-dasharray="1ch 1ch"/>
+        <line x1="20ch" y1="6lh" x2="35ch" y2="6lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+        <text x="21ch" y="5.75lh" style="fill:black">commit</text>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="10ch" height="3lh" x="45ch" y="0" rx="1ch" ry="1ch" style="fill:rgb(55,155,55)" />
+        <text x="46ch" y="1.5lh">Remote</text>
+        <text x="46ch" y="2.5lh">Repo</text>
+        <line x1="50ch" y1="3lh" x2="50ch" y2="13lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch;" stroke-dasharray="1ch 1ch"/>
+        <line x1="35ch" y1="7.5lh" x2="50ch" y2="7.5lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+        <text x="36ch" y="7.25lh" style="fill:black">push</text>
+    </g>
+    <g class="incremental" style="fill:black">
+        <line x2="35ch" y1="10.5lh" x1="50ch" y2="10.5lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+        <text x="36ch" y="10.25lh" style="fill:black">fetch</text>
+        <!-- To get a stable animation: --><circle cx="57ch" cy="13lh" r="0.1ch" fill="white"/>
+    </g>
+    <g class="incremental" style="fill:black">
+        <line x1="35ch" y1="10.5lh" x2="5ch" y2="10.5lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+        <text x="15ch" y="10.25lh" style="fill:black">merge/checkout</text>
+        <!-- To get a stable animation: --><circle cx="57ch" cy="13lh" r="0.1ch" fill="white"/>
+    </g>
+    <g class="incremental" style="fill:black">
+        <line x1="50ch" y1="12lh" x2="5ch" y2="12lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+        <text x="25ch" y="11.75lh" style="fill:black">pull</text>
+        <!-- To get a stable animation: --><circle cx="57ch" cy="13lh" r="0.1ch" fill="white"/>
+    </g>
+</svg></div></ld-topic><ld-topic id="vcs-git-commits-beispiel">
+<h2>VCS - Git - Commits - Beispiel</h2>
+<ld-scrollable>
+<pre class="code diff literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 ">commit ace47c68a2deaa6290344a5f9c2d7749d01f0efc<span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span>Author: Michael Eichberg &lt;mail&#64;michael-eichberg.de&gt;<span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span>Date:   Wed Jan 22 17:43:28 2025 +0100<span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"> </span>   encrypted presenter notes<span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span><span class="generic heading">diff --git a/renaissance/css/core/slide-view.css b/renaissance/css/core/slide-view.css</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span><span class="generic heading">index 21d433b..03f010a 100644</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="generic deleted">--- a/renaissance/css/core/slide-view.css</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="generic inserted">+++ b/renaissance/css/core/slide-view.css</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="generic subheading">&#64;&#64; -47,6 +47,12 &#64;&#64;</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"> </span>       /* The height will be computed by JavaScript depending on the mode. */<span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"> </span>   }<span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span><span class="generic inserted">+</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span><span class="generic inserted">+</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace"></span><span class="generic inserted">+    /* Presenter Notes */</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace"></span><span class="generic inserted">+    ld-presenter-note-marker[data-encrypted=&quot;true&quot;] {</span><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace"></span><span class="generic inserted">+        display: none;</span><span class="whitespace">
+</span></code><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace"></span><span class="generic inserted">+    }</span><span class="whitespace">
+</span></code><small class="ln">21 </small><code data-lineno="21 "><span class="whitespace"></span>}<span class="whitespace">
+</span></code><small class="ln">22 </small><code data-lineno="22 "><span class="whitespace">
+</span></code><small class="ln">23 </small><code data-lineno="23 "><span class="whitespace"></span>...</code></pre>
+</ld-scrollable></ld-topic><ld-topic id="vcs-git-commits">
+<h2>VCS - Git - Commits</h2>
+<p class="rubric">Commits beschreiben eine atomare Änderung des Codes</p>
+<ul class="simple">
+<li><p>Hashcode, um den Commit zu identifizieren</p></li>
+<li><p>Autor und Zeit des Commits</p></li>
+<li><p>Beschreibung der Änderung</p></li>
+<li><p>Änderung als Diff: Hinzugefügte und entferne Zeilen je Datei</p></li>
+</ul>
+</ld-topic><ld-topic id="vcs-git-hilfreiches">
+<h2>VCS - Git - Hilfreiches</h2>
+<ld-deck>
+<ld-card>
+<p class="rubric">Zwischenspeichern von Änderungen</p>
+<p>Aktuelle Änderungen zwischenspeichern und Working Copy resetten:</p>
+<p><code class="console"><span class="generic output">git stash</span></code></p>
+<p>Hilfreich z. B. wenn man vergessen hat, Änderungen von <em>Remote</em> zu pullen.
+Ein pull könnte lokale Änderungen überschreiben, mit <code class="console"><span class="generic output">git stash</span></code> werden diese Änderungen aber zunächst sicher beiseite gelegt.</p>
+<p>Änderungen vom <em>Stash</em> in <em>Working Copy</em> zurückspielen:</p>
+<p><code class="console"><span class="generic output">git stash pop</span></code></p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Änderungen in der Working Copy zurücksetzen</p>
+<p><code class="console"><span class="generic output">git reset --hard</span></code></p>
+<p>Setzt alle Änderungen in der Working Copy auf den letzten Commit zurück (z. B. nach einem „Fehlversuch“).</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Metadaten setzen</p>
+<p>Username und Emailadresse als Metadaten für Commits setzen:</p>
+<p><code class="console"><span class="generic output">git config user.name &lt;name&gt;</span></code></p>
+<p><code class="console"><span class="generic output">git config user.email &lt;e-mail&gt;</span></code></p>
+</ld-card></ld-deck></ld-topic><ld-topic id="git-branches">
+<h2>Git Branches</h2>
+<p>Git verwaltet Versionen von Dokumenten mittels Commits in Branches.</p>
+<ld-deck>
+<ld-card>
+<p class="rubric">Initiales Setup - main ist aktuell auf dieser Version</p>
+<svg width="48ch" height="8lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <rect width="4ch" height="1lh" x="0ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="1.5ch" y="3.75lh" style="fill:white">A</text>
+
+    <rect width="6ch" height="1lh" x="6ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="0.75lh" style="fill:white">main</text>
+
+    <line x1="2ch" y1="3lh" x2="6ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+</svg></ld-card><ld-card class="incremental">
+<p class="rubric"><em>main</em> ist der aktuell ausgecheckte Branch</p>
+<svg width="48ch" height="8lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        polygon.star {
+            transform: scale(calc(var(--unitless-current-base-font-size) / 20));
+        }
+    </style>
+    <defs>
+        <g id="star">
+            <polygon class="star" points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="gold" stroke="black" stroke-width="1"/>
+        </g>
+    </defs>
+
+        <rect width="4ch" height="1lh" x="0ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+        <text x="1.5ch" y="3.75lh" style="fill:white">A</text>
+
+        <rect width="6ch" height="1lh" x="6ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+        <text x="7ch" y="0.75lh" style="fill:white">main</text>
+
+        <line x1="2ch" y1="3lh" x2="6ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+
+        <use href="#star" x="11ch" y="0"/>
+</svg></ld-card><ld-card class="incremental">
+<p class="rubric"><code class="console"><span class="generic output">git branch develop</span></code></p>
+<svg width="48ch" height="8lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        polygon.star {
+            transform: scale(calc(var(--unitless-current-base-font-size) / 20));
+        }
+    </style>
+    <defs>
+        <g id="star">
+            <polygon class="star" points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="gold" stroke="black" stroke-width="1"/>
+        </g>
+    </defs>
+
+    <rect width="4ch" height="1lh" x="0ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="1.5ch" y="3.75lh" style="fill:white">A</text>
+
+    <rect width="6ch" height="1lh" x="6ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="0.75lh" style="fill:white">main</text>
+    <line x1="2ch" y1="3lh" x2="6ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+    <use href="#star" x="11ch" y="0"/>
+
+    <rect width="8ch" height="1lh" x="6ch" y="6lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="6.75lh" style="fill:white">develop</text>
+    <line x1="2ch" y1="4lh" x2="6ch" y2="6.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+</svg></ld-card><ld-card class="incremental">
+<p class="rubric"><code class="console"><span class="generic output">git checkout develop</span></code></p>
+<svg width="48ch" height="8lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        polygon.star {
+            transform: scale(calc(var(--unitless-current-base-font-size) / 20));
+        }
+    </style>
+    <defs>
+        <g id="star">
+            <polygon class="star" points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="gold" stroke="black" stroke-width="1"/>
+        </g>
+    </defs>
+
+    <rect width="4ch" height="1lh" x="0ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="1.5ch" y="3.75lh" style="fill:white">A</text>
+
+    <rect width="6ch" height="1lh" x="6ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="0.75lh" style="fill:white">main</text>
+    <line x1="2ch" y1="3lh" x2="6ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+
+    <rect width="8ch" height="1lh" x="6ch" y="6lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="6.75lh" style="fill:white">develop</text>
+    <line x1="2ch" y1="4lh" x2="6ch" y2="6.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+    <use href="#star" class="star" x="13ch" y="6lh" />
+</svg></ld-card><ld-card class="incremental">
+<p class="rubric"><code class="console"><span class="generic output">git commit</span></code> von B</p>
+<svg width="48ch" height="8lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        polygon.star {
+            transform: scale(calc(var(--unitless-current-base-font-size) / 20));
+        }
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <g id="star">
+            <polygon class="star" points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="gold" stroke="black" stroke-width="1"/>
+        </g>
+    </defs>
+
+    <rect width="4ch" height="1lh" x="0ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="1.5ch" y="3.75lh" style="fill:white">A</text>
+
+    <rect width="4ch" height="1lh" x="8ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="9.5ch" y="3.75lh" style="fill:white">B</text>
+    <line x1="4ch" y1="3.5lh" x2="8ch" y2="3.5lh" style="stroke:blue;stroke-width:0.2ch"/>
+
+    <rect width="6ch" height="1lh" x="6ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="0.75lh" style="fill:white">main</text>
+    <line x1="2ch" y1="3lh" x2="6ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+
+    <rect width="8ch" height="1lh" x="6ch" y="6lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="6.75lh" style="fill:white">develop</text>
+    <line x1="2ch" y1="4lh" x2="6ch" y2="6.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+    <use href="#star" class="star" x="13ch" y="6lh" />
+</svg></ld-card><ld-card class="incremental">
+<p class="rubric"><code class="console"><span class="generic output">git commit</span></code> von B setzt den <em>aktuellen</em> Branch weiter</p>
+<svg width="48ch" height="8lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        polygon.star {
+            transform: scale(calc(var(--unitless-current-base-font-size) / 20));
+        }
+        /* TODO: How to scale Arrowheads? */
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="0.4ex"
+        markerHeight="0.4ex"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <g id="star">
+            <polygon class="star" points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="gold" stroke="black" stroke-width="1"/>
+        </g>
+    </defs>
+
+    <rect width="4ch" height="1lh" x="0ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="1.5ch" y="3.75lh" style="fill:white">A</text>
+
+    <rect width="4ch" height="1lh" x="8ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="9.5ch" y="3.75lh" style="fill:white">B</text>
+    <line x1="4ch" y1="3.5lh" x2="8ch" y2="3.5lh" style="stroke:blue;stroke-width:0.2ch" marker-end="url(#arrow)"/>
+
+    <rect width="6ch" height="1lh" x="6ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="0.75lh" style="fill:white">main</text>
+    <line x1="2ch" y1="3lh" x2="6ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+
+    <rect width="8ch" height="1lh" x="14ch" y="6lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="15ch" y="6.75lh" style="fill:white">develop</text>
+    <line x1="10ch" y1="4lh" x2="14ch" y2="6.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+    <use href="#star" class="star" x="21ch" y="6lh" />
+</svg></ld-card><ld-card class="incremental">
+<p class="rubric"><code class="console"><span class="generic output">git checkout -b cveXXX-hotfix</span></code></p>
+<aside class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p><span class="docutils literal">git checkout <span class="pre">-b</span> <span class="pre">cveXXX-hotfix</span></span></p>
+<p>ist lediglich eine Abkürzung für:</p>
+<p><span class="docutils literal">git branch <span class="pre">cveXXX-hotfix</span></span></p>
+<p><span class="docutils literal">git checkout <span class="pre">cveXXX-hotfix</span></span></p>
+</aside>
+<svg width="32ch" height="8lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        polygon.star {
+            transform: scale(calc(var(--unitless-current-base-font-size) / 20));
+        }
+        /* TODO: How to scale Arrowheads? */
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="0.4ex"
+        markerHeight="0.4ex"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <g id="star">
+            <polygon class="star" points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="gold" stroke="black" stroke-width="1"/>
+        </g>
+    </defs>
+
+    <rect width="4ch" height="1lh" x="0ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="1.5ch" y="3.75lh" style="fill:white">A</text>
+
+    <rect width="4ch" height="1lh" x="8ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="9.5ch" y="3.75lh" style="fill:white">B</text>
+    <line x1="4ch" y1="3.5lh" x2="8ch" y2="3.5lh" style="stroke:blue;stroke-width:0.2ch" marker-end="url(#arrow)"/>
+
+    <rect width="6ch" height="1lh" x="6ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="0.75lh" style="fill:white">main</text>
+    <line x1="2ch" y1="3lh" x2="6ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+
+    <rect width="8ch" height="1lh" x="14ch" y="5lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="15ch" y="5.75lh" style="fill:white">develop</text>
+    <line x1="10ch" y1="4lh" x2="14ch" y2="5.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+
+    <rect width="12.5ch" height="1lh" x="14ch" y="7lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="15ch" y="7.75lh" style="fill:white">cveXXX-hotfix</text>
+    <line x1="10ch" y1="4lh" x2="14ch" y2="7.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+    <use href="#star" class="star" x="25.5ch" y="7lh" />
+</svg></ld-card><ld-card class="incremental">
+<p class="rubric"><code class="console"><span class="generic output">git commit</span></code> von C</p>
+<svg width="40ch" height="8lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        polygon.star {
+            transform: scale(calc(var(--unitless-current-base-font-size) / 20));
+        }
+        /* TODO: How to scale Arrowheads? */
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="0.4ex"
+        markerHeight="0.4ex"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <g id="star">
+            <polygon class="star" points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="gold" stroke="black" stroke-width="1"/>
+        </g>
+    </defs>
+
+    <rect width="4ch" height="1lh" x="0ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="1.5ch" y="3.75lh" style="fill:white">A</text>
+
+    <rect width="4ch" height="1lh" x="8ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="9.5ch" y="3.75lh" style="fill:white">B</text>
+    <line x1="4ch" y1="3.5lh" x2="8ch" y2="3.5lh" style="stroke:blue;stroke-width:0.2ch" marker-end="url(#arrow)"/>
+
+    <rect width="4ch" height="1lh" x="16ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="17.5ch" y="3.75lh" style="fill:white">C</text>
+    <line x1="12ch" y1="3.5lh" x2="16ch" y2="3.5lh" style="stroke:blue;stroke-width:0.2ch" marker-end="url(#arrow)"/>
+
+    <rect width="6ch" height="1lh" x="6ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="0.75lh" style="fill:white">main</text>
+    <line x1="2ch" y1="3lh" x2="6ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+
+    <rect width="8ch" height="1lh" x="14ch" y="5lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="15ch" y="5.75lh" style="fill:white">develop</text>
+    <line x1="10ch" y1="4lh" x2="14ch" y2="5.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+
+    <rect width="12.5ch" height="1lh" x="22ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="23ch" y="0.75lh" style="fill:white">cveXXX-hotfix</text>
+    <line x1="18ch" y1="3lh" x2="22ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+    <use href="#star" class="star" x="33.5ch" y="0lh" />
+</svg></ld-card><ld-card class="incremental">
+<p class="rubric"><code class="console"><span class="generic output">git checkout develop</span></code></p>
+<svg width="40ch" height="8lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        polygon.star {
+            transform: scale(calc(var(--unitless-current-base-font-size) / 20));
+        }
+        /* TODO: How to scale Arrowheads? */
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="0.4ex"
+        markerHeight="0.4ex"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <g id="star">
+            <polygon class="star" points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="gold" stroke="black" stroke-width="1"/>
+        </g>
+    </defs>
+
+    <rect width="4ch" height="1lh" x="0ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="1.5ch" y="3.75lh" style="fill:white">A</text>
+
+    <rect width="4ch" height="1lh" x="8ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="9.5ch" y="3.75lh" style="fill:white">B</text>
+    <line x1="4ch" y1="3.5lh" x2="8ch" y2="3.5lh" style="stroke:blue;stroke-width:0.2ch" marker-end="url(#arrow)"/>
+
+    <rect width="4ch" height="1lh" x="16ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="17.5ch" y="3.75lh" style="fill:white">C</text>
+    <line x1="12ch" y1="3.5lh" x2="16ch" y2="3.5lh" style="stroke:blue;stroke-width:0.2ch" marker-end="url(#arrow)"/>
+
+    <rect width="6ch" height="1lh" x="6ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="0.75lh" style="fill:white">main</text>
+    <line x1="2ch" y1="3lh" x2="6ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+
+    <rect width="8ch" height="1lh" x="14ch" y="6lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="15ch" y="6.75lh" style="fill:white">develop</text>
+    <line x1="10ch" y1="4lh" x2="14ch" y2="6.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+    <use href="#star" class="star" x="21ch" y="6lh" />
+
+    <rect width="12.5ch" height="1lh" x="22ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="23ch" y="0.75lh" style="fill:white">cveXXX-hotfix</text>
+    <line x1="18ch" y1="3lh" x2="22ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+</svg></ld-card><ld-card class="incremental">
+<p class="rubric">Fast-forward Merge <code class="console"><span class="generic output">git merge cveXXX-hotfix</span></code></p>
+<svg width="40ch" height="8lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        polygon.star {
+            transform: scale(calc(var(--unitless-current-base-font-size) / 20));
+        }
+        /* TODO: How to scale Arrowheads? */
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="0.4ex"
+        markerHeight="0.4ex"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <g id="star">
+            <polygon class="star" points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="gold" stroke="black" stroke-width="1"/>
+        </g>
+    </defs>
+
+    <rect width="4ch" height="1lh" x="0ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="1.5ch" y="3.75lh" style="fill:white">A</text>
+
+    <rect width="4ch" height="1lh" x="8ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="9.5ch" y="3.75lh" style="fill:white">B</text>
+    <line x1="4ch" y1="3.5lh" x2="8ch" y2="3.5lh" style="stroke:blue;stroke-width:0.2ch" marker-end="url(#arrow)"/>
+
+    <rect width="4ch" height="1lh" x="16ch" y="3lh" rx="1ch" ry="1ch" style="fill:darkblue" />
+    <text x="17.5ch" y="3.75lh" style="fill:white">C</text>
+    <line x1="12ch" y1="3.5lh" x2="16ch" y2="3.5lh" style="stroke:blue;stroke-width:0.2ch" marker-end="url(#arrow)"/>
+
+    <rect width="6ch" height="1lh" x="6ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="7ch" y="0.75lh" style="fill:white">main</text>
+    <line x1="2ch" y1="3lh" x2="6ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+
+    <rect width="8ch" height="1lh" x="22ch" y="6lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="23ch" y="6.75lh" style="fill:white">develop</text>
+    <line x1="18ch" y1="4lh" x2="22ch" y2="6.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+    <use href="#star" class="star" x="29ch" y="6lh" />
+
+    <rect width="12.5ch" height="1lh" x="22ch" y="0lh" rx="1ch" ry="1ch" style="fill:darkorange" />
+    <text x="23ch" y="0.75lh" style="fill:white">cveXXX-hotfix</text>
+    <line x1="18ch" y1="3lh" x2="22ch" y2="0.5lh" style="stroke:darkorange;stroke-width:0.2ch"/>
+</svg></ld-card><ld-card class="incremental">
+<!-- ggf. Visualisierungen einbauen (Folien von Ben - X - Git-basierte Versionskontrolle.key ab ca. Folie 32) -->
+<p class="rubric">Sonderfälle</p>
+<ul class="simple">
+<li><p>wenn es auf beiden Branches Änderungen gab, dann kann ein Merge ggf. fehlschlagen und muss manuell gemerged werden.</p></li>
+<li><p>Um Änderungen auf ein remote Repository zu schieben bzw. davon zu holen muss man git push und git pull verwenden. Dabei kann es auch zu Konflikten kommen, die manuell gelöst werden müssen.</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic id="git-flow">
+<h2>Git-Flow</h2>
+<p>Git-Flow ist eine Konvention zur Nutzung von Branches in einer sinnvollen Art und Weise.<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<p>Mindestens fünf Arten von Branches:</p>
+<dl class="incremental-list field-list simple">
+<dt>main<span class="colon">:</span></dt>
+<dd><p>enthält stets die zuletzt veröffentlichte Version</p>
+</dd>
+<dt>develop<span class="colon">:</span></dt>
+<dd><p>enthält aktuelle Entwicklungsversion</p>
+</dd>
+<dt>feature/topic branches<span class="colon">:</span></dt>
+<dd><p>zur Entwicklung individueller Features</p>
+</dd>
+<dt>hotfix branches<span class="colon">:</span></dt>
+<dd><p>zur Implementierung dringender Bugfixes</p>
+</dd>
+<dt>release branches<span class="colon">:</span></dt>
+<dd><p>zum Vorbereiten eines Releases</p>
+</dd>
+</dl>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Erstmals dokumentiert durch Vincent Driessen <a class="reference external" href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></p>
+</aside>
+</aside>
+</ld-topic><ld-topic id="dezentralisierte-vcs-verteiltes-arbeiten">
+<h2>Dezentralisierte VCS - Verteiltes Arbeiten</h2>
+<div class="align-center"><svg width="48ch" height="9lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="8"
+        markerHeight="8"
+        orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+
+    <g class="incremental" style="fill:white">
+        <rect width="12ch" height="3lh" x="0ch" y="0" rx="1ch" ry="1ch" style="fill:rgb(55,155,55)" />
+        <text x="1ch" y="1.5lh">Main</text>
+        <text x="1ch" y="2.5lh">Repository</text>
+    </g>
+    <g class="incremental" >
+        <rect width="12ch" height="3lh" x="18ch" y="6lh" rx="1ch" ry="1ch" style="fill:rgb(194, 191, 246)" />
+        <text x="19ch" y="7.5lh">Developer A</text>
+        <text x="19ch" y="8.5lh">Private</text>
+        <line x1="9ch" y1="3lh" x2="21ch" y2="6lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+    </g>
+    <g class="incremental" >
+        <rect width="12ch" height="3lh" x="36ch" y="6lh" rx="1ch" ry="1ch" style="fill:rgb(194, 191, 246)" />
+        <text x="37ch" y="7.5lh">Developer B</text>
+        <text x="37ch" y="8.5lh">Private</text>
+        <line x1="9ch" y1="3lh" x2="39ch" y2="6lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="12ch" height="3lh" x="18ch" y="0" rx="1ch" ry="1ch" style="fill:rgb(112, 105, 238)" />
+        <text x="19ch" y="1.5lh">Developer A</text>
+        <text x="19ch" y="2.5lh">Public</text>
+        <line x1="24ch" y1="6lh" x2="24ch" y2="3lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="12ch" height="3lh" x="36ch" y="0" rx="1ch" ry="1ch" style="fill:rgb(112, 105, 238)" />
+        <text x="37ch" y="1.5lh">Developer B</text>
+        <text x="37ch" y="2.5lh">Public</text>
+        <line x1="42ch" y1="6lh" x2="42ch" y2="3lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="12ch" height="3lh" x="0ch" y="6lh" rx="1ch" ry="1ch" style="fill:rgb(247, 173, 0)" />
+        <text x="1ch" y="7.5lh">Integration</text>
+        <text x="1ch" y="8.5lh">Repository</text>
+        <line x1="6ch" y1="6lh" x2="6ch" y2="3lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+        <line x1="21ch" y1="3lh" x2="9ch" y2="6lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+        <line x1="39ch" y1="3lh" x2="9ch" y2="6lh" style="stroke:rgb(0,0,0);stroke-width:0.2ch" marker-end="url(#arrow)"/>
+    </g>
+</svg></div><ld-deck class="margin-top-1em">
+<ld-card>
+<p>(Verteilte) Workflows beschreiben, wie Personen Änderungen zwischen verteilten Repositories synchronisieren.</p>
+<ul class="incremental-list simple">
+<li><p>Hängt von Projekt und Organisationsstruktur ab</p></li>
+<li><p>Workflows unterscheiden öffentliche und private Repositories</p></li>
+<li><p>In den meisten Workflows gibt es ein ausgezeichnetes Repository als <em>ground truth</em></p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Die Commit-Historie des blessed repository niemals verändern!</p>
+</aside>
+</ld-card></ld-deck></ld-topic><ld-topic id="git-befehle">
+<h2>GIT Befehle</h2>
+<ul class="incremental-list simple">
+<li><p>Erstellen eines neuen lokalen Repositories: <code class="console"><span class="generic output">git init</span></code></p></li>
+<li><p>Lokalen Klon von entferntem Repositories anlegen: <code class="console"><span class="generic output">git clone &lt;Repository-URL&gt;</span></code></p></li>
+<li><p>Geänderte Dateien anzeigen: <code class="console"><span class="generic output">git status</span></code></p></li>
+<li><p>Zeilenweise Änderungen anzeigen: <code class="console"><span class="generic output">git diff (&lt;Datei-Pfad&gt;)</span></code></p></li>
+<li><p>Änderungshistorie ansehen: <code class="console"><span class="generic output">git log</span></code></p></li>
+<li><p>Commit ansehen: <code class="console"><span class="generic output">git show &lt;Commit-Hash&gt;</span></code></p></li>
+<li><p>Dateien dem nächsten Commit hinzufügen: <code class="console"><span class="generic output">git add (--all|&lt;Datei-Pfad&gt;)</span></code></p></li>
+<li><p>Commit anlegen: <code class="console"><span class="generic output">git commit (-m &quot; &lt;Beschreibung&gt;&quot;)</span></code></p></li>
+<li><p>Neuen Branch anlegen: <code class="console"><span class="generic output">git checkout -b &lt;Branch-Name&gt;</span></code></p></li>
+<li><p>Aktuellen Branch wechseln: <code class="console"><span class="generic output">git checkout &lt;Branch-Name&gt;</span></code></p></li>
+<li><p>Commits eines anderen in den aktuellen ziehen: <code class="console"><span class="generic output">git merge &lt;Branch-Name&gt;</span></code></p></li>
+<li><p>Commits vom entfernten zum lokalen Repository holen: <code class="console"><span class="generic output">git fetch</span></code></p></li>
+<li><p>Commits vom lokalen zum entfernten Repository schieben: <code class="console"><span class="generic output">git push</span></code></p></li>
+<li><p>Kombination von <code class="console"><span class="generic output">git fetch</span></code> und <code class="console"><span class="generic output">git merge</span></code>: <code class="console"><span class="generic output">git pull</span></code></p></li>
+</ul>
+</ld-topic>
+</template>
+</body>
+</html>

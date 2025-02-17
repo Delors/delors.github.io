@@ -1214,15 +1214,27 @@ function applyDOMfixes() {
         */
     let counter = 1;
     document.querySelectorAll("svg").forEach((svg) => {
-        const svgIds = new Map(); // maps old url(#id) to new url(#id)
+        const svgURLIds = new Map(); // maps old url(#id) to new url(#id)
+        const svgIDs = new Map(); // maps old id to new id
         svg.querySelectorAll("[id]").forEach((element) => {
             const oldId = element.id;
             const newId = element.id + "-" + (counter++);
             element.id = newId;
-            svgIds.set("url(#" + oldId + ")", "url(#" + newId + ")");
+            svgURLIds.set("url(#" + oldId + ")", "url(#" + newId + ")");
+            svgIDs.set("#"+oldId, "#"+newId);
         });
-        svgIds.forEach((newId, oldId) => {
+        svgURLIds.forEach((newId, oldId) => {
             const refs = `.//@*[.="${oldId}"]`;
+            const it = document.evaluate(refs, svg, null, XPathResult.ANY_TYPE, null);
+            let attr, attrs = []
+            while ((attr = it.iterateNext()))
+                attrs.push(attr);
+            attrs.forEach((ref) => {
+                ref.textContent = newId;
+            });
+        });
+        svgIDs.forEach((newId, oldId) => {
+            const refs = `.//@*[.="${oldId}"]`; // TODO Why can't I use href="${#oldId}"?
             const it = document.evaluate(refs, svg, null, XPathResult.ANY_TYPE, null);
             let attr, attrs = []
             while ((attr = it.iterateNext()))

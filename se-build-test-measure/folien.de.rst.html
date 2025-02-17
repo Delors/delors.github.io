@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Testen&quot;, &quot;Abdeckung&quot;, Metriken" name="keywords" />
+<meta content="Software Engineering - Testen und Metriken" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-se-testen-und-metriken" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
+<title>Software Engineering - Projekte bauen, Testen und Bewerten</title>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="software-engineering-projekte-bauen-testen-und-bewerten">
+<h1 class="title">Software Engineering - Projekte bauen, Testen und Bewerten</h1>
+
+<p>Eine allererste Einführung</p>
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+<div class="footer-left tiny docutils container">
+<p>Die Folien basieren in Teilen auf Folien von Dr. Helm und Prof. Dr. Hermann.</p>
+<p>Alle Fehler sind meine eigenen.</p>
+</div>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/se-build-test-measure/folien.de.rst.html">https://delors.github.io/se-build-test-measure/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/se-build-test-measure/folien.de.rst.html.pdf">https://delors.github.io/se-build-test-measure/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></ld-topic>
+<ld-topic class="new-section transition-scale" id="buildsysteme">
+<h2>Buildsysteme</h2>
+</ld-topic><ld-topic id="buildsysteme-hier-sbt">
+<h2>Buildsysteme (hier: sbt)</h2>
+<ul class="incremental-list list-with-explanations">
+<li><p>Buildsysteme automatisieren repetitive Aufgaben</p></li>
+<li><p>Sie haben eingebaute Unterstützung oder Plugins für häufige Aufgaben:</p>
+<ul class="incremental-list simple">
+<li><p>Code zur einer ausführbaren Datei kompilieren: <code class="console"><span class="generic output">sbt compile</span></code></p></li>
+<li><p>Tests ausführen: <code class="console"><span class="generic output">sbt test</span></code></p></li>
+<li><p>Kompilierte Dateien entfernen: <code class="console"><span class="generic output">sbt clean</span></code></p></li>
+<li><p>Start eines interaktiven Interpreters: <code class="console"><span class="generic output">sbt console</span></code></p></li>
+<li><p>Code-Dokumentation als HTML oder PDF ausgeben: <code class="console"><span class="generic output">sbt doc</span></code></p></li>
+<li><p>Code formatieren, Code-Stil prüfen: <code class="console"><span class="generic output">sbt scalafmt</span></code>, <code class="console"><span class="generic output">sbt scalastyle</span></code></p></li>
+<li><p>...</p></li>
+<li><p>Ausführbare Datei (auf Server) publizieren: <code class="console"><span class="generic output">sbt publish</span></code></p></li>
+</ul>
+</li>
+<li><p>Buildsysteme werden mit Buildskripten konfiguriert</p></li>
+<li><p>Buildsysteme verarbeiten meist nur geänderte und davon abhängige Dateien</p>
+<p>(Inkrementalität)</p>
+</li>
+</ul>
+<div class="supplemental">
+<p>Heutzutage bringen fast alle Programmiersprachen eigene Buildsysteme mit oder es gibt etablierte Buildsysteme.</p>
+<dl class="field-list simple">
+<dt>C/C++<span class="colon">:</span></dt>
+<dd><p><strong>Make</strong>, <strong>CMake</strong></p>
+</dd>
+<dt>Java<span class="colon">:</span></dt>
+<dd><p><strong>Maven</strong>, Gradle, <span class="obsolete">Ant</span>, sbt</p>
+</dd>
+<dt>Scala<span class="colon">:</span></dt>
+<dd><p><strong>sbt</strong></p>
+</dd>
+<dt>Rust<span class="colon">:</span></dt>
+<dd><p><strong>Cargo</strong></p>
+</dd>
+<dt>...<span class="colon">:</span></dt>
+<dd><p>...</p>
+</dd>
+</dl>
+</div></ld-topic><ld-topic id="minimale-anforderungen-an-ein-buildskript-fur-softwareprojekte">
+<h2>Minimale Anforderungen an ein Buildskript für Softwareprojekte</h2>
+<ol class="arabic simple incremental-list">
+<li><p><strong>Kompilieren</strong> des Codes nach einem frischen Update (<span class="red">bei Fehler Abbruch</span>)</p></li>
+<li><p><strong>Testen</strong> des Codes:</p>
+<ol class="arabic simple incremental-list">
+<li><p><strong>Unit-Tests</strong> (<span class="red">bei Fehler Abbruch</span>)</p></li>
+<li><p><strong>Integrationstests</strong> (<span class="red">bei Fehler Abbruch</span>)</p></li>
+<li><p>Systemtests/Abnahmetests (<span class="red">bei Fehler Abbruch</span>)</p></li>
+</ol>
+</li>
+<li><p><strong>Packaging</strong> des Projekts (<span class="red">bei Fehler Abbruch</span>)</p></li>
+<li><p><strong>Deployment</strong> (typischerweise in einer Testumgebung)</p></li>
+</ol>
+</ld-topic><ld-topic id="buildskripte-fur-groszere-softwareprojekte">
+<h2>Buildskripte für größere Softwareprojekte</h2>
+<p>Insbesondere bei größeren Projekten kommen häufig noch viele weitere Schritte hinzu:</p>
+<ul class="simple">
+<li><p>Code-Dokumentation erzeugen und veröffentlichen</p></li>
+<li><p>verschiedene statische Analysen durchführen, um Fehler zu finden</p></li>
+<li><p>zahlreiche Skripte um zum Beispiel Datenbanken zu aktualisieren, Docker-Container zu bauen und zu starten...</p></li>
+<li><p>...</p></li>
+</ul>
+</ld-topic>
+</template>
+</body>
+</html>
