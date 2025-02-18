@@ -11,6 +11,13 @@
 <meta name="version" content="LD2 RENAISSANCE" />
 <meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
 <title>Software Engineering - Projekte bauen, Testen und Bewerten</title>
+<script>
+    window.MathJax = {
+        tex: { tags: 'ams' },
+        chtml: { displayAlign: 'center' /*left or center*/ }
+    };
+</script>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
 
     <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
 
@@ -121,6 +128,461 @@
 <li><p>zahlreiche Skripte um zum Beispiel Datenbanken zu aktualisieren, Docker-Container zu bauen und zu starten...</p></li>
 <li><p>...</p></li>
 </ul>
+</ld-topic><ld-topic class="new-section transition-fade" id="testen-von-software">
+<h2>Testen von Software</h2>
+</ld-topic><ld-topic id="validierung-vs-verifikation-v-v">
+<h2>Validierung vs. Verifikation (V&amp;V)</h2>
+<ld-deck>
+<ld-card>
+<dl class="field-list simple">
+<dt>Validierung<span class="colon">:</span></dt>
+<dd><p>„Bauen wir das richtige Produkt?“</p>
+</dd>
+<dt>Verifikation<span class="colon">:</span></dt>
+<dd><p>„Bauen wir das Produkt korrekt?“</p>
+</dd>
+</dl>
+</ld-card><ld-card class="incremental">
+<object class="align-right" data="images/software_inspektionen.svg" role="img" type="image/svg+xml">
+</object><p class="rubric">Zwei komplementäre Ansätze die (V&amp;V) unterscheiden:</p>
+<ol class="arabic list-with-explanations">
+<li><p>Software-Inspektionen oder Peer-Reviews (statische Technik)</p>
+<p>Software-Inspektionen können in allen Phasen des Prozesses durchgeführt werden.</p>
+</li>
+<li><p>Software-Tests (dynamische Technik)</p></li>
+</ol>
+</ld-card></ld-deck></ld-topic><ld-topic id="software-inspektionen-uberprufen-die-ubereinstimmung-zwischen-einem-programm-und-seiner-spezifikation">
+<h2>Software-Inspektionen überprüfen die Übereinstimmung zwischen einem Programm und seiner Spezifikation.</h2>
+<p>Ausgewählte Ansätze:</p>
+<ld-story>
+<div class="compound">
+<p class="rubric">Programminspektionen</p>
+<p>Ziel ist es, Programmfehler, Verstöße gegen Standards und mangelhaften Code zu finden, und nicht, allgemeinere Designfragen zu berücksichtigen; sie werden in der Regel von einem Team durchgeführt, dessen Mitglieder den Code systematisch analysieren. Eine Inspektion wird in der Regel anhand von Checklisten durchgeführt.</p>
+<div class="supplemental">
+<p>Studien haben gezeigt, dass eine Inspektion von etwa 100LoC etwa einen Personentag an Aufwand erfordert.</p>
+</div></div>
+<div class="incremental compound">
+<p class="rubric">automatisierte Quellcodeanalyse</p>
+<p>Diese umfasst u. a. Kontrollflussanalysen, Datenverwendungs-/flussanalyse, Informationsflussanalyse und Pfadanalyse.</p>
+<p>Statische Analysen lenken die Aufmerksamkeit auf Anomalien.</p>
+</div>
+<div class="incremental compound">
+<p class="rubric">Formale Verifikation</p>
+<p>Die formale Verifizierung kann das Nichtvorhandensein bestimmter Fehler garantieren. So kann z. B. garantiert werden, dass ein Programm keine Deadlocks, Race Conditions oder Pufferüberläufe enthält.</p>
+</div>
+<aside class="admonition incremental summary">
+<p class="admonition-title">Zusammenfassung</p>
+<p>Software-Inspektionen zeigen nicht, dass die Software nützlich ist.</p>
+</aside>
+</ld-story></ld-topic><ld-topic id="ausgewahlte-testziele">
+<h2>ausgewählte Testziele</h2>
+<ul class="simple">
+<li><p>Test der Funktionalität</p></li>
+<li><p>Test auf Robustheit</p></li>
+<li><p>Test der Effizienz/Performance</p></li>
+<li><p><span class="peripheral">Test auf Wartbarkeit</span></p></li>
+<li><p>Test auf Nutzbarkeit</p></li>
+</ul>
+</ld-topic><ld-topic class="no-title" id="testarten">
+<h2>Testarten</h2>
+<ld-grid class="height-100 default-layout">
+<ld-cell class="width-50 height-100 black-background white padding-1em width-50 height-100 black-background white padding-1em" style="align-self:auto;">
+<p><strong>Black Box Testen</strong></p>
+<p>Wir wollen die Korrektheit zeigen.</p>
+<p>Testdaten werden durch die Untersuchung der Domäne gewonnen. Was sind gültige und was sind ungültige Eingabewerte in der Domäne?</p>
+<p>Der Test kann (und sollte!) ohne Betrachtung der konkreten Implementierung entwickelt werden.</p>
+</ld-cell><ld-cell class="width-50 height-100 white-background black padding-1em width-50 height-100 white-background black padding-1em" style="align-self:auto;">
+<p><strong>White Box Testen</strong></p>
+<p>Wie auch beim Black-Box Test wollen wir die Korrektheit zeigen.</p>
+<p>Testdaten werden durch die Inspektion des Programms gewonnen.</p>
+<p>Das heißt im Umkehrschluss, dass wir den Quellcode des Programms benötigen.</p>
+</ld-cell></ld-grid></ld-topic><ld-topic id="der-umfang-eines-tests-ist-die-sammlung-der-zu-prufenden-softwarekomponenten">
+<h2>Der Umfang eines Tests ist die Sammlung der zu prüfenden Softwarekomponenten.</h2>
+<dl class="incremental-list field-list simple">
+<dt>Unit Tests (Modultest)<span class="colon">:</span></dt>
+<dd><p>Umfasst eine relativ kleine ausführbare Datei; z.B. ein einzelnes Objekt.</p>
+</dd>
+<dt>Integrationstest<span class="colon">:</span></dt>
+<dd><p>Komplettes (Teil-)System. Schnittstellen zwischen den Einheiten werden getestet, um zu zeigen, dass die Einheiten gemeinsam funktionsfähig sind.</p>
+</dd>
+<dt>Systemtest<span class="colon">:</span></dt>
+<dd><p>Eine vollständige integrierte Anwendung. Kategorisiert nach der Art der Konformität, die festgestellt werden soll: funktional, Leistung, Stress oder Belastung</p>
+</dd>
+<dt>Abnahmetests<span class="colon">:</span></dt>
+<dd><p>Tests (durch den Kunden), um zu zeigen, dass das System die Anforderungen erfüllt.</p>
+</dd>
+</dl>
+<!-- TODO Diskussion über das Aufstellen von Testplänen hinzufügen -->
+</ld-topic><ld-topic id="test-uberdeckung-eng-test-coverage">
+<h2>(Test-)Überdeckung (eng.  (Test-)Coverage)</h2>
+<aside class="admonition question">
+<p class="admonition-title">Frage</p>
+<p>Wie wissen wir aber wie “gut” unsere Tests sind?</p>
+</aside>
+<aside class="admonition incremental definition">
+<p class="admonition-title">Definition</p>
+<p>Testüberdeckung beschreibt, wie viel des Programms durch die Tests geprüft wird.</p>
+</aside>
+<div class="incremental docutils container">
+<p>Hierbei gibt es verschiedene Überdeckungskriterien, die verschiedene Metriken für die Beschreibung der Testgüte nutzen.</p>
+</div>
+</ld-topic><ld-topic id="anweisungsuberdeckung-statement-coverage">
+<h2>Anweisungsüberdeckung (<span class="eng">Statement Coverage</span>)</h2>
+<p>Alternativ auch Zeilenüberdeckung oder <span class="eng">Line Coverage</span> genannt.</p>
+<ld-grid class="default-layout">
+<ld-cell style="align-self:auto;">
+<p>Zu testende Software:</p>
+<pre class="code java literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">double</span><span class="whitespace"> </span><span class="name function">compute</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">includeTax</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword type">double</span><span class="whitespace"> </span><span class="name">result</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number float">1.3</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">    </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">includeTax</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">        </span><span class="name">result</span><span class="whitespace"> </span><span class="operator">*=</span><span class="whitespace"> </span><span class="literal number float">1.19</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">result</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">7 </small><code data-lineno="7 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-cell><ld-cell class="incremental" style="align-self:auto;">
+<p>Testfälle:</p>
+<pre class="code java literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">false</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">);</span></code></pre>
+<aside class="admonition incremental question">
+<p class="admonition-title">Frage</p>
+<p>Wie hoch ist die Anweisungsüberdeckung? Sind beide Testfälle notwendig?</p>
+<ld-presenter-note data-encrypted="true">
+MTAwMDAw:GFvjVeugs4u1Qj5tz6vkVS1TPrBkg05Rp2OMdKiKLZc=:xe6c0RURNqKync5m:9mC601XeV18AfMNtgCAwRApwhAkfKs6HIQxGYBPcAojhxGPhNVpyh1o8k7gvdxD+BTX9R3Vmt9WpQ0M6+NXsZc/YY0sILnPQE3VJY4kzdYugPGv09sV0+VCOzGza2uU5VDffccxZA+iO</ld-presenter-note>
+</aside>
+</ld-cell></ld-grid><aside class="admonition margin-top-1em incremental definition">
+<p class="admonition-title">Definition</p>
+<div class="math">
+\begin{equation*}
+\text{Anweisungsüberdeckung} = \frac{\text{\# ausgeführte Anweisungen}}{\text{\# aller Anweisungen}} \cdot 100\%
+\end{equation*}
+</div>
+</aside>
+</ld-topic><ld-topic id="zweiguberdeckung-branch-coverage">
+<h2>Zweigüberdeckung (<span class="eng">Branch Coverage</span>)</h2>
+<ld-grid class="default-layout">
+<ld-cell style="align-self:auto;">
+<p>Zu testende Software:</p>
+<pre class="code java literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">double</span><span class="whitespace"> </span><span class="name function">compute</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">includeTax</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword type">double</span><span class="whitespace"> </span><span class="name">result</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number float">1.3</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">    </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">includeTax</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">        </span><span class="name">result</span><span class="whitespace"> </span><span class="operator">*=</span><span class="whitespace"> </span><span class="literal number float">1.19</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">result</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">7 </small><code data-lineno="7 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-cell><ld-cell class="incremental" style="align-self:auto;">
+<p>Kontrollflussgraph:</p>
+<svg width="30ch" height="9.25lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        /* TODO: How to scale Arrowheads? */
+        rect {
+            fill: white;
+            stroke: blue;
+            stroke-width: 0.2ch;
+        }
+        text {
+            fill: black;
+            font-family: var(--theme-code-font-family);
+            font-size: 0.75lh;
+        }
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="10"
+        refY="5"
+        markerWidth="0.4ex"
+        markerHeight="0.4ex"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+
+    <rect width="22ch" height="2lh" x="1ch" y="1lh" rx="1ch" ry="1ch" />
+    <text class="code" x="2.5ch" y="1.85lh">
+        <tspan class="keyword type">double</tspan>
+        <tspan class="name">result</tspan>
+        <tspan class="operator">=</tspan>
+        <tspan class="literal number">1.3</tspan>
+    </text>
+    <text class="code" x="2.5ch" y="2.85lh">
+        <tspan class="keyword">if</tspan>
+        <tspan class="whitespace"> </tspan>
+        <tspan class="punctuation">(</tspan>
+        <tspan class="name">includeTax</tspan>
+        <tspan class="punctuation">)</tspan>
+    </text>
+
+    <g class="incremental">
+    <line x1="14ch" y1="3lh" x2="14ch" y2="5lh" style="stroke:blue;stroke-width:0.2ch" marker-end="url(#arrow)"/>
+    <rect width="16.5ch" height="1lh" x="6ch" y="5lh" rx="1ch" ry="1ch" />
+    <text class="code" x="7.5ch" y="5.95lh">
+        <tspan class="name">result</tspan>
+        <tspan class="whitespace"> </tspan>
+        <tspan class="operator">*=</tspan>
+        <tspan class="whitespace">
+        </tspan>
+        <tspan class="literal number float">1.19</tspan>
+    </text>
+    </g>
+
+    <g class="incremental">
+    <line x1="4ch" y1="3lh" x2="4ch" y2="8lh" style="stroke:blue;stroke-width:0.2ch" marker-end="url(#arrow)"/>
+    <line x1="14ch" y1="6lh" x2="14ch" y2="8lh" style="stroke:blue;stroke-width:0.2ch" marker-end="url(#arrow)"/>
+    <rect width="16ch" height="1lh" x="1ch" y="8lh" rx="1ch" ry="1ch" />
+    <text class="code" x="2.5ch" y="8.95lh">
+        <tspan class="keyword">return</tspan>
+        <tspan class="whitespace"> </tspan>
+        <tspan class="name">result</tspan>
+    </text>
+    </g>
+</svg></ld-cell></ld-grid><ld-deck>
+<ld-card>
+<aside class="admonition incremental question">
+<p class="admonition-title">Frage</p>
+<p>Wie hoch ist die Anweisungsüberdeckung? Sind beide Testfälle notwendig?</p>
+<ld-presenter-note data-encrypted="true">
+MTAwMDAw:GFvjVeugs4u1Qj5tz6vkVS1TPrBkg05Rp2OMdKiKLZc=:xe6c0RURNqKync5m:9mC601XeV18AfMNtgCAwRApwhAkfKs6HIQxGYBPcAojhxGPhNVpyh1o8k7gvdxD+BTX9R3Vmt9WpQ0M6+NXsZc/YY0sILnPQE3VJY4kzdYugPGv09sV0+VCOzGza2uU5VDffccxZA+iO</ld-presenter-note>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<div class="math">
+\begin{equation*}
+\text{Zweigüberdeckung} = \frac{\text{\# ausgeführte Zweige}}{\text{\# aller Zweige}} \cdot 100\%
+\end{equation*}
+</div>
+</aside>
+</ld-card></ld-deck></ld-topic><ld-topic id="pfaduberdeckung-path-coverage">
+<h2>Pfadüberdeckung (<span class="eng">Path Coverage</span>)</h2>
+<ld-deck>
+<ld-card>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<div class="math">
+\begin{equation*}
+\text{Pfadüberdeckung} = \frac{\text{\# ausgeführten Pfade}}{\text{\# aller (möglichen) Pfade}} \cdot 100\%
+\end{equation*}
+</div>
+</aside>
+</ld-card><ld-card class="incremental">
+<ld-grid class="default-layout">
+<ld-cell style="align-self:auto;">
+<p>Zu testende Software:</p>
+<pre class="code java literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">double</span><span class="whitespace"> </span><span class="name function">compute</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">includeTax</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">                       </span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">reducedTax</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">                       </span><span class="keyword type">double</span><span class="whitespace"> </span><span class="name">discount</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">  </span><span class="keyword type">double</span><span class="whitespace"> </span><span class="name">result</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number float">1.3</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">includeTax</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">reducedTax</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">      </span><span class="name">result</span><span class="whitespace"> </span><span class="operator">*=</span><span class="whitespace"> </span><span class="literal number float">1.07</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="keyword">else</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">      </span><span class="name">result</span><span class="whitespace"> </span><span class="operator">*=</span><span class="whitespace"> </span><span class="literal number float">1.19</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">discount</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number float">0.0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="name">result</span><span class="whitespace"> </span><span class="operator">*=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="literal number float">1.0</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name">discount</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">  </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">result</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-cell><ld-cell class="incremental" style="align-self:auto;">
+<p>Testfälle:</p>
+<pre class="code java literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">false</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword constant">false</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">0.0</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword constant">false</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">0.0</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword constant">true</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">0.0</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">false</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword constant">false</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">0.1</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword constant">false</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">0.1</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword constant">true</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">0.1</span><span class="punctuation">);</span></code></pre>
+<aside class="admonition incremental question">
+<p class="admonition-title">Frage</p>
+<p>Wie hoch ist die Pfadüberdeckung?</p>
+<ld-presenter-note data-encrypted="true">
+MTAwMDAw:TTCd8pW9+QKctUJnF4L8EELmQ74FHvj9I4S5cYKUswU=:9+X1tPCwMHsJ+ArQ:eAQppJnQYeG52JJ8ARKX1UaLNowSh84zQUwN4QiUt1KPnAzT3huiGfLe3tO3WGgAFqbb/sSWJQ==</ld-presenter-note>
+</aside>
+</ld-cell></ld-grid></ld-card><ld-card class="center-content incremental">
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Die Pfadüberdeckung ist in der Praxis oft nicht realisierbar, da die Anzahl der möglichen Pfade exponentiell mit der Anzahl der Verzweigungen wächst.</p>
+<p>In der Praxis wird daher oft die Zweigüberdeckung als Kompromiss genutzt.</p>
+</aside>
+</ld-card></ld-deck></ld-topic><ld-topic id="weitere-uberdeckungskriterien">
+<h2>Weitere Überdeckungskriterien</h2>
+<ul class="incremental-list list-with-explanations">
+<li><p>(einfache) Bedingungsüberdeckung (<span class="eng">(Simple) Condition Coverage</span>)</p></li>
+<li><p>Eingangs-/Ausgangsüberdeckung (<span class="eng">Entry/Exit Coverage</span>)</p></li>
+<li><p>Schleifenüberdeckung (<span class="eng">Loop Coverage</span>)</p></li>
+<li><p>Zustandsüberdeckung (<span class="eng">State Coverage</span>)</p>
+<p>(Erfodert ggf. das ein endlicher Automat modelliert wird.)</p>
+</li>
+<li><p>Datenflussüberdeckung (<span class="eng">Data Flow Coverage</span>)</p></li>
+</ul>
+</ld-topic><ld-topic id="uberdeckungsziele">
+<h2>Überdeckungsziele</h2>
+<ld-deck>
+<ld-card>
+<dl class="field-list">
+<dt>IEEE 29119 “Software Testing”<span class="colon">:</span></dt>
+<dd><p>100% Anweisungsabdeckung</p>
+<p>100% Zweigabdeckung für kritische Module</p>
+</dd>
+<dt>DO-178B “Software Considerations in Airborne Systems and Equipment Certification”<span class="colon">:</span></dt>
+<dd><p>Abhängig von der Auswirkung von Systemfehlern.
+Beispiel: 100% Anweisungsabdeckung bei Verletzungsgefahr von Passagieren.</p>
+</dd>
+<dt>IEC 61508 “Functional Safety of Electrical/Electronic/Programmable Electronic Safety-Related Systems”<span class="colon">:</span></dt>
+<dd><p>100% Anweisungs-/Zweig-/Bedingungsabdeckung je nach Sicherheitsanforderung</p>
+</dd>
+<dt>ISO 26262 “Road vehicles - Functional safety”<span class="colon">:</span></dt>
+<dd><p>Abhängig von der Kritikalität der Komponente</p>
+</dd>
+</dl>
+</ld-card><ld-card class="s-overlay center-content height-100 incremental">
+<aside class="admonition incremental backdrop-blur summary">
+<p class="admonition-title">Zusammenfassung</p>
+<p>Das Erreichen eines Überdeckungsziels erfordert Aufwand, der durch die Kritikalität möglicher Fehler motiviert sein muss.</p>
+<p>In vielen Anwendersystemen ist eine hundertprozentige Testabdeckung nicht notwendig. Testabdeckung ist dennoch zu messen.</p>
+</aside>
+</ld-card></ld-deck></ld-topic><ld-topic class="transition-flip no-title center-content" id="grenzen-des-testens">
+<h2>Grenzen des Testens</h2>
+<blockquote class="epigraph">
+<p>Tests können nur das Vorhandensein von Fehlern zeigen, nicht deren Abwesenheit.</p>
+<p class="attribution">—E. Dijkstra</p>
+</blockquote>
+</ld-topic><ld-topic id="junit-test-case-beispiel">
+<h2>JUnit Test Case - Beispiel</h2>
+<pre class="code java literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.junit.Test</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword namespace">import static</span><span class="whitespace"> </span><span class="name namespace">org.junit.Assert.assertEquals</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword namespace">import static</span><span class="whitespace"> </span><span class="name namespace">org.junit.Assert.fail</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Arrays</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">SimpleCalculatorTest</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">  </span><span class="name decorator">&#64;Test</span><span class="whitespace">                                                </span><span class="comment single">// &lt;= JUnit Test Annotation</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">testProcess</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">term</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">      </span><span class="literal string">&quot;4&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;5&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;+&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;7&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;*&quot;</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="punctuation">};</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">    </span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name">result</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">SimpleCalculator</span><span class="punctuation">.</span><span class="name attribute">process</span><span class="punctuation">(</span><span class="name">term</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">      </span><span class="name">assertEquals</span><span class="punctuation">(</span><span class="name">Arrays</span><span class="punctuation">.</span><span class="name attribute">toString</span><span class="punctuation">(</span><span class="name">term</span><span class="punctuation">),</span><span class="whitespace"> </span><span class="literal number integer">63</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">result</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// &lt;= JUnit Assertion</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-topic><ld-topic id="testng-beispiel">
+<h2>TestNG - Beispiel</h2>
+<pre class="code java literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment single">// This method will provide data to any test method</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="comment single">// that declares that its Data Provider is named &quot;provider1&quot;.</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="name decorator">&#64;DataProvider</span><span class="punctuation">(</span><span class="name">name</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string">&quot;provider1&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Object</span><span class="operator">[][]</span><span class="whitespace"> </span><span class="name function">createData1</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Object</span><span class="operator">[][]</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">        </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="literal string">&quot;Cedric&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Integer</span><span class="punctuation">(</span><span class="literal number integer">36</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">},</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">        </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="literal string">&quot;Anne&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Integer</span><span class="punctuation">(</span><span class="literal number integer">37</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="punctuation">};</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="comment single">// This test method declares that its data should be</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span><span class="comment single">// supplied by the Data Provider named &quot;provider1&quot;.</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span><span class="name decorator">&#64;Test</span><span class="punctuation">(</span><span class="name">dataProvider</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal string">&quot;provider1&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">verifyData1</span><span class="punctuation">(</span><span class="name">String</span><span class="whitespace"> </span><span class="name">n1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Integer</span><span class="whitespace"> </span><span class="name">n2</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">    </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">n1</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot; &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">n2</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-topic><ld-topic id="behavior-driven-development">
+<h2>Behavior-Driven Development</h2>
+<p>Das Ziel ist, dass die Entwickler die Verhaltensabsichten des Systems, das sie entwickeln, definieren.<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> Hier mit Hilfe von ScalaTest.</p>
+<pre class="code scala literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword">import</span><span class="whitespace"> </span><span class="name namespace">org</span><span class="punctuation">.</span><span class="name namespace">specs</span><span class="punctuation">.</span><span class="name namespace">runner</span><span class="punctuation">.</span><span class="name">_</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword">import</span><span class="whitespace"> </span><span class="name namespace">org</span><span class="punctuation">.</span><span class="name namespace">specs</span><span class="punctuation">.</span><span class="name">_</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="keyword">object</span><span class="whitespace"> </span><span class="name class">SimpleCalculatorSpec</span><span class="whitespace"> </span><span class="keyword">extends</span><span class="whitespace"> </span><span class="name class">Specification</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="literal string">&quot;The Simple Calculator&quot;</span><span class="whitespace"> </span><span class="name">should</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">        </span><span class="literal string">&quot;return the value 36 for the input {“6”,“6”,“*”}&quot;</span><span class="whitespace"> </span><span class="name">in</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">            </span><span class="name class">SimpleCalculator</span><span class="punctuation">.</span><span class="name">process</span><span class="punctuation">(</span><span class="name class">Array</span><span class="punctuation">(</span><span class="literal string">&quot;6&quot;</span><span class="punctuation">,</span><span class="literal string">&quot;6&quot;</span><span class="punctuation">,</span><span class="literal string">&quot;*&quot;</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="name">must_==</span><span class="whitespace"> </span><span class="literal number integer">36</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="http://behaviour-driven.org/">http://behaviour-driven.org/</a></p>
+</aside>
+</aside>
+</ld-topic><ld-topic id="the-last-word">
+<h2>The Last Word</h2>
+<blockquote class="epigraph">
+<p><strong>A Tester’s Courage</strong></p>
+<p>The Director of a software company proudly announced that a flight software developed by the company was installed in an airplane and the airline was offering free first flights to the members of the company. “Who are interested?” the Director asked. Nobody came forward. Finally, one person volunteered. The brave Software Tester stated, ‘I will do it. I know that the airplane will not be able to take off.’</p>
+<p class="attribution">—Unknown Author &#64; <a class="reference external" href="http://www.softwaretestingfundamentals.com">http://www.softwaretestingfundamentals.com</a></p>
+</blockquote>
+</ld-topic><ld-topic class="transition-move-to-top new-section" id="metriken">
+<h2>Metriken</h2>
+</ld-topic><ld-topic id="qualitatsmetriken">
+<h2>Qualitätsmetriken</h2>
+<ld-deck>
+<ld-card>
+<p class="rubric">Warum?</p>
+<ul class="incremental-list simple">
+<li><p>Neue Features oder Code-Qualität erhöhen?</p></li>
+<li><p>Kann ich Komponente C austauschen? Bzw. wie viel Aufwand ist das?</p></li>
+<li><p>Haben die letzten Änderungen das System negativ beeinflusst?</p></li>
+<li><p>Welche Systemteile sind besonders sicherheitskritisch?</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Ziele</p>
+<ul class="incremental-list simple">
+<li><p>Mögliche Bugs frühzeitig erkennen</p></li>
+<li><p>Systeme quantitativ miteinander vergleichen</p></li>
+<li><p>Wartbarkeit einschätzen</p></li>
+<li><p>Refactoring planen</p></li>
+<li><p>Änderungen bewerten</p></li>
+<li><p>Evolution des Systems überwachen bzw. verstehen</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Verwendung</p>
+<ul class="incremental-list">
+<li><p>Als <em>Quality Gates</em> in Buildsystemen</p>
+<p>z. B. Zeilen pro Methode &lt; 50</p>
+</li>
+<li><p>Zur Bewertung von Software</p></li>
+</ul>
+</ld-card><ld-card class="dd-margin-left-6em incremental">
+<p class="rubric">Einfache Metriken</p>
+<dl class="incremental-list field-list simple">
+<dt>Lines of Code (LOC)<span class="colon">:</span></dt>
+<dd><p>Alle Zeilen zählen so, wie sie im Quellcode stehen</p>
+</dd>
+<dt>Source Lines of Code (SLOC)<span class="colon">:</span></dt>
+<dd><p>Alle Zeilen ohne Leerzeile oder Kommentare</p>
+</dd>
+<dt>Comment Lines of Code (CLOC)<span class="colon">:</span></dt>
+<dd><p>Es zählen nur Zeilen mit Kommentaren; dies können ganze Zeilen sein, oder einfach nur Inline Kommentare; auskommentierter Code zählt ggf. auch</p>
+</dd>
+<dt>Non-Comment Lines of Code (NCLOC) / Effective Lines of Code (ELOC)<span class="colon">:</span></dt>
+<dd><p>Codezeilen ohne Kommentarzeile oder Zeilen, die nur Klammern enthalten, reine Import Statements oder Methodendeklarationen</p>
+</dd>
+<dt>Logical Lines of Code (LLOC)<span class="colon">:</span></dt>
+<dd><p>Zählt nur Anweisungen</p>
+</dd>
+</dl>
+</ld-card><ld-card class="dd-margin-left-6em incremental">
+<p class="rubric">Fortgeschrittene Metriken</p>
+<dl class="incremental-list field-list simple">
+<dt>Zyklomatische Komplexität (McCabe)<span class="colon">:</span></dt>
+<dd><p>Anzahl der linear unabhängigen Pfade durch den Code</p>
+</dd>
+<dt>Kopplung<span class="colon">:</span></dt>
+<dd><p>Anzahl der Abhängigkeiten zwischen Komponenten</p>
+</dd>
+<dt>...<span class="colon">:</span></dt>
+<dd><p>...</p>
+</dd>
+</dl>
+</ld-card></ld-deck></ld-topic><ld-topic class="no-title center-content" id="es-gibt-keine-fixen-werten">
+<h2>Es gibt keine fixen Werten</h2>
+<aside class="admonition warning">
+<p class="admonition-title">Warnung</p>
+<p>Umfangreiche Forschung hat gezeigt, dass es keine fixen Werte gibt, die für alle Projekte gelten. Es hat sich weiterhin gezeigt, dass es keine einzige Metrik gibt, die alleine zur Bewertung der Qualität eines Systems ausreicht. Welche Metriken die Qualität des Systems am besten beschreiben, lässt sich immer nur posthum beantworten.</p>
+<p>Metriken sind immer kontextabhängig zu bewerten.</p>
+<p>Metriken eignen sich insbesondere um Veränderungen zu bewerten und um die Entwicklung von Software zu überwachen.</p>
+</aside>
 </ld-topic>
 </template>
 </body>

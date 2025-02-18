@@ -743,10 +743,11 @@ pre.code {
     padding: 0;
     margin: 0 0 0.75em 0;
 }
+svg text.code,
 code,
 pre.code {
 
-    --code-color: var(--black);
+    
 
     --attribute-color: #800000;
 
@@ -778,12 +779,15 @@ pre.code {
     
     --punctuation-color: #E6194B;           /* Strong Red */
         
+    --tag-color: #FABEBE;
+
     /* RESERVED */
     --color-XXX: #46F0F0; 
-    --color-YYY: #FABEBE;
     --color-ZZZ: #E6BEFF;  
     
+    --code-color: var(--black); /* the default color*/
     color: var(--code-color);
+    fill: var(--code-color); /* for SVGs*/
 
     &.html {
         color: var(--gray);
@@ -814,6 +818,7 @@ pre.code {
     .comment {
         font-weight: 100;
         color: var(--comment-color);
+        fill: var(--comment-color); /* for styling SVGs */
         text-shadow: 2px 2px 3px var(--comment-shadow-color), -1px -1px 4px var(--gray);
 
         &.preproc {
@@ -843,24 +848,29 @@ pre.code {
 
     .keyword {
         color: var(--keyword-color);
+        fill: var(--keyword-color); /* for styling text in SVGs */
         font-weight: 700;
 
         &.type {
             color: var(--keyword-type-color);
+            fill: var(--keyword-type-color); /* for styling SVG s*/
         }
 
         &.namespace {
             color: var(--keyword-namespace-color);
+            fill: var(--keyword-namespace-color); /* for styling SVGs */
         }
 
         &.constant {
             color: var(--keyword-constant-color);
+            fill: var(--keyword-constant-color); /* for styling SVGs */
         }
     }
 
     .name {
 
         color: var(--name-color);
+        fill: var(--name-color);
         
         &.attribute { 
             color: var(--attribute-color);
@@ -895,12 +905,13 @@ pre.code {
             font-style: italic;
         }
 
-        &.tag { /* TODO */ 
-            color: var(--red);
+        &.tag { 
+            color: var(--tag-color);
         }
 
         &.variable {
             color: var(--variable-color);
+            fill: var(--variable-color); /* for styling SVGs*/
             font-weight: 500;
             text-shadow: 1px 1px 1px var(--dark-gray);
             text-decoration-line: underline;
@@ -914,9 +925,11 @@ pre.code {
             font-weight: 200;
     
             color: var(--literal-color);
+            fill: var(--literal-color); /* for styling SVGs */
 
             &.affix {
                 color: var(--literal-color);
+                fill: var(--literal-color); /* for styling SVGs */
                 font-style: italic;
                 text-decoration: dotted underline;
             }
@@ -924,11 +937,13 @@ pre.code {
 
         &.number {
             color: var(--number-color);
+            fill: var(--number-color); /* for styling SVGs */
         }
     }
 
     .operator {
         color: var(--operator-color);
+        fill: var(--operator-color); /* for styling SVGs */
         font-weight: 900;
         text-shadow: 2px 2px 2px var(--dark-gray);
 
@@ -939,9 +954,12 @@ pre.code {
 
     .punctuation {
         color: var(--punctuation-color);
+        fill: var(--punctuation-color); /* for styling SVGs */
     }
 
-    /*  Whitespace is identified differently in different languages. 
+    /*  Issues related to Pygments (i.e., when using rst2LectureDoc):
+    
+        Whitespace is identified differently in different languages. 
         Hence, decent support requires language dependent styling. 
     .whitespace {
         text-decoration-style: dashed;
