@@ -42,10 +42,10 @@ class LDTimeline extends HTMLElement {
 		let lineHeight = computedStyle.getPropertyValue('line-height');
 
 		if (lineHeight === 'normal') {
-			const fontSize = computedStyle.getPropertyValue('font-size'); // Get Font Size
-			lineHeight = parseFloat(fontSize) * 1.2; // 'normal' Line Height Equals To 120% Of Font Size In Most Browsers
+			const fontSize = computedStyle.getPropertyValue('font-size'); // get font size
+			lineHeight = parseFloat(fontSize) * 1.2; // 'normal' equals to 120% of font size in most browsers
 		} else {
-			lineHeight = parseFloat(lineHeight); // The Line Height That Is Not 'normal'
+			lineHeight = parseFloat(lineHeight); // the concrete line height (i. e., a number and not "normal")
 		}
 
 		return lineHeight;
@@ -180,8 +180,7 @@ class LDTimeline extends HTMLElement {
 			//this.style.height = height + "px";
 		};
 
-		// We can only render the timeline if it is visible (i. e., its display
-		// property is not none)
+		// We can only render the timeline if it is actually visible
 		const observer = new IntersectionObserver((events) => {
 			events.forEach((event) => {
 				console.log("timeline is intersecting:" + event);

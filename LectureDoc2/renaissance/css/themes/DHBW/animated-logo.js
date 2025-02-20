@@ -5,13 +5,12 @@
  * basic events registry.
  * 
  * @author Michael Eichberg 
- * @version 2024-07-18
+ * @version 2025-02-20
  */
 
 const logoTemplate = `
     <style>
     dhbw-logo {
-        display: block;
         position: absolute;
         width: 100%;
         height: 100%;
@@ -23,53 +22,53 @@ const logoTemplate = `
         mix-blend-mode: multiply;
         z-index: -1;
         animation: 30s infinite alternate dhbw-logo-blur;
-    }
 
-    .dhbw-logo {
-        width: 200px;
-        height: 98px;
-        position: relative;
-        overflow: visible;
-
-        perspective: 2500px;
-        transform: rotateX(-30deg);
-        transform-style: preserve-3d;
-
-        .side {
-            position: absolute;
-            border-radius: 6px;
+        .symbol {
+            width: 200px;
             height: 98px;
-        }
+            position: relative;
+            overflow: visible;
 
-        .side:is(.left, .right) {
-            width: 98px;
-        }
+            perspective: 2500px;
+            transform: rotateX(-30deg);
+            transform-style: preserve-3d;
 
-        .side:is(.front, .back) {
-            width: 108px;
-        }
+            .side {
+                position: absolute;
+                border-radius: 6px;
+                height: 98px;
+            }
 
-        .left {
-            background-color: rgba(226, 0, 26);
-            transform: translateY(49px);
-        }
+            .side:is(.left, .right) {
+                width: 98px;
+            }
 
-        .right {
-            background-color: rgba(51, 65, 73, 0.56);
-            transform: translateY(49px) translateX(102px);
-        }
+            .side:is(.front, .back) {
+                width: 108px;
+            }
 
-        .back {
-            background-color: rgba(226, 0, 26);
-            transform: translateY(49px) translateX(46px) rotateY(65deg) translateX(60px);
-        }
+            .left {
+                background-color: rgba(226, 0, 26);
+                transform: translateY(49px);
+            }
 
-        .front {
-            background-color: rgba(51, 65, 73, 0.56);
-            transform: translateY(49px) translateX(46px) rotateY(-115deg) translateX(60px);
-        }
+            .right {
+                background-color: rgba(51, 65, 73, 0.56);
+                transform: translateY(49px) translateX(102px);
+            }
 
-        animation: 30s infinite alternate move-across;
+            .back {
+                background-color: rgba(226, 0, 26);
+                transform: translateY(49px) translateX(46px) rotateY(65deg) translateX(60px);
+            }
+
+            .front {
+                background-color: rgba(51, 65, 73, 0.56);
+                transform: translateY(49px) translateX(46px) rotateY(-115deg) translateX(60px);
+            }
+
+            animation: 30s infinite alternate move-across;
+        }
     }
 
     @keyframes move-across {
@@ -95,7 +94,7 @@ const logoTemplate = `
     </style>
 
     <dhbw-logo>
-        <div class="dhbw-logo">
+        <div class="symbol">
             <div class="side left"></div>
             <div class="side front"></div>
             <div class="side back"></div>
@@ -108,7 +107,7 @@ const logoTemplate = `
 function afterLDDOMManipulations() {
     const template = document.createElement("template");
     template.innerHTML = logoTemplate;
-    const slide = document.querySelector("#ld-main-pane .ld-slide:has(h1).animated-symbol")
+    const slide = document.querySelector("#ld-slides-pane ld-slide:has(h1).animated-logo")
     const logoElement = template.content.cloneNode(true);
     // There will always be at most one h1 element per slide set.
     // Hence, we can simply add the content and don't need a shadow DOM.
