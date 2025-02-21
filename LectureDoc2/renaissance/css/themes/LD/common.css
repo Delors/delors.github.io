@@ -75,17 +75,6 @@ ld-grid {
 
 }
 
-/*  Depending on how the table is created,  the class "highlight-cell-on-hover" 
-    may only be found on the surrounding div. 
-    TODO Add functionality to reply in secondary browser(s).
-    TODO Check for duplication with ldcomponents...
-*/
-div:has(>table),
-table {
-    &.highlight-cell-on-hover td:hover {
-        background-color: var(--light-gray);
-    }
-}
 
 
 /*  ----------------------------------------------------------------------------
@@ -119,16 +108,6 @@ table {
 
 /* Lists */
 
-/* Provides a very simple means to arrange content in columns. 
-
-   In rst it has to be used like so:
-   
-   .. class:: column-list (left-aligned-columns|evenly-spaced-columns)?
-
-   - first column
-   - second column
-   - ...
-*/
 ul.horizontal{
     display: flex;
     gap: 0em 2em;
@@ -137,6 +116,17 @@ ul.horizontal{
     align-items: flex-start;
 }
 
+/*  Provides a very simple means to "misuse" a list to arrange content in 
+    columns. 
+
+    In rst it has to be used like so:
+   
+    .. class:: columns (left-aligned-columns|evenly-spaced-columns)?
+
+    - first column
+    - second column
+    - ...
+*/
 ul.columns {
     list-style: none;
 
@@ -181,6 +171,8 @@ dl.compact>dd {
 /*
     This style is complementary to the previous one and adds a pop-out effect 
     on hover.
+
+    TODO Add relay to other windows
 */
 :is(ol,ul).pop-out-on-hover{
     perspective: 500px;
@@ -1032,6 +1024,7 @@ table {
         caption-side: bottom;
     }
 
+    &.highlight-cell-on-hover,
     &.highlight-row-on-hover,
     &.highlight-identical-cells-on-hover {
         th.\:hover-related {
@@ -1088,14 +1081,7 @@ table {
     }
 }
 
-.framed {
-    border: thin solid var(--light-gray);
-    --current-background-color: var(--very-very-light-gray);
-    background-color: var(--current-background-color);
-    margin-bottom: 1em;
-    padding: 0.5em;
-    border-radius: var(--small-border-radius);
-}
+
 
 /*
     Intended to be used with a container (e.g., a div) or a container like structure (e.g. a slide) to show that is done, completed of less importance. 
@@ -1117,6 +1103,15 @@ table {
 }
 
 
+.framed {
+    border: thin solid var(--light-gray);
+    --current-background-color: var(--very-very-light-gray);
+    background-color: var(--current-background-color);
+    margin-bottom: 1em;
+    padding: 0.5em;
+    border-radius: var(--small-border-radius);
+}
+
 
 /* 
     Intended to be used with a container (e.g., a div) to visually accentuate it.
@@ -1128,7 +1123,8 @@ table {
     border-radius: var(--small-border-radius);
     
     font-weight: 600;
-    background-color: var(--very-light-gray);
+    --current-background-color: var(--very-light-gray);
+    background-color: var(--current-background-color);
 }
 
 ul.important {
@@ -1138,7 +1134,8 @@ ul.important {
 
     >li {
         position: relative;
-        background-color: var(--very-light-red);
+        --current-background-color: var(--very-light-red);
+        background-color: var(--current-background-color);
         border-radius: 0.5em;
         margin-top: 0.5em;
         padding: 0.5em;
@@ -1151,7 +1148,8 @@ ul.important {
             left: 0;
             height: 100%;
             width: 1em;
-            background-color: var(--dark-red);
+            --current-background-color: var(--dark-red);
+            background-color: var(--current-background-color);
         }
     }
 }

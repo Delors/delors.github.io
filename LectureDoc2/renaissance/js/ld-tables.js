@@ -2,9 +2,8 @@
  * This JavaScript module implements advanced functionality related to tables. 
  * 
  * In particular, selective highlighting of...
- * - cells
- * - rows
- * - identical cells
+ * - rows (highlight-row-on-hover)
+ * - identical cells (highlight-identical-cells-on-hover)
  * 
  * The highlighting is also relayed to secondary windows.
  */
@@ -144,7 +143,6 @@ function afterLDListenerRegistrations() {
             td.addEventListener("mouseover", () => { highlightRow(td) });
             td.addEventListener("mouseleave", () => { dehighlightRow(td) });
         });
-
     });
 }
 
