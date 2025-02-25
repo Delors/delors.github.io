@@ -226,6 +226,10 @@ ul > li.attention-list {
     mix-blend-mode: hard-light;
 }
 
+.list-with-sublists :is(ol,ul) > li  {
+    margin: 0;
+    font-size: smaller;
+}
 
 
 ul {
@@ -493,7 +497,8 @@ p.system-message-title {
         padding: 0 0.25em;
 
         background-color: var(--current-background-color);
-        border-radius: var(--small-border-radius);
+        border-radius: var(--medium-border-radius);
+        border-top: thin solid var(--dark-gray);
 
         & + * {
             margin-top: 0.25em;
@@ -532,11 +537,13 @@ p.system-message-title {
         }
     }
 
+    /*
     &.hint {
         code {
             background-color: var(--dhbw-light-red);
         }
     }
+    */
 
     &.attention,
     &.warning {
@@ -576,11 +583,13 @@ p.system-message-title {
         background-color: var(--current-background-color);
 
         >p:first-child.admonition-title {
+            border: none;
             font-weight: 500;
             --current-color: var(--white);
             color: var(--current-color);
             --current-background-color: var(--dark-orange);
             background-color: var(--current-background-color);
+
         }
     }
 }
@@ -593,11 +602,16 @@ p.rubric {
 }
 
 p.rubric {
-    color: var(--white);
-    text-shadow: 1px 1px 2px var(--black);
-    background-color: var(--semi-light-gray);
-    border-radius: var(--small-border-radius);
-    padding: 0.1em 0.2em;
+    color: var(--dark-gray);
+    font-weight: 300;
+    /*text-shadow: -1px -1px 2px var(--black);*/
+    /*background-color: var(--gray);
+    border-radius: var(--small-border-radius) var(--small-border-radius) 0 0 ;*/
+    padding: 0;
+    
+    &::before {
+        content: "▌";
+    }
 }
 
 p.subtitle,
@@ -1050,6 +1064,18 @@ table {
     justify-content: center;
     align-items: center;
 }
+
+/** Intended to be used a the section/slide level. */
+.summary > h2:first-child {
+    text-align: center;
+    position: relative;
+    --current-background-color: var(--dark-red);
+    background-color: var(--current-background-color);
+    color: var(--light-gray);
+    text-shadow: -1px -1px 2px var(--black);
+}
+
+
 
 
 /* 
