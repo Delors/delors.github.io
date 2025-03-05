@@ -2,7 +2,8 @@
 
 /* This style sheet is partially based on:
 
-   Minimal style sheet for the HTML output of Docutils.                    
+   Minimal style sheet for the HTML output of  Docutils.
+   
    Created by Günter Milde (2022-06-19) based on html4css1.css by 
    David Goodger (2015, 2021) 
 */
@@ -219,14 +220,16 @@ ul > li.attention-list {
 }
 
 
-:is(.list-with-explanations,.with-explanations) > li > *:not(:first-child) {
+.list-with-explanations > li > *:not(:first-child) {
     margin-top: -0.3em;
     font-size: smaller;
     color: var(--dark-gray);
     mix-blend-mode: hard-light;
 }
-
-.list-with-sublists :is(ol,ul) > li  {
+.list-with-details > li > *:not(:first-child) {
+    font-size: smaller;
+}
+.list-with-sublists > li > :is(ol,ul) {
     margin: 0;
     font-size: smaller;
 }
@@ -612,7 +615,8 @@ p.rubric {
     background-color: var(--current-background-color);
     &::before {
         content: "  ";
-        background-color: var(--dark-gray);
+        --current-background-color: var(--dark-gray);
+        background-color: var(--current-background-color);
         margin-right: 0.25em;
         border-radius: var(--small-border-radius) 0 0 0;
     }
@@ -759,13 +763,16 @@ blockquote {
 */
 pre.code {
     padding: 0;
+
     margin: 0 0 0.75em 0;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 }
 svg text.code,
 code,
 pre.code {
-
-    
 
     --attribute-color: #800000;
 
@@ -797,7 +804,7 @@ pre.code {
     
     --punctuation-color: #E6194B;           /* Strong Red */
         
-    --tag-color: #FABEBE;
+    --tag-color: #fda8a8;
 
     /* RESERVED */
     --color-XXX: #46F0F0; 
@@ -925,6 +932,7 @@ pre.code {
 
         &.tag { 
             color: var(--tag-color);
+            text-shadow: 1px 1px 1px var(--dark-gray);
         }
 
         &.variable {

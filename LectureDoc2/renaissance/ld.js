@@ -235,11 +235,17 @@ let state = { // the (default) state
 /**  
  * Short lived information that is not preserved during reloads.
  */
-let ephemeral = {
+let ephemeral = { 
     // The following information is required to enable animations.
     previousSlide: undefined,
+
     // The channel to communicate with other windows showing the same document.
     ldPerDocumentChannel: undefined,
+    
+    // CSS Properties that we change during the presentation 
+    // when the user wants to black-out the presentation.
+    bodyDisplayProperty: undefined,
+    rootBackgroundColorProperty: undefined
 }
 
 
@@ -1734,6 +1740,9 @@ function hideLectureDoc() {
     localHideLectureDoc();
 }
 function localHideLectureDoc() {
+    ephemeral.rootBackgroundColorProperty = document.documentElement.style.backgroundColor;
+    document.documentElement.style.backgroundColor = "black";
+    ephemeral.bodyDisplayProperty = document.body.style.display;
     document.body.style.display = "none";
 }
 
@@ -1743,7 +1752,8 @@ function ensureLectureDocIsVisible() {
 }
 function localEnsureLectureDocIsVisible() {
     if (document.body.style.display == "none") {
-        document.body.style.display = "initial";
+        document.body.style.display = ephemeral.bodyDisplayProperty;
+        document.documentElement.style.backgroundColor = ephemeral.rootBackgroundColorProperty;
         return true;
     } else {
         return false;

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="de" name="lang" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Compiler&quot;, &quot;Interpreter&quot;, &quot;VMs&quot;, &quot;Java&quot;" name="keywords" />
+<meta content="Von Compilern, Interpretern und virtuellen Maschinen" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-prog-compiler-interpreter-vms" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:vU/baj3UwHJE3NQsrtH0IMOsmlCkOQ3HlFVEfPII1TA=:1GzsHq5bWZ2FV975:P1tvAZ4D1yzcKSdnRiBajITEcGfzdu1jMbRGmcwVYNxsVeJk8ULpgmT5neoD4mtpTH9zLSAMa6wEdYLHOyOXdg3k3e0i7e2vvcUl/6ie9ubglZwLuz8sys5erhdwVwTgvesFZFNjhxDsm4zkTXNUVxpamRGGJrEzFQAd6WtzwcAAfJochhU+4V7a6Nr1T+ZTt/Uh2XG6O4Cf+7Xe8pcD1pcNoX/gY0W0wwJlFZ13MHSrioadKYCEJx0VnkXM9yRbPr0mA772JEymgf9u3UxGPICodtU=" />
+<title>Von Compilern, Interpretern und virtuellen Maschinen</title>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+    <!-- Modules added for specific classes used in the document: -->
+    <script src="../LectureDoc2/genesis/themes/DHBW/logo.js" type="module"></script>
+</head>
+<body>
+<template>
+<ld-topic class="animated-symbol" id="von-compilern-interpretern-und-virtuellen-maschinen">
+<h1 class="title">Von Compilern, Interpretern und virtuellen Maschinen</h1>
+
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/prog-interpreter-vms-und-compiler/folien.de.rst.html">https://delors.github.io/prog-interpreter-vms-und-compiler/folien.de.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/prog-interpreter-vms-und-compiler/folien.de.rst.html.pdf">https://delors.github.io/prog-interpreter-vms-und-compiler/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></ld-topic>
+<ld-topic class="new-section transition-move-to-top" id="einfuhrung">
+<h2>Einführung</h2>
+</ld-topic><ld-topic id="interpreter">
+<h2>Interpreter</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Ein Interpreter ist ein Programm, das ein Programm einer bestimmten Programmiersprache direkt ausführt.</p>
+</aside>
+<p>Arbeitsweise eines Interpreters:</p>
+<div class="peripheral docutils container">
+<p>(<code class="java"><span class="name">inpExpr</span></code> sei der aktueller Ausdruck des auszuführenden Programms)</p>
+</div>
+<ol class="arabic simple">
+<li><p>Syntaktische Analyse von <code class="java"><span class="name">inpExpr</span></code></p></li>
+<li><p>Überführung von <code class="java"><span class="name">inpExpr</span></code> in eine Befehlsfolge der Maschinensprache, oder der Sprache, in der das Interpreterprogramm selbst geschrieben ist (<code class="java"><span class="name">outExpr</span></code>)</p></li>
+<li><p>Ausführung von <code class="java"><span class="name">outExpr</span></code></p></li>
+<li><p>Wiederholung der Schritte (1) bis (3) für die nächste Anweisung.</p></li>
+</ol>
+</ld-topic><ld-topic id="compiler">
+<h2>Compiler</h2>
+<ld-deck>
+<ld-card>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Ein Übersetzer (Compiler) ist ein Programm, das Programme aus einer Programmiersprache A in eine Programmiersprache B übersetzt</p>
+</aside>
+<svg width="70ch" height="5lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        rect {
+            fill: white;
+            stroke: blue;
+            stroke-width: 0.2ch;
+            filter: drop-shadow( 2px 2px 4px rgba(0, 0, 0, .7));
+        }
+        line {
+            stroke:darkorange;
+            stroke-width:0.2ch;
+        }
+        text {
+            fill: black;
+            font-family: var(--theme-code-font-family);
+            font-size: 0.75lh;
+        }
+        .subtext {
+            fill: var(--dark-gray);
+        }
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 2 2"
+        refX="2"
+        refY="1"
+        markerUnits="strokeWidth"
+        markerWidth="7"
+        markerHeight="7"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" />
+        </marker>
+    </defs>
+
+        <!-- Quellprogramm P1 -->
+        <rect x="0.1ch" y="0.1ch" rx="1ch" ry="1ch" width="16ch" height="2.5lh" />
+        <text x="1ch" y="1lh">Programm in</text>
+        <text x="1ch" y="2lh">der Sprache A</text>
+        <text class="subtext" x="1ch" y="4lh">Quellprogramm P1</text>
+
+        <g class="incremental">
+        <!-- Übersetzer -->
+        <line x1="16ch" y1="1.25lh" x2="20ch" y2="1.25lh" marker-end="url(#arrow)" />
+        <rect x="20ch" y="0.5lh" rx="1ch" ry="1ch"  width="12ch" height="1.5lh" />
+        <text x="21.35ch" y="1.6lh">Übersetzer</text>
+        </g>
+
+        <g class="incremental">
+        <!-- Zielprogramm P2 -->
+        <line x1="32ch" y1="1.25lh" x2="36ch" y2="1.25lh" marker-end="url(#arrow)" />
+        <rect x="36ch" y="0.1ch" width="16ch" rx="1ch" ry="1ch" height="2.5lh" />
+        <text x="37ch" y="1lh">Programm in</text>
+        <text x="37ch" y="2lh">der Sprache B</text>
+        <text class="subtext" x="37ch" y="4lh">Zielprogramm P2</text>
+        </g>
+
+        <g class="incremental">
+            <!-- Ausführung -->
+            <line x1="52ch" y1="1.25lh" x2="56ch" y2="1.25lh" marker-end="url(#arrow)" />
+            <text x="57ch" y="1.6lh" style="font-style:italic">Ausführung</text>
+        </g>
+</svg><aside class="admonition legend">
+<p class="admonition-title">Legende</p>
+<p>A ist die Ausgangssprache und B die Zielsprache.</p>
+</aside>
+<div class="incremental docutils container">
+<p><strong>Wesentlicher Aspekt ist die semantische Korrektheit:</strong> Jedem Quellprogramm P1 in A wird genau ein Zielprogramm P2 in B zugeordnet. Das dem Quellprogramm P1 zugeordnete Zielprogramm P2 muss die gleiche Bedeutung (Semantik) wie P1 besitzen.</p>
+</div>
+</ld-card><ld-card class="incremental">
+<p>Mutmaßlich erfunden von Konteradmiral Grace Murray Hopper (1906–1992)</p>
+<p>Nach eigener Aussage hat sie den Compiler aus Faulheit erfunden, und weil sie hoffte, dass &quot;Programmierer wieder Mathematiker werden&quot; könnten.</p>
+</ld-card></ld-deck></ld-topic><ld-topic id="compiler-ubersetzungsphasen">
+<h2>Compiler - Übersetzungsphasen</h2>
+<dl class="incremental-list field-list simple">
+<dt>Lexikalische Analyse<span class="colon">:</span></dt>
+<dd><p>Quellprogramm wird in eine Folge von Worten zerlegt</p>
+</dd>
+<dt>Syntaktische Analyse<span class="colon">:</span></dt>
+<dd><p>Testet, ob das Quellprogramm den Syntaxregeln der Quellsprache entspricht. Strukturiert Worte in gültige Sätze.</p>
+</dd>
+<dt>Semantische Analyse<span class="colon">:</span></dt>
+<dd><p>Testet, ob alle im Quellprogramm benutzten Namen deklariert wurden und ihrem Typ entsprechend verwendet werden, usw.</p>
+</dd>
+<dt>Code-Generierung<span class="colon">:</span></dt>
+<dd><p>Zielprogramm wird erzeugt.</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="compiler-ubersetzung-traditionell">
+<h2>Compiler - Übersetzung (Traditionell)</h2>
+<div class="center-content"><svg width="55ch" height="9lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        line {
+            stroke:darkorange;
+            stroke-width:0.2ch;
+        }
+        text {
+            fill: black;
+            font-family: var(--theme-code-font-family);
+            font-size: 0.75lh;
+        }
+        .subtext {
+            fill: var(--dark-gray);
+        }
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 2 2"
+        refX="2"
+        refY="1"
+        markerUnits="strokeWidth"
+        markerWidth="7"
+        markerHeight="7"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" />
+        </marker>
+    </defs>
+
+    <text x="1ch" y="1lh" style="font-style: italic">N Sprachen</text>
+    <text x="40ch" y="1lh" style="font-style: italic">M Plattformen</text>
+
+    <text x="1ch" y= 2.5lh>Pascal</text>
+    <g class="incremental">
+    <line x1="7ch" y1="2.15lh" x2="39ch" y2="2.25lh" marker-end="url(#arrow)" />
+    <line x1="7ch" y1="2.15lh" x2="39ch" y2="3.75lh" marker-end="url(#arrow)" />
+    <line x1="7ch" y1="2.15lh" x2="39ch" y2="5.25lh" marker-end="url(#arrow)" />
+    <line x1="7ch" y1="2.15lh" x2="39ch" y2="6.75lh" marker-end="url(#arrow)" />
+    <line x1="7ch" y1="2.15lh" x2="39ch" y2="8.25lh" marker-end="url(#arrow)" />
+    </g>
+
+    <text x="1ch" y= 4lh>C</text>
+    <g class="incremental">
+    <line x1="2.5ch" y1="3.65lh" x2="39ch" y2="2.25lh" marker-end="url(#arrow)" />
+    <line x1="2.5ch" y1="3.65lh" x2="39ch" y2="3.75lh" marker-end="url(#arrow)" />
+    <line x1="2.5ch" y1="3.65lh" x2="39ch" y2="5.25lh" marker-end="url(#arrow)" />
+    <line x1="2.5ch" y1="3.65lh" x2="39ch" y2="6.75lh" marker-end="url(#arrow)" />
+    <line x1="2.5ch" y1="3.65lh" x2="39ch" y2="8.25lh" marker-end="url(#arrow)" />
+    </g>
+
+    <text x="1ch" y= 5.5lh>C++</text>
+    <g class="incremental">
+    <line x1="5ch" y1="5.15lh" x2="39ch" y2="2.25lh" marker-end="url(#arrow)" />
+    <line x1="5ch" y1="5.15lh" x2="39ch" y2="3.75lh" marker-end="url(#arrow)" />
+    <line x1="5ch" y1="5.15lh" x2="39ch" y2="5.25lh" marker-end="url(#arrow)" />
+    <line x1="5ch" y1="5.15lh" x2="39ch" y2="6.75lh" marker-end="url(#arrow)" />
+    <line x1="5ch" y1="5.15lh" x2="39ch" y2="8.25lh" marker-end="url(#arrow)" />
+    </g>
+
+    <text x="1ch" y= 7lh>Smalltalk</text>
+    <g class="incremental">
+    <line x1="10ch" y1="6.65lh" x2="39ch" y2="2.25lh" marker-end="url(#arrow)" />
+    <line x1="10ch" y1="6.65lh" x2="39ch" y2="3.75lh" marker-end="url(#arrow)" />
+    <line x1="10ch" y1="6.65lh" x2="39ch" y2="5.25lh" marker-end="url(#arrow)" />
+    <line x1="10ch" y1="6.65lh" x2="39ch" y2="6.75lh" marker-end="url(#arrow)" />
+    <line x1="10ch" y1="6.65lh" x2="39ch" y2="8.25lh" marker-end="url(#arrow)" />
+    </g>
+
+    <text x="1ch" y= 8.5lh>...</text>
+    <g class="incremental">
+    <line x1="4ch" y1="8.25lh" x2="39ch" y2="2.25lh" marker-end="url(#arrow)" />
+    <line x1="4ch" y1="8.25lh" x2="39ch" y2="3.75lh" marker-end="url(#arrow)" />
+    <line x1="4ch" y1="8.25lh" x2="39ch" y2="5.25lh" marker-end="url(#arrow)" />
+    <line x1="4ch" y1="8.25lh" x2="39ch" y2="6.75lh" marker-end="url(#arrow)" />
+    <line x1="4ch" y1="8.25lh" x2="39ch" y2="8.25lh" marker-end="url(#arrow)" />
+    </g>
+
+    <text x="40ch" y= 2.5lh>Linux (ARM)</text>
+    <text x="40ch" y= 4lh>Apple (ARM)</text>
+    <text x="40ch" y= 5.5lh>Apple (Intel)</text>
+    <text x="40ch" y= 7lh>Windows (Intel)</text>
+    <text x="40ch" y= 8.5lh>...</text>
+
+</svg></div><div class="incremental docutils container">
+<p>D. h. der Quelltext in Sprache A wird meinem spezialisierten Compiler für Sprache A und Zielplattform X in ein ausführbares Programm für X übersetzt.</p>
+</div>
+<ul class="incremental-list positive-list simple">
+<li><p>Performance/Effizienz: Optimale Ausnutzung der jeweiligen Prozessoreigenschaften und hohe Abarbeitungsgeschwindigkeit der übersetzten Programme.</p></li>
+</ul>
+<ul class="incremental-list negative-list simple">
+<li><p>Plattformabhängigkeit: Ein Programm, das in einer höheren Programmiersprache geschrieben ist, kann - bei Verfügbarkeit eines Compilers - auf jeder Maschine laufen.</p></li>
+</ul>
+</ld-topic><ld-topic id="interpreter-vor-und-nachteile">
+<h2>Interpreter - Vor- und Nachteile</h2>
+<ul class="incremental-list positive-list simple">
+<li><p>es lassen sich relativ schnell lauffähige Programmversionen erstellen (Prototyping)</p></li>
+<li><p>Schnelle Änderbarkeit: geänderte Anweisungen / Deklarationen des Quellprogramms sind sofort ausführbar</p></li>
+<li><p>Neuübersetzung nicht notwendig</p></li>
+</ul>
+<ul class="incremental-list negative-list simple">
+<li><p>Längere Ausführungszeit</p></li>
+<li><p>Werden Anweisungen des Quellprogramms k-mal verwendet (z.B. bei Schleifen), werden sie k-mal analysiert und überführt</p></li>
+<li><p>Bei Zugriffen auf Variablen müssen die zugeordneten Adressen immer wieder bestimmt werden.</p></li>
+</ul>
+<aside class="admonition incremental remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Auch heute gibt es noch <em>reine</em> Interpreter, aber Programmiersprachen wie Python und Java etc. setzen schon lange auf hybride Ansätze, die versuchen das Beste aus allen Welten vereinen.</p>
+</aside>
+</ld-topic><ld-topic id="virtuelle-maschinen">
+<h2>Virtuelle Maschinen</h2>
+<ld-deck>
+<ld-card>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Eine virtuelle Maschine ist ein Programm, das die Arbeit eines Prozessors in Software simuliert</p>
+</aside>
+<ul class="incremental-list simple">
+<li><p>Programme einer höheren Sprache werden in eine Assembler-ähnliche Zwischensprache übersetzt.</p></li>
+<li><p>Der simulierte Hardware-Prozessor nutzt diese Zwischensprache und besitzt einige Software-Register</p></li>
+<li><p>Die Anweisungen der Zwischensprache nennt man auch Byte-Code.</p></li>
+<li><p>Die Zwischensprache wird von der Virtuellen Maschine interpretiert.</p></li>
+<li><p>Eine virtuelle Maschine versteckt die spezifischen Eigenschaften eines konkreten Prozessors. Wir haben somit eine neue Abstraktionsschicht auf der Hardware-Ebene!</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<div class="center-content"><svg width="55ch" height="9lh" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        line {
+        stroke:darkorange;
+        stroke-width:0.2ch;
+        }
+        text {
+        fill: black;
+        font-family: var(--theme-code-font-family);
+        font-size: 0.75lh;
+        }
+        .subtext {
+        fill: var(--dark-gray);
+        }
+    </style>
+    <defs>
+        <marker
+            id="arrow"
+            viewBox="0 0 2 2"
+            refX="2"
+            refY="1"
+            markerUnits="strokeWidth"
+            markerWidth="7"
+            markerHeight="7"
+            orient="auto-start-reverse">
+            <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" />
+        </marker>
+    </defs>
+
+    <text x="1ch" y="1lh" style="font-style: italic">N Sprachen</text>
+    <text x="40ch" y="1lh" style="font-style: italic">M Plattformen</text>
+
+    <text x="20ch" y="4.5lh" style="font-style: italic">Virtuelle</text>
+    <text x="20ch" y="5.5lh" style="font-style: italic">Machine</text>
+
+    <text x="1ch" y= 2.5lh>Pascal</text>
+    <g class="incremental">
+        <line x1="7ch" y1="2.15lh" x2="19ch" y2="4.15lh" marker-end="url(#arrow)" />
+
+    </g>
+
+    <text x="1ch" y= 4lh>C</text>
+    <g class="incremental">
+        <line x1="2.5ch" y1="3.65lh" x2="19ch" y2="4.35lh" marker-end="url(#arrow)" />
+    </g>
+
+    <text x="1ch" y= 5.5lh>C++</text>
+    <g class="incremental">
+        <line x1="4.5ch" y1="5.15lh" x2="19ch" y2="4.55lh" marker-end="url(#arrow)" />
+    </g>
+
+    <text x="1ch" y= 7lh>Smalltalk</text>
+    <g class="incremental">
+        <line x1="10.5ch" y1="6.65lh" x2="19ch" y2="4.75lh" marker-end="url(#arrow)" />
+    </g>
+
+    <text x="1ch" y= 8.5lh>...</text>
+    <g class="incremental">
+        <line x1="5ch" y1="8.25lh" x2="19ch" y2="4.95lh" marker-end="url(#arrow)" />
+    </g>
+
+    <g class="incremental">
+        <line x1="29ch" y1="4.95lh" x2="39ch" y2="8.25lh" marker-end="url(#arrow)" />
+        <line x1="29ch" y1="4.15lh" x2="39ch" y2="2.15lh" marker-end="url(#arrow)" />
+        <line x1="29ch" y1="4.35lh" x2="39ch" y2="3.65lh" marker-end="url(#arrow)" />
+        <line x1="29ch" y1="4.55lh" x2="39ch" y2="5.15lh" marker-end="url(#arrow)" />
+        <line x1="29ch" y1="4.75lh" x2="39ch" y2="6.65lh" marker-end="url(#arrow)" />
+    </g>
+
+    <text x="40ch" y= 2.5lh>Linux (ARM)</text>
+    <text x="40ch" y= 4lh>Apple (ARM)</text>
+    <text x="40ch" y= 5.5lh>Apple (Intel)</text>
+    <text x="40ch" y= 7lh>Windows (Intel)</text>
+    <text x="40ch" y= 8.5lh>...</text>
+
+</svg></div></ld-card><ld-card class="incremental">
+<p>Eine VM verdeckt die speziellen Eigenschaften des jeweiligen Prozessortyps und dient somit als Abstraktionsschicht!</p>
+<ul class="incremental-list positive-list simple">
+<li><p>Übersetzte Programme einer Sprache laufen auf allen Prozessortypen, für die es einen Byte-Code Interpreter(VM) gibt.</p></li>
+<li><p>Es wird nur ein Compiler benötigt und die Sprache wird plattformunabhängig.</p></li>
+</ul>
+<div class="supplemental">
+<p>Natürlich braucht man eine VM pro Prozessortyp und Platform. Aber das ist ein geringerer Aufwand als für jede Sprache einen eigenen Compiler zu schreiben.</p>
+</div><ul class="incremental-list negative-list">
+<li><p>Byte-Code Programme sind langsamer als Maschinenprogramme</p>
+<div class="incremental peripheral docutils container">
+<p>Just-in-time-compiler (JIT) versuchen diesen Nachteil aufzulösen. Sie Übersetzen den Byte-Code in ein Objekt-Programm für einen speziellen Prozessortyp sobald es geladen wird, oder nach einer gewissen Anzahl an Ausführungen.</p>
+</div>
+</li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic id="struktur-eines-java-programms">
+<h2>Struktur eines Java-Programms</h2>
+<p>Ein Java-Programm kann aus beliebig vielen Klassen bestehen, von denen mindestens eine die <code class="java"><span class="name">main</span></code>-Operation besitzen muss (Hauptprogrammklasse).</p>
+<div class="incremental compound">
+<p class="rubric">Aufgaben von <code class="java"><span class="name">main</span></code></p>
+<ul class="incremental-list list-with-explanations">
+<li><p>Objekterzeugung; d. h. der Aufbau einer anfangs minimalen Welt</p></li>
+<li><p>Aufruf der ersten Operation</p></li>
+<li><p>Sollte in der Regel keinen weitergehenden Kontrollfluss des Java-Programms enthalten</p>
+<p>Der Kontrollfluss wird innerhalb der Objektoperationen realisiert.</p>
+</li>
+<li><p><code class="java"><span class="name">main</span></code> wird mit Hilfe des Java-Interpreters gestartet und ausgeführt</p></li>
+</ul>
+</div>
+</ld-topic><ld-topic id="java-laufzeitumgebung">
+<h2>Java-Laufzeitumgebung</h2>
+<ld-story>
+<dl class="incremental-list dd-margin-left-4em field-list">
+<dt>Java Interpreter<span class="colon">:</span></dt>
+<dd><p>Programm zur Ausführung des Java-Bytecodes auf dem konkreten Rechner.</p>
+</dd>
+<dt>Just-In-Time-Compiler (JIT-Compiler)<span class="colon">:</span></dt>
+<dd><p>Klassen bzw. Methoden werden bei Bedarf in  Code der jeweiligen Maschine übersetzt. Ggf. auf verschiedenen Optimierungsstufen.</p>
+</dd>
+<dt>Runtime-System<span class="colon">:</span></dt>
+<dd><p>Stellt einem Java-Programm wichtige Ressourcen zur Verfügung.</p>
+</dd>
+<dt>Bytecode Verifier<span class="colon">:</span></dt>
+<dd><p>Überprüft, ob die geladenen Bytecodes der JVM-Spezifikation entsprechen.
+Klassen können über das Netz oder aus dem lokalen Dateisystem zur Laufzeit einer Java-Anwendung in das Laufzeitsystem nachgeladen werden</p>
+<p>Ein Teil der Sicherheitsmaßnahmen wird durch den Bytecode Verifier realisiert.</p>
+</dd>
+</dl>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Achtung!</p>
+<p>Die Sicherheit, die der Bytecode-Verifier und Java als solches bietet - ist nicht ausreichend, um die Sicherheit des Systems zu gewährleisten. Führen Sie Java Programme, denen Sie nicht vertrauen, niemals aus.</p>
+</aside>
+</ld-story></ld-topic><ld-topic id="java-ubersetzung">
+<h2>Java-Übersetzung</h2>
+<ul class="simple">
+<li><p>Die Eingabe für <code class="console"><span class="generic output">javac</span></code> sind ein oder mehrere Java-Dateien, die jeweils die eine oder mehrere Klassendefinitionen enthalten.</p></li>
+<li><p>Eine derartige Datei nennt man eine Übersetzungseinheit</p></li>
+<li><p>Die Ausgabe ist pro Klasse X genau eine Datei X.class, die den Bytecode der Klasse enthält.</p></li>
+</ul>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<ld-deck>
+<ld-card>
+<p class="rubric">HelloWorld.java (im Default Package)</p>
+<pre class="code java literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">HelloWorld</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Hello, World!&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Kompilieren mit javac und Ausführen mit java</p>
+<pre class="code console literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="generic prompt">$ </span>javac<span class="whitespace"> </span>HelloWorld.java<span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="generic prompt">$ </span>ls<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="generic output">HelloWorld.class HelloWorld.java
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="generic output"></span><span class="generic prompt">$ </span>java<span class="whitespace"> </span>HelloWorld<span class="whitespace">                                        </span><span class="comment single"># ACHTUNG kein &quot;.java&quot;!
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="comment single"></span><span class="generic output">Hello, World!</span></code></pre>
+</ld-card><ld-card class="incremental">
+<p class="rubric">HelloWorld.java (im Package de.dhbw)</p>
+<p><span class="peripheral">Die Datei HelloWorld.java muss im Verzeichnis de/dhbw liegen!</span></p>
+<pre class="code java literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword namespace">package</span><span class="whitespace"> </span><span class="name namespace">de.dhbw</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">HelloWorld</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace">        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Hello, World!&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">7 </small><code data-lineno="7 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Kompilieren mit javac und Ausführen mit java</p>
+<pre class="code console literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="generic prompt">$ </span>javac<span class="whitespace"> </span>de/dhbw/HelloWorld.java<span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="generic prompt">$ </span>ls<span class="whitespace"> </span>de/dhbw<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="generic output">HelloWorld.class HelloWorld.java
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="generic output"></span><span class="generic prompt">$ </span>java<span class="whitespace"> </span>de.dhbw.HelloWorld<span class="whitespace">                </span><span class="comment single"># ACHTUNG vollständiger Name der Klasse!
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="comment single"></span><span class="generic output">Hello, World!</span></code></pre>
+</ld-card></ld-deck></aside>
+</ld-topic><ld-topic class="exercises" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - RPN Taschenrechner kompilieren/Java Code übersetzen" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">RPN Taschenrechner kompilieren/Java Code übersetzen</p>
+<p>Stellen Sie sicher, dass Ihr Programm für den RPN Taschenrechner durch die Klasse RPN implementiert wird und diese Klasse in der entsprechenden Java Datei gespeichert ist. Die Klasse RPN soll im Package <code class="java"><span class="name">rpn</span></code> sein! Die Klassen für den Stack und die Liste sollen im Package <code class="java"><span class="name">ds</span></code> liegen.</p>
+<p>Compilieren Sie nur Ihr Program und die benötigten Hilfsklassen in einem Schritt mit Hilfe von <code class="console"><span class="generic output">javac</span></code>. Starten Sie danach Ihr Programm mit Hilfe von <code class="console"><span class="generic output">java</span></code>. Vergessen Sie nicht den vollqualifizierten Namen der RPN Klasse zu verwenden. Stellen Sie auch sicher, dass Sie sich im passen Root-Verzeichnis befinden.</p>
+<div class="supplemental">
+<p>Falls Sie den Code nicht haben, dann können Sie den Code von hier verwenden. Achten Sie darauf die Dateien in den entsprechenden Verzeichnissen zu speichern!</p>
+<p class="rubric">Datei: rpn/RPN.java</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">package</span><span class="whitespace"> </span><span class="name namespace">rpn</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">ds.Stack</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">RPN</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">printAll</span><span class="punctuation">(</span><span class="name">Stack</span><span class="operator">&lt;</span><span class="name">String</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">stack</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">        </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="name">stack</span><span class="punctuation">.</span><span class="name attribute">size</span><span class="punctuation">();</span><span class="whitespace"> </span><span class="name">i</span><span class="operator">++</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">            </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">print</span><span class="punctuation">(</span><span class="name">stack</span><span class="punctuation">.</span><span class="name attribute">get</span><span class="punctuation">(</span><span class="name">i</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot; &quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">args</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">            </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Usage: java RPN &lt;expr&gt;&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">            </span><span class="keyword">return</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace">        </span><span class="comment single">// Main logic</span><span class="whitespace">
+</span></code><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace">        </span><span class="name">Stack</span><span class="operator">&lt;</span><span class="name">String</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">infix</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Stack</span><span class="operator">&lt;&gt;</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">21 </small><code data-lineno="21 "><span class="whitespace">        </span><span class="name">Stack</span><span class="operator">&lt;</span><span class="name">Double</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">ops</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Stack</span><span class="operator">&lt;&gt;</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">22 </small><code data-lineno="22 "><span class="whitespace">        </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">String</span><span class="whitespace"> </span><span class="name">arg</span><span class="whitespace"> </span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">23 </small><code data-lineno="23 "><span class="whitespace">            </span><span class="keyword">switch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">arg</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">24 </small><code data-lineno="24 "><span class="whitespace">                </span><span class="keyword">case</span><span class="whitespace"> </span><span class="literal string">&quot;+&quot;</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">25 </small><code data-lineno="25 "><span class="whitespace">                    </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">());</span><span class="whitespace">
+</span></code><small class="ln">26 </small><code data-lineno="26 "><span class="whitespace">                    </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="literal string">&quot;(&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot; + &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;)&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">27 </small><code data-lineno="27 "><span class="whitespace">                    </span><span class="keyword">break</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">28 </small><code data-lineno="28 "><span class="whitespace">                </span><span class="keyword">case</span><span class="whitespace"> </span><span class="literal string">&quot;*&quot;</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">29 </small><code data-lineno="29 "><span class="whitespace">                    </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">());</span><span class="whitespace">
+</span></code><small class="ln">30 </small><code data-lineno="30 "><span class="whitespace">                    </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="literal string">&quot;(&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot; * &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;)&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">31 </small><code data-lineno="31 "><span class="whitespace">                    </span><span class="keyword">break</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">32 </small><code data-lineno="32 "><span class="whitespace">                </span><span class="keyword">default</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">33 </small><code data-lineno="33 "><span class="whitespace">                    </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="name">arg</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">34 </small><code data-lineno="34 "><span class="whitespace">                    </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="name">Double</span><span class="punctuation">.</span><span class="name attribute">parseDouble</span><span class="punctuation">(</span><span class="name">arg</span><span class="punctuation">));</span><span class="whitespace">
+</span></code><small class="ln">35 </small><code data-lineno="35 "><span class="whitespace">            </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">36 </small><code data-lineno="36 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">37 </small><code data-lineno="37 "><span class="whitespace">        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">peek</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot; = &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">peek</span><span class="punctuation">());</span><span class="whitespace">
+</span></code><small class="ln">38 </small><code data-lineno="38 "><span class="whitespace">
+</span></code><small class="ln">39 </small><code data-lineno="39 "><span class="whitespace">        </span><span class="name">printAll</span><span class="punctuation">(</span><span class="name">infix</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">40 </small><code data-lineno="40 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">41 </small><code data-lineno="41 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<p class="rubric">Datei: ds/Stack.java</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">package</span><span class="whitespace"> </span><span class="name namespace">ds</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.NoSuchElementException</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">Stack</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="keyword declaration">extends</span><span class="whitespace"> </span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">push</span><span class="punctuation">(</span><span class="name">T</span><span class="whitespace"> </span><span class="name">element</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">        </span><span class="name">add</span><span class="punctuation">(</span><span class="name">element</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">T</span><span class="whitespace"> </span><span class="name function">pop</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">size</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">            </span><span class="keyword">throw</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">NoSuchElementException</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">        </span><span class="name">T</span><span class="whitespace"> </span><span class="name">element</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">get</span><span class="punctuation">(</span><span class="name">size</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">        </span><span class="name">remove</span><span class="punctuation">(</span><span class="name">size</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">element</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace">
+</span></code><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">T</span><span class="whitespace"> </span><span class="name function">peek</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">21 </small><code data-lineno="21 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">size</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">22 </small><code data-lineno="22 "><span class="whitespace">            </span><span class="keyword">throw</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">NoSuchElementException</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">23 </small><code data-lineno="23 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">24 </small><code data-lineno="24 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">get</span><span class="punctuation">(</span><span class="name">size</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">25 </small><code data-lineno="25 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">26 </small><code data-lineno="26 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<p class="rubric">Datei: ds/List.java</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">package</span><span class="whitespace"> </span><span class="name namespace">ds</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword namespace">import static</span><span class="whitespace"> </span><span class="name namespace">java.lang.System.arraycopy</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name">T</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">elements</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">count</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">List</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">size</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">        </span><span class="name decorator">&#64;SuppressWarnings</span><span class="punctuation">(</span><span class="literal string">&quot;unchecked&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">        </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">tElements</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">T</span><span class="operator">[]</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Object</span><span class="operator">[</span><span class="name">Math</span><span class="punctuation">.</span><span class="name attribute">max</span><span class="punctuation">(</span><span class="name">size</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">16</span><span class="punctuation">)</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">        </span><span class="name">elements</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">tElements</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">        </span><span class="name">count</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">List</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace">        </span><span class="keyword">this</span><span class="punctuation">(</span><span class="literal number integer">16</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace">
+</span></code><small class="ln">21 </small><code data-lineno="21 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">size</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">22 </small><code data-lineno="22 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">count</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">23 </small><code data-lineno="23 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">24 </small><code data-lineno="24 "><span class="whitespace">
+</span></code><small class="ln">25 </small><code data-lineno="25 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">T</span><span class="whitespace"> </span><span class="name function">get</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">index</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">26 </small><code data-lineno="26 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">index</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace"> </span><span class="operator">||</span><span class="whitespace"> </span><span class="name">index</span><span class="whitespace"> </span><span class="operator">&gt;=</span><span class="whitespace"> </span><span class="name">count</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">27 </small><code data-lineno="27 "><span class="whitespace">            </span><span class="keyword">throw</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">IndexOutOfBoundsException</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">28 </small><code data-lineno="28 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">29 </small><code data-lineno="29 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">elements</span><span class="operator">[</span><span class="name">index</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">30 </small><code data-lineno="30 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">31 </small><code data-lineno="31 "><span class="whitespace">
+</span></code><small class="ln">32 </small><code data-lineno="32 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">add</span><span class="punctuation">(</span><span class="name">T</span><span class="whitespace"> </span><span class="name">element</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">33 </small><code data-lineno="33 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">count</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">elements</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">34 </small><code data-lineno="34 "><span class="whitespace">            </span><span class="name">Object</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">newElements</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Object</span><span class="operator">[</span><span class="name">Math</span><span class="punctuation">.</span><span class="name attribute">min</span><span class="punctuation">(</span><span class="name">elements</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">1000</span><span class="punctuation">)</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">35 </small><code data-lineno="35 "><span class="whitespace">            </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">arraycopy</span><span class="punctuation">(</span><span class="name">elements</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">newElements</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">elements</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">36 </small><code data-lineno="36 "><span class="whitespace">            </span><span class="name decorator">&#64;SuppressWarnings</span><span class="punctuation">(</span><span class="literal string">&quot;unchecked&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">37 </small><code data-lineno="37 "><span class="whitespace">            </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">tElements</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">T</span><span class="operator">[]</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">newElements</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">38 </small><code data-lineno="38 "><span class="whitespace">            </span><span class="name">elements</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">tElements</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">39 </small><code data-lineno="39 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">40 </small><code data-lineno="40 "><span class="whitespace">        </span><span class="name">elements</span><span class="operator">[</span><span class="name">count</span><span class="operator">++]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">element</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">41 </small><code data-lineno="41 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">42 </small><code data-lineno="42 "><span class="whitespace">
+</span></code><small class="ln">43 </small><code data-lineno="43 "><span class="whitespace">    </span><span class="name decorator">&#64;SafeVarargs</span><span class="whitespace">
+</span></code><small class="ln">44 </small><code data-lineno="44 "><span class="whitespace">    </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">addAll</span><span class="punctuation">(</span><span class="name">T</span><span class="punctuation">...</span><span class="whitespace"> </span><span class="name">elements</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">45 </small><code data-lineno="45 "><span class="whitespace">        </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">T</span><span class="whitespace"> </span><span class="name">element</span><span class="whitespace"> </span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">elements</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">46 </small><code data-lineno="46 "><span class="whitespace">            </span><span class="name">add</span><span class="punctuation">(</span><span class="name">element</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">47 </small><code data-lineno="47 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">48 </small><code data-lineno="48 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">49 </small><code data-lineno="49 "><span class="whitespace">
+</span></code><small class="ln">50 </small><code data-lineno="50 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">set</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">index</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">T</span><span class="whitespace"> </span><span class="name">element</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">51 </small><code data-lineno="51 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">index</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace"> </span><span class="operator">||</span><span class="whitespace"> </span><span class="name">index</span><span class="whitespace"> </span><span class="operator">&gt;=</span><span class="whitespace"> </span><span class="name">count</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">52 </small><code data-lineno="52 "><span class="whitespace">            </span><span class="keyword">throw</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">IndexOutOfBoundsException</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">53 </small><code data-lineno="53 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">54 </small><code data-lineno="54 "><span class="whitespace">        </span><span class="name">elements</span><span class="operator">[</span><span class="name">index</span><span class="operator">]</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">element</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">55 </small><code data-lineno="55 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">56 </small><code data-lineno="56 "><span class="whitespace">
+</span></code><small class="ln">57 </small><code data-lineno="57 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">String</span><span class="whitespace"> </span><span class="name function">toString</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">58 </small><code data-lineno="58 "><span class="whitespace">        </span><span class="name">StringBuilder</span><span class="whitespace"> </span><span class="name">sb</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">StringBuilder</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">59 </small><code data-lineno="59 "><span class="whitespace">        </span><span class="name">sb</span><span class="punctuation">.</span><span class="name attribute">append</span><span class="punctuation">(</span><span class="literal string">&quot;[&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">60 </small><code data-lineno="60 "><span class="whitespace">        </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="name">count</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="operator">++</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">61 </small><code data-lineno="61 "><span class="whitespace">            </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">i</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">62 </small><code data-lineno="62 "><span class="whitespace">                </span><span class="name">sb</span><span class="punctuation">.</span><span class="name attribute">append</span><span class="punctuation">(</span><span class="literal string">&quot;, &quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">63 </small><code data-lineno="63 "><span class="whitespace">            </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">64 </small><code data-lineno="64 "><span class="whitespace">            </span><span class="name">sb</span><span class="punctuation">.</span><span class="name attribute">append</span><span class="punctuation">(</span><span class="name">elements</span><span class="operator">[</span><span class="name">i</span><span class="operator">]</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">65 </small><code data-lineno="65 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">66 </small><code data-lineno="66 "><span class="whitespace">        </span><span class="name">sb</span><span class="punctuation">.</span><span class="name attribute">append</span><span class="punctuation">(</span><span class="literal string">&quot;]&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">67 </small><code data-lineno="67 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">sb</span><span class="punctuation">.</span><span class="name attribute">toString</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">68 </small><code data-lineno="68 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">69 </small><code data-lineno="69 "><span class="whitespace">
+</span></code><small class="ln">70 </small><code data-lineno="70 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">remove</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">index</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">71 </small><code data-lineno="71 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">index</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace"> </span><span class="operator">||</span><span class="whitespace"> </span><span class="name">index</span><span class="whitespace"> </span><span class="operator">&gt;=</span><span class="whitespace"> </span><span class="name">count</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">72 </small><code data-lineno="72 "><span class="whitespace">            </span><span class="keyword">throw</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">IndexOutOfBoundsException</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">73 </small><code data-lineno="73 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">74 </small><code data-lineno="74 "><span class="whitespace">
+</span></code><small class="ln">75 </small><code data-lineno="75 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">count</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="name">elements</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="whitespace"> </span><span class="operator">/</span><span class="whitespace"> </span><span class="literal number integer">4</span><span class="whitespace"> </span><span class="operator">&amp;&amp;</span><span class="whitespace"> </span><span class="name">elements</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">16</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">76 </small><code data-lineno="76 "><span class="whitespace">            </span><span class="name decorator">&#64;SuppressWarnings</span><span class="punctuation">(</span><span class="literal string">&quot;unchecked&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">77 </small><code data-lineno="77 "><span class="whitespace">            </span><span class="name">T</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">newElements</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">T</span><span class="operator">[]</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Object</span><span class="operator">[</span><span class="name">Math</span><span class="punctuation">.</span><span class="name attribute">max</span><span class="punctuation">(</span><span class="name">elements</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="whitespace"> </span><span class="operator">/</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">16</span><span class="punctuation">)</span><span class="operator">]</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">78 </small><code data-lineno="78 "><span class="whitespace">            </span><span class="name">arraycopy</span><span class="punctuation">(</span><span class="name">elements</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">newElements</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">index</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">79 </small><code data-lineno="79 "><span class="whitespace">            </span><span class="name">arraycopy</span><span class="punctuation">(</span><span class="name">elements</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">index</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">newElements</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">index</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">count</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name">index</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">80 </small><code data-lineno="80 "><span class="whitespace">            </span><span class="name">elements</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">newElements</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">81 </small><code data-lineno="81 "><span class="whitespace">            </span><span class="name">count</span><span class="operator">--</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">82 </small><code data-lineno="82 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">else</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">83 </small><code data-lineno="83 "><span class="whitespace">            </span><span class="name">arraycopy</span><span class="punctuation">(</span><span class="name">elements</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">index</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">elements</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">index</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">count</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name">index</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">84 </small><code data-lineno="84 "><span class="whitespace">            </span><span class="name">count</span><span class="operator">--</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">85 </small><code data-lineno="85 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">86 </small><code data-lineno="86 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">87 </small><code data-lineno="87 "><span class="whitespace">
+</span></code><small class="ln">88 </small><code data-lineno="88 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</div><div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:Av/LFK49JcCzpKY0+37mnjL7NT2on5ffDFoeBHzvIdQ=:LGo1Mhf2A4BCqjQL:ZXaIVDQjNhkaw4+8Ie3L05Auu2BURI6Q8FMiYwcv7O8k+Yr/jrVS8K1XOHt7VZErP00mquDPVy+clJi4ONkf10GF8IDgbEKuEvh2UzEFd+8W6IcTqFkHYV7dmAGIpv6Wg+Og/IWfzUqNpBjj6M4cbcxv5V04l8NUo8Y6WpHFmcBnxSNcJMvw/SzfYg8dkshUopcYTWD0cL0Ea37vQTbS+A/6adj74uUpXdshVd0J7ddhg3P/D0l0NzMqk+8VulMTHvjam4uppPgfo4RwunmwNgc8o/EhH6Cotxp4vNgHF7ryYJ8+InziHc1cMWhUULIiM31g2PL6ffs+MaQzd91JrNvmaVdpk6a+DjglfklXY7TcxTz1g+9V842dC381P6i4HWNA00whH/g1aVt/1myKGdtO9b77SHttXud9ZxMhOiXmUKfxZyfNAVwETP/FYpEb1sQhLyKJY3lY1EGrVOJ5x2rAsoMzmFMmdacOOBb3mHubL17l4pv6D0Fn8hw6PoV4Tva5rHdwo34zkeyQhZ95tgZ26eruo5mLJpHiJMrT4JPMchmC9tK0Ss4rx9XrS1AfgXXnML8C7Rfi3VhGq+UdY/B6koCQf00U4YOvQSZE5cNHXMyB15iaCaSFPlybpOosIRIucQILkQPzEhKmz50+guZ28ePB2SQ/OIpQTZEMQ0KBEnrpKTEB297TR5R7hNTCHKPiOAe8mh49yMY9jUwN3CfjqQGi5yak2dAJLOTds/iiyaLEc5XGvVLHW7KFjDqKjFyDaQ3e6Uo97+PnN5/K33aHhJdwSa3CwU558aEfBlB+UrfCfZ4Nl4WABMAdduuKuKs51WgPTJEIYigGen2SyErXn1tatde8xzegJUZ5fbaxCqBpTx0CCFWxTHI4Hy0T3HZcU2QGPMW7aRsocpRKH1PveyauWKscthXQp6cxAwlcLGJt12iyqO0pApJuFXGcLadQRNMQUOXDcZHQJdVMHQ1vYT4HqHKBJOpyeg2XZG39PuJUTGcYJIQ1ib7X7Axoa0o+eCCispbk0jGCeChYtqi22/ttjIIca5tUM2fNbRz8d3nqABn+tWsvQwTI49kD9c4ThtTHoBGdLfql01ZS5OJJUzb9T9K/3b8cVoNfe1dmhGyfHJRs6PlUWBjuLmOF4GXUMwSjM3GCwL0XhogSG2cAn+lmrzDm+5d1JUT7F1MivKyv2MAE/HMURq7ISlZymOEBXsn49WZJHZO98gIjZ02ROI7day38C3dUfWrfIiXU6y0+4JBRPpmhR85+hJ8UMG19akMRQjOUXvegT44+d7NC27FFD62a7WBwXCcHUq1sI5s29LTy8HKynRjjIPXLwdrE3ih4xSPXM451zFN+XiAvy3FbNuyZUGt4h/v7jjAVkx7A4zCwqzkSGSlJ0KaAyKjiXWcGuAU0D1YVgA2QjakmjDdNDcdRMzA4YL+yUVltYTB1u55g7g9pYafA7K5E10aD5TDoIUAygcc+O5oSXrgyD8Wz5iBufZmrhpr7HDMWLTu+ichkp1NrYC0bWpsvf18bZl0DfbGt/myk4xavQE/z4XzW5r4/3u2DBl0KpqTrcY+r8tV26XxqGX5epCIdBUxmJNuW835mqJ8s0FFKdEyk0vJ7Rg6wD4yOyr2FtlNw9FVx1R3S0wNnmKVACg0tUiX82IFRhTUNIOa2dQEgmVwUdPEb+7CILTAvz77n8q+I0CD+5zwfn3OKCk5FH/vnBShpPGOTn3mzd3Cfy4iQF26Uj7UV8rvM3f5u8dkbgHhrhpmmf14sB92+z4OrkL5pDgJifa3c7jeBD+qjByHkR8O448ZNK7W3N9LQPZWgG8e1cz/qaApWcYGVCuAMnCBWhcblpSpSVXbQMMJfYzHjA3qEg5jVOulF84nLUqDURNDEDUfmf2ABBYz0AN5o06ANO2Bjc5jC0E9k6d33Xspwt+JwZVRPCiNw1ZLo1QnVbZUVPNNxX5dWZYk3hG281TrSTpCLFaGeILo8LNfRBIeouir24rBrThmP5EhFYT4Un+qdgZxbKQnaL87syVd2kCTR8psz50xm5c9Wh2DCYLbMBH+m0EGCWlAjSus1U5RdOovvnQjjN71xLwy69rh10cUlJkfx51gHzppW3GZnhFLSZZ8uWQKRwQs3QQjIfZMii5tnz1AOX7ZWboMWRZfV7m1MwlJf2ZhaJ9a+Agr9CNzLy0oiIzJLKSV7Q2HPAzCvt2OldnwORSZWibRDOAqlIAadwpaf7Yq8Y15F7VUCLaO4hClSYO5FhqnCJNLYMdvxae7Y0J7SS4hJBK0jfN9uY1uDjxTNQkCjOI89U9lO9Oc7lbdJr+7MGstO+4KQ1J0dwQPmVVen+elfxsS+33X1uGVlq5mW1/oVDVT/y2hM1cjZHEIDAGnt/a9e+NPvCes2P/KpykzDByxenhm9QEuCGeMZk+oVpNJwGutn2Qwf0zirCpfyHJnySyybRlyZjQ1BIdIwz5T1NPFVZoo1Ary17xDobfbGvRcu6/LO2/fOTSvZvi2iz+wrW2F7SspeFGSDg6EnwL6eKBNaZ0Q6XVofkV/MTqQ98PYfr7dHfFs43Fuxyhm4QPU=</div>
+</div>
+</ld-topic>
+</template>
+</body>
+</html>

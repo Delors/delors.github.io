@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="de" name="lang" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Projekt&quot;, &quot;Java&quot;" name="keywords" />
+<meta content="Aufsetzen von Java Projekten" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-prog-adv-java-projekte" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:2Ug1o/J2cKDXlZgos37RgKXETqG7do49YwYgpN6Dr4Y=:M6LG3CbobpWg457h:f0LhD9zpYC3vTb6V87fumH5Pfh7B1VFYy4GHx5fk7Q51lI2aC/K35QO1FMqgQv7cvn8/GuH+sL6BVIBKsytf9V/kyXgUZ4bTmUGQ+wesd7RZzMGsOgfMcpEL3gcL1gVffaVXqBAcwjqefd/jN4cMmM3GpPB9kK3lUiWL0Q1DfkKQ0dJiLzwhA41TALl5QfP9PKfKJQdffTbEGBPDXhF2XXvP+2JY84uiJJ6hPiTXP5ajQUpEv4/lbivi" />
+<title>Java Projekte bauen mit Maven</title>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="java-projekte-bauen-mit-maven">
+<h1 class="title">Java Projekte bauen mit Maven</h1>
+
+<p>Eine kurze Einführung</p>
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/prog-adv-java-projects/folien.de.rst.html">https://delors.github.io/prog-adv-java-projects/folien.de.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/prog-adv-java-projects/folien.de.rst.html.pdf">https://delors.github.io/prog-adv-java-projects/folien.de.rst.html.pdf</a></p>
+</dd>
+</dl>
+<!-- :Kontrollfragen:
+
+    .. source:: kontrollfragen.de.rst
+        :path: relative
+        :prefix: https://delors.github.io/
+        :suffix: .html
+
+:Klausurvorbereitung:
+
+    .. source:: klausurvorbereitung.de.rst
+        :path: relative
+        :prefix: https://delors.github.io/
+        :suffix: .html -->
+<p></p>
+<dl class="field-list simple">
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></ld-topic>
+<ld-topic class="new-section" id="java-projekte-bauen">
+<h2>Java Projekte bauen</h2>
+</ld-topic><ld-topic id="ziele">
+<h2>Ziele</h2>
+<ol class="arabic simple" start="0">
+<li><p><strong>Management der Projektabhängigkeiten</strong> (z. B. JUnit, Log4J, Hibernate, Spring, ....)</p></li>
+</ol>
+<ol class="arabic simple incremental-list">
+<li><p><strong>Kompilieren</strong> des Quellcodes</p></li>
+<li><p><strong>Testen</strong> des Quellcodes</p></li>
+<li><p><strong>Paketieren</strong> des Quellcodes (.jar oder .war Datei erzeugen inkl. <em>aller</em> Abhängigkeiten)</p></li>
+<li><p><strong>Dokumentation</strong> erstellen</p></li>
+<li><p><strong>Reports</strong> erstellen (z.B. Testabdeckung, Code-Qualität)</p></li>
+<li><p>... und vieles mehr, dass dann aber häufig Projektabhängig ist.</p></li>
+</ol>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Achtung!</p>
+<p>Ein wichtiges Meta-Ziel ist es, das Bauen der Software zu automatisieren und zu vereinfachen und <em>stabile Builds zu gewährleisten</em>.</p>
+<div class="peripheral docutils container">
+<p>D. h. zwei Entwickler, die das selbe Projekt auf unterschiedlichen Rechnern mit initial ggf. unterschiedlichen Versionen installierter Werkzeuge und Bibliotheken bauen, sollten dennoch das selbe Ergebnis erhalten.</p>
+</div>
+</aside>
+</ld-topic><ld-topic id="etablierte-build-tools">
+<h2>Etablierte Build-Tools</h2>
+<ul class="incremental-list simple">
+<li><p><span class="obsolete">Ant</span><a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></li>
+<li><p><strong>Maven</strong></p></li>
+<li><p>Gradle</p></li>
+<li><p><span class="peripheral">sbt</span></p></li>
+<li><p><span class="peripheral">make</span> (nicht spezifisch für Java)</p></li>
+</ul>
+<aside class="admonition incremental warning">
+<p class="admonition-title">Warnung</p>
+<p>IDEs wie IntelliJ IDEA, Eclipse, Visual Studio Code oder NetBeans bieten ebenfalls „Build-Unterstützung“. Diese ist aber bestenfalls für kleine Ein-Entwickler-Projekte geeignet.</p>
+</aside>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Wurde in der Anfangsphase häufig verwendet. Heute nicht mehr.</p>
+</aside>
+</aside>
+</ld-topic><ld-topic id="projektstruktur">
+<h2>Projektstruktur</h2>
+<p>Konvention, die praktisch über alle Build-Tools und IDEs hinweg gilt<a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>:</p>
+<ul class="incremental-list simple">
+<li><p>Quellcode im Verzeichnis <span class="docutils literal">src/main/java</span></p></li>
+<li><p>Testcode im Verzeichnis <span class="docutils literal">src/test/java</span></p></li>
+<li><p>Ressourcen im Verzeichnis <span class="docutils literal">src/main/resources</span></p></li>
+<li><p>Testressourcen im Verzeichnis <span class="docutils literal">src/test/resources</span></p></li>
+<li><p>Konfigurationen und andere Ressourcen im Verzeichnis <span class="docutils literal">src/main/resources</span></p></li>
+<li><p>gebaute Artefakte im Verzeichnis <span class="docutils literal">target</span></p></li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p>Andere Sprachen verwenden häufig ähnliche Strukturen. (Selbstverständlich, wird <span class="docutils literal">java</span>  dann durch den Namen der entsprechenden Sprache ersetzt.)</p>
+</aside>
+</aside>
+</ld-topic><ld-topic class="new-section transition-move-to-top" id="maven">
+<h2>Maven</h2>
+<p class="section-subtitle"><a class="reference external" href="https://maven.apache.org">https://maven.apache.org</a></p>
+</ld-topic><ld-topic id="aufsetzen-eines-projekts-mittels-scaffolding">
+<h2>Aufsetzen eines Projekts mittels <em>Scaffolding</em></h2>
+<p>Maven ermöglicht es, den Rumpf für ein Java-Projekt mit einer einfachen Befehlszeile zu erstellen:</p>
+<pre class="code console copy-to-clipboard literal-block"><code><span class="generic output">mvn archetype:generate \
+    -DgroupId=com.mycompany.app \
+    -DartifactId=my-app \
+    -DarchetypeArtifactId=maven-archetype-quickstart \
+    -DarchetypeVersion=1.5 \
+    -DinteractiveMode=false</span></code></pre>
+<p>Dies erzeugt eine initiale Build-Konfiguration für ein einfaches Java-Projekt und erzeugt die Projektstruktur.<a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
+<div class="supplemental">
+<p>Die <span class="docutils literal">GroupId</span> folgt dabei den selben Konventionen wie Java-Packages. Die <span class="docutils literal">ArtifactId</span> ist der Name des Projekts.</p>
+</div><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
+<p>Es gibt eine Vielzahl von Archetypen, die unterschiedliche Projektstrukturen erzeugen und für unterschiedliche Anwendungsfälle optimiert sind.</p>
+</aside>
+</aside>
+</ld-topic><ld-topic id="maven-build-phasen">
+<h2>Maven - Build Phasen</h2>
+<ld-deck>
+<ld-card>
+<ul class="incremental-list list-with-sublists simple">
+<li><p>Eine Phase ist ein Schritt im Build-Lebenszyklus. Die <em>ersten</em> Phasen des Standardlebenszyklus sind:</p>
+<ol class="arabic simple incremental-list">
+<li><p><span class="docutils literal">validate</span></p></li>
+<li><p><span class="docutils literal"><span class="pre">generate-sources</span></span></p></li>
+<li><p><span class="docutils literal"><span class="pre">process-sources</span></span></p></li>
+<li><p><span class="docutils literal"><span class="pre">generate-resources</span></span></p></li>
+<li><p><span class="docutils literal"><span class="pre">process-resources</span></span></p></li>
+<li><p><span class="docutils literal">compile</span></p></li>
+</ol>
+</li>
+<li><p>Wenn eine Phase angegeben wird, dann werden alle vorherigen Phasen ausgeführt. Zum Beispiel führt <span class="docutils literal">mvn compile</span> alle genannten Phasen in obiger Reihenfolge aus.</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">die wichtigsten Phasen des Standardlebenszyklus</p>
+<dl class="field-list simple">
+<dt>validate<span class="colon">:</span></dt>
+<dd><p>überprüfen, ob das Projekt korrekt konfiguriert ist</p>
+</dd>
+<dt>compile<span class="colon">:</span></dt>
+<dd><p>kompilieren des Quellcodes des Projekts</p>
+</dd>
+<dt>test<span class="colon">:</span></dt>
+<dd><p>testet den kompilierten Quellcode mit einem geeigneten Unit-Testing-Framework.</p>
+</dd>
+<dt>package<span class="colon">:</span></dt>
+<dd><p>den kompilierten Code in ein verteilbares Format, z. B. ein JAR, verpacken.</p>
+</dd>
+<dt>integration-test<span class="colon">:</span></dt>
+<dd><p>Verarbeitet  das Paket und stellt es, wenn nötig, in einer Umgebung bereit, in der Integrationstests ausgeführt werden können.</p>
+</dd>
+<dt>deploy<span class="colon">:</span></dt>
+<dd><p>bereitstellen in einer Integrations- oder Release-Umgebung</p>
+</dd>
+</dl>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Spezialisierte Lebenszyklen (mit eigenen Phasen)</p>
+<dl class="field-list">
+<dt>clean<span class="colon">:</span></dt>
+<dd><p>bereinigt Artefakte, die von früheren Builds erzeugt wurden.</p>
+<p>Phasen: <span class="docutils literal"><span class="pre">pre-clean</span></span>, <span class="docutils literal">clean</span>, <span class="docutils literal"><span class="pre">post-clean</span></span></p>
+</dd>
+<dt>site<span class="colon">:</span></dt>
+<dd><p>generiert eine Site-Dokumentation für dieses Projekt</p>
+<p>Phasen: <span class="docutils literal"><span class="pre">pre-site</span></span>, <span class="docutils literal">site</span>, <span class="docutils literal"><span class="pre">post-site</span></span>, <span class="docutils literal"><span class="pre">site-deploy</span></span></p>
+</dd>
+</dl>
+</ld-card></ld-deck></ld-topic><ld-topic id="beispiel-build-konfiguration-fur-ein-java-projekt">
+<h2>Beispiel Build-Konfiguration für ein Java Projekt</h2>
+<ld-story>
+<p class="rubric">Code der Anwendung</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">package</span><span class="whitespace"> </span><span class="name namespace">de.dhbw</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="comment multiline">/**
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="comment multiline"> * Implements the main method to greet a user by name.
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="comment multiline"> */</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">HelloYou</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">args</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">            </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Usage: java HelloYou &lt;name&gt;&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">            </span><span class="keyword">return</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Hello &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">args</span><span class="operator">[</span><span class="literal number integer">0</span><span class="operator">]</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;!&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">   </span><span class="punctuation">}</span></code></pre>
+<p class="incremental rubric">TestCode (Testing System.out)</p>
+<div class="incremental docutils container">
+<p><strong>Header</strong></p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">10 </small><code data-lineno="10 "><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">HelloYouTest</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="comment single">// Let's redirect System.out to capture the output!</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="name">PrintStream</span><span class="whitespace"> </span><span class="name">defaultOut</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="name">ByteArrayOutputStream</span><span class="whitespace"> </span><span class="name">testOut</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">ByteArrayOutputStream</span><span class="punctuation">();</span></code></pre>
+</div>
+<div class="incremental docutils container">
+<p><strong>Setup</strong></p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">    </span><span class="name decorator">&#64;BeforeEach</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">setOutputStream</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">        </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">out</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">PrintStream</span><span class="punctuation">(</span><span class="name">testOut</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace">        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">setOut</span><span class="punctuation">(</span><span class="name">out</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace">
+</span></code><small class="ln">21 </small><code data-lineno="21 "><span class="whitespace">    </span><span class="name decorator">&#64;AfterEach</span><span class="whitespace">
+</span></code><small class="ln">22 </small><code data-lineno="22 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">resetSystemOut</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">23 </small><code data-lineno="23 "><span class="whitespace">        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">setOut</span><span class="punctuation">(</span><span class="name">defaultOut</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">24 </small><code data-lineno="24 "><span class="whitespace">    </span><span class="punctuation">}</span></code></pre>
+</div>
+<div class="incremental docutils container">
+<p><strong>Eigentliche Tests</strong></p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">28 </small><code data-lineno="28 "><span class="whitespace">    </span><span class="name decorator">&#64;Test</span><span class="whitespace">
+</span></code><small class="ln">29 </small><code data-lineno="29 "><span class="whitespace">    </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">testMainNoArgs</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">30 </small><code data-lineno="30 "><span class="whitespace">        </span><span class="name">HelloYou</span><span class="punctuation">.</span><span class="name attribute">main</span><span class="punctuation">(</span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">String</span><span class="operator">[</span><span class="literal number integer">0</span><span class="operator">]</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">31 </small><code data-lineno="31 "><span class="whitespace">        </span><span class="name">assertEquals</span><span class="punctuation">(</span><span class="literal string">&quot;Usage: java HelloYou &lt;name&gt;\n&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">testOut</span><span class="punctuation">.</span><span class="name attribute">toString</span><span class="punctuation">());</span><span class="whitespace">
+</span></code><small class="ln">32 </small><code data-lineno="32 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">33 </small><code data-lineno="33 "><span class="whitespace">
+</span></code><small class="ln">34 </small><code data-lineno="34 "><span class="whitespace">    </span><span class="name decorator">&#64;Test</span><span class="whitespace">
+</span></code><small class="ln">35 </small><code data-lineno="35 "><span class="whitespace">    </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">testMainArg</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">36 </small><code data-lineno="36 "><span class="whitespace">        </span><span class="name">HelloYou</span><span class="punctuation">.</span><span class="name attribute">main</span><span class="punctuation">(</span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="literal string">&quot;Bob&quot;</span><span class="whitespace"> </span><span class="punctuation">});</span><span class="whitespace">
+</span></code><small class="ln">37 </small><code data-lineno="37 "><span class="whitespace">        </span><span class="name">assertEquals</span><span class="punctuation">(</span><span class="literal string">&quot;Hello Bob!\n&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">testOut</span><span class="punctuation">.</span><span class="name attribute">toString</span><span class="punctuation">());</span><span class="whitespace">
+</span></code><small class="ln">38 </small><code data-lineno="38 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">39 </small><code data-lineno="39 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</div>
+<div class="incremental docutils container">
+<p><strong>Benötigte Imports</strong></p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">package</span><span class="whitespace"> </span><span class="name namespace">de.dhbw</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword namespace">import static</span><span class="whitespace"> </span><span class="name namespace">org.junit.jupiter.api.Assertions.assertEquals</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.junit.jupiter.api.Test</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.junit.jupiter.api.BeforeEach</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.junit.jupiter.api.AfterEach</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.io.ByteArrayOutputStream</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.io.PrintStream</span><span class="punctuation">;</span></code></pre>
+</div>
+<p class="incremental rubric">Maven - Build-Konfiguration</p>
+<div class="incremental docutils container">
+<p><strong>Header der Konfigurationsdatei</strong></p>
+<pre class="code xml copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="comment preproc">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="name tag">&lt;project</span><span class="whitespace">  </span><span class="name attribute">xmlns=</span><span class="literal string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">          </span><span class="name attribute">xmlns:xsi=</span><span class="literal string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace">          </span><span class="name attribute">xsi:schemaLocation=</span><span class="literal string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace">  </span><span class="name tag">&lt;modelVersion&gt;</span>4.0.0<span class="name tag">&lt;/modelVersion&gt;</span></code></pre>
+</div>
+<div class="incremental docutils container">
+<p><strong>Allg. Metainformationen</strong></p>
+<pre class="code xml copy-to-clipboard literal-block"><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">  </span><span class="name tag">&lt;groupId&gt;</span>de.dhbw<span class="name tag">&lt;/groupId&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">  </span><span class="name tag">&lt;artifactId&gt;</span>hello<span class="name tag">&lt;/artifactId&gt;</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">  </span><span class="name tag">&lt;version&gt;</span>1.0<span class="name tag">&lt;/version&gt;</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">  </span><span class="name tag">&lt;name&gt;</span>HelloYou<span class="name tag">&lt;/name&gt;</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">  </span><span class="name tag">&lt;url&gt;</span>http://www.dhbw.de<span class="name tag">&lt;/url&gt;</span></code></pre>
+</div>
+<div class="incremental docutils container">
+<p><strong>Buildumgebung</strong></p>
+<pre class="code xml copy-to-clipboard literal-block"><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">  </span><span class="name tag">&lt;properties&gt;</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">    </span><span class="name tag">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="name tag">&lt;/project.build.sourceEncoding&gt;</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">    </span><span class="name tag">&lt;maven.compiler.source&gt;</span>23<span class="name tag">&lt;/maven.compiler.source&gt;</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">    </span><span class="name tag">&lt;maven.compiler.target&gt;</span>23<span class="name tag">&lt;/maven.compiler.target&gt;</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace">  </span><span class="name tag">&lt;/properties&gt;</span></code></pre>
+</div>
+<div class="incremental docutils container">
+<p><strong>Abhängigkeiten</strong></p>
+<pre class="code xml copy-to-clipboard literal-block"><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace">  </span><span class="name tag">&lt;dependencies&gt;</span><span class="whitespace">
+</span></code><small class="ln">21 </small><code data-lineno="21 "><span class="whitespace">    </span><span class="name tag">&lt;dependency&gt;</span><span class="whitespace">
+</span></code><small class="ln">22 </small><code data-lineno="22 "><span class="whitespace">      </span><span class="name tag">&lt;groupId&gt;</span>org.junit.jupiter<span class="name tag">&lt;/groupId&gt;</span><span class="whitespace">
+</span></code><small class="ln">23 </small><code data-lineno="23 "><span class="whitespace">      </span><span class="name tag">&lt;artifactId&gt;</span>junit-jupiter<span class="name tag">&lt;/artifactId&gt;</span><span class="whitespace">
+</span></code><small class="ln">24 </small><code data-lineno="24 "><span class="whitespace">      </span><span class="name tag">&lt;version&gt;</span>5.12.0<span class="name tag">&lt;/version&gt;</span><span class="whitespace">
+</span></code><small class="ln">25 </small><code data-lineno="25 "><span class="whitespace">      </span><span class="name tag">&lt;scope&gt;</span>test<span class="name tag">&lt;/scope&gt;</span><span class="whitespace">
+</span></code><small class="ln">26 </small><code data-lineno="26 "><span class="whitespace">    </span><span class="name tag">&lt;/dependency&gt;</span><span class="whitespace">
+</span></code><small class="ln">27 </small><code data-lineno="27 "><span class="whitespace">  </span><span class="name tag">&lt;/dependencies&gt;</span></code></pre>
+</div>
+<div class="incremental docutils container">
+<p><strong>Konfiguration des Builds</strong></p>
+</div>
+<pre class="code xml copy-to-clipboard incremental literal-block"><small class="ln">29 </small><code data-lineno="29 "><span class="whitespace">  </span><span class="name tag">&lt;build&gt;</span><span class="whitespace">
+</span></code><small class="ln">30 </small><code data-lineno="30 "><span class="whitespace">    </span><span class="name tag">&lt;plugins&gt;</span></code></pre>
+<pre class="code xml copy-to-clipboard incremental literal-block"><small class="ln">46 </small><code data-lineno="46 "><span class="whitespace">      </span><span class="name tag">&lt;plugin&gt;</span><span class="whitespace">
+</span></code><small class="ln">47 </small><code data-lineno="47 "><span class="whitespace">        </span><span class="name tag">&lt;groupId&gt;</span>org.jacoco<span class="name tag">&lt;/groupId&gt;</span><span class="whitespace">
+</span></code><small class="ln">48 </small><code data-lineno="48 "><span class="whitespace">        </span><span class="name tag">&lt;artifactId&gt;</span>jacoco-maven-plugin<span class="name tag">&lt;/artifactId&gt;</span><span class="whitespace">
+</span></code><small class="ln">49 </small><code data-lineno="49 "><span class="whitespace">        </span><span class="name tag">&lt;version&gt;</span>0.8.12<span class="name tag">&lt;/version&gt;</span><span class="whitespace">
+</span></code><small class="ln">50 </small><code data-lineno="50 "><span class="whitespace">        </span><span class="name tag">&lt;executions&gt;</span><span class="whitespace">
+</span></code><small class="ln">51 </small><code data-lineno="51 "><span class="whitespace">          </span><span class="name tag">&lt;execution&gt;&lt;goals&gt;&lt;goal&gt;</span>prepare-agent<span class="name tag">&lt;/goal&gt;&lt;/goals&gt;&lt;/execution&gt;</span><span class="whitespace">
+</span></code><small class="ln">52 </small><code data-lineno="52 "><span class="whitespace">          </span><span class="name tag">&lt;execution&gt;</span><span class="whitespace">
+</span></code><small class="ln">53 </small><code data-lineno="53 "><span class="whitespace">            </span><span class="name tag">&lt;id&gt;</span>report<span class="name tag">&lt;/id&gt;</span><span class="whitespace">
+</span></code><small class="ln">54 </small><code data-lineno="54 "><span class="whitespace">            </span><span class="name tag">&lt;phase&gt;</span>test<span class="name tag">&lt;/phase&gt;</span><span class="whitespace">
+</span></code><small class="ln">55 </small><code data-lineno="55 "><span class="whitespace">            </span><span class="name tag">&lt;goals&gt;&lt;goal&gt;</span>report<span class="name tag">&lt;/goal&gt;&lt;/goals&gt;</span><span class="whitespace">
+</span></code><small class="ln">56 </small><code data-lineno="56 "><span class="whitespace">          </span><span class="name tag">&lt;/execution&gt;</span><span class="whitespace">
+</span></code><small class="ln">57 </small><code data-lineno="57 "><span class="whitespace">        </span><span class="name tag">&lt;/executions&gt;</span><span class="whitespace">
+</span></code><small class="ln">58 </small><code data-lineno="58 "><span class="whitespace">      </span><span class="name tag">&lt;/plugin&gt;</span></code></pre>
+<pre class="code xml copy-to-clipboard incremental literal-block"><small class="ln">59 </small><code data-lineno="59 "><span class="whitespace">      </span><span class="name tag">&lt;plugin&gt;</span><span class="whitespace">
+</span></code><small class="ln">60 </small><code data-lineno="60 "><span class="whitespace">        </span><span class="name tag">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="name tag">&lt;/artifactId&gt;</span><span class="whitespace">
+</span></code><small class="ln">61 </small><code data-lineno="61 "><span class="whitespace">        </span><span class="name tag">&lt;version&gt;</span>3.5.2<span class="name tag">&lt;/version&gt;</span><span class="whitespace">
+</span></code><small class="ln">62 </small><code data-lineno="62 "><span class="whitespace">      </span><span class="name tag">&lt;/plugin&gt;</span></code></pre>
+<pre class="code xml copy-to-clipboard incremental literal-block"><small class="ln">63 </small><code data-lineno="63 "><span class="whitespace">      </span><span class="name tag">&lt;plugin&gt;</span><span class="whitespace">
+</span></code><small class="ln">64 </small><code data-lineno="64 "><span class="whitespace">        </span><span class="name tag">&lt;artifactId&gt;</span>maven-jar-plugin<span class="name tag">&lt;/artifactId&gt;</span><span class="whitespace">
+</span></code><small class="ln">65 </small><code data-lineno="65 "><span class="whitespace">        </span><span class="name tag">&lt;version&gt;</span>3.0.2<span class="name tag">&lt;/version&gt;</span><span class="whitespace">
+</span></code><small class="ln">66 </small><code data-lineno="66 "><span class="whitespace">        </span><span class="name tag">&lt;configuration&gt;</span><span class="whitespace">
+</span></code><small class="ln">67 </small><code data-lineno="67 "><span class="whitespace">          </span><span class="name tag">&lt;archive&gt;</span><span class="whitespace">
+</span></code><small class="ln">68 </small><code data-lineno="68 "><span class="whitespace">            </span><span class="name tag">&lt;manifest&gt;</span><span class="whitespace">
+</span></code><small class="ln">69 </small><code data-lineno="69 "><span class="whitespace">              </span><span class="name tag">&lt;addClasspath&gt;</span>true<span class="name tag">&lt;/addClasspath&gt;</span><span class="whitespace">
+</span></code><small class="ln">70 </small><code data-lineno="70 "><span class="whitespace">              </span><span class="name tag">&lt;mainClass&gt;</span>de.dhbw.HelloYou<span class="name tag">&lt;/mainClass&gt;</span><span class="whitespace">
+</span></code><small class="ln">71 </small><code data-lineno="71 "><span class="whitespace">            </span><span class="name tag">&lt;/manifest&gt;</span><span class="whitespace">
+</span></code><small class="ln">72 </small><code data-lineno="72 "><span class="whitespace">          </span><span class="name tag">&lt;/archive&gt;</span><span class="whitespace">
+</span></code><small class="ln">73 </small><code data-lineno="73 "><span class="whitespace">        </span><span class="name tag">&lt;/configuration&gt;</span><span class="whitespace">
+</span></code><small class="ln">74 </small><code data-lineno="74 "><span class="whitespace">      </span><span class="name tag">&lt;/plugin&gt;</span><span class="whitespace">
+</span></code><small class="ln">75 </small><code data-lineno="75 "><span class="whitespace">    </span><span class="name tag">&lt;/plugins&gt;</span><span class="whitespace">
+</span></code><small class="ln">76 </small><code data-lineno="76 "><span class="whitespace">  </span><span class="name tag">&lt;/build&gt;</span></code></pre>
+</ld-story></ld-topic><ld-topic id="projekt-bauen-und-ausfuhren">
+<h2>Projekt bauen und ausführen</h2>
+<p class="rubric">Projekt bauen</p>
+<pre class="code console copy-to-clipboard literal-block"><code><span class="generic output">mvn package</span></code></pre>
+<p class="rubric">Projekt ausführen</p>
+<p><span class="peripheral">Die gebauten Artefakte befinden sich im Verzeichnis target.</span></p>
+<pre class="code console copy-to-clipboard literal-block"><code><span class="generic output">java -jar target/hello-1.0.jar &lt;Name&gt;</span></code></pre>
+</ld-topic><ld-topic class="exercises" id="ubung">
+<h2>Übung</h2>
+<ld-scrollable>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Build-Konfiguration eines Java Projekts" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">Build-Konfiguration eines Java Projekts</p>
+<ul class="simple">
+<li><p>entpacken Sie das Projekt <a class="reference external" href="prog-adv-java-projects/code/newton-code.zip.html.pdf">prog-adv-java-projects/code/newton-code.zip.html.pdf</a>.</p></li>
+<li><p>legen Sie eine <span class="docutils literal">pom.xml</span> Datei an, um das Projekt zu bauen.</p></li>
+<li><p>Konfigurieren Sie eine Abhängigkeit zu JUnit 5.12 und konfigurieren Sie das <span class="docutils literal">surefire</span> Plugin, um die Tests auszuführen.</p></li>
+<li><p>Nutzen Sie <code class="console"><span class="generic output">mvn test</span></code>, um die Tests auszuführen.</p></li>
+<li><p>Konfigurieren Sie das <span class="docutils literal"><span class="pre">maven-jar-plugin</span></span>, um ein ausführbares JAR zu erzeugen. Vergessen sie nicht die <span class="docutils literal">mainClass</span> zu konfigurieren.</p></li>
+<li><p>Nutzen Sie <code class="console"><span class="generic output">mvn package</span></code>, um das Projekt zu bauen.</p></li>
+<li><p>Nutzen Sie <code class="console"><span class="generic output">mvn site</span></code>, um eine Dokumentation des Projekts zu erstellen.</p></li>
+<li><p>Schauen Sie sich die erzeugten Artefakte an.</p></li>
+<li><p>Testen Sie ob Sie die Anwendung mit <span class="docutils literal">java <span class="pre">-jar</span> <span class="pre">target/newton-1.0-SNAPSHOT.jar</span></span> starten können.</p></li>
+</ul>
+<p class="rubric">Weiterführende Aufgaben</p>
+<p>(In diesem Fall ist es Ihrer Aufgabe zu recherchieren wie die Einbindung/Konfiguration zu erfolgen hat.)</p>
+<ul>
+<li><p>Binden Sie Checkstyle in Ihre Projekt ein. D. h. wenn Sie die <code class="console"><span class="generic output">mvn site</span></code> ausführen, dann soll automatisch ein Report in Hinblick auf die Einhaltung der Checkstyle-Regeln erstellt werden.</p>
+<p>Schauen Sie sich den Report an und versuchen Sie für die Klasse Liste eine besser Einhaltung der Checkstyle Regeln zu erreichen.</p>
+</li>
+<li><p>Binden Sie das Maven-Plugin JaCoCo ein, dass automatisch die Testabdeckung berechnet und in einem Report darstellt. Führen Sie danach <code class="console"><span class="generic output">mvn test</span></code> aus (und ggf. mvn site) und schauen Sie sich den Report an.</p>
+<p>Wie hoch ist bereits die Testabdeckung für die Klasse <code class="java"><span class="name">List</span></code> obwohl diese gar nicht explizit getestet wurde?</p>
+</li>
+<li><p>Binden Sie ein Maven-Plugin ein, dass automatisch die JavaDoc erstellt und in einem Report darstellt.</p></li>
+</ul>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:0jEld6mCR9nUgaEFzRdWcHJV3yfi8Ykhf3W0/bcHRdQ=:FC93n4yyLGVi88cw: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</div>
+</div>
+</ld-scrollable></ld-topic>
+</template>
+</body>
+</html>
