@@ -9,7 +9,7 @@
 <meta content="lecture-se-testen-und-metriken" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <meta name="version" content="LD2 RENAISSANCE" />
-<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
+<meta name="exercises-passwords" content="MTAwMDAw:WJaOhX7DHSdUgK0oJgVTsfGLPdJk0nUpYsvG59u3Gxg=:b8p++i0209ipBD85:Pjp3rrSIL6OCqWxO606CFkt86ka4meRoZOUnZJowlWNgUGQYGnDUJGR/kA7AND3m/ShkLVhw/TN5MGBpFWVcMr6YlL4CJmoz/RVhkRrg1gRY9J1AvxiVOMbonm2OafJ1DV4OrbBwO+MhAD1Z31sNdmr1xGGGTUs4bfi6PMGqy+hSUmm166wK" />
 <title>Software Engineering - Projekte bauen, Testen und Bewerten</title>
 <script>
     window.MathJax = {
@@ -212,8 +212,145 @@
 <dd><p>Tests (durch den Kunden), um zu zeigen, dass das System die Anforderungen erfüllt.</p>
 </dd>
 </dl>
-<!-- TODO Diskussion über das Aufstellen von Testplänen hinzufügen -->
-</ld-topic><ld-topic id="test-uberdeckung-eng-test-coverage">
+</ld-topic><ld-topic id="testplane">
+<h2>Testpläne</h2>
+<p>Testpläne beschreiben, wie die Software getestet wird.</p>
+<aside class="admonition incremental observation">
+<p class="admonition-title">Beobachtung</p>
+<p>Da die Anzahl der Tests praktisch unendlich ist, müssen wir (für praktische Zwecke) eine Annahme darüber treffen, wo Fehler wahrscheinlich zu finden sind; d. h. die Tests müssen auf einem Fehlermodell beruhen.</p>
+</aside>
+<div class="incremental docutils container">
+<p>Es gibt zwei allgemeine Fehlermodelle und entsprechende Prüfstrategien:</p>
+<ol class="arabic simple">
+<li><p>konformitätsorientiertes Testen</p></li>
+<li><p>fehlerorientiertes Testen</p></li>
+</ol>
+</div>
+</ld-topic><ld-topic id="entwicklung-eines-testplans-beispiel">
+<h2>Entwicklung eines Testplans - Beispiel</h2>
+<ld-deck>
+<ld-card>
+<p>Entwickeln Sie einen Testplan für ein Programm, das ...</p>
+<ol class="arabic simple">
+<li><p>drei ganzzahlige Werte liest,</p></li>
+<li><p>diese dann als die Länge der Seiten eines Dreiecks interpretiert</p></li>
+<li><p>danach ausgibt ob das Dreieck...</p>
+<ul class="simple">
+<li><p>gleichschenklig,</p></li>
+<li><p>schief oder</p></li>
+<li><p>gleichseitig ist.</p></li>
+</ul>
+</li>
+</ol>
+<aside class="admonition incremental margin-top-1em hint">
+<p class="admonition-title">Hinweis</p>
+<p>Ein gültiges Dreieck muss zwei Bedingungen erfüllen:</p>
+<ul class="simple">
+<li><p>Keine Seite darf eine Länge von Null haben</p></li>
+<li><p>Jede Seite muss kürzer sein als die Summe aller Seiten geteilt durch 2</p></li>
+</ul>
+</aside>
+</ld-card><ld-card class="incremental">
+<table class="incremental-table-rows">
+<colgroup>
+<col style="width: 54.1%" />
+<col style="width: 8.1%" />
+<col style="width: 8.1%" />
+<col style="width: 8.1%" />
+<col style="width: 21.6%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>Beschreibung</p></th>
+<th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>C</p></th>
+<th class="head"><p>Erwartetes Ergebnis</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Gültiges schiefes Dreieck</p></td>
+<td><p>5</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>Schief</p></td>
+</tr>
+<tr><td><p>Gültiges gleichschenkliges Dreieck</p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>Gleichschenklig</p></td>
+</tr>
+<tr><td><p>Gültiges gleichseitiges Dreieck</p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>Gleichseitig</p></td>
+</tr>
+<tr><td><p>Erste Permutation von zwei gleichen Seiten</p></td>
+<td><p>50</p></td>
+<td><p>50</p></td>
+<td><p>25</p></td>
+<td><p>Gleichschenklig</p></td>
+</tr>
+<tr><td><p>(Permutationen des vorherigen Testfalls)</p></td>
+<td><p>...</p></td>
+<td><p>...</p></td>
+<td><p>...</p></td>
+<td><p>Gleichschenklig</p></td>
+</tr>
+<tr><td><p>Eine Seite ist Null</p></td>
+<td><p>1000</p></td>
+<td><p>1000</p></td>
+<td><p>0</p></td>
+<td><p>Ungültig</p></td>
+</tr>
+<tr><td><p>Erste Permutation von zwei gleichen Seiten</p></td>
+<td><p>10</p></td>
+<td><p>5</p></td>
+<td><p>5</p></td>
+<td><p>Ungültig</p></td>
+</tr>
+<tr><td><p>Zweite Permutation von zwei gleichen Seiten</p></td>
+<td><p>5</p></td>
+<td><p>10</p></td>
+<td><p>5</p></td>
+<td><p>Ungültig</p></td>
+</tr>
+<tr><td><p>Dritte Permutation von zwei gleichen Seiten</p></td>
+<td><p>5</p></td>
+<td><p>5</p></td>
+<td><p>10</p></td>
+<td><p>Ungültig</p></td>
+</tr>
+<tr><td><p>Drei Seiten größer als Null, Summe der zwei Kleinsten ist kleiner als die Größte</p></td>
+<td><p>8</p></td>
+<td><p>5</p></td>
+<td><p>2</p></td>
+<td><p>Ungültig</p></td>
+</tr>
+<tr><td><p>Drei Seiten mit maximaler Länge</p></td>
+<td><p>MAX</p></td>
+<td><p>MAX</p></td>
+<td><p>MAX</p></td>
+<td><p>Gleichseitig</p></td>
+</tr>
+<tr><td><p>Zwei Seiten mit maximaler Länge</p></td>
+<td><p>MAX</p></td>
+<td><p>MAX</p></td>
+<td><p>1</p></td>
+<td><p>Gleichschenklig</p></td>
+</tr>
+<tr><td><p>Eine Seite mit maximaler Länge</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>MAX</p></td>
+<td><p>Ungültig</p></td>
+</tr>
+</tbody>
+</table>
+<div class="supplemental">
+<p>Die Testfälle sind noch nicht vollständig (zum Beispiel wenn A, B und C alle 0 sind; oder wenn eine Seite die Länge der beiden anderen Seiten addiert hat). Tests zum Beispiel in Hinblick auf objektorientierte Struktur, Fehlerbehandlung, etc. ... fehlen.</p>
+</div></ld-card></ld-deck></ld-topic><ld-topic id="test-uberdeckung-eng-test-coverage">
 <h2>(Test-)Überdeckung (eng.  (Test-)Coverage)</h2>
 <aside class="admonition question">
 <p class="admonition-title">Frage</p>
@@ -512,7 +649,68 @@ Beispiel: 100% Anweisungsabdeckung bei Verletzungsgefahr von Passagieren.</p>
 <p>The Director of a software company proudly announced that a flight software developed by the company was installed in an airplane and the airline was offering free first flights to the members of the company. “Who are interested?” the Director asked. Nobody came forward. Finally, one person volunteered. The brave Software Tester stated, ‘I will do it. I know that the airplane will not be able to take off.’</p>
 <p class="attribution">—Unknown Author &#64; <a class="reference external" href="http://www.softwaretestingfundamentals.com">http://www.softwaretestingfundamentals.com</a></p>
 </blockquote>
-</ld-topic><ld-topic class="transition-move-to-top new-section" id="metriken">
+</ld-topic><ld-topic class="exercises" id="ubung">
+<h2>Übung</h2>
+<ld-scrollable>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1" id="ld-exercise-1">
+<p>Entwickeln Sie einen Testplan für das folgende Programm:</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Stack</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">RPN</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">args</span><span class="punctuation">.</span><span class="name attribute">length</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">            </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Usage: java RPN &lt;expr&gt;&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">            </span><span class="keyword">return</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">        </span><span class="comment single">// Main logic</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">        </span><span class="name">Stack</span><span class="operator">&lt;</span><span class="name">String</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">infix</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Stack</span><span class="operator">&lt;&gt;</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">        </span><span class="name">Stack</span><span class="operator">&lt;</span><span class="name">Double</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">ops</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Stack</span><span class="operator">&lt;&gt;</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">        </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">String</span><span class="whitespace"> </span><span class="name">arg</span><span class="whitespace"> </span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">            </span><span class="keyword">switch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">arg</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">                </span><span class="keyword">case</span><span class="whitespace"> </span><span class="literal string">&quot;+&quot;</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">                </span><span class="keyword">case</span><span class="whitespace"> </span><span class="literal string">&quot;*&quot;</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">                </span><span class="keyword">case</span><span class="whitespace"> </span><span class="literal string">&quot;/&quot;</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace">                    </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">size</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace">                        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Error: / requires two operands&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace">                        </span><span class="keyword">return</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">21 </small><code data-lineno="21 "><span class="whitespace">                    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">22 </small><code data-lineno="22 "><span class="whitespace">                    </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">right</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">23 </small><code data-lineno="23 "><span class="whitespace">                    </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">left</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">24 </small><code data-lineno="24 "><span class="whitespace">                    </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">rightTerm</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">25 </small><code data-lineno="25 "><span class="whitespace">                    </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">leftTerm</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">26 </small><code data-lineno="26 "><span class="whitespace">                    </span><span class="keyword">switch</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">arg</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">27 </small><code data-lineno="27 "><span class="whitespace">                        </span><span class="keyword">case</span><span class="whitespace"> </span><span class="literal string">&quot;+&quot;</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="name">left</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">right</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">28 </small><code data-lineno="28 "><span class="whitespace">                        </span><span class="keyword">case</span><span class="whitespace"> </span><span class="literal string">&quot;*&quot;</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="name">left</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">right</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">29 </small><code data-lineno="29 "><span class="whitespace">                        </span><span class="keyword">case</span><span class="whitespace"> </span><span class="literal string">&quot;/&quot;</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="name">left</span><span class="whitespace"> </span><span class="operator">/</span><span class="whitespace"> </span><span class="name">right</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">30 </small><code data-lineno="30 "><span class="whitespace">                    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">31 </small><code data-lineno="31 "><span class="whitespace">                    </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="literal string">&quot;(&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">leftTerm</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot; &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">arg</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot; &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">rightTerm</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;)&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">32 </small><code data-lineno="32 "><span class="whitespace">                    </span><span class="keyword">break</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">33 </small><code data-lineno="33 "><span class="whitespace">                </span><span class="keyword">case</span><span class="whitespace"> </span><span class="literal string">&quot;sqrt&quot;</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">34 </small><code data-lineno="34 "><span class="whitespace">                    </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">size</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">35 </small><code data-lineno="35 "><span class="whitespace">                        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Error: sqrt requires one operand&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">36 </small><code data-lineno="36 "><span class="whitespace">                        </span><span class="keyword">return</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">37 </small><code data-lineno="37 "><span class="whitespace">                    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">38 </small><code data-lineno="38 "><span class="whitespace">                    </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="name">Math</span><span class="punctuation">.</span><span class="name attribute">sqrt</span><span class="punctuation">(</span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">()));</span><span class="whitespace">
+</span></code><small class="ln">39 </small><code data-lineno="39 "><span class="whitespace">                    </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="literal string">&quot;sqrt(&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;)&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">40 </small><code data-lineno="40 "><span class="whitespace">                    </span><span class="keyword">break</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">41 </small><code data-lineno="41 "><span class="whitespace">                </span><span class="keyword">default</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">42 </small><code data-lineno="42 "><span class="whitespace">                    </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="name">arg</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">43 </small><code data-lineno="43 "><span class="whitespace">                    </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">push</span><span class="punctuation">(</span><span class="name">Double</span><span class="punctuation">.</span><span class="name attribute">parseDouble</span><span class="punctuation">(</span><span class="name">arg</span><span class="punctuation">));</span><span class="whitespace">
+</span></code><small class="ln">44 </small><code data-lineno="44 "><span class="whitespace">            </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">45 </small><code data-lineno="45 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">46 </small><code data-lineno="46 "><span class="whitespace">        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot; = &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">ops</span><span class="punctuation">.</span><span class="name attribute">pop</span><span class="punctuation">());</span><span class="whitespace">
+</span></code><small class="ln">47 </small><code data-lineno="47 "><span class="whitespace">
+</span></code><small class="ln">48 </small><code data-lineno="48 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">size</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">49 </small><code data-lineno="49 "><span class="whitespace">            </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Unused: &quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">50 </small><code data-lineno="50 "><span class="whitespace">            </span><span class="name">infix</span><span class="punctuation">.</span><span class="name attribute">forEach</span><span class="punctuation">(</span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">::</span><span class="name">println</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">51 </small><code data-lineno="51 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">52 </small><code data-lineno="52 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">53 </small><code data-lineno="53 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:oSmXmF9RA17g6/kNMlGmLG7nF2+/0mhnYowW1xfW8QM=:aWEMtVEWiHxtsuTs:WyML+iMlS+trN8EiN7f7bvWLtyJnPCRSr3paTXiDffZJiYL7hGxp2CFXqNpWwg/EnKq/rpbCh5xmAVtpOa/lSixsB7pfjy09bURynyU0yl0xCQDpRbQ1+Xpt3j62dd3vxKKtSOa285zOJsxzdFyWrkXUI0xQ/PpdIOf32l/Aku5GkG2v+CAnU3EEOcImWuEkcy9bjg34uqyMx5SJCgPp2rNP7LbXRNxhl2Hc1FOWBYDwTJSRUzDDKq5SDSv/6p7n0/716+CteTxxTnc+PPSGs0WR7Kqbo3qeDdg6ZhZHaxYEnCthqaa0sDv4O9MjDxgNbcNUCNrpqCS5rEXq0jfWeVG/x+oic+fn6Br5sq0CjDosMnZY4SjfqAx1+i7hVhEWIMP+CY/cvft3w8QBXxO8/pnNbi2iJCaB8iQ9LQ5Ug4XXfKVsRbs/fxXeOlNeFNrasgSJFHzGeGSw/CERVxItzks1WqvP73Src1m1Re7bQoAwaYw2XiCDibZOk10vCAW7pzyzi2hW47RR6pNpbdwh9v6X8U+T4yu7M6nuHUul85H9EvLd24ZgLQGOVz7EizFzIrwbpjlha+ljd3yUNxGWSnf/L4lRaQNBt5Dj6BNW+1H9MWKCeazB6G56pamdc/yTITRduPreUL+yjAw28MC3Xcg7f2DD+Y7iQZmskWbaSI9Awmjk9QSAZDuaHvrQ/o861fIOPPA+cPHQkDS6+y0me2mbNPn7dOTvLTVIOgBZHM8Miy33Y6TJ2mJ6vA2IlxXtsjsfEayW+AuPCqVxRmUH1QnZWokpb8ccWaFh4F3FdKNnMPXwzi/RMld4+kd0FlqCqzdSOngMGkIGCMd/s5voJK7tiOt3eKflLGPq768zQHAeZajI+dm8eiRNGBo5cP9YwzXypDwRqIKM2d0ZZtS0hTxvnCKxTG9AN04YZ5prvUEM8rqDkFmuobUGzKdalFrCh5UddzVkWpJb/jfbcK2yB9TvzidPtUTYrEowf9O0GotiAV/L4E7vjQlJBfcerI4nEnOCWAehtTi3HG8+1MwBYoat0Niy5UUjB/u3E5ggDAOIw5ibFA3Vbglfga1R8LUGfEE36p+wlVqkfCdNtoqBmefviIHA0DoqSs6WdbgZZlEO90WchmLrsvEoyWYYip0pN2p3mqojYWaGFAdViIGITS2kXBLteyH0o3F0sqofzk2vXLoLS6E7bDB/VNA9D3gCQiGFAupx6nMoxB0oa8Q=</div>
+</div>
+</ld-scrollable></ld-topic><ld-topic class="transition-move-to-top new-section" id="metriken">
 <h2>Metriken</h2>
 </ld-topic><ld-topic id="qualitatsmetriken">
 <h2>Qualitätsmetriken</h2>
@@ -583,7 +781,66 @@ Beispiel: 100% Anweisungsabdeckung bei Verletzungsgefahr von Passagieren.</p>
 <p>Metriken sind immer kontextabhängig zu bewerten.</p>
 <p>Metriken eignen sich insbesondere um Veränderungen zu bewerten und um die Entwicklung von Software zu überwachen.</p>
 </aside>
-</ld-topic>
+</ld-topic><ld-topic class="transition-fade new-section" id="softwarequalitatssicherung">
+<h2>Softwarequalitätssicherung</h2>
+<div class="section-subtitle docutils container">
+<p>Konstruktiv vs. Analytisch</p>
+</div>
+</ld-topic><ld-topic id="mechanismen-der-konstruktiven-softwarequalitatssicherung">
+<h2>Mechanismen der konstruktiven Softwarequalitätssicherung</h2>
+<ul class="incremental-list simple">
+<li><p>Programmiersprachen (mit Typsystemen)</p></li>
+<li><p>Softwareentwicklungsprozesse</p></li>
+<li><p>Domain Specific Languages (DSLs)</p></li>
+</ul>
+</ld-topic><ld-topic id="ansatze-der-analytischen-softwarequalitatssicherung">
+<h2>Ansätze der analytischen Softwarequalitätssicherung</h2>
+<table class="incremental-table-rows">
+<thead>
+<tr><th class="head"></th>
+<th class="head"><p>Wiederverwend-
+barkeit</p></th>
+<th class="head"><p>Wartbarkeit</p></th>
+<th class="head"><p>Korrektheit</p></th>
+<th class="head"><p>Aufwand</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>leichtgewichtige statische Analysen</p></td>
+<td></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>↓-○</p></td>
+</tr>
+<tr><td><p>Semiformale Methoden</p></td>
+<td></td>
+<td></td>
+<td><p>✓</p></td>
+<td><p>↓</p></td>
+</tr>
+<tr><td><p>formale Methoden</p></td>
+<td></td>
+<td></td>
+<td><p><span class="green">✓</span></p></td>
+<td><p>↑</p></td>
+</tr>
+<tr><td><p>Strukturanalysen</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td></td>
+<td><p>↓</p></td>
+</tr>
+<tr><td><p>Stilüberprüfungen</p></td>
+<td></td>
+<td><p><span class="green">✓</span></p></td>
+<td></td>
+<td><p>↓</p></td>
+</tr>
+</tbody>
+</table>
+<div class="supplemental">
+<p>Leichtgewichtige statische Analysen können zum Beispiel Code-Clone erkennen (Maintenance), oder Verletzungen von empfohlenen Vorgehensweisen identifizieren und auf gängige Fehlermuster (<span class="eng">Bug Patterns</span>) hinweisen.</p>
+</div></ld-topic>
 </template>
 </body>
 </html>

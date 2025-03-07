@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="de" name="lang" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Programmierung&quot;, &quot;Java&quot;, &quot;Funktional Programmierung&quot;" name="keywords" />
+<meta content="Java Funktionale Programmierung" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-prog-java-functional-programming" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta content="colored" name="theme" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
+<title>Java - Funktionale Programmierung</title>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="java-funktionale-programmierung">
+<h1 class="title">Java - Funktionale Programmierung</h1>
+
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+<p class="block-footer">Teile der Folien basieren auf: Th. Letschert - Funktionale Programmierung in Java.</p>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/prog-adv-java-funktionale-programmierung/folien.de.rst.html">https://delors.github.io/prog-adv-java-funktionale-programmierung/folien.de.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/prog-adv-java-funktionale-programmierung/folien.de.rst.html.pdf">https://delors.github.io/prog-adv-java-funktionale-programmierung/folien.de.rst.html.pdf</a></p>
+</dd>
+</dl>
+<!-- :Kontrollfragen:
+
+    .. source:: kontrollfragen.de.rst
+        :path: relative
+        :prefix: https://delors.github.io/
+        :suffix: .html
+
+:Klausurvorbereitung:
+
+    .. source:: klausurvorbereitung.de.rst
+        :path: relative
+        :prefix: https://delors.github.io/
+        :suffix: .html -->
+<dl class="field-list simple">
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></ld-topic>
+<ld-topic class="new-section" id="einfuhrung-in-die-funktionale-programmierung">
+<h2>Einführung in die Funktionale Programmierung</h2>
+</ld-topic><ld-topic id="grundlagen-funktionaler-programmierung">
+<h2>Grundlagen funktionaler Programmierung</h2>
+<ld-deck>
+<ld-card>
+<ul class="incremental-list simple">
+<li><p>Programmierparadigma, bei dem Funktionen im Mittelpunkt stehen</p></li>
+<li><p>Vermeidet veränderliche Zustände (<span class="eng">Mutable State</span>)</p></li>
+<li><p>Fördert deklarativen Code statt imperativem Code</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<aside class="admonition incremental question">
+<p class="admonition-title">Frage</p>
+<p>Wie unterscheidet sich dieses Paradigma von der objektorientierten Programmierung?</p>
+</aside>
+<aside class="admonition incremental margin-top-1em answer">
+<p class="admonition-title">Antwort</p>
+<ul class="simple">
+<li><p>Methoden ohne Seiteneffekte</p></li>
+<li><p>Daten sind standardmäßig unveränderlich</p></li>
+<li><p>Fokus auf Funktionsanwendungen und -komposition</p></li>
+</ul>
+</aside>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Wichtige Konzepte</p>
+<ul class="incremental-list simple">
+<li><p>Funktionen Höherer Ordnung</p></li>
+<li><p>Lambda-Ausdrücke</p></li>
+<li><p>Funktionskomposition</p></li>
+<li><p>Currying und Partielle Anwendung</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic class="new-section" id="funktionale-programmierung-in-java">
+<h2>Funktionale Programmierung in Java</h2>
+</ld-topic><ld-topic id="lambdas">
+<h2>Lambdas</h2>
+<ld-deck>
+<ld-card>
+<dl class="field-list">
+<dt>Lambda (auch Closure)<span class="colon">:</span></dt>
+<dd><p>Ein Ausdruck, dessen Wert eine Funktion ist.</p>
+<p>Solche Ausdrücke sind sehr nützlich, mussten in Java bisher aber mit anonymen inneren Klassen emuliert werden.</p>
+</dd>
+</dl>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Ein einfache Personenklasse</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword declaration">class</span> <span class="name class">Person</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name">String</span><span class="whitespace"> </span><span class="name">name</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">age</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">Person</span><span class="punctuation">(</span><span class="name">String</span><span class="whitespace"> </span><span class="name">name</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">age</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">        </span><span class="keyword">this</span><span class="punctuation">.</span><span class="name attribute">name</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">name</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">        </span><span class="keyword">this</span><span class="punctuation">.</span><span class="name attribute">age</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">age</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">String</span><span class="whitespace"> </span><span class="name function">getName</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">name</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">getAge</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">age</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">String</span><span class="whitespace"> </span><span class="name function">toString</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="literal string">&quot;Person[&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">name</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;, &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">age</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal string">&quot;]&quot;</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Sortieren von Personen nach Alter</p>
+<p>Angenommen wir haben eine Klasse Person und eine Liste von Personen, die nach Alter sortiert werden soll. Dazu muss eine Vergleichsfunktion übergeben werden. In Java &lt;8 kommt dazu nur ein Objekt in Frage.</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">List</span><span class="operator">&lt;</span><span class="name">Person</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">persons</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">Arrays</span><span class="punctuation">.</span><span class="name attribute">asList</span><span class="punctuation">(</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Person</span><span class="punctuation">(</span><span class="literal string">&quot;Hugo&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">55</span><span class="punctuation">),</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">    </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Person</span><span class="punctuation">(</span><span class="literal string">&quot;Amalie&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">15</span><span class="punctuation">),</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">    </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Person</span><span class="punctuation">(</span><span class="literal string">&quot;Anelise&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">32</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">);</span></code></pre>
+<ld-deck>
+<ld-card>
+<p class="rubric">Traditionelle Lösung</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">Collections</span><span class="punctuation">.</span><span class="name attribute">sort</span><span class="punctuation">(</span><span class="name">persons</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Comparator</span><span class="operator">&lt;</span><span class="name">Person</span><span class="operator">&gt;</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">compare</span><span class="punctuation">(</span><span class="name">Person</span><span class="whitespace"> </span><span class="name">p1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Person</span><span class="whitespace"> </span><span class="name">p2</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">p1</span><span class="punctuation">.</span><span class="name attribute">getAge</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name">p2</span><span class="punctuation">.</span><span class="name attribute">getAge</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span><span class="punctuation">});</span></code></pre>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Lösung ab Java 8</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">Collections</span><span class="punctuation">.</span><span class="name attribute">sort</span><span class="punctuation">(</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="name">persons</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">    </span><span class="punctuation">(</span><span class="name">p1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">p2</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">p1</span><span class="punctuation">.</span><span class="name attribute">getAge</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name">p2</span><span class="punctuation">.</span><span class="name attribute">getAge</span><span class="punctuation">();</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="punctuation">);</span></code></pre>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Lösung ab Java 8 (kürzer)</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">Collections</span><span class="punctuation">.</span><span class="name attribute">sort</span><span class="punctuation">(</span><span class="name">persons</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">p1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">p2</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">p1</span><span class="punctuation">.</span><span class="name attribute">getAge</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name">p2</span><span class="punctuation">.</span><span class="name attribute">getAge</span><span class="punctuation">());</span></code></pre>
+</ld-card></ld-deck></ld-card><ld-card class="incremental">
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Bis Java 7 ist <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">Object</span></code> der Basistyp aller Referenztypen.
+Der Typ eines Lambdas ist jedoch der Typ eines funktionalen Interfaces, das nur eine Methode hat und dieser Typ muss explizit angegeben werden.</p>
+</aside>
+<ld-deck>
+<ld-card>
+<p><strong>Instanzen von inneren Klassen können immer Object zugewiesen werden:</strong></p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">Object</span><span class="whitespace"> </span><span class="name">actionListener</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">ActionListener</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="name decorator">&#64;Override</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">actionPerformed</span><span class="punctuation">(</span><span class="name">ActionEvent</span><span class="whitespace"> </span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">        </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">text</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span><span class="punctuation">};</span></code></pre>
+</ld-card><ld-card class="incremental">
+<p><strong>Illegale Zuweisung:</strong></p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">Object</span><span class="whitespace"> </span><span class="name">actionListener</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">text</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="comment single">// Error: The target type of this expression must be a functional interface</span></code></pre>
+</ld-card><ld-card class="incremental">
+<p><strong>Zuweisung an ein funktionales Interface:</strong></p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">ActionListener</span><span class="whitespace"> </span><span class="name">actionListener</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">text</span><span class="punctuation">);</span></code></pre>
+</ld-card></ld-deck></ld-card><ld-card class="incremental">
+<p class="rubric">Funktionale Interfaces</p>
+<dl class="field-list simple">
+<dt>Functional Interface / SAM-Interface (Single Abstract Method Interface)<span class="colon">:</span></dt>
+<dd><p>Ein Functional Interface ist ein Interface das genau eine Methode enthält (die natürlich abstrakt ist) optional kann die Annotation <code class="java"><span class="name decorator">&#64;FunctionalInterface</span></code> hinzugefügt werden.</p>
+</dd>
+</dl>
+<aside class="admonition incremental example">
+<p class="admonition-title">Beispiel</p>
+<blockquote>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name decorator">&#64;FunctionalInterface</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="keyword declaration">interface</span> <span class="name class">MyActionListener</span><span class="whitespace"> </span><span class="keyword declaration">extends</span><span class="whitespace"> </span><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">awt</span><span class="punctuation">.</span><span class="name attribute">event</span><span class="punctuation">.</span><span class="name attribute">ActionListener</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">    </span><span class="comment multiline">/*final static*/</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">MAGIC_NUMBER</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">42</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span><span class="name">MyActionListener</span><span class="whitespace"> </span><span class="name">actionListener</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">e</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">text</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">MyActionListener</span><span class="punctuation">.</span><span class="name attribute">MAGIC_NUMBER</span><span class="punctuation">);</span></code></pre>
+</blockquote>
+</aside>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Vordefinierte Funktionsinterfaces</p>
+<p><code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">util</span><span class="punctuation">.</span><span class="name attribute">function</span></code> enthält viele vordefinierte Funktionsinterfaces, die in der funktionalen Programmierung häufig verwendet werden.</p>
+<p><em>Beispiele sind:</em></p>
+<ul class="incremental-list simple">
+<li><p><code class="java"><span class="name">Function</span><span class="operator">&lt;</span><span class="name">T</span><span class="punctuation">,</span><span class="name">R</span><span class="operator">&gt;</span></code>: Eine Funktion, die ein Argument vom Typ <code class="java"><span class="name">T</span></code> entgegennimmt und ein Ergebnis vom Typ <code class="java"><span class="name">R</span></code> zurückgibt.</p></li>
+<li><p><code class="java"><span class="name">Predicate</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span></code>: Eine Funktion, die ein Argument vom Typ <code class="java"><span class="name">T</span></code> entgegennimmt und ein Ergebnis vom Typ <code class="java"><span class="keyword type">boolean</span></code> zurückgibt.</p></li>
+<li><p><code class="java"><span class="name">Consumer</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span></code>: Eine Funktion, die ein Argument vom Typ <code class="java"><span class="name">T</span></code> entgegennimmt und kein Ergebnis zurückgibt.</p></li>
+<li><p><code class="java"><span class="name">Supplier</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span></code>: Eine Funktion, die kein Argument entgegennimmt und ein Ergebnis vom Typ <code class="java"><span class="name">T</span></code> zurückgibt.</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p><code class="java"><span class="name">Predicate</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span></code></p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name function">filterList</span><span class="punctuation">(</span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">l</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Predicate</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">pred</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">    </span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">res</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">LinkedList</span><span class="operator">&lt;&gt;</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">T</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">l</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">pred</span><span class="punctuation">.</span><span class="name attribute">test</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">res</span><span class="punctuation">.</span><span class="name attribute">add</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">res</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="name">List</span><span class="operator">&lt;</span><span class="name">Integer</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">l</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">Arrays</span><span class="punctuation">.</span><span class="name attribute">asList</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">3</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">4</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">5</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">6</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">7</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">8</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">9</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">filterList</span><span class="punctuation">(</span><span class="name">l</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">%</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">));</span></code></pre>
+<div class="incremental docutils container">
+<p><em>Ausgabe:</em> <code class="console"><span class="generic output">[2, 4, 6, 8]</span></code></p>
+</div>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p><code class="java"><span class="name">Consumer</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span></code></p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword declaration">class</span> <span class="name class">WorkerOnList</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="keyword declaration">implements</span><span class="whitespace"> </span><span class="name">Consumer</span><span class="operator">&lt;</span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name">Consumer</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">action</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">WorkerOnList</span><span class="punctuation">(</span><span class="name">Consumer</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">action</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">this</span><span class="punctuation">.</span><span class="name attribute">action</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">action</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="name decorator">&#64;Override</span><span class="whitespace"> </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">accept</span><span class="punctuation">(</span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">l</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">        </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">T</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">l</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">action</span><span class="punctuation">.</span><span class="name attribute">accept</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">   </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="name">WorkerOnList</span><span class="operator">&lt;</span><span class="name">Integer</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">worker</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">WorkerOnList</span><span class="operator">&lt;&gt;</span><span class="punctuation">(</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">i</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">i</span><span class="operator">*</span><span class="literal number integer">10</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="name">worker</span><span class="punctuation">.</span><span class="name attribute">accept</span><span class="punctuation">(</span><span class="name">Arrays</span><span class="punctuation">.</span><span class="name attribute">asList</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">,</span><span class="literal number integer">2</span><span class="punctuation">,</span><span class="literal number integer">3</span><span class="punctuation">,</span><span class="literal number integer">4</span><span class="punctuation">));</span></code></pre>
+<p><em>Ausgabe:</em> <code class="console"><span class="generic output">10 20 30 40</span></code></p>
+</aside>
+</ld-card></ld-deck></ld-topic><ld-topic id="lambdas-method-references">
+<h2>Lambdas -Method References</h2>
+<ld-deck>
+<ld-card class="Referenzen auf Methoden">
+<p>Als Implementierung eines funktionalen Interfaces (als „Lambda“) können auch Methoden verwendet werden.</p>
+</ld-card><ld-card class="incremental">
+<ld-deck>
+<ld-card>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p class="rubric">Referenz auf statische Methode</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword declaration">class</span> <span class="name class">ListMethods</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">    </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name function">filterList</span><span class="punctuation">(</span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">l</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Predicate</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">pred</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">        </span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">res</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">LinkedList</span><span class="operator">&lt;&gt;</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">        </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">T</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">l</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">pred</span><span class="punctuation">.</span><span class="name attribute">test</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">res</span><span class="punctuation">.</span><span class="name attribute">add</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">res</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name function">isEven</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">%</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="name">List</span><span class="operator">&lt;</span><span class="name">Integer</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">l</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">Arrays</span><span class="punctuation">.</span><span class="name attribute">asList</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">3</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">4</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">5</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">6</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">7</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">8</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">9</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">filterList</span><span class="punctuation">(</span><span class="name">l</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">ListMethods</span><span class="punctuation">::</span><span class="name">isEven</span><span class="punctuation">));</span></code></pre>
+<p><em>Ausgabe:</em> <code class="console"><span class="generic output">[2, 4, 6, 8]</span></code></p>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p class="rubric">Referenz auf Instanzmethode</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword declaration">class</span> <span class="name class">Tester</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">magicNumber</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">Tester</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">magicNumber</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">this</span><span class="punctuation">.</span><span class="name attribute">magicNumber</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">magicNumber</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name function">isMagic</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">magicNumber</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span><span class="keyword declaration">class</span> <span class="name class">ListMethods</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name function">filterList</span><span class="punctuation">(</span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">l</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Predicate</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">pred</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">        </span><span class="name">List</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">res</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">LinkedList</span><span class="operator">&lt;&gt;</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">        </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">T</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">l</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">pred</span><span class="punctuation">.</span><span class="name attribute">test</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="name">res</span><span class="punctuation">.</span><span class="name attribute">add</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">res</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">   </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span><span class="name">List</span><span class="operator">&lt;</span><span class="name">Integer</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">l</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">Arrays</span><span class="punctuation">.</span><span class="name attribute">asList</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">3</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">4</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">5</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">6</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">7</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">8</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">9</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">filterList</span><span class="punctuation">(</span><span class="name">l</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Tester</span><span class="punctuation">(</span><span class="literal number integer">5</span><span class="punctuation">)::</span><span class="name">isMagic</span><span class="punctuation">));</span></code></pre>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p class="rubric">Referenz auf Constructor</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword declaration">class</span> <span class="name class">Tester</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">magicNumber</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">Tester</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">magicNumber</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">this</span><span class="punctuation">.</span><span class="name attribute">magicNumber</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">magicNumber</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">    </span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name function">isMagic</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="name">magicNumber</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace">
+</span></code><small class="ln">7 </small><code data-lineno="7 "><span class="whitespace"></span><span class="name">Function</span><span class="operator">&lt;</span><span class="name">Integer</span><span class="punctuation">,</span><span class="name">Tester</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">create</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">Tester</span><span class="punctuation">::</span><span class="keyword">new</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">8 </small><code data-lineno="8 "><span class="whitespace"></span><span class="name">create</span><span class="punctuation">.</span><span class="name attribute">apply</span><span class="punctuation">(</span><span class="literal number integer">5</span><span class="punctuation">).</span><span class="name attribute">isMagic</span><span class="punctuation">(</span><span class="literal number integer">5</span><span class="punctuation">);</span></code></pre>
+<p><em>Ausgabe:</em> <code class="console"><span class="generic output">true</span></code></p>
+</aside>
+</ld-card></ld-deck></ld-card></ld-deck></ld-topic><ld-topic id="erweiterungen-der-collection-api">
+<h2>Erweiterungen der Collection API</h2>
+<ld-deck>
+<ld-card>
+<p class="rubric">Neue Methoden in der Collection API</p>
+<ul class="simple">
+<li><p><code class="java"><span class="name">forEach</span><span class="punctuation">(</span><span class="name">Consumer</span><span class="operator">&lt;?</span><span class="whitespace"> </span><span class="keyword declaration">super</span><span class="whitespace"> </span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">action</span><span class="punctuation">)</span></code></p></li>
+<li><p><code class="java"><span class="name">removeIf</span><span class="punctuation">(</span><span class="name">Predicate</span><span class="operator">&lt;?</span><span class="whitespace"> </span><span class="keyword declaration">super</span><span class="whitespace"> </span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">filter</span><span class="punctuation">)</span></code></p></li>
+<li><p><code class="java"><span class="name">replaceAll</span><span class="punctuation">(</span><span class="name">UnaryOperator</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">operator</span><span class="punctuation">)</span></code></p></li>
+<li><p><code class="java"><span class="name">sort</span><span class="punctuation">(</span><span class="name">Comparator</span><span class="operator">&lt;?</span><span class="whitespace"> </span><span class="keyword declaration">super</span><span class="whitespace"> </span><span class="name">T</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">c</span><span class="punctuation">)</span></code></p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">List</span><span class="operator">&lt;</span><span class="name">Integer</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">l</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">Arrays</span><span class="punctuation">.</span><span class="name attribute">asList</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">3</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">4</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">5</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">6</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">7</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">8</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">9</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name">l</span><span class="punctuation">.</span><span class="name attribute">replaceAll</span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="literal number integer">10</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="name">l</span><span class="punctuation">.</span><span class="name attribute">forEach</span><span class="punctuation">(</span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">::</span><span class="name">println</span><span class="punctuation">);</span></code></pre>
+<p><em>Ausgabe:</em> <code class="console"><span class="generic output">10 20 30 40 50 60 70 80 90</span></code></p>
+</aside>
+</ld-card></ld-deck><!-- class: : exercises
+Übung
+- - - - - - - -
+
+.. exercise::
+
+    Impl..
+
+    .. solution::
+        :pwd: FuncF
+
+        .. code:: java
+
+            public -->
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">prog-adv-java-funktionale-programmierung/folien.de.rst</span>, line 489)</p>
+<p>Invalid class attribute value for &quot;class&quot; directive: &quot;new-section
+Streams
+------------------------------------------------&quot;.</p>
+<pre class="literal-block">.. class :: new-section
+    Streams
+    ------------------------------------------------</pre>
+</aside>
+</ld-topic>
+</template>
+</body>
+</html>
