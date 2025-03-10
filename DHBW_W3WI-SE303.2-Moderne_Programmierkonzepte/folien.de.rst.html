@@ -226,13 +226,13 @@
 <h2>3. Termin - 18. Mar 2025</h2>
 <p>Pro Programmiersprache/Team:</p>
 <ul class="simple">
-<li><p>[1 Stud. - 25min] Präsentation der grundlegenden Konzepte der funktionalen Programmierung anhand der Implementierung einer einfachen Datenstruktur sowie der Verarbeitung von Datenströmen. Themen die explizit diskutiert und präsentiert werden sollten sind Scoping, Closures, Tail Recursion sowie Eager und Lazy Evaluation.</p></li>
+<li><p>[1 Stud. - 25min] Präsentation der grundlegenden Konzepte der funktionalen Programmierung anhand der Implementierung einer einfachen Datenstruktur sowie der Verarbeitung von Datenströmen. Themen, die explizit diskutiert und präsentiert werden sollten, sind Scoping, Closures, Tail Recursion sowie Eager und Lazy Evaluation.</p></li>
 </ul>
 </ld-topic><ld-topic id="termin-25-mar-2025">
 <h2>4. Termin -  25. Mar 2025</h2>
 <p>Pro Programmiersprache/Team:</p>
 <ul class="simple">
-<li><p>[1 Stud. - 25min] Präsentation der grundlegenden Konzepte der nebenläufigen Programmierung anhand der Parallelisierung von gängigen Higher-Order-Funktionen.</p></li>
+<li><p>[1 Stud. - 25min] Präsentation der grundlegenden Konzepte der nebenläufigen Programmierung anhand der Parallelisierung von gängigen Funktionen höherer Ordnung.</p></li>
 </ul>
 </ld-topic><ld-topic id="termin-1-apr-2025">
 <h2>5. Termin - 1. Apr 2025</h2>
@@ -444,9 +444,96 @@
 </div>
 </ld-story></ld-topic><ld-topic id="aufgabe-funktionale-programmierung-und-verwandte-konzepte">
 <h2>3. Aufgabe: Funktionale Programmierung und verwandte Konzepte</h2>
-</ld-topic><ld-topic id="aufgabe-nebenlaufige-programmierung">
+<ld-story class="dd-margin-left-6em">
+<div class="compound">
+<p>Setzten Sie die Entwicklung der drei einfachen Datenstrukturen (Liste, Stack und Queue) fort mit dem Ziel, die grundlegenden Konzepte der funktionalen Programmierung zu demonstrieren. Diesbezüglich gilt, dass die Originaldatenstruktur unverändert bleibt und die Methoden ggf. neue Datenstrukturen anlegen.</p>
+<p>Setzen Sie dabei für alle drei Datenstrukturen folgende Methoden um.</p>
+</div>
+<ul class="incremental-list">
+<li><p><code class="java"><span class="name">forEach</span><span class="punctuation">(</span><span class="name">f</span><span class="punctuation">)</span></code>: <code class="java"><span class="name">f</span></code> wird auf alle Elemente angewendet.</p></li>
+<li><p><code class="java"><span class="name">filter</span><span class="punctuation">(</span><span class="name">f</span><span class="punctuation">)</span></code>: eine neue Datenstruktur wird angelegt, die alle Elemente enthält für die <code class="java"><span class="name">f</span></code> den Wert <code class="java"><span class="keyword constant">true</span></code> zurückgibt.</p>
+<p>Der Nutzer soll optional eine Zieldatenstruktur angeben können.</p>
+</li>
+<li><p><code class="java"><span class="name">map</span><span class="punctuation">(</span><span class="name">f</span><span class="punctuation">)</span></code>: wendet die Funktion <code class="java"><span class="name">f</span></code> auf alle Elemente der Datenstruktur an und gibt eine neue Datenstruktur zurück. Dabei ist zu beachten, dass die ursprüngliche Datenstruktur unverändert bleibt und <code class="java"><span class="name">f</span></code> auch den Typ der Elemente ändern kann.</p>
+<p>Der Nutzer soll optional eine Zieldatenstruktur angeben können.</p>
+</li>
+<li><p><code class="java"><span class="name">reduce</span><span class="punctuation">(</span><span class="name">f</span><span class="punctuation">)</span></code>: nutzt die binäre Funktion <code class="java"><span class="name">f</span></code>, um die Elemente der Datenstruktur auf einen einzigen Wert zu reduzieren.</p>
+<p>Ein Beispiel für die Verwendung von <code class="java"><span class="name">reduce</span></code> wäre eine Liste von Zahlen und die Funktion <code class="java"><span class="name">f</span></code> ist die Addition, um die Summe zu berechnen.</p>
+<ul class="simple">
+<li><p>Die Reihenfolge der Anwendung von <code class="java"><span class="name">f</span></code> ist nicht spezifiziert.</p></li>
+<li><p>Der Zieldatentyp kann unterschiedlich vom Elementtyp sein.</p></li>
+<li><p>Ist die Datenstruktur leer, dann soll eine aussagekräftige Ausnahme geworfen werden.</p></li>
+</ul>
+</li>
+<li><p><code class="java"><span class="name">reduceLeft</span><span class="punctuation">(</span><span class="name">f</span><span class="punctuation">)</span></code>: nutzt die binäre Funktion <code class="java"><span class="name">f</span></code>, um die Elemente der Datenstruktur auf einen einzigen Wert zu reduzieren.</p>
+<p>Ein Beispiel für die Verwendung von <code class="java"><span class="name">reduceLeft</span></code> wäre eine Liste von Zahlen und eine Funktion <code class="java"><span class="name">f</span></code> die einen String erzeugt, der die natürliche Reihenfolge der Element wiederspiegeln soll.</p>
+<ul class="simple">
+<li><p>Die Reihenfolge der Anwendung von <code class="java"><span class="name">f</span></code> erfolgt gemäß der natürlichen Reihenfolge der Datenstruktur.</p></li>
+<li><p>Der Zieldatentyp kann unterschiedlich vom Elementtyp sein.</p></li>
+<li><p>Ist die Datenstruktur leer, dann soll eine aussagekräftige Ausnahme geworfen werden.</p></li>
+</ul>
+</li>
+</ul>
+<p class="incremental rubric">Anforderungen an die Datenstrukturen</p>
+<ul class="incremental-list simple">
+<li><p>Alle Operationen sollen typsicher sein.</p></li>
+<li><p>Das Ziel ist es die Methoden mit möglichst wenig Code zu implementieren; d. h. versuchen Sie — soweit es Ihnen und in der Programmiersprache möglich ist — die Methoden nur einmal zu implementieren und dann für alle Datenstrukturen zu verwenden. Sollte dies signifikante Kosten (zur Laufzeit/beim Codeverständnis) verursachen, dann implementieren Sie die Methoden für jede Datenstruktur einzeln und dokumentieren/präsentieren Sie die Gründe für diese Entscheidung.</p></li>
+<li><p>Soweit erforderlich erklären Sie wie folgenden Konzepte umgesetzt sind:</p>
+<ol class="loweralpha simple">
+<li><p>Closures (Funktionen, die auf Variablen aus ihrer Umgebung zugreifen und deren Werte speichert)</p></li>
+<li><p>Tail Recursion</p></li>
+</ol>
+</li>
+<li><p>Für die Funktionen <code class="java"><span class="name">map</span></code> und <code class="java"><span class="name">filter</span></code> soll es sowohl <em>lazy</em> als auch <em>eager</em> Versionen der Operationen geben und auch Verkettung (<code class="java"><span class="punctuation">.</span><span class="name attribute">map</span><span class="punctuation">(...).</span><span class="name attribute">filter</span><span class="punctuation">(...).</span><span class="name attribute">map</span><span class="punctuation">(...)</span></code>) ermöglicht werden. Insbesondere für die <em>lazy</em> Varianten gilt, dass diese erst dann zur Evaluation der Operationen führen sollen, wenn das Ergebnis benötigt wird. (Zum Beispiel aufgrund eines Aufrufs von <code class="java"><span class="name">reduce</span></code>. Sie können ggf. auch gerne eine Methode (<code class="java"><span class="name">to</span></code>) hinzufügen, die die Datenstruktur explizit reifiziert.)</p></li>
+</ul>
+<div class="incremental compound">
+<p class="rubric">Hinweise zur Präsentation</p>
+<ul class="simple">
+<li><p>Starten Sie mit einer Demonstration der Funktionalität der Methoden anhand von Beispielen.</p></li>
+<li><p>Präsentieren Sie die Implementierung der Methoden und die Tests danach.</p></li>
+<li><p>Diskutieren Sie die Vor- und Nachteile der Implementierung.</p></li>
+</ul>
+</div>
+</ld-story></ld-topic><ld-topic id="aufgabe-nebenlaufige-programmierung">
 <h2>4. Aufgabe: Nebenläufige Programmierung</h2>
-</ld-topic>
+<ld-story class="dd-margin-left-6em">
+<div class="compound">
+<p>Setzen Sie die Entwicklung der drei einfachen Datenstrukturen (Liste, Stack und Queue) fort mit dem Ziel, die grundlegenden Konzepte der nebenläufigen Programmierung zu demonstrieren.</p>
+<p>Setzen Sie dabei für alle drei Datenstrukturen folgende Methoden um:</p>
+<ul>
+<li><p><code class="java"><span class="name">parallelMap</span><span class="punctuation">(</span><span class="name">f</span><span class="punctuation">)</span></code>: wendet die seiteneffektfreie Funktion <code class="java"><span class="name">f</span></code> auf alle Elemente der Datenstruktur an und gibt eine neue Datenstruktur zurück. Dabei ist zu beachten, dass die ursprüngliche Datenstruktur unverändert bleibt und <code class="java"><span class="name">f</span></code> auch den Typ der Elemente ändern kann.</p>
+<ul class="simple">
+<li><p>Die Reihenfolge der Anwendung von <code class="java"><span class="name">f</span></code> ist nicht spezifiziert.</p></li>
+<li><p>Der Zieldatentyp kann unterschiedlich vom Elementtyp sein.</p></li>
+</ul>
+</li>
+<li><p><code class="java"><span class="name">parallelReduce</span><span class="punctuation">(</span><span class="name">f</span><span class="punctuation">)</span></code>: nutzt die binäre, seiteneffektfreie Funktion <code class="java"><span class="name">f</span></code>, um die Elemente der Datenstruktur auf einen einzigen Wert zu reduzieren.</p>
+<p>Ein Beispiel für die Verwendung von <code class="java"><span class="name">parallelReduce</span></code> wäre eine Liste von Zahlen und die Funktion <code class="java"><span class="name">f</span></code> ist die Addition, um die Summe zu berechnen.</p>
+<ul class="simple">
+<li><p>Die Reihenfolge der Anwendung von <code class="java"><span class="name">f</span></code> ist nicht spezifiziert.</p></li>
+<li><p>Der Zieldatentyp kann unterschiedlich vom Elementtyp sein.</p></li>
+<li><p>Ist die Datenstruktur leer, dann soll eine aussagekräftige Ausnahme geworfen werden.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="incremental compound">
+<p class="rubric">Anforderungen an die Datenstrukturen</p>
+<ul class="simple">
+<li><p>Alle Operationen sollen typsicher sein.</p></li>
+<li><p>Das Ziel ist es die Methoden mit möglichst wenig Code zu implementieren; d. h. versuchen Sie — soweit es Ihnen und in der Programmiersprache möglich ist — die Methoden nur einmal zu implementieren und dann für alle Datenstrukturen zu verwenden. Sollte dies signifikante Kosten (zur Laufzeit/beim Codeverständnis) verursachen, dann implementieren Sie die Methoden für jede Datenstruktur einzeln und dokumentieren/präsentieren Sie die Gründe für diese Entscheidung.</p></li>
+</ul>
+</div>
+<div class="incremental compound">
+<p class="rubric">Hinweise zur Präsentation</p>
+<ul class="simple">
+<li><p>Führen Sie erst kurz in die Konzepte der nebenläufigen Programmierung in der entsprechenden Sprache ein. D. h. stellen Sie die Konzepte der nebenläufigen Programmierung in der Sprache vor. Auf eine Einführung in die theoretischen Konzepte kann verzichtet werden; es geht um die konkrete Umsetzung in der Sprache.</p></li>
+<li><p>Starten Sie mit einer Demonstration der Funktionalität der Methoden anhand von Beispielen.</p></li>
+<li><p>Präsentieren Sie die Implementierung der Methoden und die Tests danach. Stellen Sie sicher, dass erkenntlich wird, wie Sie auf die Korrektheit der Implementierung - insbesondere in Hinblick auf die Parallelisierung - getestet haben.</p></li>
+<li><p>Diskutieren Sie die Vor- und Nachteile der Implementierung.</p></li>
+</ul>
+</div>
+</ld-story></ld-topic>
 </template>
 </body>
 </html>
