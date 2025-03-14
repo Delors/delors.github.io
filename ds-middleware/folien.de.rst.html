@@ -329,10 +329,10 @@
 </ul>
 </div></ld-topic><ld-topic class="smaller" id="high-level-view-auf-rpc">
 <h2>High-level View auf RPC</h2>
-<div class="assessment docutils container">
+<div class="framed docutils container">
 <p>Für Programmierer sieht ein „entfernter“ Prozeduraufruf fast identisch aus wie ein „lokaler“ Prozeduraufruf und funktioniert auch so - auf diese Weise wird Transparenz erreicht.</p>
 </div>
-<div class="incremental margin-top-2em docutils container">
+<div class="incremental docutils container">
 <p>Um Transparenz zu erreichen, führte RPC viele Konzepte von Middleware-Systemen ein:</p>
 <ul class="incremental list-with-explanations">
 <li><p><em>Interface Description Language</em> (IDL)</p></li>
@@ -348,11 +348,11 @@
 <h2>RPC - Call Semantics</h2>
 <p>Nehmen wir an, ein Client stellt eine RPC-Anfrage an einen Dienst eines bestimmten Servers.
 Nachdem die Zeitüberschreitung abgelaufen ist, beschließt der Client die Anfrage erneut zu senden. Das finale Verhalten hängt von der Semantik des Aufrufs (<span class="eng">Call Semantics</span>) ab:</p>
-<ld-deck class="margin-top-2em">
+<ld-deck>
 <ld-card>
 <p class="rubric">Maybe (vielleicht; keine Garantie)</p>
 <p>Die Zielmethode kann ausgeführt worden sein und die Antwortnachricht(en) ging(en) verloren oder die Methode wurde gar nicht erst ausgeführt da die Anfrage verloren ging.</p>
-<div class="minor docutils container">
+<div class="peripheral docutils container">
 <p><span class="docutils literal">XMLHTTPRequests</span> und <span class="docutils literal">fetch()</span> in Webbrowsern verwenden diese Semantik.</p>
 </div>
 </ld-card><ld-card class="incremental">
@@ -369,12 +369,13 @@ Nachdem die Zeitüberschreitung abgelaufen ist, beschließt der Client die Anfra
 </ld-card></ld-deck></ld-topic><ld-topic id="asynchrones-rpc">
 <h2>Asynchrones RPC</h2>
 <ld-grid class="default-layout">
-<ld-cell class="fade-to-white width-30 fade-to-white width-30" style="align-self:auto;">
+<ld-cell class="fade-out width-30 fade-out width-30" style="align-self:auto;">
 <p>Die Verbindung zwischen Client und Server in einem traditionellen RPC. Der Client wird blockiert und wartet.</p>
 </ld-cell><ld-cell style="align-self:auto;">
 <object data="images/rpcs/synchronous_rpc.svg" role="img" type="image/svg+xml">
-</object></ld-cell></ld-grid><ld-grid class="margin-top-1em default-layout">
-<ld-cell class="fade-to-white width-30 fade-to-white width-30" style="align-self:auto;">
+</object></ld-cell></ld-grid><hr class="docutils" />
+<ld-grid class="default-layout">
+<ld-cell class="fade-out width-30 fade-out width-30" style="align-self:auto;">
 <p>Die Verbindung zwischen Client und Server bei einem asynchronen RPC. Der Client wird nicht blockiert.</p>
 </ld-cell><ld-cell style="align-self:auto;">
 <object data="images/rpcs/asynchronous_rpc.svg" role="img" type="image/svg+xml">
@@ -406,16 +407,14 @@ MTAwMDAw:Q+iBczreAuWtxFA63rV15POPCxhzWon5Ots3B2rXjPg=:gqfXBIgu1HhztG5X:I1L4Suui7
 <h2>Java Remote Method Invocation (RMI)</h2>
 </ld-topic><ld-topic id="java-rmi-remote-method-invocation">
 <h2>Java RMI (Remote Method Invocation)</h2>
-<div class="large rounded-corners dhbw-light-gray-background padding-1em docutils container">
+<div class="framed docutils container">
 <p>Ermöglicht es einem Objekt, das in einer Java Virtual Machine (VM) läuft, Methoden eines Objekts aufzurufen, das in einer anderen Java VM läuft.</p>
 </div>
-<div class="incremental docutils container">
-<ul class="simple">
+<ul class="incremental-list simple">
 <li><p>Entfernte Objekte können ähnlich wie lokale Objekte behandelt werden.</p></li>
 <li><p>Übernimmt das Marshalling, den Transport und die Garbage Collection der entfernten Objekte.</p></li>
 <li><p>Teil von Java seit JDK 1.1</p></li>
 </ul>
-</div>
 </ld-topic><ld-topic id="java-rmi-vs-rpc">
 <h2>Java RMI vs. RPC</h2>
 <object class="align-center" data="images/rpc_vs_rmi.svg" role="img" type="image/svg+xml">
@@ -520,7 +519,7 @@ Prozeduraufruf und einem Methodenaufruf auf ein Objekt</p>
 </div>
 <div class="supplemental">
 <p>Jedes Unternehmen verwendet(e) seinen eigenen „konkreten“` Message-Broker - wenn wir mit mehreren Unternehmen kommunizieren wollen, müssen wir mehrere Adapter/Lösungen implementieren und pflegen.</p>
-</div></ld-topic><ld-topic class="no-title center-child-elements" id="web-services">
+</div></ld-topic><ld-topic class="no-title center-content" id="web-services">
 <h2>Web Services</h2>
 <blockquote class="epigraph">
 <p>Webservices are self-contained, modular business applications that have open, internet-oriented, standards-based interfaces.</p>
@@ -615,20 +614,20 @@ Prozeduraufruf und einem Methodenaufruf auf ein Objekt</p>
 </span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span><span class="name tag">&lt;/SOAP-ENV:Envelope&gt;</span></code></pre>
 </ld-topic><ld-topic id="beispiel-einer-soap-antwort">
 <h2>Beispiel einer SOAP-Antwort</h2>
-<pre class="code http literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="error">  </span><span class="keyword reserved">HTTP</span><span class="operator">/</span><span class="literal number">1.1</span> <span class="literal number">200</span> <span class="name exception">OK</span>
-</code><small class="ln"> 2 </small><code data-lineno=" 2 ">  <span class="literal">Content-Type: text/xml; charset=&quot;utf-8&quot;</span>
-</code><small class="ln"> 3 </small><code data-lineno=" 3 ">  <span class="literal">Content-Length: nnnn</span>
+<pre class="code http literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword reserved">HTTP</span><span class="operator">/</span><span class="literal number">1.1</span> <span class="literal number">200</span> <span class="name exception">OK</span>
+</code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="name attribute">Content-Type</span><span class="operator">:</span> <span class="literal">text/xml; charset=&quot;utf-8&quot;</span>
+</code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="name attribute">Content-Length</span><span class="operator">:</span> <span class="literal">nnnn</span>
 </code><small class="ln"> 4 </small><code data-lineno=" 4 ">
-</code><small class="ln"> 5 </small><code data-lineno=" 5 ">  &lt;SOAP-ENV:Envelope
-</code><small class="ln"> 6 </small><code data-lineno=" 6 ">    xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;
-</code><small class="ln"> 7 </small><code data-lineno=" 7 ">    SOAP-ENV:encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot; /&gt;
-</code><small class="ln"> 8 </small><code data-lineno=" 8 ">
-</code><small class="ln"> 9 </small><code data-lineno=" 9 ">  &lt;SOAP-ENV:Body&gt;
-</code><small class="ln">10 </small><code data-lineno="10 ">    &lt;m:GetLastTradePriceResponse xmlns:m=&quot;Some-URI&quot;&gt;
-</code><small class="ln">11 </small><code data-lineno="11 ">      &lt;Price&gt;34.5&lt;/Price&gt;
-</code><small class="ln">12 </small><code data-lineno="12 ">    &lt;/m:GetLastTradePriceResponse&gt;
-</code><small class="ln">13 </small><code data-lineno="13 ">  &lt;/SOAP-ENV:Body&gt;
-</code><small class="ln">14 </small><code data-lineno="14 ">  &lt;/SOAP-ENV:Envelope&gt;</code></pre>
+</code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="name tag">&lt;SOAP-ENV:Envelope</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">  </span><span class="name attribute">xmlns:SOAP-ENV=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">  </span><span class="name attribute">SOAP-ENV:encodingStyle=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;</span><span class="whitespace"> </span><span class="name tag">/&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="name tag">&lt;SOAP-ENV:Body&gt;</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">  </span><span class="name tag">&lt;m:GetLastTradePriceResponse</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">&quot;Some-URI&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="name tag">&lt;Price&gt;</span>34.5<span class="name tag">&lt;/Price&gt;</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">  </span><span class="name tag">&lt;/m:GetLastTradePriceResponse&gt;</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span><span class="name tag">&lt;/SOAP-ENV:Body&gt;</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span><span class="name tag">&lt;/SOAP-ENV:Envelope&gt;</span></code></pre>
 </ld-topic><ld-topic id="web-services-standardisierung">
 <h2>Web Services - Standardisierung</h2>
 <ld-deck>

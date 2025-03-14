@@ -9,8 +9,8 @@
 <meta content="Basic concepts of distributed systems: Lamport Clocks and 2PC" lang="en" name="description" xml:lang="en" />
 <meta content="lecture-ds-2pc-und-zeit" name="id" />
 <meta content="last-viewed" name="first-slide" />
-<meta name="version" content="LD2 GENESIS" />
-<meta name="exercises-passwords" content="MTAwMDAw:DL2PzTjlb4izMr2KYYrK8K2EzFbqW1LGpR+rdArneiM=:5WzeWG3h82aJpJid:IdzI7wIpkNKQzvohH+wvwyuOjGEbpwbujP9xSDpZP+AxYsrT2RITTM9CrDp5VyMtFI4uSIPkQAGW0dHozqrvbZ/WkcD45FVvzJOPApWgnxzJAy6ygT41Syutm4+hH4xH87+layIHh6vl3CmsXn+NT5v0bVYGJ9VQtpudkDIyzxX5WWk6lt6eNBsZr8tqzGbEsQI3vu2Ff6/r3PsaZl/wngNqkfXjQBeA/iumfjyqwP3XBgwKas/azFyrgDhjtMkd37GrM0cHnZvrEvR81u0FPSRlGdwQrsr2I0cpdczSTazPhA6Lf8L2wt6wVSqOXrzDxHo/tp+/fPZH0+S5zfkN4VOPzVCXofB7e3XDhfIixB9VOe8xU/sU/YIDMUFhgZzxHfef3lCcVncJDK6FiMe0Hizj0CXWOeW2rbsj3i3Q5vJ4rDUqCQAV/FKz" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:KMKJQ0w+CYNSALdGz5413Fzee43kMhSfRnPM/LdcUD0=:ZYKacT+xy+/PWwPG:ZyJZz8pf4YR7V28LtyGb9uWXo3j8iCs1grA3mmykkjottP2W8yHMgw+v9bq6hydw/X9wYSfL6o4i0uBMa1D8ElQdBXUjUKDLtuCtYWekzeaFO8tp5gXFRTd9hw/nLgypCYgAyZmErewvuL2edorPsNmnyFjN7w+LITp2WblxHo4DoEmEjjWbslq6qry6zZhtxL6QdCztdVKSzHKQo4SpFzBfszA8EpYomkKXR93XYnXPFxewDmPg/vpKsvxx1vJpGjbSTfKqvoIygspmoxHN8UsVfb3tQXy3jKdi5wv1iY1nYLaEP2eCLmw6dI1xQzdWytDlxwc5V44KLLH7O31bS64W0VSuDn7/VMwHKYc=" />
 <title>Grundlegende Konzepte verteilter Systeme</title>
 <script>
     window.MathJax = {
@@ -20,24 +20,23 @@
 </script>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
 
-    <script src="../LectureDoc2/genesis/ld-core.js" type="module"></script>
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
 
-    <script src="../LectureDoc2/genesis/ld-components.js" type="module"></script>
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
 
-    <link rel="stylesheet" href="../LectureDoc2/genesis/ld.css" />
-
-    <link rel="stylesheet" href="../LectureDoc2/genesis/themes/DHBW/theme.css" />
-
-    <link rel="stylesheet" href="../LectureDoc2/genesis/ld-ui.css" />
-
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
     
 </head>
 <body>
 <template>
-<div class="ld-slide" id="grundlegende-konzepte-verteilter-systeme">
+<ld-topic id="grundlegende-konzepte-verteilter-systeme">
 <h1 class="title">Grundlegende Konzepte verteilter Systeme</h1>
 
-<div class="line-above docutils container">
+<hr class="docutils" />
 <dl class="field-list simple">
 <dt>Dozent<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
@@ -49,7 +48,6 @@
 <dd><p>1.0.1</p>
 </dd>
 </dl>
-</div>
 <div class="supplemental">
 <dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
@@ -60,13 +58,13 @@
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
-</div></div>
-<div class="center-child-elements ld-slide" id="section-1">
+</div></ld-topic>
+<ld-topic class="center-content" id="section-1">
 <h2></h2>
 <p>Die folgenden Konzepte sind für die Entwicklung verteilter Systeme von zentraler Bedeutung und sind in vielen aktuellen Middlewareprodukten umgesetzt.</p>
-</div><div class="new-section transition-fade ld-slide" id="zeit-in-verteilten-systemen">
+</ld-topic><ld-topic class="new-section transition-fade" id="zeit-in-verteilten-systemen">
 <h2>Zeit in verteilten Systemen</h2>
-</div><div class="ld-slide" id="von-der-bedeutung-der-zeit-in-verteilten-systemen">
+</ld-topic><ld-topic id="von-der-bedeutung-der-zeit-in-verteilten-systemen">
 <h2>Von der Bedeutung der Zeit in verteilten Systemen</h2>
 <ul class="simple">
 <li><p>Updates, die über mehrere Systeme hinweg erfolgen, müssen in korrekter Reihenfolge erfolgen.</p></li>
@@ -74,7 +72,7 @@
 <li><p>Gültigkeit von Berechtigungen (z. B. Zertifikate)</p></li>
 <li><p>geographische Positionsbestimmung (z. B. GPS)</p></li>
 </ul>
-</div><div class="ld-slide" id="probleme-wenn-die-zeit-nicht-korrekt-ist">
+</ld-topic><ld-topic id="probleme-wenn-die-zeit-nicht-korrekt-ist">
 <h2>Probleme, wenn die Zeit nicht korrekt ist</h2>
 <blockquote class="epigraph">
 <p>A recent surge in GPS “spoofing”, a form of digital attack which can send commercial airliners off course, has entered an intriguing new dimension, according to cybersecurity researchers: The ability to hack time. [...]</p>
@@ -82,16 +80,14 @@
 In an interview with Reuters, Munro [at Defcon] cited a recent incident in which an aircraft operated by a major Western airline had its onboard clocks suddenly sent forward by years, causing the plane to lose access to its digitally-encrypted communication systems.</p>
 <p class="attribution">—<a class="reference external" href="https://www.reuters.com/technology/cybersecurity/gps-spoofers-hack-time-commercial-airlines-researchers-say-2024-08-10/">11. August, 2024 - GPS spoofers 'hack time' on commercial airlines</a></p>
 </blockquote>
-</div><div class="center-child-elements transition-scale no-title ld-slide" id="reale-vs-logische-zeit">
-<h2>Reale vs. logische Zeit</h2>
-<div class="dhbw-light-gray-background rounded-corners padding-1em margin-top-2em docutils container">
-<p>In verteilten System unterscheiden wir <strong>reale</strong> und <strong>logische Zeit</strong>.</p>
-<div class="dhbw-gray docutils container">
+</ld-topic><ld-topic class="transition-scale" id="verteilte-systeme-reale-vs-logische-zeit">
+<h2>Verteilte Systeme: Reale vs. logische Zeit</h2>
+<ld-deck>
+<ld-card>
+<p class="rubric">Logische Zeit</p>
 <p>Die logische Zeit ermöglicht es uns, eine wohldefinierte Reihenfolge zwischen Ereignissen (vgl. <span class="eng">happened before</span> Relation) zu bestimmen. <em>Häufig</em> ist dies für verteilte Systeme ausreichend.</p>
-</div>
-</div>
-</div><div class="ld-slide" id="reale-zeit">
-<h2>Reale Zeit</h2>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Reale Zeit</p>
 <dl class="field-list simple">
 <dt>Sonnensekunde<span class="colon">:</span></dt>
 <dd><p>bezieht sich auf die Zeitspanne zwischen aufeinanderfolgenden Sonnenhöchstständen.</p>
@@ -108,9 +104,9 @@ In an interview with Reuters, Munro [at Defcon] cited a recent incident in which
 <dd><p>Basiert auf TAI; aktuell ist noch das Einfügen gelegentlicher Schaltsekunden zur Anpassung an den Sonnentag erforderlich. Ab 2035 wird die Schaltsekunde voraussichtlich abgeschafft.</p>
 </dd>
 </dl>
-</div><div class="ld-slide" id="computeruhrzeit">
+</ld-card></ld-deck></ld-topic><ld-topic id="computeruhrzeit">
 <h2>Computeruhrzeit</h2>
-<ul class="incremental list-with-explanations">
+<ul class="incremental-list list-with-explanations">
 <li><p>Real-time Clock (RTC): interne batteriegepufferte Uhr.</p>
 <p>(Die Genauigkeit und Auflösung sind teilweise sehr grob.)</p>
 </li>
@@ -118,15 +114,15 @@ In an interview with Reuters, Munro [at Defcon] cited a recent incident in which
 <li><p>GPS-Signal (Global Positioning System) mit einer  Auflösung von ca. 100 ns</p></li>
 <li><p>mittels Nachrichtenaustausch mit einem Zeitserver</p></li>
 </ul>
-</div><div class="ld-slide" id="uhrensynchronisation-nach-christian">
+</ld-topic><ld-topic id="uhrensynchronisation-nach-christian">
 <h2>Uhrensynchronisation nach Christian</h2>
-<p><span class="minor">(Probabilistic Clock Synchronisation, 1989)</span></p>
+<p><span class="peripheral">(Probabilistic Clock Synchronisation, 1989)</span></p>
 <ul class="simple">
 <li><p>Voraussetzung: zentraler Zeitserver mit UTC.</p></li>
 <li><p>Clients fragen periodisch nach und korrigieren um halbe Antwortzeit</p></li>
 <li><p>Client-Uhren werden niemals zurückgesetzt sondern ggf. nur verlangsamt bzw. beschleunigt.</p></li>
 </ul>
-</div><div class="ld-slide" id="network-time-protocol-ntp-rfc-5905">
+</ld-topic><ld-topic id="network-time-protocol-ntp-rfc-5905">
 <h2>Network Time Protocol (NTP, RFC 5905)</h2>
 <ul class="incremental list-with-explanations">
 <li><p>Synchronisierung auf UTC</p>
@@ -145,7 +141,7 @@ In an interview with Reuters, Munro [at Defcon] cited a recent incident in which
 </ul>
 <div class="supplemental">
 <p>Aktualisierung der Zeit eines NTP Servers erfolgt aber nur wenn der anfragende Server einen höheren <em>Stratum</em>wert hat (d. h. potentiell unpräziser ist) als der angefragte Server. Der anfragende Server erhält danach den Stratumwert des abgefragten Servers <span class="math">\(+1\)</span>.</p>
-</div></div><div class="smaller-slide-title ld-slide" id="zeit-berechung-der-round-trip-time-und-der-zeitdifferenz-des-gangunterschieds">
+</div></ld-topic><ld-topic class="smaller-slide-title" id="zeit-berechung-der-round-trip-time-und-der-zeitdifferenz-des-gangunterschieds">
 <h2>Zeit: Berechung der Round-Trip-Time und der Zeitdifferenz/des Gangunterschieds</h2>
 <table style="width: 100%;">
 <tbody>
@@ -190,7 +186,7 @@ Gangunterschied: x = \frac{(T_2 - T_1) - (T_4 - T_3)}{2}
 <li><p>Zeit zum Kopieren von Puffern (lastabhängig)</p></li>
 </ul>
 <p>Aufgrund der Probleme ist ein konsistenter, realistischer globaler Schnappschuss nicht realisierbar.</p>
-</div></div><div class="ld-slide" id="beispiel-zur-berechnung-des-gangunterschieds">
+</div></ld-topic><ld-topic id="beispiel-zur-berechnung-des-gangunterschieds">
 <h2>Beispiel zur Berechnung des Gangunterschieds</h2>
 <div class="incremental docutils container">
 <p>Sei die Latenz 5 ms und die Bearbeitungszeit 2 ms.</p>
@@ -205,7 +201,7 @@ Gangunterschied: x = \frac{(T_2 - T_1) - (T_4 - T_3)}{2}
 <p>Somit ergibt sich der Gangunterschied zu:</p>
 <p><span class="math">\(x = \frac{(100-110) - (122-102)}{2} = \frac{(-10 - 20)}{2} = -15\)</span> ms.</p>
 </div>
-</div><div class="center-child-elements ld-slide" id="logische-zeit">
+</ld-topic><ld-topic class="center-child-elements" id="logische-zeit">
 <h2>Logische Zeit</h2>
 <div class="assessment docutils container">
 <p>Für die konsistente Sicht von Ereignissen in einem verteilten System ist die reale Zeit in vielen Fällen nicht wichtig!</p>
@@ -214,66 +210,64 @@ Gangunterschied: x = \frac{(T_2 - T_1) - (T_4 - T_3)}{2}
 </div>
 <div class="supplemental">
 <p>Es ist wichtig zu wissen, was vorher und was nachher passiert ist, aber es ist nicht wichtig, dass wir wissen wann genau (Uhrzeit) etwas passiert ist.</p>
-</div></div><div class="ld-slide" id="lamport-uhren-logical-clocks">
+</div></ld-topic><ld-topic id="lamport-uhren-logical-clocks">
 <h2>Lamport-Uhren (<em>logical clocks</em>)</h2>
 <aside class="admonition definition">
-<p class="admonition-title">Ereignis</p>
+<p class="admonition-title">Definition</p>
 <p>Ein Ereignis (<em>write</em>, <em>send</em>, <em>receive</em>) ist eine Zustandsänderung in einem Prozess.</p>
 </aside>
-<div class="smaller docutils container">
 <p class="rubric">Vorgehensweise</p>
 <ul class="simple">
 <li><p>vor <em>write</em> und <em>send</em>: erhöhen der lokalen Zeit <span class="math">\(T_{local} = T_{local} + 1\)</span></p></li>
 <li><p><em>send</em> immer inklusive Zeitstempel: <span class="math">\(T_{msg} = T_{local}\)</span></p></li>
 <li><p>vor <em>receive</em>: <span class="math">\(T_{local} = max(T_{msg}, T_{local}) + 1\)</span></p></li>
 </ul>
-</div>
-<div class="assessment smaller incremental docutils container">
+<div class="incremental docutils container">
 <p>Ereignis <em>receive</em> ist zeitlich immer nach <em>send</em>.</p>
-<p>Ereignisse werden eingeordnet nach der „happened-before“ Relation:</p>
-<p>a → b</p>
+<p>Ereignisse werden eingeordnet nach der „happened-before“ Relation: <strong>a → b</strong></p>
 <p>(a happened-before b)</p>
 </div>
-<div class="smaller incremental docutils container">
+<div class="incremental docutils container">
 <p>Resultat: es ergibt sich eine partielle Ordnung (partial ordering) der Ereignisse.</p>
 <p>Ein konsistenter Schnappschuss enthält zu jedem Empfangs- das entsprechende Sendeereignis.</p>
 </div>
 <div class="supplemental">
-<p>Lamport Uhren sind eine Möglichkeit, um Totally-ordered Multicast zu unterstützen, was insbesondere im Zusammenhang mit Replication von Nöten ist.</p>
-</div></div><div class="integrated-exercise transition-scale ld-slide" id="ubung">
+<p>Lamport Uhren sind eine Möglichkeit, um <em>Totally-ordered Multicasts</em> zu unterstützen, was insbesondere im Zusammenhang mit Replication von Nöten ist.</p>
+</div></ld-topic><ld-topic class="exercises transition-scale" id="ubung">
 <h2>Übung</h2>
-<div class="ld-exercise smaller" data-exercise-id="1" data-exercise-title="1 - Lamport-Uhren" id="ld-exercise-1">
+<ld-scrollable>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Lamport-Uhren" id="ld-exercise-1">
 <p class="ld-exercise-title rubric">Lamport-Uhren</p>
-<p>Gegeben sei die nachfolgend dargestellte Situation mit drei Prozessen in einem verteilten System. Die Zeitstempel der Ereignisse werden mittels der Lamport'schen Uhren vergeben.</p>
-<p>(Die Werte c ganz links geben den Stand der jeweiligen Uhren zu Beginn an.)</p>
+<p>Gegeben sei die nachfolgend dargestellte Situation mit drei Prozessen in einem verteilten System. Die Zeitstempel der Ereignisse werden mittels der Lamport'schen Uhren vergeben.
+(Die Werte <span class="math-r">c</span> ganz links, geben den Stand der jeweiligen Uhren zu Beginn an.)</p>
 <ol class="loweralpha simple">
 <li><p>Versehen Sie alle Ereignisse mit den korrekten Zeitstempeln.</p></li>
 <li><p>Geben Sie einen konsistenten Sicherungspunkt an, der Ereignis r enthält.</p></li>
 </ol>
-<object class="box-shadow rounded-corners align-center" data="images/lamport-exercise/task.svg" role="img" type="image/svg+xml" width="60%">
+<object class="align-center" data="images/lamport-exercise/task.svg" role="img" type="image/svg+xml">
 </object><div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:f5o7dCndm5AUHhnawFoWQHOLTV1iaZFcq1eClqdc4yY=:yDQEUJHEFNWNGhng:st3auLEE80G0LM6jlqmozmCI8BfQzKxlMoALRaA6bVLd8nnMi2OWHXnwhhy7x7fpVpQpbrWeS5+Eh/KiivAVFa/KY/pPPKu7PO2kfADtcEddPhmM9QaBKq4jEJc+oaRc/XUqTZ5oZeQebGb6qFa0Uw0pq+zK0KmTswugjMzAgGPokMqBW8JzxObIBRrMivUlMlAWibk4AFX4pwuwYai5wZ5VfefveK8WXlFEgTVdffBj9gbC+DNCo13SWdiWOGcyd3q0atMv1yZYElNF+hjwRhbSOiVl54YAIabMDcJOeyhG5Y2TYW7MYV+2PBbyHI6HI7e3tk66wB9ZBMhT6ndUPnHPbjnUvYRlV4PG11owGBhm5IQxjvaG9uOqEFoVJ5BVXus98FxfwGrNCplZ+FmBT9PXjnNF7fufrsqyJO8jOQlOZHivktDS3VQkf5yYmLZ96m5p1gKIXsWQ11LKQk1t8FG8HfpkvwVQS9ilRRom+ACD9q76zx8hgUcgMtcHLiFIiA7DvhQ51f6aUiNc2axyrPeIjfKo7ZWSbEOCMRr9rR26Fk0mEk+oN/thh8updfn18b7QWjzXB+umHGBrp3Zm63vq3w==</div>
+MTAwMDAw:zyW5s8D3Nz990udI3Kz8it0DG6esE2s2UmP0bWbD9x0=:+kV6Z5cuDyhmhHFQ:W+/dVV8orbdfdUPZPkCnE1/LEXmLVECSWmj+lnpfSsrlt5wneziS7GVnsHjVZHNolIAgx7Yg1LQXzj5Kxa1vR/mmrwtF/SreHwc3R4r/meguGDgMNvXg6yptneCFCwXSpdC/PHdBMWlGN77qJCW8etpC/H2kRWN8H+AHFvac0Cgyk123uJtt7yRnIlee0moUZhzvrykJWUcJXVjpEtOFW3ZcJmrkN60D89SMmlNVRfrvSmN3ogsb5xJ4nxMFb9SLzB8klxaRy57ZNnZdSZdP8w5n8Vslu5XmldC9eCpbtlnaBOp1RxSKkDfC+OmTnaGNEA2Nw35zrM5NaONLfEm/IaL0B08wJf4NzVUqosuHqDL53e+N4DNxqKmkELLpcsGH2/wR8fGSK9PZM35DcSOPbkQuz40A+OeRyMJVW7vP+sgCRhmohdQzlOkZ4dKQylhs8r3hvVBmS0Enj3bMDf/a4bWqpBxAkttOm4WnKknhxwm+GubBxD8YnnYPjw/1yKEV+QPCiM6RDC4H3V2iFPKBAZ/+MTLFLRApmAmq6hk9vMMlHsdcf/eZuPdCSQJ0lm3qSYGtNTrxlA==</div>
 </div>
-</div><div class="new-section ld-slide" id="verteilte-transaktionen">
+</ld-scrollable></ld-topic><ld-topic class="new-section" id="verteilte-transaktionen">
 <h2>Verteilte Transaktionen</h2>
-</div><div class="ld-slide" id="atomic-commit-protocol">
+</ld-topic><ld-topic id="atomic-commit-protocol">
 <h2>„Atomic Commit Protocol“</h2>
-<ul class="incremental smaller">
+<ul class="incremental-list">
 <li><p>Verteilte Transaktion erstrecken sich über mehrere Prozesse und meist auch über mehrere Knoten in einem verteilten System.</p></li>
 <li><p>Mehr Fehlerfälle müssen berücksichtigt werden.</p>
 <p>Ein Beispiel wäre die Überweisung eines Geldbetrags (konzeptionelles Beispiel):</p>
-<pre class="code Pseudocode tiny literal-block"><code><span class="name variable">send_money</span><span class="punctuation">(</span><span class="name variable">A</span><span class="punctuation">,</span> <span class="name variable">B</span><span class="punctuation">,</span> <span class="name variable">amount</span><span class="punctuation">)</span> <span class="error">{</span>
-  <span class="name variable">Begin_Transaction</span><span class="punctuation">();</span>
-  <span class="name variable">if</span> <span class="punctuation">(</span><span class="name variable">A</span><span class="operator">.</span><span class="name variable">balance</span> <span class="operator">-</span> <span class="name variable">amount</span> <span class="operator">≥</span> <span class="literal number integer">0</span><span class="punctuation">)</span> <span class="error">{</span>
-    <span class="name variable">A</span><span class="operator">.</span><span class="name variable">balance</span> <span class="operator">=</span> <span class="name variable">A</span><span class="operator">.</span><span class="name variable">balance</span> <span class="operator">-</span> <span class="name variable">amount</span><span class="punctuation">;</span>
-    <span class="name variable">B</span><span class="operator">.</span><span class="name variable">balance</span> <span class="operator">=</span> <span class="name variable">B</span><span class="operator">.</span><span class="name variable">balance</span> <span class="operator">+</span> <span class="name variable">amount</span><span class="punctuation">;</span>
-    <span class="name variable">Commit_Transaction</span><span class="punctuation">();</span>
-  <span class="error">}</span> <span class="name variable">else</span> <span class="error">{</span>
-    <span class="name variable">Abort_Transaction</span><span class="punctuation">();</span>
-<span class="error">}</span> <span class="error">}</span></code></pre>
+<pre class="code java literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="name">send_money</span><span class="punctuation">(</span><span class="name">A</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">B</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">amount</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">  </span><span class="name">Begin_Transaction</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">A</span><span class="punctuation">.</span><span class="name attribute">balance</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name">amount</span><span class="whitespace"> </span><span class="operator">&gt;=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="name">A</span><span class="punctuation">.</span><span class="name attribute">balance</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">A</span><span class="punctuation">.</span><span class="name attribute">balance</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name">amount</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="name">B</span><span class="punctuation">.</span><span class="name attribute">balance</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">B</span><span class="punctuation">.</span><span class="name attribute">balance</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">amount</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="name">Commit_Transaction</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">else</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="name">Abort_Transaction</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
 </li>
 </ul>
-<div class="assessment incremental docutils container">
+<div class="framed incremental docutils container">
 <p>Wir brauchen ein <em>Atomic Commit Protocol</em>.</p>
 </div>
 <div class="supplemental">
@@ -289,7 +283,7 @@ MTAwMDAw:f5o7dCndm5AUHhnawFoWQHOLTV1iaZFcq1eClqdc4yY=:yDQEUJHEFNWNGhng:st3auLEE8
 <li><p>Fehlereingrenzung: Begrenzung der Fehlerausbreitung</p></li>
 <li><p>Maskierung von Fehlern: Entwicklung von Mechanismen, die sicherstellen, dass ein System trotz eines Fehlers korrekt funktioniert (und möglicherweise einen Fehler korrigiert)</p></li>
 </ol>
-</div></div><div class="smaller ld-slide" id="two-phase-commit-protocol-2pc">
+</div></ld-topic><ld-topic class="smaller" id="two-phase-commit-protocol-2pc">
 <h2>Two-Phase Commit Protocol - 2PC</h2>
 <p>Teilnehmer sind (1) die Partizipanten (<span class="math">\(P_i\)</span>), welche die verteilten Daten verwalten, und (2) ein Koordinator, (<span class="math">\(K\)</span>) der die Steuerung des Protokolls übernimmt. (<span class="math">\(K\)</span> darf selbst einer der <span class="math">\(P_i\)</span> sein)</p>
 <ol class="arabic simple incremental">
@@ -311,14 +305,13 @@ MTAwMDAw:f5o7dCndm5AUHhnawFoWQHOLTV1iaZFcq1eClqdc4yY=:yDQEUJHEFNWNGhng:st3auLEE8
 </ol>
 <div class="supplemental">
 <p>Das 2-PC Protokoll ist nicht Fehlerresistent. d. h. es kann Fehler erkennen, aber nicht zwangsläufig korrigieren. Um einige Fehlerszenarien zu behandeln, müssen Ergebnisse (insbesondere READY und COMMIT) in einem persistenten <em>write-ahead</em> Log-File festgehalten werden.</p>
-</div></div><div class="ld-slide" id="cap-theorem">
+</div></ld-topic><ld-topic id="cap-theorem">
 <h2>CAP Theorem<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
 <p>In <strong>verteilten</strong> (<em>Datenbank-</em>)<em>Systemen</em> können nur zwei der drei folgenden Eigenschaften gleichzeitig garantiert werden:</p>
-<div class="two-columns docutils container">
-<div class="column docutils container">
-<object class="align-center" data="images/cap.svg" height="750" role="img" type="image/svg+xml">
-</object></div>
-<div class="column incremental smaller docutils container">
+<ld-grid class="default-layout">
+<ld-grid class="default-layout">
+<object class="align-center" data="images/cap.svg" role="img" type="image/svg+xml">
+</object></ld-grid><ld-grid class="incremental default-layout">
 <ul class="list-with-explanations">
 <li><p>Konsistenz (<span class="eng">Consistency</span>)</p>
 <p>(Nach Abschluss einer Transaktion ist der Rückgabewert der nächsten Leseoperation das Ergebnis der letzten Schreiboperation oder ein Fehler.)</p>
@@ -330,9 +323,7 @@ MTAwMDAw:f5o7dCndm5AUHhnawFoWQHOLTV1iaZFcq1eClqdc4yY=:yDQEUJHEFNWNGhng:st3auLEE8
 <p>(Das System funktioniert auch bei Netzwerkpartitionierungen; d.h. Knoten können nicht mehr miteinander kommunizieren.)</p>
 </li>
 </ul>
-</div>
-</div>
-<aside class="footnote-list brackets">
+</ld-grid></ld-grid><aside class="footnote-list brackets">
 <aside class="footnote brackets" id="footnote-1" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
 <p>2000 Brewer(Vermutung), 2002 Gilbert und Lynch(Beweis)</p>
@@ -350,7 +341,7 @@ MTAwMDAw:f5o7dCndm5AUHhnawFoWQHOLTV1iaZFcq1eClqdc4yY=:yDQEUJHEFNWNGhng:st3auLEE8
 </dd>
 </dl>
 </div><!-- ideas: Leader Election Algo., Gossip Protocol, RAFT Protocol, Paxos, AMQP -->
-</div><div class="integrated-exercise ld-slide" id="ubung-1">
+</ld-topic><ld-topic class="exercises transition-move-to-top" id="ubung-1">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Two-Phase-Commit" id="ld-exercise-2">
 <p class="ld-exercise-title rubric">Two-Phase-Commit</p>
@@ -359,7 +350,7 @@ MTAwMDAw:f5o7dCndm5AUHhnawFoWQHOLTV1iaZFcq1eClqdc4yY=:yDQEUJHEFNWNGhng:st3auLEE8
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:ZUSV3nq058xy9hBO9XpT+ORqlxLeTNA7SCUDh+bVAoI=:L4cQwC0eop451PLh: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</div>
 </div>
-</div>
+</ld-topic>
 </template>
 </body>
 </html>

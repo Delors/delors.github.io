@@ -72,7 +72,7 @@
 </ld-topic><ld-topic id="suchen-in-einer-liste">
 <h2>Suchen in einer Liste</h2>
 <div class="s-font-size-70 highlight-cell-on-hover docutils container">
-<table>
+<table class="incremental-table-rows">
 <thead>
 <tr><th class="head" rowspan="2"><p>Implementation</p></th>
 <th class="head" colspan="3"><p>Garantie</p></th>
@@ -246,13 +246,13 @@ muss es schwer sein:</p>
 <ld-deck>
 <ld-card>
 <p><strong>Ganze Zahlen</strong></p>
-<pre class="code rust literal-block"><code><span class="name">hash</span><span class="punctuation">(</span><span class="name">x</span>: <span class="keyword type">u32</span><span class="punctuation">)</span><span class="whitespace"> </span>: <span class="keyword type">u32</span> <span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="comment single">// u32 == 32-Bit unsigned integer</span></code></pre>
+<pre class="code rust literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">hash</span><span class="punctuation">(</span><span class="name">x</span>: <span class="keyword type">u32</span><span class="punctuation">)</span><span class="whitespace"> </span>: <span class="keyword type">u32</span> <span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="comment single">// u32 == 32-Bit unsigned integer</span></code></pre>
 </ld-card><ld-card class="incremental">
 <p><strong>Gleitkommazahlen</strong></p>
-<pre class="code rust literal-block"><code><span class="name">hash</span><span class="punctuation">(</span><span class="name">x</span>: <span class="keyword type">f64</span><span class="punctuation">)</span><span class="whitespace"> </span>: <span class="keyword type">u32</span> <span class="punctuation">{</span><span class="whitespace"> </span><span class="comment single">// f64 == 64-Bit (IEEE) floating point number
-</span><span class="whitespace">    </span><span class="name">bits</span><span class="whitespace"> </span>: <span class="keyword type">u64</span> <span class="operator">=</span><span class="whitespace"> </span><span class="name">f64ToBits</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// u64 = 64-Bit (signed) integer
-</span><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">u32</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bits</span><span class="whitespace"> </span><span class="operator">^</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bits</span><span class="whitespace"> </span><span class="operator">&gt;&gt;&gt;</span><span class="whitespace"> </span><span class="literal number integer">32</span><span class="punctuation">));</span><span class="whitespace">
-</span><span class="punctuation">}</span></code></pre>
+<pre class="code rust literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">hash</span><span class="punctuation">(</span><span class="name">x</span>: <span class="keyword type">f64</span><span class="punctuation">)</span><span class="whitespace"> </span>: <span class="keyword type">u32</span> <span class="punctuation">{</span><span class="whitespace"> </span><span class="comment single">// f64 == 64-Bit (IEEE) floating point number
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="comment single"></span><span class="whitespace">    </span><span class="name">bits</span><span class="whitespace"> </span>: <span class="keyword type">u64</span> <span class="operator">=</span><span class="whitespace"> </span><span class="name">f64ToBits</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">);</span><span class="whitespace"> </span><span class="comment single">// u64 = 64-Bit (signed) integer
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="comment single"></span><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">u32</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bits</span><span class="whitespace"> </span><span class="operator">^</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">bits</span><span class="whitespace"> </span><span class="operator">&gt;&gt;&gt;</span><span class="whitespace"> </span><span class="literal number integer">32</span><span class="punctuation">));</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
 <div class="supplemental">
 <p><span class="docutils literal">&gt;&gt;&gt;</span> ist der <em>unsigned right shift</em> Operator.</p>
 </div></ld-card><ld-card class="incremental">
@@ -306,7 +306,7 @@ muss es schwer sein:</p>
 <li><p>Der Hashwert eines (nicht veränderlichen) Objekts kann mit der Funktion <span class="docutils literal">hash()</span> berechnet werden.</p></li>
 <li><p>Eigene Objekte in Sets und Dictionaries speichern:</p>
 <ul class="incremental">
-<li><p>Um benutzerdefinierte Objekte in einer Hashmap zu speichern, müssen wir die Methoden <span class="docutils literal">__hash__</span> und <span class="docutils literal">__eq__</span> implementieren.</p></li>
+<li><p>Um benutzerdefinierte Objekte in einer Hashmap zu speichern, müssen wir die Methoden <code class="python"><span class="name function magic">__hash__</span></code> und <code class="python"><span class="name function magic">__eq__</span></code> implementieren.</p></li>
 <li><p>Zu beachten:</p>
 <ul>
 <li><p>Hashwerte <em>müssen für gleiche Objekte gleich sein</em>.</p></li>

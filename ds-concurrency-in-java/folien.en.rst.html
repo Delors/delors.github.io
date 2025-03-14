@@ -73,11 +73,11 @@
 <li><p>Fibres* (also <em>coroutines</em>) always use cooperative multitasking. This means that a fibre explicitly passes control to another fibre. (Formerly also referred to as <em>green threads</em>.) These are invisible to the operating system.</p></li>
 <li><p>As of Java 21, Java not only supports classic (native) threads but also virtual threads (which are &quot;somewhere&quot; between green threads and native threads. The latter in particular allow very natural programming of middleware that takes care of parallelization/concurrency.</p></li>
 </ul>
-</div></ld-topic><ld-topic id="communication-and-synchronisation-with-the-help-of-monitors">
-<h2>Communication and synchronisation with the help of <em>monitors</em></h2>
+</div></ld-topic><ld-topic id="communication-and-synchronization-with-the-help-of-monitors">
+<h2>Communication and synchronization with the help of <em>monitors</em></h2>
 <p>A <em>monitor</em> is an object in which the methods are executed in mutual exclusion (<em>mutual exclusion</em>).</p>
 <object aria-label="Monitor" class="align-right" data="images/threads/monitor.svg" role="img" type="image/svg+xml">
-</object><p class="rubric">Condition synchronisation</p>
+</object><p class="rubric">Condition synchronization</p>
 <ul class="simple">
 <li><p>expresses a condition on the order in which operations are executed.</p></li>
 <li><p>For example, data can only be removed from a buffer once data has been entered into the buffer.</p></li>
@@ -88,7 +88,7 @@
 <p class="admonition-title">Warning</p>
 <p>In Java, mutual exclusion only takes place between methods that have been explicitly declared as <code class="java"><span class="name">synchronised</span></code>.</p>
 </aside>
-<p><em>Monitors</em> are just one model (alternatives: <em>Semaphores</em>, <em>Message Passing</em>) that enables the communication and synchronisation of threads. It is the standard model in Java and is directly supported by the Java Virtual Machine (JVM).</p>
+<p><em>Monitors</em> are just one model (alternatives: <em>Semaphores</em>, <em>Message Passing</em>) that enables the communication and synchronization of threads. It is the standard model in Java and is directly supported by the Java Virtual Machine (JVM).</p>
 </div></ld-topic><ld-topic id="communication-between-threads-with-the-help-of-monitors">
 <h2>Communication between threads with the help of monitors</h2>
 <ul class="simple">
@@ -233,7 +233,7 @@
 </div></ld-topic><ld-topic id="conditional-synchronization">
 <h2>Conditional synchronization</h2>
 <p>For the purpose of conditional synchronisation, the methods <code class="java"><span class="name">wait</span></code>, <code class="java"><span class="name">notify</span></code> and <code class="java"><span class="name">notifyAll</span></code> can be used in Java.  These methods allow you to wait for certain conditions and notify other threads when the condition has changed.</p>
-<ld-deck class="incremental margin-top-1em">
+<ld-deck class="incremental">
 <ld-card>
 <ul class="simple">
 <li><p>These methods can only be used within methods that hold the object lock; otherwise a <code class="java"><span class="name">IllegalMonitorStateException</span></code> is thrown.</p></li>
@@ -304,7 +304,7 @@
 </span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name">Thread</span><span class="whitespace"> </span><span class="name">g1</span><span class="punctuation">,</span><span class="name">g2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(()</span><span class="whitespace"> </span><span class="operator">=&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">bb</span><span class="punctuation">.</span><span class="name attribute">get</span><span class="punctuation">();</span><span class="whitespace"> </span><span class="punctuation">});</span><span class="whitespace">
 </span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="name">Thread</span><span class="whitespace"> </span><span class="name">p1</span><span class="punctuation">,</span><span class="name">p2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(()</span><span class="whitespace"> </span><span class="operator">=&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">bb</span><span class="punctuation">.</span><span class="name attribute">put</span><span class="punctuation">(</span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Object</span><span class="punctuation">());</span><span class="whitespace"> </span><span class="punctuation">});</span><span class="whitespace">
 </span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="name">g1</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace"> </span><span class="name">g2</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace"> </span><span class="name">p1</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace"> </span><span class="name">p2</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span></code></pre>
-<table class="s-font-size-90">
+<table class="s-font-size-90 incremental-table-rows">
 <colgroup>
 <col style="width: 2.0%" />
 <col style="width: 16.7%" />
@@ -458,7 +458,7 @@ g2:bb.get(), p1:bb.put(), p2:bb.put()</p></td>
 <p class="admonition-title">Warning</p>
 <p>If two (or more) threads access the same resources in a different order, a deadlock can occur.</p>
 </aside>
-<aside class="admonition incremental width-100 margin-top-2em important">
+<aside class="admonition incremental width-100 important">
 <p class="admonition-title">Important</p>
 <p><strong>Resources must always be locked in the same order</strong> to avoid deadlocks.</p>
 </aside>
@@ -481,10 +481,10 @@ g2:bb.get(), p1:bb.put(), p2:bb.put()</p></td>
 <li><p>Independent of <em>scheduling</em> or the interleaving of the execution of these threads by the runtime environment,</p></li>
 <li><p>Without additional synchronisation on the part of the calling code.</p></li>
 </ul>
-</ld-card></ld-deck><div class="framed incremental docutils container">
+<div class="framed incremental docutils container">
 <p>As a result, operations on a thread-safe object appear to all threads as if the operations were performed in a fixed, globally consistent order.</p>
 </div>
-</ld-topic><ld-topic id="thread-safety-level">
+</ld-card></ld-deck></ld-topic><ld-topic id="thread-safety-level">
 <h2>Thread Safety Level</h2>
 <dl class="incremental-list field-list simple">
 <dt>Immutable<span class="colon">:</span></dt>
