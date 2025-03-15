@@ -124,7 +124,7 @@ In an interview with Reuters, Munro [at Defcon] cited a recent incident in which
 </ul>
 </ld-topic><ld-topic id="network-time-protocol-ntp-rfc-5905">
 <h2>Network Time Protocol (NTP, RFC 5905)</h2>
-<ul class="incremental list-with-explanations">
+<ul class="incremental-list list-with-explanations">
 <li><p>Synchronisierung auf UTC</p>
 <ul class="simple">
 <li><p>im lokalen Netz mit einer Genauigkeit von bis zu 200 Mikrosekunden</p></li>
@@ -141,8 +141,8 @@ In an interview with Reuters, Munro [at Defcon] cited a recent incident in which
 </ul>
 <div class="supplemental">
 <p>Aktualisierung der Zeit eines NTP Servers erfolgt aber nur wenn der anfragende Server einen höheren <em>Stratum</em>wert hat (d. h. potentiell unpräziser ist) als der angefragte Server. Der anfragende Server erhält danach den Stratumwert des abgefragten Servers <span class="math">\(+1\)</span>.</p>
-</div></ld-topic><ld-topic class="smaller-slide-title" id="zeit-berechung-der-round-trip-time-und-der-zeitdifferenz-des-gangunterschieds">
-<h2>Zeit: Berechung der Round-Trip-Time und der Zeitdifferenz/des Gangunterschieds</h2>
+</div></ld-topic><ld-topic id="zeit-berechnung-der-round-trip-time-und-der-zeitdifferenz-des-gangunterschieds">
+<h2>Zeit: Berechnung der Round-Trip-Time und der Zeitdifferenz/des Gangunterschieds</h2>
 <table style="width: 100%;">
 <tbody>
 <tr><td><p>Origin <span class="math">\(T_1\)</span></p></td>
@@ -169,8 +169,8 @@ RTT: r = (T_4 - T_1) - (T_3 - T_2)
 Gangunterschied: x = \frac{(T_2 - T_1) - (T_4 - T_3)}{2}
 \end{equation*}
 </div>
-<aside class="admonition warning margin-top-1em incremental">
-<p class="admonition-title">Achtung</p>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Achtung!</p>
 <p>Eine exakte Uhrensynchronisation ist in einem asynchronem System nicht realisierbar!</p>
 </aside>
 <div class="supplemental">
@@ -201,7 +201,7 @@ Gangunterschied: x = \frac{(T_2 - T_1) - (T_4 - T_3)}{2}
 <p>Somit ergibt sich der Gangunterschied zu:</p>
 <p><span class="math">\(x = \frac{(100-110) - (122-102)}{2} = \frac{(-10 - 20)}{2} = -15\)</span> ms.</p>
 </div>
-</ld-topic><ld-topic class="center-child-elements" id="logische-zeit">
+</ld-topic><ld-topic class="center-content" id="logische-zeit">
 <h2>Logische Zeit</h2>
 <div class="assessment docutils container">
 <p>Für die konsistente Sicht von Ereignissen in einem verteilten System ist die reale Zeit in vielen Fällen nicht wichtig!</p>
@@ -271,7 +271,7 @@ MTAwMDAw:zyW5s8D3Nz990udI3Kz8it0DG6esE2s2UmP0bWbD9x0=:+kV6Z5cuDyhmhHFQ:W+/dVV8or
 <p>Wir brauchen ein <em>Atomic Commit Protocol</em>.</p>
 </div>
 <div class="supplemental">
-<p class="rubric">Wiederholung Transaktionen</p>
+<p class="rubric">Wiederholung: Transaktionen</p>
 <p>Eine Transaktion stellt die zuverlässige Bearbeitung persistenter Daten sicher – auch in Fehlersituationen. Zentrales Merkmal ist die Garantie der ACID-Eigenschaften (Atomicity, Consistency, Isolation, Durability).</p>
 <p>Am Ende einer Transaktion findet entweder ein commit oder abort / rollback statt.</p>
 <p>Nach einem commit sind alle Änderungen dauerhaft.</p>
@@ -283,19 +283,19 @@ MTAwMDAw:zyW5s8D3Nz990udI3Kz8it0DG6esE2s2UmP0bWbD9x0=:+kV6Z5cuDyhmhHFQ:W+/dVV8or
 <li><p>Fehlereingrenzung: Begrenzung der Fehlerausbreitung</p></li>
 <li><p>Maskierung von Fehlern: Entwicklung von Mechanismen, die sicherstellen, dass ein System trotz eines Fehlers korrekt funktioniert (und möglicherweise einen Fehler korrigiert)</p></li>
 </ol>
-</div></ld-topic><ld-topic class="smaller" id="two-phase-commit-protocol-2pc">
+</div></ld-topic><ld-topic id="two-phase-commit-protocol-2pc">
 <h2>Two-Phase Commit Protocol - 2PC</h2>
 <p>Teilnehmer sind (1) die Partizipanten (<span class="math">\(P_i\)</span>), welche die verteilten Daten verwalten, und (2) ein Koordinator, (<span class="math">\(K\)</span>) der die Steuerung des Protokolls übernimmt. (<span class="math">\(K\)</span> darf selbst einer der <span class="math">\(P_i\)</span> sein)</p>
 <ol class="arabic simple incremental">
 <li><p><strong>Abstimmungsphase</strong>:</p>
-<ul class="incremental simple">
+<ul class="incremental-list simple">
 <li><p>K sendet eine PREPARE-Nachricht an alle <span class="math">\(P_i\)</span>.</p></li>
 <li><p>Jeder <span class="math">\(P_i\)</span> prüft für sich, ob die Transaktion lokal korrekt abgeschlossen werden kann.</p></li>
 <li><p>Falls ja, sendet er READY, anderenfalls ABORT an <span class="math">\(K\)</span></p></li>
 </ul>
 </li>
 <li><p><strong>Entscheidungsphase</strong>:</p>
-<ul class="incremental simple">
+<ul class="incremental-list simple">
 <li><p>Falls alle <span class="math">\(P_i\)</span> mit READY geantwortet haben, sendet <span class="math">\(K\)</span> COMMIT an alle <span class="math">\(P_i\)</span>; anderenfalls sendet <span class="math">\(K\)</span> eine ABORT-Nachricht an alle <span class="math">\(P_i\)</span></p></li>
 <li><p>Falls die Entscheidung COMMIT war, machen alle <span class="math">\(P_i\)</span> die Transaktion <em>stabil</em></p></li>
 <li><p>Falls die Entscheidung ABORT war, setzen alle <span class="math">\(P_i\)</span> die Transaktion zurück.</p></li>

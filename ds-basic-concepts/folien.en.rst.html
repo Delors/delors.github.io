@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Lamport Clock&quot;, &quot;2PC&quot;" name="keywords" />
+<meta content="Grundlegende Konzepte verteilter Systeme: Lamport-Uhren und 2PC" lang="de" name="description" xml:lang="de" />
+<meta content="Basic concepts of distributed systems: Lamport Clocks and 2PC" lang="en" name="description" xml:lang="en" />
+<meta content="lecture-ds-2pc-and-time" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:ytbjZN0ZPCuNSNUiT/PpMXxvEPhAibCvMLEjP4HdE78=:VzOPI8SvtTbFlg4X:szP9J+NJpRJRWO6TWH6Ahot2msrbglwu0MrYmjAM1ORU2+JTEajVJTCuLUnmxNKjxwU0Re1RqK5GUmIALEQabH9GaX3NgCHlXK2H3RygVLsLw3PcG+9D2vMSFIelDa7SNFDCGlUuFT5Oo4USSylBxBBRppsSYitbOcolGadyYd84Kf1pafvtOFMXsdIjaHYEsucE15tT2CW/GflU325J0IebPid4lfUwBzFFmTMVDprNJ0p1qOU9UChbIFO+k8TsV0R2G6ThtbW31k8l9lqOpRhRArQX7TtJBO8VzUxRiGYoC9Eia2ugMnTNvUkPKUu/5ixOnc3mZCgLsNRAs+/QDmJ71N+JILN/9656YFIrFdodhx9l5GTJ" />
+<title>Basic Concepts of Distributed Systems</title>
+<script>
+    window.MathJax = {
+        tex: { tags: 'ams' },
+        chtml: { displayAlign: 'center' /*left or center*/ }
+    };
+</script>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="basic-concepts-of-distributed-systems">
+<h1 class="title">Basic Concepts of Distributed Systems</h1>
+
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Lecturer<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Contact<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/ds-basic-concepts/folien.en.rst.html">https://delors.github.io/ds-basic-concepts/folien.en.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/ds-basic-concepts/folien.en.rst.html.pdf">https://delors.github.io/ds-basic-concepts/folien.en.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></ld-topic>
+<ld-topic class="center-content" id="section-1">
+<h2></h2>
+<p>The following concepts are of central importance for the development of distributed systems and are implemented in many current middleware products.</p>
+</ld-topic><ld-topic class="new-section transition-fade" id="time-in-distributed-systems">
+<h2>Time in distributed systems</h2>
+</ld-topic><ld-topic id="the-importance-of-time-in-distributed-systems">
+<h2>The importance of time in distributed systems</h2>
+<ul class="incremental-list simple">
+<li><p>Updates that are carried out across several systems must be carried out in the correct order.</p></li>
+<li><p>Log entries should be made in the correct order.</p></li>
+<li><p>Validity of authorizations (e.g. certificates)</p></li>
+<li><p>Geographical positioning (e.g. GPS)</p></li>
+</ul>
+</ld-topic><ld-topic id="problems-when-the-time-is-not-correct">
+<h2>Problems when the Time is not correct</h2>
+<blockquote class="epigraph">
+<p>A recent surge in GPS “spoofing”, a form of digital attack which can send commercial airliners off course, has entered an intriguing new dimension, according to cybersecurity researchers: The ability to hack time. [...]</p>
+<p>“We think too much about GPS being a source of position, but it's actually a source of time,” [...]  “We're starting to see reports of the clocks on board airplanes during spoofing events start to do weird things.&quot;
+In an interview with Reuters, Munro [at Defcon] cited a recent incident in which an aircraft operated by a major Western airline had its onboard clocks suddenly sent forward by years, causing the plane to lose access to its digitally-encrypted communication systems.</p>
+<p class="attribution">—<a class="reference external" href="https://www.reuters.com/technology/cybersecurity/gps-spoofers-hack-time-commercial-airlines-researchers-say-2024-08-10/">11. August, 2024 - GPS spoofers 'hack time' on commercial airlines</a></p>
+</blockquote>
+</ld-topic><ld-topic class="transition-scale" id="distributed-systems-real-vs-logical-time">
+<h2>Distributed Systems: Real vs. Logical Time</h2>
+<ld-deck>
+<ld-card>
+<p class="rubric">Logical Time</p>
+<p>Logical time allows us to determine a well-defined sequence between events (cf. <span class="eng">happened before</span> relation). This is <em>often sufficient</em> for distributed systems.</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Real Time</p>
+<dl class="field-list simple">
+<dt>Solar second<span class="colon">:</span></dt>
+<dd><p>refers to the period of time between successive solar equinoxes.</p>
+</dd>
+</dl>
+<dl class="incremental field-list">
+<dt>Atomic Second<span class="colon">:</span></dt>
+<dd><p>The reference point is the period of oscillation of a caesium-133 atom.</p>
+<p>TAI (Temps Atomique International): Average time of the atomic clocks of over 60 institutes worldwide (e.g. Braunschweig), determined by the BIH (Bureau International de l'Heure) in Paris.</p>
+</dd>
+</dl>
+<dl class="incremental field-list simple">
+<dt>UTC (Universal Coordinated Time)<span class="colon">:</span></dt>
+<dd><p>Based on TAI; it is currently still necessary to insert occasional leap seconds to adjust to the solar day. The leap second is expected to be abolished from 2035.</p>
+</dd>
+</dl>
+</ld-card></ld-deck></ld-topic><ld-topic id="computer-clock-time">
+<h2>Computer Clock Time</h2>
+<ul class="incremental-list list-with-explanations">
+<li><p>Real-time Clock (RTC): internal battery-buffered clock.</p>
+<p>(The accuracy and resolution are sometimes very coarse).</p>
+</li>
+<li><p>Radio-controlled clock (DCF77 from Mainflingen, approx. 2000 km range)</p></li>
+<li><p>GPS signal (Global Positioning System) with a resolution of approx. 100 ns</p></li>
+<li><p>by means of message exchange with a time server</p></li>
+</ul>
+</ld-topic><ld-topic id="clock-synchronization-according-to-christian">
+<h2>Clock synchronization according to Christian</h2>
+<p><span class="peripheral">(Probabilistic Clock Synchronisation, 1989)</span></p>
+<ul class="simple">
+<li><p>Prerequisite: central time server with UTC.</p></li>
+<li><p>Clients ask periodically and correct by half the response time</p></li>
+<li><p>Client clocks are never reset but only slowed down or accelerated if necessary.</p></li>
+</ul>
+</ld-topic><ld-topic id="network-time-protocol-ntp-rfc-5905">
+<h2>Network Time Protocol (NTP, RFC 5905)</h2>
+<ul class="incremental-list list-with-explanations">
+<li><p>Synchronisation to UTC</p>
+<ul class="simple">
+<li><p>in the local network with an accuracy of up to 200 microseconds</p></li>
+<li><p>on the Internet with an accuracy of 1-10 milliseconds</p></li>
+</ul>
+</li>
+<li><p>Hierarchy of time servers</p>
+<p>Stratum 0: Quelle - z. B. DCF77-Zeitzeichensender</p>
+<p>Stratum 1: Primary server</p>
+<p>Stratum 2,...: Secondary-/...server</p>
+<p>Clients</p>
+</li>
+<li><p>Mutual exchange of time stamps between the server computers is supported (NTP is symmetrical).</p></li>
+</ul>
+<div class="supplemental">
+<p>However, the time of an NTP server is only updated if the requesting server has a higher <em>stratum</em>value (i.e. is potentially less precise) than the requested server. The requesting server then receives the stratum value of the queried server <span class="math-r">+1</span>.</p>
+</div></ld-topic><ld-topic id="time-calculation-of-the-round-trip-time-and-the-time-difference">
+<h2>Time: Calculation of the round trip time and the time difference</h2>
+<table style="width: 100%;">
+<tbody>
+<tr><td><p>Origin <span class="math">\(T_1\)</span></p></td>
+<td><p>System time of the client when sending the request</p></td>
+</tr>
+<tr><td><p>Receive <span class="math">\(T_2\)</span></p></td>
+<td><p>System time of the server when the request is received</p></td>
+</tr>
+<tr><td><p>Transmit <span class="math">\(T_3\)</span></p></td>
+<td><p>System time of the server when sending the response</p></td>
+</tr>
+<tr><td><p>Destination <span class="math">\(T_4\)</span></p></td>
+<td><p>System time of the client when receiving the response</p></td>
+</tr>
+</tbody>
+</table>
+<div class="math">
+\begin{equation*}
+\text{RTT:}\quad r = (T_4 - T_1) - (T_3 - T_2)
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+\text{Time difference:}\quad x = \frac{(T_2 - T_1) - (T_4 - T_3)}{2}
+\end{equation*}
+</div>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Attention!</p>
+<p>Exact clock synchronization cannot be achieved in an asynchronous system!</p>
+</aside>
+<div class="supplemental">
+<p>It is assumed that time passes at virtually the same speed on both computers. The time difference between the two computers is therefore constant.</p>
+<p><span class="math">\((T3 - T2)\)</span> is the time required by the server for processing.</p>
+<p>The round trip time (RTT) is the time it takes for a signal to travel from one computer to another and back.</p>
+<p>The time difference is the difference between the time on the server and the time on the client.</p>
+<p>Problems with clock synchronisation arise due to uncertain latencies:</p>
+<ul class="simple">
+<li><p>Message transmission time (depending on distance and medium)</p></li>
+<li><p>Time delay in routers during relaying (load-dependent)</p></li>
+<li><p>Time until interrupt acceptance in the operating system (context-dependent)</p></li>
+<li><p>Time for copying buffers (load-dependent)</p></li>
+</ul>
+<p>Due to these problems, a consistent, realistic global snapshot cannot be realised.</p>
+</div></ld-topic><ld-topic id="example-of-calculating-the-time-difference">
+<h2>Example of Calculating the Time Difference</h2>
+<div class="incremental docutils container">
+<p>Let the latency be 5 ms and the processing time 2 ms.</p>
+<p>Furthermore, let <span class="math">\(T_1 = 110\)</span> and <span class="math">\(T_2 = 100\)</span>. I.e. the client is ahead.</p>
+</div>
+<div class="incremental docutils container">
+<p>Since the processing time of the server is 2 ms, the following applies for <span class="math">\(T_3\)</span> and <span class="math">\(T_4\)</span>:</p>
+<p><span class="math">\(T_3 = 102\)</span> and</p>
+<p><span class="math">\(T_4 = 110+(2 \times 5) +2 = 122\)</span>.</p>
+</div>
+<div class="incremental docutils container">
+<p>This results in the time difference:</p>
+<p><span class="math">\(x = \frac{(100-110) - (122-102)}{2} = \frac{(-10 - 20)}{2} = -15\)</span> ms.</p>
+</div>
+</ld-topic><ld-topic id="logical-time">
+<h2>Logical Time</h2>
+<aside class="admonition observation">
+<p class="admonition-title">Observation</p>
+<p>For the consistent view of events in a distributed system, the real time is not important in many cases!</p>
+<p>We only need a globally unique sequence of events, i.e. we need timestamps.</p>
+<p>However, not all events influence each other, i.e. they are causally independent.</p>
+</aside>
+<div class="supplemental">
+<p>It is important to know what happened before and what happened after, but it is not important that we know exactly when (time) something happened.</p>
+</div></ld-topic><ld-topic id="lamport-uhren-logical-clocks">
+<h2>Lamport-Uhren (<em>logical clocks</em>)</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>An event (<em>write</em>, <em>send</em>, <em>receive</em>) is a change in a process.</p>
+</aside>
+<p class="rubric">Procedure</p>
+<ul class="simple">
+<li><p>before <em>write</em> and <em>send</em>: increment the local time <span class="math">\(T_{local} = T_{local} + 1\)</span></p></li>
+<li><p><em>send</em> always include the timestamp: <span class="math">\(T_{msg} = T_{local}\)</span></p></li>
+<li><p>before <em>receive</em>: <span class="math">\(T_{local} = max(T_{msg}, T_{local}) + 1\)</span></p></li>
+</ul>
+<div class="incremental docutils container">
+<p>The <em>receive</em> event is always after <em>send</em>.</p>
+<p>Events are categorised according to the happened-before relation: <strong>a → b</strong></p>
+<p>(a happened-before b)</p>
+</div>
+<div class="incremental docutils container">
+<p>The result is a partial ordering of the events.</p>
+<p>A consistent snapshot contains the corresponding send event for each receive event.</p>
+</div>
+<div class="supplemental">
+<p>Lamport clocks are one way of supporting <em>totally-ordered multicasts</em>, which is particularly necessary in combination with replication.</p>
+</div></ld-topic><ld-topic class="exercises transition-scale" id="exercise">
+<h2>Exercise</h2>
+<ld-scrollable>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Lamport-Clocks" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">Lamport-Clocks</p>
+<p>Consider the following situation with three processes in a distributed system. The timestamps of the events are assigned using Lamport's clocks.
+(The values <span class="math-r">c</span> on the far left indicate the state of the respective clocks at the beginning).</p>
+<ol class="loweralpha simple">
+<li><p>Provide all events with the correct timestamps.</p></li>
+<li><p>Specify a consistent save point containing event r.</p></li>
+</ol>
+<object class="align-center" data="images/lamport-exercise/task.svg" role="img" type="image/svg+xml">
+</object><div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:j641NZk1KZMtxndTaFBVlWUniyn8ANgHTx23/0RpGIg=:dNh8ERzv/51hqSNL:QEr5qUNjkbswKuqZuSNrw5R+Buzc3W2nlV1fPh/4fVQ85/4IWNJMBJPOfkafYIY2Bq1ZCTSRMjkwWmULtrDPTC1raQN3r/xg7AW2TJH1vePaIJJ3vx+oPyyIQgXXVtF9ThhIwSEpk/v6vxMMMKhY4F0xaspx6jjUX5NzQIMLYI4qPd9DysWiEnFiwq8qElxae+dYKojYZhgyeJ/0FVvktExO+WXjptVLZTRZ+JlThB7EMQdZgt2QO5lekSoowm9+s2r4B7kiThi/yimH+058wUFuNu/FMcy3qOC1fxMdcDBfFURRyJ2zHzgU9TkanwaYTrmp5TiIp+6V0R80VzBsauYd+QEeXX6yIyUxbShdaRjTFj/vfC9WfbH5ww8/QKrPGVSru6SM0D/qct16zAyoedMOf8VXKm9V7464LJ4kJeDEFxd5dfLpBQ/ivBH7UGW9jWZc5qT1/nvDkOf/NLpPBdFBjEBIMUv9jBOIrkf6KL/VilopfRVBWml5rZ0tL/GYiry0YzuTelhOInnhOkN43LMQYtZ1OKuqcsg=</div>
+</div>
+</ld-scrollable></ld-topic><ld-topic class="new-section" id="distributed-transactions">
+<h2>Distributed transactions</h2>
+</ld-topic><ld-topic id="atomic-commit-protocol">
+<h2>„Atomic Commit Protocol“</h2>
+<ul class="incremental-list">
+<li><p>Distributed transactions extend over several processes and usually also over several nodes in a distributed system.</p></li>
+<li><p>More error cases must be taken into account.</p>
+<p>One example would be the transfer of a sum of money (conceptual example):</p>
+<pre class="code java literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="name">send_money</span><span class="punctuation">(</span><span class="name">A</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">B</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">amount</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">  </span><span class="name">Begin_Transaction</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">  </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">A</span><span class="punctuation">.</span><span class="name attribute">balance</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name">amount</span><span class="whitespace"> </span><span class="operator">&gt;=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="name">A</span><span class="punctuation">.</span><span class="name attribute">balance</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">A</span><span class="punctuation">.</span><span class="name attribute">balance</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name">amount</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="name">B</span><span class="punctuation">.</span><span class="name attribute">balance</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">B</span><span class="punctuation">.</span><span class="name attribute">balance</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">amount</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="name">Commit_Transaction</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">else</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="name">Abort_Transaction</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
+</li>
+</ul>
+<div class="framed incremental docutils container">
+<p>We need an <em>Atomic Commit Protocol</em>.</p>
+</div>
+<div class="supplemental">
+<p class="rubric">Repetition: Transactions</p>
+<p>A transaction ensures the reliable processing of persistent data - even in error situations. The central feature is the guarantee of the ACID properties (Atomicity, Consistency, Isolation, Durability).</p>
+<p>At the end of a transaction, either a commit or abort / rollback takes place.</p>
+<p>After a commit, all changes are permanent.</p>
+<p class="rubric">Fault tolerance</p>
+<p>The aim is to make it possible to build a reliable system from unreliable components.</p>
+<p>Three basic steps:</p>
+<ol class="arabic simple">
+<li><p>error detection: recognising the presence of an error in a data value or a control signal</p></li>
+<li><p>fault localization: limiting the propagation of faults</p></li>
+<li><p>masking errors: developing mechanisms that ensure that a system functions correctly despite an error (and possibly corrects an error)</p></li>
+</ol>
+</div></ld-topic><ld-topic id="two-phase-commit-protocol-2pc">
+<h2>Two-Phase Commit Protocol - 2PC</h2>
+<p>Participants are (1) those (<span class="math">\(P_i\)</span>), who manage the distributed data, and (2) a coordinator (<span class="math">\(K\)</span>), who controls the protocol. (<span class="math">\(K\)</span> may itself be one of the <span class="math">\(P_i\)</span>)</p>
+<ol class="arabic simple incremental">
+<li><p><strong>Coordination Phase</strong>:</p>
+<ul class="incremental-list simple">
+<li><p>K sends a PREPARE message to all <span class="math">\(P_i\)</span>.</p></li>
+<li><p>Each <span class="math">\(P_i\)</span> checks for itself whether the transaction can be completed correctly locally.</p></li>
+<li><p>If so, it sends READY, otherwise ABORT to <span class="math">\(K\)</span></p></li>
+</ul>
+</li>
+<li><p><strong>Decision Phase</strong>:</p>
+<ul class="incremental-list simple">
+<li><p>If all <span class="math">\(P_i\)</span> have responded with READY, <span class="math">\(K\)</span> sends COMMIT to all <span class="math">\(P_i\)</span>; otherwise <span class="math">\(K\)</span> sends an ABORT message to all <span class="math">\(P_i\)</span></p></li>
+<li><p>If the decision was COMMIT, all <span class="math">\(P_i\)</span> make the transaction <em>stable</em></p></li>
+<li><p>If the decision was ABORT, all <span class="math">\(P_i\)</span> roll back the transaction.</p></li>
+<li><p>Finally, all <span class="math">\(P_i\)</span> send an OK message to <span class="math">\(K\)</span></p></li>
+</ul>
+</li>
+</ol>
+<div class="supplemental">
+<p>The 2-PC protocol is not error-resistant, i.e. it can recognise errors but cannot necessarily correct them. To handle some error scenarios, results (especially READY and COMMIT) must be recorded in a persistent <em>write-ahead</em> log file.</p>
+</div></ld-topic><ld-topic id="cap-theorem">
+<h2>CAP Theorem<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<p>In <strong>distributed</strong> (<em>database</em>)<em>systems</em>, only two of the following three properties can be guaranteed at the same time:</p>
+<ld-grid class="default-layout">
+<ld-grid class="default-layout">
+<object class="align-center" data="images/cap.svg" role="img" type="image/svg+xml">
+</object></ld-grid><ld-grid class="incremental default-layout">
+<ul class="list-with-explanations">
+<li><p><em>Consistency</em></p>
+<p>After completion of a transaction, the return value of the next read operation is the result of the last write operation or an error.</p>
+</li>
+<li><p><em>Availability</em></p>
+<p>Each request receives a response in an acceptable time.</p>
+</li>
+<li><p><em>Partition tolerance</em></p>
+<p>The system also works with network partitioning, i.e. nodes can no longer communicate with each other.</p>
+</li>
+</ul>
+</ld-grid></ld-grid><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>2000 Brewer(Conjecture), 2002 Gilbert and Lynch(Proof)</p>
+</aside>
+</aside>
+<div class="supplemental">
+<p>The CAP theorem <em>only</em> refers to distributed systems. Network partitioning can always occur in such systems. Therefore, partition tolerance is a natural property and you can often only choose between consistency and availability.</p>
+<p>Which properties are important in which scenarios?</p>
+<dl class="field-list simple">
+<dt>DNS<span class="colon">:</span></dt>
+<dd><p>Availability and partition tolerance</p>
+</dd>
+<dt>Banking<span class="colon">:</span></dt>
+<dd><p>Consistency and partition tolerance</p>
+</dd>
+</dl>
+</div><!-- ideas: Leader Election Algo., Gossip Protocol, RAFT Protocol, Paxos, AMQP -->
+</ld-topic><ld-topic class="exercises transition-move-to-top" id="exercise-1">
+<h2>Exercise</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Two-Phase-Commit" id="ld-exercise-2">
+<p class="ld-exercise-title rubric">Two-Phase-Commit</p>
+<p>Analyse how the two-phase commit protocol deals with error situations.</p>
+<p>Which errors can occur at which points in time and which can the protocol rectify?</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:4aL6w1G7VUFLtU7IoI/ps6bLQcHhxJW8XfbUgaKT1Nw=:Tn70cQ0NHprwhuXj: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</div>
+</div>
+</ld-topic>
+</template>
+</body>
+</html>
