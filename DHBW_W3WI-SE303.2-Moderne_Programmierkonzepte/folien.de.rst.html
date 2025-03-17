@@ -238,14 +238,14 @@
 <h2>5. Termin - 1. Apr 2025</h2>
 <p>Pro Programmiersprache/Team:</p>
 <ul class="simple">
-<li><p>[1 Stud. - 25min] Präsentation einer einfachen eDSL (embedded Domain Specific Language)</p></li>
+<li><p>[1 Stud. - 25min] Präsentation fortgeschrittener Programmierkonzepte anhand einer einfachen eDSL (embedded Domain Specific Language)</p></li>
 <li><p>[60 min] Übung zu Scala</p></li>
 </ul>
 </ld-topic><ld-topic id="termin-8-apr-2025">
 <h2>6. Termin - 8. Apr 2025</h2>
 <p>Pro Programmiersprache/Team:</p>
 <ul class="simple">
-<li><p>[1 Stud. - 25min] Präsentation eines einfachen parallelisierten RESTful Web-Services</p></li>
+<li><p>[1 Stud. - 25min] Parallele Passwortwiederherstellung</p></li>
 <li><p>[60 min] Übung zu Rust</p></li>
 </ul>
 </ld-topic><ld-topic id="abschluss-22-apr-2025">
@@ -497,10 +497,9 @@
 </ld-story></ld-topic><ld-topic id="aufgabe-nebenlaufige-programmierung">
 <h2>4. Aufgabe: Nebenläufige Programmierung</h2>
 <ld-story class="dd-margin-left-6em">
-<div class="compound">
 <p>Setzen Sie die Entwicklung der drei einfachen Datenstrukturen (Liste, Stack und Queue) fort mit dem Ziel, die grundlegenden Konzepte der nebenläufigen Programmierung zu demonstrieren.</p>
 <p>Setzen Sie dabei für alle drei Datenstrukturen folgende Methoden um:</p>
-<ul>
+<ul class="incremental-list">
 <li><p><code class="java"><span class="name">parallelMap</span><span class="punctuation">(</span><span class="name">f</span><span class="punctuation">)</span></code>: wendet die seiteneffektfreie Funktion <code class="java"><span class="name">f</span></code> auf alle Elemente der Datenstruktur an und gibt eine neue Datenstruktur zurück. Dabei ist zu beachten, dass die ursprüngliche Datenstruktur unverändert bleibt und <code class="java"><span class="name">f</span></code> auch den Typ der Elemente ändern kann.</p>
 <ul class="simple">
 <li><p>Die Reihenfolge der Anwendung von <code class="java"><span class="name">f</span></code> ist nicht spezifiziert.</p></li>
@@ -516,7 +515,6 @@
 </ul>
 </li>
 </ul>
-</div>
 <div class="incremental compound">
 <p class="rubric">Anforderungen an die Datenstrukturen</p>
 <ul class="simple">
@@ -532,6 +530,65 @@
 <li><p>Präsentieren Sie die Implementierung der Methoden und die Tests danach. Stellen Sie sicher, dass erkenntlich wird, wie Sie auf die Korrektheit der Implementierung - insbesondere in Hinblick auf die Parallelisierung - getestet haben.</p></li>
 <li><p>Diskutieren Sie die Vor- und Nachteile der Implementierung.</p></li>
 </ul>
+</div>
+</ld-story></ld-topic><ld-topic id="aufgabe-embedded-domain-specific-languages-edsl">
+<h2>5. Aufgabe: Embedded Domain Specific Languages (eDSL)</h2>
+<ld-story class="dd-margin-left-6em">
+<p class="rubric">Hintergrund</p>
+<p>Ziel dieser Aufgabe ist es zu untersuchen bzw. darzustellen, inwieweit es möglich ist, in der jeweiligen Sprache eine sogenannte eDSL zu entwickeln. Das Ziel einer eDSL ist es, eine API bereitzustellen, die es ermöglicht, mit vertrauten Konzepten aus einer bestimmten Domäne/einem bestimmten Bereich zu arbeiten.</p>
+<aside class="admonition incremental s-font-size-80 remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Die Fähigkeiten von Programmiersprachen unterscheiden sich diesbezüglich stark und hängen ganz insbesondere von der Flexibilität der (Syntax der) Sprache ab. So gibt es zum Beispiel moderne Sprachen, die es ermöglichen mal Klammern zu verwenden und mal Klammern wegzulassen bzw. Semikolons zu inferieren. Weiterhin ist eine sehr gute Typinferenz häufig hilfreich. Weiterhin gibt es Sprachen, die zum Beispiel quasi beliebige Operatoren (ggf. mit wohldefinierten Prioritäten) definieren lassen bzw. bei denen Methodennamen sich sehr frei aus dem Unicode Zeichensatz bedienen können. Darüber hinaus sind Konzepte wie Macros, Templates oder vergleichbares vorhanden, dass bei der Entwicklung hilfreich sein kann.</p>
+</aside>
+<div class="incremental compound">
+<p class="rubric">Aufgabenstellung - eDSL für Funktionen</p>
+<p>Entwickeln Sie eine eDSL die es ermöglicht, mathematische Ausdrücke (z. B. <span class="math">\(f(x) = x + 1\)</span> , <span class="math">\(f(x) = x ^ 2 + 2 \cdot x - 3\)</span> oder <span class="math">\(f(x) = \sqrt{ \frac{1}{x}}\)</span>) direkt in der Programmiersprache so zu formulieren, dass diese dann für verschiedene Werte von <span class="math">\(x\)</span> ausgewertet werden können. Weiterhin wollen sie für einfache Ausdrücke die Ableitung (<span class="math">\(f'(x)\)</span>) berechnen können und diese dann als Latex-Formel ausgegeben.</p>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Achtung!</p>
+<p>Letzteres, d. h. die Fähigkeit die Formel als Latex-Formel auszugeben, verlangt, dass die Ausdrücke explizit als Syntaxbaum repräsentiert werden.</p>
+</aside>
+</div>
+<div class="incremental compound">
+<p class="rubric">Aufgabenstellung - eDSL für die Beschreibung einer Vektorgrafik</p>
+<p>Entwickeln Sie eine eDSL, die es ermöglicht, einfache Vektorgrafiken zu beschreiben. Die eDSL soll es ermöglichen eine Zeichenfläche zu spezifizieren, um dann einfache geometrische Formen (z. B. Kreise, Rechtecke, Linien(, Text)) darauf zeichnen zu können. Es soll am Ende eine Methode geben, um eine Ausgabe im SVG-Format zu erhalten. Beim Entwurf der eDSL können Sie sich an den Möglichkeiten von SVG und der Syntax von SVG orientieren.</p>
+</div>
+<div class="incremental compound">
+<p class="rubric">Hinweise zur Präsentation</p>
+<p>Themen, die im Rahmen der Präsentation zu beantworten sind:</p>
+<ul class="list-with-explanations">
+<li><p>Wie flexibel ist die Syntax der Sprache?</p></li>
+<li><p>Wie gut ist die Typinferenz?</p>
+<p>Dies ist wichtig, damit Nutzer der eDSL, die ggf. keine Profis in der Programmiersprache sind, nicht unnötig viele Typen explizit angeben müssen.</p>
+</li>
+<li><p>Können Operatoren überladen werden? Können neue Operatoren definiert werden? Wie bestimmen sich dann die Prioritäten?</p></li>
+<li><p>Macros / Templates etc.</p>
+<p>Kann die Sprache über Macros oder Templates erweitert werden, um die Entwicklung der eDSL zu erleichtern?</p>
+</li>
+</ul>
+</div>
+</ld-story></ld-topic><ld-topic id="aufgabe-passwortwiederherstellung">
+<h2>6. Aufgabe: Passwortwiederherstellung</h2>
+<ld-story class="dd-margin-left-6em">
+<p>Ziel dieses Programms ist es zu zeigen wie IO umgesetzt wird. Darüber hinaus soll diese Aufgabe zeigen  wie performant die Sprache ist; insbesondere in Hinblick auf die Parallelisierung von IO-Operationen.</p>
+<p>Ihre Aufgaben ist es die Passwörter zu finden, die hinter den folgenden drei MD5 Hashwerten (Hex-Encoding) stecken:</p>
+<ol class="arabic simple">
+<li><p><span class="docutils literal">32c5c26e20908ebd80269d32f51cb5bb</span></p></li>
+<li><p><span class="docutils literal">648d5d9cc7cafe536fdbc6331f00c6a0</span></p></li>
+<li><p><span class="docutils literal">d31daf6579548a2a1bf5a9bd57b5bb89</span></p></li>
+</ol>
+<div class="incremental compound">
+<p>D. h. Ihre Aufgabe ist es alle Passwörter der Datei <a class="reference external" href="https://github.com/zacheller/rockyou">Rockyou.txt</a> einzulesen, zu transformieren und dann den MD5 Wert zu berechnen (in allen Sprachen gibt es dafür eine vorgefertigte Implementierung/ein Module/ein Package/..., welches es zu nutzen gilt). Sobald ein Passwort gefunden wurde, sollen Sie dieses ausgeben werden. Sobald alle drei gefunden wurden, sollen Sie die Suche abzubrechen.</p>
+<div class="supplemental">
+<p>Rockyou is in Kali Linux zu finden in: <span class="docutils literal">/usr/share/wordlists/rockyou.txt</span>.</p>
+</div></div>
+<div class="incremental compound">
+<p>Da die Passwörter modern sind und Rockyou alt, müssen die Passwörter noch transformiert werden:</p>
+<ul class="simple">
+<li><p>eines der Sonderzeichen <span class="docutils literal">!</span>, <span class="docutils literal">+</span>, <span class="docutils literal">#</span> kann entweder vorangestellt oder angehängt sein.</p></li>
+<li><p>eine Ziffer (0..9) kann vorangestellt oder angehängt sein.</p></li>
+<li><p>es ist jedoch nie mehr als ein Zeichen angehängt oder vorangestellt.</p></li>
+</ul>
+<p>Beachten Sie, dass die Datei <cite>rockyou.txt</cite> sehr groß ist und dass Sie die Passwörter parallel wiederherstellen können. Messen Sie die Performance Ihrer Anwendung. Sobald das Passwort gefunden wurde, soll die Suche abgebrochen werden.</p>
 </div>
 </ld-story></ld-topic>
 </template>
