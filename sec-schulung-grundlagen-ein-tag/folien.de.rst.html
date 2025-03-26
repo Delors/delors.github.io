@@ -9,8 +9,15 @@
 <meta content="schulung-it-security-grundlagen" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <meta name="version" content="LD2 RENAISSANCE" />
-<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
+<meta name="exercises-passwords" content="MTAwMDAw:uYHvNf5j1Qwig9hMmHQxqv3F3Vx9v0A9eEsFgbzPNYc=:sSyCBl4I5EqtwkEZ:My0YrjVWy+onaRmO3Toi5fnY9rDUZa8LT7N6lHu24fiojBl+L6wN2jLK6+Do9GVMN8lpJ3MEXqcj6EKu7yhJnM1gJz+FGbE6nsQaW7DE8Hh/pEvW4yWR0mDWiJWly5uwuQvAlwQtmM4rZWlcqETOqitUxUPqMMG0KR/dvkTeGgSrGXFetlqJU2n3uhNpUHZDNFbYex5o46c+JbxoaqaPlocCpWxM3juxXAiEwjBywzYFTEtxMqkRy4N319pO9BH/ogcdMiFNMh6KxvQiSnvNu+vutw6cRatuGxEep6Mh/stYdQZzEBpZNpgwxHqNu9FI2HjXTuja0hltmiTLmQKanxfWpIBJKqC9jWLQB10EHyioGHgvybbaEDJz3xn/33SCb67v7agFNOpk4jdaw2OrsjaYPgl+TzSHxcH33+saymntqf5vOasfksPyaB5j21zQki8/bjTtXykwGR78vXyDK1tGQjzi8WkDA6WNwTnBb2+sF2YrA7Gwcb0qw7IIx6fOpQ==" />
 <title>IT Sicherheit - Grundlagen an einem Tag</title>
+<script>
+    window.MathJax = {
+        tex: { tags: 'ams' },
+        chtml: { displayAlign: 'center' /*left or center*/ }
+    };
+</script>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
 
     <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
 
@@ -27,7 +34,7 @@
 </head>
 <body>
 <template>
-<ld-topic class="animated-symbol organic-red" id="it-sicherheit-grundlagen-an-einem-tag">
+<ld-topic class="animated-symbol" id="it-sicherheit-grundlagen-an-einem-tag">
 <h1 class="title">IT Sicherheit - Grundlagen an einem Tag</h1>
 <dl class="docinfo">
 <dt class="dozent">Dozent<span class="colon">:</span></dt>
@@ -793,6 +800,1877 @@ curl <span style="position:absolute;top:-100px;left:-1000px">-f "does.not.exist"
 <dd><p>None, Low, High</p>
 </dd>
 </dl>
+</ld-topic><ld-topic class="exercises transition-move-left" id="diskussion-schwachstellen-und-ihre-bewertung">
+<h2>Diskussion: Schwachstellen und Ihre Bewertung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1" id="ld-exercise-1">
+<p>Ihnen liegt eine externe Festplatte vor, die Hardwareverschlüsselung unterstützt. D. h. wenn diese Festplatte an einen Computer angeschlossen wird, dann muss ein Passwort eingegeben werden, bevor auf die Daten zugegriffen werden kann. Dieses entsperren der Festplatte geschieht mit Hilfe eines speziellen Programms, dass ggf. vorher installiert werden muss. Die Festplatte ist mit AES-256-XTX verschlüsselt.</p>
+<p>Das Clientprogramm <em>hasht</em> erst das Passwort clientseitig, bevor es den <em>Hash</em> an den Controller der Festplatte überträgt. Die Firmware des Controllers validiert das Passwort in dem es den gesendeten Hash direkt mit dem bei der Einrichtung übermittelten Hash vergleicht; d. h. es finden keine weiteren sicherheitsrelevanten Operationen außer dem direkten Vergleich statt. Zum Entsperren der Festplatte ist es demzufolge ausreichend, den Hash aus der Hardware auszulesen und diesen an den Controller zu senden, um die Festplatte zu entsperren. Danach kann auf die Daten frei zugegriffen werden.</p>
+<aside class="admonition question">
+<p class="admonition-title">Frage</p>
+<p>Wie sieht der <a class="reference external" href="https://www.first.org/cvss/v4-0/">CVSS 4.0 Score</a> für diese Schwachstelle aus? (<a class="reference external" href="https://www.first.org/cvss/calculator/4.0">CVSS Rechner</a>)</p>
+</aside>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:g8V/OX2LwwcAieM/Cgmwi+dxN3StBDWlGn8Q3dPHUbU=:Kru9PWs9mOE66Ifx:xmeKbeKnZiPsDCD9GehQmGpU6DFUiy28v5XLIn/OmljnAI9D68SwvkQrR+mLgXjCZ7wRZn6CZb//5ljuUz6l3YAcQ//CFno4Fnqy68br2zesIEUQCZ0Z6bCQlYE7eGxR0yh46MtMwjEu2I7PfjS4WKgdMdOcQOSpu4L6GDzsOlqqTiWtRMWFFxAXClIdYDuPHmX7SracpUW5Wy2QeA==</div>
+</div>
+</ld-topic><ld-topic class="new-section transition-fade" id="common-vulnerabilities-and-exposures-cve">
+<h2>Common Vulnerabilities and Exposures (<a class="reference external" href="https://cve.org/">CVE</a>)</h2>
+</ld-topic><ld-topic id="zweck-von-cves">
+<h2>Zweck von CVEs</h2>
+<ul class="incremental-list simple">
+<li><p>Schwachstellen eindeutig identifizieren und bestimmten Versionen eines Codes (z. B. Software und gemeinsam genutzte Bibliotheken) mit diesen Schwachstellen verknüpfen.</p></li>
+<li><p>Kommunikationsgrundlage bilden, damit mehrere Parteien über eine eindeutig identifizierte Sicherheitslücke diskutieren können. <a class="reference external" href="https://nvd.nist.gov">National Vulnerabilities Database - NIST</a></p></li>
+</ul>
+</ld-topic><ld-topic id="jan-2024-zuletzt-bewertete-cves">
+<h2>1.  Jan. 2024 - zuletzt bewertete CVEs</h2>
+<div class="docutils container">
+<!-- die folgende Liste wurde per Copy-and-Paste des HTML Code von der NIST Webseite erzeugt: -->
+<ul>
+    <li>
+        <div class="col-lg-9">
+            <p>
+                <strong><a href="/vuln/detail/CVE-2024-20672" id="cveDetailAnchor-0">CVE-2024-20672</a></strong>  - .NET Denial of Service Vulnerability
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <p id="severity-score-0">
+                <span id="cvss3-link-0"> <em>V3.1:</em> <a href="/vuln-metrics/cvss/v3-calculator?name=CVE-2024-20672&amp;vector=AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H&amp;version=3.1&amp;source=Microsoft%20Corporation" class="label label-danger" data-testid="vuln-cvss3-link-0" aria-label="V3 score for CVE-2024-20672">7.5 HIGH</a><br>
+                </span>
+            </p>
+        </div>
+    </li>
+
+    <li>
+        <div class="col-lg-9">
+            <p>
+                <strong><a href="/vuln/detail/CVE-2024-20666" id="cveDetailAnchor-1">CVE-2024-20666</a></strong>  - BitLocker Security Feature Bypass Vulnerability
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <p id="severity-score-1">
+                <span id="cvss3-link-1"> <em>V3.1:</em> <a href="/vuln-metrics/cvss/v3-calculator?name=CVE-2024-20666&amp;vector=AV:P/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H&amp;version=3.1&amp;source=Microsoft%20Corporation" class="label label-warning" data-testid="vuln-cvss3-link-1" aria-label="V3 score for CVE-2024-20666">6.6 MEDIUM</a><br>
+                </span>
+            </p>
+        </div>
+    </li>
+
+    <li>
+        <div class="col-lg-9">
+            <p>
+                <strong><a href="/vuln/detail/CVE-2024-20680" id="cveDetailAnchor-2">CVE-2024-20680</a></strong>  - Windows Message Queuing Client (MSMQC) Information Disclosure
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <p id="severity-score-2">
+                <span id="cvss3-link-2"> <em>V3.1:</em> <a href="/vuln-metrics/cvss/v3-calculator?name=CVE-2024-20680&amp;vector=AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N&amp;version=3.1&amp;source=Microsoft%20Corporation" class="label label-warning" data-testid="vuln-cvss3-link-2" aria-label="V3 score for CVE-2024-20680">6.5 MEDIUM</a><br>
+                </span>
+            </p>
+        </div>
+    </li>
+
+    <li>
+        <div class="col-lg-9">
+            <p>
+                <strong><a href="/vuln/detail/CVE-2024-20676" id="cveDetailAnchor-3">CVE-2024-20676</a></strong>  - Azure Storage Mover Remote Code Execution Vulnerability
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <p id="severity-score-3">
+                <span id="cvss3-link-3"> <em>V3.1:</em> <a href="/vuln-metrics/cvss/v3-calculator?name=CVE-2024-20676&amp;vector=AV:N/AC:H/PR:H/UI:N/S:C/C:H/I:H/A:H&amp;version=3.1&amp;source=Microsoft%20Corporation" class="label label-danger" data-testid="vuln-cvss3-link-3" aria-label="V3 score for CVE-2024-20676">8.0 HIGH</a><br>
+                </span>
+            </p>
+        </div>
+    </li>
+
+    <li>
+        <div class="col-lg-9">
+            <p>
+                <strong><a href="/vuln/detail/CVE-2024-20674" id="cveDetailAnchor-4">CVE-2024-20674</a></strong>  - Windows Kerberos Security Feature Bypass Vulnerability
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <p id="severity-score-4">
+
+            </p>
+        </div>
+    </li>
+
+    <li>
+        <div class="col-lg-9">
+            <p>
+                <strong><a href="/vuln/detail/CVE-2024-20682" id="cveDetailAnchor-5">CVE-2024-20682</a></strong>  - Windows Cryptographic Services Remote Code Execution Vulnerability
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <p id="severity-score-5">
+                <span id="cvss3-link-5"> <em>V3.1:</em> <a href="/vuln-metrics/cvss/v3-calculator?name=CVE-2024-20682&amp;vector=AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H&amp;version=3.1&amp;source=Microsoft%20Corporation" class="label label-danger" data-testid="vuln-cvss3-link-5" aria-label="V3 score for CVE-2024-20682">7.8 HIGH</a><br>
+                </span>
+            </p>
+        </div>
+    </li>
+
+    <li>
+        <div class="col-lg-9">
+            <p>
+                <strong><a href="/vuln/detail/CVE-2024-20683" id="cveDetailAnchor-6">CVE-2024-20683</a></strong>  - Win32k Elevation of Privilege Vulnerability
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <p id="severity-score-6">
+                <span id="cvss3-link-6"> <em>V3.1:</em> <a href="/vuln-metrics/cvss/v3-calculator?name=CVE-2024-20683&amp;vector=AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H&amp;version=3.1&amp;source=Microsoft%20Corporation" class="label label-danger" data-testid="vuln-cvss3-link-6" aria-label="V3 score for CVE-2024-20683">7.8 HIGH</a><br>
+                </span>
+            </p>
+        </div>
+    </li>
+
+    <li>
+        <div class="col-lg-9">
+            <p>
+                <strong><a href="/vuln/detail/CVE-2024-20681" id="cveDetailAnchor-7">CVE-2024-20681</a></strong>  - Windows Subsystem for Linux Elevation of Privilege Vulnerability
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <p id="severity-score-7">
+                <span id="cvss3-link-7"> <em>V3.1:</em> <a href="/vuln-metrics/cvss/v3-calculator?name=CVE-2024-20681&amp;vector=AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H&amp;version=3.1&amp;source=Microsoft%20Corporation" class="label label-danger" data-testid="vuln-cvss3-link-7" aria-label="V3 score for CVE-2024-20681">7.8 HIGH</a><br>
+                </span>
+            </p>
+        </div>
+    </li>
+
+    <li> ... </li>
+</ul></div>
+</ld-topic><ld-topic id="national-vulnerability-database-nvd">
+<h2>National Vulnerability Database (<a class="reference external" href="https://nvd.nist.gov/">NVD</a>)<a class="footnote-reference brackets" href="#footnote-5" id="footnote-reference-5" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></h2>
+<ul class="incremental-list simple">
+<li><p>Auflistung aller CVEs und deren Bewertung</p></li>
+<li><p>Alle Schwachstellen in der NVD sind mit einer CVE-Kennung versehen</p></li>
+<li><p>Die NVD ist ein Produkt der NIST Computer Security Division, Information Technology Laboratory</p></li>
+<li><p>Verlinkt häufig weiterführend Seiten, die Lösungshinweise und Tools bereitstellen, um die Schwachstelle zu beheben</p></li>
+<li><p>Verweist auf entsprechende Schwachstellen gemäß <a class="reference external" href="https://cwe.mitre.org/">CWEs</a></p></li>
+<li><p>Verlinkt gelegentlich <em>PoC</em> Exploits (<span class="eng">Proof-of-Concept Exploits</span>)</p></li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-5">5</a><span class="fn-bracket">]</span></span>
+<p>Die NIS 2 Richtlinie der EU sieht auch den Aufbau einer europäischen Schwachstellen-Datenbank vor. Aktuell ist die NVD die zentrale Anlaufstelle bzgl. Schwachstellen.</p>
+</aside>
+</aside>
+</ld-topic><ld-topic id="common-weakness-enumeration-cwe">
+<h2>Common Weakness Enumeration (<a class="reference external" href="https://cwe.mitre.org/">CWE</a>)</h2>
+<ul class="simple">
+<li><p>eine kollaborativ entwickelte, vollständig durchsuchbare, kategorisierte Liste von Typen von Software- und Hardware-Schwachstellen und deren Beschreibung, dient als:</p>
+<ul class="incremental-list">
+<li><p>gemeinsame Sprache,</p></li>
+<li><p>Messlatte für Sicherheitstools,</p></li>
+<li><p>als Grundlage für die Identifizierung von Schwachstellen sowie für Maßnahmen zur Abschwächung und Prävention.</p></li>
+</ul>
+</li>
+</ul>
+</ld-topic><ld-topic id="cwe-schwachstellenkatalog-top-25-in-2023">
+<h2>CWE - Schwachstellenkatalog <a class="reference external" href="https://cwe.mitre.org/top25/archive/2023/2023_top25_list.html#tableView">TOP 25 in 2023</a></h2>
+<ld-story>
+<table class="highlight-line-on-hover incremental-table-rows">
+<colgroup>
+<col style="width: 7.0%" />
+<col style="width: 12.0%" />
+<col style="width: 63.0%" />
+<col style="width: 18.0%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>Rank</p></th>
+<th class="head"><p>ID</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Rank Change vs. 2022</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>1</p></td>
+<td><p>CWE-787</p></td>
+<td><p>Out-of-bounds Write</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>CWE-79</p></td>
+<td><p>Improper Neutralization of Input During Web Page Generation (&quot;<em>Cross-site Scripting</em>&quot;)</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>CWE-89</p></td>
+<td><p>Improper Neutralization of Special Elements used in an SQL Command (&quot;<em>SQL Injection</em>&quot;&quot;)</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>CWE-416</p></td>
+<td><p>Use After Free</p></td>
+<td><p>+3</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>CWE-78</p></td>
+<td><p>Improper Neutralization of Special Elements used in an OS Command (&quot;<em>OS Command Injection</em>&quot;)</p></td>
+<td><p>+1</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>CWE-20</p></td>
+<td><p>Improper Input Validation</p></td>
+<td><p>-2</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>CWE-125</p></td>
+<td><p>Out-of-bounds Read</p></td>
+<td><p>-2</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>CWE-22</p></td>
+<td><p>Improper Limitation of a Pathname to a Restricted Directory (&quot;<em>Path Traversal</em>&quot;)</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>CWE-352</p></td>
+<td><p>Cross-Site Request Forgery (CSRF)</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>CWE-434</p></td>
+<td><p>Unrestricted Upload of File with Dangerous Type</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><td><p>11</p></td>
+<td><p>CWE-862</p></td>
+<td><p>Missing Authorization</p></td>
+<td><p>+5</p></td>
+</tr>
+<tr><td><p>12</p></td>
+<td><p>CWE-476</p></td>
+<td><p>NULL Pointer Dereference</p></td>
+<td><p>-1</p></td>
+</tr>
+<tr><td><p>13</p></td>
+<td><p>CWE-287</p></td>
+<td><p>Improper Authentication</p></td>
+<td><p>+1</p></td>
+</tr>
+<tr><td><p>14</p></td>
+<td><p>CWE-190</p></td>
+<td><p>Integer Overflow or Wraparound</p></td>
+<td><p>-1</p></td>
+</tr>
+<tr><td><p>15</p></td>
+<td><p>CWE-502</p></td>
+<td><p>Deserialization of Untrusted Data</p></td>
+<td><p>-3</p></td>
+</tr>
+<tr><td><p>16</p></td>
+<td><p>CWE-77</p></td>
+<td><p>Improper Neutralization of Special Elements used in a Command (&quot;<em>Command Injection</em>&quot;)</p></td>
+<td><p>+1</p></td>
+</tr>
+<tr><td><p>17</p></td>
+<td><p>CWE-119</p></td>
+<td><p>Improper Restriction of Operations within the Bounds of a Memory Buffer</p></td>
+<td><p>+2</p></td>
+</tr>
+<tr><td><p>18</p></td>
+<td><p>CWE-798</p></td>
+<td><p>Use of Hard-coded Credentials</p></td>
+<td><p>-3</p></td>
+</tr>
+<tr><td><p>19</p></td>
+<td><p>CWE-918</p></td>
+<td><p>Server-Side Request Forgery (SSRF)</p></td>
+<td><p>+2</p></td>
+</tr>
+<tr><td><p>20</p></td>
+<td><p>CWE-306</p></td>
+<td><p>Missing Authentication for Critical Function</p></td>
+<td><p>-2</p></td>
+</tr>
+<tr><td><p>21</p></td>
+<td><p>CWE-362</p></td>
+<td><p>Concurrent Execution using Shared Resource with Improper Synchronization (&quot;<em>Race Condition</em>&quot;)</p></td>
+<td><p>+1</p></td>
+</tr>
+<tr><td><p>22</p></td>
+<td><p>CWE-269</p></td>
+<td><p>Improper Privilege Management</p></td>
+<td><p>+7</p></td>
+</tr>
+<tr><td><p>23</p></td>
+<td><p>CWE-94</p></td>
+<td><p>Improper Control of Generation of Code (&quot;<em>Code Injection</em>&quot;)</p></td>
+<td><p>+2</p></td>
+</tr>
+<tr><td><p>24</p></td>
+<td><p>CWE-863</p></td>
+<td><p>Incorrect Authorization</p></td>
+<td><p>+4</p></td>
+</tr>
+<tr><td><p>25</p></td>
+<td><p>CWE-276</p></td>
+<td><p>Incorrect Default Permissions</p></td>
+<td><p>-5</p></td>
+</tr>
+</tbody>
+</table>
+</ld-story><div class="supplemental">
+<p>Request Forgery = <span class="ger">Anfragefälschung</span></p>
+<blockquote class="epigraph">
+<p><strong>Fest codierte Cloud-Zugangsdaten in populären Apps entdeckt</strong></p>
+<p>Betroffen sind mehrere Apps mit teils Millionen von Downloads. Den Entdeckern zufolge gefährdet dies nicht nur Backend-Dienste, sondern auch Nutzerdaten.</p>
+<p>Sicherheitsforscher von Symantec haben Anwendungen aus dem Google Play Store und dem Apple App Store untersucht und dabei festgestellt, dass mehrere Apps mit teils Millionen von Downloads fest codierte und unverschlüsselte Anmeldedaten für verschiedene Clouddienste enthalten. Entdeckt wurden sowohl Schlüssel für den Zugang zu AWS-Ressourcen als auch solche für Microsoft Azure. [...]</p>
+<p class="attribution">—23.10.2024 <a class="reference external" href="https://www.golem.de/news/android-und-ios-fest-codierte-cloud-zugangsdaten-in-populaeren-apps-entdeckt-2410-190106.html">Golem.de</a></p>
+</blockquote>
+</div></ld-topic><ld-topic id="cve-2023-51034-arbitrary-code-execution">
+<h2>CVE-2023-51034 - <em>Arbitrary Code Execution</em></h2>
+<blockquote class="epigraph">
+<p>TOTOlink EX1200L V9.3.5u.6146_B20201023 is vulnerable to arbitrary command execution via the cstecgi.cgi UploadFirmwareFile interface.</p>
+<p class="attribution">—Published: December 22, 2023; Last modified: January 2, 2024</p>
+</blockquote>
+<div class="docutils container">
+<dl class="field-list simple">
+<dt>Bewertung<span class="colon">:</span></dt>
+<dd><p>CVSS V3.1: 9.8 Critical</p>
+</dd>
+<dt>PoC Exploit<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://815yang.github.io/2023/12/12/ex1200l/totolink_ex1200L_UploadFirmwareFile/">815yang.github.io</a></p>
+</dd>
+<dt>Weakness Enumeration<span class="colon">:</span></dt>
+<dd><p>CWE-434 Unrestricted Upload of File with Dangerous Type</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<p>Bei TOTOlink EX1200L handelt es sich um einen Wifi Range Expander.</p>
+<p>PoC ≘ Proof-of-Concept</p>
+</div></ld-topic><ld-topic id="cwe-434-unrestricted-upload-of-file-with-dangerous-type">
+<h2>CWE-434 Unrestricted Upload of File with Dangerous Type<a class="footnote-reference brackets" href="#footnote-6" id="footnote-reference-6" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></h2>
+<ul class="incremental-list">
+<li><p><strong>Beschreibung</strong></p>
+<p>Das Produkt ermöglicht es dem Angreifer, Dateien gefährlicher Typen hochzuladen oder zu übertragen, die in der Produktumgebung automatisch verarbeitet werden können.</p>
+</li>
+<li><p><strong>Art der Einführung</strong></p>
+<p>Diese Schwäche wird durch das Fehlen einer Sicherheitstaktik während der Architektur- und Entwurfsphase verursacht.</p>
+</li>
+<li><p><strong>Scope</strong></p>
+<p>Willkürliche Codeausführung ist möglich, wenn eine hochgeladene Datei vom Empfänger als Code interpretiert und ausgeführt wird. [...] Somit ist ggf. die Integrität, Vertraulichkeit und Verfügbarkeit betroffen.</p>
+</li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-6">6</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://cwe.mitre.org/data/definitions/434.html">Mitre.org</a> (2023; übersetzt mit DeepL)</p>
+</aside>
+</aside>
+</ld-topic><ld-topic id="cve-2023-51034-poc-gekurzt">
+<h2>CVE-2023-51034 - PoC (gekürzt)</h2>
+<ld-grid class="default-layout">
+<ld-cell style="align-self:auto;">
+<p class="rubric">Initiale Anfrage</p>
+<pre class="code http literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name function">POST</span> <span class="name namespace">/cgi-bin/cstecgi.cgi</span> <span class="keyword reserved">HTTP</span><span class="operator">/</span><span class="literal number">1.1</span>
+</code><small class="ln">2 </small><code data-lineno="2 "><span class="error">[...]</span>
+</code><small class="ln">3 </small><code data-lineno="3 ">{
+</code><small class="ln">4 </small><code data-lineno="4 ">    &quot;FileName&quot;:
+</code><small class="ln">5 </small><code data-lineno="5 ">        &quot;;ls../&gt;/www/yf.txt;&quot;,
+</code><small class="ln">6 </small><code data-lineno="6 ">    &quot;topicurl&quot;:
+</code><small class="ln">7 </small><code data-lineno="7 ">        &quot;UploadFirmwareFile&quot;
+</code><small class="ln">8 </small><code data-lineno="8 ">}</code></pre>
+</ld-cell><ld-cell style="align-self:auto;">
+<p class="rubric">Abfrage der Datei (hier: <code>yf.txt</code>)</p>
+<pre class="code http literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name function">GET</span> <span class="name namespace">/yf.txt</span> <span class="keyword reserved">HTTP</span><span class="operator">/</span><span class="literal number">1.1</span>
+</code><small class="ln">2 </small><code data-lineno="2 "><span class="error">[...]</span>
+</code><small class="ln">3 </small><code data-lineno="3 ">Connection: close</code></pre>
+<p>Das Ergebnis ist eine Datei mit der Auflistung der Dateien im Verzeichnis (<span class="docutils literal">..</span>).</p>
+</ld-cell></ld-grid></ld-topic><ld-topic id="cve-2023-51034-zugrundeliegende-schwachstelle">
+<h2>CVE-2023-51034 - zugrundeliegende Schwachstelle</h2>
+<pre class="code C literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="name">Var</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword">const</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="name">websGetVar</span><span class="punctuation">(</span><span class="name">a1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;FileName&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">byte_42FE28</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="name">v3</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword">const</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="name">websGetVar</span><span class="punctuation">(</span><span class="name">a1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;FullName&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">byte_42FE28</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="name">v4</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword">const</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="name">websGetVar</span><span class="punctuation">(</span><span class="name">a1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;ContentLength&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">word_42DD4C</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="name">v5</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">websGetVar</span><span class="punctuation">(</span><span class="name">a1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;flags&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">word_42DD4C</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="name">v6</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">atoi</span><span class="punctuation">(</span><span class="name">v5</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span><span class="name">Object</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">cJSON_CreateObject</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span><span class="name">v8</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">fopen</span><span class="punctuation">(</span><span class="literal string">&quot;/dev/console&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;a&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span><span class="name">v9</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">v8</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="whitespace"> </span><span class="name">v8</span><span class="whitespace"> </span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="name">fprintf</span><span class="punctuation">(</span><span class="name">v8</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;[%s:%d] FileName=%s,FullName=%s,ContentLength=%s</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">                </span><span class="literal string">&quot;UploadFirmwareFile&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">751</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Var</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">v3</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">v4</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">    </span><span class="name">fclose</span><span class="punctuation">(</span><span class="name">v9</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span><span class="name">v10</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">strtol</span><span class="punctuation">(</span><span class="name">v4</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">10</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span><span class="name">strcpy</span><span class="punctuation">(</span><span class="name">v52</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;/tmp/myImage.img&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace"></span><span class="name">doSystem</span><span class="punctuation">(</span><span class="literal string">&quot;mv %s %s&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Var</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">v52</span><span class="punctuation">);</span></code></pre>
+<div class="supplemental">
+<p>Die Lücke ist auf die folgenden Zeilen zurückzuführen:</p>
+<pre class="code c literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">Var</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword">const</span><span class="whitespace"> </span><span class="keyword type">char</span><span class="whitespace"> </span><span class="operator">*</span><span class="punctuation">)</span><span class="name">websGetVar</span><span class="punctuation">(</span><span class="name">a1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="error">“</span><span class="name">FileName</span><span class="error">”</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&amp;</span><span class="name">byte_42FE28</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="punctuation">...</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="name">doSystem</span><span class="punctuation">(</span><span class="error">“</span><span class="name">mv</span><span class="whitespace"> </span><span class="operator">%</span><span class="name">s</span><span class="whitespace"> </span><span class="operator">%</span><span class="name">s</span><span class="error">”</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Var</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">v52</span><span class="punctuation">);</span></code></pre>
+<p>Der Aufruf von <code>doSystem</code> ermöglicht die Ausführung von beliebigem Code. Der Angreifer kann den Wert von <code>Var</code> so manipulieren, dass er quasi beliebigen Code ausführen kann.</p>
+</div></ld-topic><ld-topic id="ausgenutzte-schwachstellen">
+<h2>Ausgenutzte Schwachstellen</h2>
+<p>Der <a class="reference external" href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">Known Exploited Vulnerabilities (KEV) Katalog der CISA</a> umfasst Produkte deren Schwachstellen ausgenutzt wurden oder aktiv ausgenutzt werden.</p>
+<ul class="incremental-list list-with-sublists simple">
+<li><p>Kriterien für die Aufnahme in den KEV Katalog:</p>
+<ol class="arabic simple">
+<li><p>Eine CVE-Id liegt vor.</p></li>
+<li><p>Die Schwachstelle wird aktiv ausgenutzt (<span class="eng">Active Exploitation</span>) (ggf. reicht es jedoch wenn „nur“ ein <em>Honeypot</em> aktiv angegriffen wurde) - ein PoC reicht nicht aus.</p></li>
+<li><p>Eine Handlungsempfehlung liegt vor (z. B. Patch, Workaround oder vollständige Abschaltung).</p></li>
+</ol>
+</li>
+<li><p>Firmen sollten die KEV <em>Schwachstellen priorisieren</em>, um die Wahrscheinlichkeit eines erfolgreichen Angriffs zu verringern.</p></li>
+</ul>
+<div class="supplemental">
+<p>CISA = <em>Cybersecurity and Infrastructure Security Agency</em> (oder <em>America's Cyber Defense Agency</em>)</p>
+<p>Ausgewählte Amerikanische Behörden sind sogar verpflichtet innerhalb vorgegebener Zeiträume zu reagieren.</p>
+</div></ld-topic><ld-topic id="cwe-top-10-kev-weaknesses">
+<h2>2023 CWE Top 10 KEV Weaknesses</h2>
+<table class="small highlight-line-on-hover incremental">
+<thead>
+<tr><th class="head"><p>Schwachstelle</p></th>
+<th class="head"><p>CWE ID</p></th>
+<th class="head"><p># CVE Mappings in KEV</p></th>
+<th class="head"><p>Avg. CVSS</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Use After Free</p></td>
+<td><p>416</p></td>
+<td><p>44</p></td>
+<td><p>8.54</p></td>
+</tr>
+<tr><td><p>Heap-based Buffer Overflow</p></td>
+<td><p>122</p></td>
+<td><p>32</p></td>
+<td><p>8.79</p></td>
+</tr>
+<tr><td><p>Out-of-bounds Write</p></td>
+<td><p>787</p></td>
+<td><p>34</p></td>
+<td><p>8.19</p></td>
+</tr>
+<tr><td><p>Improper Input Validation</p></td>
+<td><p>20</p></td>
+<td><p>33</p></td>
+<td><p>8.27</p></td>
+</tr>
+<tr><td><p>Improper Neutralization of Special Elements used in an OS Command (&quot;<em>OS Command Injection</em>&quot;)</p></td>
+<td><p>78</p></td>
+<td><p>25</p></td>
+<td><p>9.36</p></td>
+</tr>
+<tr><td><p>Deserialization of Untrusted Data</p></td>
+<td><p>502</p></td>
+<td><p>16</p></td>
+<td><p>9.06</p></td>
+</tr>
+<tr><td><p>Server-Side Request Forgery (SSRF)</p></td>
+<td><p>918</p></td>
+<td><p>16</p></td>
+<td><p>8.72</p></td>
+</tr>
+<tr><td><p>Access of Resource Using Incompatible Type (&quot;<em>Type Confusion</em>&quot;)</p></td>
+<td><p>843</p></td>
+<td><p>16</p></td>
+<td><p>8.61</p></td>
+</tr>
+<tr><td><p>Improper Limitation of a Pathname to a Restricted Directory (&quot;<em>Path Traversal</em>&quot;)</p></td>
+<td><p>22</p></td>
+<td><p>14</p></td>
+<td><p>8.09</p></td>
+</tr>
+<tr><td><p>Missing Authentication for Critical Function</p></td>
+<td><p>306</p></td>
+<td><p>8</p></td>
+<td><p>8.86</p></td>
+</tr>
+</tbody>
+</table>
+</ld-topic><ld-topic class="center-child-elements" id="schwachstellen-die-auf-fehler-beim-speicherzugriff-zuruckzufuhren-sind-sind-nicht-mehr-notwendig">
+<h2>Schwachstellen, die auf Fehler beim Speicherzugriff zurückzuführen sind, sind nicht (mehr) notwendig!</h2>
+<blockquote class="epigraph">
+<p><strong>Google hails move to Rust for huge drop in memory vulnerabilities</strong></p>
+<p>[...] Memory access vulnerabilities often occur in programming languages that are not memory safe. In 2019, memory safety issues accounted for 76% of all Android vulnerabilities.</p>
+<p>[...] the transition to memory safe languages through the gradual use of memory safe code in new projects and developments over a five year period. The results showed that despite a gradual rise in code [still] being written in memory unsafe languages, memory safety vulnerabilities dropped significantly.</p>
+<p>[...] there has been a significant drop in the number of memory-related vulnerabilities, with memory safe vulnerabilities down to 24% in 2024 [...]</p>
+<p class="attribution">—26. September 2024 - <a class="reference external" href="https://www.techradar.com/pro/google-hails-move-to-rust-for-huge-drop-in-memory-vulnerabilities">Techradar.com</a></p>
+</blockquote>
+</ld-topic><ld-topic id="offenlegung-von-sicherheitslucken-nach-cisa">
+<h2>Offenlegung von Sicherheitslücken nach <a class="reference external" href="https://www.cisa.gov/coordinated-vulnerability-disclosure-process">CISA</a> <a class="footnote-reference brackets" href="#footnote-7" id="footnote-reference-7" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></h2>
+<p><span class="eng">Coordinated Vulnerability Disclosure (CVD)</span></p>
+<ol class="arabic simple incremental-list">
+<li><p>Sammlung von Schwachstellenmeldungen:</p>
+<ul class="simple">
+<li><p>Eigene Schwachstellenanalysen</p></li>
+<li><p>Überwachung öffentlicher Quellen</p></li>
+<li><p>Direkte Meldungen von Herstellern, Forschern und Nutzern</p></li>
+</ul>
+</li>
+<li><p>Analyse der Schwachstellenmeldungen zusammen mit den Herstellern, um die Sicherheitsauswirkungen zu verstehen.</p></li>
+<li><p>Entwicklung von Strategien zur Eindämmung der Schwachstellen; insbesondere Entwicklung von notwendigen Patches.</p></li>
+<li><p>Anwendung der Strategien zur Eindämmung der Schwachstellen in Zusammenarbeit mit dem Hersteller und ggf. betroffenen Nutzern.</p></li>
+<li><p>Veröffentlichung der Schwachstellenmeldung in Abstimmung mit der Quelle des Schwachstellenberichts und dem Hersteller.</p></li>
+</ol>
+<div class="supplemental">
+<p><strong>CISA</strong> (America's Cybersecurity and Infrastructure Security Agency/Cyber Defense Agency).</p>
+</div><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-7" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-7">7</a><span class="fn-bracket">]</span></span>
+<p>Das BSI verfährt ähnlich; <a class="reference external" href="https://www.heise.de/news/Trojaner-Wie-die-Ampel-beim-Schwachstellenmanagement-die-Kurve-kriegen-will-9670572.html">tut sich aber sehr schwer</a>.</p>
+</aside>
+</aside>
+</ld-topic><ld-topic id="zeitlicher-rahmen-fur-die-offenlegung-von-sicherheitslucken">
+<h2>Zeitlicher Rahmen für die Offenlegung von Sicherheitslücken</h2>
+<p>Der Zeitrahmen für die Offenlegung von Sicherheitslücken wird durch folgende Faktoren bestimmt:</p>
+<ul class="incremental-list simple">
+<li><p>Aktive Ausnutzung der Schwachstelle</p></li>
+<li><p>besonders kritische Schwachstellen</p></li>
+<li><p>Auswirkungen auf Standards</p></li>
+<li><p>bereits öffentlich bekannt (zum Beispiel durch einen „naïven“` Forscher)</p></li>
+<li><p>Auswirkungen auf die kritische Infrastruktur, öffentliche Gesundheit und Sicherheit</p></li>
+<li><p>die Verfügbarkeit von effektiven Eindämmungsmaßnahmen</p></li>
+<li><p>das Verhalten des Herstellers und die Möglichkeit der Entwicklung eines Patches</p></li>
+<li><p>Schätzung des Herstellers wie lange es dauert einen Patch zu entwickeln, zu testen und auszurollen.</p></li>
+</ul>
+</ld-topic><ld-topic id="welche-neuen-schwachstellen-werden-in-absehbarer-zeit-ausgenutzt">
+<h2>Welche neuen Schwachstellen werden in absehbarer Zeit ausgenutzt?</h2>
+<aside class="admonition observation">
+<p class="admonition-title">Beobachtung</p>
+<p>Am 1. Oktober 2023 hat die NVD 139.473 CVEs veröffentlicht. In den folgenden 30 Tagen wurden 3.852 CVEs beobachtet, die ausgenutzt (<span class="eng">exploited</span>) wurden.</p>
+<p>Ca. 5-6% aller Schwachstellen werden „irgendwann“ ausgenutzt. <a class="footnote-reference brackets" href="#footnote-8" id="footnote-reference-8" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a></p>
+</aside>
+<aside class="admonition incremental question">
+<p class="admonition-title">Frage</p>
+<p>Wie stelle ich sicher, dass ich meine Bemühungen zum Beseitigen der Schwachstellen auf diejenigen konzentriere, die am wahrscheinlichsten zeitnahe ausgenutzt werden?</p>
+</aside>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-8" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-8">8</a><span class="fn-bracket">]</span></span>
+<p>Fortinet, <a class="reference external" href="https://www.fortinet.com/content/dam/fortinet/assets/threat-reports/q2-2018-threat-landscape-report.pdf">Threat Landscape Report Q2 2018</a></p>
+</aside>
+</aside>
+</ld-topic><ld-topic id="nutzung-des-cvss-als-grundlage-fur-die-schatzung">
+<h2>Nutzung des CVSS als Grundlage für die Schätzung?</h2>
+<p>Annahme: Schwachstellen mit einem CVSS Score <span class="math">\(\geq\)</span> 7 (d. h. mit einer Bewertung von Hoch oder kritisch) werden ausgenutzt.</p>
+<ul class="incremental-list">
+<li><p>80.024 Schwachstellen haben einen CVSS Score <span class="math">\(\geq\)</span> 7</p>
+<p><strong>Ausgenutzt wurden: 3.166</strong></p>
+</li>
+<li><p>59.449 Schwachstellen haben eine CVSS <span class="math">\(&lt;\)</span> 7</p>
+<p><strong>Ausgenutzt wurden: 686</strong></p>
+</li>
+</ul>
+<aside class="admonition smaller incremental">
+<p class="admonition-title">Zusammenfassung</p>
+<p>Die Strategie „Priorisierung von Schwachstellen mit einem bestimmten CVSS Score“ (hier <span class="math">\(\geq\)</span> 7) ist keine geeignete Strategie, da sie nicht alle relevanten  Schwachstellen erfasst (686 <em>False Negatives</em>) und - ganz insbesondere - zu viele Schwachstellen (76.858 <em>False Positives</em>) erfasst, die nicht ausgenutzt werden.</p>
+</aside>
+</ld-topic><ld-topic id="exploit-prediction-scoring-system-epss">
+<h2><a class="reference external" href="https://www.first.org/epss/">Exploit Prediction Scoring System (EPSS)</a></h2>
+<ul class="incremental simple">
+<li><p>EPSS ist eine Methode zur <em>Bewertung der Wahrscheinlichkeit</em>, dass eine Schwachstelle in den nächsten 30 Tagen ausgenutzt wird.</p></li>
+<li><p>EPSS basiert auf der Analyse von Schwachstellen, die in den letzten 12 Monaten ausgenutzt wurden.</p></li>
+<li><p>EPSS nutzt KI basierend auf folgenden Informationen (Stand Jan. 2024):</p>
+<ul class="incremental smaller">
+<li><p>Hersteller</p></li>
+<li><p>Alter der Schwachstelle (Tage seit der Veröffentlichung des CVEs)</p></li>
+<li><p>die Beschreibung der Schwachstelle</p></li>
+<li><p>betroffene CWEs</p></li>
+<li><p>CVSS Bewertungen der Schwachstellen</p></li>
+<li><p>Wird der CVE auf bekannten Listen diskutiert bzw. aufgelistet?</p></li>
+<li><p>Gibt es öffentliche verfügbare Exploits?</p></li>
+</ul>
+</li>
+</ul>
+</ld-topic><ld-topic id="nutzung-des-epss-fur-die-schatzung">
+<h2>Nutzung des EPSS für die Schätzung? <a class="footnote-reference brackets" href="#footnote-9" id="footnote-reference-9" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a></h2>
+<p>Annahme: Schwachstellen mit EPSS 10% und größer sind werden ausgenutzt werden.</p>
+<ul class="incremental">
+<li><p>3.735 Schwachstellen haben ein Wahrscheinlichkeit von EPSS 10% und größer</p>
+<p><strong>Ausgenutzt wurden: 2.435</strong></p>
+</li>
+<li><p>135.738 Schwachstellen haben ein EPSS <span class="math">\(&lt;\)</span> 10%</p>
+<p><strong>Ausgenutzt wurden: 1.417</strong></p>
+</li>
+</ul>
+<aside class="admonition smaller incremental">
+<p class="admonition-title">Zusammenfassung</p>
+<p>Die Strategie „Priorisierung von Schwachstellen mit einem EPSS von 10% und höher“ ist eine geeignete<em>re</em> Strategie, da sehr viele relevante Schwachstellen erfasst werden und - ganz insbesondere - die Anzahl der zu beachtenden Schwachstellen ganz massiv reduziert wird ohne die Gesamtqualität <em>zu stark</em> zu beeinflussen.</p>
+</aside>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-9" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-9">9</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://arxiv.org/abs/2302.14172">Enhancing Vulnerability Prioritization: Data-Driven Exploit Predictions with Community-Driven Insights</a></p>
+</aside>
+</aside>
+</ld-topic><ld-topic class="new-section transition-fade" id="schwachstellenmanagement">
+<h2>Schwachstellenmanagement</h2>
+</ld-topic><ld-topic id="vulnerabilities-equities-process-vep-usa">
+<h2><a class="reference external" href="https://trumpwhitehouse.archives.gov/sites/whitehouse.gov/files/images/External%20-%20Unclassified%20VEP%20Charter%20FINAL.PDF">Vulnerabilities Equities Process (VEP) (USA)</a> <a class="footnote-reference brackets" href="#footnote-10" id="footnote-reference-10" role="doc-noteref"><span class="fn-bracket">[</span>10<span class="fn-bracket">]</span></a></h2>
+<blockquote class="epigraph">
+<p>[...] Der <em>Vulnerability-Equity-Process (VEP)</em> wägt ab, ob Informationen über Schwachstellen an den Hersteller/Lieferanten weitergegeben werden sollen, in der Erwartung, dass sie gepatcht werden, oder ob die Kenntnis der Schwachstelle vorübergehend auf die US-Regierung und möglicherweise andere Partner beschränkt werden soll, damit sie für Zwecke der nationalen Sicherheit und der Strafverfolgung, wie z. B. nachrichtendienstliche Erfassung, militärische Operationen und/oder Spionageabwehr, genutzt werden können. [...]</p>
+<p class="attribution">—Übersetzung: DeepL</p>
+</blockquote>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-10" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-10">10</a><span class="fn-bracket">]</span></span>
+<p>Die rechtlichen Rahmenbedingungen bzgl. eines effektiven Schwachstellenmanagement sind in Deutschland gerade in der Diskussion. (Stand Jul. 2024); Schwachstellen, die direkt an das BSI gemeldet werden, unterliegen dem vorher diskutierten CVD.</p>
+</aside>
+</aside>
+<div class="supplemental">
+<p>Insbesondere durch die föderale Struktur in Deutschland kann es ggf. dazu kommen, dass bezüglich der Handhabung von Schwachstellen unterschiedliche rechtliche Regelungen gelten werden - je nachdem ob die Behörde eine Bundes- oder Landesbehörde ist.</p>
+</div></ld-topic><ld-topic id="vulnerabilities-equities-process-vep-usa-1">
+<h2><a class="reference external" href="https://trumpwhitehouse.archives.gov/sites/whitehouse.gov/files/images/External%20-%20Unclassified%20VEP%20Charter%20FINAL.PDF">Vulnerabilities Equities Process (VEP) (USA)</a></h2>
+<blockquote class="epigraph">
+<p>[...] Die Entscheidung der US-Regierung, ob eine Schwachstelle veröffentlicht oder eingeschränkt werden soll, ist nur ein Element des Prozesses zur Bewertung der Schwachstellen und ist nicht immer eine binäre Entscheidung. Andere Optionen, die in Betracht gezogen werden können, sind die Verbreitung von Informationen zur Schadensbegrenzung an bestimmte Stellen, ohne die jeweilige Schwachstelle offenzulegen, die Einschränkung der Nutzung der Schwachstelle durch die US-Regierung in irgendeiner Weise, die Information von Regierungsstellen der USA und verbündeter Staaten über die Schwachstelle [...].</p>
+<p class="attribution">—Übersetzung: DeepL</p>
+</blockquote>
+</ld-topic><ld-topic id="vulnerabilities-equities-process-vep-usa-2">
+<h2><a class="reference external" href="https://trumpwhitehouse.archives.gov/sites/whitehouse.gov/files/images/External%20-%20Unclassified%20VEP%20Charter%20FINAL.PDF">Vulnerabilities Equities Process (VEP) (USA)</a></h2>
+<blockquote class="epigraph">
+<p>[...] Alle diese Entscheidungen müssen auf der Grundlage des Verständnisses der Risiken einer Verbreitung, des potenziellen Nutzens von Schwachstellen durch die Regierung sowie der Risiken und Vorteile aller dazwischen liegenden Optionen getroffen werden. [...]</p>
+<p class="attribution">—Übersetzung: DeepL</p>
+</blockquote>
+</ld-topic><ld-topic id="schwachstellenmanagement-in-deutschland-quo-vadis">
+<h2>Schwachstellenmanagement in Deutschland - Quo Vadis?</h2>
+<blockquote class="epigraph">
+<div class="obsolete docutils container">
+<p>[...] Die Ausnutzung von Schwachstellen von IT-Systemen steht in einem hochproblematischen Spannungsverhältnis zur IT-Sicherheit und den Bürgerrechten. Der Staat wird daher keine Sicherheitslücken ankaufen oder offenhalten, sondern sich in einem Schwachstellenmanagement unter Federführung eines unabhängigeren Bundesamtes für Sicherheit in der Informationstechnik immer um die schnellstmögliche Schließung bemühen.[...]</p>
+</div>
+<p class="attribution">—KOALITIONSVERTRAG 2021—2025 (SPD, BÜNDNIS 90/DIE GRÜNEN, FDP)</p>
+</blockquote>
+</ld-topic><ld-topic class="new-subsection transition-fade" id="verschlusselung-eine-allererste-einfuhrung">
+<h2>Verschlüsselung - eine allererste Einführung</h2>
+</ld-topic><ld-topic id="definitionen">
+<h2>Definitionen</h2>
+<dl class="field-list">
+<dt>Klartext<span class="colon">:</span></dt>
+<dd><p><span class="eng">Plaintext</span></p>
+<p>Die Originalnachricht, die verschlüsselt werden soll.</p>
+</dd>
+<dt>Geheimtext oder Chiffretext oder <span class="peripheral">Krytogramm</span><span class="colon">:</span></dt>
+<dd><p><span class="eng">Ciphertext</span></p>
+<p>Die kodierte/verschlüsselte Nachricht.</p>
+</dd>
+<dt>Verschlüsselung<span class="colon">:</span></dt>
+<dd><p><span class="eng">Encryption</span></p>
+<p>Der Prozess der Umwandlung von Klartext in Geheimtext.</p>
+</dd>
+<dt>Entschlüsselung<span class="colon">:</span></dt>
+<dd><p><span class="eng">Decryption</span></p>
+<p>Der Prozess der Wiederherstellung des Klartextes aus dem Geheimtext.</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="sicherheit-von-verschlusselungsschemata">
+<h2>Sicherheit von Verschlüsselungsschemata</h2>
+<div class="docutils container">
+<p><em>Bedingungslos Sicher</em> (<span class="eng">Unconditionally Secure</span>)</p>
+<ul class="simple">
+<li><p>Unabhängig davon wie viel Zeit ein Gegner hat, ist es ihm unmöglich, den Geheimtext zu entschlüsseln, weil die erforderlichen Informationen nicht vorhanden sind.</p></li>
+</ul>
+</div>
+<div class="incremental docutils container">
+<p><em>Rechnerisch Sicher</em> (<span class="eng">Computationally Secure</span>)</p>
+<ul class="simple">
+<li><p>Die Kosten für das Brechen der Chiffre übersteigen den Wert der verschlüsselten Informationen.</p></li>
+<li><p>Die zum Knacken der Chiffre benötigte Zeit übersteigt die Lebensdauer der Informationen.</p></li>
+</ul>
+</div>
+<aside class="admonition incremental question">
+<p class="admonition-title">Frage</p>
+<p>Wie lange könnte der Nutzen einer bestimmten Information andauern?</p>
+</aside>
+</ld-topic><ld-topic id="eines-der-ersten-verschlusselungsverfahren-caesar-cipher">
+<h2>Eines der ersten Verschlüsselungsverfahren: Caesar Cipher</h2>
+<ul>
+<li><p>Einfachste und früheste bekannte Verwendung einer Substitutions-Chiffre; verwendet von Julius Cäsar.</p></li>
+<li><p>Dabei wird jeder Buchstabe des Alphabets durch einen Buchstaben ersetzt, der drei Stellen weiter hinten im Alphabet steht.</p></li>
+<li><p>Am Ende des Alphabets wird wieder am Anfang begonnen. Somit folgt auf den Buchstabe Z der Buchstabe A.</p>
+<blockquote>
+<pre class="literal-block">unverschlüsselt:    meet me after the toga party</pre>
+<pre class="incremental literal-block">verschlüsselt:      PHHW PH DIWHU WKH WRJD SDUWB</pre>
+</blockquote>
+</li>
+</ul>
+<div class="supplemental">
+<p>Das Verfahren ist aus mehrfacher Sicht komplett unsicher und verletzt allg. Sicherheitsprinzipien. Es ist jedoch ein einfaches Beispiel für eine Substitutions-Chiffre.</p>
+</div></ld-topic><ld-topic id="brute-force-angriff">
+<h2>Brute-Force Angriff</h2>
+<ul class="incremental">
+<li><p>Es werden alle möglichen Schlüssel ausprobiert, bis eine verständliche Übersetzung des Chiffriertextes in Klartext erreicht wird.</p></li>
+<li><p>Im Durchschnitt muss die Hälfte aller möglichen Schlüssel ausprobiert werden, um Erfolg zu haben.</p></li>
+<li><p>Zur Durchführung des Brute-Force-Ansatzes ist ein gewisses Maß an Wissen über den zu erwartenden Klartext erforderlich. Es werden Mittel zur automatischen Unterscheidung von Klartext und „Müll“ benötigt.</p>
+<aside class="admonition admonition-frage">
+<p class="admonition-title">Frage</p>
+<p>Was bedeuted somit <em>bis eine verständliche Übersetzung des Chiffriertextes in Klartext erreicht wird</em>? Wenn der Klartext zum Beispiel ein Bild, ein Video oder ein Computerprogramm ist?</p>
+</aside>
+</li>
+</ul>
+</ld-topic><ld-topic id="hashfunktionen">
+<h2>Hashfunktionen</h2>
+<ul class="incremental-list simple">
+<li><p>Eine Hashfunktion <span class="math">\(H\)</span> akzeptiert eine beliebig lange Nachricht <span class="math">\(M\)</span> als Eingabe und gibt einen Wert fixer Größe zurück: <span class="math">\(h = H(M)\)</span>.</p></li>
+<li><p>Eine Änderung eines beliebigen Bits in <span class="math">\(M\)</span> sollte mit hoher Wahrscheinlichkeit zu einer Änderung des Hashes <span class="math">\(h\)</span> führen.</p></li>
+<li><p>Kryptographische Hashfunktionen werden für das Signieren von Nachrichten, die Erstellung von digitalen Signaturen, die Überprüfung von Nachrichtenintegrität und bei der Speicherung von Passwörtern verwendet.</p></li>
+</ul>
+<div class="supplemental">
+<p><strong>Kollisionen bei Hashes</strong></p>
+<p>Wenn ein Passwort „nur“ als Hash gespeichert wird, dann gibt es zwangsläufig Kollisionen und es kann theoretisch passieren, dass ein Angreifer (zufällig) ein völlig anderes Passwort findet, dass bei der Überprüfung des Passworts akzeptiert wird. Die Konstruktion kryptografischer Hashfunktionen stellt jedoch sicher, dass dies in der Praxis nicht auftritt. Sollte jedoch eine „normale Hashfunktion“ genommen werden, dann ist dieses Szenario durchaus realistisch.</p>
+</div></ld-topic><ld-topic id="sha256-hashfunktion-beispiele">
+<h2>SHA256 Hashfunktion - Beispiele</h2>
+<dl class="incremental-list dd-margin-left-2em field-list simple">
+<dt>ok<span class="colon">:</span></dt>
+<dd><p>2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df</p>
+</dd>
+<dt>password<span class="colon">:</span></dt>
+<dd><p>5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</p>
+</dd>
+<dt>Password<span class="colon">:</span></dt>
+<dd><p>e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a</p>
+</dd>
+<dt>12345678<span class="colon">:</span></dt>
+<dd><p>ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f</p>
+</dd>
+<dt>12345679<span class="colon">:</span></dt>
+<dd><p>b759803bc6037a05e6564b6447a755b7f3862ba4d0d746785dbe133dcb6c8f4d</p>
+</dd>
+<dt>&quot;this is a very, very long password that would be absolutely safe for all purposes until the END of tIME!&quot;<span class="colon">:</span></dt>
+<dd><p>b915b962df3b0d49b6c7995164a0a1756885d749af214e561aa8125a9186b26d</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="sicherheit-verschlusselung-und-signaturen">
+<h2>Sicherheit - Verschlüsselung und Signaturen</h2>
+<p>Es geht im Wesentlichen um das Ver- und Entschlüsseln von Daten (<span class="math">\(X\)</span>) mit Hilfe von Schlüsseln.</p>
+<ld-deck>
+<ld-card>
+<p><span class="math">\(E(K,X)\)</span> bedeutet, dass wir die Nachricht X mit dem Schlüssel <span class="math">\(K\)</span>  verschlüsseln (<span class="eng">encryption</span>).</p>
+<p><span class="math">\(D(K,X)\)</span> bezeichnet die Umkehrfunktion, die die Daten wieder entschlüsselt (<span class="eng">decryption</span>).</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Symmetrische Verschlüsselung</p>
+<p>Der Schlüssel zur Verschlüsselung ist identisch mit dem Schlüssel zur Entschlüsselung (<span class="eng">decryption</span> (<span class="math">\(D\)</span>)).</p>
+<div class="math">
+\begin{equation*}
+X = D(K,E(K,X))
+\end{equation*}
+</div>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Asymmetrische Verschlüsselung</p>
+<p>Wir unterscheiden zwischen privaten (<span class="math">\(PR\)</span>) und öffentlichen Schlüsseln (<span class="math">\(PU\)</span>) (<span class="math">\(PU\)</span> <span class="math">\(\neq\)</span> <span class="math">\(PR\)</span>). Ein privater und ein öffentlicher Schlüssel bilden immer ein Paar. Der private Schlüssel ist immer geheim zu halten.</p>
+<ld-deck class="incremental">
+<ld-card>
+<p><strong>Verschlüsselung von Nachrichten</strong></p>
+<p>Alice sendet eine Nachricht an Bob mit Hilfe des öffentlichen Schlüssels von Bob.</p>
+<div class="math">
+\begin{align*}
+Y = E(PU_{Bob},X) \\
+X = D(PR_{Bob},Y)
+\end{align*}
+</div>
+</ld-card><ld-card class="incremental">
+<p><strong>Signierung von Nachrichten</strong></p>
+<p>Alice „signiert“ (<span class="math">\(S\)</span>) eine Nachricht mit ihrem privaten Schlüssel.</p>
+<div class="math">
+\begin{align*}
+Y = E(PR_{Alice},X) \\
+X = D(PU_{Alice},Y)
+\end{align*}
+</div>
+</ld-card><ld-card class="incremental">
+<p><strong>Signierung von Nachrichten mit sicheren Hashfunktionen</strong></p>
+<p>Alice signiert eine Nachricht <span class="math">\(X\)</span> mit ihrem privaten Schlüssel.</p>
+<div class="math">
+\begin{equation*}
+Alice: [E(PR_{Alice},H=Digest(X)),X]
+\end{equation*}
+</div>
+<p>Bob prüft die Nachricht <span class="math">\(X\)</span> auf Authentizität:</p>
+<div class="math">
+\begin{equation*}
+Bob: D(PU_{Alice},H) \stackrel{?}{=} Digest(X)
+\end{equation*}
+</div>
+</ld-card></ld-deck></ld-card></ld-deck></ld-topic><ld-topic class="new-section transition-fade" id="passwortsicherheit">
+<h2>Passwortsicherheit</h2>
+</ld-topic><ld-topic id="verwendung-von-passworten">
+<h2>Verwendung von Passworten</h2>
+<aside class="admonition observation">
+<p class="admonition-title">Beobachtung</p>
+<p>Klassische Passwörter werden (noch immer) in zahlreichen Bereichen verwendet.</p>
+</aside>
+<div class="incremental docutils container">
+<p class="rubric">Beispiele</p>
+<ul class="simple">
+<li><p>Smartphones</p></li>
+<li><p>Cryptosticks</p></li>
+<li><p>Logins für Computer und Serversysteme</p></li>
+<li><p>verschlüsselte Dateien und Datenträger</p></li>
+<li><p>&quot;als Backup&quot;</p></li>
+</ul>
+</div>
+<div class="supplemental">
+<p><strong>Hintergrund</strong></p>
+<p>Obwohl an vielen Stellen versucht wird Passwörter aus vielen Gründen zurück zu drängen, so ist die Verwendung noch allgegenwärtig und in machen Bereichen ist auch nicht unmittelbar eine Ablösung zu erkennen.</p>
+<p>Biometrie ist zum Beispiel in machen Bereichen kein Ersatz für Passwörter und wird - wenn überhaupt - nur ergänzend genommen. So ist es zum Beispiel im deutschen Recht erlaubt/möglich einem Beschuldigten sein Smartphone bei Bedarf vor das Gesicht zu halten, um es zu entsperren (Stand 2023). Je nach Qualität des Fingerabdrucksensors können ggf. auch genommene Fingerabdrücke verwendet werden. Möchte der Beschuldigte jedoch das Passwort nicht freiwillige nennen, dann besteht keine direkte weitere Handhabe.</p>
+</div></ld-topic><ld-topic id="passwortbasierte-angriffe-auf-unternehmen">
+<h2>Passwortbasierte Angriffe auf Unternehmen</h2>
+<blockquote class="epigraph">
+<p>Microsoft said hackers working for the Russian government breached its corporate networks recently and stole email from executives and some employees to find out what the company knew about them. The tech company said the breach was not due to any flaw in its software, but rather began with a “password spraying.” The technique worked on what Microsoft said was an old test account, and the hackers then used the account’s privileges to get access to multiple streams of email.</p>
+<p class="attribution">—19. Januar 2024: The Washington Post; Joseph Menn</p>
+</blockquote>
+</ld-topic><ld-topic id="ist-passwortwiederherstellung-nicht-trivial">
+<h2>Ist Passwortwiederherstellung nicht „trivial“?</h2>
+<blockquote class="epigraph">
+<p><strong>59 Prozent aller Passwörter in unter 60 Minuten knackbar</strong></p>
+<p><em>Forscher haben per Brute-Force-Methode mit einer Nvidia Geforce RTX 4090 Millionen von Passwörtern aus dem Darknet geknackt</em>.</p>
+<p>[...] Sicherheitsforscher von Kaspersky haben untersucht, wie schnell sich gängige Passwörter mit einer modernen GPU vom Typ Nvidia Geforce RTX 4090 knacken lassen. Durchgeführt wurde die Untersuchung anhand einer Datenbank mit 193 Millionen echten Nutzerpasswörtern, die die Forscher aus dem Darknet bezogen. Sämtliche Passwörter lagen dabei in Form von gesalzenen MD5-Hashes vor. [...]</p>
+<p class="attribution">—21. Juni 2024: <a class="reference external" href="https://www.golem.de/news/forscher-machen-den-test-59-prozent-aller-passwoerter-in-unter-60-minuten-knackbar-2406-186329.html">golem.de</a></p>
+</blockquote>
+</ld-topic><ld-topic class="no-title" id="ist-passwortwiederherstellung-nicht-trivial-1">
+<h2>Ist Passwortwiederherstellung nicht „trivial“?</h2>
+<p><strong>An AI cracked your password.</strong> Time It Takes Using AI to Crack Your Password.<a class="footnote-reference brackets" href="#footnote-11" id="footnote-reference-11" role="doc-noteref"><span class="fn-bracket">[</span>11<span class="fn-bracket">]</span></a></p>
+<table class="s-font-size-80 highlight-line-on-hover incremental">
+<thead>
+<tr><th class="head"><p># OF CHARACTER</p></th>
+<th class="head"><p>Numbers Only</p></th>
+<th class="head"><p>Lowercase Letters</p></th>
+<th class="head"><p>Lower- &amp; Uppercase Letters</p></th>
+<th class="head"><p>Numbers, Upper- &amp; Lowercase Letters</p></th>
+<th class="head"><p>Numbers, Upper- &amp; Lowercase Letters, Symbols</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>4</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>4 Seconds</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>Instantly</p></td>
+<td><p>Instantly</p></td>
+<td><p>22 Seconds</p></td>
+<td><p>42 Seconds</p></td>
+<td><p>6 Minutes</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>Instantly</p></td>
+<td><p>3 Seconds</p></td>
+<td><p>19 Minutes</p></td>
+<td><p>48 Minutes</p></td>
+<td><p>7 Hours</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>Instantly</p></td>
+<td><p>1 Minutes</p></td>
+<td><p>11 Hours</p></td>
+<td><p>2 Days</p></td>
+<td><p>2 Weeks</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>Instantly</p></td>
+<td><p>1 Hours</p></td>
+<td><p>4 Weeks</p></td>
+<td><p>6 Months</p></td>
+<td><p>5 Years</p></td>
+</tr>
+<tr><td><p>11</p></td>
+<td><p>Instantly</p></td>
+<td><p>23 Hours</p></td>
+<td><p>4 Years</p></td>
+<td><p>38 Years</p></td>
+<td><p>356 Years</p></td>
+</tr>
+<tr><td><p>12</p></td>
+<td><p>25 Seconds</p></td>
+<td><p>3 Weeks</p></td>
+<td><p>289 Years</p></td>
+<td><p>2K Years</p></td>
+<td><p>30K Years</p></td>
+</tr>
+<tr><td><p>13</p></td>
+<td><p>3 Minutes</p></td>
+<td><p>11 Months</p></td>
+<td><p>16K Years</p></td>
+<td><p>91K Years</p></td>
+<td><p>2M Years</p></td>
+</tr>
+<tr><td><p>14</p></td>
+<td><p>36 Minutes</p></td>
+<td><p>49 Years</p></td>
+<td><p>827K Years</p></td>
+<td><p>9M Years</p></td>
+<td><p>187M Years</p></td>
+</tr>
+<tr><td><p>15</p></td>
+<td><p>5 Hours</p></td>
+<td><p>890 Years</p></td>
+<td><p>47M Years</p></td>
+<td><p>613M Years</p></td>
+<td><p>14Bn Years</p></td>
+</tr>
+<tr><td><p>16</p></td>
+<td><p>2 Days</p></td>
+<td><p>23K Years</p></td>
+<td><p>2Bn Years</p></td>
+<td><p>26Bn Years</p></td>
+<td><p>1Tn Years</p></td>
+</tr>
+<tr><td><p>17</p></td>
+<td><p>3 Weeks</p></td>
+<td><p>812K Years</p></td>
+<td><p>539.72M Years</p></td>
+<td><p>2Tn Years</p></td>
+<td><p>95Tn Years</p></td>
+</tr>
+<tr><td><p>18</p></td>
+<td><p>10 Months</p></td>
+<td><p>22M Years</p></td>
+<td><p>7.23Bn Years</p></td>
+<td><p>96Tn Years</p></td>
+<td><p>6Qn Years</p></td>
+</tr>
+</tbody>
+</table>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-11" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-11">11</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.securityhero.io/ai-password-cracking/">Home Security Heroes</a></p>
+</aside>
+</aside>
+<div class="supplemental">
+<p>Aus dem &quot;Paper&quot;:</p>
+<blockquote class="epigraph">
+<p>We used [...] PassGAN to run through a list of 15,680,000 passwords. [...]</p>
+</blockquote>
+</div></ld-topic><ld-topic id="sammlungen-von-passwortern">
+<h2>Sammlungen von Passwörtern</h2>
+<blockquote class="epigraph">
+<p><strong>Check Your Accounts: 10 Billion Passwords Exposed in Largest Leak Ever</strong></p>
+<p><em>The 'RockYou2024' database includes almost 10 billion passwords pulled from 'a mix of old and new data breaches.' Here's how to check if yours are at risk.</em></p>
+<p>[...]Researchers at Cybernews have uncovered a massive trove of nearly 10 billion passwords on a popular hacking forum in what they're calling &quot;largest password compilation&quot; ever.</p>
+<p>The file, titled <span class="docutils literal">rockyou2024.txt</span>, was posted on July 4 by someone going by the name ObamaCare and contains a mind-boggling 9,948,575,739 unique plaintext passwords. The user only joined the forum in late May, but they've posted data from other breaches, too. [...]</p>
+<p class="attribution">—6. Juli 2024: <a class="reference external" href="https://uk.pcmag.com/security/153138/check-your-accounts-10-billion-passwords-exposed-in-largest-leak-ever">PCMag</a></p>
+</blockquote>
+</ld-topic><ld-topic id="raum-der-passwortkandidaten">
+<h2>Raum der Passwortkandidaten</h2>
+<dl class="field-list">
+<dt>vierstellige PIN<span class="colon">:</span></dt>
+<dd><div class="incremental docutils container">
+<p><span class="math">\(10.000\)</span> Kombinationen</p>
+</div>
+</dd>
+<dt>Passwort mit 8 Zeichen und 70 Zeichen im Zeichensatz (a-z, A-Z, 0-9 und ausgewählte Sonderzeichen)<span class="colon">:</span></dt>
+<dd><div class="incremental docutils container">
+<p><span class="math">\(70^8 = 576.480.100.000.000 \approx 5,7 \times 10^{14}\)</span> Kombinationen</p>
+</div>
+</dd>
+<dt>Passphrase mit 6 Wörtern aus einem Wörterbuch mit 2.000 Wörtern<span class="colon">:</span></dt>
+<dd><div class="incremental docutils container">
+<p><span class="math">\(2.000^6 = 6,4 \times 10 ^{19}\)</span> Kombinationen</p>
+</div>
+</dd>
+<dt>Passphrase mit 4 Wörtern aus einem Wörterbuch mit 100.000 Wörtern<span class="colon">:</span></dt>
+<dd><div class="incremental docutils container">
+<p><span class="math">\(100.000^4 = 1 \times 10^{20}\)</span> Kombinationen</p>
+</div>
+</dd>
+<dt>Passwort mit 16 Zeichen und 84 Zeichen im Zeichensatz (a-z, A-Z, 0-9 und die meisten Sonderzeichen)<span class="colon">:</span></dt>
+<dd><div class="incremental docutils container">
+<p><span class="math">\(84^{16} = 6,14 \times 10^{30}\)</span> Kombinationen</p>
+</div>
+</dd>
+</dl>
+<div class="supplemental">
+<p>Eine vierstellige PIN kann niemals als sicher angesehen werden. Selbst wenn ein Bruteforce nur auf 4 oder 5 Versuche pro Stunde kommt, so ist es dennoch in wenigen Monaten möglich die PIN zu ermitteln.</p>
+</div></ld-topic><ld-topic id="quellen-fur-passwortkandidaten">
+<h2>Quellen für Passwortkandidaten</h2>
+<ul class="incremental">
+<li><p>Wörterbücher</p></li>
+<li><p>Verzeichnisse (z. B. Postleitzahlen, Städte, Straßennamen)</p></li>
+<li><p>Leaks</p>
+<p><span class="peripheral">(Sammlungen von realen Passwörtern, die meist von Hackern veröffentlicht wurden.)</span></p>
+<ul class="simple">
+<li><p>Rockyou</p></li>
+<li><p>LinkedIn</p></li>
+<li><p>Sony</p></li>
+<li><p>etc.</p></li>
+</ul>
+</li>
+</ul>
+</ld-topic><ld-topic id="qualitat-von-passworten">
+<h2>Qualität von Passworten</h2>
+<p>Wie ist die Qualität der folgenden Passwörter zu bewerten in Hinblick darauf wie aufwändig es ist das Passwort ggf. wiederherzustellen:</p>
+<ol class="arabic simple incremental smaller">
+<li><p>Donaudampfschifffahrt</p></li>
+<li><p>Passwort</p></li>
+<li><p>ME01703138541</p></li>
+<li><p>2wsx3edc4rfv</p></li>
+<li><p>Haus Maus</p></li>
+<li><p>iluvu</p></li>
+<li><p>Emily18</p></li>
+<li><p>MuenchenHamburg2023!!!!</p></li>
+<li><p>hjA223dn4fw&quot;üäKßß k`≤-~ajsdk</p></li>
+<li><p>Baum Lampe Haus Steak Eis Berg</p></li>
+<li><p>password123</p></li>
+</ol>
+</ld-topic><ld-topic class="new-section transition-fade" id="kryptografische-hashfunktionen-und-passworter">
+<h2>Kryptografische Hashfunktionen und Passwörter</h2>
+</ld-topic><ld-topic id="hashraten-in-mh-s-auf-aktueller-hardware">
+<h2>Hashraten in MH/s auf aktueller Hardware</h2>
+<table class="incremental-table-rows no-table-borders">
+<thead>
+<tr><th class="head"><p><strong>Hashcat Mode (Hashcat 6.2.6)</strong></p></th>
+<th class="head"><p><strong>Hash</strong></p></th>
+<th class="head"><p><strong>RTX 1080Ti (250 W)</strong></p></th>
+<th class="head"><p><strong>RTX 2080TI (260 W)</strong></p></th>
+<th class="head"><p><strong>RTX 3090 (350 W)</strong></p></th>
+<th class="head"><p><strong>RTX 4090 (450 W)</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>25700</p></td>
+<td><p>Murmur</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>643700.0 (643 GH/s)</p></td>
+</tr>
+<tr><td><p>23</p></td>
+<td><p>Skype</p></td>
+<td><p>21330.1</p></td>
+<td><p>27843.1</p></td>
+<td><p>37300.7</p></td>
+<td><p>84654.8</p></td>
+</tr>
+<tr><td><p>1400</p></td>
+<td><p>SHA2-256</p></td>
+<td><p>4459.7</p></td>
+<td><p>7154.8</p></td>
+<td><p>9713.2</p></td>
+<td><p>21975.5</p></td>
+</tr>
+<tr><td><p>10500</p></td>
+<td><p>PDF1.4-1.6</p></td>
+<td><p>24.9</p></td>
+<td><p>29.8</p></td>
+<td><p>76.8</p></td>
+<td><p>122.0</p></td>
+</tr>
+<tr><td><p>1800</p></td>
+<td><p>SHA 512 Unix (5000 Iterations)</p></td>
+<td><p>0.2</p></td>
+<td><p>0.3</p></td>
+<td><p>0.5</p></td>
+<td><p>1.2</p></td>
+</tr>
+<tr><td><p>13723</p></td>
+<td><p>Veracrypt SHA2- 512 + XTX 1536Bit</p></td>
+<td><p>0.0004</p></td>
+<td><p>0.0006</p></td>
+<td><p>0.0009</p></td>
+<td><p>0.002
+(2000 H/s)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="supplemental smaller">
+<p><strong>Quellen:</strong></p>
+<ul class="simple">
+<li><p>4090: <cite>https://gist.github.com/Chick3nman/e4fcee00cb6d82874dace72106d73fef</cite></p></li>
+<li><p>3090: <cite>https://gist.github.com/Chick3nman/e4fcee00cb6d82874dace72106d73fef</cite></p></li>
+<li><p>1080Ti: <cite>https://www.onlinehashcrack.com/tools-benchmark-hashcat-nvidia-gtx-1080-ti.php</cite></p></li>
+<li><p>2080Ti: <cite>https://gist.github.com/binary1985/c8153c8ec44595fdabbf03157562763e</cite></p></li>
+</ul>
+</div></ld-topic><ld-topic id="brute-force-angriff-auf-lange-passworte">
+<h2>Brute-Force Angriff auf lange Passworte</h2>
+<object aria-label="Zeit für für Angriffe auf lange Passwörter benötigt wird." class="align-center" data="images/brute_force.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="kryptografische-hashfunktionen-fur-passworte">
+<h2>Kryptografische Hashfunktionen für Passworte</h2>
+<aside class="admonition incremental warning">
+<p class="admonition-title">Warnung</p>
+<p>Bekannte kryptografische Hash-Funktionen wie <span class="obsolete">MD4</span>, <span class="obsolete">MD5</span>, SHA-256, SHA-512 oder auch RIPE-MD sind für das Hashen von Passwörtern nicht geeignet.</p>
+</aside>
+<ul class="incremental list-with-explanations">
+<li><p>Zur Schlüsselableitung bzw. zum Hashen von Passwörtern wurden spezialisierte Funktionen entwickelt. Zum Beispiel: PBKDF2, Scrypt, Bcrypt und die Argon2 Familie. Diese wiederstehen gängigen Angriffen.</p>
+<div class="far-smaller docutils container">
+<p>PBKDF2 verwendet zum Beispiel beim Hashing von Passwörtern klassische Basisalgorithmen (z. B. SHA-256) und wiederholt diese mehrfach (ggf. viele hunderttausend Male), um die Laufzeit zu verlängern und es für Angreifer schwieriger zu machen.</p>
+</div>
+</li>
+<li><p>Diese Algorithmen sind parametrisierbar, um sie an verschiedene Zwecke anpassen zu können.  Je nach Parametrisierung sind diese so rechenintensiv, dass sie z. B. nicht für Webanwendungen mit vielen Nutzern geeignet sind.</p></li>
+</ul>
+<div class="supplemental">
+<p>Parametrisierungen, die die Laufzeit und den Speicherbedarf so stark erhöhen, dass eine Verwendung in Webanwendungen nicht mehr sinnvoll ist, können z. B. ideal sein zum Schutz von Dateien, Containern oder lokaler Festplatten.</p>
+</div></ld-topic><ld-topic id="vom-salzen-salt">
+<h2>Vom Salzen (<span class="eng">Salt</span>) ...</h2>
+<ld-story>
+<p><strong>Beobachtung/Problem</strong></p>
+<p>Werden Passwörter direkt mit Hilfe einer kryptografischen Hashfunktion gehasht, dann haben zwei Nutzer, die das gleiche Passwort verwenden, den gleichen Hash.</p>
+<table class="tiny highlight-line-on-hover">
+<thead>
+<tr><th class="head"><p>User</p></th>
+<th class="head"><p>Hash</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Alice</p></td>
+<td><p>sha256_crypt.hash('<strong>DHBWMannheim</strong>',salt='',rounds=1000) =
+<span class="docutils literal"><span class="pre">$5$rounds=1000$$lb/CwYgN/xR9dqYuYxYVtWkxMEh.VK.QOC9IKmy9DP/</span></span></p></td>
+</tr>
+<tr><td><p>Bob</p></td>
+<td><p>sha256_crypt.hash('<strong>DHBWMannheim</strong>',salt='',rounds=1000) =
+<span class="docutils literal"><span class="pre">$5$rounds=1000$$lb/CwYgN/xR9dqYuYxYVtWkxMEh.VK.QOC9IKmy9DP/</span></span></p></td>
+</tr>
+</tbody>
+</table>
+<div class="incremental docutils container">
+<p><strong>Lösung</strong></p>
+<p>Passwörter sollten immer mit einem einzigartigen und zufälligen „Salt“ gespeichert werden, um Angriffe mittels Regenbogentabellen zu verhindern.</p>
+<table class="highlight-line-on-hover">
+<thead>
+<tr><th class="head"><p>User</p></th>
+<th class="head"><p>Hash</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Alice</p></td>
+<td><p>sha256_crypt.hash('<strong>DHBWMannheim</strong>',<span class="red">salt='0123456'</span>,rounds=1000) =
+<span class="docutils literal">$5$rounds=1000$0123456$66x8MB.qev25coq9OVrD1lr1ZGJJelAzOVlCDZykrY0</span></p></td>
+</tr>
+<tr><td></td>
+<td></td>
+</tr>
+<tr><td><p>Bob</p></td>
+<td><p>sha256_crypt.hash('<strong>DHBWMannheim</strong>',<span class="red">salt='1234567'</span>,rounds=1000) =
+<span class="docutils literal">$5$rounds=1000$1234567$LxD/hg29N9KYpNdFMW69Kk65BLkVLlzlSEJvqhCmFU9</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</ld-story><div class="supplemental">
+<p class="rubric">Rainbow Tables</p>
+<p>Eine <em>Rainbow Table</em> (<span class="ger">Regenbogentabelle</span> - Verwendung jedoch nicht gängig) bezeichnet eine vorberechnete Tabelle, die konzeptionell zum einem Hash ein jeweilig dazugehörendes  Passwort speichert und einen effizienten Lookup ermöglicht. Dies kann ggf. die Angriffsgeschwindigkeit sehr signifikant beschleunigen, auch wenn die Tabellen sehr groß sind und ggf. in die Terabytes gehen.</p>
+<p>Aufgrund der allgemeinen Verwendung von Salts sind Angriffe mit Hilfe von Regenbogentabellen heute (fast nur noch) von historischer Bedeutung.</p>
+</div></ld-topic><ld-topic id="verwendung-sicherer-hash-bzw-schlusselableitungsfunktionen-fur-passworte">
+<h2>Verwendung sicherer Hash- bzw. Schlüsselableitungsfunktionen für Passworte</h2>
+<aside class="admonition width-40 note">
+<p class="admonition-title">Bemerkung</p>
+<p>Häufig werden die „Hashwerte“ von Passwörtern in Datenbanken oder Dateien  als Base64 kodierter String gespeichert.</p>
+</aside>
+<dl class="field-list simple">
+<dt>Argon2<span class="colon">:</span></dt>
+<dd><p>z. B. verwendete von LUKS2</p>
+</dd>
+<dt>bcrypt<span class="colon">:</span></dt>
+<dd><p>basierend auf Blowfish; z. B. verwendet in OpenBSD</p>
+</dd>
+<dt>scrypt<span class="colon">:</span></dt>
+<dd><p>z. B. (ergänzend) verwendet für das Hashing von Passwörtern auf Smartphones</p>
+</dd>
+<dt>yescrypt<span class="colon">:</span></dt>
+<dd><p>z. B. moderne Linux Distributionen</p>
+</dd>
+<dt>PBKDF2-HMAC-SHA256<span class="colon">:</span></dt>
+<dd><p>Ethereum Wallets</p>
+</dd>
+</dl>
+</ld-topic><ld-topic id="angriff-auf-luks2-mit-argon2">
+<h2>Angriff auf LUKS2 mit Argon2</h2>
+<blockquote class="epigraph">
+<p>[…] The choice of Argon2 as a KDF makes GPU acceleration impossible. As a result, you’ll be restricted to CPU-only attacks, which may be very slow or extremely slow depending on your CPU. To give an idea, you can try 2 (that’s right, two) passwords per second on a single Intel(R) Core(TM) i7-9700K CPU &#64; 3.60GHz. Modern CPUs will deliver a slightly better performance, but don’t expect a miracle: LUKS2 default KDF is deliberately made to resist attacks. […]</p>
+<p class="attribution">—Elcomsoft <a class="reference external" href="https://blog.elcomsoft.com/2022/08/probing-linux-disk-encryption-luks2-argon-2-and-gpu-acceleration">LUKS2 with Argon2</a></p>
+</blockquote>
+</ld-topic><ld-topic id="effizienz-eines-brute-force-angriffs-auf-luks2">
+<h2>Effizienz eines Brute-Force Angriffs auf LUKS2</h2>
+<object aria-label="Zeit die für einen Angriff auf LUKS2 benötigt wird." class="align-center" data="images/brute_force-luks2.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic class="new-section transition-scale" id="passworte-verstehen">
+<h2>Passworte Verstehen</h2>
+</ld-topic><ld-topic id="aufbau-von-passworten">
+<h2>Aufbau von Passworten</h2>
+<p>Von Menschen vergebene Passwörter basieren häufig auf Kombinationen von Wörtern aus den folgenden Kategorien:</p>
+<ul class="incremental-list simple">
+<li><p>Pins: <span class="docutils literal">1111</span>, <span class="docutils literal">1234</span>, <span class="docutils literal">123456</span>, …</p></li>
+<li><p>Tastaturwanderungen (<span class="eng">keyboard walks</span>): <span class="docutils literal">asdfg</span>, <span class="docutils literal">q2w3e4r5t</span>, …</p></li>
+<li><p>Patterns: <span class="docutils literal">aaaaa</span>, <span class="docutils literal">ababab</span>, <span class="docutils literal">abcabcabc</span>, …</p></li>
+<li><p>Reguläre Wörter aus Wörterbüchern: Duden, Webster, …</p></li>
+<li><p>Kontextinformationen:</p>
+<ul>
+<li><p>szenetypisch:  <span class="docutils literal">acab</span>, <span class="docutils literal">1888</span>, <span class="docutils literal">1488</span><a class="footnote-reference brackets" href="#footnote-12" id="footnote-reference-12" role="doc-noteref"><span class="fn-bracket">[</span>12<span class="fn-bracket">]</span></a>, oder bestimmte Marken (z. B. Gucci, Ferrari), …</p></li>
+<li><p>privates Umfeld: Namen von Kindern, Eltern, Hunden, Geburtsort, Adresse, …</p></li>
+</ul>
+</li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-12" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-12">12</a><span class="fn-bracket">]</span></span>
+<p><span class="docutils literal">14</span> oder <span class="docutils literal">1488</span> ist ein numerischer Code für die vierzehn Worte des David Eden Lane.
+(Er war ein Mitbegründer der Terrororganisation <em>The Order</em>, die für die Vorherrschaft der weißen Rasse in den USA kämpfte.)</p>
+</aside>
+</aside>
+</ld-topic><ld-topic id="haufige-passworte">
+<h2>Häufige Passworte</h2>
+<p>Eine gute Quelle für das Studium von Passwörtern sind sogenannte <em>Leaks</em> oder auch Listen mit gängigen Passwörtern. Zum Beispiel <a class="reference external" href="https://www.beckershospitalreview.com/cybersecurity/30-most-common-passwords-of-2023.html">Becker's Health IT 2023</a>:</p>
+<ul class="columns">
+<li><p>123456</p>
+<p>password</p>
+<p>123456789</p>
+<p>12345</p>
+<p>12345678</p>
+<p>qwerty</p>
+<p>1234567</p>
+<p>111111</p>
+<p>1234567890</p>
+<p>123123</p>
+</li>
+<li><p>abc123</p>
+<p>1234</p>
+<p>password1</p>
+<p>iloveyou</p>
+<p>1q2w3e4r</p>
+<p>000000</p>
+<p>qwerty123</p>
+<p>zaq12wsx</p>
+<p>dragon</p>
+<p>sunshine</p>
+</li>
+<li><p>princess</p>
+<p>letmein</p>
+<p>654321</p>
+<p>monkey</p>
+<p>27653</p>
+<p>1qaz2wsx</p>
+<p>123321</p>
+<p>qwertyuiop</p>
+<p>superman</p>
+<p>asdfghjkl</p>
+</li>
+</ul>
+<div class="supplemental">
+<p><strong>Hinweise</strong></p>
+<ul class="simple">
+<li><p>Die Listen ändern sich in der Regel von Jahr zu Jahr nicht wesentlich.</p></li>
+<li><p>Die konkrete Methodik ist oft fragwürdig; in der Gesamtheit aber dennoch aussagekräftig.</p></li>
+</ul>
+</div></ld-topic><ld-topic id="die-struktur-von-passwortern-in-rockyou">
+<h2>Die Struktur von Passwörtern in Rockyou</h2>
+<div class="docutils container">
+<p>Hier haben wir alle <strong>Kleinbuchstaben auf l</strong>, <strong>Großbuchstaben auf u</strong>, <strong>Ziffern auf d</strong> und <strong>Sonderzeichen auf s</strong> abgebildet.</p>
+</div>
+<table class="align-left no-table-borders s-font-size-80" style="width: 100%;">
+<tbody>
+<tr><td><p>llllllll</p></td>
+<td><p>4,8037%</p></td>
+<td><p>lllllllldd</p></td>
+<td><p>1,4869%</p></td>
+<td><p>dddddddddddd</p></td>
+<td><p>0,2683%</p></td>
+<td><p>ddddddll</p></td>
+<td><p>0,1631%</p></td>
+</tr>
+<tr><td><p>llllll</p></td>
+<td><p>4,1978%</p></td>
+<td><p>lllllld</p></td>
+<td><p>1,3474%</p></td>
+<td><p>lllddddd</p></td>
+<td><p>0,2625%</p></td>
+<td><p>lllllls</p></td>
+<td><p>0,1615%</p></td>
+</tr>
+<tr><td><p>lllllll</p></td>
+<td><p>4,0849%</p></td>
+<td><p>llllllld</p></td>
+<td><p>1,3246%</p></td>
+<td><p>lllllllllldd</p></td>
+<td><p>0,2511%</p></td>
+<td><p>ddddlll</p></td>
+<td><p>0,1613%</p></td>
+</tr>
+<tr><td><p>lllllllll</p></td>
+<td><p>3,6086%</p></td>
+<td><p>llllllllllll</p></td>
+<td><p>1,3223%</p></td>
+<td><p>llllllllllllllll</p></td>
+<td><p>0,2340%</p></td>
+<td><p>dlllllll</p></td>
+<td><p>0,1583%</p></td>
+</tr>
+<tr><td><p>ddddddd</p></td>
+<td><p>3,4003%</p></td>
+<td><p>llldddd</p></td>
+<td><p>1,2439%</p></td>
+<td><p>lllldddddd</p></td>
+<td><p>0,2322%</p></td>
+<td><p>dllllll</p></td>
+<td><p>0,1575%</p></td>
+</tr>
+<tr><td><p>dddddddddd</p></td>
+<td><p>3,3359%</p></td>
+<td><p>llllldddd</p></td>
+<td><p>1,2109%</p></td>
+<td><p>llddddd</p></td>
+<td><p>0,2270%</p></td>
+<td><p>llllddddd</p></td>
+<td><p>0,1560%</p></td>
+</tr>
+<tr><td><p>dddddddd</p></td>
+<td><p>2,9878%</p></td>
+<td><p>lllllldddd</p></td>
+<td><p>1,1204%</p></td>
+<td><p>uuuuuudd</p></td>
+<td><p>0,2189%</p></td>
+<td><p>dddddddl</p></td>
+<td><p>0,1557%</p></td>
+</tr>
+<tr><td><p>lllllldd</p></td>
+<td><p>2,9326%</p></td>
+<td><p>lllllllld</p></td>
+<td><p>1,1168%</p></td>
+<td><p>ddddll</p></td>
+<td><p>0,2169%</p></td>
+<td><p>uuuudd</p></td>
+<td><p>0,1551%</p></td>
+</tr>
+<tr><td><p>llllllllll</p></td>
+<td><p>2,9110%</p></td>
+<td><p>lllllddd</p></td>
+<td><p>1,0633%</p></td>
+<td><p>lddddddd</p></td>
+<td><p>0,2064%</p></td>
+<td><p>lllllddddd</p></td>
+<td><p>0,1395%</p></td>
+</tr>
+<tr><td><p>dddddd</p></td>
+<td><p>2,7243%</p></td>
+<td><p>llllllddd</p></td>
+<td><p>0,9225%</p></td>
+<td><p>ddddddddddddd</p></td>
+<td><p>0,2017%</p></td>
+<td><p>ddllllll</p></td>
+<td><p>0,1391%</p></td>
+</tr>
+<tr><td><p>ddddddddd</p></td>
+<td><p>2,1453%</p></td>
+<td><p>llllllllld</p></td>
+<td><p>0,9059%</p></td>
+<td><p>ullllldd</p></td>
+<td><p>0,1930%</p></td>
+<td><p>ulllll</p></td>
+<td><p>0,1379%</p></td>
+</tr>
+<tr><td><p>llllldd</p></td>
+<td><p>2,0395%</p></td>
+<td><p>lllll</p></td>
+<td><p>0,8793%</p></td>
+<td><p>ddddllll</p></td>
+<td><p>0,1905%</p></td>
+<td><p>uuuuuuuuuu</p></td>
+<td><p>0,1378%</p></td>
+</tr>
+<tr><td><p>llllllldd</p></td>
+<td><p>1,9092%</p></td>
+<td><p>lllllllllllll</p></td>
+<td><p>0,8334%</p></td>
+<td><p>uuuuuuuuu</p></td>
+<td><p>0,1886%</p></td>
+<td><p>llllllls</p></td>
+<td><p>0,1374%</p></td>
+</tr>
+<tr><td><p>lllllllllll</p></td>
+<td><p>1,8697%</p></td>
+<td><p>llllld</p></td>
+<td><p>0,8005%</p></td>
+<td><p>uuuuudd</p></td>
+<td><p>0,1815%</p></td>
+<td><p>lllllllllld</p></td>
+<td><p>0,1345%</p></td>
+</tr>
+<tr><td><p>lllldddd</p></td>
+<td><p>1,6420%</p></td>
+<td><p>llllddd</p></td>
+<td><p>0,7759%</p></td>
+<td><p>lllllllllddd</p></td>
+<td><p>0,1808%</p></td>
+<td><p>llllllllllldd</p></td>
+<td><p>0,1344%</p></td>
+</tr>
+<tr><td><p>lllldd</p></td>
+<td><p>1,5009%</p></td>
+<td><p>ddddddddddd</p></td>
+<td><p>0,7524%</p></td>
+<td><p>llllllllldddd</p></td>
+<td><p>0,1725%</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<div class="supplemental">
+<p>Analyse auf Grundlage des „berühmten“ Rockyou-Lecks.</p>
+</div></ld-topic><ld-topic id="die-zusammensetzung-von-passwortern-verstehen">
+<h2>Die Zusammensetzung von Passwörtern verstehen</h2>
+<ld-story>
+<div class="incremental docutils container">
+<p>Analyse des ersten/original <em>Rockyou</em> Leaks.</p>
+<table class="borderless booktabs s-font-size-90">
+<thead>
+<tr><th class="head"><p>∑ Passworte</p></th>
+<th class="head"><p>14.334.851</p></th>
+<th class="head"><p>100%</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>Pins</p></td>
+<td><p>2.346.591</p></td>
+<td><p>16,37%</p></td>
+</tr>
+<tr><td><p>Passworte mit Buchstaben</p></td>
+<td><p>11.905.977</p></td>
+<td><p>83,34%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="incremental docutils container">
+<p>Analyse der Passworte mit Buchstaben:</p>
+<table class="borderless booktabs s-font-size-90" style="width: 100%;">
+<thead>
+<tr><th class="head"><p>Kategorie</p></th>
+<th class="head"><p>Absolut</p></th>
+<th class="head"><p>Prozentual</p></th>
+<th class="head"><p>Beispiele</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>E-Mails</p></td>
+<td><p>26.749</p></td>
+<td><p>0,22%</p></td>
+<td><p>me&#64;me.com</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>Zahlen gerahmt von Buchstaben</p></td>
+<td><p>35696</p></td>
+<td><p>0,30%</p></td>
+<td><p>a123456a</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>Leetspeak</p></td>
+<td><p>64.672</p></td>
+<td><p>0,54%</p></td>
+<td><p>G3tm0n3y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>Patterns</p></td>
+<td><p>124.347</p></td>
+<td><p>1,04%</p></td>
+<td><p>lalala</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>Reguläre oder Populäre Wörter</p></td>
+<td><p>4.911.647</p></td>
+<td><p><strong>41,25%</strong></p></td>
+<td><p>princess</p></td>
+<td><p>iloveu</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>Sequenzen</p></td>
+<td><p>5.290</p></td>
+<td><p>0,04%</p></td>
+<td><p>abcdefghij</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>keyboard walks (de/en)</p></td>
+<td><p>14.662</p></td>
+<td><p>0,12%</p></td>
+<td><p>q2w3e4r</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>Einfache Wortkombinationen</p></td>
+<td><p>535.037</p></td>
+<td><p>4,49%</p></td>
+<td><p>pinkpink</p></td>
+<td><p>sexy4u</p></td>
+<td><p>te amo</p></td>
+<td></td>
+</tr>
+<tr><td><p>Komplexe Wortkombinationen</p></td>
+<td><p>5.983.259</p></td>
+<td><p><strong>50,25%</strong></p></td>
+<td><p>Inparadise</p></td>
+<td><p>kelseylovesbarry</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p><em>&lt;Rest&gt;</em></p></td>
+<td><p>204.618</p></td>
+<td><p>1,72%</p></td>
+<td><p>j4**9c+p</p></td>
+<td><p>i(L)you</p></td>
+<td><p>p&#64;55w0rd</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</ld-story><div class="supplemental">
+<p class="rubric">Hinweise</p>
+<p>Die Sprachen, die bei der Identifizierung der Wörter berücksichtigt wurden, waren: &quot;de, en, fr, es, pt, nl&quot;.</p>
+<p><em>Populäre Wörter</em> sind Wörter, die auf Twitter oder Facebook verwendet wurden, z. B. &quot;iloveu&quot;, &quot;iluvu&quot;, ....</p>
+</div></ld-topic><ld-topic class="transition-move-left exercises" id="gedankenexperiment">
+<h2>Gedankenexperiment</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Kosten und Aufwand für Passwortwiederherstellung" id="ld-exercise-2">
+<p class="ld-exercise-title rubric">Kosten und Aufwand für Passwortwiederherstellung</p>
+<p>Sie wollen einen <em>SHA-256</em> angreifen und sie haben 100 Nvidia 4090 GPUs. Jede GPU hat eine Hash-Rate von ~22GH/s (mit Hashcat 6.2.6) und benötigt ~500 Watt pro Stunde (Wh). Der verwendete Zeichensatz besteht aus 84 verschiedenen Zeichen (z. B. a-z, A-Z, 0-9, &lt;einige Sonderzeichen&gt;).</p>
+<ol class="arabic simple">
+<li><p>Wie lange dauert es, ein 10-stelliges Passwort zu ermitteln (Worst Case)?</p></li>
+<li><p>Wie viel Geld wird es Sie kosten, ein 10-stelliges Passwort zu knacken (Worst Case), wenn 1kWh 25ct kostet?</p></li>
+<li><p>Werden Sie im Laufe Ihres Lebens in der Lage sein, ein Passwort mit 12 Zeichen Länge zu ermitteln?</p></li>
+</ol>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:G15ZUrWM2dSyX12+i1Y4HwAiwWDco47dA/WXZddrR+4=:KOXKYctlQIreyH4D:Qj9z+/0WWHGUCiScWuumov2OL6RzG0lX3okSDadF2aMZxKlraCItKVZNdrTA/3S8L6g4JZcaiguKGf0oJJUv/7vZ0PVI7mdoGL5QAVs5eS/1N8Pap2b/khfzGaCuU6fQzk/+dNisXO+V7u6IWS5/Pzoq9l/kePCYp1yoRz6RJvbK2rnbEACe7fX8pRlHy5GwPaUCQrU4HquU48ErH+t+39RQlHuWnojiSWrRCuIVcIhfLSz7DjZfUU9oAg4+parEKLUcqiqHfCYycIcq+utLLxxXu2OcO3BrIok3A76bN3DveX+pUeBleZ5p8/TnJGhFWLCXvafq+oSADb2yxn2F5brQzIhIBJeurPoCZuTWwGtLXjJz06AhvjMBnkdTjn8cGag4TF06LIgSKqo9Chj4zANxOIO3kzSF9OUeerOeFet+VuMFQy0YRH1O+kR8ep03+kdEKVme6odKeRMYaNm9KUQntAowxI2iSxr4X0fpIRAL6G73lpntHBW9nUEh57folEnxMHpR0EOkxWAm2T7mmtjPSyS3ODnth7u3R3ruLm4tbx3lew8GRy5HY5IbHHVt3m4lwhAoK9MAeqJ4jpcAmkdYthO73+/XkVYw64BkwnyPw5ivmBbFaWETZKWPn9BAE6rbSMAUoaT+ycAmfWXUUNCMYbJ/SPVqBSnPcwUJFmd75lUkGkkM2l5iBoFBr8sCcz62gxdsWjMRxBUfWE1ZZw+F8YkjjhrfTlPyjFt10ninZiDOC36B8/J6QBpqdjf83aQEIxeyA3hQSlHrU6PB1UVICv+YID8fyVrcK/Ya9cS2BJHzU0caUwkG1TARqVUrZZEC+cUmP5bSFfevxr3NBmkVxOWrQJpEcfGLV4gA3KCZJoaxh9dY4AXz2VTcmqHJJjyZFs0EmyKysZCHrqIgl8yDHF9q5nKvof62XnpS8cteVjvlvE+0Rn3WZeTnvIazOYY29l1ZrAogiIT9FWD0Z2IyzSHzoKTHCjCe6w==</div>
+</div>
+</ld-topic><ld-topic class="transition-move-left exercises" id="gedankenexperiment-1">
+<h2>Gedankenexperiment</h2>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Verstehen des Suchraums" id="ld-exercise-3">
+<p class="ld-exercise-title rubric">Verstehen des Suchraums</p>
+<p>Sie haben „ganz viele“ Grafikkarten und einen sehr schnellen Hash. Sie kommen auf eine Hashrate von 1 THash/Sekunde (<span class="math">\(1 \times 10^{12}\)</span>). Sie haben einen Monat Zeit für das Knacken des Passworts.
+Gehen Sie vereinfacht davon aus, dass Ihr Zeichensatz 100 Zeichen umfasst.</p>
+<p>Berechnen Sie den Anteil des Suchraums, den Sie abgesucht haben, wenn das Passwort 32 Zeichen lang sein sollte und Sie dies wissen. Drücken Sie den Anteil des abgesuchten Raums in Relation zu der Anzahl der Sandkörner der Sahara aus. Gehen Sie davon aus, dass die Sahara ca. 70 Trilliarden (<span class="math">\(70 \times 10^{21}\)</span>) Sandkörner hat.<a class="footnote-reference brackets" href="#footnote-13" id="footnote-reference-13" role="doc-noteref"><span class="fn-bracket">[</span>13<span class="fn-bracket">]</span></a></p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:GUcXZe9o8jdIEXW+UPoJzBk0lY4kgGHn4Nce5OJ9cZs=:1JkS6NQRe9vTnKnt:UK+rHU6ieRUmfCuioZZylpFRTKYO3ZZ9hRdWeRoxe5m4eTS737IMP0YhOU0BhA9RAP0TGKaMfL+0nlscoKfhaXcVAZ3Xz8hRvxx1uJRS8J/JIFHOhL7uiSeSSQcyYC8D/6845WFclrpt4JbxOZCjoq4Msj2Y+u/1U1sraFJpmRNkMdfnI6YbVHGSOsal4GqbhRDy4HqckxNyFkOMlsITysmepWkJrEIGAy+tnIWBNgmjJEBJ3geovqwI7ebyz3hnjn6DHpep5mzE75mJjIdYlkQV0v4cV4vzvJRIRRtpNhJ924wsMcNIRuy1nviuPb2JjJwOmbEYAaE24DpPpCKsODtd62lLIuW2OXzJi7J6aRvL1Jlo5I7oIJN6Y8ECX/p3b6zJK5O8AG1piLPRzV+pDZ2nkiWMkx51DCAG3SMso1ea7/bx/ySfgVyMMTt4lpoyUVufO7++2UxRKehM8+XZomiRxEt10JZGcWu0PMghD1vDcnr0J+X14uBoAEbNw8gLEKFBCHyNlZ38afkbsoVm+hKPZBOUNqO0wEM4Nr00YUghDBsJsy7qpCoUT7lMvINEsaemIg3Ww0D8C+e1cqLRnMjbZAbvMZAduIczaPSX0/zP9/TWVJBSppy0O585HZQYlGUCv9ayqEoCnF1jkW4X6TRbMlKJeq5S1mwr/QyP8f6JTv2pU7uOoKU+Uw06EcXRnfGlNNs+hZZvtdJHXikuMVP05Bvm9p0lG8GhShLEbeIbCoDQtAAApSa7Ax8H1/sEttb1Fz4lFei0ODtvxc7NqB3gDzju1WIq2Br/C8Fk8zVkG2IQ5XkgtQFLxPvOuk1+ZHzGiku/3wfBn2kIeuk6ewaPf56Kc1HjdH0Znb2mR8M95L+HgtMzbxQLKJaO3DztNV4LQgfA1tcZUYoQdmSgbU7EyDPaOryXUC2GL3mbfvDvouqjBIuJn4chljdY6W8OkP++KB1hYejy0Mr1k3rHuWlMckia2rpFsjy0WwYmgzOaCYIeN8AE4doYKweVV+vy5uEtWdIXzylfBh8TcY0mTVn6lJUZDXgbuCdqM95HN5oIlMiW+UkXNjaNyRP4cj5i/IRSJjI85BjGkETvI34AfvCCLj1LNF6Bxj0yRcA27XTDOpTil82+Mpo07F58nYgadQS9DwSVdP+LxEFu2tuNX5AEK1vkXixqvYkfeseyyR9ZYM40HJFatTDHTGShtaKLIExwVk9wve8kF5ILtMntS9XYyp1ENb3ayL9rhqsveG04Yk8fygc0WRdgGc9w0vkV5/zWcGN6lz/W40qDaaNpsDT17xN5Ube1mxtQ0agzmBwC0afegOCeEwgicrOlb6Nd04faptZ0HurB+ivUAO+A8uZQ3dyn4rQJgQcDN0NR5s1MeQDoYksTeoH16/ey8k0g2dVfPttXAr+PsP9htREgoIuv3wuIHoE6NC3Q0kCqeJUHaoqtvuwFY/bcfCZ4rQ0QSo0GzlHLfRVBoMGfzDZugq/ZME/SYXWI87mUonAtuiP9rjTTFDNox09eEVlJG9vHymoCYbosUt1ugZs1l++1pAskxgpETTFpyZtaQBO7i8ZxxGI5VMQnwpKlIPcXsdTPd9jtOHNS81NR2XLRm22ODmVAqDZqSZ6JFCFF3VUw1kWH39o5xhjJQWNTA/j3N7JCpZzdozgZJ/o2L6PBqUQ/7JLNyZBOZ2Dxi4lb00y5fLE5RZyr/aWaPrEghMVW28dE</div>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-13" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-13">13</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.welt.de/wissenschaft/weltraum/article7068474/Hobby-Astronom-widerlegt-die-Sandkorn-These.html">Astronom widerlegt die Sandkorn These (Welt.de)</a></p>
+</aside>
+</aside>
+</ld-topic><ld-topic id="effekte-von-passwortrichtlinien">
+<h2>Effekte von Passwortrichtlinien</h2>
+<p>Moderne Passwortrichtlinien (<span class="eng">Password Policies</span>) machen es unmöglich, ältere Leaks <em>direkt</em> zu nutzen.</p>
+<p><em>Beispiele:</em></p>
+<ul class="incremental more-space-between-list-items simple">
+<li><p>Mindestanzahl von Zeichen (maximale Anzahl von Zeichen)</p></li>
+<li><p>Anforderungen an die Anzahl der Ziffern, Sonderzeichen, Groß- und Kleinbuchstaben</p></li>
+<li><p>Anforderungen an die Vielfalt der verwendeten Zeichen</p></li>
+<li><p>einige Passwörter (z. B. aus bekannten Leaks und Wörterbüchern) sind verboten</p></li>
+<li><p>...</p></li>
+</ul>
+<div class="supplemental">
+<p>Passwortrichtlinien extrem: <a class="reference external" href="https://neal.fun/password-game/">Password Game</a></p>
+<p>Die wichtigsten <a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63b.pdf">NIST-Richtlinien</a> für Passwörter:</p>
+<ul class="simple">
+<li><p>Mindestlänge von 8 Zeichen.</p></li>
+<li><p>Keine Komplexitätsanforderung. Benutzer sollten auch die Möglichkeit haben, Leerzeichen einzufügen, um die Verwendung von Phrasen zu ermöglichen. Für die Benutzerfreundlichkeit [...] kann es von Vorteil sein, wiederholte Leerzeichen in getippten Passwörtern vor der Überprüfung zu entfernen.</p></li>
+</ul>
+</div></ld-topic><ld-topic id="der-effekt-von-passwortrichtlinien-auf-passworter">
+<h2>Der Effekt von Passwortrichtlinien auf Passwörter</h2>
+<p>Reale Passwortrichtlinie:</p>
+<blockquote>
+<p>Nutze 1 Großbuchstabe, 1 Kleinbuchstabe, 2 Symbole, 2 Ziffern, 4 Buchstaben, 4 Nicht-Buchstaben</p>
+</blockquote>
+<div class="incremental docutils container">
+<p>Exemplarisch beobachteter Effekt wenn die Passwörter vorher einfacher waren und der Benutzer gezwungen wurde diese zu erweitern:</p>
+<blockquote>
+<p>Password11##</p>
+<p>Password12!!</p>
+</blockquote>
+<p>d. h. die Passworte werden mit möglichst geringem Aufwand erweitert.</p>
+</div>
+</ld-topic><ld-topic id="aufbau-von-passwortern-zusammenfassung">
+<h2>Aufbau von Passwörtern - Zusammenfassung</h2>
+<ul class="more-space-between-list-items simple">
+<li><p>Passwörter, die häufig eingegeben werden müssen, basieren in den allermeisten Fällen auf „echten“ Wörtern.</p></li>
+<li><p>Echte Wörter werden oft nicht unverändert verwendet, sondern nach einfachen Regeln umgewandelt, z. B. durch Anhängen einer Zahl oder eines Sonderzeichens, Veränderung der Groß-/Kleinschreibung, etc.</p></li>
+</ul>
+<aside class="admonition incremental small">
+<p class="admonition-title">Frage</p>
+<p>Wie können wir gute Passwortkandidaten identifizieren/generieren, wenn ein <em>Leak</em> nicht ausreicht oder nur eine kleine Anzahl von Passwörtern getestet werden kann?</p>
+<div class="incremental docutils container">
+<p>Zum Beispiel dauert das Testen aller Passwörter von Rockyou...:</p>
+<p>~13.000.000 Passworte / 5 Hashes/Sekunde ≈ 1 Monat</p>
+<p>~13.000.000 Passworte / 5 Hashes/Stunde ≈ ~297 Jahre</p>
+</div>
+</aside>
+</ld-topic><ld-topic id="bewertung-von-passworten">
+<h2>Bewertung von Passworten</h2>
+<ul class="far-smaller incremental simple">
+<li><p><strong>Donaudampfschifffahrt</strong>: Ist weder in Rockyou noch im Duden und auch nicht in den Corpora von Twitter und Facebook von 2022 zu finden.</p></li>
+<li><p><strong>Passwort</strong>: Nr. 93968 in Rockyou.</p></li>
+<li><p><strong>password123</strong>: Nr. 1348 in Rockyou.</p></li>
+<li><p><strong>2wsx3edc4rfv</strong>: So nicht in Rockyou, aber 1qaz<em>2wsx3edc4rfv</em> ist Nr. 143611 in Rockyou.</p></li>
+<li><p><strong>Haus Maus</strong>: In Rockyou ist lediglich hausmaus zu finden.</p></li>
+<li><p><strong>iluvu</strong>: Nr. 1472 in Rockyou.</p></li>
+<li><p><strong>Emily060218</strong>: Emily ist Nr. 35567 in Rockyou. Die Zahl ist ganz offensichtlich ein Datum: 6. Feb. 2018 und könnte ein Geburtsdatum, Hochzeitsdatum, oder ein für die Person vergleichbar bedeutends Datum sein.</p></li>
+<li><p><strong>MuenchenHamburg2023!!!!*</strong>: Das Passwort ist zwar sehr lang aber es handelt sich vermutlich um zwei - für die entsprechende Person - bedeutende Orte. Die Zahl und die Sonderzeichen sind vermutlich auf eine Passwortrichtlinie zurückzuführen.</p></li>
+<li><p><strong>hjA223dn4fw&quot;üäKßß k`≤-~ajsdk</strong>: 28 Stellen basierend auf einem Zeichensatz, der vermutlich ca. 192 Zeichen pro Stelle umfasst.</p></li>
+<li><p><strong>Baum Lampe Haus Steak Eis Berg</strong>: Es handelt sich um ein Passwort mit 30 Stellen, das vermutlich mit Hilfe von Diceware generiert wurde und 6 Worte umfasst.</p></li>
+<li><p><strong>ME01703138541</strong>: Namenskürzel und Telefonnummer.</p></li>
+</ul>
+<div class="supplemental">
+<aside class="admonition admonition-diceware">
+<p class="admonition-title">Diceware</p>
+<p>Auch wenn dem Angreifer
+(a) bekannt ist, dass das Passwort mit Hilfe von Diceware generiert wurde,
+(b) die zugrundeliegende Wortliste vorliegt und
+(c) auch die Länge (hier 6 Worte) bekannt sein sollte, dann umfasst der Suchraum: <span class="math">\((6^5)^6 \approx 2,21\times 10^{23}\)</span> Passwortkandidaten. Sollte man also mit einer Geschwindigkeit von 1 Billion Hashes pro Sekunde angreifen können, dann brauch man noch immer über 7000  Jahre für das Absuchen des vollständigen Suchraums.</p>
+<p>Beim klassischen Dicewareansatz umfasst das Wörterbuch <span class="math">\(6^5\)</span> Worte, da man mit einem normalen Würfel fünfmal Würfelt und dann das entsprechende Wort nachschlägt. Würde man zum Beispiel die folgenden Zahlen würfeln: 1,4,2,5,2. Dann würde man das Wort zur Zahl: 14252 nachschlagen.</p>
+</aside>
+</div></ld-topic><ld-topic id="schwachstellen-in-passwort-managern">
+<h2>Schwachstellen in Passwort-Managern</h2>
+<blockquote class="epigraph">
+<p>Das Bundesamt für Informationssicherheit (BSI) hat zusammen mit der Münchner Firma MGM Security Partners zwei Passwort-Manager im Rahmen des Projekts zur Codeanalyse von Open-Source-Software (Caos 3.0) auf mögliche Mängel überprüft. Die Tester wurden dabei vor allem bei Vaultwarden fündig.</p>
+<p>[...] &quot;Vaultwarden sieht keinen Offboarding-Prozess für Mitglieder vor&quot; [...] &quot;Das bedeutet, dass die für den Datenzugriff notwendigen Master-Schlüssel in diesem Fall nicht ausgetauscht werden.&quot; Folglich besitze die ausscheidende Person, der eigentlich der Zugang entzogen werden sollte, weiterhin den kryptografischen Schlüssel zu den Daten der Organisation. [...]</p>
+<p>&quot;Das Admin-Dashboard ist anfällig für HTML-Injection-Angriffe&quot;, haben die Prüfer zudem entdeckt (CVE-2024-39926, Risiko mittel).[...]</p>
+<p class="attribution">—15.10.2024 - Heise.de <a class="reference external" href="https://www.heise.de/news/Passwort-Manager-BSI-berichtet-ueber-kritische-Schwachstellen-in-Vaultwarden-9982427.html">BSI: Forscher finden Schwachstellen in Passwort-Managern</a></p>
+</blockquote>
+</ld-topic><ld-topic id="password-sniffing">
+<h2>Password Sniffing</h2>
+<dl class="field-list">
+<dt>In der Anfangszeit<span class="colon">:</span></dt>
+<dd><p>unverschlüsselte Übertragung von Passwörtern (telnet, ftp, ...)</p>
+</dd>
+<dt>In der Übergangszeit<span class="colon">:</span></dt>
+<dd><p>Verwendung von Einmal-Passwörtern (S/Key, ...)</p>
+</dd>
+<dt>Heute<span class="colon">:</span></dt>
+<dd><p>Passwörter werden verschlüsselt übertragen (ssh, https, ...)</p>
+<p>Zusätzliche Absicherung durch Zwei-Faktor-Authentifizierung (basierend auf Einmalpassworten: TOTP, ...)</p>
+</dd>
+</dl>
+<div class="supplemental">
+<p>Unverschlüsselte Passworte können leicht mittels eines Sniffers, der den Netzwerkverkehr mitschneidet (z. B. Wireshark), abgefangen werden.</p>
+</div></ld-topic><ld-topic id="einmal-passworter">
+<h2>Einmal-Passwörter</h2>
+<p>Die Idee ist, dass Passwörter nur genau einmal gültig sind und nicht wiederverwendbar sind.</p>
+<ul class="simple">
+<li><p>Tokens (z. B. RSA SecurID)</p></li>
+<li><p>Codebuch: Liste von Einmal-Passwörtern, die das gemeinsame Geheimnis sind.</p></li>
+<li><p>S/Key: Passwort „wird mit einem Zähler kombiniert“ und dann gehasht.</p></li>
+</ul>
+</ld-topic><ld-topic id="das-s-key-verfahren">
+<h2>Das S/Key Verfahren</h2>
+<p>Einmal-Passwort-System nach Codebuch-Verfahren.</p>
+<ld-deck>
+<ld-card>
+<p><strong>Initialisierung</strong></p>
+<ol class="arabic incremental-list list-with-explanations">
+<li><p>Der Nutzer gibt sein Passwort <span class="math">\(W\)</span> ein; dies ist der geheime Schlüssel.</p>
+<p>(Sollte <span class="math">\(W\)</span> bekannt werden, dann ist die Sicherheit des Verfahrens nicht mehr gewährleistet.)</p>
+</li>
+<li><p>Eine kryptografische Hash-Funktion <span class="math">\(H\)</span> wird n-mal auf <span class="math">\(W\)</span> angewandt, wodurch eine Hash-Kette von n einmaligen Passwörtern entsteht. <span class="math">\(H(W), H(H(W)), \dots, H^{n}(W)\)</span></p></li>
+<li><p>Das initiale Passwort wird verworfen.</p></li>
+<li><p>Der Benutzer erhält die <span class="math">\(n\)</span> Passwörter, die in umgekehrter Reihenfolge ausgedruckt werden: <span class="math">\(H^n(W), H^{n-1}(W), ..., H(H(W)), H(W)\)</span>.</p></li>
+<li><p>Nur das Passwort <span class="math">\(H^n(W)\)</span>, das an erster Stelle der Liste des Benutzers steht, der Wert von <span class="math">\(n\)</span> und ggf. ein Salt, wird auf dem Server gespeichert.</p></li>
+</ol>
+</ld-card><ld-card class="incremental">
+<p><strong>Anmeldung</strong></p>
+<p>Identifiziere das letzte verwendete Passwort <span class="math">\(n\)</span>.</p>
+<ul class="incremental-list simple">
+<li><p>Der Server fragt den Nutzer nach dem Passwort <span class="math">\(n-1\)</span> (d. h. <span class="math">\(H^{n-1}(W)\)</span>) und übermittelt ggf. auch den Salt.</p></li>
+<li><p>Der Server hasht das Passwort und vergleicht es dann mit dem gespeicherten Passwort <span class="math">\(H^n(W)\)</span>.</p></li>
+<li><p>Ist das Passwort korrekt, dann wird der Nutzer angemeldet und der Server speichert das Passwort <span class="math">\(H^{n-1}(W)\)</span> als neues Passwort <span class="math">\(H^n(W)\)</span> und dekrementiert n.</p></li>
+</ul>
+</ld-card></ld-deck><div class="supplemental">
+<p>Im Original basiert S/Key auf der kryptographischen Hashfunktion MD4. Ein Austausch wäre aber selbstverständlich möglich!</p>
+<p>Intern verwendet S/KEY 64-bit Zahlen. Für die Benutzbarkeit werden diese Zahlen auf sechs kurze Wörter, von ein bis vier Zeichen, aus einem öffentlich zugänglichen 2048-Wörter-Wörterbuch (<span class="math">\(2048 = 2^{11}\)</span>) abgebildet. Zum Beispiel wird eine 64-Bit-Zahl auf &quot;ROY HURT SKI FAIL GRIM KNEE&quot; abgebildet.</p>
+</div></ld-topic><ld-topic id="hmac-based-one-time-password-hotp">
+<h2>HMAC-based one-time password (HOTP)<a class="footnote-reference brackets" href="#footnote-14" id="footnote-reference-14" role="doc-noteref"><span class="fn-bracket">[</span>14<span class="fn-bracket">]</span></a></h2>
+<ul class="simple">
+<li><p>ermöglicht die Erzeugung von Einmal-Passwörtern auf Basis eines geheimen Schlüssels und eines Zählers; Parameter:</p>
+<ul class="incremental-list">
+<li><p>Ein kryptografisches Hash-Verfahren <span class="math">\(H\)</span> (Standard ist SHA-1)</p></li>
+<li><p>einen geheimen Schlüssel <span class="math">\(K\)</span>, der eine beliebige Bytefolge ist</p></li>
+<li><p>Ein Zähler <span class="math">\(C\)</span>, der die Anzahl der Iterationen zählt</p></li>
+<li><p>Länge des Passworts: <span class="math">\(d\)</span> (6-10, Standardwert ist 6, empfohlen werden 6-8)</p></li>
+</ul>
+</li>
+</ul>
+<ul class="incremental-list">
+<li><p>Zur Authentifizierung berechnen beide das Einmalpasswort (HOTP) und dann vergleicht der Server den Wert mit dem vom Client übermittelten Wert:</p>
+<div class="docutils container">
+<p>Berechnung aus dem Schlüssel <span class="math">\(K\)</span> und dem Zähler <span class="math">\(C\)</span>:</p>
+<blockquote>
+<p class="incremental"><span class="math">\(HOTP(K, C) = truncate(HMAC_H(K, C))\)</span></p>
+<div class="incremental docutils container">
+<p><span class="math">\(truncate(MAC) = extract31(MAC, MAC[(19 \times  8 + 4):(19 \times  8 + 7)])\)</span></p>
+</div>
+<p class="incremental"><span class="math">\(HOTP\; value = HOTP(K, C)\; mod\; 10^d\qquad\)</span> (führende Nullen behalten!)</p>
+</blockquote>
+</div>
+</li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-14" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-14">14</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.rfc-editor.org/rfc/rfc4226">https://www.rfc-editor.org/rfc/rfc4226</a></p>
+</aside>
+</aside>
+<div class="supplemental">
+<p><span class="math">\(truncate\)</span> verwendet die 4 niederwertigsten Bits des MAC als Byte-Offset <span class="math">\(i\)</span> in den MAC.
+Der Wert <span class="math">\(19\)</span> kommt daher, dass ein SHA-1 <span class="math">\(160\)</span> Bit hat und <span class="math">\(160/8 = 20\)</span> Byte.</p>
+<p><span class="math">\(extract31\)</span> extrahiert 31 Bit aus dem MAC. Das höchstwertig Bit wird (wenn es nicht 0 ist) entsprechend maskiert.
+Eine Schwäche des Algorithmus ist, dass beide Seiten den Zähler erhöhen müssen und, falls die Zähler aus dem Tritt geraten, ggf. eine Resynchronisation notwendig ist.</p>
+</div></ld-topic><ld-topic id="time-based-one-time-password-totp">
+<h2>Time-based one-time password (TOTP)<a class="footnote-reference brackets" href="#footnote-15" id="footnote-reference-15" role="doc-noteref"><span class="fn-bracket">[</span>15<span class="fn-bracket">]</span></a></h2>
+<ul class="simple">
+<li><p>Erzeugung von zeitlich limitierten Einmal-Passwörtern (z. B. 30 Sekunden)</p></li>
+</ul>
+<ul class="incremental list-with-explanations">
+<li><p>Basierend auf einem vorher ausgetauschten geheimen Schlüssel und der aktuellen Zeit</p>
+<p>Z. B. Unix-Zeit in Sekunden (ganzzahlig) und danach gerundet auf 30 Sekunden.</p>
+</li>
+<li><p>Es wird das HOTP Verfahren mit der Zeit als Zähler verwendet und entweder SHA-256 oder SHA-512 als Hashverfahren, d. h. TOTP <span class="math">\(value(K)\)</span> = HOTP <span class="math">\(value(K, C_T)\)</span>, wobei <span class="math">\(T\)</span> die „aktuelle Zeit“ ist.</p>
+<p><span class="math">\(C_T = \lfloor { T - T_0 \over T_X } \rfloor\)</span></p>
+<ul class="simple">
+<li><p><span class="math">\(T_X\)</span> ist die Länge eines Zeitintervalls (z. B. 30 Sekunden)</p></li>
+<li><p><span class="math">\(T\)</span> ist die aktuelle Zeit in Sekunden seit einer bestimmten Epoche</p></li>
+<li><p><span class="math">\(T_0\)</span> ist bei Verwendung der Unix-Zeit <span class="math">\(0\)</span></p></li>
+<li><p><span class="math">\(C_T\)</span> ist somit die Anzahl der Dauern <span class="math">\(T_X\)</span> zwischen <span class="math">\(T_0\)</span> und <span class="math">\(T\)</span></p></li>
+</ul>
+</li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-15" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-15">15</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.rfc-editor.org/rfc/rfc6238">https://www.rfc-editor.org/rfc/rfc6238</a></p>
+</aside>
+</aside>
+<div class="supplemental">
+<p>Das verfahren verlangt somit, dass die Uhren von Server und Client (hinreichend) synchronisiert sind.</p>
+</div></ld-topic><ld-topic class="new-section transition-scale" id="netzwerksicherheit">
+<h2>Netzwerksicherheit</h2>
+</ld-topic><ld-topic id="denial-of-service-dos-angriffe">
+<h2>Denial-of-Service (DoS) Angriffe</h2>
+<p>Ziel des Angreifers: Lahmlegen eines Dienstes oder des ganzen Systems ...</p>
+<ul class="simple">
+<li><p>durch Ausnutzen von Schwachstellen (<span class="eng">vulnerabilities</span>) wie z. B. Buffer Overflows</p></li>
+<li><p>durch Generierung von Überlast (Ausschöpfen von RAM, CPU, Netzwerkbandbreite, ...)</p></li>
+</ul>
+<aside class="admonition incremental smaller">
+<p class="admonition-title">Beispiel: Ping-of-Death</p>
+<p>(Historisch: aus dem Jahr 1997)</p>
+<p>Ein <span class="docutils literal">ping</span> (vgl. Internet Control Message Protocol (ICMP)) verwendet üblicherweise kleine Nachrichten, aber die verwendete Länge ist einstellbar.</p>
+<p>Falls die Länge zu groß ist ⇒ Buffer Overflow ⇒ Systemabsturz!</p>
+<p>Variante: mittels Fragmentierung ließen sich generell übergroße IP-Pakete (&gt;65,536 Byte) erstellen.</p>
+</aside>
+</ld-topic><ld-topic id="distributed-denial-of-service-ddos-angriff">
+<h2>Distributed Denial-of-Service (DDoS) Angriff</h2>
+<p>Opfer wird von sehr vielen Angreifern mit Nachrichten überflutet.</p>
+<div class="incremental docutils container">
+<p>Ein Beispiel: Smurf-Angriff:</p>
+<object aria-label="Smurf Angriff" class="align-center" data="images/smurf-angriff.svg" role="img" type="image/svg+xml">
+</object></div>
+</ld-topic><ld-topic id="distributed-reflected-denial-of-service-angriff">
+<h2>Distributed-Reflected-Denial-of-Service Angriff</h2>
+<ld-grid class="default-layout">
+<ld-cell class="width-40" style="align-self:auto;">
+<ul>
+<li><p>Idee eines (DRDoS) Angriffs:</p>
+<ul class="list-with-explanations">
+<li><p>Es wird eine Anfrage an einen Server gesendet, die eine große Antwort auslöst.</p>
+<p>(Z. B. hat(te) der NTP Monlist Befehl eine Antwort, die ca. 200 Fach größer ist als die Anfrage!)</p>
+</li>
+<li><p>Mittels IP-Spoofing wird die IP-Adresse des Opfers als Absenderadresse verwendet.</p></li>
+</ul>
+<ul class="incremental simple">
+<li><p>Es werden insbesondere Dienste basierend auf UDP verwendet, da hier keine Verbindung aufgebaut werden muss.</p></li>
+</ul>
+</li>
+</ul>
+</ld-cell><ld-cell style="align-self:auto;">
+<object aria-label="DRDoS Angriff" class="align-center" data="images/drdos.svg" role="img" type="image/svg+xml">
+</object></ld-cell></ld-grid><ul class="incremental-list simple">
+<li><p>Nehmen einen signifikanten Teil aller DDoS-Angriffe ein.</p></li>
+<li><p>Die Tatsache, dass die Sender legitime Server sind, erschwert die Abwehr.</p></li>
+<li><p><span class="eng">Egress Filtering</span> kann helfen, die Verwendung von IP-Spoofing zu verhindern.</p></li>
+</ul>
+<div class="supplemental">
+<p>Bereits im Jahr 2018 wurde ein Angriff mit einer Bandbreite von 1,7 TBit/s beobachtet.</p>
+<dl class="field-list simple">
+<dt>Egress Filtering<span class="colon">:</span></dt>
+<dd><p>Der Router verwirft alle Pakete, die eine Absenderadresse verwenden, die nicht aus dem eigenen Netzwerk stammt.</p>
+</dd>
+</dl>
+</div></ld-topic><ld-topic id="distributed-denial-of-service-ddos-angriffe-beispiel">
+<h2><a class="reference external" href="https://cloud.google.com/blog/products/identity-security/google-cloud-mitigated-largest-ddos-attack-peaking-above-398-million-rps">Distributed Denial-of-Service (DDoS) Angriffe - Beispiel</a></h2>
+<blockquote class="epigraph">
+<p>[...] Google's DDoS Response Team has observed the trend that distributed denial-of-service (DDoS) attacks are <strong>increasing exponentially in size</strong>. Last year, we blocked the largest DDoS attack recorded at the time. This August [2023], we stopped an even larger DDoS attack — 7½ times larger — that also used new techniques to try to disrupt websites and Internet services.</p>
+<p>This new series of DDoS attacks reached <strong>a peak of 398 million requests per second (rps)</strong>, and relied on a novel HTTP/2 “Rapid Reset” technique based on stream multiplexing that has affected multiple Internet infrastructure companies. By contrast, last year's largest-recorded DDoS attack peaked at 46 million rps.</p>
+</blockquote>
+</ld-topic><ld-topic id="distributed-denial-of-service-angriffe-beispiele">
+<h2>Distributed Denial-of-Service Angriffe - Beispiele</h2>
+<ul class="simple">
+<li><p><strong>TCP Stack Attacks</strong> SYN, FIN, RST, ACK, SYN-ACK, URG-PSH, other combinations of TCP Flags, slow TCP attacks</p></li>
+<li><p><strong>Application Attacks</strong>:HTTP GET/POST Floods, slow HTTP Attacks, SIP Invite Floods, DNS Attacks, HTTPS Protocol Attacks</p></li>
+<li><p><strong>SSL/TLS Attacks</strong>: Malformed SSL Floods, SSL Renegotiation, SSL Session Floods</p></li>
+<li><p><strong>DNS Cache Poisoning</strong></p></li>
+<li><p><strong>Reflection Amplification Flood Attacks</strong>: TCP, UDP, ICMP, DNS, mDNS, SSDP, NTP, NetBIOS, RIPv1, rpcbind, SNMP, SQL RS, Chargen, L2TP, Microsoft SQL Resolution Service</p></li>
+<li><p><strong>Fragmentation Attacks</strong>: Teardrop, Targa3, Jolt2, Nestea</p></li>
+<li><p><strong>Vulnerability Attacks</strong></p></li>
+<li><p><strong>Resource Exhaustion Attacks</strong>: Slowloris, Pyloris, LOIC, etc.</p></li>
+<li><p><strong>Flash Crowd Protection</strong></p></li>
+<li><p><strong>Attacks on Gaming Protocols</strong></p></li>
+</ul>
+</ld-topic><ld-topic id="schutz-vor-ddos-angriffen-on-site-masznahmen">
+<h2>Schutz vor DDoS-Angriffen: On-Site Maßnahmen</h2>
+<ul class="incremental-list list-with-sublists simple">
+<li><p>Aufrüsten der Ressourcen (z. B. Bandbreite, CPU, RAM, ...)</p></li>
+<li><p>Exemplarische Sofortmaßnahmen bei aktivem Angriff:</p>
+<ul class="incremental">
+<li><p>Whitelisting von IP-Adressen von besonders wichtigen Clients</p></li>
+<li><p>Blacklisting von IP-Adressen aus bestimmten Bereichen</p></li>
+<li><p>Captchas</p></li>
+<li><p>Überprüfung der Browser-Echtheit</p></li>
+</ul>
+</li>
+<li><p>Anti-DDos Appliances</p></li>
+</ul>
+<aside class="admonition warning incremental">
+<p class="admonition-title">Achtung</p>
+<p>Diese Maßnahmen sind häufig teuer und ggf. begrenzt effektiv; wenn der Angriff die verfügbare Bandbreite übersteigt, sind diese Maßnahmen darüber hinaus wirkungslos.</p>
+</aside>
+</ld-topic><ld-topic id="schutz-vor-ddos-angriffen-off-site-masznahmen">
+<h2>Schutz vor DDoS-Angriffen: Off-Site Maßnahmen</h2>
+<ul class="incremental list-with-explanations">
+<li><p>Einbinden des ISP</p></li>
+<li><p>Einbinden spezialisierter Dienstleister</p>
+<p>(Im Angriffsfall wird mittels BGP-Rerouting der Traffic an den Dienstleister umgeleitet, der dann die DDos Attacke filtert.)</p>
+</li>
+<li><p>Content-Delivery-Networks (CDNs) für statische Inhalte (z. B. Cloudflare, Akamai, ...)</p></li>
+<li><p>Distributed Clouds</p></li>
+</ul>
+</ld-topic><ld-topic id="ein-letztes-wort">
+<h2>Ein letztes Wort</h2>
+<blockquote class="epigraph">
+<p><strong>Why Government Workers, Military Planners Use Signal Now</strong></p>
+<p>This week's revelation that U.S. officials planned a recent military attack in Yemen on Signal highlights increasing use of the messaging app by U.S. government workers to communicate with colleagues, journalists, and family members without fear of monitoring or retaliation. The switch to Signal among federal workers and top government officials has raised concerns about transparency and the preservation of government correspondence and internal communications.</p>
+<p class="attribution">—25.3.2025 - ACM Technews based on The Washington Post; Shira Ovide; Danielle Abril; Hannah Natanson; et al.</p>
+</blockquote>
 </ld-topic>
 </template>
 </body>
