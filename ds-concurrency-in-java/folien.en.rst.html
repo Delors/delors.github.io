@@ -38,7 +38,7 @@
 <dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>1.0</p>
+<dd><p>1.0.1</p>
 </dd>
 </dl>
 <div class="supplemental">
@@ -86,7 +86,7 @@
 <div class="supplemental">
 <aside class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>In Java, mutual exclusion only takes place between methods that have been explicitly declared as <code class="java"><span class="name">synchronised</span></code>.</p>
+<p>In Java, mutual exclusion only takes place between methods that have been explicitly declared as <code class="java"><span class="keyword declaration">synchronized</span></code>.</p>
 </aside>
 <p><em>Monitors</em> are just one model (alternatives: <em>Semaphores</em>, <em>Message Passing</em>) that enables the communication and synchronization of threads. It is the standard model in Java and is directly supported by the Java Virtual Machine (JVM).</p>
 </div></ld-topic><ld-topic id="communication-between-threads-with-the-help-of-monitors">
@@ -220,7 +220,7 @@
 </span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">    </span><span class="keyword">return</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">SharedCoordinate</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">y</span><span class="punctuation">);</span><span class="whitespace">
 </span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
 <div class="supplemental">
-<p>The two methods: <code class="java"><span class="name">readX</span></code> and <code class="java"><span class="name">readY</span></code> are not synchronised, as reading <code class="java"><span class="keyword type">int</span></code> values is atomic. However, they do allow an inconsistent state to be read! It is conceivable that the corresponding thread is interrupted directly after a <code class="java"><span class="name">readX</span></code> and another thread changes the values of <code class="java"><span class="name">x</span></code> and <code class="java"><span class="name">y</span></code>. If the original thread is then continued and calls <code class="java"><span class="name">readY</span></code>, it receives the new value of <code class="java"><span class="name">y</span></code> and thus has a pair of <code class="java"><span class="name">x</span></code>, <code class="java"><span class="name">y</span></code> that never existed in this form.</p>
+<p>The two methods: <code class="java"><span class="name">readX</span></code> and <code class="java"><span class="name">readY</span></code> are not synchronized, as reading <code class="java"><span class="keyword type">int</span></code> values is atomic. However, they do allow an inconsistent state to be read! It is conceivable that the corresponding thread is interrupted directly after a <code class="java"><span class="name">readX</span></code> and another thread changes the values of <code class="java"><span class="name">x</span></code> and <code class="java"><span class="name">y</span></code>. If the original thread is then continued and calls <code class="java"><span class="name">readY</span></code>, it receives the new value of <code class="java"><span class="name">y</span></code> and thus has a pair of <code class="java"><span class="name">x</span></code>, <code class="java"><span class="name">y</span></code> that never existed in this form.</p>
 <p>A consistent state can only be determined by the method <code class="java"><span class="name">read</span></code>, which reads the values of <code class="java"><span class="name">x</span></code> and <code class="java"><span class="name">y</span></code> in one step and returns them as a pair.</p>
 <p>If it can be ensured that a reading thread names the instance in a <code class="java"><span class="keyword declaration">synchronized</span></code> block, then the reading of a consistent state can also be ensured for several consecutive method calls.</p>
 <pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">SharedCoordinate</span><span class="whitespace"> </span><span class="name">point</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">SharedCoordinate</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="literal number integer">0</span><span class="punctuation">);</span><span class="whitespace">

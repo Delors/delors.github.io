@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="de" name="lang" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Programmierung&quot;, &quot;Java&quot;, &quot;IO&quot;" name="keywords" />
+<meta content="Lesen und Schreiben von Dateien in Java - Grundlagen" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-prog-java-ea" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:lHTTNoB75HMsPm0AUwiZ5yJlMNc0/du4fO1wgzhgkIg=:T7HMTmIvOyVOP9j7:bvxElaHP9JVJFLblNshueH3UyOg2LIyZ15cFsRvo3DjUyW4xlxi6UbKm9JcUZhPulZgWKTyiSpwiGRheci1anb+8XD6JM/TSlJN7tYO1qpEQUk9Np9N2RATn1nL7WPqgn/G14EhcDGGMIX51WrKPsfDNmcebsDAzB+slZsf7JJX3AXZ60mFDKMvFDb83G3PnIwqC7XgH5zLJBTVvR1jVG7ORI5uF80XpGzGPAb20/Y3WAg+tpdu32OsFP6ZlJMx1owE4PlI0engXdJzY6lJRRYBAyx4aIBqmR3MtvQ0UqSqzeFbQc22Cj6DdijfDOy9Ecf7l3BlR2ZjSMe7lpFhoddNXMlpJ9GYYPV5UoG9Mw78MrCuzv5Auts/zpjO3PtAXawPLQjRkwK8I9ziaB7TY6Tc08ZTBlL1Ez1J22KkmUbPuJN8248rQpvLjLdd4QAS0pP2OztdzIfdAZovsBtU4dTr9qfYUAJns+8LeoKZKkusstcdXSsOa//J8Z/nqCyrkAOxV8eV7tMiImvGdZ0fr+zFLbWDxG8s=" />
+<title>Java - Dateien lesen und schreiben</title>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="java-dateien-lesen-und-schreiben">
+<h1 class="title">Java - Dateien lesen und schreiben</h1>
+
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/prog-adv-java-ea/folien.de.rst.html">https://delors.github.io/prog-adv-java-ea/folien.de.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/prog-adv-java-ea/folien.de.rst.html.pdf">https://delors.github.io/prog-adv-java-ea/folien.de.rst.html.pdf</a></p>
+</dd>
+</dl>
+<!-- :Kontrollfragen:
+
+    .. source:: kontrollfragen.de.rst
+        :path: relative
+        :prefix: https://delors.github.io/
+        :suffix: .html
+
+:Klausurvorbereitung:
+
+    .. source:: klausurvorbereitung.de.rst
+        :path: relative
+        :prefix: https://delors.github.io/
+        :suffix: .html -->
+<dl class="field-list simple">
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></ld-topic>
+<ld-topic class="new-section" id="einfuhrung-in-e-a-i-o-in-java">
+<h2>Einführung in E/A (<span class="eng">I/O</span>) in Java</h2>
+</ld-topic><ld-topic id="architektur-von-java-i-o">
+<h2>Architektur von Java I/O</h2>
+<ul class="incremental-list">
+<li><p>Verschiedene Quellen/Senken für die Daten</p>
+<ul class="simple">
+<li><p>Tastatureingabe („Standard I/O“)</p></li>
+<li><p>Datei(en) auf dem lokalen Rechner („File I/O“)</p></li>
+<li><p>Datei(en)/Prozess(e) im Netzwerk („Network I/O“)</p></li>
+<li><p>Hauptspeicher („Memory I/O“)</p></li>
+</ul>
+</li>
+<li><p>Um einheitlich Daten auf unterschiedliche „Datenbehälter“ ein-/auszugeben, verwendet Java das Konzept der „Streams“ (Ströme): Eingabe- und Ausgabeströme (E/A, <span class="eng">I/O</span>)</p></li>
+<li><p>Datenströme als eine Abstraktion von I/O „Geräten“</p>
+<ul class="incremental list-with-explanations">
+<li><p>Verstecken Details über die Implementierung / Funktionsweise der einzelnen I/O-Geräte vor dem Java Programmierer</p>
+<p>(D. h. ob die Eingabe zum Beispiel eine Tastatur, Datei, anderes Programm, Netz, Hauptspeicher, … ist.)</p>
+</li>
+<li><p>Stellen Java-Programmen einheitliche Schnittstellen zum Lesen bzw. Schreiben von Daten zur Verfügung.</p></li>
+</ul>
+</li>
+</ul>
+</ld-topic><ld-topic id="i-o-strome-in-java">
+<h2>I/O-Ströme in Java</h2>
+<p class="rubric">Lesen von Daten</p>
+<p>Um Daten von einer externen Datenquelle zu lesen, öffnet ein Java-Programm einen Eingabestrom und liest die Daten <em>seriell</em> (nacheinander) ein:</p>
+<p class="rubric">Schreiben von Daten</p>
+<p>Um Daten in eine externe Senke zu schreiben, öffnet ein Java-Programm einen Ausgabestrom und schreibt die Daten <em>seriell</em>.</p>
+</ld-topic><ld-topic id="klassifizierung-von-datenstromen">
+<h2>Klassifizierung von Datenströmen</h2>
+<ld-deck class="dd-margin-left-2em">
+<ld-card>
+<dl class="field-list">
+<dt>Nach Datentyp<span class="colon">:</span></dt>
+<dd><dl class="incremental-list field-list">
+<dt>Zeichenströme<span class="colon">:</span></dt>
+<dd><p>lesen / schreiben <code class="java"><span class="keyword type">char</span></code> (16-bit Unicode Zeichensatz).</p>
+<div class="incremental peripheral docutils container">
+<p><code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">io</span><span class="punctuation">.</span><span class="name attribute">Reader</span></code>/<code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">io</span><span class="punctuation">.</span><span class="name attribute">Writer</span></code> stellen die Schnittstelle und eine partielle Implementierung von Zeichenströmen zur Verfügung.</p>
+<p>Subklassen von <code class="java"><span class="name">Reader</span></code>/<code class="java"><span class="name">Writer</span></code> fügen neues Verhalten hinzu bzw. ändern dieses.</p>
+</div>
+</dd>
+<dt>Byteströme<span class="colon">:</span></dt>
+<dd><p>lesen / schreiben <code class="java"><span class="keyword type">byte</span></code>s (8-bit).</p>
+<p>Werden zum Lesen bzw. Schreiben von Binärdaten, z.B. Bildern, benutzt.</p>
+<div class="incremental peripheral docutils container">
+<p><code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">io</span><span class="punctuation">.</span><span class="name attribute">InputStream</span></code>/<code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">io</span><span class="punctuation">.</span><span class="name attribute">OutputStream</span></code>: gemeinsame Schnittstelle und partielle Implementierung für alle Ströme zum Lesen bzw. Schreiben von Bytes.</p>
+<p>Alle anderen Byteströme sind Unterklassen davon.</p>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+</ld-card><ld-card class="incremental">
+<dl class="field-list">
+<dt>Nach Struktur der Ströme<span class="colon">:</span></dt>
+<dd><dl class="incremental-list field-list">
+<dt>Datensenkeströme<span class="colon">:</span></dt>
+<dd><p>Daten werden direkt von „physikalischer“ Datenquelle gelesen bzw. auf „physikalische“ Datensenke geschrieben</p>
+</dd>
+<dt>Prozessströme<span class="colon">:</span></dt>
+<dd><p>Daten werden von anderen Strömen gelesen bzw. auf andere Ströme geschrieben</p>
+<p>Daten werden nach dem Lesen bzw. vor dem Schreiben gefiltert, gepuffert, bearbeitet, usw.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</ld-card></ld-deck></ld-topic><ld-topic id="hierarchie-der-zeichenstrome-fur-i-o">
+<h2>Hierarchie der Zeichenströme für I/O</h2>
+<ld-deck>
+<ld-card>
+<object data="images/readers_and_writers/readers.svg" role="img" type="image/svg+xml">
+</object></ld-card><ld-card class="incremental">
+<object data="images/readers_and_writers/writers.svg" role="img" type="image/svg+xml">
+</object></ld-card><ld-card class="incremental">
+<object data="images/input_and_output/input.svg" role="img" type="image/svg+xml">
+</object></ld-card><ld-card class="incremental">
+<object data="images/input_and_output/output.svg" role="img" type="image/svg+xml">
+</object></ld-card></ld-deck><object class="align-right" data="images/readers_and_writers/legend.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="allgemeines-vorgehen-beim-lesen-schreiben-von-dateien">
+<h2>Allgemeines Vorgehen beim Lesen/Schreiben von Dateien</h2>
+<dl class="incremental-list field-list">
+<dt>Lesen<span class="colon">:</span></dt>
+<dd><ol class="arabic incremental-list list-with-explanations">
+<li><p>Öffne einen Strom</p>
+<p>Ströme werden beim Erzeugen automatisch geöffnet</p>
+</li>
+<li><p>Lese Daten, solange nötig und es noch Daten gibt</p></li>
+<li><p>Schließe den Strom</p>
+<p>Beim Beenden des Lesens bzw. Schreibens ist der Strom durch <code class="java"><span class="name">close</span><span class="punctuation">()</span></code> zu schließen.</p>
+</li>
+</ol>
+</dd>
+<dt>Schreiben<span class="colon">:</span></dt>
+<dd><ol class="arabic simple incremental-list list-with-explanations">
+<li><p>Öffne einen Strom</p></li>
+<li><p>Solange es noch Daten gibt, schreibe Daten</p></li>
+<li><p>Schließe den Strom mit <code class="java"><span class="name">close</span><span class="punctuation">()</span></code>.</p></li>
+</ol>
+</dd>
+</dl>
+<aside class="admonition incremental remember">
+<p class="admonition-title">Zur Erinnerung</p>
+<p>Lesen/Schreiben von/auf Strömen haben unabhängig von Datentyp und Quelle bzw. Senke die gleiche Form.</p>
+</aside>
+</ld-topic><ld-topic id="schreiben-und-lesen-von-daten">
+<h2>Schreiben und Lesen von Daten</h2>
+<ld-deck>
+<ld-card>
+<div class="compound">
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">interface</span> <span class="name class">InputStream</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">read</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">read</span><span class="punctuation">(</span><span class="keyword type">byte</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">bbuf</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">read</span><span class="punctuation">(</span><span class="keyword type">byte</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">bbuf</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">offset</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">len</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</div>
+<div class="incremental compound">
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">interface</span> <span class="name class">Reader</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">read</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">read</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">cbuf</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">read</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">cbuf</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">offset</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">len</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</div>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Achtung!</p>
+<p>Es gilt immer zu überprüfen ob auch die erwartete Anzahl an Bytes/Zeichen gelesen wurde.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<div class="compound">
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">interface</span> <span class="name class">OutputStream</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">write</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">b</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">write</span><span class="punctuation">(</span><span class="keyword type">byte</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">bbuf</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">write</span><span class="punctuation">(</span><span class="keyword type">byte</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">bbuf</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">offset</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">len</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</div>
+<div class="incremental compound">
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">interface</span> <span class="name class">Writer</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">write</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">c</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">write</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">cbuf</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">write</span><span class="punctuation">(</span><span class="keyword type">char</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">cbuf</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">offset</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">len</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</div>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Achtung!</p>
+<p>Es gilt immer zu überprüfen ob auch die erwartete Anzahl an Bytes/Zeichen geschrieben wurde.</p>
+</aside>
+</ld-card></ld-deck></ld-topic><ld-topic id="dateistrome-in-java">
+<h2>Dateiströme in Java</h2>
+<ld-deck>
+<ld-card>
+<ul class="incremental-list simple">
+<li><p>Dateiströme sind Ein-/Ausgabe-Ströme, deren Quellen/Senken Dateien im Dateisystem sind:</p></li>
+<li><p><code class="java"><span class="name">FileReader</span></code> / <code class="java"><span class="name">FileWriter</span></code> für Lesen / Schreiben von Zeichen aus/in Dateien</p></li>
+<li><p><code class="java"><span class="name">FileInputStream</span></code> / <code class="java"><span class="name">FileOutputStream</span></code> für Lesen / Schreiben von Bytes von/in Dateien</p></li>
+<li><p>Ein Dateistrom kann erzeugt werden, indem man die Quelle- bzw. Senke-Datei durch eines der folgenden Objekte als Parameter des Strom-Konstruktors übergibt:</p></li>
+<li><p>Dateiname  (<code class="java"><span class="name">String</span></code>)</p></li>
+<li><p>Datei-Objekt (<code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">io</span><span class="punctuation">.</span><span class="name attribute">File</span></code>)</p></li>
+<li><p>Dateibeschreibung (<code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">io</span><span class="punctuation">.</span><span class="name attribute">FileDescriptor</span></code>)</p></li>
+<li><p>Die Klasse <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">nio</span><span class="punctuation">.</span><span class="name attribute">file</span><span class="punctuation">.</span><span class="name attribute">Files</span></code> bietet weitere Methoden (z. B. <code class="java"><span class="name">newInputStream</span><span class="punctuation">(...)</span></code>, <code class="java"><span class="name">newBufferedWriter</span><span class="punctuation">(...)</span></code>) zum Lesen und Schreiben von Dateien als Streams an.</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Einfaches (ineffizientes) Beispiel</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">print</span><span class="punctuation">(</span><span class="name">String</span><span class="whitespace"> </span><span class="name">fileName</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">IOException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">    </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">FileReader</span><span class="whitespace"> </span><span class="name">in</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">FileReader</span><span class="punctuation">(</span><span class="name">fileName</span><span class="punctuation">))</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">        </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">b</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">        </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">((</span><span class="name">b</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">in</span><span class="punctuation">.</span><span class="name attribute">read</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="operator">!=</span><span class="whitespace"> </span><span class="operator">-</span><span class="literal number integer">1</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">print</span><span class="punctuation">(</span><span class="name">b</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-card></ld-deck></ld-topic><ld-topic id="prozessstrome">
+<h2>Prozessströme</h2>
+<ld-deck>
+<ld-card>
+<ul class="incremental-list list-with-explanations">
+<li><p>Ein Prozess-Strom enthält einen anderen (Daten- oder Prozess-)Strom</p>
+<p>Dieser dient als Quelle bzw. Senke.</p>
+</li>
+<li><p>Prozess-Ströme ändern Daten oder bieten Funktionalität:</p>
+<ul class="simple">
+<li><p>Zwischenspeichern (Puffern) von Daten</p></li>
+<li><p>Zählen der gelesenen/geschriebenen Zeilen</p></li>
+<li><p>Konvertierung zwischen Byte und Zeichen</p></li>
+<li><p>Kompression, …</p></li>
+</ul>
+</li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Pufferströme</p>
+<ul class="incremental-list list-with-explanations simple">
+<li><p>Ein Pufferstrom (z. B. <code class="java"><span class="name">BufferedInputStream</span></code> oder <code class="java"><span class="name">BufferedOutputStream</span></code>) kapselt einen anderen Datenstrom und einen internen Puffer</p></li>
+<li><p>Beim ersten Lesen wird der Puffer vollständig gefüllt</p>
+<ul>
+<li><p>Weitere Lese-Operationen liefern Bytes vom Puffer zurück, ohne vom unterliegenden Strom tatsächlich zu lesen.</p></li>
+<li><p>Bei leerem Puffer wird erneut vom unterliegenden Strom gelesen</p></li>
+</ul>
+</li>
+<li><p>Beim Schreiben werden die Daten zuerst in dem internen Puffer gespeichert, bevor sie in den unterliegenden Strom geschrieben werden.</p>
+<ul>
+<li><p>Nur wenn der Puffer voll ist, wird auf den unterliegenden Strom geschrieben</p></li>
+<li><p>Sowie bei explizitem Aufruf der Methode <code class="java"><span class="name">flush</span><span class="punctuation">()</span></code> oder <code class="java"><span class="name">close</span><span class="punctuation">()</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+<aside class="admonition incremental important">
+<p class="admonition-title">Wichtig</p>
+<p>Die richtige Puffergröße kann die Geschwindigkeit beim Lesen und Schreiben von Dateien <strong>erheblich</strong> beeinflussen (5-10x). Die richtige Puffergröße ist von vielen Faktoren abhängig liegt aber vermutlich zwischen 8KB und 64KB.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Einfaches Beispiel</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword">try</span><span class="punctuation">(</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">    </span><span class="name">FileOutputStream</span><span class="whitespace"> </span><span class="name">fos</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">FileOutputStream</span><span class="punctuation">(</span><span class="literal string">&quot;Test.tmp&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="name">BufferedOutputStream</span><span class="whitespace"> </span><span class="name">bos</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">BufferedOutputStream</span><span class="punctuation">(</span><span class="name">fos</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="name">DataOutputStream</span><span class="whitespace"> </span><span class="name">out</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">DataOutputStream</span><span class="punctuation">(</span><span class="name">bos</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="name">out</span><span class="punctuation">.</span><span class="name attribute">writeInt</span><span class="punctuation">(</span><span class="literal number integer">9</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="name">out</span><span class="punctuation">.</span><span class="name attribute">writeDouble</span><span class="punctuation">(</span><span class="name">Math</span><span class="punctuation">.</span><span class="name attribute">PI</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="name">out</span><span class="punctuation">.</span><span class="name attribute">writeBoolean</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<pre class="code console incremental literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="generic prompt">$ </span>hexdump<span class="whitespace"> </span>Test.tmp<span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="generic output">0000000 0000 0900 0940 fb21 4454 182d 0001</span></code></pre>
+</ld-card></ld-deck></ld-topic><ld-topic id="architektur-der-i-o-api">
+<h2>Architektur der I/O API</h2>
+<ld-deck>
+<ld-card>
+<p>Ströme können ineinander verschachtelt werden.</p>
+<p><span class="peripheral">Abstraktionsebenen, bei denen unterliegende „primitive“ Ströme von umschließenden („höheren“, komfortableren) Strömen benutzt werden („Prozessströme“).</span></p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="comment single">// erzeugt gepufferten, komprimierenden Dateiausgabestrom</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name">OutputStream</span><span class="whitespace"> </span><span class="name">out</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">FileOutputStream</span><span class="punctuation">(</span><span class="operator">&lt;</span><span class="name">filename</span><span class="operator">&gt;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">bout</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">BufferedOutputStream</span><span class="punctuation">(</span><span class="name">out</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">zout</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">ZipOutputStream</span><span class="punctuation">(</span><span class="name">bout</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span><span class="comment single">// … mehr Eigenschaften koennen dynamisch hinzugefuegt werden</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span><span class="comment single">// Die Stromeigenschaften sind unsichtbar fuer Klienten</span></code></pre>
+</ld-card><ld-card class="incremental">
+<p>Die Technik, mit der erreicht wird, dass Ströme beliebig zur Laufzeit kombiniert werden können, ist nicht nur im Kontext von Strömen von Interesse. Es handelt sich um eine generelle Technik, um Objekte dynamisch mit Features zu erweiterten.</p>
+<div class="incremental docutils container">
+<p>In der Softwaretechnik werden solche Techniken in der Form so genannter <em>Design Patterns</em> (<span class="ger">Entwurfsmuster</span>) dokumentiert; d. h. wiederverwendbare, dokumentierte Designideen.</p>
+</div>
+<div class="incremental docutils container">
+<p>Die oben genannte Technik bei Streams ist als „Decorator Pattern“ bekannt.</p>
+</div>
+</ld-card></ld-deck></ld-topic><ld-topic class="exercises" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Datei lesen und ausgeben" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">Datei lesen und ausgeben</p>
+<p>Schreiben Sie ein Programm, dass eine Textdatei liest und die Zeilen in der Konsole ausgibt. Schreiben Sie vor jede Zeile die Zeilennummer.</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>Für folgende Datei (Autor: ChatGPT):</p>
+<pre class="literal-block">In Java springt der Code so leicht,
+Klammern tanzen, Ziel erreicht,
+Fehler? Nur ein Abenteuer vielleicht!</pre>
+<p>sollte folgende Ausgabe erzeugt werden:</p>
+<pre class="literal-block">1: In Java springt der Code so leicht,
+2: Klammern tanzen, Ziel erreicht,
+3: Fehler? Nur ein Abenteuer vielleicht!</pre>
+</aside>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:sD+QChAXoOnxQyMLZubJCsI26LoR8fcJzv2Ug0l3gdU=:Tki9aeJqIAPTU9Ep:QYBd+tR+H2EGf8AacOqX+V5h6BSNDJJiczwVSkZZvSZJATE01JgfrdRrr1eFzkUwytkGtyCA/LNka8ialFslyAHjn9voMuK22zWwgwNLKvRGV6Ya1Y3sMKrJONlhbM34fxSD6L0bSTTIL2IS8XbtbpENg08OabaX0pEnma+a35TkhTKSW21B+8hVdgs1OQdYY2Vx/DWF0qi6XJ4A00sI2/wGU/RpIEUsm/sXGjP7NNoij/26KAGAVm4lCJPt0rsS9lEXOB31w610O+ykEECWkhi/iwORJWpxrEIMFtqEW6PSRDVR2NyXWtvv5jGcCyrChYYd5uwQPgNchTQLXeu8XpXXcaJoRP+mjQN9XjVWEjAfi4cxJMOqcDUfaiAr/ERtoDhO+Gx4Go1nOMHuIAFQbYj0Opn0f8IQPrWah9J/GWGVPCXVXEr+vlPzJdMbquGDTgou7Yf0A76Rh0F43IKULsFx3KX5qe9iW7ApfzbjwRb+NHTY7gKGHBKMnsGoSq6VFa11NKF8eqJBai//MyLusCt1zUoplqOwe+3LVDk7/ocYgnkBXsi9jEWp6E9+NnPQ3Hz1buzXys9GFn+kSuG2zWr6QSf1366ohz8EXAWZc8fOnhnVv9VmkjII/7CRE1aCt0HolphjiNtcdXs1KVZDSPzIBoiUR9WVw3t4XFbCtoIMjBT354bA+QBfQbgRccGn067pwae+VjkXPvRhuPdg5QJmxWzKvIH+EVae5p5tudg4DZdKi6QTSWsIElZbzdMmtej0ba/XpWZWFFKq292fSx904v1bPCWbQeQ9uqGoAIzOaDfNHeoajhbBi7o7eG8qLyqYZfyzGtlCtKXTAoFF/mGRQfvokjOiArx9zFAWVDvzVG4qeVGAbNgxPiS33DvDyVHVMWZdauPOIR5Ng6N3A0gR4ArIRPx4685CfyqOR5SNl/6wgDqosYUSQWlc4prRwg+R51EcH9Hv3fKF0oFgpPMNHqbym1pKPIHo2WCIlnZZU0BbZRhrfRxpGSw9OV67+9ABuzGuOmGQXR9VVFkwHy7gXKjvPYXVjaRAyVGtIx9Q7DD3CLrJUbe3BA6In45pNhpJFGIo8eFzu7TZXl2eCs5C/yMfsBvN+KFmLC4gaGcspO2s3pWazNfwJ2D7cSR0zIfb2CzgILT+EoLIhUa+YXbyCrW99m84DJdUlnrfY8f6bTJO1RJxJmX87GlFtb6Qi0btNWPuI4I7Ion44GLrRHaQJ00iEjq9HKy/0ZzQhHNfh74jCEKqaoAEnnjrtnIgyZ/F40zQEY2fA/Py60ODulzqPQ+uLmaBJUUzTWeNxdnWGg2E/JdKzML/02trbuvquscRUkeYsdctoKMgh/bkz9LmmSMf2W/LNV+xtPufMX4rG9H5qqTLxuL8ai1Q0xXwxmvXtjRIfLqiIqohRqJ6mmChSjdEgq36YnGKHnmxPI/fdWaLD8i+NaypYw1P4PRrIUb6Fq2L0k93liwotAHK2+e6+Q+ClamEOshJhHnxwezWfaDIxJPJLCAaUkrbpAYsM/55MaZ6mIoJYBrBrC2PO2qRRtnxEjft+Xs2MdzzPZF7qyqD2TGrriFGhCyMg78mYiBvLRDiF6i7GbSDekGTWgwbz8lMYLiSNmcCEytIFJ3Rk9WhUlRkv3hrkc9BQiAUQbpIpRyJx8Q9YHIXl7JsHD9knVVv0JESw4PlsIn7zT0mk/enqSDxK4b3np/dRmDN9S5lK91d9vLaiv8mJRZpKSYxUEjtf6ueIS9MiMWWIYZbL4CZNTWJmf+fvOJ30V3Hp/DpEf+y9knUwUntLKIZMwZGiekxRF+fj4XdL0YXT5cJYg465Qh2q5PP9s1DMeI292669G7qdHRnVK8pV5IcfgwrR8XPBBM+H0jaFUqenByorKQKPdDo5U3Yb5f9tcWD93tHWORNF+GEQ8V5lbFV8fVPN3x+6p+fPUGWO1MHS3YZV31zDxirQFtZzS1DuFVD3w7wOeqZsl5OqCLLrj1gg6h7jv593am1oPGoPvH5JnOAwXzR9vZ6PdlVvEpwE6CDz6C2uLVdD2N1WkKzpVh7OdTH3bDD46eGLVal5xjhpX67eTWkm4WawZn67zMQrRkLo7L2M8xrw/2aUhLzeYJkDsGoqQVMrqRkHTgZnOaUzxbiicUk8h3wkgRSX+NuWWYaEHJJqsYDp+LqA/AYLCHUi6tTNZcrW2kXpf7MW593hQXuYZfxAVWBMnhrLOYnys9dh8drMSEpJoJgtOVxmoybMW3FNuEf5ncq2eMIvPmdnkJbPCuygUNGRYZyRgUyzhonFlMM085GLRN59XooAz/9JHErNP1c4Drk8vluTEUVStu8FO2aHA3voUCURo85gYiK07iaAZiHsWLvrqkjoxhmoiCzwf/TqQErNcpBpA7k3Vf1mC85rKe668+KGqgYZjZocNb2sbgYjywzX/0zB2QSzGM2nsLqeGzw/rR/8/NnG1fEyQHkSQTiHFJZNF1EjPxIjuBF0yooLDRG/J13gpTcNTyKKkzuVK3PD3Axkk5du9TvVbMo4721UEhosD4bXMBzQiaSAN0fapxs1Z3h/CLvpZPX1+df4cbyahhptP2ibx+b9UN+yuRJP7ZUi72MfeTad2ScJ0r3NvY06xKhjUNKUsJBSmzh/Yz6iMFiOKTtLSOuWI5ozBzZAw2FeP9fg/Ir7CbTpcKkm2b5eBr3la8QMDC3xA+xUJjfUFYg41l07mLFLCOMzvy8KP5o5FQ6q1mEpMnngKT4+LHoYJc3X1ClDU9SIa1rwd85fM7cGGc9ruUzOv7Ep2VlNzJzgLfT/KupVaixEsbsgy4J24xAJI0UDxvDrp9SogDti/cecD2Xztej4d/PYlmDrdxZdpuycTxA5+xEYlh57SM1ai+sWOzzicT1vzTBzRp8M7i4+2KFiYoqsuBKukZNuKGVusicRjeXNA+o/mgK7y3TFfuDPCy2pJ42F7j8CExy6yajqhU+4tNzEFJpxvTam98HHry2EMCFp3e6pEUNcSGjAkfV1vgl4Gl3cSkE23W+VTxiqzPGzP/Q+IAamaGm0eHt8c3aJjkHqMFxqSAv348Yi4tfBHVzScCehh+KqAsaNBrWjglFt1LeBwaLeKzW64DKPH2qoNGtEV25OWCSisLszJ0MS9cdNO50Rpb7E/kryzYCME3lGe1etIFCn3RsIw6XgiJiwZXdBogrrnzrV6m843VPbKHTaKpgANSBBkcp+dtLdl0xL12+8whgRo/CXa/ZFgX98Ef0PgSTO9op/tlg9Y13hLyRAzXBu/5WJ9hdXlpKT5lKocHaOeQ6o9KpbsmzKHX+vtxpzi61QNows0rzRf18aiq9kcEMHtow0ginQGSmLtktY6XPv2cDEYhuF+QQfzhdbujrWC+DA759tzIkK8MYt3vbubfau09Q1rQeQaqQMVJCbvYlkEXv2Bpe2/LLyHQJrfRY91bfpsB8AYHCHw81xqJmbiM8iDusvmN6h/WuXsKmS5vEoVHg1SnCTxvCjVLCcRdIsHP4ze9m7DfgvQjF7fLl+2oZceEJiyey2NGASuBe2lS+2FsYQQkHHtl+PssP3eySIA6ad1w2fjVmZnEPDVeG/v9gp1tnaPzF08cCgrBLEXDuj5gUCnoMtlaEJU2qYPCTkAb6/Ft46cKZcPvwLCX4hCvSF3p1eK89wKKB/QFKw65Ky+U2kk7+DLODHvCggMFAt5xpF9jhY/sUwYRo0gsAS97znnrQNC8BC/Hf5nhW2kNnqV7bcK0FRFJyKLvcSS27GccDR5Fo2U1YwnexQj6O0dwHm5e7uDGacDxDI3gqKEmxRv9gDPFosaMvIQzGN8RYgL0p1rZJ4/Gkh4biINCdXon3tKbRdmGitoWu8gRx89Ik8ZTTRAQZjCTEkdLBAdRO+i6A4JA2KB2e0oGpZBxA95HgxksL2PB8UHC9vXbo9GGtfEUTpj6PVScM9NVUMF5g+SBDSBoW6F+W+7QkFvn2uiVMvWDZR1Jyd1gmhQNp4Kg99U8lTY1LCcEJGJ82VccrzTluo+9HYnfBLyRzzX+YAbefJkJkJRFLnBjPfGSnsxdiRq1cCY7LSvTqE4RuFVWApOZYqtkG257STTDQblEyVaDwpT7N2ZM22lTZARq3SRCLaL2bRrhAvj0CwKdJ/SlTeqE9Ut6DaPINmMb0dFGoPMsw6SypB6n1YpREURQ5+TmKrxp8zlbUe7rm8tN+leC9c4Ren4JYEFRsez8CzZYA+YZd7iHHQIArQDAetd6smj4Aib0Jr9MtSpglW8kQ+fo4UEoRqEchPNb7TKzXd5/kCOKBg6U3DLg7Ajc72oS2SiqxHjd2lh4xwCezPmVppAKrbmfqVykw2n4Xr9x0N775Zbnys4ncgnYncaZxdY3ExQoD9q/0C0pUO3PMS5OOW/V5Bbg4R9R+kf/G/gkeji4tVxFIOiBdP/RTJ6F9f5vCORF6dTfhg+JkDBTBBVT6O+uMjjlDyAUy5nVF4QvC21D6aZ0r8Nrwg6ej2ELUo/Tgjcacy5aAlos6H6L0oL/XwCgc88f7aOclmbL9rvMKdbxf49L/Xbr9yAp0iygHyD6SN31EDofNxXxjqQC/87tDDs9jHhFtQCE+0UN7URVI0XPqehlpYeMeVqU6kVrEUqVW68Oi/KtgMqp3vWhKqUXyyRz9JDgovMo=</div>
+</div>
+</ld-topic><ld-topic class="new-section" id="java-streams-und-i-o">
+<h2>Java <code class="java"><span class="name">Stream</span></code>s und I/O</h2>
+</ld-topic><ld-topic id="java-nio-file-files">
+<h2><code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">nio</span><span class="punctuation">.</span><span class="name attribute">file</span><span class="punctuation">.</span><span class="name attribute">Files</span></code></h2>
+<p>Neben den traditionellen I/O-Klassen (seit Java 1.X) gibt es auch die Möglichkeit Dateien als Streams zu lesen und zu schreiben (<code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">nio</span><span class="punctuation">.</span><span class="name attribute">file</span><span class="punctuation">.</span><span class="name attribute">Files</span></code>).</p>
+<pre class="code java literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">package</span><span class="whitespace"> </span><span class="name namespace">java.nio.file</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">Files</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="comment multiline">/** Read all lines from a file as a Stream. */</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="name">Stream</span><span class="operator">&lt;</span><span class="name">String</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name function">lines</span><span class="punctuation">(</span><span class="name">Path</span><span class="whitespace"> </span><span class="name">path</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="comment multiline">/** Read all lines from a file as a Stream. */</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="name">Stream</span><span class="operator">&lt;</span><span class="name">String</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name function">lines</span><span class="punctuation">(</span><span class="name">Path</span><span class="whitespace"> </span><span class="name">path</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Charset</span><span class="whitespace"> </span><span class="name">cs</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="comment single">// ...</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Diese Streams müssen explizit geschlossen werden (<code class="java"><span class="name">close</span><span class="punctuation">()</span></code>), da sie Ressourcen verbrauchen.</p>
+</aside>
+</ld-topic><ld-topic class="exercise" id="ubung-1">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Streamverarbeitung von Dateien" id="ld-exercise-2">
+<p class="ld-exercise-title rubric">Streamverarbeitung von Dateien</p>
+<p>Schreiben Sie ein Programm, das eine Textdatei liest und die Zeilen in der Konsole ausgibt. Jeder Zeile soll weiterhin die Zeilennummer vorangestellt werden. Verwenden Sie dazu die Klasse <cite>Files</cite> und die Methode <cite>lines</cite>.</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>Für folgende Datei (Autor: ChatGPT):</p>
+<pre class="literal-block">In Java springt der Code so leicht,
+Klammern tanzen, Ziel erreicht,
+Fehler? Nur ein Abenteuer vielleicht!</pre>
+<p>sollte folgende Ausgabe erzeugt werden:</p>
+<pre class="literal-block">1: In Java springt der Code so leicht,
+2: Klammern tanzen, Ziel erreicht,
+3: Fehler? Nur ein Abenteuer vielleicht!</pre>
+</aside>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:722MLlnqEwxwzuUE0VTF+pLJGsGiBY8iO+WtYhMAoxo=:Dz3myHXljYDb8De6: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</div>
+</div>
+</ld-topic><ld-topic class="exercise" id="ubung-2">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Durchsuchen von Dateien" id="ld-exercise-3">
+<p class="ld-exercise-title rubric">Durchsuchen von Dateien</p>
+<p>Schreiben Sie ein Programm (Sie können die JShell benutzen), dass alle Textdateien (z. B. *.rxt, *.md oder *.java) eines Verzeichnisses in Hinblick auf das Vorkommen eines bestimmten Wortes (z. B. Java) durchsucht. Geben Sie den Namen der Datei und eine Zeilennummer aus, in der das Wort vorkommt. Parallelisieren Sie die Suche wenn möglich.</p>
+<p>Relevante API: <code class="java"><span class="name">Files</span><span class="punctuation">.</span><span class="name attribute">walk</span></code>, <code class="java"><span class="name">Files</span><span class="punctuation">.</span><span class="name attribute">isRegularFile</span></code>, <code class="java"><span class="name">Files</span><span class="punctuation">.</span><span class="name attribute">lines</span></code>, <code class="java"><span class="name">Stream</span><span class="punctuation">.</span><span class="name attribute">filter</span></code>, <code class="java"><span class="name">Stream</span><span class="punctuation">.</span><span class="name attribute">map</span></code>, <code class="java"><span class="name">Stream</span><span class="punctuation">.</span><span class="name attribute">findAny</span></code>, <code class="java"><span class="name">Optional</span><span class="punctuation">.</span><span class="name attribute">isPresent</span></code>, <code class="java"><span class="name">Optional</span><span class="punctuation">.</span><span class="name attribute">get</span></code>, <code class="java"><span class="name">Optional</span><span class="punctuation">.</span><span class="name attribute">empty</span></code></p>
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Sie müssen ggf. <code class="java"><span class="name">IOException</span></code>s explizit behandeln und in solchen Fällen zum Beispiel <code class="java"><span class="name">Optional</span><span class="punctuation">.</span><span class="name attribute">empty</span><span class="punctuation">()</span></code> zurückgeben.</p>
+</aside>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:oGB8xtar8NwAoRhJk0drGZWvMopVlDAWteBU6ZXep48=:6EcSh5ORU/7f0KcC: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</div>
+</div>
+</ld-topic>
+</template>
+</body>
+</html>
