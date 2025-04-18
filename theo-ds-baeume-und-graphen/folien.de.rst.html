@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="de" name="lang" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Datenstrukturen&quot;" name="keywords" />
+<meta content="Datenstrukturen - Bäume und Graphen" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-theo-ds-baeume-und-graphen" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:FrJq8UyNwv26DvqsFbtK0jMRhWqAsFC3vGVyVrvSG4I=:b27nT7IrOCD71fDd:/+E6H/M5wd23VeibLN0mFA+v9lKkFzVBXfZEPJSYifpJCoBp0wNYOmvgylkgaAzsL8GVnBOjieIjV9j00fN9sHflS4fIb4O3VZMvOioit5hOC9+nPXtHKO0iNUoPQ8JLR5fLe2spF5q6X4k2A6oa8KCKtQi39qEV+3JDUNG5xOjbHynhAQJ5rq1nYmkV8i9f6yIQv7ba6HLFiZuw5+8yNSs3jBUfYvbiUG/chfyYYHHheY76KwNxi1MYKKuMeLjBybkwVxXjD4cA8a3UBsHufrGDhjDSxXW6Vj0AbfQ6KrCOk5YIbsoB5nQYIPlEY66ZXfhiL5XHqOTK69O/d5QEtlyKv99x/5FXzgTtp7ghmuOuAGJD/7d+e3805EMY6zW7+/IYPl9kzTGhdoDmlujDxXN4dOIpEOxL1h3GMOBw4p3RPDU4f6XIS8B8W5a1P4GVJdIQp8yedHfAUcyuP11CMCY6+URENEy7SST61jmH2+tConkven7N8pXS4wm8+a2XwfgXyJ/fmuJZ756MsRxaaYeJEySBPks5Dajy93B1XuJPUKwxyAGKhoVILMiIx5RiWJ8dBgv3Kt2Cp/52Z8JUdAi4r5SMt5HgtAb15fdoplOIag/aamPZsgRAqdzGQ1n5o7GlYNOIh8M8BP7WUbERqp5kpmflc/o=" />
+<title>Datenstrukturen - Bäume und Graphen</title>
+<script>
+    window.MathJax = {
+        tex: { tags: 'ams' },
+        chtml: { displayAlign: 'center' /*left or center*/ }
+    };
+</script>
+<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+    <!-- Modules added for specific classes used in the document: -->
+    <script src="../LectureDoc2/renaissance/css/themes/DHBW/animated-logo.js" type="module"></script>
+</head>
+<body>
+<template>
+<ld-topic class="animated-logo" id="datenstrukturen-baume-und-graphen">
+<h1 class="title">Datenstrukturen - Bäume und Graphen</h1>
+
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.1</p>
+</dd>
+</dl>
+<div class="peripheral footer-left docutils container">
+<dl class="field-list">
+<dt>Quelle<span class="colon">:</span></dt>
+<dd><p>Die Folien sind teilweise inspiriert von oder basierend auf:</p>
+<p>Lehrmaterial von Prof. Dr. Scherer, Prof. Dr. Baumgart</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/theo-ds-baeume-und-graphen/folien.de.rst.html">https://delors.github.io/theo-ds-baeume-und-graphen/folien.de.rst.html</a></p>
+<p><a class="reference external" href="https://delors.github.io/theo-ds-baeume-und-graphen/folien.de.rst.html.pdf">https://delors.github.io/theo-ds-baeume-und-graphen/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></ld-topic>
+<ld-topic class="new-section transition-move-to-top" id="graphen">
+<h2>Graphen</h2>
+</ld-topic><ld-topic id="gerichteter-graph">
+<h2>Gerichteter Graph</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Ein gerichteter Graph <span class="math">\(G = (V, E)\)</span> wird durch eine Knotenmenge <span class="math">\(V\)</span> und eine Kantenmenge <span class="math">\(E\)</span> beschrieben.</p>
+<p><span class="math">\(V= \{ v_1, v_2, . . . , v_n \}\)</span></p>
+<p><span class="math">\(E= \{ (v_i, v_j ) | v_i, v_j \in  V \}\)</span></p>
+</aside>
+<aside class="admonition incremental remark">
+<p class="admonition-title">Bemerkung</p>
+<ul class="incremental-list simple">
+<li><p>Es ist erlaubt, dass ein Knoten (Vertex) eine Kante (Edge) zu sich selbst besitzt</p></li>
+<li><p>Da <span class="math">\(E\)</span> eine Menge ist, kann es keine doppelten Elemente geben; folglich gilt:</p>
+<ul>
+<li><p>Es gibt maximal zwei Kanten zwischen zwei Knoten vi und vj (i ̸= j)</p></li>
+<li><p>Ein Knoten kann maximal eine Kante zu sich selbst haben</p></li>
+<li><p>Statt <span class="math">\(v_1, . . . v_n\)</span> werden häufig (Groß-) Buchstaben A, B, C etc. verwendet</p></li>
+</ul>
+</li>
+</ul>
+</aside>
+</ld-topic><ld-topic id="gerichteter-graph-beispiel">
+<h2>Gerichteter Graph - Beispiel</h2>
+<div class="text-align-center"><svg    width="48ch" height="28ch"
+        viewBox="0 0 24 14"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        g.graph {
+            circle{
+                fill: black;
+                stroke-width: 0.2;
+
+                &.red {
+                    fill: red;
+                }
+
+                &.green {
+                    fill: green;
+                }
+
+                &.blue {
+                    fill: blue;
+                }
+            }
+            path {
+                fill: none;
+                stroke:darkgray;
+                stroke-width:0.2;
+            }
+            line {
+                stroke:darkgray;
+                stroke-width:0.2;
+            }
+            text {
+                fill: black;
+                font-family: var(--theme-code-font-family);
+                font-weight: bold;
+                font-size: 0.2cqh;
+            }
+            .edge-label {
+                fill: darkorange;
+                font-family: var(--theme-code-font-family);
+                font-weight: bold;
+                font-size: 0.12cqh;
+            }
+        }
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 2 2"
+        refX="2"
+        refY="1"
+        markerUnits="strokeWidth"
+        markerWidth="6"
+        markerHeight="6"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" />
+        </marker>
+    </defs>
+    <g class="graph">
+        <g>
+        <circle cx="8" cy="1" r="0.5" />
+        <text x="7.5" y="3.25">A</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="1" cy="6" r="0.5" />
+        <line x1="1.35" y1="5.65" x2="7.65" y2="1.35" marker-end="url(#arrow)" />
+        <path d="M 7.5 1 C 4 0.5, 1 3, 1 5.5" marker-end="url(#arrow)" />
+        <text x="0.5" y="8.25">B</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="15" cy="6" r="0.5" />
+        <line x1="14.65" y1="5.65" x2="8.35" y2="1.35" marker-end="url(#arrow)"/>
+        <text x="15.75" y="6.75">C</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="8" cy="11" r="0.5" />
+        <line x1="8.35" y1="10.65" x2="14.5" y2="6" marker-end="url(#arrow)" />
+        <path d="M 8 10.5 C 5 6.5, 2.5 12, 7.5 11" marker-end="url(#arrow)" />
+        <text x="7.5" y="13.25">D</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11" marker-end="url(#arrow)" />
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" marker-end="url(#arrow)" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+    </g>
+</svg></div></ld-topic><ld-topic id="ungerichteter-graph">
+<h2>Ungerichteter Graph</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Ein ungerichteter Graph <span class="math">\(G = (V, E)\)</span> ist ein gerichteter Graph, in dem die Relation <span class="math">\(E\)</span> symmetrisch ist:</p>
+<p><span class="math">\((v_i, v_j ) \in  E \Rightarrow  (v_j , v_i) \in  E\)</span></p>
+<p>Die Kanten <span class="math">\(\{(v_i, v_j ), (v_j, v_i)\}\)</span> werden dann als eine Kante gezählt.</p>
+</aside>
+</ld-topic><ld-topic id="ungerichteter-graph-beispiel">
+<h2>Ungerichteter Graph - Beispiel</h2>
+<div class="text-align-center"><svg    width="48ch" height="28ch"
+        viewBox="0 0 24 14"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <!-- the previous style is reused!-->
+    <g class="graph">
+        <g>
+        <circle cx="8" cy="1" r="0.5" />
+        <text x="7.5" y="3.25">A</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="1" cy="6" r="0.5" />
+        <line x1="1.35" y1="5.65" x2="7.65" y2="1.35" />
+        <path d="M 7.5 1 C 4 0.5, 1 3, 1 5.5" />
+        <text x="0.5" y="8.25">B</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="15" cy="6" r="0.5" />
+        <line x1="14.65" y1="5.65" x2="8.35" y2="1.35"/>
+        <text x="15.75" y="6.75">C</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="8" cy="11" r="0.5" />
+        <line x1="8.35" y1="10.65" x2="14.5" y2="6" />
+        <path d="M 8 10.5 C 5 6.5, 2.5 12, 7.5 11" />
+        <text x="7.5" y="13.25">D</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11" />
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+    </g>
+</svg></div></ld-topic><ld-topic id="gewichteter-graph">
+<h2>Gewichteter Graph</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Bei einem gewichteten Graphen <span class="math">\(G = (V, E)\)</span> besitzt jede Kante <span class="math">\((vi, vj)\)</span> eine Attributierung <span class="math">\(w(v_i, v_j)\)</span>.</p>
+</aside>
+<aside class="admonition remark">
+<p class="admonition-title">Bemerkung</p>
+<ul class="simple">
+<li><p>Sowohl gerichtete als auch ungerichtete Graphen können gewichtet sein</p></li>
+<li><p>Die Funktion <span class="math">\(w\)</span> hat als Wertebereich oft <span class="math">\(\mathbb{N}, \mathbb{Z}\)</span> oder <span class="math">\(\mathbb{R}\)</span></p></li>
+<li><p>Die Attributierung kann aber auch aus mehreren Attributen bestehen, z. B. aus einer Zahl und einer (Kanten-) Farbe; für dieses Beispiel sind die Ergebnisse von <span class="math">\(w\)</span> dann Zweitupel</p></li>
+</ul>
+</aside>
+</ld-topic><ld-topic id="gewichteter-graph-beispiel">
+<h2>Gewichteter Graph - Beispiel</h2>
+<div class="text-align-center"><svg    width="48ch" height="28ch"
+        viewBox="0 0 24 14"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <!-- the previous style is reused!-->
+    <g class="graph">
+        <g>
+        <circle cx="8" cy="1" r="0.5" />
+        <text x="7.5" y="3.25">A</text>
+        </g>
+
+        <g>
+        <circle cx="1" cy="6" r="0.5" />
+        <line x1="1.35" y1="5.65" x2="7.65" y2="1.35" />
+        <path d="M 7.5 1 C 4 0.5, 1 3, 1 5.5" />
+        <text x="0.5" y="8.25">B</text>
+        </g>
+
+        <g>
+        <circle cx="15" cy="6" r="0.5" />
+        <line x1="14.65" y1="5.65" x2="8.35" y2="1.35"/>
+        <text x="15.75" y="6.75">C</text>
+        </g>
+
+        <g>
+        <circle cx="8" cy="11" r="0.5" />
+        <line x1="8.35" y1="10.65" x2="14.5" y2="6" />
+        <path d="M 8 10.5 C 5 6.5, 2.5 12, 7.5 11" />
+        <text x="7.5" y="13.25">D</text>
+        </g>
+
+        <g>
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11" />
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+
+        <g class="incremental" >
+            <text class="edge-label" x="1" y="2.75">6</text>
+            <text class="edge-label" x="5.5" y="4">8</text>
+            <text class="edge-label" x="12.5" y="4">2</text>
+            <text class="edge-label" x="12.5" y="8.5">12</text>
+            <text class="edge-label" x="15" y="12">7</text>
+            <text class="edge-label" x="3.5" y="11">7</text>
+            <text class="edge-label" x="20" y="5">9</text>
+        </g>
+    </g>
+</svg></div></ld-topic><ld-topic id="markierte-graphen">
+<h2>Markierte Graphen</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>In einem markierter Graphen <span class="math">\(G = (V, E)\)</span> besitzt jeder Knoten <span class="math">\(v_i\)</span> eine Markierung <span class="math">\(m(v_i)\)</span>.</p>
+</aside>
+<aside class="admonition remark">
+<p class="admonition-title">Bemerkung</p>
+<ul class="simple">
+<li><p>Die Markierung stellt eine Attributierung des Knotens dar</p></li>
+<li><p>Die Markierung ist häufig ein Farbwert</p></li>
+<li><p>Alle Typen von Graphen (gerichtet, ungerichtet, gewichtet) können markiert werden</p></li>
+<li><p>Die Markierung spielt in vielen Graphenalgorithmen eine Rolle (z. B. bei der Breite-zuerst-Suche)</p></li>
+</ul>
+</aside>
+</ld-topic><ld-topic id="markierter-gewichteter-graph-beispiel">
+<h2>Markierter (gewichteter) Graph - Beispiel</h2>
+<div class="text-align-center"><svg    width="48ch" height="28ch"
+        viewBox="0 0 24 14"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <!-- the previous style is reused!-->
+    <g class="graph">
+        <g>
+        <circle class="red" cx="8" cy="1" r="0.5"/>
+        <text x="7.5" y="3.25">A</text>
+        </g>
+
+        <g>
+        <circle class="green" cx="1" cy="6" r="0.5" />
+        <line x1="1.35" y1="5.65" x2="7.65" y2="1.35" />
+        <path d="M 7.5 1 C 4 0.5, 1 3, 1 5.5" />
+        <text x="0.5" y="8.25">B</text>
+        </g>
+
+        <g>
+        <circle class="blue" cx="15" cy="6" r="0.5" />
+        <line x1="14.65" y1="5.65" x2="8.35" y2="1.35"/>
+        <text x="15.75" y="6.75">C</text>
+        </g>
+
+        <g>
+        <circle class="green" cx="8" cy="11" r="0.5" />
+        <line x1="8.35" y1="10.65" x2="14.5" y2="6" />
+        <path d="M 8 10.5 C 5 6.5, 2.5 12, 7.5 11" />
+        <text x="7.5" y="13.25">D</text>
+        </g>
+
+        <g>
+        <circle cx="22" cy="11" r="0.5" class="blue" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11" />
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+
+        <g>
+            <text class="edge-label" x="1.5" y="2.75">6</text>
+            <text class="edge-label" x="5.5" y="4">8</text>
+            <text class="edge-label" x="12.5" y="4">2</text>
+            <text class="edge-label" x="12.5" y="8.5">12</text>
+            <text class="edge-label" x="15" y="12">7</text>
+            <text class="edge-label" x="3.5" y="11">7</text>
+            <text class="edge-label" x="20" y="5">9</text>
+        </g>
+    </g>
+</svg></div></ld-topic><ld-topic id="pfad">
+<h2>Pfad</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Ein Pfad in einem Graphen <span class="math">\(G = (V, E)\)</span> mit <span class="math">\(V= \{ v_1, . . . , v_n \}\)</span> ist eine Folge von Knoten <span class="math">\(v_{a_1}, v_{a_2}, . . . , v_{a_k}\)</span> mit folgender Eigenschaft: <span class="math">\((v_{a_i}, v_{a_{i+1}}) \in  E\)</span> für <span class="math">\(i \in  \{ 1, . . . , k- 1 \}\)</span>.</p>
+<p>Die Länge des Pfades ist die Anzahl der Kanten auf dem Pfad, d. h. <span class="math">\(k- 1\)</span>.</p>
+</aside>
+<aside class="admonition remark">
+<p class="admonition-title">Bemerkung</p>
+<ul class="simple">
+<li><p>In einem Pfad dürfen Knoten mehrfach auftreten</p></li>
+<li><p>Für Pfade wird häufig eine Listenschreibweise verwendet: <span class="math">\(&lt; v3, v1, v2, v3, v4 &gt;\)</span></p></li>
+</ul>
+</aside>
+</ld-topic><ld-topic id="fragestellungen-auf-graphen">
+<h2>Fragestellungen auf Graphen</h2>
+<ul class="incremental-list simple">
+<li><p>Welche Knoten sind von einem (Start-) Knoten aus erreichbar? → Erreichbarkeitsbaum</p></li>
+<li><p>Existiert zwischen 2 Knoten A und B ein Pfad, d. h. ist B von A aus erreichbar?</p></li>
+<li><p>Wenn mehrere Pfade zwischen 2 Knoten existieren, welcher ist der kürzeste?</p></li>
+<li><p>Existieren in einem Graphen Zyklen?</p></li>
+</ul>
+</ld-topic><ld-topic id="implementierung-von-graphen">
+<h2>Implementierung von Graphen</h2>
+<ld-grid class="default-layout">
+<ld-cell class="width-40" style="align-self:auto;">
+<div class="text-align-center"><svg    width="24ch" height="14ch"
+        viewBox="0 0 24 14"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 2 2"
+        refX="2"
+        refY="1"
+        markerUnits="strokeWidth"
+        markerWidth="6"
+        markerHeight="6"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" />
+        </marker>
+    </defs>
+    <g class="graph">
+        <g>
+        <circle cx="8" cy="1" r="0.5" />
+        <text x="7.5" y="3.25">A</text>
+        </g>
+
+        <g>
+        <circle cx="1" cy="6" r="0.5" />
+        <line x1="1.35" y1="5.65" x2="7.65" y2="1.35" marker-end="url(#arrow)" />
+        <path d="M 7.5 1 C 4 0.5, 1 3, 1 5.5" marker-end="url(#arrow)" />
+        <text x="0.5" y="8.25">B</text>
+        </g>
+
+        <g>
+        <circle cx="15" cy="6" r="0.5" />
+        <line x1="14.65" y1="5.65" x2="8.35" y2="1.35" marker-end="url(#arrow)"/>
+        <text x="15.75" y="6.75">C</text>
+        </g>
+
+        <g>
+        <circle cx="8" cy="11" r="0.5" />
+        <line x1="8.35" y1="10.65" x2="14.5" y2="6" marker-end="url(#arrow)" />
+        <path d="M 8 10.5 C 5 6.5, 2.5 12, 7.5 11" marker-end="url(#arrow)" />
+        <text x="7.5" y="13.25">D</text>
+        </g>
+
+        <g>
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11" marker-end="url(#arrow)" />
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" marker-end="url(#arrow)" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+    </g>
+</svg></div></ld-cell><ld-cell class="width-60" style="align-self:auto;">
+<ld-deck>
+<ld-card>
+<p class="rubric">Adjazenzliste</p>
+<ld-deck>
+<ld-card>
+<p>Struktur der Adjazenzlisten für einen Graphen <span class="math">\(G = (V, E)\)</span>:</p>
+<p>Es gibt eine Knotenliste <span class="math">\(L_0\)</span>, die alle Knoten aus <span class="math">\(V\)</span> enthält.</p>
+<p>Jedem Element <span class="math">\(v_i (i \in  { v_1, . . . , v_n })\)</span> der Knotenliste <span class="math">\(L_0\)</span> ist eine weitere Knotenliste <span class="math">\(L_i\)</span> zugeordnet, die die Endknoten der Kanten aus <span class="math">\(E\)</span> enthält, die von <span class="math">\(v_i\)</span> ausgehen</p>
+<blockquote>
+<p>Wir speichern einen Graphen somit als Liste von Listen.</p>
+</blockquote>
+</ld-card><ld-card class="incremental">
+<p><strong>Bewertung</strong></p>
+<ul class="incremental-list positive-list simple">
+<li><p>Kompaktere Speicherung</p></li>
+<li><p>Erweiterbarkeit</p></li>
+</ul>
+<ul class="incremental-list negative-list simple">
+<li><p>Aufwändigerer Zugriﬀ z. B. bei der Adressierung der Kanten</p></li>
+<li><p>Höhere Komplexität für die Beantwortung von Fragen wie</p>
+<ul>
+<li><p>Existiert eine Kante von x nach y?</p></li>
+<li><p>Welche Kanten enden an einem Knoten x?</p></li>
+</ul>
+</li>
+</ul>
+</ld-card></ld-deck></ld-card><ld-card class="incremental">
+<p class="rubric">Adjazenzmatrix</p>
+<ld-deck>
+<ld-card>
+<p>Struktur der Adjazenzmatrix für einen Graphen <span class="math">\(G = (V, E)\)</span>:</p>
+<ul class="simple">
+<li><p>Die Zeilen und Spalten der Adjazenzmatrix sind mit der Knotenmenge V beschriftet</p></li>
+<li><p>Die Matrixelemente dienen zur Darstellung der Kantenrelation E eines Graphen G = (V, E)</p></li>
+</ul>
+<p>AJ[x, y] = 1 ⇔ es existiert eine gerichtete Kante von x nach y
+- Bei einem gewichteten Graphen enthält die Adjazenzmatrix die Kantengewichte w(x, y)</p>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<table class="highlight-cell-on-hover">
+<thead>
+<tr><th class="head stub"></th>
+<th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>C</p></th>
+<th class="head"><p>D</p></th>
+<th class="head"><p>E</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><th class="stub"><p>A</p></th>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><th class="stub"><p>B</p></th>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><th class="stub"><p>C</p></th>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><th class="stub"><p>D</p></th>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr><th class="stub"><p>E</p></th>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</aside>
+</ld-card><ld-card class="incremental">
+<p><strong>Bewertung</strong></p>
+<ul class="positive-list incremental-list simple">
+<li><p>Extrem schnelle und einfache Adressierbarkeit der Kanten</p></li>
+<li><p>Semantik einer Zeile: Welche Kanten gehen von dem zugehörigen Knoten weg</p></li>
+<li><p>Semantik einer Spalte: Welche Kanten enden an dem zugehörigen Knoten</p></li>
+</ul>
+<ul class="negative-list incremental-list simple">
+<li><p>Bei wenigen Kante ist die Matrix nur dünn besetzt → Speicherplatzverschwendung</p></li>
+<li><p>Arrays als typische Implementierung für Matrizen erfordern Reorganisationsaufwand, wenn dem Graphen neue Knoten hinzugefügt werden</p></li>
+</ul>
+</ld-card></ld-deck></ld-card></ld-deck></ld-cell></ld-grid></ld-topic><ld-topic class="new-subsection" id="suchalgorithmen-auf-graphen">
+<h2>Suchalgorithmen auf Graphen</h2>
+</ld-topic><ld-topic id="suchalgorithmen-auf-graphen-grundlegendes">
+<h2>Suchalgorithmen auf Graphen - Grundlegendes</h2>
+<ld-deck>
+<ld-card>
+<p><strong>Eingaben</strong></p>
+<ul class="simple">
+<li><p>(Gerichteter) Graph <span class="math">\(G = (V, E)\)</span></p></li>
+<li><p>Startknoten <span class="math">\(v_s\)</span></p></li>
+</ul>
+<p><strong>Ablauf</strong></p>
+<ul>
+<li><p>S1: Markiere Startknoten <span class="math">\(v_s\)</span></p></li>
+<li><p>S2: Wähle Kante <span class="math">\((v_i, v_j)\)</span> mit folgenden Eigenschaften:</p>
+<p><span class="math">\(v_i\)</span> ist markiert und <span class="math">\(v_j\)</span> ist nicht markiert</p>
+</li>
+<li><p>S3: Markiere <span class="math">\(v_j\)</span> und setze mit Schritt S2 fort</p></li>
+</ul>
+<p><strong>Endebedingung</strong></p>
+<p>Es existiert in Schritt S2 kein unmarkierter Knoten mehr</p>
+<p><strong>Ergebnis</strong></p>
+<p>Genau ein Erreichbarkeitsbaum wird markiert.</p>
+</ld-card><ld-card class="incremental">
+<p><strong>Wichtige Varianten</strong></p>
+<ul class="simple">
+<li><p>Breite-zuerst-Suche</p></li>
+<li><p>Tiefe-zuerst-Suche</p></li>
+</ul>
+<p>(Die Unterscheidung erfolgt im Schritt S2 in Hinblick auf die auszuwählende Kante.)</p>
+</ld-card><ld-card class="incremental">
+<p><strong>Benötigte Konzepte</strong></p>
+<ul>
+<li><p>Aktiver und passiver Knoten</p>
+<p>Kennzeichnung eines Knotens als aktiv, wenn von ihm aus die Suche (gegebenenfalls) später fortgesetzt werden kann.</p>
+</li>
+<li><p>allg. Vorgehensweise</p>
+<ul>
+<li><p>Kennzeichnung eines neu markierten Knotens als aktiv</p></li>
+<li><p>Ein aktiver Knoten <span class="math">\(v\)</span> wird passiv, wenn gilt:</p>
+<p>Alle von <span class="math">\(v\)</span> ausgehenden Kanten wurden dahingehend untersucht, ob sie zu einem noch nichtmarkierten Knoten führen.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Ergebnis</strong></p>
+<ul class="simple">
+<li><p>Weitersuche ist nur von aktiven Knoten aus sinnvoll</p></li>
+<li><p>Nur markierte Knoten können aktiv sein</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic id="breite-zuerst-suche-breadth-first-search">
+<h2>Breite-zuerst-Suche (<span class="eng">Breadth-first-Search</span>)</h2>
+<ld-deck>
+<ld-card>
+<p><strong>Im Schritt S2</strong></p>
+<ul class="incremental-list list-with-explanations">
+<li><p>Durchsuchung aller vom Suchknoten ausgehenden Kanten dahingehend, ob sie zu einem (bisher) unmarkierten Knoten führen.</p></li>
+<li><p>Markierung eines derartigen Knotens.</p></li>
+<li><p>Aufnahme des Knotens in die Liste aktiver Knoten.</p></li>
+<li><p>Gibt es keine derartige Kante mehr, wähle als neuen Suchknoten den ältesten noch aktiven Knoten.</p>
+<p>(Als Datenstruktur dient die Verwendung einer FIFO-Warteschlange)</p>
+</li>
+</ul>
+<div class="incremental docutils container">
+<p><strong>Endekriterium</strong></p>
+<p>Vom Suchknoten aus wird kein unmarkierter Nachfolgerknoten mehr gefunden und die Liste aktiver Knoten ist leer.</p>
+</div>
+</ld-card><ld-card class="incremental">
+<aside class="admonition important">
+<p class="admonition-title">Wichtig</p>
+<p>Unter allen möglichen Erreichbarkeitsbäumen wird derjenige mit den kürzesten Pfaden erzeugt.</p>
+<p>Dies liegt an der Struktur der Suchsteuerung in S2:</p>
+<ul class="simple">
+<li><p>Inkrementeller Aufbau der Pfade</p></li>
+<li><p>Weiterhin werden die Pfade nicht sequentiell, sondern simultan aufgebaut</p></li>
+</ul>
+<p>⇒ Knoten werden markiert, bevor lange Pfade entstehen können</p>
+</aside>
+</ld-card></ld-deck></ld-topic><ld-topic id="breite-zuerst-suche-beispiel">
+<h2>Breite-zuerst-Suche - Beispiel</h2>
+<div class="text-align-center"><svg    width="48ch" height="28ch"
+        viewBox="0 0 24 14"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <!-- the previous style is (also) used!-->
+    <style>
+        g.graph {circle{
+            &.start-node {
+                fill: none;
+                stroke: red;
+                stroke-width: 0.3;
+            }
+            &.visited-node {
+                fill: lightgray;
+                stroke: blue;
+                stroke-width: 0.3;
+            }
+            &.unreached-node {
+                fill: lightgray;
+                stroke: none;
+                stroke-width: 0.3;
+            }
+
+        }
+            line, path { &.irrelevant-edge {
+            stroke: red;
+            stroke-width: 0.2;
+            }
+            }
+        {
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 2 2"
+        refX="2"
+        refY="1"
+        markerUnits="strokeWidth"
+        markerWidth="6"
+        markerHeight="6"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" />
+        </marker>
+    </defs>
+
+    <g class="graph">
+        <g>
+        <circle cx="8" cy="1" r="0.5" />
+        <text x="7.5" y="3.25">A</text>
+        </g>
+
+        <g>
+        <circle cx="1" cy="6" r="0.5" />
+        <line x1="1.35" y1="5.65" x2="7.65" y2="1.35" marker-end="url(#arrow)" />
+        <path d="M 7.5 1 C 4 0.5, 1 3, 1 5.5"  marker-end="url(#arrow)"/>
+        <text x="0.5" y="8.25">B</text>
+        </g>
+
+        <g>
+        <circle cx="15" cy="6" r="0.5" />
+        <line x1="14.65" y1="5.65" x2="8.35" y2="1.35" marker-end="url(#arrow)"/>
+        <text x="15.75" y="6.75">C</text>
+        </g>
+
+        <g>
+        <circle cx="8" cy="11" r="0.5" />
+        <line x1="8.35" y1="10.65" x2="14.5" y2="6" marker-end="url(#arrow)" />
+        <path d="M 8 10.35 C 5 6.5, 2.5 12, 7.5 11" marker-end="url(#arrow)" />
+        <text x="7.5" y="13.25">D</text>
+        </g>
+
+        <g>
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11"  marker-end="url(#arrow)"/>
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" marker-end="url(#arrow)" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+
+        <g class="incremental" >
+            <circle class="start-node" cx="22" cy="11" r="0.5" />
+        </g>
+
+        <g class="incremental" >
+            <circle class="visited-node" cx="8" cy="11" r="0.5" />
+            <text class="edge-label" x="15.5" y="10.5">1</text>
+        </g>
+
+        <g class="incremental" >
+            <circle class="visited-node" cx="8" cy="1" r="0.5" />
+            <text class="edge-label" x="17" y="4.5">2</text>
+        </g>
+
+        <g class="incremental" >
+            <text class="edge-label" x="3.5" y="10.5">3</text>
+            <path class="irrelevant-edge" stroke-dasharray="0.2,0.2" d="M 8 10.35 C 5 6.5, 2.5 12, 7.5 11" marker-end="url(#arrow)" />
+        </g>
+
+        <g class="incremental" >
+            <circle class="visited-node" cx="15" cy="6" r="0.5" />
+            <text class="edge-label" x="11.5" y="9.25">4</text>
+        </g>
+
+        <g class="incremental" >
+            <circle class="visited-node" cx="1" cy="6" r="0.5" />
+            <text class="edge-label" x="1.5" y="2.5">5</text>
+        </g>
+
+        <g class="incremental" >
+            <text class="edge-label" x="12.5" y="4">6</text>
+            <line class="irrelevant-edge" stroke-dasharray="0.2,0.2" x1="14.65" y1="5.65" x2="8.35" y2="1.35" marker-end="url(#arrow)"/>
+        </g>
+
+        <g class="incremental" >
+            <line class="irrelevant-edge" stroke-dasharray="0.2,0.2" x1="1.35" y1="5.65" x2="7.65" y2="1.35" marker-end="url(#arrow)" />
+            <text class="edge-label" x="4.5" y="5">7</text>
+        </g>
+    </g>
+</svg></div></ld-topic><ld-topic id="tiefe-zuerst-suche">
+<h2>Tiefe-zuerst-Suche</h2>
+<p><strong>Im Schritt S2</strong></p>
+<ul class="incremental-list list-with-explanations">
+<li><p>Suche vom aktuellen Suchknoten <span class="math">\(nd\)</span> eine Kante zu einem (bisher) unmarkierten Knoten <span class="math">\(nd_{neu}\)</span></p></li>
+<li><p>Markierung von <span class="math">\(nd_{neu}\)</span></p></li>
+<li><p>Aufnahme des Knotens <span class="math">\(nd\)</span> (nicht <span class="math">\(nd_{neu}\)</span>!) in die Liste aktiver Knoten</p></li>
+<li><p><span class="math">\(nd_{neu}\)</span> wird zum neuen Suchknoten und die Suche wird mit <span class="math">\(nd_{neu}\)</span> fortgesetzt</p></li>
+<li><p>Gibt es keine derartige Kante mehr, wähle als neuen Suchknoten den jüngsten noch aktiven Knoten</p>
+<p>(Zu verwendende Datenstruktur: Stack (LiFO))</p>
+</li>
+</ul>
+<div class="incremental docutils container">
+<p><strong>Endekriterium</strong></p>
+<p>Vom Suchknoten aus wird kein unmarkierter Nachfolgerknoten mehr gefunden und die Liste aktiver Knoten ist leer.</p>
+</div>
+</ld-topic><ld-topic id="tiefe-zuerst-suche-beispiel">
+<h2>Tiefe-zuerst-Suche - Beispiel</h2>
+<div class="text-align-center"><svg    width="48ch" height="28ch"
+        viewBox="0 0 24 14"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <!-- the previous style is (also) used!-->
+    <style>
+        g.graph {
+            circle{
+                &.start-node {
+                    fill: none;
+                    stroke: red;
+                    stroke-width: 0.3;
+                }
+                &.visited-node {
+                    fill: lightgray;
+                    stroke: blue;
+                    stroke-width: 0.3;
+                }
+                &.unreached-node {
+                    fill: lightgray;
+                    stroke: none;
+                    stroke-width: 0.3;
+                }
+            }
+
+            line, path {
+                &.irrelevant-edge {
+                    stroke: red;
+                    stroke-width: 0.2;
+                }
+            }
+        }
+    </style>
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 2 2"
+        refX="2"
+        refY="1"
+        markerUnits="strokeWidth"
+        markerWidth="6"
+        markerHeight="6"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" />
+        </marker>
+    </defs>
+
+    <g class="graph">
+        <g>
+        <circle cx="8" cy="1" r="0.5" />
+        <text x="7.5" y="3.25">A</text>
+        </g>
+
+        <g>
+        <circle cx="1" cy="6" r="0.5" />
+        <line x1="1.35" y1="5.65" x2="7.65" y2="1.35" marker-end="url(#arrow)" />
+        <path d="M 7.5 1 C 4 0.5, 1 3, 1 5.5"  marker-end="url(#arrow)"/>
+        <text x="0.5" y="8.25">B</text>
+        </g>
+
+        <g>
+        <circle cx="15" cy="6" r="0.5" />
+        <line x1="14.65" y1="5.65" x2="8.35" y2="1.35" marker-end="url(#arrow)"/>
+        <text x="15.75" y="6.75">C</text>
+        </g>
+
+        <g>
+        <circle cx="8" cy="11" r="0.5" />
+        <line x1="8.35" y1="10.65" x2="14.5" y2="6" marker-end="url(#arrow)" />
+        <path d="M 8 10.5 C 5 6.5, 2.5 12, 7.5 11" marker-end="url(#arrow)" />
+        <text x="7.5" y="13.25">D</text>
+        </g>
+
+        <g>
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11"  marker-end="url(#arrow)"/>
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" marker-end="url(#arrow)" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+
+        <g class="incremental" >
+            <circle class="start-node" cx="22" cy="11" r="0.5" />
+        </g>
+        <g class="incremental" >
+            <circle class="visited-node" cx="8" cy="11" r="0.5" />
+            <text class="edge-label" x="15.5" y="10.5">1</text>
+        </g>
+        <g class="incremental" >
+            <circle class="visited-node" cx="15" cy="6" r="0.5" />
+            <text class="edge-label" x="11.5" y="9.5">2</text>
+        </g>
+        <g class="incremental" >
+            <circle class="visited-node" cx="8" cy="1" r="0.5" />
+            <text class="edge-label" x="12.5" y="4">3</text>
+        </g>
+        <g class="incremental" >
+            <circle class="visited-node" cx="1" cy="6" r="0.5" />
+            <text class="edge-label" x="1.5" y="2.5">4</text>
+        </g>
+
+        <g class="incremental" >
+            <text class="edge-label" x="4.5" y="5">5</text>
+            <line class="irrelevant-edge" stroke-dasharray="0.2,0.2" x1="1.35" y1="5.65" x2="7.65" y2="1.35" marker-end="url(#arrow)"  />
+        </g>
+
+        <g class="incremental" >
+            <text class="edge-label" x="3.5" y="10.5">6</text>
+            <path class="irrelevant-edge" d="M 8 10.5 C 5 6.5, 2.5 12, 7.5 11" marker-end="url(#arrow)" stroke-dasharray="0.2,0.2" />
+        </g>
+
+        <g class="incremental" >
+            <text class="edge-label" x="17" y="4.5">7</text>
+            <path class="irrelevant-edge" d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" marker-end="url(#arrow)" stroke-dasharray="0.2,0.2"/>
+        </g>
+
+    </g>
+</svg></div></ld-topic><ld-topic class="exercises" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Tiefe-/Breite-zuerst-Suche" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">Tiefe-/Breite-zuerst-Suche</p>
+<p>Gegeben sei der folgenden Graph:</p>
+<div class="text-align-center"><svg    width="36ch" height="21ch"
+        viewBox="0 0 24 14"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <!-- the previous style is (also) used!-->
+    <defs>
+        <marker
+        id="arrow"
+        viewBox="0 0 2 2"
+        refX="2"
+        refY="1"
+        markerUnits="strokeWidth"
+        markerWidth="6"
+        markerHeight="6"
+        orient="auto-start-reverse">
+        <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" />
+        </marker>
+    </defs>
+
+    <g class="graph">
+        <g>
+        <circle cx="8" cy="1" r="0.5" />
+        <text x="8.25" y="4.25">1</text>
+        <line x2="14.65" y2="5.65" x1="8.35" y1="1.35" marker-end="url(#arrow)"/>
+        <path d="M 8.5 1 C 16 1, 22 5.5, 22 10.5" marker-end="url(#arrow)" />
+        </g>
+
+        <g>
+        <circle cx="1" cy="6" r="0.5" />
+        <line x1="1.35" y1="5.65" x2="7.65" y2="1.35" marker-end="url(#arrow)" />
+        <path d="M 7.5 1 C 4 0.5, 1 3, 1 5.5"  marker-end="url(#arrow)"/>
+
+        <text x="0.5" y="8.25">2</text>
+        </g>
+
+        <g>
+        <circle cx="15" cy="6" r="0.5" />
+
+        <text x="15.75" y="6.75">3</text>
+        </g>
+
+        <g>
+        <circle cx="8" cy="11" r="0.5" />
+        <line x1="8.35" y1="10.65" x2="14.5" y2="6" marker-end="url(#arrow)" />
+        <line x1="8.35" y1="10.65" x2="8" y2="1.5" marker-end="url(#arrow)" />
+        <path d="M 8 10.5 C 5 6.5, 2.5 12, 7.5 11" marker-end="url(#arrow)" />
+        <text x="7.5" y="13.25">4</text>
+        </g>
+
+        <g>
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11"  marker-end="url(#arrow)"/>
+        <text x="21.5" y="13.25">5</text>
+        </g>
+    </g>
+</svg></div><p>Führen Sie sowohl eine Tiefe- als auch Breite-zuerst-Suche ausgehend von dem Knoten 4 als auch Knoten 5 durch. Sollte es mehrere Möglichkeiten geben, dann wählen Sie zuerst den Knoten mit der kleineren Nummer!</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:hnTqQ2UO7qlnvZd0n6Z6NGEuzy+Rk/oI5A25Wvat01o=:UUfOTEiOrZQyTZ3s:ftBcnr707VoFB6rNdB4GHBo0aYp1ATHiq6Qrgp3ZDweMsM08RfoIkDnMEIR2cX5ylUYhCJR13k4IbpFAhG4DPFlwejv+eIJolILvkSVDB+OxCuFbiC3FQ9emM/p5O0VTZ+Uze8l/p0lYG8TNZx2x4yvSCiQhuz4s+ZrFVqsxgCef1Jrehtw81xP7hbfujjBy9dSFsRccJ1P/8QPugHMGkb9HgtbbNBVNVoqCe1D5HjmnPik/aGV5BtzzuM+EZblXBS3uPfyXnOTohUs9ORtsIH1AcFDrcA5ZiAY6E3I/sPYHd2fNzTTwtdhsq3AQR6eBBreRmPzToWGGJ8OxPrtQwLZ7taPTvff5QYV7J1dupi4d3hPDHbEGm0tGBvv0wX5GmJRCqHOz4IZaPXyorKm3RIr8ePDBJhPBvbovNLI08oJJcJ0EdkrsWMar8KopK6wk2Q/DSIzStDP0Dd5EPAbehbCALXqsPJ8/6agQB116b//MhtNsaqnOo3FLI08sIfDhJWJ3dzyb+VUGmDeVfmHveHaWsuq/0EpQO6pwW1ZAB8qxH+PzMjwR3e3cpXAqpOlVSsLilHbsOtWxAjYtougf0ZvQH6bYMlAqMlh0bERD1qTuSR71It3xYA7o2mqfwLlxFCzteP9VNEB+hKv3wIiXOxHCERideF+Nz/E2zKw59qOAFgUCOBgrpMkq+gvT7wacGVAU4tOg88XEsAkWQB/lzD65kqUFMvy1E0/FA9cIylRdnRDb3IVrnzreq20LlT1apoBtZ29LqUCcHtgxx36S4UJvDMyW+0WKLHYBw7Xq+M74RTD5wppIThRSxQ1XDEidN+MSPxQNAAvrXZcPIS7zH6G2pv8Qdays8mUVkLOK+TlH/UWB+Z7ZEX8=</div>
+</div>
+</ld-topic><ld-topic class="new-section transition-move-to-top" id="baume">
+<h2>Bäume</h2>
+</ld-topic><ld-topic id="baume-einfuhrung">
+<h2>Bäume - Einführung</h2>
+<ul>
+<li><p>Bäume sind eine Datenstruktur für hierarchische Daten</p>
+<p class="rubric">Beispiele</p>
+<ul class="incremental-list simple">
+<li><p>Stammbaum</p></li>
+<li><p>Dateisystem</p></li>
+<li><p>Organisationsstruktur</p></li>
+</ul>
+</li>
+</ul>
+<ul class="incremental-list simple">
+<li><p>relevante Operationen</p>
+<ul>
+<li><p>Schnelles Abändern</p></li>
+<li><p>Schnelles Suchen</p></li>
+</ul>
+</li>
+</ul>
+</ld-topic><ld-topic id="baume-schlusselbegriffe">
+<h2>Bäume - Schlüsselbegriffe</h2>
+<ld-grid class="default-layout">
+<ld-cell class="width-30" style="align-self:auto;">
+<p class="rubric">Beispielbaum</p>
+<div class="text-align-center docutils container">
+<svg width="21ch" height="22ch" viewBox="0 0 21 22" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        g.tree {
+            circle {
+                fill: darkgray;
+                filter: drop-shadow( 2 2 4 rgb(0, 0, 0));
+            }
+            line {
+                stroke:darkgray;
+                stroke-width:0.2;
+            }
+            text {
+                fill: black;
+                font-family: var(--theme-code-font-family);
+                font-weight: bold;
+                font-size: 0.2cqh;
+            }
+        }
+    </style>
+    <g class="tree">
+        <g>
+        <circle cx="8" cy="1" r="0.5" />
+        <text x="8.75" y="1.5">2</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="3" cy="6" r="0.5" />
+        <line x1="3" y1="6" x2="8" y2="1" />
+        <text x="1.5" y="6.5">1</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="13" cy="6" r="0.5" />
+        <line x1="13" y1="6" x2="8" y2="1" />
+        <text x="13.75" y="6.5">7</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="8" cy="11" r="0.5" />
+        <line x1="8" y1="11" x2="13" y2="6" />
+        <text x="8.75" y="11.5">4</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="18" cy="11" r="0.5" />
+        <line x1="18" y1="11" x2="13" y2="6" />
+        <text x="18.75" y="11.5">8</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="3" cy="16" r="0.5" />
+        <line x1="3" y1="16" x2="8" y2="11" />
+        <text x="1.5" y="16.5">3</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="13" cy="16" r="0.5" />
+        <line x1="13" y1="16" x2="8" y2="11" />
+        <text x="13.5" y="16.5">6</text>
+        </g>
+
+        <g class="incremental">
+            <circle cx="8" cy="21" r="0.5" />
+            <line x1="8" y1="21" x2="13" y2="16" />
+            <text x="8.75" y="21.5">5</text>
+        </g>
+    </g>
+</svg></div>
+</ld-cell><ld-cell class="width-70 incremental width-70 incremental" style="align-self:auto;">
+<ld-deck>
+<ld-card>
+<p>Elternknoten (<span class="eng">Parent</span>)</p>
+<p>Ein Elternknoten ist ein Knoten, der einen oder mehrere Kinder hat.</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>2 ist der Elternknoten von 7</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p>Kindknoten (<span class="eng">Child(ren)</span>)</p>
+<p>Kindknoten sind Knoten, die einen Elternknoten haben.</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>1 und 7 sind Kindknoten von 2</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p>Wurzel (<span class="eng">Root</span>)</p>
+<p>Der Wurzelknoten ist der einzige Knoten, der keinen Elternknoten hat.</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>2 ist die Wurzel/der Wurzelknoten</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p>Blattknoten (<span class="eng">Leaf</span>)</p>
+<p>Ein Blattknoten ist ein Knoten, der keine Kinder hat.</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>8, 3, 5 sind Blattknoten</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p>Innerer Knoten (<span class="eng">Inner Node</span>)</p>
+<p>Ein Knoten, der kein Blattknoten ist, ist ein innerer Knoten.</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>4, 7 und 6 sind innere Knoten. Auch der Wurzelknoten ist ein innerer Knoten, wenn der Baum nicht degeniert ist.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p>Die Höhe eines Baumes ist die Länge des längsten Pfades vom Wurzelknoten zu einem Blattknoten.</p>
+</ld-card><ld-card class="incremental">
+<p>Die Tiefe eines Knotens <span class="math">\(p\)</span> ist die Länge des Pfades vom Wurzelknoten zu <span class="math">\(p\)</span>.</p>
+</ld-card><ld-card class="incremental">
+<p>Binärbaum</p>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Ein Binärbaum ist ein Baum, bei dem jeder Knoten höchstens zwei Kinder hat.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p>Binärer Suchbaum</p>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Ein binärer Suchbaum ist ein Binärbaum, bei dem für jeden Knoten alle Schlüssel in den linken Unterbäumen kleiner sind und alle Schlüssel in den rechten Unterbäumen größer sind.</p>
+</aside>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>(siehe Darstellung)</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Da die Kanten in einem Baum grundsätzlich von einem Eltern- zu einem Kindknoten gehen (d. h. es sind gerichtete Kanten), wird die Kantenrichtung typischerweise nicht angegeben (d. h. es wird keine Pfeilspitze gezeichnet).</p>
+</aside>
+</ld-card></ld-deck></ld-cell></ld-grid></ld-topic><ld-topic id="traversierung-von-baumen">
+<h2>Traversierung von Bäumen</h2>
+<!-- TODO Pfeile den Grafiken hinzufügen, um klar zu machen wann die Knoten besucht werden. -->
+<ld-deck>
+<ld-card>
+<p>Traversierung von Bäumen beschreibt die Reihenfolge, in der Knoten eines Baumes besucht werden.</p>
+<p>Wir können drei Formen von Traversierung unterscheiden:</p>
+<ol class="arabic simple">
+<li><p>Präorder</p></li>
+<li><p>Inorder und</p></li>
+<li><p>Postorder</p></li>
+</ol>
+<p>Traversierung.</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Präorder Traversierung (<span class="eng">Preorder Traversal</span>)</p>
+<ld-grid class="default-layout">
+<ld-cell class="width-70" style="align-self:auto;">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<svg width="48ch" height="22ch" viewBox="0 0 48 22" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        g.tree {
+            circle.visited-node {
+                fill: lightgray;
+                stroke: blue;
+                stroke-width: 0.3;
+            }
+        }
+    </style>
+    <g class="tree">
+        <g>
+        <circle cx="8" cy="1" r="0.5" />
+        <text x="8.75" y="1.55">2</text>
+        </g>
+
+        <g>
+        <circle cx="3" cy="6" r="0.5" />
+        <line x1="3" y1="6" x2="8" y2="1" />
+        <text x="1.5" y="6.5">1</text>
+        </g>
+
+        <g>
+        <circle cx="13" cy="6" r="0.5" />
+        <line x1="13" y1="6" x2="8" y2="1" />
+        <text x="13.5" y="6.5">7</text>
+        </g>
+
+        <g>
+        <circle cx="8" cy="11" r="0.5" />
+        <line x1="8" y1="11" x2="13" y2="6" />
+        <text x="8.75" y="11.5">4</text>
+        </g>
+
+        <g>
+        <circle cx="18" cy="11" r="0.5" />
+        <line x1="18" y1="11" x2="13" y2="6" />
+        <text x="18.75" y="11.5">8</text>
+        </g>
+
+        <g>
+        <circle cx="3" cy="16" r="0.5" />
+        <line x1="3" y1="16" x2="8" y2="11" />
+        <text x="1.5" y="16.5">3</text>
+        </g>
+
+        <g>
+        <circle cx="13" cy="16" r="0.5" />
+        <line x1="13" y1="16" x2="8" y2="11" />
+        <text x="13.75" y="16.5">6</text>
+        </g>
+
+        <g>
+            <circle cx="8" cy="21" r="0.5" />
+            <line x1="8" y1="21" x2="13" y2="16" />
+            <text x="8.75" y="21.5">5</text>
+        </g>
+
+        <g class="incremental">
+            <text x="15" y="1.55">Reihenfolge = [ </text>
+            <circle class="visited-node" cx="8" cy="1" r="0.5" />
+            <text x="30" y="1.55">2,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="3" cy="6" r="0.5" />
+            <text x="32" y="1.55">1,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="13" cy="6" r="0.5" />
+            <text x="34" y="1.55">7,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="8" cy="11" r="0.5" />
+            <text x="36" y="1.55">4,</text>
+        </g>
+
+
+        <g class="incremental">
+            <circle class="visited-node" cx="3" cy="16" r="0.5" />
+            <text x="38" y="1.55">3,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="13" cy="16" r="0.5" />
+            <text x="40" y="1.55">6,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="8" cy="21" r="0.5" />
+            <text x="42" y="1.55">5,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="18" cy="11" r="0.5" />
+            <text x="44" y="1.55">8]</text>
+        </g>
+
+    </g>
+</svg></aside>
+</ld-cell><ld-cell class="width-30" style="align-self:auto;">
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Eine Präorder Traversierung eines (Teil-)Baumes beginnt mit der Verarbeitung des aktuellen (Wurzel-)Knotens, danach besuchen wir rekursiv den linken Unterbaum, bevor der rechte Unterbaum besucht wird.</p>
+</aside>
+</ld-cell></ld-grid></ld-card><ld-card class="incremental">
+<p class="rubric">Inorder Traversierung (<span class="eng">Inorder Traversal</span>)</p>
+<ld-grid class="default-layout">
+<ld-cell class="width-70" style="align-self:auto;">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<svg width="48ch" height="22ch" viewBox="0 0 48 22" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g class="tree">
+        <g>
+            <circle cx="8" cy="1" r="0.5" />
+            <text x="8.75" y="1.55">2</text>
+        </g>
+
+        <g>
+            <circle cx="3" cy="6" r="0.5" />
+            <line x1="3" y1="6" x2="8" y2="1" />
+            <text x="1.5" y="6.5">1</text>
+        </g>
+
+        <g>
+            <circle cx="13" cy="6" r="0.5" />
+            <line x1="13" y1="6" x2="8" y2="1" />
+            <text x="13.5" y="6.5">7</text>
+        </g>
+
+        <g>
+            <circle cx="8" cy="11" r="0.5" />
+            <line x1="8" y1="11" x2="13" y2="6" />
+            <text x="8.75" y="11.5">4</text>
+        </g>
+
+        <g>
+            <circle cx="18" cy="11" r="0.5" />
+            <line x1="18" y1="11" x2="13" y2="6" />
+            <text x="18.75" y="11.5">8</text>
+        </g>
+
+        <g>
+            <circle cx="3" cy="16" r="0.5" />
+            <line x1="3" y1="16" x2="8" y2="11" />
+            <text x="1.5" y="16.5">3</text>
+        </g>
+
+        <g>
+            <circle cx="13" cy="16" r="0.5" />
+            <line x1="13" y1="16" x2="8" y2="11" />
+            <text x="13.75" y="16.5">6</text>
+        </g>
+
+        <g>
+            <circle cx="8" cy="21" r="0.5" />
+            <line x1="8" y1="21" x2="13" y2="16" />
+            <text x="8.75" y="21.5">5</text>
+        </g>
+
+
+        <g class="incremental">
+            <text x="15" y="1.55">Reihenfolge = [ </text>
+            <circle class="visited-node" cx="3" cy="6" r="0.5" />
+            <text x="30" y="1.55">1,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="8" cy="1" r="0.5" />
+            <text x="32" y="1.55">2,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="3" cy="16" r="0.5" />
+            <text x="34" y="1.55">3,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="8" cy="11" r="0.5" />
+            <text x="36" y="1.55">4,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="8" cy="21" r="0.5" />
+            <text x="38" y="1.55">5,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="13" cy="16" r="0.5" />
+            <text x="40" y="1.55">6,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="13" cy="6" r="0.5" />
+            <text x="42" y="1.55">7,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="18" cy="11" r="0.5" />
+            <text x="44" y="1.55">8]</text>
+        </g>
+
+    </g>
+</svg></aside>
+</ld-cell><ld-cell class="width-30" style="align-self:auto;">
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Eine Inorder-Traversierung eines Baumes beginnt mit den linken Unterbaum, besucht dann den (Wurzel-)knoten, bevor der rechte Unterbaum besucht wird.</p>
+</aside>
+</ld-cell></ld-grid><aside class="admonition incremental remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Eine Inorder-Traversierung eines (binären) Suchbaums führt zu einer sortierten Liste der Knotenwerte. Es handelt sich somit um ein weiteres Beispiel für ein Sortierverfahren.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Postorder Traversierung (<span class="eng">Postorder Traversal</span>)</p>
+<ld-grid class="default-layout">
+<ld-cell class="width-70" style="align-self:auto;">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<svg width="48ch" height="22ch" viewBox="0 0 48 22" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g class="tree">
+        <g>
+        <circle cx="8" cy="1" r="0.5" />
+        <text x="8.75" y="1.55">2</text>
+        </g>
+
+        <g>
+        <circle cx="3" cy="6" r="0.5" />
+        <line x1="3" y1="6" x2="8" y2="1" />
+        <text x="1.5" y="6.5">1</text>
+        </g>
+
+        <g>
+        <circle cx="13" cy="6" r="0.5" />
+        <line x1="13" y1="6" x2="8" y2="1" />
+        <text x="13.5" y="6.5">7</text>
+        </g>
+
+        <g>
+        <circle cx="8" cy="11" r="0.5" />
+        <line x1="8" y1="11" x2="13" y2="6" />
+        <text x="8.75" y="11.5">4</text>
+        </g>
+
+        <g>
+        <circle cx="18" cy="11" r="0.5" />
+        <line x1="18" y1="11" x2="13" y2="6" />
+        <text x="18.75" y="11.5">8</text>
+        </g>
+
+        <g>
+        <circle cx="3" cy="16" r="0.5" />
+        <line x1="3" y1="16" x2="8" y2="11" />
+        <text x="1.5" y="16.5">3</text>
+        </g>
+
+        <g>
+        <circle cx="13" cy="16" r="0.5" />
+        <line x1="13" y1="16" x2="8" y2="11" />
+        <text x="13.75" y="16.5">6</text>
+        </g>
+
+        <g>
+            <circle cx="8" cy="21" r="0.5" />
+            <line x1="8" y1="21" x2="13" y2="16" />
+            <text x="8.75" y="21.5">5</text>
+        </g>
+
+        <text x="15" y="1.55">Reihenfolge = [ </text>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="3" cy="6" r="0.5" />
+            <text x="30" y="1.55">1,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="3" cy="16" r="0.5" />
+            <text x="32" y="1.55">3,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="8" cy="21" r="0.5" />
+            <text x="34" y="1.55">5,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="13" cy="16" r="0.5" />
+            <text x="36" y="1.55">6,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="8" cy="11" r="0.5" />
+            <text x="38" y="1.55">4,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="18" cy="11" r="0.5" />
+            <text x="40" y="1.55">8,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="13" cy="6" r="0.5" />
+            <text x="42" y="1.55">7,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="8" cy="1" r="0.5" />
+            <text x="44" y="1.55">2]</text>
+        </g>
+
+    </g>
+</svg></aside>
+</ld-cell><ld-cell class="width-30" style="align-self:auto;">
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Eine Postorder-Traversierung eines Baumes beginnt mit den linken Unterbaum und besucht dann den rechten Unterbaum, bevor der (Wurzel-)knoten besucht wird.</p>
+</aside>
+</ld-cell></ld-grid></ld-card></ld-deck></ld-topic><ld-topic id="implementierung-eines-binaren-suchbaums-bst">
+<h2>Implementierung eines binären Suchbaums (BST)</h2>
+<ld-scrollable>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln">  1 </small><code data-lineno="  1 "><span class="comment single">// BST.java</span><span class="whitespace">
+</span></code><small class="ln">  2 </small><code data-lineno="  2 "><span class="whitespace">
+</span></code><small class="ln">  3 </small><code data-lineno="  3 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Deque</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">  4 </small><code data-lineno="  4 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.LinkedList</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">  5 </small><code data-lineno="  5 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Queue</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">  6 </small><code data-lineno="  6 "><span class="whitespace">
+</span></code><small class="ln">  7 </small><code data-lineno="  7 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">BST</span><span class="operator">&lt;</span><span class="name">Key</span><span class="whitespace"> </span><span class="keyword declaration">extends</span><span class="whitespace"> </span><span class="name">Comparable</span><span class="operator">&lt;</span><span class="name">Key</span><span class="operator">&gt;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Value</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">  8 </small><code data-lineno="  8 "><span class="whitespace">
+</span></code><small class="ln">  9 </small><code data-lineno="  9 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">Node</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 10 </small><code data-lineno=" 10 "><span class="whitespace">        </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name">Key</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 11 </small><code data-lineno=" 11 "><span class="whitespace">        </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name">Value</span><span class="whitespace"> </span><span class="name">val</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 12 </small><code data-lineno=" 12 "><span class="whitespace">        </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name">Node</span><span class="whitespace"> </span><span class="name">left</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">right</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 13 </small><code data-lineno=" 13 "><span class="whitespace">        </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">count</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 14 </small><code data-lineno=" 14 "><span class="whitespace">
+</span></code><small class="ln"> 15 </small><code data-lineno=" 15 "><span class="whitespace">        </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">Node</span><span class="punctuation">(</span><span class="name">Key</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Value</span><span class="whitespace"> </span><span class="name">val</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 16 </small><code data-lineno=" 16 "><span class="whitespace">                </span><span class="keyword">this</span><span class="punctuation">.</span><span class="name attribute">key</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 17 </small><code data-lineno=" 17 "><span class="whitespace">                </span><span class="keyword">this</span><span class="punctuation">.</span><span class="name attribute">val</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">val</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 18 </small><code data-lineno=" 18 "><span class="whitespace">                </span><span class="keyword">this</span><span class="punctuation">.</span><span class="name attribute">count</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 19 </small><code data-lineno=" 19 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 20 </small><code data-lineno=" 20 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 21 </small><code data-lineno=" 21 "><span class="whitespace">
+</span></code><small class="ln"> 22 </small><code data-lineno=" 22 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name">Node</span><span class="whitespace"> </span><span class="name">root</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 23 </small><code data-lineno=" 23 "><span class="whitespace">
+</span></code><small class="ln"> 24 </small><code data-lineno=" 24 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">put</span><span class="punctuation">(</span><span class="name">Key</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Value</span><span class="whitespace"> </span><span class="name">val</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 25 </small><code data-lineno=" 25 "><span class="whitespace">        </span><span class="name">root</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">put</span><span class="punctuation">(</span><span class="name">root</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">val</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 26 </small><code data-lineno=" 26 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 27 </small><code data-lineno=" 27 "><span class="whitespace">
+</span></code><small class="ln"> 28 </small><code data-lineno=" 28 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name">Node</span><span class="whitespace"> </span><span class="name function">put</span><span class="punctuation">(</span><span class="name">Node</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Key</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Value</span><span class="whitespace"> </span><span class="name">val</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 29 </small><code data-lineno=" 29 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 30 </small><code data-lineno=" 30 "><span class="whitespace">                </span><span class="keyword">return</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Node</span><span class="punctuation">(</span><span class="name">key</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">val</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 31 </small><code data-lineno=" 31 "><span class="whitespace">        </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">cmp</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">.</span><span class="name attribute">compareTo</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">key</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 32 </small><code data-lineno=" 32 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">cmp</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 33 </small><code data-lineno=" 33 "><span class="whitespace">                </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">put</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">val</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 34 </small><code data-lineno=" 34 "><span class="whitespace">        </span><span class="keyword">else</span><span class="whitespace"> </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">cmp</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 35 </small><code data-lineno=" 35 "><span class="whitespace">                </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">put</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">val</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 36 </small><code data-lineno=" 36 "><span class="whitespace">        </span><span class="keyword">else</span><span class="whitespace"> </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">cmp</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 37 </small><code data-lineno=" 37 "><span class="whitespace">                </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">val</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">val</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 38 </small><code data-lineno=" 38 "><span class="whitespace">        </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">count</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">size</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">size</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 39 </small><code data-lineno=" 39 "><span class="whitespace">
+</span></code><small class="ln"> 40 </small><code data-lineno=" 40 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 41 </small><code data-lineno=" 41 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 42 </small><code data-lineno=" 42 "><span class="whitespace">
+</span></code><small class="ln"> 43 </small><code data-lineno=" 43 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Value</span><span class="whitespace"> </span><span class="name function">get</span><span class="punctuation">(</span><span class="name">Key</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 44 </small><code data-lineno=" 44 "><span class="whitespace">        </span><span class="name">Node</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">root</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 45 </small><code data-lineno=" 45 "><span class="whitespace">        </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">!=</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 46 </small><code data-lineno=" 46 "><span class="whitespace">            </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">cmp</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">.</span><span class="name attribute">compareTo</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">key</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 47 </small><code data-lineno=" 47 "><span class="whitespace">            </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">cmp</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 48 </small><code data-lineno=" 48 "><span class="whitespace">                </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 49 </small><code data-lineno=" 49 "><span class="whitespace">            </span><span class="keyword">else</span><span class="whitespace"> </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">cmp</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 50 </small><code data-lineno=" 50 "><span class="whitespace">                </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 51 </small><code data-lineno=" 51 "><span class="whitespace">            </span><span class="keyword">else</span><span class="whitespace"> </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">cmp</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 52 </small><code data-lineno=" 52 "><span class="whitespace">                </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">val</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 53 </small><code data-lineno=" 53 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 54 </small><code data-lineno=" 54 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 55 </small><code data-lineno=" 55 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 56 </small><code data-lineno=" 56 "><span class="whitespace">
+</span></code><small class="ln"> 57 </small><code data-lineno=" 57 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">size</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 58 </small><code data-lineno=" 58 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">size</span><span class="punctuation">(</span><span class="name">root</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 59 </small><code data-lineno=" 59 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 60 </small><code data-lineno=" 60 "><span class="whitespace">
+</span></code><small class="ln"> 61 </small><code data-lineno=" 61 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name function">size</span><span class="punctuation">(</span><span class="name">Node</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 62 </small><code data-lineno=" 62 "><span class="whitespace">       </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 63 </small><code data-lineno=" 63 "><span class="whitespace">             </span><span class="keyword">return</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 64 </small><code data-lineno=" 64 "><span class="whitespace">       </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">count</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 65 </small><code data-lineno=" 65 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 66 </small><code data-lineno=" 66 "><span class="whitespace">
+</span></code><small class="ln"> 67 </small><code data-lineno=" 67 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Key</span><span class="whitespace"> </span><span class="name function">select</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">k</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="comment single">// returns the nth-largest key</span><span class="whitespace">
+</span></code><small class="ln"> 68 </small><code data-lineno=" 68 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">k</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">         </span><span class="keyword">return</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 69 </small><code data-lineno=" 69 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">k</span><span class="whitespace"> </span><span class="operator">&gt;=</span><span class="whitespace"> </span><span class="name">size</span><span class="punctuation">())</span><span class="whitespace">   </span><span class="keyword">return</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 70 </small><code data-lineno=" 70 "><span class="whitespace">        </span><span class="name">Node</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">select</span><span class="punctuation">(</span><span class="name">root</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">k</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 71 </small><code data-lineno=" 71 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">key</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 72 </small><code data-lineno=" 72 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 73 </small><code data-lineno=" 73 "><span class="whitespace">
+</span></code><small class="ln"> 74 </small><code data-lineno=" 74 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name">Node</span><span class="whitespace"> </span><span class="name function">select</span><span class="punctuation">(</span><span class="name">Node</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">k</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 75 </small><code data-lineno=" 75 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">Node</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 76 </small><code data-lineno=" 76 "><span class="whitespace">        </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">t</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">size</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 77 </small><code data-lineno=" 77 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">t</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">k</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 78 </small><code data-lineno=" 78 "><span class="whitespace">            </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">select</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">k</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 79 </small><code data-lineno=" 79 "><span class="whitespace">        </span><span class="keyword">else</span><span class="whitespace"> </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">t</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="name">k</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 80 </small><code data-lineno=" 80 "><span class="whitespace">            </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">select</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">k</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="name">t</span><span class="whitespace"> </span><span class="operator">-</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 81 </small><code data-lineno=" 81 "><span class="whitespace">        </span><span class="keyword">else</span><span class="whitespace"> </span><span class="comment single">// if (t == k)</span><span class="whitespace">
+</span></code><small class="ln"> 82 </small><code data-lineno=" 82 "><span class="whitespace">            </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 83 </small><code data-lineno=" 83 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 84 </small><code data-lineno=" 84 "><span class="whitespace">
+</span></code><small class="ln"> 85 </small><code data-lineno=" 85 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">delete</span><span class="punctuation">(</span><span class="name">Key</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 86 </small><code data-lineno=" 86 "><span class="whitespace">        </span><span class="comment multiline">/* root = */</span><span class="whitespace"> </span><span class="name">delete</span><span class="punctuation">(</span><span class="name">root</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 87 </small><code data-lineno=" 87 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 88 </small><code data-lineno=" 88 "><span class="whitespace">
+</span></code><small class="ln"> 89 </small><code data-lineno=" 89 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name">Node</span><span class="whitespace"> </span><span class="name function">delete</span><span class="punctuation">(</span><span class="name">Node</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">Key</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 90 </small><code data-lineno=" 90 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">)</span><span class="whitespace">     </span><span class="keyword">return</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 91 </small><code data-lineno=" 91 "><span class="whitespace">        </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">cmp</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">.</span><span class="name attribute">compareTo</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">key</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 92 </small><code data-lineno=" 92 "><span class="whitespace">        </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">cmp</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">       </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">delete</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 93 </small><code data-lineno=" 93 "><span class="whitespace">        </span><span class="keyword">else</span><span class="whitespace"> </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">cmp</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">  </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">delete</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln"> 94 </small><code data-lineno=" 94 "><span class="whitespace">        </span><span class="keyword">else</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 95 </small><code data-lineno=" 95 "><span class="whitespace">                </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">)</span><span class="whitespace">     </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 96 </small><code data-lineno=" 96 "><span class="whitespace">                </span><span class="keyword">if</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="keyword constant">null</span><span class="punctuation">)</span><span class="whitespace">      </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 97 </small><code data-lineno=" 97 "><span class="whitespace">
+</span></code><small class="ln"> 98 </small><code data-lineno=" 98 "><span class="whitespace">                </span><span class="name">Node</span><span class="whitespace"> </span><span class="name">t</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 99 </small><code data-lineno=" 99 "><span class="whitespace">                </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">min</span><span class="punctuation">(</span><span class="name">t</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">100 </small><code data-lineno="100 "><span class="whitespace">                </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">deleteMin</span><span class="punctuation">(</span><span class="name">t</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">101 </small><code data-lineno="101 "><span class="whitespace">                </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">t</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">102 </small><code data-lineno="102 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">103 </small><code data-lineno="103 "><span class="whitespace">        </span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">count</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">size</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">left</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">size</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">.</span><span class="name attribute">right</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">104 </small><code data-lineno="104 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">105 </small><code data-lineno="105 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">106 </small><code data-lineno="106 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-scrollable></ld-topic><ld-topic class="exercises" id="ubung-1">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Optimale Einfügereihenfolge" id="ld-exercise-2">
+<p class="ld-exercise-title rubric">Optimale Einfügereihenfolge</p>
+<p>Nehmen wir an, dass wir im Voraus schätzen können, wie oft auf Suchschlüssel in einem binären Baum zugegriffen wird. Sollten die Schlüssel in wachsender oder fallender Reihenfolge der zu erwartenden Zugriffshäufigkeit in den Baum eingefügt werden? Warum?</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:ADnP5FNLvKpERSp8VGysyTDkqwijdw197Q3u427yGAU=:Vw8ylsBPl458OuOa:i5tP9T28SwqaXmUnudjBL7JCeKK8wyMJLWze62OT101EcHbXBtn949pWqVxS663FhqjS2rvDDOi9xOJDqf/akRSBGeyrE2N3F9Br1o2CV8ObngGQQRPmgrNxC4/woiqCQqRxIBkFvQMgWIRJ4PrIOXN9WJONAjxsu3aiHCeluTBJJc03ai8r30Vq++pRKGFFzfnWZo+AmbX/ZXaJB5wb4/VFbrPbIZ+I2X7uYVrZKfHCut1UG6kXTFaF9y+a9zeGDXht7pEAp9BcU2y6CEQ4LLYojo5YmdSzpG0f5T4=</div>
+</div>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Minimum bestimmen" id="ld-exercise-3">
+<p class="ld-exercise-title rubric">Minimum bestimmen</p>
+<p>Implementieren Sie die Methode <code class="java"><span class="name">min</span></code> (<code class="java"><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Node</span><span class="whitespace"> </span><span class="name function">min</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{...}</span></code>) als rekursive Methode.</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:cD5cntg6BC/XQcZPrDNoJUMTkrMgJALVfbIjiiW/2no=:/V8xUSVN5AEz8UN+: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</div>
+</div>
+<div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Rückgabe in absteigender Reihenfolge" id="ld-exercise-4">
+<p class="ld-exercise-title rubric">Rückgabe in absteigender Reihenfolge</p>
+<p>Implementieren Sie eine Methode <code class="java"><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">Iterable</span><span class="operator">&lt;</span><span class="name">Key</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name function">descending</span><span class="punctuation">(){...</span><span class="whitespace"> </span><span class="punctuation">}</span></code>, die die Schlüssel in umgekehrter Reihenfolge zurückgibt (d. h. der größte Schlüssel zuerst, der kleinste Schlüssel zuletzt). Implementieren Sie diese Methode rekursiv.</p>
+<aside class="admonition peripheral remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Es ist eine gute Hausübung die Methode auch einmal nicht-rekursiv zu implementieren.</p>
+</aside>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:4UT72ysODjBSDW6pj8+NvHUJi2qNGRSIOdF+g3p7HoM=:YsVNtq2sMRuPhOUS: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</div>
+</div>
+</ld-topic>
+</template>
+</body>
+</html>

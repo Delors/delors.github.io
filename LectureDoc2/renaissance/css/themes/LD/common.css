@@ -2,12 +2,11 @@
 
 /* This style sheet is partially based on:
 
-   Minimal style sheet for the HTML output of Docutils.
-   
-   Created by Günter Milde (2022-06-19) based on html4css1.css by 
-   David Goodger (2015, 2021) 
+   Minimal style sheet for the HTML output of Docutils created by Günter Milde (2022-06-19) which in turn is based on html4css1.css by
+   David Goodger (2015, 2021).
 */
 
+ld-grid:has(+ *),
 div.compound:has(+ *),
 div.container:has(+ *),
 p:has(+ *),
@@ -34,7 +33,6 @@ ul {
 }
 
 ld-deck {
-
     &:has(+ *) {
         margin-bottom: var(--default-bottom-margin);
     }
@@ -73,10 +71,8 @@ ld-deck {
 }
 
 ld-grid {
-
     /*  The default layout is (at the moment) a flex based layout. */
     &.default-layout {
-
         display: flex;
         flex-wrap: nowrap;
         justify-content: space-between;
@@ -87,10 +83,7 @@ ld-grid {
             display: block;
         }
     }
-
 }
-
-
 
 /*  ----------------------------------------------------------------------------
     Adds the styling for the functionality to copy code to the clipboard.
@@ -100,17 +93,17 @@ ld-grid {
 .code.copy-to-clipboard {
     position: relative;
 
-    /*  The DIV with the class ".ld-copy-to-clipboard-button" is added by 
+    /*  The DIV with the class ".ld-copy-to-clipboard-button" is added by
         programmatically by LectureDoc. */
     .ld-copy-to-clipboard-button {
         content: url(copy_to_clipboard.svg);
         width: 27px;
         height: 27px;
-        
+
         position: absolute;
         right: 18px;
         top: 18px;
-        
+
         opacity: 0;
         transition: 500ms;
     }
@@ -123,7 +116,7 @@ ld-grid {
 
 /* Lists */
 
-ul.horizontal{
+ul.horizontal {
     display: flex;
     gap: 0em 2em;
     flex-wrap: wrap;
@@ -131,11 +124,11 @@ ul.horizontal{
     align-items: flex-start;
 }
 
-/*  Provides a very simple means to "misuse" a list to arrange content in 
-    columns. 
+/*  Provides a very simple means to "misuse" a list to arrange content in
+    columns.
 
     In rst it has to be used like so:
-   
+
     .. class:: columns (left-aligned-columns|evenly-spaced-columns)?
 
     - first column
@@ -148,7 +141,7 @@ ul.columns {
     display: flex;
     padding: 0;
     margin: 0;
-    
+
     gap: 1em;
 
     align-items: flex-start;
@@ -175,26 +168,26 @@ li,
 .compact li,
 .compact ul,
 .compact ol,
-.simple>li p,
-dl.simple>dd,
-.compact>li p,
-dl.compact>dd {
+.simple > li p,
+dl.simple > dd,
+.compact > li p,
+dl.compact > dd {
     margin-top: 0em;
     margin-bottom: 0.25em;
 }
 
 /*
-    This style is complementary to the previous one and adds a pop-out effect 
+    This style is complementary to the previous one and adds a pop-out effect
     on hover.
 
     TODO Add relay to other windows
 */
-:is(ol,ul).pop-out-on-hover{
+:is(ol, ul).pop-out-on-hover {
     perspective: 500px;
     transform-style: preserve-3d;
     overflow: visible;
-    
-    >li {
+
+    > li {
         transition: 0.5s;
 
         &::before {
@@ -212,27 +205,25 @@ dl.compact>dd {
     }
 }
 
-ul.negative-list > li, /* TODO rename: attention-list*/ 
+ul.negative-list > li, /* TODO rename: attention-list*/
 ul > li.negative-list {
     list-style-type: "❗️";
 }
 
-ul.positive-list > li, /* TODO rename: check-list*/ 
+ul.positive-list > li, /* TODO rename: check-list*/
 ul > li.positive-list {
     list-style-type: "✓";
 }
 
-ul.question-list > li, /* TODO rename: */ 
+ul.question-list > li, /* TODO rename: */
 ul > li.question-list {
     list-style-type: " ? ";
 }
 
-
-ul.attention-list > li, /* TODO rename: */ 
+ul.attention-list > li, /* TODO rename: */
 ul > li.attention-list {
     list-style-type: "⚡️";
 }
-
 
 .list-with-explanations > li > *:not(:first-child) {
     margin-top: -0.3em;
@@ -243,11 +234,10 @@ ul > li.attention-list {
 .list-with-details > li > *:not(:first-child) {
     font-size: smaller;
 }
-.list-with-sublists > li > :is(ol,ul) {
+.list-with-sublists > li > :is(ol, ul) {
     margin: 0;
     font-size: smaller;
 }
-
 
 ul {
     list-style-position: outside;
@@ -291,10 +281,9 @@ li {
     padding-left: 0em;
 }
 
-
 /* Definition Lists and Derivatives */
 dt .classifier {
-    font-style: italic
+    font-style: italic;
 }
 
 dt .classifier:before {
@@ -309,8 +298,8 @@ dl.field-list {
     display: flow-root;
 
     /* There will be no extra-margin between two field-lists. */
-    
-    &:has(+dl.field-list) {
+
+    &:has(+ dl.field-list) {
         margin-bottom: 0;
     }
 
@@ -323,9 +312,9 @@ dl.docinfo {
     display: flow-root;
 }
 
-dl.field-list>dt,
-dl.option-list>dt,
-dl.docinfo>dt {
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
     font-weight: 500;
     clear: left;
     float: left;
@@ -335,23 +324,23 @@ dl.docinfo>dt {
 }
 
 /* Offset for field content (corresponds to the --field-name-limit option) */
-dl.field-list>dd,
-dl.option-list>dd,
-dl.docinfo>dd {
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
     margin-left: 9em;
     /* ca. 14 chars in the test examples, fit all Docinfo fields */
 }
 
 /* start nested lists on new line */
-dd>dl:first-child,
-dd>ul:first-child,
-dd>ol:first-child {
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
     clear: left;
 }
 
 /* start field-body on a new line after long field names */
-dl.field-list>dd>*:first-child,
-dl.option-list>dd>*:first-child {
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child {
     display: inline-block;
     width: 100%;
     margin: 0;
@@ -363,17 +352,16 @@ dl.docinfo pre.address {
     margin: 0.5em 0;
 }
 
-dl.docinfo>dd.authors>p {
+dl.docinfo > dd.authors > p {
     margin: 0;
 }
 
 /* Option Lists */
-dl.option-list>dt {
+dl.option-list > dt {
     font-weight: normal;
 }
 
-
-.no-title :is(h1,h2):first-child {
+.no-title :is(h1, h2):first-child {
     display: none;
 }
 
@@ -381,7 +369,6 @@ dl.option-list>dt {
     font-weight: bolder;
     color: var(--emph-color);
 }
-
 
 .footnote,
 .citation {
@@ -398,49 +385,46 @@ dl.option-list>dt {
     padding-left: 1.7em;
 }
 
-
 .footnote.superscript {
-    padding-left: 1.0em;
+    padding-left: 1em;
 }
 
-.citation>.label {
+.citation > .label {
     margin-left: -2em;
 }
 
-.footnote>.label {
+.footnote > .label {
     margin-left: -1.7em;
 }
 
-.footnote.superscript>.label {
-    margin-left: -1.0em;
+.footnote.superscript > .label {
+    margin-left: -1em;
 }
 
-.footnote>.label+*,
-.citation>.label+* {
+.footnote > .label + *,
+.citation > .label + * {
     display: inline-block;
     margin-top: 0;
     vertical-align: top;
 }
 
-.footnote>.backrefs+*,
-.citation>.backrefs+* {
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
     margin-top: 0;
 }
 
-.footnote>.label+p,
-.footnote>.backrefs+p,
-.citation>.label+p,
-.citation>.backrefs+p {
+.footnote > .label + p,
+.footnote > .backrefs + p,
+.citation > .label + p,
+.citation > .backrefs + p {
     display: inline;
     vertical-align: inherit;
 }
 
-
-
 /* superscript footnotes */
 a[role="doc-noteref"].superscript,
-.footnote.superscript>.label,
-.footnote.superscript>.backrefs {
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
     vertical-align: super;
     font-size: smaller;
     line-height: 1;
@@ -452,49 +436,38 @@ a[role="doc-noteref"].superscript,
     list-style-type: none;
 }
 
-
-
-a[role="doc-noteref"].superscript>.fn-bracket,
-.footnote.superscript>.label>.fn-bracket {
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
     /* hide brackets in display but leave for copy/paste */
     display: inline-block;
     width: 0;
     overflow: hidden;
 }
 
-[role="doc-noteref"].superscript+[role="doc-noteref"].superscript {
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
     padding-left: 0.15em;
     /* separate consecutive footnote references */
     /* TODO: unfortunately, "+" also selects with text between the references. */
 }
 
-
 .backrefs {
     user-select: none;
 }
 
-.backrefs>a {
+.backrefs > a {
     font-style: italic;
 }
-
 
 span.option {
     white-space: nowrap;
 }
-
-
-
-
 
 p.topic-title,
 p.system-message-title {
     font-weight: bold;
 }
 
-
-
 .admonition {
-
     border: 1px solid var(--semi-light-gray);
     border-top: 0;
     border-radius: var(--small-border-radius);
@@ -509,7 +482,7 @@ p.system-message-title {
         margin-bottom: 0.5em;
     }
 
-    >p:first-child.admonition-title {
+    > p:first-child.admonition-title {
         position: relative;
         left: -0.5em;
         width: calc(100% + 1em);
@@ -518,13 +491,13 @@ p.system-message-title {
         margin-bottom: 0;
 
         border-radius: var(--small-border-radius) var(--small-border-radius) 0 0;
-        
+
         --current-background-color: var(--semi-light-gray);
         background-color: var(--current-background-color);
         --current-color: var(--white);
-        color: var(--current-color); 
+        color: var(--current-color);
         text-shadow: var(--gray) -1px -1px 1px;
-    
+
         & + * {
             margin-top: 0.15em;
         }
@@ -536,7 +509,7 @@ p.system-message-title {
             text-align: center;
             position: relative;
             left: -0.5em;
-            
+
             padding: 0 0.5em;
             border-radius: var(--small-border-radius) 0 0 0;
         }
@@ -545,13 +518,13 @@ p.system-message-title {
     > *:last-child {
         margin-bottom: 0;
     }
-    
+
     &.hint {
         border: none;
 
         --current-background-color: var(--very-light-green);
-        
-        >p:first-child.admonition-title {
+
+        > p:first-child.admonition-title {
             --current-background-color: var(--green);
             --current-color: var(--white);
         }
@@ -560,9 +533,9 @@ p.system-message-title {
     &.warning {
         border: none;
 
-        --current-background-color: var(--very-light-red);  
-       
-        >p:first-child.admonition-title {        
+        --current-background-color: var(--very-light-red);
+
+        > p:first-child.admonition-title {
             --current-color: var(--white);
             --current-background-color: var(--dark-red);
         }
@@ -571,50 +544,50 @@ p.system-message-title {
     &.summary {
         border: none;
 
-        --current-background-color: var(--very-light-gray);  
+        --current-background-color: var(--very-light-gray);
 
-        >p:first-child.admonition-title {
-            --current-background-color: var(--gray);  
+        > p:first-child.admonition-title {
+            --current-background-color: var(--gray);
             text-align: center;
-        }   
+        }
     }
 
     &.question {
         border: none;
-        
-        --current-background-color: var(--very-light-blue);  
 
-        >p:first-child.admonition-title {
-            --current-background-color: var(--blue);  
+        --current-background-color: var(--very-light-blue);
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--blue);
 
             &::before {
                 content: "?";
-                background-color: var(--light-blue);  
+                background-color: var(--light-blue);
             }
         }
     }
 
     &.answer {
         border: none;
-        
-        --current-background-color: var(--very-light-blue);  
 
-        >p:first-child.admonition-title {
-            --current-background-color: var(--light-blue);  
+        --current-background-color: var(--very-light-blue);
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--light-blue);
 
             &::before {
                 content: "✓";
-                background-color: var(--blue);  
+                background-color: var(--blue);
             }
         }
     }
 
     &.attention {
         border: none;
-        
-        --current-background-color: var(--light-orange);  
 
-        >p:first-child.admonition-title {
+        --current-background-color: var(--light-orange);
+
+        > p:first-child.admonition-title {
             --current-color: var(--white);
             --current-background-color: var(--dark-orange);
         }
@@ -625,25 +598,24 @@ p.system-message-title {
 
         --current-background-color: var(--very-light-red);
 
-        >p:first-child.admonition-title {
-
+        > p:first-child.admonition-title {
             --current-background-color: var(--red);
             --current-color: var(--white);
-            
+
             &::before {
                 content: "!!";
-                background-color: var(--dark-red);  
+                background-color: var(--dark-red);
             }
         }
     }
 
     &.observation {
         border: none;
-        
-        --current-background-color: var(--very-light-blue);  
 
-        >p:first-child.admonition-title {
-            --current-background-color: var(--blue);  
+        --current-background-color: var(--very-light-blue);
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--blue);
 
             &::before {
                 content: "🔎";
@@ -675,31 +647,28 @@ p.system-message-title {
         background-color: inherit;
     }
 
-
     &.tip {
-
         border-top: none;
 
         /* The first two elements ("p"s) markup the generic title (e.g., "Tip")
         and the user chosen Title; we markup both in a section title. */
 
-        >p:first-child.admonition-title { 
+        > p:first-child.admonition-title {
             --current-background-color: var(--red);
             margin-bottom: 0;
-            
+
             text-shadow: none;
 
             &::before {
                 content: "💡";
-                
             }
 
             + p {
                 position: relative;
                 left: -0.5em;
 
-                width: calc( 100% + 1em);
-                
+                width: calc(100% + 1em);
+
                 margin-top: 0;
 
                 padding: 0.2em 0.5em 0.2em 2.25em;
@@ -713,14 +682,12 @@ p.system-message-title {
         }
     }
 
-    
     &.hint {
         border: none;
 
         --current-background-color: var(--very-light-green);
 
-        >p:first-child.admonition-title {
-
+        > p:first-child.admonition-title {
             --current-background-color: var(--green);
             --current-color: var(--white);
         }
@@ -731,16 +698,16 @@ p.system-message-title {
 
         --current-background-color: var(--very-light-yellow);
 
-        >p:first-child.admonition-title {
+        > p:first-child.admonition-title {
             --current-background-color: var(--dark-yellow);
             --current-color: var(--dark-gray);
-            color: var(--current-color); /* TODO move to general admonition definition! */
+            color: var(
+                --current-color
+            ); /* TODO move to general admonition definition! */
             text-shadow: none;
         }
     }
 }
-
-
 
 p.sidebar-title,
 p.rubric {
@@ -750,7 +717,6 @@ p.rubric {
 }
 
 p.rubric {
-    
     padding: 0;
 }
 
@@ -761,7 +727,7 @@ p.sidebar-subtitle {
     margin-top: -0.5em;
 }
 
-h1+p.subtitle {
+h1 + p.subtitle {
     font-size: 1.6em;
 }
 
@@ -774,10 +740,9 @@ p:last-child {
     margin-bottom: 0;
 }
 
-details>p:last-child {
+details > p:last-child {
     margin-bottom: 1em;
 }
-
 
 a.toc-backref {
     color: inherit;
@@ -797,10 +762,9 @@ span.problematic {
     white-space: pre-wrap;
 }
 /* do not wrap at hyphens and similar: */
-.literal>span.pre {
+.literal > span.pre {
     white-space: nowrap;
 }
-
 
 /* Alignment */
 .align-left {
@@ -831,8 +795,6 @@ span.problematic {
     vertical-align: bottom;
 }
 
-
-
 /* Text Blocks */
 .topic {
     margin: 1em 2em;
@@ -850,17 +812,16 @@ table.align-right {
 figcaption {
     font-size: smaller;
     font-style: italic;
-    color: var(--dark-gray);    
+    color: var(--dark-gray);
     padding: 0.5em;
 
     > .legend {
         font-style: normal;
         font-size: smaller;
-        color: var(--gray);   
-        text-align: left; 
+        color: var(--gray);
+        text-align: left;
     }
 }
-
 
 .sidebar,
 .system-message {
@@ -877,7 +838,6 @@ div.line-block {
 div.line-block div.line-block {
     margin-left: 0em;
 }
-
 
 blockquote {
     border-radius: var(--small-border-radius);
@@ -905,43 +865,42 @@ pre.code {
 svg text.code,
 code,
 pre.code {
-
     --attribute-color: #800000;
 
-    --builtin-color: #6383f8;   
+    --builtin-color: #6383f8;
 
-    --class-color: #9A6324;  
+    --class-color: #9a6324;
 
-    --comment-color: #696969;  
-    --comment-preprocfile-color: #FFE119;   /* Bright Yellow */
-    --comment-preproc-color: #BCF60C;       /* Lime Green */
-    --comment-shadow-color: #FFFAC8;        /* Pale Yellow */
+    --comment-color: #696969;
+    --comment-preprocfile-color: #ffe119; /* Bright Yellow */
+    --comment-preproc-color: #bcf60c; /* Lime Green */
+    --comment-shadow-color: #fffac8; /* Pale Yellow */
 
-    --function-color: #494949;              /* Dark Gray */
+    --function-color: #494949; /* Dark Gray */
 
-    --keyword-color: #4363D8;               /* Strong Blue */
-    --keyword-constant-color: #3232fc;   
-    --keyword-namespace-color: #31bcc9;   
-    --keyword-type-color: #0000ff;  
+    --keyword-color: #4363d8; /* Strong Blue */
+    --keyword-constant-color: #3232fc;
+    --keyword-namespace-color: #31bcc9;
+    --keyword-type-color: #0000ff;
 
-    --literal-color: #911EB4;               /* Purple */
+    --literal-color: #911eb4; /* Purple */
 
-    --name-color: #008080;                  /* Teal */
-    --namespace-color: #3CB44B;             /* Strong Green */
-    --number-color: #F032E6;                /* Magenta */
+    --name-color: #008080; /* Teal */
+    --namespace-color: #3cb44b; /* Strong Green */
+    --number-color: #f032e6; /* Magenta */
 
-    --operator-color: #F58231;              /* Orange */
-    
-    --variable-color: #3CB44B;              /* Strong Green */
-    
-    --punctuation-color: #E6194B;           /* Strong Red */
-        
+    --operator-color: #f58231; /* Orange */
+
+    --variable-color: #3cb44b; /* Strong Green */
+
+    --punctuation-color: #e6194b; /* Strong Red */
+
     --tag-color: #fda8a8;
 
     /* RESERVED */
-    --color-XXX: #46F0F0; 
-    --color-ZZZ: #E6BEFF;  
-    
+    --color-XXX: #46f0f0;
+    --color-ZZZ: #e6beff;
+
     --code-color: var(--black); /* the default color*/
     color: var(--code-color);
     fill: var(--code-color); /* for SVGs*/
@@ -976,7 +935,9 @@ pre.code {
         font-weight: 100;
         color: var(--comment-color);
         fill: var(--comment-color); /* for styling SVGs */
-        text-shadow: 2px 2px 3px var(--comment-shadow-color), -1px -1px 4px var(--gray);
+        text-shadow:
+            2px 2px 3px var(--comment-shadow-color),
+            -1px -1px 4px var(--gray);
 
         &.preproc {
             color: var(--comment-preproc-color);
@@ -991,7 +952,7 @@ pre.code {
     }
 
     .deleted {
-        background-color: #DEB0A1
+        background-color: #deb0a1;
     }
 
     .heading {
@@ -1000,7 +961,7 @@ pre.code {
     }
 
     .inserted {
-        background-color: #A3D289
+        background-color: #a3d289;
     }
 
     .keyword {
@@ -1025,11 +986,10 @@ pre.code {
     }
 
     .name {
-
         color: var(--name-color);
         fill: var(--name-color);
-        
-        &.attribute { 
+
+        &.attribute {
             color: var(--attribute-color);
             font-style: italic;
         }
@@ -1062,7 +1022,7 @@ pre.code {
             font-style: italic;
         }
 
-        &.tag { 
+        &.tag {
             color: var(--tag-color);
             text-shadow: 1px 1px 1px var(--dark-gray);
         }
@@ -1077,11 +1037,10 @@ pre.code {
     }
 
     .literal {
-
         &.string {
-            color: #0C5404;
+            color: #0c5404;
             font-weight: 200;
-    
+
             color: var(--literal-color);
             fill: var(--literal-color); /* for styling SVGs */
 
@@ -1116,9 +1075,9 @@ pre.code {
     }
 
     /*  Issues related to Pygments (i.e., when using rst2LectureDoc):
-    
-        Whitespace is identified differently in different languages. 
-        Hence, decent support requires language dependent styling. 
+
+        Whitespace is identified differently in different languages.
+        Hence, decent support requires language dependent styling.
     .whitespace {
         text-decoration-style: dashed;
         text-decoration-line: underline;
@@ -1135,10 +1094,8 @@ pre.code {
     */
 }
 
-
 /* Tables */
 table {
-    
     border-collapse: collapse;
 
     td,
@@ -1146,33 +1103,33 @@ table {
         border: thin solid silver;
         padding: 0 1ex;
     }
-    
+
     &.borderless td,
     &.borderless th {
         border: 0;
         padding: 0;
-        padding-right: 0.5em
-            /* separate table cells */
+        padding-right: 0.5em;
+        /* separate table cells */
     }
-
 
     /* "booktabs" style (no vertical lines) */
     &.booktabs {
         border: 0;
         border-top: 2px solid black;
         border-bottom: 2px solid black;
-    
-        td,th {
+
+        td,
+        th {
             border: 0;
             border-bottom: thin solid silver;
         }
-    
+
         th {
             border-bottom: thin solid darkgray;
         }
     }
 
-    >caption {
+    > caption {
         text-align: left;
         margin-top: 0.2em;
         margin-bottom: 0.2em;
@@ -1219,10 +1176,7 @@ table {
     text-shadow: -1px -1px 2px var(--black);
 }
 
-
-
-
-/* 
+/*
     Intended to be used with a container (e.g., a div) to signify that it contains an important message.
 */
 .exclamation-mark {
@@ -1231,7 +1185,7 @@ table {
 
     padding: calc(0.5 * var(--current-base-font-size));
     padding-left: calc(3 * var(--current-base-font-size));
-    
+
     background-color: var(--light-gray);
 
     border-radius: 0.5em;
@@ -1239,28 +1193,26 @@ table {
     &::before {
         position: absolute;
         left: 0;
-        top:0;
+        top: 0;
         background-color: var(--dark-red);
         height: 100%;
-        width: calc(2.5 * var(--current-base-font-size)) ;
+        width: calc(2.5 * var(--current-base-font-size));
         text-align: center;
         content: "!";
         color: var(--white);
         font-size: 2lh;
-        font-weight: bold;        
+        font-weight: bold;
     }
 }
 
-
-
 /*
-    Intended to be used with a container (e.g., a div) or a container like structure (e.g. a slide) to show that is done, completed of less importance. 
+    Intended to be used with a container (e.g., a div) or a container like structure (e.g. a slide) to show that is done, completed of less importance.
 */
 .fade-out {
     position: relative;
 
     &::after {
-        content : " ";
+        content: " ";
         position: absolute;
         top: 0;
         left: 0;
@@ -1272,7 +1224,6 @@ table {
     }
 }
 
-
 .framed {
     border: thin solid var(--light-gray);
     --current-background-color: var(--very-very-light-gray);
@@ -1280,13 +1231,12 @@ table {
     padding: 0.5em;
     border-radius: var(--small-border-radius);
 
-    &:has(+*) {
+    &:has(+ *) {
         margin-bottom: 0.5em;
     }
 }
 
-
-/* 
+/*
     Intended to be used with a container (e.g., a div) to visually accentuate it.
 */
 .accentuate {
@@ -1294,7 +1244,7 @@ table {
     padding: 0.25em;
 
     border-radius: var(--small-border-radius);
-    
+
     font-weight: 600;
     --current-background-color: var(--very-light-gray);
     background-color: var(--current-background-color);
@@ -1305,7 +1255,7 @@ ul.important {
     margin-left: 0;
     padding-left: 0;
 
-    >li {
+    > li {
         position: relative;
         --current-background-color: var(--very-light-red);
         background-color: var(--current-background-color);
@@ -1314,8 +1264,8 @@ ul.important {
         padding: 0.5em;
         padding-left: 1.5em;
 
-        &::before{
-            position:absolute;
+        &::before {
+            position: absolute;
             content: " ";
             top: 0;
             left: 0;
