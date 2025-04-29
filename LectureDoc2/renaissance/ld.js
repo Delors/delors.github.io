@@ -36,7 +36,9 @@ import * as ld from "./js/ld-lib.js";
  * meta-information (e.g., about the presentation) and several functions
  * to query and manipulate the current state.
  *
- * Furthermore, a function to optimize the view for printing is provided.
+ * Furthermore, a function to facilitate printing the document is provided.
+ * The function changes the view to the document view and to ensure that all
+ * dialogs are turned off.
  *
  * @author Michael Eichberg
  * @license BSD-3-Clause
@@ -45,10 +47,10 @@ import * as ld from "./js/ld-lib.js";
 /* We load the crypto module on demand. */
 let ldCryptoModule = undefined;
 async function ldCrypto() {
-  if (!ldCryptoModule) {
-    ldCryptoModule = await import("./js/ld-crypto.js");
-  }
-  return ldCryptoModule;
+    if (!ldCryptoModule) {
+        ldCryptoModule = await import("./js/ld-crypto.js");
+    }
+    return ldCryptoModule;
 }
 
 /**
@@ -88,36 +90,36 @@ async function ldCrypto() {
  * ldEvents.addEventListener("afterLDListenerRegistrations", afterLDListenerRegistrations);
  */
 const ldEvents = {
-  beforeLDDOMManipulations: [],
-  afterLDDOMManipulations: [],
-  afterLDListenerRegistrations: [],
-  resetSlideProgress: [],
-  addEventListener: function (event, listener) {
-    switch (event) {
-      case "beforeLDDOMManipulations":
-        this.beforeLDDOMManipulations.push(listener);
-        break;
-      case "afterLDDOMManipulations":
-        this.afterLDDOMManipulations.push(listener);
-        break;
-      case "afterLDListenerRegistrations":
-        this.afterLDListenerRegistrations.push(listener);
-        break;
-      case "resetSlideProgress":
-        this.resetSlideProgress.push(listener);
-        break;
-      default:
-        console.error("Unknown event: " + event);
-    }
-  },
+    beforeLDDOMManipulations: [],
+    afterLDDOMManipulations: [],
+    afterLDListenerRegistrations: [],
+    resetSlideProgress: [],
+    addEventListener: function (event, listener) {
+        switch (event) {
+            case "beforeLDDOMManipulations":
+                this.beforeLDDOMManipulations.push(listener);
+                break;
+            case "afterLDDOMManipulations":
+                this.afterLDDOMManipulations.push(listener);
+                break;
+            case "afterLDListenerRegistrations":
+                this.afterLDListenerRegistrations.push(listener);
+                break;
+            case "resetSlideProgress":
+                this.resetSlideProgress.push(listener);
+                break;
+            default:
+                console.error("Unknown event: " + event);
+        }
+    },
 };
 
 /* We need to make the basic functions available here, to enable ld-components
    the registration for all basic events, before they actually happen. */
 const lectureDoc2 = {
-  lib: ld,
-  crypto: ldCrypto,
-  ldEvents: ldEvents,
+    lib: ld,
+    crypto: ldCrypto,
+    ldEvents: ldEvents,
 };
 export default lectureDoc2;
 
@@ -132,11 +134,11 @@ const topicTemplates = document.querySelector("body > template").content;
 let mathJaxPromise = Promise.resolve(); // Used to hold chain of typesetting calls
 
 function typesetMath(element) {
-  mathJaxPromise = mathJaxPromise
-    .then(() => MathJax.typesetPromise([element]))
-    .then(() => console.log(`MathJax done`))
-    .catch(() => console.log("MathJax not found/used"));
-  return mathJaxPromise;
+    mathJaxPromise = mathJaxPromise
+        .then(() => MathJax.typesetPromise([element]))
+        .then(() => console.log(`MathJax done`))
+        .catch(() => console.log("MathJax not found/used"));
+    return mathJaxPromise;
 }
 
 /**
@@ -148,56 +150,56 @@ function typesetMath(element) {
  * This information will not be mutated after initialization.
  */
 const presentation = {
-  /**
-   * The unique id of this document; required to store state information
-   * in local storage across multiple visits to the same document.
-   *
-   * If the document id is null we will not use local storage.
-   */
-  id: null,
-  /**
-   * Configuration of the slide dimensions. The default is 1920 (width) :
-   * 1200 (height) for a 16:10 ratio. This can be changed in the meta
-   * information.
-   */
-  slide: {
-    width: 1920,
-    height: 1200,
-  },
-  /**
-   * The number of slides; automatically derived when the slide set is
-   * loaded.
-   */
-  slideCount: -1,
-  /**
-   * Defines the first slide that should be shown; the default is
-   * to show the last-shown slide.
-   * Alternatives:
-   * - "<slide no>" where slide no is a number in the range [1,<#slides>]
-   * - "last" to show the last slide
-   * - "last-viewed" to show the last shown slide (default)
-   */
-  firstSlide: "last-viewed",
-  /**
-   * If true, the light table will be shown when this presentation
-   * is shown for the first time. If false (default) it will not be shown.
-   */
-  showLightTable: false,
-  /**
-   * If true (default), the document view mode will be shown when this
-   * presentation is shown for the first time. If false the slide view
-   * is used.
-   */
-  showDocumentView: true,
-  /**
-   * If true the help dialog will be shown when this presentation is
-   * shown for the first time.
-   *
-   * However, if the help was never shown before w.r.t. the same origin,
-   * then the help will be shown at least once; unless help is explicitly
-   * set to false.
-   */
-  showHelp: true,
+    /**
+     * The unique id of this document; required to store state information
+     * in local storage across multiple visits to the same document.
+     *
+     * If the document id is null we will not use local storage.
+     */
+    id: null,
+    /**
+     * Configuration of the slide dimensions. The default is 1920 (width) :
+     * 1200 (height) for a 16:10 ratio. This can be changed in the meta
+     * information.
+     */
+    slide: {
+        width: 1920,
+        height: 1200,
+    },
+    /**
+     * The number of slides; automatically derived when the slide set is
+     * loaded.
+     */
+    slideCount: -1,
+    /**
+     * Defines the first slide that should be shown; the default is
+     * to show the last-shown slide.
+     * Alternatives:
+     * - "<slide no>" where slide no is a number in the range [1,<#slides>]
+     * - "last" to show the last slide
+     * - "last-viewed" to show the last shown slide (default)
+     */
+    firstSlide: "last-viewed",
+    /**
+     * If true, the light table will be shown when this presentation
+     * is shown for the first time. If false (default) it will not be shown.
+     */
+    showLightTable: false,
+    /**
+     * If true (default), the document view mode will be shown when this
+     * presentation is shown for the first time. If false the slide view
+     * is used.
+     */
+    showDocumentView: true,
+    /**
+     * If true the help dialog will be shown when this presentation is
+     * shown for the first time.
+     *
+     * However, if the help was never shown before w.r.t. the same origin,
+     * then the help will be shown at least once; unless help is explicitly
+     * set to false.
+     */
+    showHelp: true,
 };
 
 /**
@@ -209,41 +211,41 @@ const presentation = {
  * stored in the state object.
  */
 let state = {
-  // the (default) state
-  // The overall progress.
-  currentSlideNo: 0,
-  slideProgress: {}, // stores for each slide the number of executed animation steps
+    // the (default) state
+    // The overall progress.
+    currentSlideNo: 0,
+    slideProgress: {}, // stores for each slide the number of executed animation steps
 
-  showMainSlideNumber: false,
-  showHelp: false,
-  showTableOfContents: false,
+    showMainSlideNumber: false,
+    showHelp: false,
+    showTableOfContents: false,
 
-  // Light table related state
-  showLightTable: false, // "actually" set by document or by default in presentation
-  lightTableZoomLevel: 0.2,
-  lightTableViewScrollY: 0, // FIXME use approach which doesn't depend on viewport size
+    // Light table related state
+    showLightTable: false, // "actually" set by document or by default in presentation
+    lightTableZoomLevel: 0.2,
+    lightTableViewScrollY: 0, // FIXME use approach which doesn't depend on viewport size
 
-  // Document view related state
-  showDocumentView: true, // set in the document or by default in presentation
-  continuousViewScrollY: 0,
+    // Document view related state
+    showDocumentView: true, // set in the document or by default in presentation
+    continuousViewScrollY: 0,
 
-  masterPassword: "",
+    masterPassword: "",
 };
 
 /**
  * Short lived information that is not preserved during reloads.
  */
 let ephemeral = {
-  // The following information is required to enable animations.
-  previousSlide: undefined,
+    // The following information is required to enable animations.
+    previousSlide: undefined,
 
-  // The channel to communicate with other windows showing the same document.
-  ldPerDocumentChannel: undefined,
+    // The channel to communicate with other windows showing the same document.
+    ldPerDocumentChannel: undefined,
 
-  // CSS Properties that we change during the presentation
-  // when the user wants to black-out the presentation.
-  bodyDisplayProperty: undefined,
-  rootBackgroundColorProperty: undefined,
+    // CSS Properties that we change during the presentation
+    // when the user wants to black-out the presentation.
+    bodyDisplayProperty: undefined,
+    rootBackgroundColorProperty: undefined,
 };
 
 /**
@@ -262,9 +264,9 @@ let ephemeral = {
  *         message.
  */
 function postMessage(msg, data) {
-  if (ephemeral.ldPerDocumentChannel) {
-    ld.postMessage(ephemeral.ldPerDocumentChannel, msg, data);
-  }
+    if (ephemeral.ldPerDocumentChannel) {
+        ld.postMessage(ephemeral.ldPerDocumentChannel, msg, data);
+    }
 }
 
 /**
@@ -279,11 +281,11 @@ function postMessage(msg, data) {
  *          "ld-".
  */
 function documentSpecificId(dataId) {
-  if (presentation.id) {
-    return "ld-" + presentation.id + "-" + dataId;
-  } else {
-    throw new Error("no document id available");
-  }
+    if (presentation.id) {
+        return "ld-" + presentation.id + "-" + dataId;
+    } else {
+        throw new Error("no document id available");
+    }
 }
 
 /**
@@ -291,11 +293,11 @@ function documentSpecificId(dataId) {
  * unique id.
  */
 function storeState() {
-  if (presentation.id) {
-    const jsonState = JSON.stringify(state);
-    localStorage.setItem(documentSpecificId("state"), jsonState);
-    console.debug(`${presentation.id} saved state: ${jsonState}`);
-  }
+    if (presentation.id) {
+        const jsonState = JSON.stringify(state);
+        localStorage.setItem(documentSpecificId("state"), jsonState);
+        console.debug(`${presentation.id} saved state: ${jsonState}`);
+    }
 }
 
 /**
@@ -308,9 +310,9 @@ function storeState() {
  * This function is registered as a listener of the document's visibility.
  */
 function storeStateOnVisibilityHidden() {
-  if (document.visibilityState === "hidden") {
-    storeState();
-  }
+    if (document.visibilityState === "hidden") {
+        storeState();
+    }
 }
 
 /**
@@ -319,29 +321,29 @@ function storeStateOnVisibilityHidden() {
  * This method DOES NOT apply the state to the presentation.
  */
 function loadState() {
-  if (presentation.id) {
-    const jsonState = localStorage.getItem(documentSpecificId("state"));
-    const newState = JSON.parse(jsonState);
-    if (newState) {
-      state = newState;
-      // console.debug(`${presentation.id} state loaded: ${jsonState}`);
-    } else {
-      // console.debug(`${presentation.id} no previous state found`);
+    if (presentation.id) {
+        const jsonState = localStorage.getItem(documentSpecificId("state"));
+        const newState = JSON.parse(jsonState);
+        if (newState) {
+            state = newState;
+            // console.debug(`${presentation.id} state loaded: ${jsonState}`);
+        } else {
+            // console.debug(`${presentation.id} no previous state found`);
+        }
     }
-  }
 
-  // Check if the user wants to start the presentation at a specific slide.
-  const params = new URL(document.location).searchParams;
-  const ldSlideNo = params.get("ld-slide-no");
-  if (ldSlideNo) {
-    state.currentSlideNo = Number(ldSlideNo) - 1;
-  }
-  const ldView = params.get("ld-view");
-  if (ldView) {
-    if (ldView === "continuous") state.showDocumentView = true;
-    else if (ldView === "slides") state.showDocumentView = false;
-    else console.error(`URL contains invalid view: ${ldView}`);
-  }
+    // Check if the user wants to start the presentation at a specific slide.
+    const params = new URL(document.location).searchParams;
+    const ldSlideNo = params.get("ld-slide-no");
+    if (ldSlideNo) {
+        state.currentSlideNo = Number(ldSlideNo) - 1;
+    }
+    const ldView = params.get("ld-view");
+    if (ldView) {
+        if (ldView === "continuous") state.showDocumentView = true;
+        else if (ldView === "slides") state.showDocumentView = false;
+        else console.error(`URL contains invalid view: ${ldView}`);
+    }
 }
 
 /**
@@ -352,28 +354,28 @@ function loadState() {
  * presentation progress etc.) is as before.
  */
 function applyState() {
-  reapplySlideProgress();
+    reapplySlideProgress();
 
-  let slideCount = lastSlideNo();
-  if (state.currentSlideNo > slideCount) {
-    state.currentSlideNo = slideCount;
-    console.info(`slide number: ${slideCount}`);
-  }
-  showSlideWithNo(state.currentSlideNo);
+    let slideCount = lastSlideNo();
+    if (state.currentSlideNo > slideCount) {
+        state.currentSlideNo = slideCount;
+        console.info(`slide number: ${slideCount}`);
+    }
+    showSlideWithNo(state.currentSlideNo);
 
-  updateLightTableZoomLevel(state.lightTableZoomLevel);
-  if (state.showLightTable) {
-    toggleLightTable();
-  }
+    updateLightTableZoomLevel(state.lightTableZoomLevel);
+    if (state.showLightTable) {
+        toggleLightTable();
+    }
 
-  if (state.showHelp) toggleDialog("help");
-  if (state.showTableOfContents) toggleDialog("table-of-contents");
+    if (state.showHelp) toggleDialog("help");
+    if (state.showTableOfContents) toggleDialog("table-of-contents");
 
-  if (state.showDocumentView) toggleDocumentView();
+    if (state.showDocumentView) toggleDocumentView();
 
-  if (state.showMainSlideNumber) {
-    showMainSlideNumber(true);
-  }
+    if (state.showMainSlideNumber) {
+        showMainSlideNumber(true);
+    }
 }
 
 /**
@@ -381,11 +383,11 @@ function applyState() {
  * document as well as global LectureDoc related information.
  */
 function deleteStoredState() {
-  localStorage.removeItem("ld-help-was-shown");
+    localStorage.removeItem("ld-help-was-shown");
 
-  if (presentation.id) {
-    localStorage.removeItem(documentSpecificId("state"));
-  }
+    if (presentation.id) {
+        localStorage.removeItem(documentSpecificId("state"));
+    }
 }
 
 /**
@@ -394,99 +396,107 @@ function deleteStoredState() {
  * deleted.
  */
 function resetLectureDoc() {
-  postMessage("resetLectureDoc");
-  localResetLectureDoc();
+    postMessage("resetLectureDoc");
+    localResetLectureDoc();
 }
 function localResetLectureDoc() {
-  console.log(`LectureDoc reset initiated`);
+    console.log(`LectureDoc reset initiated`);
 
-  // We need to remove the visibility listener first to avoid that
-  // the state is saved before/on a reload.
-  document.removeEventListener("visibilitychange", storeStateOnVisibilityHidden);
-  deleteStoredState();
-  const url = new URL(document.location);
-  url.search = "";
-  url.hash = "";
-  location.replace(url);
+    // We need to remove the visibility listener first to avoid that
+    // the state is saved before/on a reload.
+    document.removeEventListener(
+        "visibilitychange",
+        storeStateOnVisibilityHidden,
+    );
+    deleteStoredState();
+    const url = new URL(document.location);
+    url.search = "";
+    url.hash = "";
+    location.replace(url);
 }
 
 function scaleSlideImages() {
-  const imgs = document.querySelectorAll(".ld-slide img");
-  for (const img of imgs) {
-    if (img.style.width || img.style.height)
-      // if we have explicit sizing of the image, we don't want to change it
-      continue;
-    if (img.complete) {
-      console.error(
-        "image " +
-          img.src +
-          " is already loaded: " +
-          img.naturalWidth +
-          "x" +
-          img.naturalHeight,
-      );
-      // TODO Implement when required.
-    } else {
-      console.info("waiting for image " + img.src + " to load");
-      img.addEventListener("load", () => {
-        console.info(
-          "image " +
-            img.src +
-            " has been loaded: " +
-            img.naturalWidth +
-            "x" +
-            img.naturalHeight,
-        );
-        img.style.width = img.naturalWidth * 3 + "px";
-        img.style.height = img.naturalHeight * 3 + "px";
-      });
+    const imgs = document.querySelectorAll(".ld-slide img");
+    for (const img of imgs) {
+        if (img.style.width || img.style.height)
+            // if we have explicit sizing of the image, we don't want to change it
+            continue;
+        if (img.complete) {
+            console.error(
+                "image " +
+                    img.src +
+                    " is already loaded: " +
+                    img.naturalWidth +
+                    "x" +
+                    img.naturalHeight,
+            );
+            // TODO Implement when required.
+        } else {
+            console.info("waiting for image " + img.src + " to load");
+            img.addEventListener("load", () => {
+                console.info(
+                    "image " +
+                        img.src +
+                        " has been loaded: " +
+                        img.naturalWidth +
+                        "x" +
+                        img.naturalHeight,
+                );
+                img.style.width = img.naturalWidth * 3 + "px";
+                img.style.height = img.naturalHeight * 3 + "px";
+            });
+        }
     }
-  }
 
-  const objects = document.querySelectorAll(
-    ".ld-slide object[role='img'][type='image/svg+xml']",
-  );
-  for (const obj of objects) {
-    const loadListener = () => {
-      if (obj.width) {
-        console.error(
-          obj.data + " has an explicit width: " + obj.width + "; no scaling performed",
-        );
-        return;
-      }
-      const svg = obj.contentDocument.querySelector("svg");
-      svg.style.overflow = "visible";
-      // const width = svg.scrollWidth; <== doesn't work with Firefox
-      // const height = svg.scrollHeight; <== doesn't work with Firefox
-      const width = svg.width.baseVal.value;
-      const height = svg.height.baseVal.value;
-      console.info("svg " + obj.data + " has been loaded: " + width + "x" + height);
-      obj.style.width = width * 3 + "px";
-      obj.style.height = height * 3 + "px";
-      obj.removeEventListener("load", loadListener);
-    };
-    if (obj.contentDocument) {
-      console.log("svg " + obj.data + " is already loaded");
-      loadListener();
-    } else {
-      console.info("waiting for svg " + obj.data + " to load");
+    const objects = document.querySelectorAll(
+        ".ld-slide object[role='img'][type='image/svg+xml']",
+    );
+    for (const obj of objects) {
+        const loadListener = () => {
+            if (obj.width) {
+                console.error(
+                    obj.data +
+                        " has an explicit width: " +
+                        obj.width +
+                        "; no scaling performed",
+                );
+                return;
+            }
+            const svg = obj.contentDocument.querySelector("svg");
+            svg.style.overflow = "visible";
+            // const width = svg.scrollWidth; <== doesn't work with Firefox
+            // const height = svg.scrollHeight; <== doesn't work with Firefox
+            const width = svg.width.baseVal.value;
+            const height = svg.height.baseVal.value;
+            console.info(
+                "svg " + obj.data + " has been loaded: " + width + "x" + height,
+            );
+            obj.style.width = width * 3 + "px";
+            obj.style.height = height * 3 + "px";
+            obj.removeEventListener("load", loadListener);
+        };
+        if (obj.contentDocument) {
+            console.log("svg " + obj.data + " is already loaded");
+            loadListener();
+        } else {
+            console.info("waiting for svg " + obj.data + " to load");
 
-      obj.addEventListener("load", loadListener);
+            obj.addEventListener("load", loadListener);
+        }
     }
-  }
 }
 
 /**
  * Reads the document id from the documents meta information.
  */
 function initDocumentId() {
-  try {
-    presentation.id = document.querySelector('meta[name="id"]').content;
-  } catch {
-    console.info("no document id found; state will not be preserved");
-    return;
-  }
-  ephemeral.ldPerDocumentChannel = new BroadcastChannel(presentation.id);
+    try {
+        presentation.id = document.querySelector('meta[name="id"]').content;
+    } catch {
+        console.info("no document id found; state will not be preserved");
+        return;
+    }
+    ephemeral.ldPerDocumentChannel = new BroadcastChannel(presentation.id);
 }
 
 /**
@@ -499,22 +509,22 @@ function initDocumentId() {
  * E.g., `<meta name="slide-dimensions" content="1600x1200">`.
  */
 function initSlideDimensions() {
-  try {
-    const slideDimensions = document.querySelector(
-      'meta[name="slide-dimensions"]',
-    ).content;
-    const [w, h] = slideDimensions.split("x").map((e) => e.trim());
-    presentation.slide.width = w;
-    presentation.slide.height = h;
-  } catch (error) {
-    console.info(
-      `no or invalid slide dimensions specified (${error.message}); using 1920x1200 pixels`,
-    );
-  }
-  // Set the corresponding CSS variables accordingly.
-  const root = document.querySelector(":root").style;
-  root.setProperty("--ld-slide-width", presentation.slide.width + "px");
-  root.setProperty("--ld-slide-height", presentation.slide.height + "px");
+    try {
+        const slideDimensions = document.querySelector(
+            'meta[name="slide-dimensions"]',
+        ).content;
+        const [w, h] = slideDimensions.split("x").map((e) => e.trim());
+        presentation.slide.width = w;
+        presentation.slide.height = h;
+    } catch (error) {
+        console.info(
+            `no or invalid slide dimensions specified (${error.message}); using 1920x1200 pixels`,
+        );
+    }
+    // Set the corresponding CSS variables accordingly.
+    const root = document.querySelector(":root").style;
+    root.setProperty("--ld-slide-width", presentation.slide.width + "px");
+    root.setProperty("--ld-slide-height", presentation.slide.height + "px");
 }
 
 /**
@@ -523,14 +533,15 @@ function initSlideDimensions() {
  * This method has to be called before the slides are copied.
  */
 function initSlideCount() {
-  presentation.slideCount = topicTemplates.querySelectorAll("ld-topic").length;
+    presentation.slideCount =
+        topicTemplates.querySelectorAll("ld-topic").length;
 }
 
 /**
  * The number of the last slide (0-based).
  */
 function lastSlideNo() {
-  return presentation.slideCount - 1;
+    return presentation.slideCount - 1;
 }
 
 /**
@@ -539,75 +550,85 @@ function lastSlideNo() {
  * first-slide that should be shown.
  */
 function initCurrentSlide() {
-  try {
-    presentation.firstSlide = document.querySelector('meta[name="first-slide"]').content;
-  } catch {
-    console.info("first slide not specified; showing last viewed");
-  }
-  switch (presentation.firstSlide) {
-    case "last-viewed":
-      // handled by applyState(); defaults to the first slide
-      break;
-    case "last":
-      state.currentSlideNo = lastSlideNo();
-      break;
+    try {
+        presentation.firstSlide = document.querySelector(
+            'meta[name="first-slide"]',
+        ).content;
+    } catch {
+        console.info("first slide not specified; showing last viewed");
+    }
+    switch (presentation.firstSlide) {
+        case "last-viewed":
+            // handled by applyState(); defaults to the first slide
+            break;
+        case "last":
+            state.currentSlideNo = lastSlideNo();
+            break;
 
-    default:
-      try {
-        state.currentSlideNo = Number(presentation.firstSlide) - 1;
-      } catch {
-        console.error('invalid "first-slide" information: ${error}');
-      }
-  }
+        default:
+            try {
+                state.currentSlideNo = Number(presentation.firstSlide) - 1;
+            } catch {
+                console.error('invalid "first-slide" information: ${error}');
+            }
+    }
 }
 
 function initShowLightTable() {
-  const showLightTable = document.querySelector('meta[name="ld-show-light-table"]');
-  if (showLightTable) {
-    presentation.showLightTable = showLightTable.content.trim().toLowerCase();
-    state.showLightTable = presentation.showLightTable === "true";
-  } else {
-    state.showLightTable = presentation.showLightTable;
-  }
+    const showLightTable = document.querySelector(
+        'meta[name="ld-show-light-table"]',
+    );
+    if (showLightTable) {
+        presentation.showLightTable = showLightTable.content
+            .trim()
+            .toLowerCase();
+        state.showLightTable = presentation.showLightTable === "true";
+    } else {
+        state.showLightTable = presentation.showLightTable;
+    }
 }
 
 function initShowDocumentView() {
-  // recall that the default is true, when a document is opened for
-  // the first time
-  const showDocumentView = document.querySelector(
-    'meta[name="ld-show-continuous-view"]',
-  );
-  if (showDocumentView) {
-    presentation.showDocumentView = showDocumentView.content.trim().toLowerCase();
-    state.showDocumentView = presentation.showDocumentView === "true";
-  } else {
-    state.showDocumentView = presentation.showDocumentView;
-  }
+    // recall that the default is true, when a document is opened for
+    // the first time
+    const showDocumentView = document.querySelector(
+        'meta[name="ld-show-continuous-view"]',
+    );
+    if (showDocumentView) {
+        presentation.showDocumentView = showDocumentView.content
+            .trim()
+            .toLowerCase();
+        state.showDocumentView = presentation.showDocumentView === "true";
+    } else {
+        state.showDocumentView = presentation.showDocumentView;
+    }
 }
 
 function initShowHelp() {
-  const showHelp = document.querySelector('meta[name="ld-show-help"]');
-  if (showHelp) {
-    presentation.showHelp = showHelp.content.trim().toLowerCase();
-    state.showHelp = presentation.showHelp === "true";
-  }
-  // We don't want to show the help over and over again ... therefore,
-  // we use a LectureDoc specific - i.e., document independent - id to
-  // store the information if the help was shown at least once.
-  if (!state.showHelp && !localStorage.getItem("ld-help-was-shown")) {
-    state.showHelp = true;
-    localStorage.setItem("ld-help-was-shown", true);
-  }
+    const showHelp = document.querySelector('meta[name="ld-show-help"]');
+    if (showHelp) {
+        presentation.showHelp = showHelp.content.trim().toLowerCase();
+        state.showHelp = presentation.showHelp === "true";
+    }
+    // We don't want to show the help over and over again ... therefore,
+    // we use a LectureDoc specific - i.e., document independent - id to
+    // store the information if the help was shown at least once.
+    if (!state.showHelp && !localStorage.getItem("ld-help-was-shown")) {
+        state.showHelp = true;
+        localStorage.setItem("ld-help-was-shown", true);
+    }
 }
 
 function getEncryptedExercisesPasswords() {
-  const exercisesPasswords = document.querySelector('meta[name="exercises-passwords"]');
-  if (exercisesPasswords) {
-    return exercisesPasswords.content;
-  } else {
-    console.info("no exercises specified or no master password set");
-    return undefined;
-  }
+    const exercisesPasswords = document.querySelector(
+        'meta[name="exercises-passwords"]',
+    );
+    if (exercisesPasswords) {
+        return exercisesPasswords.content;
+    } else {
+        console.info("no exercises specified or no master password set");
+        return undefined;
+    }
 }
 
 /**
@@ -619,26 +640,28 @@ function getEncryptedExercisesPasswords() {
  * respective view.
  */
 function setupCopyToClipboard(rootNode) {
-  rootNode.querySelectorAll(".code.copy-to-clipboard").forEach((code) => {
-    const copyToClipboardButton = ld.div({ classes: ["ld-copy-to-clipboard-button"] });
-    code.insertBefore(copyToClipboardButton, code.firstChild);
-    copyToClipboardButton.addEventListener("click", (event) => {
-      event.stopPropagation();
-      const c = code.cloneNode(true);
-      const lns = c.querySelectorAll(":scope > small.ln");
-      lns.forEach((ln) => c.removeChild(ln));
-      const textToCopy = c.innerText;
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        showMessage("Copied to clipboard.", 1000);
-      });
+    rootNode.querySelectorAll(".code.copy-to-clipboard").forEach((code) => {
+        const copyToClipboardButton = ld.div({
+            classes: ["ld-copy-to-clipboard-button"],
+        });
+        code.insertBefore(copyToClipboardButton, code.firstChild);
+        copyToClipboardButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const c = code.cloneNode(true);
+            const lns = c.querySelectorAll(":scope > small.ln");
+            lns.forEach((ln) => c.removeChild(ln));
+            const textToCopy = c.innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showMessage("Copied to clipboard.", 1000);
+            });
+        });
     });
-  });
 }
 
 function setupIncrementalElements(slide) {
-  slide.querySelectorAll(":scope .incremental-list").forEach((list) => {
-    if (list.tagName === "DL") {
-      /*  The following does not work, because a single "line" consists
+    slide.querySelectorAll(":scope .incremental-list").forEach((list) => {
+        if (list.tagName === "DL") {
+            /*  The following does not work, because a single "line" consists
                 of a dt and a dd element.
 
                 const items = list.querySelectorAll(":scope > dt");
@@ -649,51 +672,77 @@ function setupIncrementalElements(slide) {
                 Therefore, we split up the list in multiple lists which are
                 then made incremental as a whole.
              */
-      const div = ld.div({});
-      list.parentElement.replaceChild(div, list);
-      const items = list.querySelectorAll(":scope > *");
-      let currentList = undefined;
-      items.forEach((item) => {
-        if (item.tagName === "DT") {
-          currentList = list.cloneNode(false);
-          div.appendChild(currentList);
-          currentList.classList.add("incremental");
+            const div = ld.div({});
+            list.parentElement.replaceChild(div, list);
+            const items = list.querySelectorAll(":scope > *");
+            let currentList = undefined;
+            items.forEach((item) => {
+                if (item.tagName === "DT") {
+                    currentList = list.cloneNode(false);
+                    div.appendChild(currentList);
+                    currentList.classList.add("incremental");
+                }
+                currentList.appendChild(item);
+            });
+        } else {
+            // ul and ol lists
+            const items = list.querySelectorAll(":scope > li");
+            items.forEach((item) => {
+                item.classList.add("incremental");
+            });
         }
-        currentList.appendChild(item);
-      });
-    } else {
-      // ul and ol lists
-      const items = list.querySelectorAll(":scope > li");
-      items.forEach((item) => {
-        item.classList.add("incremental");
-      });
-    }
-  });
-  slide
-    .querySelectorAll(":scope .incremental-table-rows")
-    .forEach((incrementalTableRows) => {
-      const items = incrementalTableRows.querySelectorAll(":scope > tbody > tr");
-      items.forEach((item) => {
-        item.classList.add("incremental");
-      });
     });
 
-  // Bring everything to the base-state
-  slide.querySelectorAll(":scope .incremental").forEach((e) => {
-    e.style.visibility = "hidden";
-  });
+    slide
+        .querySelectorAll(":scope .incremental-table-rows")
+        .forEach((incrementalTableRows) => {
+            const items = incrementalTableRows.querySelectorAll(
+                ":scope > tbody > tr",
+            );
+            items.forEach((item) => {
+                item.classList.add("incremental");
+            });
+        });
+
+    slide.querySelectorAll(":scope .incremental-code").forEach((pre) => {
+        /* Currently, we only support incremental code if it is numbered. In this
+         case, the pre tag with the class "incremental-code" always has pairs of
+         children for each line of code. This pair consists of:
+
+          <span class="ln">...<span><code>...</code>
+
+        Other child tags (e.g. <div>s created for additional buttons such as
+        "copy-to-clipboard") are ignored.
+      */
+        pre.classList.add("incremental[rel-ctx]");
+        let lineNo = 0;
+        Array.from(pre.children).forEach((child) => {
+            if (child.tagName === "SMALL" && child.classList.contains("ln")) {
+                child.classList.add(`incremental[rel-${lineNo}]`);
+            }
+            if (child.tagName === "CODE") {
+                child.classList.add(`incremental[rel-${lineNo}]`);
+                lineNo++;
+            }
+        });
+    });
+
+    // Bring everything to the base-state
+    slide.querySelectorAll(":scope .incremental").forEach((e) => {
+        e.style.visibility = "hidden";
+    });
 }
 
 function setupLightTable() {
-  const lightTableDialog = ld.dialog({
-    id: "ld-light-table-dialog",
-    classes: ["ld-ui"],
-  });
+    const lightTableDialog = ld.dialog({
+        id: "ld-light-table-dialog",
+        classes: ["ld-ui"],
+    });
 
-  ld.div({
-    classes: ["ld-dialog-header"],
-    parent: lightTableDialog,
-    innerHTML: `
+    ld.div({
+        classes: ["ld-dialog-header"],
+        parent: lightTableDialog,
+        innerHTML: `
             <span id="ld-light-table-slides-count" class="ld-dialog-title">
                 Light Table: ${presentation.slideCount} slides
             </span>
@@ -705,393 +754,435 @@ function setupLightTable() {
                 tabindex ="-1" >
             <button type="button" class="ld-dialog-close-button" id="ld-light-table-close-button" ></button>
         `,
-  });
+    });
 
-  const lightTableSlides = ld.create("section", {
-    parent: lightTableDialog,
-    id: "ld-light-table-slides",
-  });
+    const lightTableSlides = ld.create("section", {
+        parent: lightTableDialog,
+        id: "ld-light-table-slides",
+    });
 
-  ld.div({
-    classes: ["ld-dialog-footer"],
-    parent: lightTableDialog,
-    innerHTML: `
+    ld.div({
+        classes: ["ld-dialog-footer"],
+        parent: lightTableDialog,
+        innerHTML: `
         <div id="ld-light-table-zoom">
         <label for="ld-light-table-zoom-slider">Zoom:</label>
         <input type="range" id="ld-light-table-zoom-slider" name="Zoom"
                 min="0.05" max="0.3" step="0.05" value="0.2"/>
         </div>`,
-  });
-
-  topicTemplates.querySelectorAll("ld-topic").forEach((topic, i) => {
-    const slide = topic.cloneNode(true);
-    slide.classList.add("ld-slide");
-    slide.removeAttribute("id"); // not needed anymore (in case it was set)
-
-    const slideScaler = ld.div({ classes: ["ld-light-table-slide-scaler"] });
-    slideScaler.appendChild(slide);
-
-    const slideOverlay = ld.div({ classes: ["ld-light-table-slide-overlay"] });
-    slideOverlay.dataset.ldSlideNo = i;
-    slideOverlay.innerHTML = `<span class='ld-light-table-slide-number'>${i + 1}</span>`;
-
-    ld.div({
-      classes: ["ld-light-table-slide-pane", "ld-slide-context"],
-      parent: lightTableSlides,
-      children: [slideScaler, slideOverlay],
     });
-  });
 
-  typesetMath(lightTableDialog);
-  document.body.prepend(lightTableDialog);
+    topicTemplates.querySelectorAll("ld-topic").forEach((topic, i) => {
+        const slide = topic.cloneNode(true);
+        slide.classList.add("ld-slide");
+        slide.removeAttribute("id"); // not needed anymore (in case it was set)
+
+        const slideScaler = ld.div({
+            classes: ["ld-light-table-slide-scaler"],
+        });
+        slideScaler.appendChild(slide);
+
+        const slideOverlay = ld.div({
+            classes: ["ld-light-table-slide-overlay"],
+        });
+        slideOverlay.dataset.ldSlideNo = i;
+        slideOverlay.innerHTML = `<span class='ld-light-table-slide-number'>${i + 1}</span>`;
+
+        ld.div({
+            classes: ["ld-light-table-slide-pane", "ld-slide-context"],
+            parent: lightTableSlides,
+            children: [slideScaler, slideOverlay],
+        });
+    });
+
+    typesetMath(lightTableDialog);
+    document.body.prepend(lightTableDialog);
 }
 
 function setupHelp() {
-  const helpDialog = ld.dialog({ id: "ld-help-dialog", classes: ["ld-ui"] });
+    const helpDialog = ld.dialog({ id: "ld-help-dialog", classes: ["ld-ui"] });
 
-  helpDialog.innerHTML = `
+    helpDialog.innerHTML = `
         <div class="ld-dialog-header">
             <span class="ld-dialog-title">Help</span>
             <button type="button" id="ld-help-close-button" class="ld-dialog-close-button" >
             </button>
         </div>`;
 
-  const helpFrag = import.meta.resolve("./js/ld-help.frag.html");
-  fetch(helpFrag)
-    .then((response) => {
-      return response.text();
-    })
-    .then((htmlFrag) => {
-      const helpTemplate = ld.create("template", { id: "ld-help-template" });
-      helpTemplate.innerHTML = htmlFrag;
-      helpDialog.appendChild(helpTemplate.content);
-    })
-    .catch((error) => {
-      helpDialog.innerHTML = `<p>Help not found: ${error}</p>`;
-    });
+    const helpFrag = import.meta.resolve("./js/ld-help.frag.html");
+    fetch(helpFrag)
+        .then((response) => {
+            return response.text();
+        })
+        .then((htmlFrag) => {
+            const helpTemplate = ld.create("template", {
+                id: "ld-help-template",
+            });
+            helpTemplate.innerHTML = htmlFrag;
+            helpDialog.appendChild(helpTemplate.content);
+        })
+        .catch((error) => {
+            helpDialog.innerHTML = `<p>Help not found: ${error}</p>`;
+        });
 
-  document.body.prepend(helpDialog);
+    document.body.prepend(helpDialog);
 }
 
 function setupTableOfContents() {
-  const topics = topicTemplates.querySelectorAll(
-    "ld-topic:where(.new-section,.new-subsection)",
-  );
-  let level = 1;
-  let s = "<ol>";
-  for (const topic of topics) {
-    const newLevel = topic.classList.contains("new-section") ? 1 : 2;
-    if (newLevel > level) {
-      s += "<ol>";
+    const topics = topicTemplates.querySelectorAll(
+        "ld-topic:where(.new-section,.new-subsection)",
+    );
+    let level = 1;
+    let s = "<ol>";
+    for (const topic of topics) {
+        const newLevel = topic.classList.contains("new-section") ? 1 : 2;
+        if (newLevel > level) {
+            s += "<ol>";
+        }
+        if (newLevel < level) {
+            s += "</ol>";
+        }
+        s += `<li><a href="#${topic.id}">`;
+        s += topic.querySelector("h1,h2").innerHTML;
+        s += "</a></li>";
+        level = newLevel;
     }
-    if (newLevel < level) {
-      s += "</ol>";
-    }
-    s += `<li><a href="#${topic.id}">`;
-    s += topic.querySelector("h1,h2").innerHTML;
-    s += "</a></li>";
-    level = newLevel;
-  }
-  s += "</ol>";
+    s += "</ol>";
 
-  const tocDialog = ld.dialog({ id: "ld-table-of-contents-dialog", classes: ["ld-ui"] });
-  tocDialog.innerHTML = `
+    const tocDialog = ld.dialog({
+        id: "ld-table-of-contents-dialog",
+        classes: ["ld-ui"],
+    });
+    tocDialog.innerHTML = `
         <div class="ld-dialog-header">
             <span class="ld-dialog-title">Table of Contents</span>
             <button type="button" id="ld-table-of-contents-close-button" class="ld-dialog-close-button" ></button>
         </div>
         ${s}`;
 
-  document.body.prepend(tocDialog);
-  document
-    .getElementById("ld-table-of-contents-close-button")
-    .addEventListener("click", toggleTableOfContents);
-  tocDialog.querySelectorAll(":scope a").forEach((a) => {
-    // console.log("registering link listener for: "+a);
-    registerInternalLinkClickListener(a, toggleTableOfContents);
-  });
+    document.body.prepend(tocDialog);
+    document
+        .getElementById("ld-table-of-contents-close-button")
+        .addEventListener("click", toggleTableOfContents);
+    tocDialog.querySelectorAll(":scope a").forEach((a) => {
+        // console.log("registering link listener for: "+a);
+        registerInternalLinkClickListener(a, toggleTableOfContents);
+    });
 }
 
 function createPasswordInput() {
-  const passwordInput = ld.create("INPUT", {});
-  passwordInput.type = "password";
-  passwordInput.placeholder = "🔑";
-  // When the user has entered a password in the past, it may just be filled
-  // in automatically. This makes it easier for the user to continue where she left.
-  // However, to make it possible to just press "return" to submit the "old"
-  // password; we simply fake an input event.
-  passwordInput.addEventListener("keydown", () => {
-    passwordInput.dispatchEvent(new Event("input", { target: passwordInput }));
-  });
-  return passwordInput;
+    const passwordInput = ld.create("INPUT", {});
+    passwordInput.type = "password";
+    passwordInput.placeholder = "🔑";
+    // When the user has entered a password in the past, it may just be filled
+    // in automatically. This makes it easier for the user to continue where she left.
+    // However, to make it possible to just press "return" to submit the "old"
+    // password; we simply fake an input event.
+    passwordInput.addEventListener("keydown", () => {
+        passwordInput.dispatchEvent(
+            new Event("input", { target: passwordInput }),
+        );
+    });
+    return passwordInput;
 }
 
 function setupUnlockPresenterNotesAndSolutionsDialog() {
-  const unlockDialog = ld.dialog({
-    id: "ld-exercises-passwords-dialog",
-    classes: ["ld-ui"],
-  });
-  unlockDialog.innerHTML = `
+    const unlockDialog = ld.dialog({
+        id: "ld-exercises-passwords-dialog",
+        classes: ["ld-ui"],
+    });
+    unlockDialog.innerHTML = `
             <div class="ld-dialog-header">
                 <span class="ld-dialog-title">Unlock Presenter Notes and Solutions</span>
                 <button type="button" class="ld-dialog-close-button" id="ld-exercises-passwords-close-button" ></button>
             </div>`;
-  const encryptedExercisesPasswords = getEncryptedExercisesPasswords();
-  if (encryptedExercisesPasswords) {
-    const passwordInput = createPasswordInput();
-    if (state.masterPassword) {
-      passwordInput.value = state.masterPassword;
-    }
-    const contentArea = ld.div({
-      id: "ld-exercises-passwords-content",
-      parent: unlockDialog,
-      children: [passwordInput],
-    });
-    passwordInput.addEventListener("input", async (e) => {
-      const currentPassword = e.target.value;
-      if (currentPassword.length > 2) {
-        ldCrypto()
-          .then((ldCrypto) => {
-            return ldCrypto.decryptAESGCMPBKDF(
-              encryptedExercisesPasswords,
-              currentPassword,
-            );
-          })
-          .then((decrypted) => {
-            contentArea.removeChild(passwordInput);
+    const encryptedExercisesPasswords = getEncryptedExercisesPasswords();
+    if (encryptedExercisesPasswords) {
+        const passwordInput = createPasswordInput();
+        if (state.masterPassword) {
+            passwordInput.value = state.masterPassword;
+        }
+        const contentArea = ld.div({
+            id: "ld-exercises-passwords-content",
+            parent: unlockDialog,
+            children: [passwordInput],
+        });
+        passwordInput.addEventListener("input", async (e) => {
+            const currentPassword = e.target.value;
+            if (currentPassword.length > 2) {
+                ldCrypto()
+                    .then((ldCrypto) => {
+                        return ldCrypto.decryptAESGCMPBKDF(
+                            encryptedExercisesPasswords,
+                            currentPassword,
+                        );
+                    })
+                    .then((decrypted) => {
+                        contentArea.removeChild(passwordInput);
 
-            state.masterPassword = currentPassword;
+                        state.masterPassword = currentPassword;
 
-            localDecryptPresenterNotes(currentPassword);
+                        localDecryptPresenterNotes(currentPassword);
 
-            const decryptedPasswords = JSON.parse(decrypted);
-            if (decryptedPasswords.length === 0) {
-              console.info("No exercise passwords unlocked.");
-              unlockDialog.querySelector(":scope .ld-dialog-title").innerHTML =
-                "Presenter Notes";
-              contentArea.innerHTML = "<strong>Unlocked.</strong>";
-              return;
+                        const decryptedPasswords = JSON.parse(decrypted);
+                        if (decryptedPasswords.length === 0) {
+                            console.info("No exercise passwords unlocked.");
+                            unlockDialog.querySelector(
+                                ":scope .ld-dialog-title",
+                            ).innerHTML = "Presenter Notes";
+                            contentArea.innerHTML =
+                                "<strong>Unlocked.</strong>";
+                            return;
+                        }
+                        const exercisesPasswords =
+                            decryptedPasswords[0]["passwords"];
+                        const passwordsTable = ld.convertToTable(
+                            exercisesPasswords,
+                            (i) => {
+                                // FIXME make this a button
+                                const div = ld.div({
+                                    classes: ["ld-unlock-global"],
+                                });
+                                div.addEventListener("click", () =>
+                                    decryptExercise(
+                                        exercisesPasswords[i][0],
+                                        exercisesPasswords[i][1],
+                                    ),
+                                );
+                                const td = ld.create("td", { children: [div] });
+                                return [td];
+                            },
+                        );
+
+                        for (let i = 0; i < exercisesPasswords.length; i++) {
+                            localDecryptExercise(
+                                exercisesPasswords[i][0],
+                                exercisesPasswords[i][1],
+                            );
+                        }
+                        contentArea.appendChild(passwordsTable);
+                        unlockDialog.querySelector(
+                            ":scope .ld-dialog-title",
+                        ).innerHTML = "Exercises Passwords";
+                    })
+                    .catch((error) => {
+                        console.log(
+                            "decryption using: " +
+                                currentPassword +
+                                " failed - " +
+                                error,
+                        );
+                    });
             }
-            const exercisesPasswords = decryptedPasswords[0]["passwords"];
-            const passwordsTable = ld.convertToTable(exercisesPasswords, (i) => {
-              // FIXME make this a button
-              const div = ld.div({ classes: ["ld-unlock-global"] });
-              div.addEventListener("click", () =>
-                decryptExercise(exercisesPasswords[i][0], exercisesPasswords[i][1]),
-              );
-              const td = ld.create("td", { children: [div] });
-              return [td];
-            });
-
-            for (let i = 0; i < exercisesPasswords.length; i++) {
-              localDecryptExercise(exercisesPasswords[i][0], exercisesPasswords[i][1]);
-            }
-            contentArea.appendChild(passwordsTable);
-            unlockDialog.querySelector(":scope .ld-dialog-title").innerHTML =
-              "Exercises Passwords";
-          })
-          .catch((error) => {
-            console.log("decryption using: " + currentPassword + " failed - " + error);
-          });
-      }
-    });
-  } else {
-    ld.div({ parent: unlockDialog }).innerHTML = `
+        });
+    } else {
+        ld.div({ parent: unlockDialog }).innerHTML = `
             <div id="ld-exercises-passwords-content">
                 <strong>This document has no exercises or the master password is not set.</strong>
             </div>`;
-  }
+    }
 
-  document.getElementsByTagName("BODY")[0].prepend(unlockDialog);
-  document
-    .getElementById("ld-exercises-passwords-close-button")
-    .addEventListener("click", toggleExercisesPasswordsDialog);
+    document.getElementsByTagName("BODY")[0].prepend(unlockDialog);
+    document
+        .getElementById("ld-exercises-passwords-close-button")
+        .addEventListener("click", toggleExercisesPasswordsDialog);
 }
 
 function setupJumpTargetDialog() {
-  const jumpTargetDialog = ld.dialog({
-    id: "ld-jump-target-dialog",
-    classes: ["ld-ui"],
-  });
-  ld.div({
-    parent: jumpTargetDialog,
-    innerHTML: `
+    const jumpTargetDialog = ld.dialog({
+        id: "ld-jump-target-dialog",
+        classes: ["ld-ui"],
+    });
+    ld.div({
+        parent: jumpTargetDialog,
+        innerHTML: `
             <span id="ld-jump-target-current"></span> /
             <span id="ld-jump-target-max">${presentation.slideCount}</span>
         `,
-  });
+    });
 
-  document.getElementsByTagName("BODY")[0].prepend(jumpTargetDialog);
+    document.getElementsByTagName("BODY")[0].prepend(jumpTargetDialog);
 }
 
 function showsSlide() {
-  return !state.showDocumentView && !state.showLightTable && !state.showHelp;
+    return !state.showDocumentView && !state.showLightTable && !state.showHelp;
 }
 
 function showLaserPointer(slideX, slideY) {
-  postMessage("showLaserPointer", [slideX, slideY]);
-  localShowLaserPointer(slideX, slideY);
+    postMessage("showLaserPointer", [slideX, slideY]);
+    localShowLaserPointer(slideX, slideY);
 }
 
 function localShowLaserPointer(slideX, slideY) {
-  if (!showsSlide()) return;
+    if (!showsSlide()) return;
 
-  const currentSlide = getCurrentSlide();
-  const laserPointer = document.querySelector("ld-laser-pointer");
-  const laserPointerStyle = laserPointer.style;
-  laserPointerStyle.left = currentSlide.offsetLeft + slideX + "px";
-  laserPointerStyle.top = currentSlide.offsetTop + slideY + "px";
-  laserPointer.style.scale = "initial";
+    const currentSlide = getCurrentSlide();
+    const laserPointer = document.querySelector("ld-laser-pointer");
+    const laserPointerStyle = laserPointer.style;
+    laserPointerStyle.left = currentSlide.offsetLeft + slideX + "px";
+    laserPointerStyle.top = currentSlide.offsetTop + slideY + "px";
+    laserPointer.style.scale = "initial";
 }
 
 function hideLaserPointer() {
-  postMessage("hideLaserPointer", undefined);
-  localHideLaserPointer();
+    postMessage("hideLaserPointer", undefined);
+    localHideLaserPointer();
 }
 
 function localHideLaserPointer() {
-  document.querySelector("ld-laser-pointer").style.scale = 0;
+    document.querySelector("ld-laser-pointer").style.scale = 0;
 }
 
 function setupSlidePane() {
-  const slidesPane = ld.div({
-    id: "ld-slides-pane",
-    classes: ["ld-slide-context"],
-    children: [ld.create("ld-laser-pointer", {})],
-  });
+    const slidesPane = ld.div({
+        id: "ld-slides-pane",
+        classes: ["ld-slide-context"],
+        children: [ld.create("ld-laser-pointer", {})],
+    });
 
-  slidesPane.addEventListener(
-    "mousemove",
-    (event) => {
-      // By default, the laser pointer is positioned in the center and
-      // also relative to the main pane.
-      const s = slidesPane.style.scale;
-      const innerW = window.innerWidth;
-      const innerH = window.innerHeight;
-      const w = presentation.slide.width;
-      const h = presentation.slide.height;
-      const sh = h * s;
-      const sw = w * s;
+    slidesPane.addEventListener(
+        "mousemove",
+        (event) => {
+            // By default, the laser pointer is positioned in the center and
+            // also relative to the main pane.
+            const s = slidesPane.style.scale;
+            const innerW = window.innerWidth;
+            const innerH = window.innerHeight;
+            const w = presentation.slide.width;
+            const h = presentation.slide.height;
+            const sh = h * s;
+            const sw = w * s;
 
-      // Coordinates of the mouse pointer relative to the top left
-      // corner of the slide. ATTENTION: we can't use the offset
-      // properties of the event object, because they are not
-      // necessarily relative to the slide as a whole.
-      let slideX = (event.clientX - (innerW - sw) / 2) / s;
-      if (slideX < 0 || slideX >= w) slideX = undefined; // outside
-      let slideY = (event.clientY - (innerH - sh) / 2) / s;
-      if (slideY < 0 || slideY >= h) slideY = undefined; // outside
-      if (!slideX || !slideY) return; // outside
+            // Coordinates of the mouse pointer relative to the top left
+            // corner of the slide. ATTENTION: we can't use the offset
+            // properties of the event object, because they are not
+            // necessarily relative to the slide as a whole.
+            let slideX = (event.clientX - (innerW - sw) / 2) / s;
+            if (slideX < 0 || slideX >= w) slideX = undefined; // outside
+            let slideY = (event.clientY - (innerH - sh) / 2) / s;
+            if (slideY < 0 || slideY >= h) slideY = undefined; // outside
+            if (!slideX || !slideY) return; // outside
 
-      if (event.ctrlKey) {
-        showLaserPointer(slideX, slideY);
-        event.preventDefault();
-      } else {
-        hideLaserPointer();
-      }
-    },
-    false,
-  );
+            if (event.ctrlKey) {
+                showLaserPointer(slideX, slideY);
+                event.preventDefault();
+            } else {
+                hideLaserPointer();
+            }
+        },
+        false,
+    );
 
-  /*  Creates slides (by means of ld-slide elements) from the defined topics.
+    /*  Creates slides (by means of ld-slide elements) from the defined topics.
         Associates every slide with a unique id based on the number of the
         slide (data-ld-slide-no-*). Internally, the numbering of slides starts
         with 0. However, user-facing functions assume that the first slide has
         the id 1.
     */
-  topicTemplates.querySelectorAll("ld-topic").forEach((t, i) => {
-    const slide = ld.create("ld-slide", {
-      id: "ld-slide-no-" + i,
-      classList: t.classList,
-      children: t.children,
+    topicTemplates.querySelectorAll("ld-topic").forEach((t, i) => {
+        const slide = ld.create("ld-slide", {
+            id: "ld-slide-no-" + i,
+            classList: t.classList,
+            children: t.children,
+        });
+        slide.classList.add("ld-slide");
+        slide.dataset.ldSlideNo = i;
+        slide.dataset.id = t.id; /* The original ID! */
+
+        setupCopyToClipboard(slide);
+
+        // Move supplemental infos at the end.
+        const allSupplementals = slide.querySelectorAll(":scope .supplemental");
+        if (allSupplementals.length > 0) {
+            const ldSupplementals = ld.create("ld-supplementals", {});
+            for (const supplemental of allSupplementals) {
+                ldSupplementals.appendChild(supplemental);
+            }
+            slide.appendChild(ldSupplementals);
+        }
+
+        // Collect and move presenter notes as a whole at the end.
+        const presenterNotes = slide.querySelectorAll(
+            ":scope ld-presenter-note",
+        );
+        if (presenterNotes.length > 0) {
+            let presenterNoteId = 0;
+            const ldPresenterNotes = ld.create("ld-presenter-notes", {});
+            for (const presenterNote of presenterNotes) {
+                const clonedPresenterNote = presenterNote.cloneNode(true);
+                clonedPresenterNote.id =
+                    "ld-presenter-note-" + ++presenterNoteId;
+                clonedPresenterNote.dataset.presenterNoteId = presenterNoteId;
+                ldPresenterNotes.appendChild(clonedPresenterNote);
+
+                // Create a marker element instead of the "full" presenter note.
+                const presenterNoteMarker = ld.create(
+                    "ld-presenter-note-marker",
+                    {},
+                );
+                presenterNoteMarker.dataset.encrypted = true;
+                presenterNoteMarker.dataset.presenterNoteId = presenterNoteId;
+                presenterNoteMarker.innerHTML = `<div>${presenterNoteId}</div>`;
+                presenterNote.parentElement.replaceChild(
+                    presenterNoteMarker,
+                    presenterNote,
+                );
+            }
+            slide.appendChild(ldPresenterNotes);
+        }
+
+        // Let's hide all elements that should be shown incrementally;
+        // this is done to get all (new) slides to a well-defined state.
+        setupIncrementalElements(slide);
+        slide.style.display = "none";
+        slidesPane.appendChild(slide);
     });
-    slide.classList.add("ld-slide");
-    slide.dataset.ldSlideNo = i;
-    slide.dataset.id = t.id; /* The original ID! */
 
-    setupCopyToClipboard(slide);
-
-    // Move supplemental infos at the end.
-    const allSupplementals = slide.querySelectorAll(":scope .supplemental");
-    if (allSupplementals.length > 0) {
-      const ldSupplementals = ld.create("ld-supplementals", {});
-      for (const supplemental of allSupplementals) {
-        ldSupplementals.appendChild(supplemental);
-      }
-      slide.appendChild(ldSupplementals);
-    }
-
-    // Collect and move presenter notes as a whole at the end.
-    const presenterNotes = slide.querySelectorAll(":scope ld-presenter-note");
-    if (presenterNotes.length > 0) {
-      let presenterNoteId = 0;
-      const ldPresenterNotes = ld.create("ld-presenter-notes", {});
-      for (const presenterNote of presenterNotes) {
-        const clonedPresenterNote = presenterNote.cloneNode(true);
-        clonedPresenterNote.id = "ld-presenter-note-" + ++presenterNoteId;
-        clonedPresenterNote.dataset.presenterNoteId = presenterNoteId;
-        ldPresenterNotes.appendChild(clonedPresenterNote);
-
-        // Create a marker element instead of the "full" presenter note.
-        const presenterNoteMarker = ld.create("ld-presenter-note-marker", {});
-        presenterNoteMarker.dataset.encrypted = true;
-        presenterNoteMarker.dataset.presenterNoteId = presenterNoteId;
-        presenterNoteMarker.innerHTML = `<div>${presenterNoteId}</div>`;
-        presenterNote.parentElement.replaceChild(presenterNoteMarker, presenterNote);
-      }
-      slide.appendChild(ldPresenterNotes);
-    }
-
-    // Let's hide all elements that should be shown incrementally;
-    // this is done to get all (new) slides to a well-defined state.
-    setupIncrementalElements(slide);
-    slide.style.display = "none";
-    slidesPane.appendChild(slide);
-  });
-
-  typesetMath(slidesPane);
-  const body = document.querySelector("BODY");
-  body.prepend(ld.create("ld-slide-number", {}));
-  body.prepend(slidesPane);
+    typesetMath(slidesPane);
+    const body = document.querySelector("BODY");
+    body.prepend(ld.create("ld-slide-number", {}));
+    body.prepend(slidesPane);
 }
 
 function decryptExercise(title, password) {
-  postMessage("decryptExercise", [title, password]);
-  localDecryptExercise(title, password);
+    postMessage("decryptExercise", [title, password]);
+    localDecryptExercise(title, password);
 }
 
 function localDecryptPresenterNotes(password) {
-  document
-    .querySelectorAll(":scope ld-presenter-note-marker")
-    .forEach((presenterNoteMarker) => {
-      delete presenterNoteMarker.dataset.encrypted;
-    });
+    document
+        .querySelectorAll(":scope ld-presenter-note-marker")
+        .forEach((presenterNoteMarker) => {
+            delete presenterNoteMarker.dataset.encrypted;
+        });
 
-  document
-    .querySelectorAll(":scope ld-presenter-note[data-encrypted='true']")
-    .forEach(async (presenterNote) => {
-      const crypto = await ldCrypto();
-      const html = await crypto.decryptAESGCMPBKDF(
-        presenterNote.innerText.trim(),
-        password,
-      );
-      presenterNote.innerHTML = html;
-      typesetMath(presenterNote);
-      delete presenterNote.dataset.encrypted;
-    });
+    document
+        .querySelectorAll(":scope ld-presenter-note[data-encrypted='true']")
+        .forEach(async (presenterNote) => {
+            const crypto = await ldCrypto();
+            const html = await crypto.decryptAESGCMPBKDF(
+                presenterNote.innerText.trim(),
+                password,
+            );
+            presenterNote.innerHTML = html;
+            typesetMath(presenterNote);
+            delete presenterNote.dataset.encrypted;
+        });
 }
 
 function localDecryptExercise(title, password) {
-  console.info("decrypting exercise: " + title + "; password: " + password);
-  const solutionWrapper = document.querySelector(
-    `.ld-extracted-exercise[data-exercise-title='${title}'] .ld-exercise-solution-wrapper`,
-  );
-  if (!solutionWrapper) {
-    console.error("No solution wrapper found for exercise: " + title);
-    return;
-  }
-  const solution = solutionWrapper.querySelector(":scope .ld-exercise-solution");
-  tryDecryptExercise(password, solutionWrapper, solution);
+    console.info("decrypting exercise: " + title + "; password: " + password);
+    const solutionWrapper = document.querySelector(
+        `.ld-extracted-exercise[data-exercise-title='${title}'] .ld-exercise-solution-wrapper`,
+    );
+    if (!solutionWrapper) {
+        console.error("No solution wrapper found for exercise: " + title);
+        return;
+    }
+    const solution = solutionWrapper.querySelector(
+        ":scope .ld-exercise-solution",
+    );
+    tryDecryptExercise(password, solutionWrapper, solution);
 }
 
 /**
@@ -1102,101 +1193,112 @@ function localDecryptExercise(title, password) {
  * @param HTMLDivElement solution
  */
 function tryDecryptExercise(password, solutionWrapper, solution) {
-  console.assert(solutionWrapper !== null);
-  console.assert(solution !== null);
+    console.assert(solutionWrapper !== null);
+    console.assert(solution !== null);
 
-  if (!solution.dataset.encrypted) {
-    return;
-  }
-  ldCrypto()
-    .then((ldCrypto) => {
-      return ldCrypto.decryptAESGCMPBKDF(solution.innerText.trim(), password);
-    })
-    .then((decrypted) => {
-      solution.innerHTML = decrypted;
-      setupCopyToClipboard(solution);
-      typesetMath(solution);
+    if (!solution.dataset.encrypted) {
+        return;
+    }
+    ldCrypto()
+        .then((ldCrypto) => {
+            return ldCrypto.decryptAESGCMPBKDF(
+                solution.innerText.trim(),
+                password,
+            );
+        })
+        .then((decrypted) => {
+            solution.innerHTML = decrypted;
+            setupCopyToClipboard(solution);
+            typesetMath(solution);
 
-      // The first child is the input field!
-      solutionWrapper.firstElementChild.remove(); //Child(passwordField);
-      delete solution.dataset.encrypted;
-    })
-    .catch((error) => {
-      console.log("wrong password: " + password + " - " + error);
-    });
+            // The first child is the input field!
+            solutionWrapper.firstElementChild.remove(); //Child(passwordField);
+            delete solution.dataset.encrypted;
+        })
+        .catch((error) => {
+            console.log("wrong password: " + password + " - " + error);
+        });
 }
 
 function setupDocumentView() {
-  /* The documents will be rearranged in the document view as follows:
-   * <section>
-   *   Content
-   *   <footer>
-   *    <div class="ld-dv-section-number">...</div>
-   *   </footer>
-   * </section>
-   */
-  const documentView = ld.div({ id: "ld-document-view" });
+    /* The documents will be rearranged in the document view as follows:
+     * <section>
+     *   Content
+     *   <footer>
+     *    <div class="ld-dv-section-number">...</div>
+     *   </footer>
+     * </section>
+     */
+    const documentView = ld.div({ id: "ld-document-view" });
 
-  topicTemplates.querySelectorAll("ld-topic").forEach((t, i) => {
-    const template = t.cloneNode(true);
-    template.classList.remove("ld-slide"); // not needed anymore
+    topicTemplates.querySelectorAll("ld-topic").forEach((t, i) => {
+        const template = t.cloneNode(true);
+        template.classList.remove("ld-slide"); // not needed anymore
 
-    setupCopyToClipboard(template);
+        setupCopyToClipboard(template);
 
-    const section = ld.create("ld-section", {
-      id: "ld-section-no-" + i,
-      classList: template.classList,
-      children: template.children,
-    });
+        const section = ld.create("ld-section", {
+            id: "ld-section-no-" + i,
+            classList: template.classList,
+            children: template.children,
+        });
 
-    if (template.classList.contains("exercises")) {
-      // Replace the encrypted solutions with password fields.
-      section.querySelectorAll(":scope .ld-exercise").forEach((task) => {
-        task.classList.add("ld-extracted-exercise");
-        const solution = task.querySelector(":scope .ld-exercise-solution");
-        if (solution) {
-          solution.parentElement.removeChild(solution);
+        if (template.classList.contains("exercises")) {
+            // Replace the encrypted solutions with password fields.
+            section.querySelectorAll(":scope .ld-exercise").forEach((task) => {
+                task.classList.add("ld-extracted-exercise");
+                const solution = task.querySelector(
+                    ":scope .ld-exercise-solution",
+                );
+                if (solution) {
+                    solution.parentElement.removeChild(solution);
 
-          const passwordField = createPasswordInput();
-          const solutionWrapper = ld.div({
-            classes: ["ld-exercise-solution-wrapper"],
-            parent: task,
-            children: [passwordField, solution],
-          });
+                    const passwordField = createPasswordInput();
+                    const solutionWrapper = ld.div({
+                        classes: ["ld-exercise-solution-wrapper"],
+                        parent: task,
+                        children: [passwordField, solution],
+                    });
 
-          passwordField.addEventListener("input", (e) => {
-            const currentPassword = e.target.value;
-            if (currentPassword.length > 2) {
-              tryDecryptExercise(currentPassword, solutionWrapper, solution);
-            }
-          });
+                    passwordField.addEventListener("input", (e) => {
+                        const currentPassword = e.target.value;
+                        if (currentPassword.length > 2) {
+                            tryDecryptExercise(
+                                currentPassword,
+                                solutionWrapper,
+                                solution,
+                            );
+                        }
+                    });
+                }
+            });
         }
-      });
-    }
 
-    const footer = ld.create("footer", {
-      innerHTML: `<div class="ld-dv-section-number">${i + 1}</div>`,
-      parent: section,
+        const footer = ld.create("footer", {
+            innerHTML: `<div class="ld-dv-section-number">${i + 1}</div>`,
+            parent: section,
+        });
+
+        // Move footnotes to the footer.
+        for (const footnotes of section.querySelectorAll(
+            ":scope aside.footnote-list",
+        )) {
+            footnotes.parentElement.removeChild(footnotes);
+            footer.prepend(footnotes);
+        }
+
+        documentView.appendChild(section);
     });
 
-    // Move footnotes to the footer.
-    for (const footnotes of section.querySelectorAll(":scope aside.footnote-list")) {
-      footnotes.parentElement.removeChild(footnotes);
-      footer.prepend(footnotes);
-    }
-
-    documentView.appendChild(section);
-  });
-
-  typesetMath(documentView);
-  document.body.prepend(documentView);
+    typesetMath(documentView);
+    document.body.prepend(documentView);
 }
 
 function setupMenu() {
-  const menuPane = document.createElement("nav");
-  menuPane.id = "ld-menu";
-  menuPane.className = "ld-ui";
-  menuPane.innerHTML = `
+    const menuPane = document.createElement("nav");
+    menuPane.id = "ld-menu";
+    menuPane.className = "ld-ui";
+    menuPane.innerHTML = `
         <!-- The icons are set using css. Using img over here
             would not work when the slides are opened locally
             (due to the same-origin-policy) -->
@@ -1215,75 +1317,87 @@ function setupMenu() {
         <button type="button" id="ld-exercises-passwords-button"
                 aria-label="show exercises passwords dialog"></button>
     `;
-  document.getElementsByTagName("BODY")[0].prepend(menuPane);
+    document.getElementsByTagName("BODY")[0].prepend(menuPane);
 }
 
 /**
  * Fixes issues related to the copying of the slide templates.
  */
 function applyDOMfixes() {
-  /*  Due to the copying of the slide templates, the ids in inline SVGs
+    /*  Due to the copying of the slide templates, the ids in inline SVGs
         (e.g. for defining and referencing markers) are no longer unique,
         which is a violation of the spec and causes troubles in Chrome and
         Firefox. We have to fix this!
 
         TODO Check scenario and handle the case where an SVG references a marker defined a previous SVG.
         */
-  let counter = 1;
-  document.querySelectorAll("svg").forEach((svg) => {
-    const svgURLIds = new Map(); // maps old url(#id) to new url(#id)
-    const svgIDs = new Map(); // maps old id to new id
-    svg.querySelectorAll("[id]").forEach((element) => {
-      const oldId = element.id;
-      const newId = element.id + "-" + counter++;
-      element.id = newId;
-      svgURLIds.set("url(#" + oldId + ")", "url(#" + newId + ")");
-      svgIDs.set("#" + oldId, "#" + newId);
+    let counter = 1;
+    document.querySelectorAll("svg").forEach((svg) => {
+        const svgURLIds = new Map(); // maps old url(#id) to new url(#id)
+        const svgIDs = new Map(); // maps old id to new id
+        svg.querySelectorAll("[id]").forEach((element) => {
+            const oldId = element.id;
+            const newId = element.id + "-" + counter++;
+            element.id = newId;
+            svgURLIds.set("url(#" + oldId + ")", "url(#" + newId + ")");
+            svgIDs.set("#" + oldId, "#" + newId);
+        });
+        svgURLIds.forEach((newId, oldId) => {
+            const refs = `.//@*[.="${oldId}"]`;
+            const it = document.evaluate(
+                refs,
+                svg,
+                null,
+                XPathResult.ANY_TYPE,
+                null,
+            );
+            let attr,
+                attrs = [];
+            while ((attr = it.iterateNext())) attrs.push(attr);
+            attrs.forEach((ref) => {
+                ref.textContent = newId;
+            });
+        });
+        svgIDs.forEach((newId, oldId) => {
+            const refs = `.//@*[.="${oldId}"]`; // TODO Why can't I use href="${#oldId}"?
+            const it = document.evaluate(
+                refs,
+                svg,
+                null,
+                XPathResult.ANY_TYPE,
+                null,
+            );
+            let attr,
+                attrs = [];
+            while ((attr = it.iterateNext())) attrs.push(attr);
+            attrs.forEach((ref) => {
+                ref.textContent = newId;
+            });
+        });
     });
-    svgURLIds.forEach((newId, oldId) => {
-      const refs = `.//@*[.="${oldId}"]`;
-      const it = document.evaluate(refs, svg, null, XPathResult.ANY_TYPE, null);
-      let attr,
-        attrs = [];
-      while ((attr = it.iterateNext())) attrs.push(attr);
-      attrs.forEach((ref) => {
-        ref.textContent = newId;
-      });
-    });
-    svgIDs.forEach((newId, oldId) => {
-      const refs = `.//@*[.="${oldId}"]`; // TODO Why can't I use href="${#oldId}"?
-      const it = document.evaluate(refs, svg, null, XPathResult.ANY_TYPE, null);
-      let attr,
-        attrs = [];
-      while ((attr = it.iterateNext())) attrs.push(attr);
-      attrs.forEach((ref) => {
-        ref.textContent = newId;
-      });
-    });
-  });
 }
 
 function setupMessageBox() {
-  const message = document.createElement("DIALOG");
-  message.id = "ld-message-box";
-  message.className = "ld-ui";
-  document.body.prepend(message);
+    const message = document.createElement("DIALOG");
+    message.id = "ld-message-box";
+    message.className = "ld-ui";
+    document.body.prepend(message);
 }
 
 function showMessage(htmlMessage, ms = 3000) {
-  const messageBox = document.getElementById("ld-message-box");
-  messageBox.innerHTML = htmlMessage;
-  messageBox.show();
-  setTimeout(() => {
-    messageBox.close();
-  }, ms);
+    const messageBox = document.getElementById("ld-message-box");
+    messageBox.innerHTML = htmlMessage;
+    messageBox.show();
+    setTimeout(() => {
+        messageBox.close();
+    }, ms);
 }
 
 /**
  * @returns The element ("DIV") with the ID of the current slide.
  */
 function getCurrentSlide() {
-  return document.getElementById("ld-slide-no-" + state.currentSlideNo);
+    return document.getElementById("ld-slide-no-" + state.currentSlideNo);
 }
 
 /**
@@ -1294,9 +1408,12 @@ function getCurrentSlide() {
  * viewport changes.
  */
 function setPaneScale() {
-  const w_scale = window.innerWidth / presentation.slide.width;
-  const h_scale = window.innerHeight / presentation.slide.height;
-  document.getElementById("ld-slides-pane").style.scale = Math.min(w_scale, h_scale);
+    const w_scale = window.innerWidth / presentation.slide.width;
+    const h_scale = window.innerHeight / presentation.slide.height;
+    document.getElementById("ld-slides-pane").style.scale = Math.min(
+        w_scale,
+        h_scale,
+    );
 }
 
 /**
@@ -1305,60 +1422,60 @@ function setPaneScale() {
  * state is correctly updated!
  */
 function showSlideWithNo(slideNo, setNewMarker = false) {
-  if (typeof slideNo == "string" || slideNo instanceof String) {
-    slideNo = parseInt(slideNo);
-  }
-  const slideId = "ld-slide-no-" + slideNo;
-  const ldSlide = document.getElementById(slideId);
-  if (!ldSlide) {
-    console.error(`slide number ${slideNo} with id ${slideId} not found`);
-    return;
-  }
-  return showSlide(ldSlide, setNewMarker);
+    if (typeof slideNo == "string" || slideNo instanceof String) {
+        slideNo = parseInt(slideNo);
+    }
+    const slideId = "ld-slide-no-" + slideNo;
+    const ldSlide = document.getElementById(slideId);
+    if (!ldSlide) {
+        console.error(`slide number ${slideNo} with id ${slideId} not found`);
+        return;
+    }
+    return showSlide(ldSlide, setNewMarker);
 }
 
 function showSlide(ldSlide, setNewMarker = false) {
-  /* We now want to use the style based display property again: */
-  ldSlide.style.removeProperty("display");
-  ldSlide.style.scale = 1;
-  if (setNewMarker) ldSlide.classList.add("ld-current-slide");
-  const slideNo = Number(ldSlide.dataset.ldSlideNo);
-  state.currentSlideNo = slideNo;
-  document.querySelector("ld-slide-number").innerText = slideNo + 1;
+    /* We now want to use the style based display property again: */
+    ldSlide.style.removeProperty("display");
+    ldSlide.style.scale = 1;
+    if (setNewMarker) ldSlide.classList.add("ld-current-slide");
+    const slideNo = Number(ldSlide.dataset.ldSlideNo);
+    state.currentSlideNo = slideNo;
+    document.querySelector("ld-slide-number").innerText = slideNo + 1;
 
-  // Update the URL to reflect the current slide number. (To make it
-  // possible to share the URL with others.)
-  const url = new URL(location);
-  url.searchParams.set("ld-slide-no", slideNo + 1);
-  history.pushState({}, "", url);
+    // Update the URL to reflect the current slide number. (To make it
+    // possible to share the URL with others.)
+    const url = new URL(location);
+    url.searchParams.set("ld-slide-no", slideNo + 1);
+    history.pushState({}, "", url);
 
-  return ldSlide;
+    return ldSlide;
 }
 
 function hideSlideWithNo(slideNo, setOldMarker = false) {
-  if (ephemeral.previousSlide) {
-    ephemeral.previousSlide.classList.remove("ld-previous-slide");
-    /* When we simply "keep" all slides in the DOM, we have a significant
+    if (ephemeral.previousSlide) {
+        ephemeral.previousSlide.classList.remove("ld-previous-slide");
+        /* When we simply "keep" all slides in the DOM, we have a significant
             memory issue in Safari. A small set with ~40 slide can
             suddenly require 1.5 to 2GB of memory!
             */
-    ephemeral.previousSlide.style.display = "none";
-  }
-  const ldSlide = document.getElementById("ld-slide-no-" + slideNo);
-  if (ldSlide) {
-    ephemeral.previousSlide = ldSlide;
-    ldSlide.style.scale = 0;
-    ldSlide.classList.remove("ld-current-slide");
-    if (setOldMarker) ldSlide.classList.add("ld-previous-slide");
+        ephemeral.previousSlide.style.display = "none";
+    }
+    const ldSlide = document.getElementById("ld-slide-no-" + slideNo);
+    if (ldSlide) {
+        ephemeral.previousSlide = ldSlide;
+        ldSlide.style.scale = 0;
+        ldSlide.classList.remove("ld-current-slide");
+        if (setOldMarker) ldSlide.classList.add("ld-previous-slide");
 
-    // We have to clear a potential selection of text to avoid that the
-    // user is confused if s(he) copies text to the clipboard (s)he can't
-    // see.
-    window.getSelection().empty();
-    localHideLaserPointer();
-  } else {
-    ephemeral.previousSlide = undefined;
-  }
+        // We have to clear a potential selection of text to avoid that the
+        // user is confused if s(he) copies text to the clipboard (s)he can't
+        // see.
+        window.getSelection().empty();
+        localHideLaserPointer();
+    } else {
+        ephemeral.previousSlide = undefined;
+    }
 }
 
 // TODO MAKE MORE RESILIENT AGAINST ERRORS WHEN THE SYNCHRONIZATION FAILED
@@ -1369,56 +1486,56 @@ function hideSlideWithNo(slideNo, setOldMarker = false) {
  * In general, `advancePresentation` should be called.
  */
 function moveToNextSlide() {
-  postMessage("moveToNextSlide", undefined);
-  localMoveToNextSlide();
+    postMessage("moveToNextSlide", undefined);
+    localMoveToNextSlide();
 }
 function localMoveToNextSlide() {
-  if (state.currentSlideNo < lastSlideNo()) {
-    hideSlideWithNo(state.currentSlideNo, true);
-    showSlideWithNo(++state.currentSlideNo, true);
-  }
+    if (state.currentSlideNo < lastSlideNo()) {
+        hideSlideWithNo(state.currentSlideNo, true);
+        showSlideWithNo(++state.currentSlideNo, true);
+    }
 }
 
 function moveToPreviousSlide() {
-  postMessage("moveToPreviousSlide", undefined);
-  localMoveToPreviousSlide();
+    postMessage("moveToPreviousSlide", undefined);
+    localMoveToPreviousSlide();
 }
 function localMoveToPreviousSlide() {
-  if (state.currentSlideNo > 0) {
-    hideSlideWithNo(state.currentSlideNo);
-    showSlideWithNo(--state.currentSlideNo);
-  }
+    if (state.currentSlideNo > 0) {
+        hideSlideWithNo(state.currentSlideNo);
+        showSlideWithNo(--state.currentSlideNo);
+    }
 }
 
 /**
  * Gets the information how many animation steps are already executed.
  */
 function getSlideProgress(slide) {
-  if (!state.slideProgress) {
-    return 0;
-  }
-  return state.slideProgress[slide.id];
+    if (!state.slideProgress) {
+        return 0;
+    }
+    return state.slideProgress[slide.id];
 }
 
 /**
  * Stores the information how many animation steps are already executed.
  */
 function setSlideProgress(slide, i) {
-  if (!state.slideProgress) {
-    state.slideProgress = {};
-  }
-  state.slideProgress[slide.id] = i;
+    if (!state.slideProgress) {
+        state.slideProgress = {};
+    }
+    state.slideProgress[slide.id] = i;
 }
 
 function getElementsToAnimate(slide) {
-  /*
+    /*
     const elementsToAnimate =
         ':scope :is(ul,ol).incremental>li, ' +
         ':scope :is(table).incremental>tbody>tr, ' +
         ':scope :not( :is(ul,ol,table)).incremental'
     */
-  const elementsToAnimate = ":scope .incremental";
-  return slide.querySelectorAll(elementsToAnimate);
+    const elementsToAnimate = ":scope .incremental";
+    return slide.querySelectorAll(elementsToAnimate);
 }
 
 /**
@@ -1431,195 +1548,200 @@ function getElementsToAnimate(slide) {
  * progress is implicitly covered by the visible and hidden elements.
  */
 function advancePresentation() {
-  postMessage("advancePresentation", undefined);
-  localAdvancePresentation();
+    postMessage("advancePresentation", undefined);
+    localAdvancePresentation();
 }
 function localAdvancePresentation() {
-  const slide = getCurrentSlide();
-  const elements = getElementsToAnimate(slide);
-  const elementsCount = elements.length;
-  for (let i = 0; i < elementsCount; i++) {
-    const element = elements[i];
-    if (element.style.visibility == "hidden") {
-      element.style.visibility = "visible";
-      setSlideProgress(slide, i + 1);
-      return;
+    const slide = getCurrentSlide();
+    const elements = getElementsToAnimate(slide);
+    const elementsCount = elements.length;
+    for (let i = 0; i < elementsCount; i++) {
+        const element = elements[i];
+        if (element.style.visibility == "hidden") {
+            element.style.visibility = "visible";
+            setSlideProgress(slide, i + 1);
+            return;
+        }
     }
-  }
-  // When we reach this point all elements are (already) visible.
-  localMoveToNextSlide();
+    // When we reach this point all elements are (already) visible.
+    localMoveToNextSlide();
 }
 function retrogressPresentation() {
-  postMessage("retrogressPresentation", undefined);
-  localRetrogressPresentation();
+    postMessage("retrogressPresentation", undefined);
+    localRetrogressPresentation();
 }
 function localRetrogressPresentation() {
-  const slide = getCurrentSlide();
-  let i = getSlideProgress(slide);
-  const elementsToAnimate = getElementsToAnimate(slide);
-  if (elementsToAnimate) {
-    if (i > elementsToAnimate.length) {
-      i = elementsToAnimate.length - 1;
+    const slide = getCurrentSlide();
+    let i = getSlideProgress(slide);
+    const elementsToAnimate = getElementsToAnimate(slide);
+    if (elementsToAnimate) {
+        if (i > elementsToAnimate.length) {
+            i = elementsToAnimate.length - 1;
+        }
+        if (i > 0) {
+            i--;
+            elementsToAnimate[i].style.visibility = "hidden";
+            setSlideProgress(slide, i);
+            i--;
+            return;
+        }
     }
-    if (i > 0) {
-      i--;
-      elementsToAnimate[i].style.visibility = "hidden";
-      setSlideProgress(slide, i);
-      i--;
-      return;
-    }
-  }
-  // When we reach this point all elements are hidden (again).
-  localMoveToPreviousSlide();
+    // When we reach this point all elements are hidden (again).
+    localMoveToPreviousSlide();
 }
 function hideAllAnimatedElements(slide) {
-  getElementsToAnimate(slide).forEach((e) =>
-    // We want to hide the elements in reverse order to ensure that
-    // functions that rely on the order work smoothly.
-    setTimeout(() => (e.style.visibility = "hidden")),
-  );
+    getElementsToAnimate(slide).forEach((e) =>
+        // We want to hide the elements in reverse order to ensure that
+        // functions that rely on the order work smoothly.
+        setTimeout(() => (e.style.visibility = "hidden")),
+    );
 }
 
 function resetCurrentSlideProgress() {
-  postMessage("resetCurrentSlideProgress", undefined);
-  localResetCurrentSlideProgress();
+    postMessage("resetCurrentSlideProgress", undefined);
+    localResetCurrentSlideProgress();
 }
 function localResetCurrentSlideProgress() {
-  localResetSlideProgress(getCurrentSlide());
+    localResetSlideProgress(getCurrentSlide());
 }
 function localResetSlideProgress(slide /* : element*/) {
-  hideAllAnimatedElements(slide);
-  if (state.slideProgress) {
-    delete state.slideProgress[slide.id];
-    // ... when the last slide.id key is removed from the object, the
-    // object is actually deleted...
-  }
-  ldEvents.resetSlideProgress.forEach((f) => f(slide));
+    hideAllAnimatedElements(slide);
+    if (state.slideProgress) {
+        delete state.slideProgress[slide.id];
+        // ... when the last slide.id key is removed from the object, the
+        // object is actually deleted...
+    }
+    ldEvents.resetSlideProgress.forEach((f) => f(slide));
 }
 function reapplySlideProgress() {
-  if (!state.slideProgress) {
-    state.slideProgress = {};
-    return;
-  }
-  //console.log("reapplying slide progress");
-  document.querySelectorAll("#ld-slides-pane ld-slide").forEach((slide) => {
-    const visibleElements = getSlideProgress(slide);
-    if (visibleElements > 0) {
-      const elements = getElementsToAnimate(slide);
-      const elementsCount = elements.length;
-      for (let i = 0; i < elementsCount; i++) {
-        const visibility = i < visibleElements ? "visible" : "hidden";
-        elements[i].style.visibility = visibility;
-      }
+    if (!state.slideProgress) {
+        state.slideProgress = {};
+        return;
     }
-  });
+    //console.log("reapplying slide progress");
+    document.querySelectorAll("#ld-slides-pane ld-slide").forEach((slide) => {
+        const visibleElements = getSlideProgress(slide);
+        if (visibleElements > 0) {
+            const elements = getElementsToAnimate(slide);
+            const elementsCount = elements.length;
+            for (let i = 0; i < elementsCount; i++) {
+                const visibility = i < visibleElements ? "visible" : "hidden";
+                elements[i].style.visibility = visibility;
+            }
+        }
+    });
 }
 
 function resetAllAnimations() {
-  postMessage("resetAllAnimations", undefined);
-  localResetAllAnimations();
+    postMessage("resetAllAnimations", undefined);
+    localResetAllAnimations();
 }
 function localResetAllAnimations() {
-  document.querySelectorAll("#ld-slides-pane ld-slide").forEach((slide) => {
-    localResetSlideProgress(slide);
-  });
-  showMessage("Reset all animation progress.");
+    document.querySelectorAll("#ld-slides-pane ld-slide").forEach((slide) => {
+        localResetSlideProgress(slide);
+    });
+    showMessage("Reset all animation progress.");
 }
 
 function clearJumpTarget() {
-  document.getElementById("ld-jump-target-current").innerText = "";
-  document.getElementById("ld-jump-target-dialog").close();
+    document.getElementById("ld-jump-target-current").innerText = "";
+    document.getElementById("ld-jump-target-dialog").close();
 }
 /** Removes the last digit of the current jump target. */
 function cutDownJumpTarget() {
-  const ld_goto_number = document.getElementById("ld-jump-target-current");
-  const jumpTarget = ld_goto_number.innerText;
-  switch (jumpTarget.length) {
-    case 0 /* a redundant "backspace" press */:
-      return;
-    case 1 /* the last remaining digit is deleted */:
-      clearJumpTarget();
-      return;
-    default:
-      ld_goto_number.innerText = jumpTarget.substring(0, jumpTarget.length - 1);
-  }
+    const ld_goto_number = document.getElementById("ld-jump-target-current");
+    const jumpTarget = ld_goto_number.innerText;
+    switch (jumpTarget.length) {
+        case 0 /* a redundant "backspace" press */:
+            return;
+        case 1 /* the last remaining digit is deleted */:
+            clearJumpTarget();
+            return;
+        default:
+            ld_goto_number.innerText = jumpTarget.substring(
+                0,
+                jumpTarget.length - 1,
+            );
+    }
 }
 function updateJumpTarget(number) {
-  document.getElementById("ld-jump-target-current").innerText += number;
-  document.getElementById("ld-jump-target-dialog").showModal();
+    document.getElementById("ld-jump-target-current").innerText += number;
+    document.getElementById("ld-jump-target-dialog").showModal();
 }
 function jumpToSlide() {
-  const ld_goto_number = document.getElementById("ld-jump-target-current");
-  const slideNo =
-    Number(ld_goto_number.innerText) - 1; /* users number the slides starting with 1 */
-  ld_goto_number.innerText = "";
-  document.getElementById("ld-jump-target-dialog").close();
-  if (slideNo >= 0) {
-    const targetSlideNo = slideNo > lastSlideNo() ? lastSlideNo() : slideNo;
+    const ld_goto_number = document.getElementById("ld-jump-target-current");
+    const slideNo =
+        Number(ld_goto_number.innerText) -
+        1; /* users number the slides starting with 1 */
+    ld_goto_number.innerText = "";
+    document.getElementById("ld-jump-target-dialog").close();
+    if (slideNo >= 0) {
+        const targetSlideNo = slideNo > lastSlideNo() ? lastSlideNo() : slideNo;
 
-    if (state.showDocumentView) {
-      window.scrollTo(
-        0,
-        document.getElementById("ld-section-no-" + targetSlideNo).offsetTop,
-      );
-    } else {
-      goToSlideWithNo(targetSlideNo);
+        if (state.showDocumentView) {
+            window.scrollTo(
+                0,
+                document.getElementById("ld-section-no-" + targetSlideNo)
+                    .offsetTop,
+            );
+        } else {
+            goToSlideWithNo(targetSlideNo);
+        }
     }
-  }
 }
 
 function goToSlideWithNo(targetSlideNo) {
-  postMessage("goToSlide", targetSlideNo);
-  return localGoToSlideWithNo(targetSlideNo);
+    postMessage("goToSlide", targetSlideNo);
+    return localGoToSlideWithNo(targetSlideNo);
 }
 
 function localGoToSlideWithNo(targetSlideNo) {
-  hideSlideWithNo(state.currentSlideNo);
-  return showSlideWithNo(targetSlideNo);
+    hideSlideWithNo(state.currentSlideNo);
+    return showSlideWithNo(targetSlideNo);
 }
 
 function localGoToSlide(targetSlide) {
-  hideSlideWithNo(state.currentSlideNo);
-  return showSlide(targetSlide);
+    hideSlideWithNo(state.currentSlideNo);
+    return showSlide(targetSlide);
 }
 
 function updateLightTableZoomLevel(value) {
-  // The following statement will not trigger an event but is necessary
-  // when the state is restored.
-  document.getElementById("ld-light-table-zoom-slider").value = value;
+    // The following statement will not trigger an event but is necessary
+    // when the state is restored.
+    document.getElementById("ld-light-table-zoom-slider").value = value;
 
-  const root = document.querySelector(":root");
-  root.style.setProperty("--ld-lt-zoom-level", value);
+    const root = document.querySelector(":root");
+    root.style.setProperty("--ld-lt-zoom-level", value);
 
-  state.lightTableZoomLevel = value;
+    state.lightTableZoomLevel = value;
 }
 
 function updateLightTableViewScrollY(y) {
-  if (y) {
-    document.getElementById("ld-light-table-slides").scrollTo(0, y);
-  }
+    if (y) {
+        document.getElementById("ld-light-table-slides").scrollTo(0, y);
+    }
 }
 
 function toggleLightTable() {
-  if (toggleDialog("light-table")) {
-    updateLightTableViewScrollY(state.lightTableViewScrollY);
+    if (toggleDialog("light-table")) {
+        updateLightTableViewScrollY(state.lightTableViewScrollY);
 
-    // We don't want the search input field to be automatically selected.
-    // This would prevent us from pressing "l" to close
-    // the light table view without deselecting the input first.
-    document.getElementById("ld-light-table-search-input").blur();
-  }
+        // We don't want the search input field to be automatically selected.
+        // This would prevent us from pressing "l" to close
+        // the light table view without deselecting the input first.
+        document.getElementById("ld-light-table-search-input").blur();
+    }
 }
 
 function toggleExercisesPasswordsDialog() {
-  // we don't want the press of the "m" key to fill the password input field
-  setTimeout(() => {
-    toggleDialog("exercises-passwords");
-  });
+    // we don't want the press of the "m" key to fill the password input field
+    setTimeout(() => {
+        toggleDialog("exercises-passwords");
+    });
 }
 
 function toggleTableOfContents() {
-  toggleDialog("table-of-contents");
+    toggleDialog("table-of-contents");
 }
 
 /**
@@ -1632,44 +1754,44 @@ function toggleTableOfContents() {
  *      to store the current state.
  */
 function toggleDialog(name) {
-  const elementId = "ld-" + name + "-dialog";
-  const stateId = "show" + ld.capitalizeCSSName(name);
-  let isShown = undefined;
+    const elementId = "ld-" + name + "-dialog";
+    const stateId = "show" + ld.capitalizeCSSName(name);
+    let isShown = undefined;
 
-  const dialog = document.getElementById(elementId);
-  if (dialog.open) {
-    //dialog.style.opacity = 0;
-    /* the 500ms is also hard coded in the css */
-    dialog.classList.add("ld-dialog-closing");
-    setTimeout(function () {
-      dialog.close();
-      dialog.classList.remove("ld-dialog-closing");
-    }, 500);
-    isShown = false;
-  } else {
-    dialog.showModal();
-    //dialog.style.opacity = 1;
-    isShown = true;
-  }
+    const dialog = document.getElementById(elementId);
+    if (dialog.open) {
+        //dialog.style.opacity = 0;
+        /* the 500ms is also hard coded in the css */
+        dialog.classList.add("ld-dialog-closing");
+        setTimeout(function () {
+            dialog.close();
+            dialog.classList.remove("ld-dialog-closing");
+        }, 500);
+        isShown = false;
+    } else {
+        dialog.showModal();
+        //dialog.style.opacity = 1;
+        isShown = true;
+    }
 
-  state[stateId] = isShown;
-  return isShown;
+    state[stateId] = isShown;
+    return isShown;
 }
 
 function showMainSlideNumber(show) {
-  state.showMainSlideNumber = show;
+    state.showMainSlideNumber = show;
 
-  if (show && !state.showDocumentView) {
-    document.querySelector("ld-slide-number").style.display = "block";
-  } else {
-    document.querySelector("ld-slide-number").style.display = "none";
-  }
+    if (show && !state.showDocumentView) {
+        document.querySelector("ld-slide-number").style.display = "block";
+    } else {
+        document.querySelector("ld-slide-number").style.display = "none";
+    }
 }
 
 function toggleSlideNumber() {
-  if (!state.showDocumentView) {
-    showMainSlideNumber(!state.showMainSlideNumber);
-  }
+    if (!state.showDocumentView) {
+        showMainSlideNumber(!state.showMainSlideNumber);
+    }
 }
 
 /**
@@ -1678,28 +1800,28 @@ function toggleSlideNumber() {
  * This view shows all slides in its final rendering.
  */
 function toggleDocumentView() {
-  const continuousViewPane = document.getElementById("ld-document-view");
-  const mainPane = document.getElementById("ld-slides-pane");
-  // If we currently show the slides, we update the state for `showDocumentView`
-  // and then actually perform the change.
-  state.showDocumentView = getComputedStyle(mainPane).display == "flex";
-  if (state.showDocumentView) {
-    mainPane.style.display = "none";
-    continuousViewPane.style.display = "block";
-    setTimeout(() => {
-      // We have to defer the scrollTo to make sure that the browser has
-      // rendered the document view and the scroll position makes
-      // sense to the browser.
-      window.scrollTo(0, state.continuousViewScrollY);
-    });
-  } else {
-    continuousViewPane.style.display = "none";
-    mainPane.style.display = "flex";
-  }
+    const continuousViewPane = document.getElementById("ld-document-view");
+    const mainPane = document.getElementById("ld-slides-pane");
+    // If we currently show the slides, we update the state for `showDocumentView`
+    // and then actually perform the change.
+    state.showDocumentView = getComputedStyle(mainPane).display == "flex";
+    if (state.showDocumentView) {
+        mainPane.style.display = "none";
+        continuousViewPane.style.display = "block";
+        setTimeout(() => {
+            // We have to defer the scrollTo to make sure that the browser has
+            // rendered the document view and the scroll position makes
+            // sense to the browser.
+            window.scrollTo(0, state.continuousViewScrollY);
+        });
+    } else {
+        continuousViewPane.style.display = "none";
+        mainPane.style.display = "flex";
+    }
 
-  // The main slide number pane is rendered independent of the slide and
-  // we always have to check/update the state.
-  showMainSlideNumber(state.showMainSlideNumber);
+    // The main slide number pane is rendered independent of the slide and
+    // we always have to check/update the state.
+    showMainSlideNumber(state.showMainSlideNumber);
 }
 
 /**
@@ -1718,28 +1840,30 @@ function toggleDocumentView() {
  *    stack-based layouts.
  */
 function prepareForPrinting() {
-  if (state.showHelp) toggleDialog("help");
-  if (state.showLightTable) toggleLightTable();
-  clearJumpTarget();
+    if (state.showHelp) toggleDialog("help");
+    if (state.showLightTable) toggleLightTable();
+    clearJumpTarget();
 
-  if (!state.showDocumentView) toggleDocumentView();
+    if (!state.showDocumentView) toggleDocumentView();
 
-  const sectionList = document.querySelectorAll("#ld-document-view>ld-section");
-  const sectionCount = sectionList.length;
-  const sectionIterator = sectionList.values();
-  let sectionIteratorResult = sectionIterator.next();
+    const sectionList = document.querySelectorAll(
+        "#ld-document-view>ld-section",
+    );
+    const sectionCount = sectionList.length;
+    const sectionIterator = sectionList.values();
+    let sectionIteratorResult = sectionIterator.next();
 
-  function scrollToNextSection() {
-    if (!sectionIteratorResult.done) {
-      const section = sectionIteratorResult.value;
-      section.scrollIntoView({ behavior: "smooth" });
+    function scrollToNextSection() {
+        if (!sectionIteratorResult.done) {
+            const section = sectionIteratorResult.value;
+            section.scrollIntoView({ behavior: "smooth" });
 
-      sectionIteratorResult = sectionIterator.next();
-      setTimeout(scrollToNextSection, 100);
+            sectionIteratorResult = sectionIterator.next();
+            setTimeout(scrollToNextSection, 100);
+        }
     }
-  }
-  scrollToNextSection();
-  return sectionCount;
+    scrollToNextSection();
+    return sectionCount;
 }
 
 /**
@@ -1747,581 +1871,619 @@ function prepareForPrinting() {
  * body to "none".
  */
 function hideLectureDoc() {
-  postMessage("hideLectureDoc", undefined);
-  localHideLectureDoc();
+    postMessage("hideLectureDoc", undefined);
+    localHideLectureDoc();
 }
 function localHideLectureDoc() {
-  ephemeral.rootBackgroundColorProperty = document.documentElement.style.backgroundColor;
-  document.documentElement.style.backgroundColor = "black";
-  ephemeral.bodyDisplayProperty = document.body.style.display;
-  document.body.style.display = "none";
+    ephemeral.rootBackgroundColorProperty =
+        document.documentElement.style.backgroundColor;
+    document.documentElement.style.backgroundColor = "black";
+    ephemeral.bodyDisplayProperty = document.body.style.display;
+    document.body.style.display = "none";
 }
 
 function ensureLectureDocIsVisible() {
-  postMessage("ensureLectureDocIsVisible", undefined);
-  return localEnsureLectureDocIsVisible();
+    postMessage("ensureLectureDocIsVisible", undefined);
+    return localEnsureLectureDocIsVisible();
 }
 function localEnsureLectureDocIsVisible() {
-  if (document.body.style.display == "none") {
-    document.body.style.display = ephemeral.bodyDisplayProperty;
-    document.documentElement.style.backgroundColor =
-      ephemeral.rootBackgroundColorProperty;
-    return true;
-  } else {
-    return false;
-  }
+    if (document.body.style.display == "none") {
+        document.body.style.display = ephemeral.bodyDisplayProperty;
+        document.documentElement.style.backgroundColor =
+            ephemeral.rootBackgroundColorProperty;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function redrawSlide() {
-  postMessage("redrawSlide", undefined);
-  localRedrawSlide();
+    postMessage("redrawSlide", undefined);
+    localRedrawSlide();
 }
 function localRedrawSlide() {
-  if (!state.showDocumentView) {
-    console.log(
-      "forced rerendering of the current slide [" + state.currentSlideNo + "]",
-    );
-    // Sometimes the current slide is not shown properly after
-    // resetting the slide progress. This is a workaround to
-    // ensure that the current slide is shown properly.
-    const slideStyle = getCurrentSlide().style;
-    const slideState = slideStyle.display;
-    slideStyle.display = "none";
-    setTimeout(() => {
-      slideStyle.display = slideState;
-    });
-  }
+    if (!state.showDocumentView) {
+        console.log(
+            "forced rerendering of the current slide [" +
+                state.currentSlideNo +
+                "]",
+        );
+        // Sometimes the current slide is not shown properly after
+        // resetting the slide progress. This is a workaround to
+        // ensure that the current slide is shown properly.
+        const slideStyle = getCurrentSlide().style;
+        const slideState = slideStyle.display;
+        slideStyle.display = "none";
+        setTimeout(() => {
+            slideStyle.display = slideState;
+        });
+    }
 }
 
 /**
  * Central keyboard event handler.
  */
 function registerKeyboardEventListener() {
-  /**
-   * Stores the number of times the user has to press the reset key ('r')
-   * before LectureDoc will be reset.
-   */
-  const resetCount = { v: 8 };
+    /**
+     * Stores the number of times the user has to press the reset key ('r')
+     * before LectureDoc will be reset.
+     */
+    const resetCount = { v: 8 };
 
-  document.addEventListener("keydown", (event) => {
-    // let's check if the user is using an input field to type something in
-    if (document.activeElement.nodeName == "INPUT") {
-      return;
-    }
-
-    // let's check if the user is using a modifier key not used by LectureDoc
-    if (event.altKey || event.ctrlKey || event.metaKey) {
-      return;
-    }
-
-    const wasHidden = ensureLectureDocIsVisible();
-
-    if (!event.shiftKey) {
-      // When the user presses the "r" key eight times in a row, LectureDoc
-      // will be reset.
-      if (event.key == "r") {
-        resetCount.v--;
-        if (resetCount.v == 0) {
-          resetLectureDoc();
-        } else if (resetCount.v == 4) {
-          showMessage('Press "r" again to reset all animation progress.');
-          return;
-        } else if (resetCount.v == 3) {
-          resetAllAnimations();
-          return;
-        } else if (resetCount.v < 3) {
-          console.info(`press "r" ${resetCount.v} more times to reset LectureDoc`);
-          return;
-        } else if (resetCount.v < 7) {
-          console.info(
-            `press "r" ${resetCount.v - 3} more times to reset all animations.`,
-          );
-          return;
+    document.addEventListener("keydown", (event) => {
+        // let's check if the user is using an input field to type something in
+        if (document.activeElement.nodeName == "INPUT") {
+            return;
         }
-      } else {
-        resetCount.v = 8;
-      }
 
-      switch (event.key) {
-        case "0":
-        case "1":
-        case "2":
-        case "3":
-        case "4":
-        case "5":
-        case "6":
-        case "7":
-        case "8":
-        case "9":
-          updateJumpTarget(event.key);
-          break;
-        case "Escape":
-          clearJumpTarget();
-          break;
-        case "Backspace":
-          cutDownJumpTarget();
-          break;
-        case "Enter":
-          jumpToSlide();
-          break;
-        case "ArrowLeft":
-          retrogressPresentation();
-          break;
-        case "ArrowRight":
-        case " ":
-        case "Space":
-          advancePresentation();
-          break;
-        case "r":
-          resetCurrentSlideProgress();
-          break;
+        // let's check if the user is using a modifier key not used by LectureDoc
+        if (event.altKey || event.ctrlKey || event.metaKey) {
+            return;
+        }
 
-        case "l":
-          toggleLightTable();
-          break;
+        const wasHidden = ensureLectureDocIsVisible();
 
-        case "h":
-          toggleDialog("help");
-          break;
+        if (!event.shiftKey) {
+            // When the user presses the "r" key eight times in a row, LectureDoc
+            // will be reset.
+            if (event.key == "r") {
+                resetCount.v--;
+                if (resetCount.v == 0) {
+                    resetLectureDoc();
+                } else if (resetCount.v == 4) {
+                    showMessage(
+                        'Press "r" again to reset all animation progress.',
+                    );
+                    return;
+                } else if (resetCount.v == 3) {
+                    resetAllAnimations();
+                    return;
+                } else if (resetCount.v < 3) {
+                    console.info(
+                        `press "r" ${resetCount.v} more times to reset LectureDoc`,
+                    );
+                    return;
+                } else if (resetCount.v < 7) {
+                    console.info(
+                        `press "r" ${resetCount.v - 3} more times to reset all animations.`,
+                    );
+                    return;
+                }
+            } else {
+                resetCount.v = 8;
+            }
 
-        case "n":
-          toggleSlideNumber();
-          break;
+            switch (event.key) {
+                case "0":
+                case "1":
+                case "2":
+                case "3":
+                case "4":
+                case "5":
+                case "6":
+                case "7":
+                case "8":
+                case "9":
+                    updateJumpTarget(event.key);
+                    break;
+                case "Escape":
+                    clearJumpTarget();
+                    break;
+                case "Backspace":
+                    cutDownJumpTarget();
+                    break;
+                case "Enter":
+                    jumpToSlide();
+                    break;
+                case "ArrowLeft":
+                    retrogressPresentation();
+                    break;
+                case "ArrowRight":
+                case " ":
+                case "Space":
+                    advancePresentation();
+                    break;
+                case "r":
+                    resetCurrentSlideProgress();
+                    break;
 
-        case "m":
-          toggleExercisesPasswordsDialog();
-          break;
+                case "l":
+                    toggleLightTable();
+                    break;
 
-        case "c":
-          toggleDocumentView();
-          break;
+                case "h":
+                    toggleDialog("help");
+                    break;
 
-        case "p":
-          prepareForPrinting();
-          break;
+                case "n":
+                    toggleSlideNumber();
+                    break;
 
-        case "b":
-          if (!wasHidden) hideLectureDoc();
-          break;
+                case "m":
+                    toggleExercisesPasswordsDialog();
+                    break;
 
-        case "w":
-          if (!presentation.id) {
-            showMessage(
-              'This feature requires that the document has a unique id<br>(Use: &lt;meta name="id" content="&lt;unique_id&gt;"/&gt;.)',
-              5000,
-            );
-          }
-          if (window.document.URL.startsWith("file://")) {
-            showMessage("Presentation mode requires a (local) web server.", 5000);
-            console.log(
-              "Presentation mode requires a (local) web server. (E. g., use 'python3 -m http.server' to start one in the respective root directory.)",
-            );
-            break;
-          }
-          storeState();
-          window.open(window.document.URL, "_blank");
-          break;
+                case "c":
+                    toggleDocumentView();
+                    break;
 
-        case "t":
-          toggleTableOfContents();
-          break;
+                case "p":
+                    prepareForPrinting();
+                    break;
 
-        case "d":
-          redrawSlide();
-          break;
+                case "b":
+                    if (!wasHidden) hideLectureDoc();
+                    break;
 
-        // for development purposes:
-        default:
-          console.debug("unhandled: " + event.key);
-      }
-    } else {
-      console.log(event + " " + event.key);
-      switch (event.key) {
-        case 37:
-        case "ArrowLeft":
-          moveToPreviousSlide();
-          break;
-        case 39:
-        case "ArrowRight":
-          moveToNextSlide();
-          break;
+                case "w":
+                    if (!presentation.id) {
+                        showMessage(
+                            'This feature requires that the document has a unique id<br>(Use: &lt;meta name="id" content="&lt;unique_id&gt;"/&gt;.)',
+                            5000,
+                        );
+                    }
+                    if (window.document.URL.startsWith("file://")) {
+                        showMessage(
+                            "Presentation mode requires a (local) web server.",
+                            5000,
+                        );
+                        console.log(
+                            "Presentation mode requires a (local) web server. (E. g., use 'python3 -m http.server' to start one in the respective root directory.)",
+                        );
+                        break;
+                    }
+                    storeState();
+                    window.open(window.document.URL, "_blank");
+                    break;
 
-        // for development purposes:
-        default:
-          console.debug("unhandled: shift + " + event.key);
-      }
-    }
-  });
+                case "t":
+                    toggleTableOfContents();
+                    break;
+
+                case "d":
+                    redrawSlide();
+                    break;
+
+                // for development purposes:
+                default:
+                    console.debug("unhandled: " + event.key);
+            }
+        } else {
+            console.log(event + " " + event.key);
+            switch (event.key) {
+                case 37:
+                case "ArrowLeft":
+                    moveToPreviousSlide();
+                    break;
+                case 39:
+                case "ArrowRight":
+                    moveToNextSlide();
+                    break;
+
+                // for development purposes:
+                default:
+                    console.debug("unhandled: shift + " + event.key);
+            }
+        }
+    });
 }
 
 function registerViewportResizeListener() {
-  document.defaultView.addEventListener("resize", () => {
-    ensureLectureDocIsVisible();
-    setPaneScale();
-  });
+    document.defaultView.addEventListener("resize", () => {
+        ensureLectureDocIsVisible();
+        setPaneScale();
+    });
 }
 
 function registerSlideClickedListener() {
-  // we still want to be able to click:
-  // - links,
-  // - buttons and
-  // - the "ld-copy-to-clipboard-button" icon // FIXME: make this a button
-  document
-    .querySelectorAll(
-      "#ld-slides-pane :is(a,button,div.ld-copy-to-clipboard-button,video)",
-    )
-    .forEach((e) => {
-      e.addEventListener(
-        "click",
-        (event) => {
-          event["interactive_element_clicked"] = true;
-        },
-        { capture: true },
-      );
-    });
+    // we still want to be able to click:
+    // - links,
+    // - buttons and
+    // - the "ld-copy-to-clipboard-button" icon // FIXME: make this a button
+    document
+        .querySelectorAll(
+            "#ld-slides-pane :is(a,button,div.ld-copy-to-clipboard-button,video)",
+        )
+        .forEach((e) => {
+            e.addEventListener(
+                "click",
+                (event) => {
+                    event["interactive_element_clicked"] = true;
+                },
+                { capture: true },
+            );
+        });
 
-  document.getElementById("ld-slides-pane").addEventListener("click", (event) => {
-    if (event.interactive_element_clicked) return;
+    document
+        .getElementById("ld-slides-pane")
+        .addEventListener("click", (event) => {
+            if (event.interactive_element_clicked) return;
 
-    // Let's check if the user is currently selecting text - we don't want
-    // to interfere with that!
-    if (window.getSelection().anchorNode != null) {
-      return;
-    }
+            // Let's check if the user is currently selecting text - we don't want
+            // to interfere with that!
+            if (window.getSelection().anchorNode != null) {
+                return;
+            }
 
-    /* Let's determine if we have clicked on the left or right part. */
-    if (event.pageX < window.innerWidth / 2) {
-      moveToPreviousSlide();
-      showMessage("⬅︎", 400);
-    } else {
-      advancePresentation();
-    }
-  });
+            /* Let's determine if we have clicked on the left or right part. */
+            if (event.pageX < window.innerWidth / 2) {
+                moveToPreviousSlide();
+                showMessage("⬅︎", 400);
+            } else {
+                advancePresentation();
+            }
+        });
 }
 
 /**
  * @param str id The unique id of the target element on a slide!
  */
 function localJumpToSlideWithElementWithId(id) {
-  const slide = document.querySelector(`#ld-slides-pane .ld-slide:has(#${id})`);
-  if (!slide) {
-    return undefined;
-  }
-  localGoToSlide(slide);
+    const slide = document.querySelector(
+        `#ld-slides-pane .ld-slide:has(#${id})`,
+    );
+    if (!slide) {
+        return undefined;
+    }
+    localGoToSlide(slide);
 
-  // ensure that all elements up to the target element are visible.
-  const target = document.querySelector(`#ld-slides-pane .ld-slide #${id}`);
-  while (getComputedStyle(target).visibility == "hidden") {
-    localAdvancePresentation();
-  }
-  return slide;
+    // ensure that all elements up to the target element are visible.
+    const target = document.querySelector(`#ld-slides-pane .ld-slide #${id}`);
+    while (getComputedStyle(target).visibility == "hidden") {
+        localAdvancePresentation();
+    }
+    return slide;
 }
 
 /**
  * @param str id The original id saved in the data-id attribute of the slide!
  */
 function localJumpToSlideWithId(id) {
-  const slide = document.querySelector(`#ld-slides-pane .ld-slide[data-id="${id}"]`);
-  if (!slide) {
-    return undefined;
-  }
-  return localGoToSlide(slide);
+    const slide = document.querySelector(
+        `#ld-slides-pane .ld-slide[data-id="${id}"]`,
+    );
+    if (!slide) {
+        return undefined;
+    }
+    return localGoToSlide(slide);
 }
 
 function localJumpToId(id) {
-  const slide = localJumpToSlideWithId(id) || localJumpToSlideWithElementWithId(id);
-  if (!slide) {
-    console.warn("invalid jump target: " + id);
-    return undefined;
-  }
-  return slide;
+    const slide =
+        localJumpToSlideWithId(id) || localJumpToSlideWithElementWithId(id);
+    if (!slide) {
+        console.warn("invalid jump target: " + id);
+        return undefined;
+    }
+    return slide;
 }
 
 function jumpToId(id) {
-  console.assert(!id.startsWith("#"));
-  console.log("jump to id: " + id);
+    console.assert(!id.startsWith("#"));
+    console.log("jump to id: " + id);
 
-  if (localJumpToId(id)) {
-    postMessage("jumpToId", id);
-  }
+    if (localJumpToId(id)) {
+        postMessage("jumpToId", id);
+    }
 }
 
 function localScrollSupplemental(supplementalId, scrollTop) {
-  const supplemental = document.querySelector(
-    `#ld-slides-pane ld-supplementals[data-supplementals-id="${supplementalId}"]`,
-  );
+    const supplemental = document.querySelector(
+        `#ld-slides-pane ld-supplementals[data-supplementals-id="${supplementalId}"]`,
+    );
 
-  if (supplemental.scrollTop !== scrollTop) {
-    supplemental.scrollTo({ top: scrollTop, scrollTop, behavior: "smooth" });
-  }
+    if (supplemental.scrollTop !== scrollTop) {
+        supplemental.scrollTo({
+            top: scrollTop,
+            scrollTop,
+            behavior: "smooth",
+        });
+    }
 }
 
 function registerInternalLinkClickListener(a, f) {
-  a.addEventListener("click", (event) => {
-    event.stopPropagation();
-    const target = a.getAttribute("href").substring(1);
-    jumpToId(target);
-    if (f) f();
-  });
+    a.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const target = a.getAttribute("href").substring(1);
+        jumpToId(target);
+        if (f) f();
+    });
 }
 
 function registerSlideInternalLinkClickedListener() {
-  // Handle links to "other" slides, the bibliography and also back-links.
-  document
-    .querySelectorAll(
-      '#ld-slides-pane a:where(.reference.internal, .citation-reference, [role="doc-backlink"])',
-    )
-    .forEach((e) => registerInternalLinkClickListener(e));
+    // Handle links to "other" slides, the bibliography and also back-links.
+    document
+        .querySelectorAll(
+            '#ld-slides-pane a:where(.reference.internal, .citation-reference, [role="doc-backlink"])',
+        )
+        .forEach((e) => registerInternalLinkClickListener(e));
 
-  // // Handle links to other slides in the document.
-  // document.
-  //     querySelectorAll("#ld-slides-pane a.reference.internal").
-  //     forEach((a) => {
-  //         a.addEventListener("click", (event) => {
-  //             event.stopPropagation();
-  //             const target = a.getAttribute("href");
-  //             jumpToElementWithId(target.substring(1));
-  //         })
-  //     });
+    // // Handle links to other slides in the document.
+    // document.
+    //     querySelectorAll("#ld-slides-pane a.reference.internal").
+    //     forEach((a) => {
+    //         a.addEventListener("click", (event) => {
+    //             event.stopPropagation();
+    //             const target = a.getAttribute("href");
+    //             jumpToElementWithId(target.substring(1));
+    //         })
+    //     });
 
-  // // Handle links related to the bibliography.
-  // document.
-  //     querySelectorAll("#ld-slides-pane a.citation-reference").
-  //     forEach((a) => {
-  //         a.addEventListener("click", (event) => {
-  //             event.stopPropagation();
-  //             const target = a.getAttribute("href");
-  //             jumpToSlideWithElementWithId(target);
-  //         })
-  //     });
-  // document.
-  //     querySelectorAll('#ld-slides-pane a[role="doc-backlink"]').
-  //     forEach((a) => {
-  //         a.addEventListener("click", (event) => {
-  //             event.stopPropagation();
-  //             const target = a.getAttribute("href");
-  //             jumpToSlideWithElementWithId(target);
-  //         })
-  //     });
+    // // Handle links related to the bibliography.
+    // document.
+    //     querySelectorAll("#ld-slides-pane a.citation-reference").
+    //     forEach((a) => {
+    //         a.addEventListener("click", (event) => {
+    //             event.stopPropagation();
+    //             const target = a.getAttribute("href");
+    //             jumpToSlideWithElementWithId(target);
+    //         })
+    //     });
+    // document.
+    //     querySelectorAll('#ld-slides-pane a[role="doc-backlink"]').
+    //     forEach((a) => {
+    //         a.addEventListener("click", (event) => {
+    //             event.stopPropagation();
+    //             const target = a.getAttribute("href");
+    //             jumpToSlideWithElementWithId(target);
+    //         })
+    //     });
 }
 
 function registerHoverSupplementalListener() {
-  let supplementalsId = 1;
-  document
-    .querySelectorAll("#ld-slides-pane ld-supplementals")
-    .forEach((supplemental) => {
-      console.log("registering hover listener for supplemental", supplemental);
-      const id = supplementalsId++;
-      supplemental.dataset.supplementalsId = id;
-      const addHover = (event) => {
-        if (event.ctrlKey) {
-          postMessage("addHoverSupplemental", id);
-        }
-        supplemental.classList.add("hover:ld-supplementals");
-      };
-      const removeHover = () => {
-        // We always send the message to remove the hover class.
-        // The effect is idempotent, i.e., it can be applied multiple times
-        // and this way, we don't have to keep track of the state.
-        postMessage("removeHoverSupplemental", id);
-        supplemental.classList.remove("hover:ld-supplementals");
-      };
-      supplemental.addEventListener("mouseenter", addHover);
-      supplemental.addEventListener("mouseleave", removeHover);
-      if (ephemeral.ldPerDocumentChannel) {
-        ld.addScrollingEventListener(
-          ephemeral.ldPerDocumentChannel,
-          "supplementalScrolled",
-          supplemental,
-          id,
-        );
-      }
-    });
+    let supplementalsId = 1;
+    document
+        .querySelectorAll("#ld-slides-pane ld-supplementals")
+        .forEach((supplemental) => {
+            console.log(
+                "registering hover listener for supplemental",
+                supplemental,
+            );
+            const id = supplementalsId++;
+            supplemental.dataset.supplementalsId = id;
+            const addHover = (event) => {
+                if (event.ctrlKey) {
+                    postMessage("addHoverSupplemental", id);
+                }
+                supplemental.classList.add("hover:ld-supplementals");
+            };
+            const removeHover = () => {
+                // We always send the message to remove the hover class.
+                // The effect is idempotent, i.e., it can be applied multiple times
+                // and this way, we don't have to keep track of the state.
+                postMessage("removeHoverSupplemental", id);
+                supplemental.classList.remove("hover:ld-supplementals");
+            };
+            supplemental.addEventListener("mouseenter", addHover);
+            supplemental.addEventListener("mouseleave", removeHover);
+            if (ephemeral.ldPerDocumentChannel) {
+                ld.addScrollingEventListener(
+                    ephemeral.ldPerDocumentChannel,
+                    "supplementalScrolled",
+                    supplemental,
+                    id,
+                );
+            }
+        });
 }
 
 function registerHoverPresenterNoteListener() {
-  document
-    .querySelectorAll("#ld-slides-pane ld-presenter-note-marker")
-    .forEach((marker) => {
-      console.log("registering hover listener for presenter note", marker);
+    document
+        .querySelectorAll("#ld-slides-pane ld-presenter-note-marker")
+        .forEach((marker) => {
+            console.log(
+                "registering hover listener for presenter note",
+                marker,
+            );
 
-      const noteId = marker.dataset.presenterNoteId;
+            const noteId = marker.dataset.presenterNoteId;
 
-      const ldSlide = marker.closest(".ld-slide");
-      const ldPresenterNote = ldSlide.querySelector(
-        `:scope #ld-presenter-note-${noteId}`,
-      );
-      function addHover() {
-        ldPresenterNote.classList.add("hover:ld-presenter-note");
-      }
-      function removeHover(e) {
-        // We have to handle the case where the mouse leaves the marker
-        // because the actual note is shown on top of the marker.
-        // In this case, we can't remove the hover class because this
-        // would lead to a nasty flickering effect.
-        if (e.relatedTarget !== ldPresenterNote) {
-          ldPresenterNote.classList.remove("hover:ld-presenter-note");
-        }
-      }
-      ldPresenterNote.addEventListener("mouseleave", removeHover);
-      marker.addEventListener("mouseenter", addHover);
-      marker.addEventListener("mouseleave", removeHover);
-    });
+            const ldSlide = marker.closest(".ld-slide");
+            const ldPresenterNote = ldSlide.querySelector(
+                `:scope #ld-presenter-note-${noteId}`,
+            );
+            function addHover() {
+                ldPresenterNote.classList.add("hover:ld-presenter-note");
+            }
+            function removeHover(e) {
+                // We have to handle the case where the mouse leaves the marker
+                // because the actual note is shown on top of the marker.
+                // In this case, we can't remove the hover class because this
+                // would lead to a nasty flickering effect.
+                if (e.relatedTarget !== ldPresenterNote) {
+                    ldPresenterNote.classList.remove("hover:ld-presenter-note");
+                }
+            }
+            ldPresenterNote.addEventListener("mouseleave", removeHover);
+            marker.addEventListener("mouseenter", addHover);
+            marker.addEventListener("mouseleave", removeHover);
+        });
 }
 
 function registerLightTableZoomListener() {
-  document
-    .getElementById("ld-light-table-zoom-slider")
-    .addEventListener("input", (event) => {
-      updateLightTableZoomLevel(event.target.value);
-    });
+    document
+        .getElementById("ld-light-table-zoom-slider")
+        .addEventListener("input", (event) => {
+            updateLightTableZoomLevel(event.target.value);
+        });
 }
 
 function registerLightTableSlideSelectionListener() {
-  document.querySelectorAll(".ld-light-table-slide-overlay").forEach((slideOverlay) => {
-    const slideNo = slideOverlay.dataset.ldSlideNo;
-    slideOverlay.addEventListener("click", () => {
-      goToSlideWithNo(slideNo);
-      toggleDialog("light-table");
-    });
-  });
+    document
+        .querySelectorAll(".ld-light-table-slide-overlay")
+        .forEach((slideOverlay) => {
+            const slideNo = slideOverlay.dataset.ldSlideNo;
+            slideOverlay.addEventListener("click", () => {
+                goToSlideWithNo(slideNo);
+                toggleDialog("light-table");
+            });
+        });
 }
 
 function registerLightTableSlideSearchListener() {
-  const lightTableSlides = document.getElementById("ld-light-table-slides");
-  const searchInput = document.getElementById("ld-light-table-search-input");
-  searchInput.addEventListener("input", () => {
-    const searchValue = searchInput.value;
-    lightTableSlides
-      .querySelectorAll(":scope .ld-light-table-slide-pane")
-      .forEach((slidePane) => {
-        const ns = document.evaluate(
-          `.//*[text()[contains(.,'${searchValue}')]]`,
-          slidePane,
-          null,
-          XPathResult.ANY_TYPE,
-          null,
-        );
-        const e = ns.iterateNext();
-        if (e || searchValue == "") {
-          slidePane.classList.remove("ld-light-table-slide-pane-hide");
-        } else {
-          slidePane.classList.add("ld-light-table-slide-pane-hide");
-        }
-      });
-  });
+    const lightTableSlides = document.getElementById("ld-light-table-slides");
+    const searchInput = document.getElementById("ld-light-table-search-input");
+    searchInput.addEventListener("input", () => {
+        const searchValue = searchInput.value;
+        lightTableSlides
+            .querySelectorAll(":scope .ld-light-table-slide-pane")
+            .forEach((slidePane) => {
+                const ns = document.evaluate(
+                    `.//*[text()[contains(.,'${searchValue}')]]`,
+                    slidePane,
+                    null,
+                    XPathResult.ANY_TYPE,
+                    null,
+                );
+                const e = ns.iterateNext();
+                if (e || searchValue == "") {
+                    slidePane.classList.remove(
+                        "ld-light-table-slide-pane-hide",
+                    );
+                } else {
+                    slidePane.classList.add("ld-light-table-slide-pane-hide");
+                }
+            });
+    });
 }
 
 function registerLightTableViewScrollYListener() {
-  const lightTableView = document.getElementById("ld-light-table-slides");
-  lightTableView.addEventListener("scroll", () => {
-    if (state.showLightTable) {
-      state.lightTableViewScrollY = lightTableView.scrollTop;
-    }
-  });
+    const lightTableView = document.getElementById("ld-light-table-slides");
+    lightTableView.addEventListener("scroll", () => {
+        if (state.showLightTable) {
+            state.lightTableViewScrollY = lightTableView.scrollTop;
+        }
+    });
 }
 
 function registerLightTableCloseListener() {
-  document
-    .getElementById("ld-light-table-close-button")
-    .addEventListener("click", toggleLightTable);
+    document
+        .getElementById("ld-light-table-close-button")
+        .addEventListener("click", toggleLightTable);
 }
 
 function registerHelpCloseListener() {
-  document.getElementById("ld-help-close-button").addEventListener("click", () => {
-    toggleDialog("help");
-  });
+    document
+        .getElementById("ld-help-close-button")
+        .addEventListener("click", () => {
+            toggleDialog("help");
+        });
 }
 
 function registerDocumentViewScrollYListener() {
-  document.addEventListener("scroll", () => {
-    if (state.showDocumentView) {
-      const scrollY = window.scrollY;
-      state.continuousViewScrollY = scrollY;
-    }
-  });
+    document.addEventListener("scroll", () => {
+        if (state.showDocumentView) {
+            const scrollY = window.scrollY;
+            state.continuousViewScrollY = scrollY;
+        }
+    });
 }
 
 function registerMenuClickListener() {
-  document.getElementById("ld-slides-button").addEventListener("click", () => {
-    if (state.showDocumentView) {
-      toggleDocumentView();
-    }
-    showMainSlideNumber(false);
-  });
+    document
+        .getElementById("ld-slides-button")
+        .addEventListener("click", () => {
+            if (state.showDocumentView) {
+                toggleDocumentView();
+            }
+            showMainSlideNumber(false);
+        });
 
-  document.getElementById("ld-slides-with-nr-button").addEventListener("click", () => {
-    if (state.showDocumentView) {
-      toggleDocumentView();
-    }
-    showMainSlideNumber(true);
-  });
+    document
+        .getElementById("ld-slides-with-nr-button")
+        .addEventListener("click", () => {
+            if (state.showDocumentView) {
+                toggleDocumentView();
+            }
+            showMainSlideNumber(true);
+        });
 
-  document.getElementById("ld-dv-button").addEventListener("click", () => {
-    if (!state.showDocumentView) {
-      toggleDocumentView();
-    }
-  });
+    document.getElementById("ld-dv-button").addEventListener("click", () => {
+        if (!state.showDocumentView) {
+            toggleDocumentView();
+        }
+    });
 
-  document.getElementById("ld-help-button").addEventListener("click", () => {
-    toggleDialog("help");
-  });
+    document.getElementById("ld-help-button").addEventListener("click", () => {
+        toggleDialog("help");
+    });
 
-  document
-    .getElementById("ld-light-table-button")
-    .addEventListener("click", toggleLightTable);
+    document
+        .getElementById("ld-light-table-button")
+        .addEventListener("click", toggleLightTable);
 
-  document
-    .getElementById("ld-exercises-passwords-button")
-    .addEventListener("click", toggleExercisesPasswordsDialog);
+    document
+        .getElementById("ld-exercises-passwords-button")
+        .addEventListener("click", toggleExercisesPasswordsDialog);
 
-  document.getElementById("ld-table-of-contents-button").onclick = toggleTableOfContents;
+    document.getElementById("ld-table-of-contents-button").onclick =
+        toggleTableOfContents;
 }
 
 /**
  * Some initial support for swipe gestures.
  */
 function registerSwipeListener() {
-  let xDown = null;
-  let yDown = null;
+    let xDown = null;
+    let yDown = null;
 
-  document.addEventListener(
-    "touchstart",
-    function (evt) {
-      ensureLectureDocIsVisible();
-      xDown = evt.changedTouches[0].clientX;
-      yDown = evt.changedTouches[0].clientY;
-    },
-    false,
-  );
+    document.addEventListener(
+        "touchstart",
+        function (evt) {
+            ensureLectureDocIsVisible();
+            xDown = evt.changedTouches[0].clientX;
+            yDown = evt.changedTouches[0].clientY;
+        },
+        false,
+    );
 
-  document.addEventListener(
-    "touchend",
-    function (evt) {
-      let xUp = evt.changedTouches[0].clientX;
-      let yUp = evt.changedTouches[0].clientY;
+    document.addEventListener(
+        "touchend",
+        function (evt) {
+            let xUp = evt.changedTouches[0].clientX;
+            let yUp = evt.changedTouches[0].clientY;
 
-      let xDiff = xDown - xUp;
-      let yDiff = yDown - yUp;
-      console.log("touch event (x,y): ", xDiff, yDiff);
-      if (Math.abs(xDiff) > Math.abs(yDiff)) {
-        if (xDiff < -10) {
-          retrogressPresentation();
-        } else if (xDiff > 10) {
-          advancePresentation();
-        }
-      } else {
-        if (yDiff < -10) {
-          retrogressPresentation();
-        } else if (yDiff > 10) {
-          advancePresentation();
-        }
-      }
-      xDown = null;
-      yDown = null;
-    },
-    false,
-  );
+            let xDiff = xDown - xUp;
+            let yDiff = yDown - yUp;
+            console.log("touch event (x,y): ", xDiff, yDiff);
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                if (xDiff < -10) {
+                    retrogressPresentation();
+                } else if (xDiff > 10) {
+                    advancePresentation();
+                }
+            } else {
+                if (yDiff < -10) {
+                    retrogressPresentation();
+                } else if (yDiff > 10) {
+                    advancePresentation();
+                }
+            }
+            xDown = null;
+            yDown = null;
+        },
+        false,
+    );
 }
 
 /**
@@ -2329,59 +2491,59 @@ function registerSwipeListener() {
  * presentation to the last state.
  */
 const onDOMContentLoaded = async () => {
-  initDocumentId();
-  initSlideDimensions();
+    initDocumentId();
+    initSlideDimensions();
 
-  await import("./js/ld-tables.js");
-  await import("./js/ld-decks.js");
-  await import("./js/ld-scrollables.js");
-  await import("./js/ld-stories.js");
+    await import("./js/ld-tables.js");
+    await import("./js/ld-decks.js");
+    await import("./js/ld-scrollables.js");
+    await import("./js/ld-stories.js");
 
-  ldEvents.beforeLDDOMManipulations.forEach((f) => f());
+    ldEvents.beforeLDDOMManipulations.forEach((f) => f());
 
-  initSlideCount(); // We need to do this here, because the animations
-  initCurrentSlide(); // package may add slides!
-  initShowLightTable();
-  initShowDocumentView();
-  initShowHelp();
+    initSlideCount(); // We need to do this here, because the animations
+    initCurrentSlide(); // package may add slides!
+    initShowLightTable();
+    initShowDocumentView();
+    initShowHelp();
 
-  /**
-   * Load the previous state if possible; this may override document settings.
-   *
-   * However, information in the state object is APPLIED after all DOM
-   * Manipulations are executed!
-   */
-  loadState();
+    /**
+     * Load the previous state if possible; this may override document settings.
+     *
+     * However, information in the state object is APPLIED after all DOM
+     * Manipulations are executed!
+     */
+    loadState();
 
-  /*
+    /*
     Setup all components.
 
     Given a LectureDoc document - which is basically an HTML document that
     has to follow some well-defined restrictions - we first extend the DOM
     with the elements that realize LectureDoc's core functionality.
     */
-  setupMessageBox();
-  setupLightTable();
-  setupUnlockPresenterNotesAndSolutionsDialog();
-  setupTableOfContents();
-  setupHelp();
-  setupJumpTargetDialog();
-  setupDocumentView();
-  setupSlidePane();
-  setupMenu();
+    setupMessageBox();
+    setupLightTable();
+    setupUnlockPresenterNotesAndSolutionsDialog();
+    setupTableOfContents();
+    setupHelp();
+    setupJumpTargetDialog();
+    setupDocumentView();
+    setupSlidePane();
+    setupMenu();
 
-  scaleSlideImages();
+    scaleSlideImages();
 
-  /*
+    /*
     Update rendering related information.
     */
-  setPaneScale(); // done to improve the initial rendering behavior
+    setPaneScale(); // done to improve the initial rendering behavior
 
-  /*  Due to the copying of the slide templates, some things (e.g.,
+    /*  Due to the copying of the slide templates, some things (e.g.,
         no longer unique ids), need to be fixed. */
-  applyDOMfixes();
+    applyDOMfixes();
 
-  ldEvents.afterLDDOMManipulations.forEach((f) => f());
+    ldEvents.afterLDDOMManipulations.forEach((f) => f());
 };
 
 /**
@@ -2389,120 +2551,120 @@ const onDOMContentLoaded = async () => {
  * enable state changes after everything is fully loaded.
  */
 const onLoad = () => {
-  // Whatever the state is/was - let's apply it before we make state changes
-  // possible by the user.
-  // console.debug("presentation: "+JSON.stringify(presentation));
-  // console.debug("state:        "+JSON.stringify(state));
-  applyState();
+    // Whatever the state is/was - let's apply it before we make state changes
+    // possible by the user.
+    // console.debug("presentation: "+JSON.stringify(presentation));
+    // console.debug("state:        "+JSON.stringify(state));
+    applyState();
 
-  document.addEventListener("visibilitychange", storeStateOnVisibilityHidden);
+    document.addEventListener("visibilitychange", storeStateOnVisibilityHidden);
 
-  registerDocumentViewScrollYListener();
-  registerLightTableViewScrollYListener();
-  registerKeyboardEventListener();
-  registerViewportResizeListener();
-  registerSlideClickedListener();
-  registerSlideInternalLinkClickedListener();
-  registerLightTableZoomListener();
-  registerLightTableSlideSelectionListener();
-  registerLightTableSlideSearchListener();
-  registerLightTableCloseListener();
-  registerHelpCloseListener();
-  registerMenuClickListener();
-  registerSwipeListener();
-  registerHoverSupplementalListener();
-  registerHoverPresenterNoteListener();
+    registerDocumentViewScrollYListener();
+    registerLightTableViewScrollYListener();
+    registerKeyboardEventListener();
+    registerViewportResizeListener();
+    registerSlideClickedListener();
+    registerSlideInternalLinkClickedListener();
+    registerLightTableZoomListener();
+    registerLightTableSlideSelectionListener();
+    registerLightTableSlideSearchListener();
+    registerLightTableCloseListener();
+    registerHelpCloseListener();
+    registerMenuClickListener();
+    registerSwipeListener();
+    registerHoverSupplementalListener();
+    registerHoverPresenterNoteListener();
 
-  ldEvents.afterLDListenerRegistrations.forEach((f) => f());
+    ldEvents.afterLDListenerRegistrations.forEach((f) => f());
 
-  if (ephemeral.ldPerDocumentChannel /* no document id - no channel */) {
-    ephemeral.ldPerDocumentChannel.addEventListener("message", (event) => {
-      const [msg, data] = event.data;
-      switch (msg) {
-        case "advancePresentation":
-          localAdvancePresentation();
-          break;
-        case "retrogressPresentation":
-          localRetrogressPresentation();
-          break;
-        case "moveToPreviousSlide":
-          localMoveToPreviousSlide();
-          break;
-        case "moveToNextSlide":
-          localMoveToNextSlide();
-          break;
-        case "goToSlide":
-          localGoToSlideWithNo(data);
-          break;
-        case "jumpToId":
-          localJumpToId(data);
-          break;
+    if (ephemeral.ldPerDocumentChannel /* no document id - no channel */) {
+        ephemeral.ldPerDocumentChannel.addEventListener("message", (event) => {
+            const [msg, data] = event.data;
+            switch (msg) {
+                case "advancePresentation":
+                    localAdvancePresentation();
+                    break;
+                case "retrogressPresentation":
+                    localRetrogressPresentation();
+                    break;
+                case "moveToPreviousSlide":
+                    localMoveToPreviousSlide();
+                    break;
+                case "moveToNextSlide":
+                    localMoveToNextSlide();
+                    break;
+                case "goToSlide":
+                    localGoToSlideWithNo(data);
+                    break;
+                case "jumpToId":
+                    localJumpToId(data);
+                    break;
 
-        case "resetCurrentSlideProgress":
-          localResetCurrentSlideProgress();
-          break;
-        case "resetAllAnimations":
-          localResetAllAnimations();
-          break;
-        case "resetLectureDoc":
-          localResetLectureDoc();
-          break;
+                case "resetCurrentSlideProgress":
+                    localResetCurrentSlideProgress();
+                    break;
+                case "resetAllAnimations":
+                    localResetAllAnimations();
+                    break;
+                case "resetLectureDoc":
+                    localResetLectureDoc();
+                    break;
 
-        case "hideLectureDoc":
-          localHideLectureDoc();
-          break;
-        case "ensureLectureDocIsVisible":
-          localEnsureLectureDocIsVisible();
-          break;
-        case "decryptExercise": {
-          const [title, password] = data;
-          localDecryptExercise(title, password);
-          break;
-        }
+                case "hideLectureDoc":
+                    localHideLectureDoc();
+                    break;
+                case "ensureLectureDocIsVisible":
+                    localEnsureLectureDocIsVisible();
+                    break;
+                case "decryptExercise": {
+                    const [title, password] = data;
+                    localDecryptExercise(title, password);
+                    break;
+                }
 
-        case "showLaserPointer": {
-          const [slideX, slideY] = data;
-          localShowLaserPointer(slideX, slideY);
-          break;
-        }
-        case "hideLaserPointer":
-          localHideLaserPointer();
-          break;
+                case "showLaserPointer": {
+                    const [slideX, slideY] = data;
+                    localShowLaserPointer(slideX, slideY);
+                    break;
+                }
+                case "hideLaserPointer":
+                    localHideLaserPointer();
+                    break;
 
-        case "redrawSlide":
-          localRedrawSlide();
-          break;
+                case "redrawSlide":
+                    localRedrawSlide();
+                    break;
 
-        case "addHoverSupplemental": {
-          const id = data;
-          document
-            .querySelector(
-              `#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`,
-            )
-            .classList.add("hover:ld-supplementals");
-          break;
-        }
-        case "removeHoverSupplemental": {
-          const id = data;
-          document
-            .querySelector(
-              `#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`,
-            )
-            .classList.remove("hover:ld-supplementals");
-          break;
-        }
-        case "supplementalScrolled": {
-          const [supplementalId, scrollTop] = data;
-          localScrollSupplemental(supplementalId, scrollTop);
-          break;
-        }
+                case "addHoverSupplemental": {
+                    const id = data;
+                    document
+                        .querySelector(
+                            `#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`,
+                        )
+                        .classList.add("hover:ld-supplementals");
+                    break;
+                }
+                case "removeHoverSupplemental": {
+                    const id = data;
+                    document
+                        .querySelector(
+                            `#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`,
+                        )
+                        .classList.remove("hover:ld-supplementals");
+                    break;
+                }
+                case "supplementalScrolled": {
+                    const [supplementalId, scrollTop] = data;
+                    localScrollSupplemental(supplementalId, scrollTop);
+                    break;
+                }
 
-        default:
-          console.warn("unknown message: " + event.data);
-          console.dir(event);
-      }
-    });
-  }
+                default:
+                    console.warn("unknown message: " + event.data);
+                    console.dir(event);
+            }
+        });
+    }
 };
 
 // We want to ensure that the initialization is serialized in the sense
@@ -2512,23 +2674,25 @@ const onLoad = () => {
 // other scripts.
 let LDInitializationPromise = Promise.resolve(); // Used to serialize the initialization of the LD object
 document.addEventListener("DOMContentLoaded", () => {
-  LDInitializationPromise = LDInitializationPromise.then(() => onDOMContentLoaded())
-    .then(() => console.log("DOM transformations finished."))
-    .catch((e) => console.log("DOM transformations failed." + e));
+    LDInitializationPromise = LDInitializationPromise.then(() =>
+        onDOMContentLoaded(),
+    )
+        .then(() => console.log("DOM transformations finished."))
+        .catch((e) => console.log("DOM transformations failed." + e));
 });
 window.addEventListener("load", () => {
-  LDInitializationPromise = LDInitializationPromise.then(() => onLoad())
-    .then(() => console.log("Event transformations finished."))
-    .catch((e) => console.log("Event transformations failed." + e));
+    LDInitializationPromise = LDInitializationPromise.then(() => onLoad())
+        .then(() => console.log("Event transformations finished."))
+        .catch((e) => console.log("Event transformations failed." + e));
 });
 
 /* Finish initialization of the LectureDoc2 object. */
 lectureDoc2.presentation = presentation; // "constant state"
 lectureDoc2.getState = function () {
-  return state;
+    return state;
 }; // the state object as a whole may change
 lectureDoc2.getEphemeral = function () {
-  return ephemeral;
+    return ephemeral;
 };
 lectureDoc2.prepareForPrinting = prepareForPrinting;
 

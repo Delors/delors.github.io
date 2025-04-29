@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta content="Michael Eichberg" name="author" />
-<meta content="&quot;IT Sicherheit&quot;, Passwortwiederherstellung" name="keywords" />
-<meta content="Fortgeschrittene Angewandte IT Sicherheit" lang="de" name="description" xml:lang="de" />
-<meta content="2023_11-w3wi_se403_passwort_wiederherstellung-regexp" name="id" />
+<meta content="&quot;Reguläre Ausdrücke&quot;" name="keywords" />
+<meta content="Eine erste Einführung in reguläre Ausdrücke" lang="de" name="description" xml:lang="de" />
+<meta content="lab-regexp" name="id" />
 <meta content="last-viewed" name="first-slide" />
+<meta content="WirklichSchwierig!" name="exercises-master-password" />
 <meta name="version" content="LD2 GENESIS" />
-<meta name="exercises-passwords" content="MTAwMDAw:bnGAK3CRqjd26CFnxuUdIdjoSdFWkO3e4od05o8Q2Bg=:/g9uStMQkrcG2oL4:8VU/AF650lmJZw2usZ3VvbGfgNY8QxXXbT9XA65256vZ+lSWYp7HAtwlMZVv9ZYoBM5XFGMFz9bN5iZxSziECwQkmKkWvTbxWLIpP6oXc+aKPtMRlpaJjcj/HXecQvswT5G+MsmVlD0kpkKDtZXx7czCOsSCThH8S7LVrbgxeT6Zii3ccjePY1rzLV4XWyYqWojGZEC7UXZ0yWQRn+bXgKGelR/NQzSjWVDjO+rEig2Di1RWpbnwjRyc6nKnBElDPGy7PS6RaNuLyZnpR6qqSjcbWXIg8kNlNLv3EZ/Hb7ErAPxh8s75Ryu8TZpEs9v63v0wLcFUzdbty+9tVcUO355LOl4VbzcJTIuShhku0EHkxKE4lWWqe8cyi+Y3azEgKPNIcQuEkmE516tZM005mAitx90BwGrDLUBycyGWDgojvCUbjD5Kb9QIlUQ34N+RwvsVsG7rBN+8VdqUc5BMP41CiWTKj1aPvMeBv9PdgcFzOySCM2VhafqsE1FDH6PftfPFJmkWAXceKp4DLQIS9GD92oFFaCvHWs8Nu7vW1Mu0AnlwACzrSs8IU/s3eAxe0okhHjfz7uvQWWXafuxH2QibbjFuP3P80FOWY4qzVH0EUrWsLIIn81DOhgsCSr+pXAZB72L1JK64VF0eelyOczAz" />
 <title>Reguläre Ausdrücke</title>
 
     <script src="../LectureDoc2/genesis/ld-core.js" type="module"></script>
@@ -23,14 +23,27 @@
     <link rel="stylesheet" href="../LectureDoc2/genesis/ld-ui.css" />
 
     
-    <!-- Modules added for specific classes used in the document: -->
-    <script src="../LectureDoc2/genesis/themes/DHBW/logo.js" type="module"></script>
 </head>
 <body>
 <template>
-<div class="animated-symbol ld-slide" id="regulare-ausdrucke">
+<div class="ld-slide" id="regulare-ausdrucke">
 <h1 class="title">Reguläre Ausdrücke</h1>
 
+<!-- This file is intended to be included in rst files and contains
+substitution definitions as wells as role definitions frequently
+used in LectureDoc documents.
+
+Created 2025 - Michael Eichberg -->
+<!-- SUBSTITUTIONS -->
+<!-- ANIMATION RELATED -->
+<!-- LANGUAGE RELATED -->
+<!-- TEXT RELATED -->
+<!-- The following definitions enable "lightweight" definitions of mathematical
+expressions that resemble MathJax definitions without causing the overhead
+incurred by MathJax.
+Both (are intended to) change the font to the font used by MathJax.
+"math-r" uses the normal style which is used by MathJax for numbers.
+"math-i" uses (the italic) font which is used by MathJax for other characters. -->
 <hr class="docutils" />
 <dl class="field-list simple">
 <dt>Dozent<span class="colon">:</span></dt>
@@ -40,7 +53,7 @@
 <dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>1.2</p>
+<dd><p>1.2.1</p>
 </dd>
 </dl>
 <div class="supplemental">
@@ -103,7 +116,7 @@
 <h2>Reguläre Ausdrücke - Escapezeichen</h2>
 <p>Der Backslash <span class="docutils literal">\</span> dient als Escapezeichen für Sonderzeichen.</p>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc-123[a-z]&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;\[a-z\]&quot;</span></code></pre>
-<p>findet: <span class="docutils literal"><span class="pre">[a-z]</span></span> <span class="minor">(aber nicht &quot;abc&quot;)</span></p>
+<p>findet: <span class="docutils literal"><span class="pre">[a-z]</span></span> <span class="peripheral">(aber nicht &quot;abc&quot;)</span></p>
 </div><div class="ld-slide" id="regulare-ausdrucke-anker">
 <h2>Reguläre Ausdrücke - Anker</h2>
 <p><span class="docutils literal">^</span>: Steht für den Anfang einer Zeile.</p>
@@ -171,19 +184,19 @@
 </div><div class="transition-scale integrated-exercise ld-slide" id="fingerubungen">
 <h2>Fingerübungen</h2>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Schmetterling in Rockyou" id="ld-exercise-1">
-<p class="rubric">Schmetterling in Rockyou</p>
+<p class="ld-exercise-title rubric">Schmetterling in Rockyou</p>
 <p>Prüfen Sie ob der Begriff: schmetterling oder Schmetterling in der Datei <span class="docutils literal">rockyou.txt</span> vorkommt.</p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:3FoWo+yCqnf66xrf6VzJ9F4bAkfJDgSS3xg7q4UAuaQ=:jN8T6v/LMy0V/QYa:5aVNdFwjjvFwVvafqQHGYqDl24YvQmnkdB3cpzyZ9lrWFfqxyzW/vw99A5hnxRRlcT7ckz1i4PGGAnIRAP3Osd7o6U6ZtMlr5iHRUViCkd3FSSwJJPvgmeFjknOLvQGuQCgidBgNne4iX9Qvv6Qt0Fo6rTxuHLxb5lFOe4GssWZ8uM4gst293/QISBrA1yxpAbFb0ytzU16sOGns0PsByejP48LBf9cWeK/2IEEhehSfRWlzB9S3nFsaYuM9y7WIo5yK+bX3MsgYgG8pzaH7g2A232yLGdrLSBAv22VzMIvqIfy8L2dGGyox0sPAw00FMcKFDH0DBRM2gp4aBoikDqr9/IVeAEP3Oo/3Wn83DmtJVe7MUBjN9h2m/tMiO1Rj7/m3iX9f0yu3xuUwl7b9kSHjAY/+jmX75pbPz2UAwOzQpfl90JqDoY5j6CnpTjK5L6LWZIPDYZq8wCltmUBzA73uulJlWA46M7N+xPV2akUz519BGyfegfchJVpP5h0IYbKEa5saHCy/B4oD4JZveH4v8bJHTCT1PNGJYTipTDVcrwaO3PETIpppAf7QnuU2kf0YMxcczrfh55ZSsvQ4SPuJL8BL1yZ9/sneYyDu2UwCl918uiyH5LoesCl3gA8n76fZW//xV9dZP9lzJaGDRd8tDFK+00cNgAGdeSP3fl2+C89+pGy0IoxqExTsabCSd4tkUe6yIsEJ82aEL2ExhCV/mzr3FK7StcJdPfFlPLxETFPvw4DgctLD88hSjNlfgRg9U+B3a1QVgFbWC4nYuiq2HO/R7D9MZydVxJlOKBt66Q7OkG9CAPHbkTS3/YdmijJwyWmX1KdtJbP6mCN6Lw==</div>
 </div>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Wiederholungen von Zeichen in Passwörtern" id="ld-exercise-2">
-<p class="rubric">Wiederholungen von Zeichen in Passwörtern</p>
+<p class="ld-exercise-title rubric">Wiederholungen von Zeichen in Passwörtern</p>
 <p>Finden Sie alle Passworte in denen ein Zeichen mind. 3 oder mehrmals wiederholt wird. z. B. &quot;x0000!&quot; oder &quot;aaaabbbb&quot;.</p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:DI4bTNbEPfukzjlilX0MOKJQsQ948+r0ozvFovGrtVo=:qliGG6RDRgHQitEr:LKDRqjxkqbfFTV+oKm9AkCAKHrw9/GguO2qMVh9lLVFFnEngbXlgd5iplfrkhJvg7sTQDIB0jh8uq3PdW8Mx6HBG8dOCO2P9rTULbDT/duRHmQFdeDViiIT762wk/TkgMyzqFXlY+c+pGKMGAPFEycgGs9vFgZejccm1slvNjwKkFD/3YRq1rkWmIXTrEKoNV8WEGdRRFVRgPFotYXXDviEHlgEiyxjdnA0hPOjkX5Hq3zmJ23YcqGMTC/7JxpOIP8UXmqDiDVDVkuD3FV2Ov6yPRoaQRqepdiforY9fghY8tz/gF7i+W/yD43ZhIN7LhXzu/ssEK0PpKQ5SCpHrS4IziDU6dOuDUp7Dol0OWmZUqo+JYXT17Bmh0Uypq5wOEGPpIUATPFzPct4KGhPc9EVeD2g=</div>
 </div>
 <div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Wiederholungen von Sequenzen in Passwörtern" id="ld-exercise-3">
-<p class="rubric">Wiederholungen von Sequenzen in Passwörtern</p>
+<p class="ld-exercise-title rubric">Wiederholungen von Sequenzen in Passwörtern</p>
 <p>Finden Sie alle Passworte, in denen eine Sequenz mit mindestens 3 Zeichen wiederholt wird, z. B. „TestTest“` oder „1AffeIstAffe#“.</p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:74jc1apfRpUgTZQVXFcpXJ6lLpKH31Vu0/ssAYQSGXo=:oXH4suQiscwDAy60:tAvY6RR+I2caZEbFLiXtrbBuQoc7K5ba1GKJCUw9ZR1IsfEo1KVmumSg7DtRgyPEdbqWwEqf09wuLb/71/Cw2ODf88C8l2m3uYaDMZx5vEB3AYgPlrQyCckYJoN7oGd5p+m6y7WpbUkYyp2ogTXGeDRcs9/DW9pLchcGJfY14nZ7WodtJcS6MhE2zxpLygDHlJhvaTsnjcz0RKQ2wCVpKNNrkYOx54y63R+1NFgZ2rE4IkrLfUS0zYgGh2Ck9yM6CCg9xHzQkV0gYOMrz1GC6/3Ytyooc21/R7KEJG6pPsjeiknc7jcTkSoyTe3tVUzxe9OcYum4yALJjbbmzcInODXUZNivRDT0zW2FsTglE5GDfHwM/p/OYOSxARv4lbTdbg5gsYTr+FVugTaCtZRKQqdePiIoCQ==</div>
