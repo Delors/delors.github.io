@@ -85,9 +85,15 @@ async function ldCrypto() {
  * }
  * // Register with LectureDoc's basic events.
  * const ldEvents = lectureDoc2.ldEvents
- * ldEvents.addEventListener("beforeLDDOMManipulations", beforeLDDOMManipulations);
- * ldEvents.addEventListener("afterLDDOMManipulations", afterLDDOMManipulations);
- * ldEvents.addEventListener("afterLDListenerRegistrations", afterLDListenerRegistrations);
+ * ldEvents.addEventListener(
+ *      "beforeLDDOMManipulations",
+ *      beforeLDDOMManipulations);
+ * ldEvents.addEventListener(
+ *      "afterLDDOMManipulations",
+ *      afterLDDOMManipulations);
+ * ldEvents.addEventListener(
+ *      "afterLDListenerRegistrations",
+ *      afterLDListenerRegistrations);
  */
 const ldEvents = {
     beforeLDDOMManipulations: [],
@@ -142,10 +148,10 @@ function typesetMath(element) {
 }
 
 /**
- * The meta-information about the document.
+ * The static meta-information about the document.
  *
- * The following information is read from the document or initialized
- * with default values.
+ * The following information is specified in the document or computed based
+ * on the document.
  *
  * This information will not be mutated after initialization.
  */
@@ -159,8 +165,7 @@ const presentation = {
     id: null,
     /**
      * Configuration of the slide dimensions. The default is 1920 (width) :
-     * 1200 (height) for a 16:10 ratio. This can be changed in the meta
-     * information.
+     * 1200 (height) for a 16:10 ratio.
      */
     slide: {
         width: 1920,
@@ -203,10 +208,13 @@ const presentation = {
 };
 
 /**
- * Captures the current state of the presentation. This state is used
- * to restore the presentation state when the user returns to the document.
+ * Captures the current state of the presentation.
+
+ * This state is also used to restore the presentation state when the user
+ * returns to the document.
  *
- * Modules are allowed to extend this object with additional information.
+ * Modules are allowed to extend this object with additional information and
+ * are also allowed to read the data.
  * However, modules are not expected to change any values that are already
  * stored in the state object.
  */
@@ -246,6 +254,12 @@ let ephemeral = {
     // when the user wants to black-out the presentation.
     bodyDisplayProperty: undefined,
     rootBackgroundColorProperty: undefined,
+
+    // Mapping between a slide (DOM Object) and the ordered list of DOM
+    // elements to animate.
+    // The list of elements is a list of lists to enable multiple elements
+    // to be shown in the same step.
+    animatedElements: {},
 };
 
 /**
@@ -415,6 +429,27 @@ function localResetLectureDoc() {
     location.replace(url);
 }
 
+function scaleDocumentImages() {
+    document.querySelectorAll("ld-section img").forEach((img) => {
+        if (img.style.width || img.style.height) return;
+
+        if (img.classList.contains("highdpi")) {
+            img.addEventListener("load", () => {
+                const targetWidth = img.naturalWidth / 2;
+                const targetHeight = img.naturalHeight / 2;
+                console.log(
+                    "scaling highdpi image for document view",
+                    img,
+                    targetWidth,
+                    targetHeight,
+                );
+                img.style.width = targetWidth + "px";
+                img.style.height = targetHeight + "px";
+            });
+        }
+    });
+}
+
 function scaleSlideImages() {
     const imgs = document.querySelectorAll(".ld-slide img");
     for (const img of imgs) {
@@ -432,19 +467,24 @@ function scaleSlideImages() {
             );
             // TODO Implement when required.
         } else {
-            console.info("waiting for image " + img.src + " to load");
-            img.addEventListener("load", () => {
-                console.info(
-                    "image " +
+            if (!img.classList.contains("highdpi")) {
+                console.info("waiting for image " + img.src + " to load");
+                img.addEventListener("load", () => {
+                    /*
+                    console.info(
+                        "image " +
                         img.src +
                         " has been loaded: " +
                         img.naturalWidth +
                         "x" +
                         img.naturalHeight,
-                );
-                img.style.width = img.naturalWidth * 3 + "px";
-                img.style.height = img.naturalHeight * 3 + "px";
-            });
+                    );
+                    */
+
+                    img.style.width = img.naturalWidth * 3 + "px";
+                    img.style.height = img.naturalHeight * 3 + "px";
+                });
+            }
         }
     }
 
@@ -658,7 +698,81 @@ function setupCopyToClipboard(rootNode) {
     });
 }
 
+/**
+ * Walks the tree (depth-first) and associates each element that should be
+ * shown incrementally with a step id.
+ * If no explicit step id is given, the passed in step id is used. Returns the
+ * stepId that should be used next.
+ *
+ * @param {*} element An HTML DOM element.
+ * @param {*} nextStepId The step id that should be used for the next element
+ *            with an incremental annoation.
+ */
+function associateAnnotationStepIds(element, nextStepId) {
+    let currentStepId = nextStepId;
+
+    const elementStepId = element.dataset.ldIncrementalStepId;
+    // "prevSib" is handled at the parent level (see below); we will simply
+    // override "prevSib" in the following.
+    if (elementStepId && elementStepId !== "prevSib") {
+        currentStepId = parseInt(elementStepId);
+    }
+
+    if (element.classList.contains("incremental")) {
+        element.dataset.ldIncrementalStepId = currentStepId++;
+    }
+
+    const children = element.children;
+    for (let i = 0; i < children.length; i++) {
+        const c = children[i];
+        let stepIdToUse = currentStepId;
+
+        // When we need to use the previous step id, we simply search
+        // for it in the DOM; if we can't find one, we implicitly fall
+        // back to the nextStepId
+        if (c.dataset.ldIncrementalStepId === "prevSib") {
+            for (let j = i - 1; j >= 0; j--) {
+                const prevSibStepId = children[j].dataset.ldIncrementalStepId;
+                if (prevSibStepId) {
+                    stepIdToUse = prevSibStepId;
+                    break;
+                }
+            }
+        }
+        currentStepId = associateAnnotationStepIds(c, stepIdToUse);
+    }
+
+    return currentStepId;
+}
+
+// TODO Rename using something like: setupAnimations...
+
 function setupIncrementalElements(slide) {
+    /* 1. Search all incremental elements and check if an explicit step-id
+       is defined.
+       If so, associate the step id with the element using the element's
+       dataset. */
+    const incrementalElements = Array.from(
+        slide.querySelectorAll(
+            ":scope :is([class^='incremental-'],[class*=' incremental-'])",
+        ),
+    );
+    incrementalElements.forEach((e) => {
+        Array.from(e.classList)
+            .filter((c) => c.startsWith("incremental-"))
+            .filter((c) => {
+                const lastSegment = c.substring(c.lastIndexOf("-") + 1);
+                return lastSegment === "prevSib" || !isNaN(lastSegment);
+            })
+            .forEach((i) => {
+                const stepId = i.substring(i.lastIndexOf("-") + 1);
+                e.dataset.ldIncrementalStepId = stepId; // a number or "prev"
+                // let's remove the step-id from the class name
+                e.classList.remove(i);
+                e.classList.add(i.substring(0, i.lastIndexOf("-")));
+            });
+    });
+
     slide.querySelectorAll(":scope .incremental-list").forEach((list) => {
         if (list.tagName === "DL") {
             /*  The following does not work, because a single "line" consists
@@ -674,22 +788,30 @@ function setupIncrementalElements(slide) {
              */
             const div = ld.div({});
             list.parentElement.replaceChild(div, list);
+            list.classList.remove("incremental-list");
+            const stepId = list.dataset.ldIncrementalStepId;
+            delete list.dataset.ldIncrementalStepId;
+
             const items = list.querySelectorAll(":scope > *");
             let currentList = undefined;
-            items.forEach((item) => {
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
                 if (item.tagName === "DT") {
                     currentList = list.cloneNode(false);
-                    div.appendChild(currentList);
                     currentList.classList.add("incremental");
+                    if (stepId && i == 0)
+                        currentList.dataset.ldIncrementalStepId = stepId;
+                    div.appendChild(currentList);
                 }
                 currentList.appendChild(item);
-            });
+            }
         } else {
             // ul and ol lists
             const items = list.querySelectorAll(":scope > li");
-            items.forEach((item) => {
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
                 item.classList.add("incremental");
-            });
+            }
         }
     });
 
@@ -705,27 +827,19 @@ function setupIncrementalElements(slide) {
         });
 
     slide.querySelectorAll(":scope .incremental-code").forEach((pre) => {
-        /* Currently, we only support incremental code if it is numbered. In this
-         case, the pre tag with the class "incremental-code" always has pairs of
-         children for each line of code. This pair consists of:
-
-          <span class="ln">...<span><code>...</code>
-
-        Other child tags (e.g. <div>s created for additional buttons such as
-        "copy-to-clipboard") are ignored.
-      */
-        pre.classList.add("incremental[rel-ctx]");
-        let lineNo = 0;
         Array.from(pre.children).forEach((child) => {
             if (child.tagName === "SMALL" && child.classList.contains("ln")) {
-                child.classList.add(`incremental[rel-${lineNo}]`);
+                child.classList.add(`incremental`);
             }
             if (child.tagName === "CODE") {
-                child.classList.add(`incremental[rel-${lineNo}]`);
-                lineNo++;
+                child.classList.add(`incremental`);
+                child.dataset.ldIncrementalStepId = "prevSib"; // will be replaced!
             }
         });
     });
+
+    // TODO rename: associateAnimationStepIds
+    associateAnnotationStepIds(slide, 1);
 
     // Bring everything to the base-state
     slide.querySelectorAll(":scope .incremental").forEach((e) => {
@@ -1400,6 +1514,10 @@ function getCurrentSlide() {
     return document.getElementById("ld-slide-no-" + state.currentSlideNo);
 }
 
+function getCurrentSlideNo() {
+    return state.currentSlideNo;
+}
+
 /**
  * Sets the scaling of the main-pane to make sure that the slide is always shown
  * in the middle of the screen and completely fills it.
@@ -1478,18 +1596,24 @@ function hideSlideWithNo(slideNo, setOldMarker = false) {
     }
 }
 
-// TODO MAKE MORE RESILIENT AGAINST ERRORS WHEN THE SYNCHRONIZATION FAILED
-
 /**
  * Advances the presentation by moving to the next slide.
  *
  * In general, `advancePresentation` should be called.
  */
 function moveToNextSlide() {
-    postMessage("moveToNextSlide", undefined);
-    localMoveToNextSlide();
+    const currentSlideNo = state.currentSlideNo;
+    postMessage("moveToNextSlide", currentSlideNo);
+    localMoveToNextSlide(currentSlideNo);
 }
-function localMoveToNextSlide() {
+function localMoveToNextSlide(expectedCurrentSlideNo) {
+    // If we have multiple browser windows and the windows get out of sync
+    // we make sure that the state is realigned before we actually move
+    // to the next slide. This enables animations.
+    if (expectedCurrentSlideNo !== state.currentSlideNo) {
+        localGoToSlideWithNo(Math.min(expectedCurrentSlideNo, lastSlideNo()));
+    }
+
     if (state.currentSlideNo < lastSlideNo()) {
         hideSlideWithNo(state.currentSlideNo, true);
         showSlideWithNo(++state.currentSlideNo, true);
@@ -1497,10 +1621,15 @@ function localMoveToNextSlide() {
 }
 
 function moveToPreviousSlide() {
-    postMessage("moveToPreviousSlide", undefined);
-    localMoveToPreviousSlide();
+    const currentSlideNo = state.currentSlideNo;
+    postMessage("moveToPreviousSlide", currentSlideNo);
+    localMoveToPreviousSlide(currentSlideNo);
 }
-function localMoveToPreviousSlide() {
+function localMoveToPreviousSlide(expectedCurrentSlideNo) {
+    if (expectedCurrentSlideNo !== state.currentSlideNo) {
+        localGoToSlideWithNo(Math.min(expectedCurrentSlideNo, lastSlideNo()));
+    }
+
     if (state.currentSlideNo > 0) {
         hideSlideWithNo(state.currentSlideNo);
         showSlideWithNo(--state.currentSlideNo);
@@ -1511,7 +1640,7 @@ function localMoveToPreviousSlide() {
  * Gets the information how many animation steps are already executed.
  */
 function getSlideProgress(slide) {
-    if (!state.slideProgress) {
+    if (!state.slideProgress || !state.slideProgress[slide.id]) {
         return 0;
     }
     return state.slideProgress[slide.id];
@@ -1527,15 +1656,35 @@ function setSlideProgress(slide, i) {
     state.slideProgress[slide.id] = i;
 }
 
+/**
+ * Returns the ordered list of all elements of the slide that should be
+ * animated.
+ *
+ * @param {*} slide
+ * @return {Array.<Array.<Element>>}
+ */
 function getElementsToAnimate(slide) {
-    /*
-    const elementsToAnimate =
-        ':scope :is(ul,ol).incremental>li, ' +
-        ':scope :is(table).incremental>tbody>tr, ' +
-        ':scope :not( :is(ul,ol,table)).incremental'
-    */
-    const elementsToAnimate = ":scope .incremental";
-    return slide.querySelectorAll(elementsToAnimate);
+    let animatedElements = ephemeral.animatedElements[slide.id];
+    if (!animatedElements) {
+        const rawAnimatedElements = Array.from(
+            slide.querySelectorAll(":scope .incremental"),
+        );
+
+        const groupedAnimatedElements = Object.entries(
+            Object.groupBy(
+                rawAnimatedElements,
+                (e) => e.dataset.ldIncrementalStepId,
+            ),
+        );
+
+        animatedElements = groupedAnimatedElements
+            .sort((g1, g2) => g1[0] - g2[0])
+            .map(([, v]) => v);
+
+        ephemeral.animatedElements[slide.id] = animatedElements;
+    }
+
+    return animatedElements;
 }
 
 /**
@@ -1554,17 +1703,15 @@ function advancePresentation() {
 function localAdvancePresentation() {
     const slide = getCurrentSlide();
     const elements = getElementsToAnimate(slide);
-    const elementsCount = elements.length;
-    for (let i = 0; i < elementsCount; i++) {
-        const element = elements[i];
-        if (element.style.visibility == "hidden") {
-            element.style.visibility = "visible";
-            setSlideProgress(slide, i + 1);
-            return;
-        }
+    const i = getSlideProgress(slide);
+
+    if (i >= elements.length) {
+        // When we reach this point all elements are (already) visible.
+        localMoveToNextSlide(getCurrentSlideNo());
+    } else {
+        elements[i].forEach((e) => (e.style.visibility = "visible"));
+        setSlideProgress(slide, i + 1);
     }
-    // When we reach this point all elements are (already) visible.
-    localMoveToNextSlide();
 }
 function retrogressPresentation() {
     postMessage("retrogressPresentation", undefined);
@@ -1572,28 +1719,31 @@ function retrogressPresentation() {
 }
 function localRetrogressPresentation() {
     const slide = getCurrentSlide();
+    const elements = getElementsToAnimate(slide);
     let i = getSlideProgress(slide);
-    const elementsToAnimate = getElementsToAnimate(slide);
-    if (elementsToAnimate) {
-        if (i > elementsToAnimate.length) {
-            i = elementsToAnimate.length - 1;
-        }
-        if (i > 0) {
-            i--;
-            elementsToAnimate[i].style.visibility = "hidden";
-            setSlideProgress(slide, i);
-            i--;
-            return;
-        }
+
+    // When the number of animated elements has changed (i.e., was reduced)
+    // we need to fix the value to the maximum meaningful value.
+    if (i > elements.length) {
+        i = elements.length - 1;
     }
-    // When we reach this point all elements are hidden (again).
-    localMoveToPreviousSlide();
+
+    if (i <= 0) {
+        // When we reach this point no elements are animated or
+        // all elements are hidden (again).
+        delete state.slideProgress[slide.id];
+        localMoveToPreviousSlide(getCurrentSlideNo());
+    } else {
+        i--;
+        elements[i].forEach((e) => (e.style.visibility = "hidden"));
+        setSlideProgress(slide, i);
+    }
 }
 function hideAllAnimatedElements(slide) {
-    getElementsToAnimate(slide).forEach((e) =>
+    getElementsToAnimate(slide).forEach((g) =>
         // We want to hide the elements in reverse order to ensure that
         // functions that rely on the order work smoothly.
-        setTimeout(() => (e.style.visibility = "hidden")),
+        setTimeout(() => g.forEach((e) => (e.style.visibility = "hidden"))),
     );
 }
 
@@ -1626,7 +1776,7 @@ function reapplySlideProgress() {
             const elementsCount = elements.length;
             for (let i = 0; i < elementsCount; i++) {
                 const visibility = i < visibleElements ? "visible" : "hidden";
-                elements[i].style.visibility = visibility;
+                elements[i].forEach((e) => (e.style.visibility = visibility));
             }
         }
     });
@@ -2255,10 +2405,12 @@ function registerHoverSupplementalListener() {
     document
         .querySelectorAll("#ld-slides-pane ld-supplementals")
         .forEach((supplemental) => {
+            /*
             console.log(
                 "registering hover listener for supplemental",
                 supplemental,
             );
+            */
             const id = supplementalsId++;
             supplemental.dataset.supplementalsId = id;
             const addHover = (event) => {
@@ -2291,10 +2443,12 @@ function registerHoverPresenterNoteListener() {
     document
         .querySelectorAll("#ld-slides-pane ld-presenter-note-marker")
         .forEach((marker) => {
+            /*
             console.log(
                 "registering hover listener for presenter note",
                 marker,
             );
+            */
 
             const noteId = marker.dataset.presenterNoteId;
 
@@ -2533,6 +2687,7 @@ const onDOMContentLoaded = async () => {
     setupMenu();
 
     scaleSlideImages();
+    scaleDocumentImages();
 
     /*
     Update rendering related information.
@@ -2588,10 +2743,10 @@ const onLoad = () => {
                     localRetrogressPresentation();
                     break;
                 case "moveToPreviousSlide":
-                    localMoveToPreviousSlide();
+                    localMoveToPreviousSlide(data);
                     break;
                 case "moveToNextSlide":
-                    localMoveToNextSlide();
+                    localMoveToNextSlide(data);
                     break;
                 case "goToSlide":
                     localGoToSlideWithNo(data);

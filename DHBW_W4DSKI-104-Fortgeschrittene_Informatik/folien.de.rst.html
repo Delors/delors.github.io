@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Fortgeschrittene Informatik&quot;" name="keywords" />
+<meta content="Verteilte Systeme und Web-Entwicklung" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-w3dski_10-fortgeschrittene_informatik" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
+<title>W4DSKI 104 - Fortgeschrittene Informatik</title>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="w4dski-104-fortgeschrittene-informatik">
+<h1 class="title">W4DSKI 104 - Fortgeschrittene Informatik</h1>
+
+<!-- This file is intended to be included in rst files and contains
+substitution definitions as wells as role definitions frequently
+used in LectureDoc documents.
+
+Created 2025 - Michael Eichberg -->
+<!-- SUBSTITUTIONS -->
+<!-- ANIMATION RELATED -->
+<!-- LANGUAGE RELATED -->
+<!-- TEXT RELATED -->
+<!-- The following definitions enable "lightweight" definitions of mathematical
+expressions that resemble MathJax definitions without causing the overhead
+incurred by MathJax.
+Both (are intended to) change the font to the font used by MathJax.
+"math-r" uses the normal style which is used by MathJax for numbers.
+"math-i" uses (the italic) font which is used by MathJax for other characters. -->
+<hr class="docutils" />
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>MA-WDSKI24A</p>
+</dd>
+</dl>
+</ld-topic>
+<ld-topic id="verteilte-systeme-kerninhalte-gem-mhb">
+<h2>Verteilte Systeme - Kerninhalte gem. MHB</h2>
+<ul class="simple">
+<li><p>Terminologie, Konzepte, Architekturen, Anforderungsprofile und Architekturmodelle für verteilte Systeme</p></li>
+<li><p>Synchrone und asynchrone Kommunikation und entfernter Methodenaufruf (RMI, RPC, Web-Services, ...), Übertragungsprotokolle und APIs zwischen Client und Server (z.B. HTTP, HTTPS, WebSockets, Fetch API, etc.), Einführung in das RESTful API-Design</p></li>
+<li><p>Herausforderungen in verteilten Systemen</p></li>
+<li><p>High Performance Computing und Distributed Computing</p></li>
+<li><p>Sicherheitsaspekte bei der Verarbeitung von verteilten Anwendungen; Authentifizierung, Autorisierung, Rollenkonzepte</p></li>
+<li><p>Grundlagen Ubiquitous Computing, Internet der Dinge, MQTT, Edge Computing, Streaming &amp; Messaging</p></li>
+</ul>
+</ld-topic><ld-topic id="web-entwicklung-kerninhalte-gem-mhb">
+<h2>Web-Entwicklung  - Kerninhalte gem. MHB</h2>
+<ul class="simple">
+<li><p>Frontend-Technologien, HTML, CSS, JavaScript</p></li>
+<li><p>Konzepte, Entwurfsmuster und Werkzeuge für die Entwicklung von Web-Anwendungen - Entwurf und Umsetzung von Responsive Web-Design und zustandsbehafteten Web-Anwendungen</p></li>
+<li><p>Abgrenzung client-side und Server-Side-Rendering</p></li>
+</ul>
+<div class="accentuate compound">
+<p class="rubric">Labor Web Projekt</p>
+<p>Die theoretischen Inhalte sollen jeweils auch mit aktuellen Technologien beispielhaft umgesetzt werden. Es soll eine übergreifende Anwendung entwickelt werden anhand derer das Zusammenspiel deutlich wird.</p>
+</div>
+</ld-topic><ld-topic id="prufungsleistung-portfolio">
+<h2>Prüfungsleistung - Portfolio</h2>
+<ld-deck>
+<ld-card>
+<p class="rubric">Hintergrund</p>
+<ul class="simple">
+<li><p>Das Modul hat 5 ECTS</p></li>
+<li><p>Insgesamt gibt es max. 120 Punkte</p></li>
+</ul>
+<p class="rubric">Bewertung</p>
+<ul class="simple">
+<li><p>Kurztest 25%</p></li>
+<li><p>Portfolioaufgabe 75% in Teams von 5 bis 6 Studierenden. Die Aufgabe umfasst Präsentationen, Code Reviews und die Entwicklung eines Projekts. Jeder muss mind. einmal vortragen.</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p>Gegenstand der Portfolioaufgabe ist die Entwicklung eines verteilten Web-Spiels für mehrere Spieler. Die Wahl des Spieles ist weitgehend frei.</p>
+<p>Folgende Anforderungen sind zu erfüllen:</p>
+<ul class="incremental-list">
+<li><p>Ihr Projekt muss am Ende spielbar sein in dem Sinne, dass alle Kursteilnehmer die Möglichkeit haben gleichzeitig zu spielen; ggf. in mehreren Kleingruppen gegeneinander.</p></li>
+<li><p>Das Spiel muss rundenbasiert sein.</p>
+<div class="supplemental">
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Echtzeitspiele sind aufgrund der damit verbundenen Komplexität ausgeschlossen.</p>
+</aside>
+</div></li>
+<li><p>Sie können sich von klassischen Brettspielen oder Kartenspielen inspirieren lassen.</p></li>
+<li><p>Die Entwicklung erfolgt in Gruppen von 5 bis 6 Personen und muss immer einen Webclient und eine Serverkomponente umfassen.</p></li>
+<li><p>Die eingesetzten Technologien sind auf JavaScript, CSS und HTML sowie ggf. Python für die Serverseite beschränkt. Frameworks, um ggf. die Kommunikation zwischen Web-Client und Server zu vereinfachen dürfen eingesetzt werden.</p></li>
+<li><p>Die Webanwendung muss responsive sein und braucht nur auf den neuesten Browsern laufen: Safari, Chrome und Firefox. Es sollten also die neuesten Web-Technologien verwendet werden.</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic id="termine-1-block">
+<h2>Termine - 1. Block</h2>
+<p>(Klassische Vorlesungen und Übungen)</p>
+<ul class="simple">
+<li><p>7. May 2025 von 09:30 bis 12:45 und 13:15 bis 16:30, CEST</p></li>
+<li><p>12. May 2025 von 09:30 bis 12:45, CEST</p></li>
+<li><p>19. May 2025 von 09:30 bis 12:45, CEST</p></li>
+</ul>
+</ld-topic><ld-topic id="termine-2-block">
+<h2>Termine - 2. Block</h2>
+<ld-deck>
+<ld-card>
+<p>(Vorlesungen und Übungen zusätzlich zur Begleitung des Projekts sowie ein Test.)</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">18. Jun 2025 von 09:30 bis 12:45 und 13:30 bis 16:45, CEST</p>
+<p><strong>Ablauf</strong></p>
+<ol class="arabic">
+<li><p>Vorstellung der Projekte</p>
+<p>(8-10 Minuten pro Gruppe - 1 Personen)</p>
+<div class="supplemental">
+<p>An dem Tag muss das Spielkonzept weitgehend fertig sein und auch das Design der Oberfläche muss weitestgehend fertig sein.</p>
+<p><span class="peripheral">Die eigentliche Spiellogik, insbesondere die Interaktion mit dem Server - muss weder angefangen noch fertig sein!</span></p>
+</div></li>
+<li><p>Durchführung eines Code Reviews (HTML und CSS) eines anderen Projektes (2 * 45 Minuten)</p>
+<div class="supplemental">
+<p>Die Code Reviews erfolgen in zwei Runden, damit jede Gruppe ein Review bekommmt!</p>
+<p>Welche Gruppe welche andere Gruppe reviewt wird <em>nach</em> den Vorträgen bekannt gegeben.</p>
+</div><ld-presenter-note data-encrypted="true">
+MTAwMDAw:IXwQpCB3Nae4fd83p2S+WlDsJLX/zHxjfe6vypNV7Hw=:SiTFDu5JMu/l4D+Y:k1JqhshjPTsxB+VcpbSvBXYi5FY9D7hKXwcicaQkpA17Pka1oGr8Ejw0vxi2TF0QGKxhAVA0KVjAta5NiuJscFib0nY/btlRcAWV71YVLCiEr9/DVA/2WNM3fGkUw/bPkpm3jc3XDdMD8OHgv3sN29T+ICb0Fna7XophATgxF7WSEZu1TdVhNlQwDsiEtLAAfk1m5S+BqoDjYE5zVmNiLh/dnMTUMoHUK3Zin8W0Yk+PhT9QtAG6JpNuiEdvPfXgOVIVsRI+Ti7mwqem0+EYLYjzKbTKXHuwsF9wxLMlwgicaDp1AeX8wT2P2Y33isnrAbluPAyzIwfA0B+LCptNX1wp+2tONLXYRBk3uKByNNtmUCQOjfO/Yk5fwDwkuzf8w/sGZbaCdp87raXBC+9pKJrvz979Lp9POKcO3EVwXryH2HQ6+TRwWSUzn/JeWQYqxFBP2zWbtCC2OHs97TNywQ/28fmTPvwy16uLxL9geCq5zxlkcWdpg9t5qvijRDKdRjkDLm/LS1uGyFgMy8pr0YfCMMCBhele6ZZPX7/WuKbPydMr6Dg3e+asNsHuJ87UHrAZmFcMmnsmSyOGEaOHwIrDqtvb5B3f+I8+v8lQMY4VEjbtBc6k3JtdJ5F1gkG65lfFDjhMdplG6sjyRTsTVisr9E9uIEiFIjMmypJNK2gmzPr32WcCpoFGORKlIvXSwUPJZnZwdH/mQQK6eAS/9ZnPyRUh6wqq9bfu2uapq7C5oyqo2bpVK6iq4lqxtxcupq/ilyFaGQWBTzChEABQFnmwlbwmjrMeCAvLOWznFCKQEZoyNKtdDnZym/2KTBST4+YFHKNoTY4FrcgpTskQQ3j9X0VBUiANZIY3UUf2J5p162CHPj2hklgsxAjwUap7q1Y5I/GSPBAmbVoUnGQ8WpVcSiGRibrrLxZ4Z377IIY3MTQhF+3GzS4Xq3lM+SIw/wxB1ZTjEzuR32ABXCfdgq9cvKM2iJ12MV/cHT8aSILrgzVc9p63SoK+H6VnNh1GJUGyi5S9X6sU1MWEix2tTDWHNuO4qZpKSP8QlvNBuIACH8mTzR0y4CDydnQFF4yYXQfTEjKmrzzdE4oR1SgLng4Kx4eL96P4Avh22mkEH0oYI0qOjmq+vE8ZYY3RperhwxqyEHiXPemDgoNW7E0FI/mpPLT6mnJha/SqG7WOzVFUkAFKEIrSYK/kvEO4T845mXkmoq7rCxArj15LiglKOpQJ/75qXg5tT3YBXCqNz0K0fo8mNJefUnstYUt3deqNBc6Zdz6/31c=</ld-presenter-note>
+</li>
+<li><p>Erstellung eines Reports, der konstruktive Vorschläge enthält (30 Minuten).</p></li>
+<li><p>Präsentation der Reports (max 2 Personen pro Gruppe!)</p></li>
+<li><p>Danach wird es weitere Vorlesungsinhalte und Übungen geben.</p></li>
+</ol>
+</ld-card><ld-card class="incremental">
+<p class="rubric">25. Jun 2025 von 09:30 bis 12:45, CEST</p>
+<p class="rubric">27. Jun 2025 von 09:30 bis 12:45 und 13:30 bis 16:45, CEST</p>
+<p>Vorlesungen und Übungen; ggf. Unterstützung bei der Durchführung des Portfolioprojekts.</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">9. Jul 2025 von 09:30 bis 12:45 und 13:30 bis 16:45, CEST</p>
+<p><strong>Ablauf</strong></p>
+<ul>
+<li><p>Vormittag</p>
+<p>Vorlesung und Übung</p>
+</li>
+<li><p>Nachmittag</p>
+<p>Unterstützung der Gruppen bei der Entwicklung:</p>
+<dl class="field-list simple">
+<dt>Gruppe1<span class="colon">:</span></dt>
+<dd><p>13:30 bis 14:00</p>
+</dd>
+<dt>Gruppe2<span class="colon">:</span></dt>
+<dd><p>14:00 bis 14:30</p>
+</dd>
+<dt>Gruppe3<span class="colon">:</span></dt>
+<dd><p>14:30 bis 15:00</p>
+</dd>
+<dt>Gruppe4<span class="colon">:</span></dt>
+<dd><p>15:00 bis 15:30</p>
+</dd>
+<dt>Gruppe5<span class="colon">:</span></dt>
+<dd><p>15:30 bis 16:00</p>
+</dd>
+<dt>Gruppe6<span class="colon">:</span></dt>
+<dd><p>16:00 bis 16:30</p>
+</dd>
+</dl>
+</li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">14. Jul 2025 von 09:30 bis 12:45 und 13:30 bis 16:45, CEST</p>
+<p><strong>Ablauf</strong></p>
+<ol class="arabic" start="0">
+<li><p>Kurztest (20 Minuten mit max. 30 Punkten)</p></li>
+<li><p>Vorstellung der Projekte mit Fokus auf der Implementierung (Architektur, Build Scripte, JavaScript und ggf. Python)</p>
+<p>(8-10 Minuten pro Gruppe - 1 Person)</p>
+</li>
+<li><p>Durchführung gegenseitiger Code Reviews (Fokus: JavaScript und ggf. Python Code) eines anderen Projektes (2 * 60 Minuten)</p>
+<div class="supplemental">
+<p>Welche Gruppe welche andere Gruppe reviewt wird <em>nach</em> den Vorträgen bekannt gegeben.</p>
+</div><ld-presenter-note data-encrypted="true">
+MTAwMDAw:l6dqMZozToOPgSszYQlk6rEOx5q13bAzbEqnfsGUCes=:yRjl27X/M6qSsySA:cVKq+VxZ35qE1E2J74Ci6uAhKXnoCOl99J1ajXWKAt7rZCmJ2Dgs3esNFJ5vveIH2+mshgm/2EYGh0zauFXAUGXswj3Qfr5tmXqklMGceyER4q9DmgGFMcQYf96vXfkF9eQMKSVv9iUPSowZDJJ5a0np0q50n5IrYAz51yRiu62AmOpGCxCRfUM2cx3UTpLX+sfKEMXu4LHkgWQdzDSGdFtbe+BowuPthra6JFossvyxRO6hCTQsE4KHol7WVFca1/e3wqZ2vJfpk8XOzqOsNHcdKfjSbjJmxVXXShEH2W9qgkriRc8+RzExn0XCSpqYNDybt5YxboFXbDbZ6d/WKVu43TEVSc7EJ76L+4fV0JYa6kxB52/VP/PnPn+w5u2yIGsR88FZBHNrxttI5Jm0o0unzyUUIb1PB8DetLjOPmMKjBExXb/SdEaMKR7Fgia27ySHfhmzBowrTS2+c6nb+VSYv0sGyhzHI/81ICrniaDplY1+RcVs/BeIvB+tv7vWvyd9lHpo9WgjpW7JEn+6atlrx+ksLvU/gNE06QTKGF564MNx6ANTHuUQJ3JR3vNMAq2YpXSBXiLMwkffxKKeDquxnqiDGBnws6zD4ph1CyqPm+O4xUP+jZQtxjD/NGsb9CqHU1DY31t+btcmMYyfjkJqXhYZbifPuNO7aQX940XEtKthI9Ynq10MpcC1Z2gOC1KMpm7gJ26kMzaEdXgd4MDThDi7Yb4WKrZWXkIE3bwR+KKaEVrY2iGJVhDH3aEVOJRil3SQ0H5CIdZtrWq0kPlML+CKU2eULVEFVlix9TAph3MCP4uWx0hjkC2Xpq/hHysIpSerL62ws7v/GCa/moIs1w==</ld-presenter-note>
+</li>
+<li><p>Erstellung eines Reports, der konstruktive Vorschläge enthält (30 Minuten).</p></li>
+<li><p>Präsentation der Reports (max 2 Personen pro Gruppen).</p></li>
+<li><p>Umsetzung von Verbesserungsvorschlägen und bei Bedarf Beratung der Gruppen.</p></li>
+</ol>
+</ld-card><ld-card class="incremental">
+<p class="rubric">16. Jul 2025 von 09:30 bis 12:45 und 13:30 bis 16:45, CEST</p>
+<p><strong>Ablauf</strong></p>
+<ol class="arabic simple">
+<li><p>Jede Gruppe stellt kurz die finale Version des Spiels inkl. der Regeln und der Bedienung vor (ca. 5-10 Minuten). Danach spielen wir das Spiel ca. 20 Minuten.</p></li>
+<li><p>Besprechung der Anforderungen an die finale Abgabe.</p></li>
+</ol>
+</ld-card></ld-deck></ld-topic><ld-topic id="prufungsleistungsbestandteile">
+<h2>Prüfungsleistungsbestandteile</h2>
+<table class="incremental-table-rows booktabs" style="width: 100%;">
+<thead>
+<tr><th class="head"><p>Bestandteil</p></th>
+<th class="head"><p>Benotung</p></th>
+<th class="head"><p>Punkte</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>ein bewerteter Kurztest</p></td>
+<td><p>Individualnote</p></td>
+<td><p>30</p></td>
+</tr>
+<tr><td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>initiale Projektpräsentation</p></td>
+<td><p>Gruppennote</p></td>
+<td><p>05</p></td>
+</tr>
+<tr><td><p>Qualität des Reviews (d.h. des Reports)</p></td>
+<td><p>Gruppennote</p></td>
+<td><p>15</p></td>
+</tr>
+<tr><td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>zweite Projektpräsentation</p></td>
+<td><p>Gruppennote</p></td>
+<td><p>05</p></td>
+</tr>
+<tr><td><p>Qualität des Reviews (d.h. des Reports)</p></td>
+<td><p>Gruppennote</p></td>
+<td><p>20</p></td>
+</tr>
+<tr><td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>Spielbarkeit (inkl. Abschlusspräsentation)</p></td>
+<td><p>Gruppennote</p></td>
+<td><p>10</p></td>
+</tr>
+<tr><td></td>
+<td></td>
+<td></td>
+</tr>
+<tr><td><p>Projekt</p></td>
+<td><p>Gruppennote</p></td>
+<td><p>35</p></td>
+</tr>
+</tbody>
+</table>
+</ld-topic>
+</template>
+</body>
+</html>
