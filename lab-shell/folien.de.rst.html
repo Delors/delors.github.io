@@ -8,27 +8,24 @@
 <meta content="Fortgeschrittene Angewandte IT Sicherheit" lang="de" name="description" xml:lang="de" />
 <meta content="2023_11-w3wi_se403_passwort_wiederherstellung-shell" name="id" />
 <meta content="last-viewed" name="first-slide" />
-<meta name="version" content="LD2 GENESIS" />
-<meta name="exercises-passwords" content="MTAwMDAw:Z9rpgK3GKmc8F+yk7ybCwFS69z4+esO4HV+La5sA04Q=:WIcFSu2qPH6aZc9d:Q8QXOkSBtp0F8JboGFXGkap4Cw9vkFdsqvURtjE5Kewem9ZcEQXK+VbqOkx046nHsj1NIlMi/kKi7xANZecP8zSJ57hszaGV4BSNt1s7WM6X63cOokSALDp4O//MDcUCTXfXme31JLzSnyiHaq0EYZ45NXKBFFeJystLD2Hf9V47QMCP8Tb7xGckHVK6mXWYCDJjI6VI8/tcjOLw/BlRg3vjzoweQKbIcU80I483nfqcJgGEgb4Q007s/NP2dErKa0ahbF3mTRTYGhb749YGUmg5oCcVt7CGtCM/9eidrgrQUwFunwI3Y6Og2AVkjC3hB6ZirANLGHbJN3YTS8LM5zgD811W02V0dmtlkJ6lAeA5K2oDLoC0712PVYJSETE9jxPftqyGyZ7Aqha0zTQUsbSpuMkdsHta9rzS4J2NWODsMEiI5vAF0jR4+2KxsyMAlspcevSW75ARhkA/Ld+zG+SeDlcg84jG/zlv4TL2cJrL+fVnMW8cOdTGc7ZiZSsDBgu1yA25LGqZe458fY3gduUqeZUzeVEWYAmUULuh3xV5bzc=" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:Bczdw45+KfYAi9Hb+DFIVk7teb7EQ6eZ1nKBRdHzrWA=:YZoMsdxbBHxrJPaN:tMn5MvL6EGo1fNWoqpDAxO57ySgtfC8ivX425TX2BrvYyd11O4cRSTJLXwyR5RtxKcvH3lvjwRLMWQyvrPyEWWiI5FL3dFDdjtp523W+GzoaVgSOYZVI901/6xQ8dpCUx5XSGhbu7r6fSYRf2yCyxMxmr+SS7jw5RnOxb6Gs4jlQLS4eNBnBTEUcjfFs0BKM1V1peq7+ojxYb8NZkr0DhdRZnifI8yiZYmOsWyLvtiXwd1O8IGZviCCGd1aWZdHojuhxVSgumM7eftkRQtsO+AqNKFR4HI73nX9kO2FM/2QkyNc+dtWJ9c91YgZ3gnj+EGBrPrT6OI2Fk04aOIhkVw9K/3rJ4NiiaZkaS7k7DXM1zZEenQ6/R8QDE6T3l/RPjXgeCcHay8PJCzQouzetvhcirZJNgFZhOZ6gx01lFeZpZylkAFHg8jsuO5hSrX+kA2EZrIOQ99o9p/IfEaIRGIcAHFG0GQ==" />
 <title>Die Linux Shell</title>
 
-    <script src="../LectureDoc2/genesis/ld-core.js" type="module"></script>
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
 
-    <script src="../LectureDoc2/genesis/ld-components.js" type="module"></script>
-
-    <link rel="stylesheet" href="../LectureDoc2/genesis/ld.css" />
-
-    <link rel="stylesheet" href="../LectureDoc2/genesis/themes/DHBW/theme.css" />
-
-    <link rel="stylesheet" href="../LectureDoc2/genesis/ld-ui.css" />
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
 
     
-    <!-- Modules added for specific classes used in the document: -->
-    <script src="../LectureDoc2/genesis/themes/DHBW/logo.js" type="module"></script>
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets 
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
 </head>
 <body>
 <template>
-<div class="animated-symbol ld-slide" id="die-linux-shell">
+<ld-topic id="die-linux-shell">
 <h1 class="title">Die Linux Shell</h1>
 
 <!-- This file is intended to be included in rst files and contains
@@ -69,8 +66,62 @@ Both (are intended to) change the font to the font used by MathJax.
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
-</div></div>
-<div class="ld-slide" id="die-grundlegenden-datenstrome">
+</div></ld-topic>
+<ld-topic id="einloggen-auf-einem-server">
+<h2>Einloggen auf einem Server</h2>
+<p><strong>Ablauf</strong></p>
+<ol class="arabic simple peripheral" start="0">
+<li><p>Starten Sie ggf. den CISCO Secure Client, wenn Sie auf interne Server der DHBW Mannheim zugreifen wollen. Dies ist ggf. auch aus dem WLan der DHBW heraus notwendig!</p></li>
+</ol>
+<ol class="arabic incremental-list">
+<li><p>Starten Sie eine Shell (Terminal oder iTerm auf MacOS bzw. Linux; cmd oder powershell unter Windows.)</p></li>
+<li><p>Verwenden Sie SSH um sich auf dem Server einzuloggen. Sollte Ihr Accountname zum Beispiel &quot;mueller&quot; sein und der Server unter der IP &quot;141.72.12.103&quot; erreichbar sein, dann können Sie sich wie folgt auf dem Server einloggen<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<pre class="code bash copy-to-clipboard literal-block"><code>ssh<span class="whitespace"> </span>-l<span class="whitespace"> </span>mueller<span class="whitespace"> </span><span class="literal number">141</span>.72.12.103</code></pre>
+</li>
+</ol>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Erhalten Sie eine Meldung, dass eine Passwort basierte Authentifizierung nicht erlaubt ist, dannn müssen Sie sich an Ihren Administrator wenden.</p>
+</aside>
+</aside>
+<div class="supplemental">
+<p>Im professionellen Umfeld würde man zur Authentifizierung auf Zertifikate setzen. Für diese erste Übung verzichten wir darauf.</p>
+</div></ld-topic><ld-topic id="grundlegende-befehle">
+<h2>Grundlegende Befehle</h2>
+<ld-deck>
+<ld-card>
+<p class="rubric">Verzeichnis Operationen</p>
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>In Unixoiden Betriebssystemen trennt der &quot;/&quot; Verzeichnisnamen und es gibt nur ein Wurzelverzeichnis welches den namen &quot;/&quot; hat.</p>
+</aside>
+<dl class="incremental-list dd-margin-left-4em field-list">
+<dt><code class="console"><span class="generic output">ls</span></code><span class="colon">:</span></dt>
+<dd><p>Ermöglicht es den Inhalt eines Verzeichnisses aufzulisten. <code class="console"><span class="generic output">ls -al</span></code> gibt weitergehende Informationen aus. Insbesondere alle versteckten Dateien und Verzeichnisse sowie die Größe der Dateien und die Rechte.</p>
+</dd>
+<dt><code class="console"><span class="generic output">cd</span></code><span class="colon">:</span></dt>
+<dd><p>(<span class="eng">change directory</span>)</p>
+<p>Wechsel des Verzeichnisses. Wechsel zu einem bestimmten Verzeichnis erfolgt durch Angabe des Names (<code class="console"><span class="generic output">cd source</span></code>).             Wechsel zum Elternverzeichnis erfolgt über: <code class="console"><span class="generic output">..</span></code> (<code class="console"><span class="generic output">cd ..</span></code>).
+Wechsel zum Wurzelverzeichnis erfolgt über: <code class="console"><span class="generic output">cd /</span></code></p>
+</dd>
+<dt><code class="console"><span class="generic output">mkdir</span></code><span class="colon">:</span></dt>
+<dd><p>Anlegen eines Verzeichnisses</p>
+</dd>
+<dt><code class="console"><span class="generic output">rmdir</span></code><span class="colon">:</span></dt>
+<dd><p>Löschen eines <em>leeren</em> Verzeichnisses</p>
+</dd>
+</dl>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Allgemeines</p>
+<ul class="incremental-list simple">
+<li><p>Löschen einer Datei:         <code class="console"><span class="generic output">rm</span></code> (<span class="eng">remove</span>) Löschen</p></li>
+<li><p>Wenn man in Linux/MacOS ein Stern benutzt, dann wird dies zu den Namen aller nicht-versteckten Dateien/Verzeichnisse im aktuellen Verzeichnis aufgelöst und diese werden an das Programm übergeben! Zum Beispiel löscht <code class="console"><span class="generic output">rm *</span></code> alle Dateien im aktuellen Verzeichnis.</p></li>
+<li><p>Verfügbarer Speicher auf der Festplatte: <code class="console"><span class="generic output">df -h</span></code></p></li>
+<li><p>Benutzer Speicher (eines Verzeichnisses): <code class="console"><span class="generic output">du -h ~</span></code></p></li>
+</ul>
+</ld-card></ld-deck><p>TODO Übung: Server (zum Beispiel NodeJS) starten und eine Datei ausliefern...</p>
+</ld-topic><ld-topic id="die-grundlegenden-datenstrome">
 <h2>Die grundlegenden Datenströme</h2>
 <p>Jedes Programm hat immer Zugriff auf die drei Standarddatenströme:</p>
 <ul class="simple">
@@ -92,149 +143,118 @@ Both (are intended to) change the font to the font used by MathJax.
 </dd>
 </dl>
 </div>
-</div><div class="ld-slide" id="umleitung-von-stdin-in-dateien">
+</ld-topic><ld-topic id="umleitung-von-stdin-in-dateien">
 <h2>Umleitung von <span class="docutils literal">stdin</span> in Dateien</h2>
-<div class="incremental docutils container">
 <p><span class="docutils literal">&gt;</span> leitet die Ausgabe eines Programmes/Kommandos in eine Datei um; löscht bzw. legt die Zieldatei bei Bedarf an.</p>
-</div>
-<div class="incremental docutils container">
-<p><span class="docutils literal">&gt;&gt;</span> leitet die Ausgabe eines Programmes/Kommandos in eine Datei um; hängt die Ausgabe an das Ende einer bestehenden Datei an bzw. legt die Zieldatei bei Bedarf an.</p>
-</div>
-<div class="incremental small line-above margin-top-1em padding-top-1em docutils container">
-<p>Beispiel: Erzeugen einer Datei <span class="docutils literal">tmp/0s.txt</span>, die 1024 mal den Wert 0 in Base64 Kodierung enthält.</p>
+<p class="incremental"><span class="docutils literal">&gt;&gt;</span> leitet die Ausgabe eines Programmes/Kommandos in eine Datei um; hängt die Ausgabe an das Ende einer bestehenden Datei an bzw. legt die Zieldatei bei Bedarf an.</p>
+<aside class="admonition incremental example">
+<p class="admonition-title">Beispiel</p>
+<p>Erzeugen einer Datei <span class="docutils literal">tmp/0s.txt</span>, die 1024 mal den Wert 0 in Base64 Kodierung enthält.</p>
 <pre class="code zsh copy-to-clipboard literal-block"><code>dd<span class="whitespace"> </span><span class="keyword">if</span><span class="operator">=</span>/dev/zero<span class="whitespace"> </span><span class="name variable">bs</span><span class="operator">=</span><span class="literal number">1</span><span class="whitespace"> </span><span class="name variable">count</span><span class="operator">=</span><span class="literal number">1024</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>base64<span class="whitespace"> </span><span class="literal string escape">\ </span><span class="comment single"># 1024 * &quot;0&quot; in base64
 </span>&gt;<span class="whitespace">                                        </span><span class="literal string escape">\ </span><span class="comment single"># Umleitung der Ausgabe
 </span>/tmp/0s.txt<span class="whitespace">                                </span><span class="comment single"># in /tmp/0s.txt</span></code></pre>
-</div>
-</div><div class="ld-slide" id="umleiten-von-bestimmten-ausgaben-an-dateien">
+</aside>
+</ld-topic><ld-topic id="umleiten-von-bestimmten-ausgaben-an-dateien">
 <h2>Umleiten von bestimmten Ausgaben an Dateien</h2>
 <p>Beim Umleiten von Ausgaben an eine Datei, kann der Dateideskriptor angegeben werden: <span class="docutils literal"><span class="pre">[FD]&gt;&lt;Ziel&gt;</span></span></p>
 <div class="incremental docutils container">
 <p><span class="docutils literal">2&gt;</span> leitet z. B. die Fehlerausgaben (<span class="eng">stderr</span>) eines Programmes/Kommandos in eine Datei um; löscht bzw. legt die Zieldatei bei Bedarf an.</p>
 </div>
-<div class="incremental small line-above margin-top-1em padding-top-1em docutils container">
-<p>Beispiel: Finden von bestimmten Dateien; aber Fehlerausgaben während des Suchprozesses ignorieren.</p>
+<div class="incremental docutils container">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>Finden von bestimmten Dateien; aber Fehlerausgaben während des Suchprozesses ignorieren.</p>
 <pre class="code bash copy-to-clipboard literal-block"><code>find<span class="whitespace"> </span>/<span class="whitespace"> </span>-iname<span class="whitespace"> </span><span class="literal string double">&quot;*txt*&quot;</span><span class="whitespace"> </span>-type<span class="whitespace"> </span>f<span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="literal number">2</span>&gt;/dev/null<span class="whitespace">           </span><span class="comment single"># Umleitung aller Fehler nach /dev/null</span></code></pre>
+</aside>
 </div>
-</div><div class="ld-slide" id="grundlegende-prinzipien-lesen-aus-einer-datei">
+</ld-topic><ld-topic id="grundlegende-prinzipien-lesen-aus-einer-datei">
 <h2>Grundlegende Prinzipien: Lesen aus einer Datei</h2>
-<div class="incremental docutils container">
 <p><span class="docutils literal">&lt;</span> liest den Inhalt einer Datei und leitet diesen an das Programm/Kommando weiter; d. h. stellt den Inhalt über stdin zur Verfügung.</p>
-</div>
-<div class="incremental small line-above margin-top-1em padding-top-1em docutils container">
-<p>Beispiel: Finden aller Städte, die mit &quot;B&quot; beginnen.<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<aside class="admonition incremental example">
+<p class="admonition-title">Beispiel</p>
+<p>Finden aller Städte, die mit &quot;B&quot; beginnen.<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
 <pre class="code zsh copy-to-clipboard literal-block"><code>grep<span class="whitespace"> </span>B<span class="whitespace"> </span><span class="literal string escape">\ </span><span class="whitespace">         </span><span class="comment single"># filtert alle Zeilen, die ein &quot;B&quot; enthalten
 </span>&lt;<span class="whitespace"> </span>Big<span class="literal string escape">\ </span>Cities.txt<span class="whitespace"> </span><span class="comment single"># der Inhalt von Big Cities.txt wird über stdin zur
 </span><span class="whitespace">                  </span><span class="comment single"># Verfügung gestellt</span></code></pre>
-</div>
+</aside>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
 <p>In diesem Fall könnte die Datei (<span class="docutils literal">Big Cities.txt</span>) auch direkt als Parameter an <span class="docutils literal">grep</span> übergeben werden. In anderen Fällen ist dies aber nicht möglich.</p>
 </aside>
 </aside>
-</div><div class="ld-slide" id="linux-shell-grundlegendes-design-pattern-pipes-and-filters">
+</ld-topic><ld-topic id="linux-shell-grundlegendes-design-pattern-pipes-and-filters">
 <h2>Linux Shell - Grundlegendes Design-Pattern: <strong>Pipes and Filters</strong></h2>
 <ul class="simple">
 <li><p>Grundlegendes Konzept bzw. Entwurfsmuster (<span class="eng">Design-Pattern</span>) in Unix-basierten Betriebssystemen.</p></li>
 <li><p>Ermöglicht die effiziente Verkettung von Befehlen. Die „Pipes-and-Filter“ Architektur erlaubt es komplexe Verarbeitungsoperationen mit Hilfe von einfachen Befehlen durchzuführen.</p></li>
 </ul>
-<div class="incremental docutils container">
-<p><span class="docutils literal">|</span>: Verbindet den Ausgabestrom (<span class="docutils literal">stdout</span>) des vorhergehenden Befehls mit dem Eingabestrom (<span class="docutils literal">stdin</span>) des nachfolgenden Befehls.</p>
-</div>
-<div class="incremental scriptsize line-above margin-top-1em padding-top-1em docutils container">
-<p>Beispiel: Konvertierung des Wortes <span class="docutils literal">Test</span> in Base64 Kodierung.</p>
+<p class="incremental"><span class="docutils literal">|</span>: Verbindet den Ausgabestrom (<span class="docutils literal">stdout</span>) des vorhergehenden Befehls mit dem Eingabestrom (<span class="docutils literal">stdin</span>) des nachfolgenden Befehls.</p>
+<aside class="admonition incremental example">
+<p class="admonition-title">Beispiel</p>
+<p>Konvertierung des Wortes <span class="docutils literal">Test</span> in Base64 Kodierung.</p>
 <pre class="code bash copy-to-clipboard literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;Test&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="punctuation">|</span><span class="whitespace">              </span><span class="literal string escape">\ </span><span class="comment single"># Weiterleitung der Ausgabe von echo an base64.
 </span>base64</code></pre>
-</div>
+</aside>
 <div class="supplemental">
 <p>„Filter“: Kommandos/Programme, die von <span class="docutils literal">stdin</span> lesen und nach <span class="docutils literal">stdout</span> schreiben.</p>
-</div></div><div class="ld-slide" id="wichtige-linux-kommandozeilenwerkzeuge-fur-die-verarbeitung-von-passwortkandidaten">
+</div></ld-topic><ld-topic id="wichtige-linux-kommandozeilenwerkzeuge-fur-die-verarbeitung-von-passwortkandidaten">
 <h2>Wichtige Linux Kommandozeilenwerkzeuge für die Verarbeitung von Passwortkandidaten</h2>
-<div class="scrollable docutils container">
-<dl class="field-list simple">
+<ld-story>
+<dl class="incremental-list field-list simple">
 <dt>cat<span class="colon">:</span></dt>
 <dd><p>Dateien verketten.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>sed<span class="colon">:</span></dt>
 <dd><p>Strom Editor.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>grep<span class="colon">:</span></dt>
 <dd><p>Mustersuche auf Dateien.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>tr<span class="colon">:</span></dt>
 <dd><p>Ersetzung und Löschung von Zeichen.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>uniq<span class="colon">:</span></dt>
 <dd><p>Filtert wiederholte aufeinanderfolgende Zeilen in einer Datei.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>sort<span class="colon">:</span></dt>
 <dd><p>Sortiert Dateien.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>echo<span class="colon">:</span></dt>
 <dd><p>Schreibt Argumente auf <em>Standard Out</em> (<span class="docutils literal">stdout</span>).</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>wc<span class="colon">:</span></dt>
 <dd><p>Zählt die Zeichen, Wörter, Zeilen einer Datei.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>comm<span class="colon">:</span></dt>
 <dd><p>Vergleicht sortierte Listen und filtert entsprechend.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>find<span class="colon">:</span></dt>
 <dd><p>Auswertung eines Ausdrucks für jede Datei während eines rekusiven Abstiegs über den Verzeichnisbaum.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>awk<span class="colon">:</span></dt>
 <dd><p>Muster-orientierte Verarbeitung der Zeilen einer Eingabedatei.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>base64<span class="colon">:</span></dt>
 <dd><p>(De-)Kodierung von Daten in Base64 Kodierung.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>rev<span class="colon">:</span></dt>
 <dd><p>Dreht die Reihenfolge der Zeichen einer Zeile um.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>head<span class="colon">:</span></dt>
 <dd><p>Zeigt die ersten (<span class="docutils literal"><span class="pre">-n</span></span>) Zeilen einer Datei an.</p>
 </dd>
-</dl>
-<dl class="incremental field-list simple">
 <dt>tail<span class="colon">:</span></dt>
 <dd><p>Zeigt die letzten (<span class="docutils literal"><span class="pre">-n</span></span>) Zeilen einer Datei an. <span class="raw-html"><br></span>
 (<span class="docutils literal"><span class="pre">-f</span></span> folgt der Datei, d. h. wartet auf weitere Daten, die der Datei hinzugefügt werden.)</p>
 </dd>
 </dl>
-</div>
-<div class="supplemental">
+</ld-story><div class="supplemental">
 <p><strong>Anwendungsfälle</strong></p>
 <p>Typischerweise werden diese Werkzeuge bei der Verarbeitung von Leaks/Aufbereitung von Wörterbüchern im Vorfeld gebraucht - vor dem eigentlichen Versuch das Passwort wiederherzustellen.</p>
-</div></div><div class="small ld-slide" id="echo">
+</div></ld-topic><ld-topic id="echo">
 <h2>echo</h2>
 <ul class="simple">
 <li><p>Universell eingesetzt, um Inhalte in Dateien zu schreiben bzw. anzuhängen.</p></li>
@@ -242,9 +262,9 @@ Both (are intended to) change the font to the font used by MathJax.
 <span class="peripheral">(Besonders dann wichtig, wenn man Hashes für Testdaten generieren will.)</span></p></li>
 <li><p>Entweder ein explizites Programm oder ein in die Shell eingebautes Kommando.</p></li>
 </ul>
-<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
-<aside class="admonition note">
-<p class="admonition-title">Hinweis</p>
+<div class="incremental docutils container">
+<aside class="admonition width-30 note">
+<p class="admonition-title">Bemerkung</p>
 <p>Der hier zu sehende Befehl <span class="docutils literal">shasum <span class="pre">-a</span> 256</span> ist unter einigen Linuxdistributionen einfach <span class="docutils literal">sha256sum</span>.</p>
 </aside>
 <p><strong>Anwendungsfall</strong>: Programmatisch Daten nach <span class="docutils literal">stdout</span> schreiben.</p>
@@ -254,7 +274,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </span>2214db3d6fca761041242b9fc41fdcca<span class="whitespace">
 </span>f0b2c7f556b80c0a91cfe6994437d807</code></pre>
 </div>
-</div><div class="small ld-slide" id="cat">
+</ld-topic><ld-topic id="cat">
 <h2>cat</h2>
 <ul>
 <li><p>Liest alle Dateien sequentiell ein und schreibt diese auf <span class="docutils literal">Standard Out</span> (stdout).</p></li>
@@ -263,7 +283,7 @@ Both (are intended to) change the font to the font used by MathJax.
 <p>(Das Einlesen von der Kommandozeile kann mit <span class="docutils literal">CTR+D</span> beendet werden.)</p>
 </li>
 </ul>
-<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<div class="incremental docutils container">
 <p><strong>Anwendungsfall</strong>: Mehrere Teilwörterbücher sollen zusammengefügt werden.</p>
 <p>Inhalt von Test1.txt: <span class="docutils literal">Test1</span></p>
 <p>Inhalt von Test2.txt: <span class="docutils literal">Test2</span></p>
@@ -272,7 +292,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </span>Test2<span class="whitespace">
 </span>Test3</code></pre>
 </div>
-</div><div class="small ld-slide" id="tr">
+</ld-topic><ld-topic id="tr">
 <h2>tr</h2>
 <ul class="simple">
 <li><p>Kopiert die Eingabe von <span class="docutils literal">stdin</span> nach <span class="docutils literal">stdout</span> und führt dabei Substitutionen und Löschungen durch.</p></li>
@@ -282,18 +302,18 @@ Both (are intended to) change the font to the font used by MathJax.
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string single">'ab.cd_12!'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>tr<span class="whitespace"> </span>-dc<span class="whitespace"> </span><span class="literal string single">'[:alnum:]'</span><span class="whitespace">  </span><span class="comment single"># -dc = delete complement
 </span>abcd12</code></pre>
 </div>
-<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<div class="incremental docutils container">
 <p><strong>Anwendungsfall</strong>: Groß- in Kleinbuchstaben verwandeln.</p>
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string single">'STARK'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>tr<span class="whitespace"> </span><span class="literal string single">'[:upper:]'</span><span class="whitespace"> </span><span class="literal string single">'[:lower:]'</span><span class="whitespace">
 </span>stark</code></pre>
 </div>
-</div><div class="small ld-slide" id="uniq">
+</ld-topic><ld-topic id="uniq">
 <h2>uniq</h2>
 <ul class="simple">
 <li><p>vergleicht nebeneinanderliegende Zeilen und schreibt jede einzigartige Zeile einmal nach <span class="docutils literal">stdout</span>. Nicht-nebeneinanderliegende Wiederholungen werden nicht erkannt.</p></li>
 <li><p><span class="docutils literal"><span class="pre">-c</span></span> erlaubt es die Anzahl der Wiederholungen zu zählen.</p></li>
 </ul>
-<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<div class="incremental docutils container">
 <p><strong>Anwendungsfall</strong>: Wir möchten eine alphabetisch sortierte Liste nach der Häufigkeit des Vorkommens eines Wortes sortieren.</p>
 <p>Mittels <span class="docutils literal">uniq</span> kann die Häufigkeit gezählt werden.</p>
 <p><span class="peripheral">Die Sortierung - zum Beispiel angefangen mit den am häufigsten vorkommenden Einträgen - kann danach im Nachgang erfolgen</span>.</p>
@@ -302,7 +322,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </span><span class="literal number">1</span><span class="whitespace"> </span>Schlaraffenland<span class="whitespace">
 </span><span class="literal number">1</span><span class="whitespace"> </span>Test</code></pre>
 </div>
-</div><div class="small ld-slide" id="awk">
+</ld-topic><ld-topic id="awk">
 <h2>awk</h2>
 <ul>
 <li><p>Muster-orientierte Verarbeitung der Zeilen einer Eingabedatei.</p></li>
@@ -312,13 +332,13 @@ Both (are intended to) change the font to the font used by MathJax.
 <p>ist das Muster (<span class="eng">pattern</span>) leer, dann wird die Zeile immer verarbeitet; ist keine Handlungsanweisung (<span class="eng">action</span>) angegeben, dann wird die Zeile ausgegeben.</p>
 </li>
 </ul>
-<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<div class="incremental docutils container">
 <p><strong>Anwendungsfall</strong>: Die Einträge einer Datei sollen nach länge sortiert werden. In diesem Fall, kann mit Hilfe von awk jede Zeile mit der Länge ausgegeben werden. <span class="peripheral">Danach kann die Liste entsprechend sortiert werden.</span></p>
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Test\nSchlaraffenland&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace">  </span>awk<span class="whitespace"> </span><span class="literal string single">'{print length &quot; &quot; $1}'</span><span class="whitespace">
 </span><span class="literal number">4</span><span class="whitespace"> </span>Test<span class="whitespace">
 </span><span class="literal number">15</span><span class="whitespace"> </span>Schlaraffenland</code></pre>
 </div>
-</div><div class="small ld-slide" id="sort">
+</ld-topic><ld-topic id="sort">
 <h2>sort</h2>
 <ul class="simple">
 <li><p>Sortiert eine Liste gemäß der entsprechenden Felder.</p></li>
@@ -341,7 +361,7 @@ Both (are intended to) change the font to the font used by MathJax.
 <div class="supplemental">
 <p><strong>Komplexes Beispiel</strong></p>
 <p>Sortierung einer Liste von Worten in absteigender Reihenfolge bzgl. (1) der Häufigkeit und (2) Länge.</p>
-<pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">printf</span><span class="whitespace"> </span><span class="literal string single">'%s'</span><span class="whitespace"> </span><span class="literal string double">&quot;abc\nuvw\nxyz\nlmnop\nxyz\nuvw&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
+<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">printf</span><span class="whitespace"> </span><span class="literal string single">'%s'</span><span class="whitespace"> </span><span class="literal string double">&quot;abc\nuvw\nxyz\nlmnop\nxyz\nuvw&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="whitespace">       </span><span class="literal string double">&quot;\nlmnop\nlmnop\nxyz\ncd\ncd\ncd&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>awk<span class="whitespace"> </span><span class="literal string single">'{print length &quot; &quot; $1}'</span><span class="whitespace">
   </span><span class="punctuation">|</span><span class="whitespace"> </span>sort<span class="whitespace">
@@ -353,7 +373,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </span><span class="literal number">2</span><span class="whitespace"> </span><span class="literal number">3</span><span class="whitespace"> </span>uvw<span class="whitespace">
 </span><span class="literal number">1</span><span class="whitespace"> </span><span class="literal number">3</span><span class="whitespace"> </span>abc</code></pre>
 <p>Sortierung einer Liste von Worten in absteigender Reihenfolge bzgl. (1) der Häufigkeit und (2) aufsteigend bzgl. der Länge.</p>
-<pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;uvw\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;xyz\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;lmnop\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;xyz\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;uvw\n&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
+<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;uvw\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;xyz\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;lmnop\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;xyz\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;uvw\n&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="whitespace">       </span><span class="literal string double">&quot;lmnop\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;lmnop\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;xyz\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;cd\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;cd\n&quot;</span><span class="whitespace"> </span><span class="literal string double">&quot;cd&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>awk<span class="whitespace"> </span><span class="literal string single">'{print length &quot; &quot; $1}'</span><span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>sort<span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>uniq<span class="whitespace"> </span>-c<span class="whitespace"> </span><span class="literal string escape">\
@@ -363,7 +383,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </span><span class="literal number">3</span><span class="whitespace"> </span><span class="literal number">6</span><span class="whitespace"> </span>lmnop<span class="whitespace">
 </span><span class="literal number">2</span><span class="whitespace"> </span><span class="literal number">4</span><span class="whitespace"> </span>uvw<span class="whitespace">
 </span><span class="literal number">1</span><span class="whitespace"> </span><span class="literal number">3</span><span class="whitespace"> </span>abc</code></pre>
-</div></div><div class="small ld-slide" id="base64">
+</div></ld-topic><ld-topic id="base64">
 <h2>base64</h2>
 <p>Base64 kodierte Werte bestehen nur noch aus gültigen ASCII Zeichen und können als &quot;Text&quot; gespeichet/übermittelt werden kann.</p>
 <aside class="admonition note smaller">
@@ -382,7 +402,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="name variable">REhCVyBNYW5uaGVpbQ</span><span class="operator">==</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>base64<span class="whitespace"> </span>--decode<span class="whitespace">
 </span>DHBW<span class="whitespace"> </span>Mannheim</code></pre>
 </div>
-</div><div class="small ld-slide" id="grep">
+</ld-topic><ld-topic id="grep">
 <h2>grep</h2>
 <ul class="simple">
 <li><p>Selektiert Zeilen, die einem gegebenen Muster entsprechen.</p></li>
@@ -392,7 +412,7 @@ Both (are intended to) change the font to the font used by MathJax.
 <li><p><span class="docutils literal"><span class="pre">-i</span></span> ignoriert Groß-/Kleinschreibung (in Verbindung mit -E mgl. verwirrend).</p></li>
 <li><p><span class="docutils literal"><span class="pre">-P</span></span> Perl kompatible Ausdrücke</p></li>
 </ul>
-<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<div class="incremental docutils container">
 <p><strong>Anwendungsfall</strong>: Alle Textfragmente in einem Leak finden<span class="peripheral">, um danach mit Regeln neue Passwortkandidaten zu bilden</span>.</p>
 <pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Test123\nmichael&#64;dhbw.de\n345test&#64;dhbw.de\nEnde__&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
 </span><span class="whitespace">  </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-zA-Z]{3,}&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>sort<span class="whitespace"> </span>-u<span class="whitespace">
@@ -402,7 +422,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </span>michael<span class="whitespace">
 </span><span class="name builtin">test</span></code></pre>
 </div>
-</div><div class="small ld-slide" id="sed-stromeditor">
+</ld-topic><ld-topic id="sed-stromeditor">
 <h2>sed - Stromeditor</h2>
 <ul class="simple">
 <li><p>modifiziert die Eingabe gemäß der spezifizierten Kommandos in der angegebenen Reihenfolge.</p></li>
@@ -410,12 +430,12 @@ Both (are intended to) change the font to the font used by MathJax.
 <li><p>Standardform: <span class="docutils literal">Funktion[Agrumente]</span></p></li>
 <li><p>Substitutionen: <span class="docutils literal">s/Regulärer <span class="pre">Ausdruck/Ersatz/[Kennzeichen]</span></span>; das Kennzeichen &quot;<span class="docutils literal">g</span>&quot; z. B. bewirkt, dass jedes Vorkommen ersetzt wird; sonst nur das erste Vorkommen.</p></li>
 </ul>
-<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<div class="incremental docutils container">
 <p><strong>Anwendungsfall</strong>: Löschen des ersten Sonderzeichens in einer Zeile.</p>
 <pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string single">'ab_cd!_ef?'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>sed<span class="whitespace"> </span>-E<span class="whitespace">  </span><span class="literal string single">'s/[^a-zA-Z0-9]//'</span><span class="whitespace">
 </span>abcd!_ef?</code></pre>
 </div>
-<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<div class="incremental docutils container">
 <p><strong>Anwendungsfall</strong>: Analyse der Struktur eines Leaks durch das Abbilden <strong>aller</strong> Buchstaben auf die Repräsentanten: <span class="docutils literal">l</span>(lower) <span class="docutils literal">u</span>(upper) <span class="docutils literal">d</span>(digits) <span class="docutils literal">s</span>(special).</p>
 <pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string single">'aB_c1d!_ef?'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace">
   </span>sed<span class="whitespace"> </span>-E<span class="whitespace"> </span>-e<span class="literal string single">'s/[a-z]/l/g'</span><span class="whitespace"> </span>-e<span class="literal string single">'s/[A-Z]/u/g'</span><span class="whitespace"> </span>-e<span class="literal string single">'s/[0-9]/d/g'</span><span class="whitespace"> </span>-e<span class="whitespace"> </span><span class="literal string single">'s/[^lud]/s/g'</span><span class="whitespace">
@@ -424,14 +444,14 @@ Both (are intended to) change the font to the font used by MathJax.
 <div class="supplemental">
 <p><strong>Hinweis</strong></p>
 <p><span class="docutils literal">sed</span> auf dem Mac (BSD) und <span class="docutils literal">sed</span> unter Linux (GNU) unterscheiden sich teilweise deutlich.</p>
-</div></div><div class="small ld-slide" id="find">
+</div></ld-topic><ld-topic id="find">
 <h2>find</h2>
 <ul class="simple">
 <li><p>durchläuft den Dateibaum ab einer angegebenen Stelle und evaluiert dabei Ausdrücke.</p></li>
 <li><p><span class="docutils literal"><span class="pre">-iname</span></span> Testet ob der Verzeichniseintrag - unabhängig von der Groß- und Kleinschreibung - dem gegebenen Muster entspricht.</p></li>
 <li><p><span class="docutils literal"><span class="pre">-exec</span> ... {} ... \;</span> ermöglicht es für jede gefilterte Datei <span class="docutils literal">{}</span> einen Befehl auszuführen.</p></li>
 </ul>
-<div class="incremental line-above margin-top-1em padding-top-1em docutils container">
+<div class="incremental docutils container">
 <p><strong>Anwendungsfall</strong>: Feststellen wie lange die Hashes sind.</p>
 <pre class="code bash smaller literal-block"><code>$<span class="whitespace"> </span>find<span class="whitespace"> </span>.<span class="whitespace"> </span>-iname<span class="whitespace"> </span><span class="literal string double">&quot;*hash*&quot;</span><span class="whitespace"> </span>-exec<span class="whitespace"> </span>wc<span class="whitespace"> </span>-c<span class="whitespace"> </span><span class="operator">{}</span><span class="whitespace"> </span><span class="literal string escape">\;</span><span class="whitespace">
 </span><span class="literal number">33</span><span class="whitespace"> </span>./saltedmd5/hash.md5<span class="whitespace">
@@ -441,7 +461,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </span><span class="literal number">65</span><span class="whitespace"> </span>./scenario7/hash.sha256<span class="whitespace">
 </span><span class="literal number">65</span><span class="whitespace"> </span>./scenario9/hash.sha256</code></pre>
 </div>
-</div><div class="small ld-slide" id="software-nachinstallieren">
+</ld-topic><ld-topic id="software-nachinstallieren">
 <h2>Software nachinstallieren</h2>
 <ul>
 <li><p>Auf allen Linux und BSD Distributionen können Softwarepakete durch den Paketmanager des Betriebssystems nachinstalliert werden, z. B.:</p>
@@ -451,13 +471,13 @@ Both (are intended to) change the font to the font used by MathJax.
 <ul class="minor simple">
 <li><p><span class="docutils literal">yum</span> (RedHat, CentOS, ...)</p></li>
 <li><p><span class="docutils literal">pacman</span> (Arch Linux, ...)</p></li>
-<li><p><span class="docutils literal">brew</span> oder <span class="docutils literal">macports</span> (MacOS) <a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p></li>
+<li><p><span class="docutils literal">brew</span> oder <span class="docutils literal">macports</span> (MacOS) <a class="brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a></p></li>
 </ul>
 </li>
 </ul>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">*</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">*</a><span class="fn-bracket">]</span></span>
 <p>Beide sind in diesem Fall nicht Teil des Betriebssystems, sondern müssen erst nachinstalliert werden, bevor damit weitere Software nachinstalliert werden kann.</p>
 </aside>
 </aside>
@@ -465,7 +485,7 @@ Both (are intended to) change the font to the font used by MathJax.
 <p><strong>Anwendungsfall</strong>: Installieren von <span class="docutils literal">ent</span> (ein Programm, das die Entropie von Dateien berechnet):</p>
 <pre class="code bash smaller copy-to-clipboard literal-block"><code>sudo<span class="whitespace"> </span>apt<span class="whitespace"> </span>install<span class="whitespace"> </span>ent</code></pre>
 </div>
-</div><div class="small ld-slide" id="shellprogrammierung">
+</ld-topic><ld-topic class="small" id="shellprogrammierung">
 <h2>Shellprogrammierung</h2>
 <ul class="simple">
 <li><p>Jede Shell (insbesondere: <span class="docutils literal">zsh</span> (auf Mac und Kali Linux) und <span class="docutils literal">bash</span> (Debian, Ubuntu, ...)) erlaubt es prozedurale Programme zu schreiben.</p></li>
@@ -485,7 +505,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </span><span class="whitespace">        </span>&gt;&gt;<span class="whitespace"> </span>Files.list.assessed<span class="whitespace"> </span><span class="punctuation">;</span><span class="whitespace"> </span><span class="comment single"># Schreibe das Ergebnis
 </span><span class="keyword">done</span><span class="punctuation">;</span></code></pre>
 </div>
-</div><div class="transition-scale integrated-exercise ld-slide" id="fingerubungen">
+</ld-topic><ld-topic class="transition-scale integrated-exercise" id="fingerubungen">
 <h2>Fingerübungen</h2>
 <aside class="admonition far-smaller">
 <p class="admonition-title">Voraussetzung</p>
@@ -509,7 +529,7 @@ MTAwMDAw:8JFgwDGIUHwltJFiGP4l3WEPI0xqnCUfD5RUaERlwKs=:JE9UVPzfRadWNV/A:mhO3Q0ffn
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:SzVc+/n33ec1O0Czo2d7mMxItAe3y/scjt6Az4wC8Po=:kuQjuS7Uxw/VuiQP:4mXd0lx3laD0VYWs3DFApZKHSnD0OUoMK4VwazUjO8fZBGGVM6EHAgerV1V6IewkbPrCitRulOtY9G8j2Xa+0bEPNoYpzOQh6D1nSZEKd2VH7y6Ux/KCJvwioInEwUoN+Q4V5TlcOGUsmEO086fatk5mAnOo+pSfK2iTExoFv5znU1bfoKSAkCf7+rPg12ZRSkjAIxayG52nKqnrR/q4gnAzHA9pKEkrA95Ixo4GMg6n+XYZV47Ic38PsfKKAqEWvMjbc5H6ING5PiUZQDs44LfTGaFVBK2aWtXz2ltRKI94FyCivrQS2UfxNaP4e1y6kB5C2Z+/U1d6unEZwINHB0tNh4hfw+yrwAFwofMg7/coEc84ioRJwotZHd1UqD7u0gi37OrURP6T+9nSyuDS5q4k9fpF3ql91mO+hXqRfd4MqqL2brmZ4/o6ogph9UV1MCi+13mDf1JpVPqJZbdNUrC+jQhPxHLyxQfiLI+koN/hyRqxRacJumP4K7JbGPS+cwAlytbrRwVZRcGeQKALEmmfIuX2kDv8JMMcWQywiAsMddXuC2hsTAsJ70Lf8ZMK7aO1HogMVicbD175</div>
 </div>
-</div>
+</ld-topic>
 </template>
 </body>
 </html>

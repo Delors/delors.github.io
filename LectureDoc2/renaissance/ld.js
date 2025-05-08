@@ -429,14 +429,14 @@ function localResetLectureDoc() {
     location.replace(url);
 }
 
-function scaleDocumentImages() {
+function scaleDocumentImagesAndVideos() {
     document.querySelectorAll("ld-section img").forEach((img) => {
         if (img.style.width || img.style.height) return;
 
         if (img.classList.contains("highdpi")) {
             img.addEventListener("load", () => {
-                const targetWidth = img.naturalWidth / 2;
-                const targetHeight = img.naturalHeight / 2;
+                const targetWidth = img.naturalWidth / 2.5;
+                const targetHeight = img.naturalHeight / 2.5;
                 console.log(
                     "scaling highdpi image for document view",
                     img,
@@ -448,6 +448,26 @@ function scaleDocumentImages() {
             });
         }
     });
+
+    document
+        .querySelectorAll("ld-section video:not(.no-scaling)")
+        .forEach((video) => {
+            if (!video.height || !video.width) {
+                console.log(
+                    "cannot adapt size of video for document view: missing size information:",
+                    video,
+                );
+                return;
+            }
+            const newHeight = video.height / 3;
+            const newWidth = video.width / 3;
+            console.log(
+                `adapting size of video (height: ${video.height} -> ${newHeight}; width: (${video.width} -> ${newWidth}):`,
+                video,
+            );
+            video.height = newHeight;
+            video.width = newWidth;
+        });
 }
 
 function scaleSlideImages() {
@@ -2687,7 +2707,7 @@ const onDOMContentLoaded = async () => {
     setupMenu();
 
     scaleSlideImages();
-    scaleDocumentImages();
+    scaleDocumentImagesAndVideos();
 
     /*
     Update rendering related information.
@@ -2833,7 +2853,7 @@ document.addEventListener("DOMContentLoaded", () => {
         onDOMContentLoaded(),
     )
         .then(() => console.log("DOM transformations finished."))
-        .catch((e) => console.log("DOM transformations failed." + e));
+        .catch((e) => console.log("DOM transformations failed:", e));
 });
 window.addEventListener("load", () => {
     LDInitializationPromise = LDInitializationPromise.then(() => onLoad())

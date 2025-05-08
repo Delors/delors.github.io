@@ -774,6 +774,7 @@ span.problematic {
 }
 
 .align-center {
+    /* works if the child element does not override margin-left or margin-right. */
     text-align: center;
     margin-left: auto;
     margin-right: auto;
@@ -1158,51 +1159,50 @@ table {
         }
     }
 
-
     /*
-    
+
         The class "annotated-text" can be used in combination with tables to make
-        them look like as if we have a text document with some paragraphs with some 
+        them look like as if we have a text document with some paragraphs with some
         comments to the side.
-    
+
     */
-    
+
     &.annotated-text {
         border: none;
         box-shadow: none;
         border-collapse: separate;
         border-spacing: 0 0.5em;
-        
-        td, th {
+
+        td,
+        th {
             border: 0;
             padding-bottom: 0;
             text-align: justify;
             hyphens: auto;
-        
+
             /* style the "comment" column */
             &:first-of-type:not(:empty) {
                 max-width: 25%;
                 padding-top: 0.15em;
                 padding-bottom: 0;
-                
+
                 --current-background-color: var(--gray);
                 background-color: var(--current-background-color);
                 --current-color: var(--white);
                 color: var(--current-color);
                 vertical-align: text-top;
                 text-align: right;
-                border-radius: var(--medium-border-radius) 0 0 var(--medium-border-radius);
+                border-radius: var(--medium-border-radius) 0 0
+                    var(--medium-border-radius);
                 font-size: smaller;
                 font-weight: 300;
             }
-
-            
         }
 
         td {
             /* the intermediate columns */
-            &:not(:first-of-type):not(:empty) {    
-                font-family: var(--text-font-family)
+            &:not(:first-of-type):not(:empty) {
+                font-family: var(--text-font-family);
             }
         }
     }

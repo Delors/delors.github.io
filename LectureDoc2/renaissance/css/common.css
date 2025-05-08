@@ -2,44 +2,49 @@
 
 /* LectureDoc2's "common.css"
 
-   It defines some defaults that are generally useful in the context of 
+   It defines some defaults that are generally useful in the context of
    LectureDoc2 to achieve a consistent look and feel.
 
    Michael Eichberg (LectureDoc2) (c) 2025 - www.michael-eichberg.de
 */
 
 html {
-  font-family: var(--default-font-family);
+    font-family: var(--default-font-family);
 }
 
 body {
-  /*  The following background-color definitions primarily serve debugging 
-      purposes! Slides are expected/required to set a background-color. */ 
-  --current-background-color: rgb(25, 20, 20);
-  background-color:  var(--current-background-color); 
+    --current-color: black;
+    color: var(--current-color);
+
+    /*  The following background-color definitions primarily serve debugging
+      purposes! Slides are expected/required to set a background-color. */
+    --current-background-color: rgb(25, 20, 20);
+    background-color: var(--current-background-color);
 }
 
-@media print { /* At least Safari seems to honor this setting... */
-  
-  html {
-      --current-background-color: white;
-      background-color: var(--current-background-color);
-  }
+@media print {
+    /* At least Safari seems to honor this setting... */
 
-  body {
-      --current-background-color: white;
-      background-color: var(--current-background-color);
-  }
+    html {
+        --current-background-color: white;
+        --current-color: black;
+    }
+
+    body {
+        --current-background-color: white;
+        --current-color: black;
+    }
 }
 
 hr {
-  height: 1px;
-  background-color: var(--black);
+    height: 1px;
+    background-color: var(--black);
 }
 
-h1, h2 {
-  font-family: var(--large-text-font-family);
-  text-wrap: balance;
+h1,
+h2 {
+    font-family: var(--large-text-font-family);
+    text-wrap: balance;
 }
 
 h1,
@@ -49,31 +54,30 @@ h4,
 h5,
 h6,
 dd,
-details>p:last-child {
-  margin-bottom: 0.5em;
+details > p:last-child {
+    margin-bottom: 0.5em;
 }
 
 p {
-  text-wrap: pretty;
+    text-wrap: pretty;
 }
 
-
 a {
-  margin-left: auto;
-  margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
 
-  user-select: initial;
+    user-select: initial;
 
-  text-decoration: none;
-
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
-
-  &:hover {
     text-decoration: none;
-  }
+
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 p,
@@ -83,17 +87,16 @@ dl,
 div.line-block,
 .footnote,
 .citation,
-div>math,
+div > math,
 table {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
 
-
 /* Definition Lists */
 /* Indent lists nested in definition lists */
-dd>ul:only-child,
-dd>ol:only-child {
+dd > ul:only-child,
+dd > ol:only-child {
     padding-left: 1em;
 }
 
@@ -101,39 +104,39 @@ dd>ol:only-child {
 /* styled like in most dictionaries, encyclopedias etc. */
 dl.description {
     display: flow-root;
-}
 
-dl.description>dt {
-    font-weight: bold;
-    clear: left;
-    float: left;
-    margin: 0;
-    padding: 0;
-    padding-right: 0.3em;
-}
+    > dt {
+        font-weight: bold;
+        clear: left;
+        float: left;
+        margin: 0;
+        padding: 0;
+        padding-right: 0.3em;
+    }
 
-dl.description>dd:after {
-    display: table;
-    content: "";
-    clear: left;
-    /* clearfix for empty descriptions */
+    > dd:after {
+        display: table;
+        content: "";
+        clear: left;
+        /* clearfix for empty descriptions */
+    }
 }
 
 /* Field Lists */
 
-dl.field-list>dd,
-dl.docinfo>dd {
+dl.field-list > dd,
+dl.docinfo > dd {
     margin-left: var(--field-indent);
     /* adapted in media queries or HTML */
 }
 
 /* example for custom field-name width */
-dl.field-list.narrow>dd {
+dl.field-list.narrow > dd {
     --field-indent: 5em;
 }
 
 /* run-in: start field-body on same line after long field names */
-dl.field-list.run-in>dd p {
+dl.field-list.run-in > dd p {
     display: block;
 }
 
@@ -151,7 +154,7 @@ div.dedication {
     font-style: italic;
 
     p.topic-title {
-        font-style: normal; 
+        font-style: normal;
     }
 }
 
@@ -164,13 +167,10 @@ summary {
     margin-left: -1em;
 }
 
-
 /* Block Quotes and Topics */
 blockquote {
-  padding: 0.3em 0.5em;
-  --current-background-color: var(--blockquote-background-color);
-  background-color: var(--current-background-color);
-  line-height: 1.4em;
+    padding: 0.3em 0.5em;
+    line-height: 1.4em;
 }
 
 blockquote p.attribution,
@@ -182,12 +182,11 @@ blockquote p.attribution,
     color: var(--dark-gray);
 }
 
-
 /* numbered tables (counter defined in div.document) */
-table.numbered>caption:before {
-  counter-increment: table;
-  content: "Table " counter(table) ": ";
-  font-weight: bold;
+table.numbered > caption:before {
+    counter-increment: table;
+    content: "Table " counter(table) ": ";
+    font-weight: bold;
 }
 
 figure.align-left,
@@ -219,17 +218,14 @@ header {
 
 pre,
 samp {
-  font-family: var(--pre-font-family);
-  font-size: 0.9em;
+    font-size: 0.9em;
 }
 
 code,
 kbd {
-  font-family: var(--code-font-family);
-  font-size: 0.9em;
+    font-size: 0.9em;
 }
 
-
 ld-deck {
-  display: block;
+    display: block;
 }

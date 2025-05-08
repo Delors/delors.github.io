@@ -1,22 +1,47 @@
 /* LAYER: common */
 
 :root {
-    --default-font-family: "Noto Sans Display", Helvetica, Arial, sans-serif;
-    --code-font-family: "Victor Mono", "Monospace", monospace;
-    --pre-font-family: "Monospace", monospace;
-    --text-font-family: "Noto Serif", "Times New Roman", serif;
-    --math-font-family: "MathJax Main", "Noto Serif", "Times New Roman", serif;
-    --large-text-font-family: "Noto Serif Display", "Times New Roman", serif;
+    /*  Noto Sans Display, Noto Serif (Display), Victor Mono and MathJaxMai can
+        not be assumed to be generally available!
 
-    
+        Use ld-fonts.css to ensure that it is available. */
+
+    --default-font-family: "Noto Sans Display", Helvetica, Arial, sans-serif;
+    font-family: var(--default-font-family);
+
+    --code-font-family: "Victor Mono", "Monospace", monospace;
+    code,
+    kbd {
+        font-family: var(--code-font-family);
+    }
+
+    --pre-font-family: "Monospace", monospace;
+    pre,
+    samp {
+        font-family: var(--pre-font-family);
+    }
+
+    --current-color: white;
+    color: var(--current-color);
+
     --current-background-color: black;
     background-color: var(--current-background-color);
-    
-    --blockquote-background-color: #f0f0f0;
 
-    --ld-rendering-mode: none /* either "section" oder "slide" - defined to enable container-style queries based on custom properties */;
+    --blockquote-background-color: #f0f0f0;
+    blockquote {
+        --current-background-color: var(--blockquote-background-color);
+        background-color: var(--current-background-color);
+    }
+
+    --text-font-family: "Noto Serif", "Times New Roman", serif;
+    --large-text-font-family: "Noto Serif Display", "Times New Roman", serif;
+    --math-font-family: "MathJax Main", "Noto Serif", "Times New Roman", serif;
 
     --small-border-radius: 0.2em;
-    --medium-border-radius: 0.4em; 
+    --medium-border-radius: 0.4em;
 
+    /*  The rendering mode is either "section" oder "slide".
+
+        Defined to enable container-style queries based on custom properties. */
+    --ld-rendering-mode: none;
 }
