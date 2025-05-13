@@ -9,8 +9,8 @@
 <meta content="Blockverschlüsselung" lang="de" name="description" xml:lang="de" />
 <meta content="lecture-security-blockchiffre" name="id" />
 <meta content="last-viewed" name="first-slide" />
-<meta name="version" content="LD2 GENESIS" />
-<meta name="exercises-passwords" content="MTAwMDAw:buWfRWuOj0o2oPg6kesZFV3d/+O0bXJNu7MXDhWiHQ4=:FQ5smeTNd3Mdh7t5:q2109BJWE4GADcL7ShvS4dgaBC/1sCfI7J7KcAfVYk17YSP6QpyYPt2OzPnjZpwzno2pFIbEARBSsS/ypBulfZBrJMYM3us0wEwqcYsrV70epJ2qaix1KT4amcDM9sosYspwgARKfJRYDOqYirXumJeqdFxDGDsfSB+VtMeCnxz2xZb2dwPVeviDX/kJhzhhBRwic2n7imhStVc3qfBYTTSaCj9gfiVBqDX0gmxDVRPis3nap4gsW2uMn3NQyMxkk0GpvoBgglWEYsdvH4C/abJZWQMWRjvlYN8XbsqwBV96A4D0f/+RGApHT4IPruqcLQbQan7MffLXSykXCNrmQ7RQkBbVcFilgVgECe2TqWB3UvVA1f6tUDLHwUJnkZ67V5RTw0v5dM2qHkcrU0qsu1xGC93X2XpPQUFKNLSVu6+KUSBmRpyktq/9ks7yLNtqnYpuNY1SHy8K627F" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:dVvvbJdM1kdhXnyWw2TXAwF3syX8IScSCDqcR/PObgA=:13E8nxtNlSldG6f6:kSjL3DJOtMca8zNko5Xa7HQHR3bVc4Du0yE7ETTzrCB2FeBjpXzHH7usZCEbUdT6iFxox260aTlYgyu055CMdqA197I9phyt1MRqMcVXQDJPFIdpjDRRmFKYOY+dweTwoBMYpTpbUFsGhFJ/7AhJYQ/WzRyYHKL2mxtUbcbQBAevhyXxWkXoiBAjrh64Qs8DJuSh0DnpfdGbu+Az0rohaBrM9ozgueiGrTdJyPAYAnxkakMgiKfioxNKk+sGnJcmPKCCHh4/m0NUuqP0q0pXMhlEfp0rjrgzFPbwDfzFvRHaTnbBM5uEUiBmWwvaXJMPOd9G81Zmu02sRqIHvV/fh6zk7kUprZwhVcA2BG3xAWGb4hfFz1fEwlom8gaken8=" />
 <title>Block Chiffre und der Data Encryption Standard (DES)</title>
 <script>
     window.MathJax = {
@@ -20,21 +20,20 @@
 </script>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
 
-    <script src="../LectureDoc2/genesis/ld-core.js" type="module"></script>
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
 
-    <script src="../LectureDoc2/genesis/ld-components.js" type="module"></script>
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
 
-    <link rel="stylesheet" href="../LectureDoc2/genesis/ld.css" />
-
-    <link rel="stylesheet" href="../LectureDoc2/genesis/themes/DHBW/theme.css" />
-
-    <link rel="stylesheet" href="../LectureDoc2/genesis/ld-ui.css" />
-
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
     
 </head>
 <body>
 <template>
-<div class="ld-slide" id="block-chiffre-und-der-data-encryption-standard-des">
+<ld-topic id="block-chiffre-und-der-data-encryption-standard-des">
 <h1 class="title">Block Chiffre und der <em>Data Encryption Standard (DES)</em></h1>
 <dl class="docinfo">
 <dt class="dozent">Dozent<span class="colon">:</span></dt>
@@ -75,68 +74,55 @@ Both (are intended to) change the font to the font used by MathJax.
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
-</div></div>
-<div class="ld-slide" id="stromchiffre">
+</div></ld-topic>
+<ld-topic class="repetition" id="stromchiffre">
 <h2>Stromchiffre</h2>
 <ul>
 <li><p>Verschlüsselt einen digitalen Datenstrom ein Bit oder ein Byte nach dem anderen.</p>
 <p>Beispiele: Autokeyed Vigenère-Chiffre und Vernam-Chiffre.</p>
 </li>
 </ul>
-<ul class="incremental">
+<ld-story>
+<ul class="incremental-list">
 <li><p>Im Idealfall wird (würde) ein One-Time-Pad verwendet werden. Der Schlüsselstrom wäre genauso lang wie der Bitstrom des Klartextes.</p>
-<div class="stack incremental">
-<div class="layer">
+<div class="incremental docutils container">
 <ul class="simple">
 <li><p>Wenn der kryptografische Schlüsselstrom zufällig ist, kann diese Chiffre auf keine andere Weise als durch die Beschaffung des Schlüsselstroms geknackt werden.</p></li>
-</ul>
-<ul class="smaller simple">
 <li><p>Der Schlüsselstrom muss beiden Nutzern im Voraus über einen unabhängigen und sicheren Kanal zur Verfügung gestellt werden.</p></li>
 <li><p>Dies führt zu unüberwindbaren logistischen Problemen, wenn der vorgesehene Datenverkehr sehr groß ist.</p></li>
 </ul>
-</div><div class="layer incremental">
-<p><strong>Beispielimplementierung in Python</strong></p>
-<pre class="code python smaller literal-block"><code><span class="keyword">def</span> <span class="name function">vernam</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">)</span> <span class="operator">-&gt;</span> <span class="name builtin">bytes</span><span class="punctuation">:</span><span class="whitespace">
-</span>    <span class="keyword">return</span> <span class="name builtin">bytes</span><span class="punctuation">([</span><span class="name">p</span> <span class="operator">^</span> <span class="name">k</span> <span class="keyword">for</span> <span class="name">p</span><span class="punctuation">,</span> <span class="name">k</span> <span class="operator word">in</span> <span class="name builtin">zip</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">)])</span></code></pre>
-</div></div></li>
-</ul>
-<div class="block-footer white dhbw-gray-background text-align-center docutils container">
-<p>Wiederholung</p>
 </div>
-</div><div class="ld-slide" id="stromchiffre-1">
-<h2>Stromchiffre</h2>
-<ul class="simple">
-<li><p>Aus praktischen Gründen muss der Bitstromgenerator als algorithmisches Verfahren implementiert werden, damit der kryptografische Bitstrom von beiden Benutzern erzeugt werden kann.</p>
-<ul class="incremental">
+<div class="incremental docutils container">
+<p class="rubric">Beispielimplementierung in Python</p>
+<pre class="code python copy-to-clipboard literal-block"><code><span class="keyword">def</span> <span class="name function">vernam</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">)</span> <span class="operator">-&gt;</span> <span class="name builtin">bytes</span><span class="punctuation">:</span><span class="whitespace">
+</span>    <span class="keyword">return</span> <span class="name builtin">bytes</span><span class="punctuation">([</span><span class="name">p</span> <span class="operator">^</span> <span class="name">k</span> <span class="keyword">for</span> <span class="name">p</span><span class="punctuation">,</span> <span class="name">k</span> <span class="operator word">in</span> <span class="name builtin">zip</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">)])</span></code></pre>
+</div>
+</li>
+<li><p>Aus praktischen Gründen muss der Bitstromgenerator als algorithmisches Verfahren implementiert werden, damit der kryptografische Bitstrom von beiden Benutzern erzeugt werden kann.</p></li>
 <li><p>Es muss rechnerisch praktisch unmöglich sein, zukünftige Teile des Bitstroms auf der Grundlage früherer Teile des Bitstroms vorherzusagen.</p></li>
 <li><p>Die beiden Benutzer müssen nur den erzeugenden Schlüssel sicher miteinander teilen, damit jeder den Schlüsselstrom erzeugen kann.</p></li>
 </ul>
-</li>
-</ul>
-<div class="block-footer white dhbw-gray-background text-align-center docutils container">
-<p>Wiederholung</p>
-</div>
-</div><div class="ld-slide" id="blockchiffre">
+</ld-story></ld-topic><ld-topic id="blockchiffre">
 <h2>Blockchiffre</h2>
-<ul class="incremental simple">
+<ul class="incremental-list simple">
 <li><p>Ein Klartextblock wird als Ganzes behandelt und verwendet, um einen gleich langen Chiffretextblock zu erzeugen.</p></li>
 <li><p>In der Regel wird eine Blockgröße von 64 (8 Byte) oder 128 Bit (16 Byte) verwendet.</p></li>
 <li><p>Wie bei einer Stromchiffre <em>teilen sich die beiden Benutzer einen symmetrischen Chiffrierschlüssel</em>.</p></li>
 <li><p>Viele netzbasierte Anwendungen, die auf symmetrische Verschlüsselung setzen, verwenden Blockchiffren.</p></li>
 </ul>
-</div><div class="ld-slide" id="stromchiffre-vs-blockchiffre">
+</ld-topic><ld-topic id="stromchiffre-vs-blockchiffre">
 <h2>Stromchiffre vs. Blockchiffre</h2>
-<object class="margin-none padding-none align-left" data="drawings/chiffren/stromchiffre.svg" height="520px" role="img" type="image/svg+xml">
-</object><object class="incremental align-right" data="drawings/chiffren/blockchiffre.svg" height="520px" role="img" type="image/svg+xml">
-</object></div><div class="ld-slide" id="allgemeine-n-bit-n-bit-blocksubstitution-n-4">
+<object class="align-left" data="drawings/chiffren/stromchiffre.svg" role="img" type="image/svg+xml">
+</object><object class="incremental align-right" data="drawings/chiffren/blockchiffre.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="allgemeine-n-bit-n-bit-blocksubstitution-n-4">
 <h2>Allgemeine n-Bit-n-Bit-Blocksubstitution (n = 4)</h2>
-<object class="align-center" data="drawings/chiffren/4-bit_block_substitution.svg" role="img" type="image/svg+xml" width="1400px">
+<object class="align-center" data="drawings/chiffren/4-bit_block_substitution.svg" role="img" type="image/svg+xml">
 </object><div class="supplemental">
 <p>Mittels 4 Bit können <span class="math">\(16\)</span> verschiedene Werte dargestellt werden (<span class="math">\([0,15]\)</span>). Je nach Wert der Eingabe wird ein anderer Wert ausgegeben. Die Zuordnung ist der Grafik zu entnehmen.</p>
-</div></div><div class="ld-slide" id="verschlusselungs-und-entschlusselungstabelle-fur-eine-substitutions-chiffre">
+</div></ld-topic><ld-topic id="verschlusselungs-und-entschlusselungstabelle-fur-eine-substitutions-chiffre">
 <h2>Verschlüsselungs- und Entschlüsselungstabelle für eine Substitutions-Chiffre</h2>
 <p><strong>Verschlüsselungstabelle</strong></p>
-<table class="align-center smallest highlight-cell-on-hover">
+<table class="align-center font-size-65 highlight-identical-cells-on-hover">
 <tbody>
 <tr><td><p>Klartext</p></td>
 <td><p>0000</p></td>
@@ -177,7 +163,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </tbody>
 </table>
 <p><strong>Entschlüsselungstabelle</strong></p>
-<table class="align-center smallest incremental highlight-cell-on-hover">
+<table class="align-center incremental font-size-65 highlight-identical-cells-on-hover">
 <tbody>
 <tr><td><p>Geheimtext</p></td>
 <td><p>0000</p></td>
@@ -217,24 +203,26 @@ Both (are intended to) change the font to the font used by MathJax.
 </tr>
 </tbody>
 </table>
-</div><div class="ld-slide" id="feistel-chiffre">
+</ld-topic><ld-topic id="feistel-chiffre">
 <h2>Feistel-Chiffre</h2>
 <p>Feistel schlug die Verwendung einer Chiffre vor, bei der sich Substitutionen und Permutationen abwechseln.</p>
-<aside class="admonition definition incremental">
-<p class="admonition-title">Substitutionen</p>
+<aside class="admonition incremental definition">
+<p class="admonition-title">Definition</p>
+<p class="rubric">Substitutionen</p>
 <p>Jedes Klartextelement oder jede Gruppe von Elementen wird eindeutig durch ein entsprechendes Chiffretextelement oder eine entsprechende Gruppe von Elementen ersetzt.</p>
 </aside>
-<aside class="admonition definition incremental">
-<p class="admonition-title">Permutation</p>
+<aside class="admonition incremental definition">
+<p class="admonition-title">Definition</p>
+<p class="rubric">Permutation</p>
 <p>Bei einer Permutation werden keine Elemente hinzugefügt, gelöscht oder ersetzt, sondern die Reihenfolge, in der die Elemente in einer Folge erscheinen, wird geändert.</p>
 </aside>
-</div><div class="ld-slide" id="feistel-chiffre-hintergrund">
+</ld-topic><ld-topic id="feistel-chiffre-hintergrund">
 <h2>Feistel-Chiffre - Hintergrund</h2>
 <ul class="simple">
 <li><p>Hierbei handelt es sich um eine praktische Anwendung eines Vorschlags von Claude Shannon zur Entwicklung einer Chiffre, bei der sich <em>Konfusions- und Diffusionsfunktionen</em> abwechseln.</p></li>
 <li><p>Dieser Aufbau wird von vielen bedeutenden (Twofish, Blowfish, Serpent, Mars) - im Einsatz befindlichen - symmetrischen Blockchiffren verwendet.</p></li>
 </ul>
-<div class="incremental margin-top-2em docutils container">
+<div class="incremental docutils container">
 <p><strong>Diffusion und Konfusion</strong></p>
 <ul class="simple">
 <li><p>Begriffe, die von Claude Shannon eingeführt wurden, um die beiden grundlegenden Bausteine für jedes kryptografische System zu erfassen.</p></li>
@@ -243,7 +231,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </div>
 <div class="supplemental">
 <p>Blowfish ist zum Beispiel die Basis für das Hashingverfahren <span class="docutils literal">bcrypt</span>, welches für Passworthashing verwendet wird.</p>
-</div></div><div class="ld-slide" id="diffusion">
+</div></ld-topic><ld-topic id="diffusion">
 <h2>Diffusion</h2>
 <ul class="simple">
 <li><p>Die statistische Struktur des Klartextes wird in weitreichende Statistiken des Chiffretextes überführt, d. h. die statistische Beziehung zwischen Klartext und Chiffretext wird so komplex wie möglich.</p></li>
@@ -254,7 +242,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </li>
 <li><p>Die Diffusion kann z. B. durch <em>Permutationen</em> erreicht werden.</p></li>
 </ul>
-</div><div class="ld-slide" id="konfusion">
+</ld-topic><ld-topic id="konfusion">
 <h2>Konfusion</h2>
 <ul class="simple">
 <li><p>Versucht, die Beziehung zwischen den Statistiken des Chiffriertextes und dem Wert des Chiffrierschlüssels so komplex wie möglich zu gestalten, d. h. eine einzige Änderung des Chiffrierschlüssels sollte viele Bits des Chiffriertextes beeinflussen.</p></li>
@@ -263,46 +251,42 @@ Both (are intended to) change the font to the font used by MathJax.
 <li><p>Selbst wenn der Angreifer die Statistik des Chiffretextes einigermaßen in den Griff bekommt, ist die Art und Weise, wie der Schlüssel verwendet wurde, um diesen Chiffretext zu erzeugen, so komplex, dass es schwierig ist, den Schlüssel abzuleiten.</p></li>
 <li><p>Die Verwirrung kann z. B. durch <em>Substitutionen</em> realisiert werden.</p></li>
 </ul>
-</div><div class="no-title ld-slide" id="feistel-chiffre-verschlusselung-und-entschlusselung">
+</ld-topic><ld-topic class="no-title" id="feistel-chiffre-verschlusselung-und-entschlusselung">
 <h2>Feistel-Chiffre - Verschlüsselung und Entschlüsselung</h2>
-<div class="two-columns no-default-width docutils container">
-<div class="column no-separator docutils container">
+<ld-grid class="default-layout">
+<ld-cell class="width-40" style="align-self:auto;">
 <p class="rubric">Feistel-Chiffre</p>
 <p>Verschlüsselung und Entschlüsselung</p>
-<!-- TODO add concept of admonition::Legende -->
-<div class="far-far-smaller dhbw-gray-background white padding-1em rounded-corners docutils container">
+<aside class="admonition width-100 legend">
+<p class="admonition-title">Legende</p>
 <p><strong>Legende</strong></p>
 <p><span class="math">\(K_x\)</span> - Schlüssel der <span class="math">\(x\)</span>-ten Runde</p>
 <p><span class="math">\(L_{x-1}\)</span> - linke Hälfte des Eingabeblocks der <span class="math">\(x\)</span>-ten Runde</p>
 <p><span class="math">\(R_{x-1}\)</span> - rechte Hälfte des Eingabeblocks der <span class="math">\(x\)</span>-ten Runde</p>
 <p><span class="math">\(f\)</span> - Rundenfunktion</p>
 <p><span class="math">\(\oplus\)</span> - XOR-Operation</p>
-</div>
-</div>
-<div class="width-100 docutils container">
-<object class="align-center" data="drawings/feistel/design.svg" height="1150px" role="img" type="image/svg+xml">
-</object></div>
-</div>
-<div class="supplemental">
+</aside>
+</ld-cell><ld-cell class="width-60" style="align-self:auto;">
+<object class="align-center" data="drawings/feistel/design.svg" role="img" type="image/svg+xml">
+</object></ld-cell></ld-grid><div class="supplemental">
 <p class="rubric">Swap</p>
 <p>Die Verwendung des Swaps am Ende ist notwendig, damit die Verschlüsselung und Entschlüsselung identisch sind; d. h. der selbe Algorithmus kann verwendet werden.</p>
-<object class="align-center" data="drawings/feistel/one_round_and_swap.svg" role="img" type="image/svg+xml" width="90%">
+<object class="align-center" data="drawings/feistel/one_round_and_swap.svg" role="img" type="image/svg+xml">
 </object><p>Wird der Swap am Ende nicht durchgeführt, würde die Entschlüsselung nicht funktionieren, wie am folgenden Beispiel mit nur einer Runde zu sehen ist:</p>
-<object class="align-center" data="drawings/feistel/one_round_no_swap.svg" role="img" type="image/svg+xml" width="90%">
+<object class="align-center" data="drawings/feistel/one_round_no_swap.svg" role="img" type="image/svg+xml">
 </object><p>Ein alternatives Design wäre es beim Verschlüsseln auf den finalen Tausch zu verzichten und stattdessen beim Entschlüsseln initial einen Tausch durchzuführen — zusätzlich zum finalen Tausch. Dieses Design wird jedoch nicht verwendet, da es die Implementierung komplizierter macht.</p>
-</div></div><div class="ld-slide" id="feistel-chiffre-beispiel">
+</div></ld-topic><ld-topic id="feistel-chiffre-beispiel">
 <h2>Feistel Chiffre - Beispiel</h2>
-<object class="align-center" data="drawings/feistel/example.svg" role="img" type="image/svg+xml" width="100%">
+<object class="align-center" data="drawings/feistel/example.svg" role="img" type="image/svg+xml">
 </object><div class="far-smaller docutils container">
 <p class="rubric">Zur Erinnerung</p>
 <pre class="literal-block">[F(03A6,12DE52) ⊕ DE7F] ⊕ F(03A6,12DE52) =
  F(03A6,12DE52) ⊕ F(03A6,12DE52) ⊕ DE7F  = DE7F</pre>
 </div>
-</div><div class="ld-slide" id="feistel-chiffre-eigenschaften">
+</ld-topic><ld-topic id="feistel-chiffre-eigenschaften">
 <h2>Feistel Chiffre - Eigenschaften</h2>
-<div class="stack">
-<div class="layer border-none padding-none box-shadow-none no-number border-none padding-none box-shadow-none no-number">
-<dl class="field-list simple">
+<ld-story>
+<dl class="incremental-list dd-margin-left-2em field-list simple">
 <dt><strong>Rundenfunktion F</strong><span class="colon">:</span></dt>
 <dd><p>Größere Komplexität bedeutet in der Regel größere Resistenz gegen Kryptoanalyse.</p>
 </dd>
@@ -312,9 +296,6 @@ Both (are intended to) change the font to the font used by MathJax.
 <dt><strong>Einfachheit der Analyse</strong><span class="colon">:</span></dt>
 <dd><p>Wenn der Algorithmus kurz und klar erklärt werden kann, ist es einfacher den Algorithmus auf kryptoanalytische Schwachstellen hin zu analysieren und somit ein höheres Maß an Sicherheit in Bezug auf seine Stärke zu entwickeln.</p>
 </dd>
-</dl>
-</div><div class="layer border-none padding-none box-shadow-none no-number incremental border-none padding-none box-shadow-none no-number incremental">
-<dl class="field-list simple">
 <dt><strong>Algorithmus für die Ableitung der (Unter-)Schlüssel</strong><span class="colon">:</span></dt>
 <dd><p>Eine höhere Komplexität dieses Algorithmus sollte zu einer größeren Schwierigkeit der Kryptoanalyse führen.</p>
 </dd>
@@ -328,34 +309,34 @@ Both (are intended to) change the font to the font used by MathJax.
 <dd><p>Das Wesen der Feistel-Chiffre besteht darin, dass eine einzige Runde unzureichende Sicherheit bietet, während mehrere Runden zunehmende Sicherheit bieten.</p>
 </dd>
 </dl>
-</div></div></div><div class="ld-slide" id="data-encryption-standard-des">
+</ld-story></ld-topic><ld-topic id="data-encryption-standard-des">
 <h2>Data Encryption Standard (DES)</h2>
 <ul>
 <li><p>Wurde 1977 vom National Bureau of Standards (heute NIST) als Federal Information Processing Standard 46 herausgegeben.</p></li>
 <li><p>War das am häufigsten verwendete Verschlüsselungsverfahren bis zur Einführung des Advanced Encryption Standard (AES) im Jahr 2001</p></li>
 <li><p>Der Algorithmus selbst wird als Data Encryption Algorithm (DEA) bezeichnet.</p>
-<div class="incremental text-align-center width-100 docutils container">
-<p><strong>Eigenschaften</strong></p>
-</div>
-<ul class="incremental simple">
+<aside class="admonition admonition-eigenschaften">
+<p class="admonition-title">Eigenschaften</p>
+<ul class="incremental-list simple">
 <li><p>Die Daten werden in 64-Bit-Blöcken mit einem 56-Bit-Schlüssel verschlüsselt.</p></li>
 <li><p>Der Algorithmus wandelt die 64-Bit-Eingabe in einer Reihe von Schritten in eine 64-Bit-Ausgabe um.</p></li>
 <li><p>Dieselben Schritte werden mit demselben Schlüssel verwendet, um die Verschlüsselung rückgängig zu machen.</p></li>
 </ul>
+</aside>
 </li>
 </ul>
 <div class="supplemental">
 <p>Bei DES enthält ein 64 Bit langer Schlüssel 8 Paritätsbits, die zur Überprüfung der Schlüsselübertragung verwendet werden.</p>
 <p>Die 8 Paritätsbits werden dann aus dem 64-Bit-Schlüssel entfernt. Somit ist die effektive Schlüssellänge 56 Bit. Diese Operation wurde oft als explizite Schwächung des Algorithmus kritisiert, da die Sinnhaftigkeit der Paritätsbits in Frage gestellt wurde.</p>
 <p>Diese Verkürzung hat dazu geführt, dass bereits im Jahre 1998 die <a class="reference external" href="https://de.wikipedia.org/wiki/Electronic_Frontier_Foundation">EFF</a> einen DES-Schlüssel in weniger als 3 Tagen durch einfachen <em>Brute Force</em> ermitteln konnte. D. h. der Algorithmus an sich wurde nicht gebrochen!</p>
-</div></div><div class="ld-slide" id="des-design">
+</div></ld-topic><ld-topic id="des-design">
 <h2>DES: Design</h2>
-<object class="align-center" data="drawings/des/design.svg" role="img" type="image/svg+xml" width="1200px">
+<object class="align-center" data="drawings/des/design.svg" role="img" type="image/svg+xml">
 </object><div class="supplemental">
-<dl class="field-list">
+<dl class="dd-margin-left-4em field-list">
 <dt>Permuted Choice 1<span class="colon">:</span></dt>
 <dd><p>Permutation und Selektion (d. h. Entfernung der Paritätsbits) der 56 (Schlüssel-)bits</p>
-<table class="monospaced far-far-smaller highlight-cell-on-hover">
+<table class="monospaced highlight-cell-on-hover table-data-align-right">
 <tbody>
 <tr><td><p>57</p></td>
 <td><p>49</p></td>
@@ -426,7 +407,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </dd>
 <dt>&lt;&lt;&lt;<span class="colon">:</span></dt>
 <dd><p>Rotation der Schlüsselbits</p>
-<table class="monospaced far-far-smaller highlight-cell-on-hover">
+<table class="monospaced highlight-cell-on-hover">
 <thead>
 <tr><th class="head"><p>Iteration</p></th>
 <th class="head"><p>Anzahl der Linksverschiebungen</p></th>
@@ -486,7 +467,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </dd>
 <dt>Permuted Choice 2<span class="colon">:</span></dt>
 <dd><p>Auswahl der 48 zur Verschlüsselung zu verwendenden Bits aus den 56 Eingabebits</p>
-<table class="monospaced far-far-smaller highlight-cell-on-hover">
+<table class="monospaced highlight-cell-on-hover table-data-align-right">
 <tbody>
 <tr><td><p>14</p></td>
 <td><p>17</p></td>
@@ -548,20 +529,20 @@ Both (are intended to) change the font to the font used by MathJax.
 </table>
 </dd>
 </dl>
-</div></div><div class="ld-slide" id="des-rundenfunktion-f">
+</div></ld-topic><ld-topic id="des-rundenfunktion-f">
 <h2>DES: Rundenfunktion („F“)</h2>
-<!-- TODO add .. caption :: (dt. Legende) -->
-<div class="note small width-40 docutils container">
+<aside class="admonition width-40 float-right legend">
+<p class="admonition-title">Legende</p>
 <p><strong>Legende</strong></p>
 <p>R - rechte Hälfte der Nachricht</p>
 <p>E - Expansionsfunktion</p>
 <p>S - Substitutionsboxen</p>
-<p>P - Permutation.</p>
-</div>
-<object class="align-left" data="drawings/des/round_function.svg" role="img" type="image/svg+xml" width="840px">
+<p>P - Permutation</p>
+</aside>
+<object class="align-left" data="drawings/des/round_function.svg" role="img" type="image/svg+xml">
 </object><div class="supplemental">
 <p><strong>Expansionsfunktion 32 → 48 Bit</strong></p>
-<table class="monospaced far-far-smaller highlight-cell-on-hover">
+<table class="monospaced highlight-cell-on-hover text-align-right">
 <tbody>
 <tr><td><p>32</p></td>
 <td><p>1</p></td>
@@ -621,110 +602,110 @@ Both (are intended to) change the font to the font used by MathJax.
 </tr>
 </tbody>
 </table>
-</div></div><div class="vertical-title ld-slide" id="des-beispiel">
+</div></ld-topic><ld-topic class="vertical-title" id="des-beispiel">
 <h2>DES: Beispiel</h2>
-<div class="width-100 docutils container">
-<table class="align-center far-smaller monospaced highlight-line-on-hover">
-<tbody>
-<tr><td><p>Round</p></td>
-<td><p><span class="math">\(Ki\)</span></p></td>
-<td><p><span class="math">\(Li\)</span></p></td>
-<td><p><span class="math">\(Ri\)</span></p></td>
+<table class="align-center monospaced highlight-row-on-hover highlight-identical-cells-on-hover font-size-85">
+<thead>
+<tr><th class="head stub"><p>Round</p></th>
+<th class="head"><p><span class="math">\(Ki\)</span></p></th>
+<th class="head"><p><span class="math">\(Li\)</span></p></th>
+<th class="head"><p><span class="math">\(Ri\)</span></p></th>
 </tr>
-<tr><td><p>IP</p></td>
+</thead>
+<tbody>
+<tr><th class="stub"><p>IP</p></th>
 <td></td>
 <td><p>5a005a00</p></td>
 <td><p>3cf03c0f</p></td>
 </tr>
-<tr><td><p>1</p></td>
+<tr><th class="stub"><p>1</p></th>
 <td><p>1e030f03080d2930</p></td>
 <td><p>3cf03c0f</p></td>
 <td><p>bad22845</p></td>
 </tr>
-<tr><td><p>2</p></td>
+<tr><th class="stub"><p>2</p></th>
 <td><p>0a31293432242318</p></td>
 <td><p>bad22845</p></td>
 <td><p>99e9b723</p></td>
 </tr>
-<tr><td><p>3</p></td>
+<tr><th class="stub"><p>3</p></th>
 <td><p>23072318201d0c1d</p></td>
 <td><p>99e9b723</p></td>
 <td><p>Obae3b9e</p></td>
 </tr>
-<tr><td><p>4</p></td>
+<tr><th class="stub"><p>4</p></th>
 <td><p>05261d3824311a20</p></td>
 <td><p>Obae3b9e</p></td>
 <td><p>42415649</p></td>
 </tr>
-<tr><td><p>5</p></td>
+<tr><th class="stub"><p>5</p></th>
 <td><p>3325340136002025</p></td>
 <td><p>42415649</p></td>
 <td><p>18b3fa41</p></td>
 </tr>
-<tr><td><p>6</p></td>
+<tr><th class="stub"><p>6</p></th>
 <td><p>123a2d0d04262a1c</p></td>
 <td><p>18b3fa41</p></td>
 <td><p>9616fe23</p></td>
 </tr>
-<tr><td><p>7</p></td>
+<tr><th class="stub"><p>7</p></th>
 <td><p>021f120b1c130611</p></td>
 <td><p>9616fe23</p></td>
 <td><p>67117cf2</p></td>
 </tr>
-<tr><td><p>8</p></td>
+<tr><th class="stub"><p>8</p></th>
 <td><p>1c10372a2832002b</p></td>
-<td><p>67117c12</p></td>
+<td><p>67117cf2</p></td>
 <td><p>c11bfc09</p></td>
 </tr>
-<tr><td><p>9</p></td>
+<tr><th class="stub"><p>9</p></th>
 <td><p>04292a380c341103</p></td>
 <td><p>c11bfc09</p></td>
-<td><p>887fbe6c</p></td>
+<td><p>887fbc6c</p></td>
 </tr>
-<tr><td><p>10</p></td>
+<tr><th class="stub"><p>10</p></th>
 <td><p>2703212607280403</p></td>
 <td><p>887fbc6c</p></td>
 <td><p>60017e8b</p></td>
 </tr>
-<tr><td><p>11</p></td>
+<tr><th class="stub"><p>11</p></th>
 <td><p>2826390c31261504</p></td>
 <td><p>60017e8b</p></td>
 <td><p>f596506e</p></td>
 </tr>
-<tr><td><p>12</p></td>
+<tr><th class="stub"><p>12</p></th>
 <td><p>12071c241a0a0108</p></td>
 <td><p>f596506e</p></td>
 <td><p>738538b8</p></td>
 </tr>
-<tr><td><p>13</p></td>
+<tr><th class="stub"><p>13</p></th>
 <td><p>300935393c0d100b</p></td>
-<td><p>73853868</p></td>
+<td><p>738538b8</p></td>
 <td><p>c6a62c4e</p></td>
 </tr>
-<tr><td><p>14</p></td>
+<tr><th class="stub"><p>14</p></th>
 <td><p>311e09231321182a</p></td>
 <td><p>c6a62c4e</p></td>
 <td><p>56b0bd75</p></td>
 </tr>
-<tr><td><p>15</p></td>
+<tr><th class="stub"><p>15</p></th>
 <td><p>283d3e0227072528</p></td>
 <td><p>56b0bd75</p></td>
 <td><p>75e8fd8f</p></td>
 </tr>
-<tr><td><p>16</p></td>
+<tr><th class="stub"><p>16</p></th>
 <td><p>2921080b13143025</p></td>
 <td><p>75e8fd8f</p></td>
 <td><p>25896490</p></td>
 </tr>
-<tr><td><p>IP-1</p></td>
+<tr><th class="stub"><p>IP-1</p></th>
 <td></td>
 <td><p>da02ce3a</p></td>
 <td><p>89ecac3b</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="margin-left-1em far-smaller docutils container">
+<div class="supplemental">
 <p>DES-Unterschlüssel werden als acht 6-Bit-Werte im Hexadezimalformat angezeigt.</p>
 <p>Der Höchstwert für einen Wert von <span class="math">\(k_i\)</span> ist somit <span class="math">\(2^6-1=63=0x3F\)</span>.</p>
 <p class="rubric">Beispiel - <span class="math">\(k_1\)</span></p>
@@ -754,14 +735,10 @@ Both (are intended to) change the font to the font used by MathJax.
 </tr>
 </tbody>
 </table>
-</div>
-</div><div class="vertical-title smaller ld-slide" id="lawineneffekt-in-des">
+</div></ld-topic><ld-topic id="lawineneffekt-in-des">
 <h2>Lawineneffekt in DES</h2>
-<div class="width-100 docutils container">
-<div class="smaller text-align-center docutils container">
 <p>Kleine Änderung im Klartext (erster Wert +1)</p>
-</div>
-<table class="align-center scriptsize monospaced highlight-line-on-hover" style="width: 800px;">
+<table class="font-size-80 monospaced highlight-row-on-hover" style="width: 100%;">
 <thead>
 <tr><th class="head"><p>Round</p></th>
 <th class="head"></th>
@@ -865,14 +842,10 @@ cf402c682b2cefbc</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div><div class="vertical-title smaller ld-slide" id="lawineneffekt-in-des-1">
+</ld-topic><ld-topic id="lawineneffekt-in-des-1">
 <h2>Lawineneffekt in DES</h2>
-<div class="width-100 docutils container">
-<div class="smaller text-align-center docutils container">
 <p>Kleine Änderung des Schlüssels: 0f1571c947d9e859 ➟ 1f1571c947d9e859</p>
-</div>
-<table class="align-center scriptsize monospaced highlight-line-on-hover" style="width: 800px;">
+<table class="font-size-80 monospaced highlight-row-on-hover" style="width: 100%;">
 <thead>
 <tr><th class="head"><p>Round</p></th>
 <th class="head"></th>
@@ -976,19 +949,22 @@ ee92b50606b6260b</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div><div class="smaller-slide-title ld-slide" id="durchschnittliche-zeit-fur-erschopfende-schlusselsuche">
+</ld-topic><ld-topic id="durchschnittliche-zeit-fur-erschopfende-schlusselsuche">
 <h2>Durchschnittliche Zeit für erschöpfende Schlüsselsuche</h2>
-<table class="align-center footnotesize highlight-line-on-hover">
+<table class="align-center highlight-row-on-hover font-size-90">
 <tbody>
 <tr><td><p>Schlüsselgröße (bits)</p></td>
 <td><p>Chiffre</p></td>
 <td><p>Anzahl der alternativen
 Schlüssel</p></td>
-<td><p>Zeit benötigt bei <span class="math">\(10^9\)</span>
-Entschlüsselungen/s</p></td>
-<td><p>Zeit benötigt bei <span class="math">\(10^{13}\)</span>
-Entschlüsselungen/s</p></td>
+<td><p>Zeit benötigt bei <span class="math">\(10^9\)</span> Entschlüsselungen/s</p></td>
+<td><p>Zeit benötigt bei <span class="math">\(10^{13}\)</span> Entschlüsselungen/s</p></td>
+</tr>
+<tr><td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr><td><p>56</p></td>
 <td><p>DES</p></td>
@@ -1028,62 +1004,63 @@ Entschlüsselungen/s</p></td>
 </tr>
 </tbody>
 </table>
-</div><div class="ld-slide" id="starke-von-des-timing-angriffe">
+</ld-topic><ld-topic id="starke-von-des-timing-angriffe">
 <h2>Stärke von DES - Timing-Angriffe</h2>
-<ul class="incremental simple">
+<ul class="incremental-list simple">
 <li><p>Ein Verfahren, bei dem Informationen über den Schlüssel oder den Klartext gewonnen werden, indem beobachtet wird, wie lange eine bestimmte Implementierung für die Entschlüsselung verschiedener Chiffretexte benötigt.</p></li>
 <li><p>Dabei wird die Tatsache ausgenutzt, dass ein Verschlüsselungs- oder Entschlüsselungsalgorithmus für verschiedene Eingaben oft leicht unterschiedliche Zeit benötigt.</p></li>
 <li><p>Bislang scheint es unwahrscheinlich, dass diese Technik jemals gegen DES oder leistungsfähigere symmetrische Chiffren wie Triple DES und AES erfolgreich sein wird.</p></li>
 </ul>
-</div><div class="ld-slide" id="entwurfsprinzipien-fur-blockchiffren-anzahl-der-runden">
+</ld-topic><ld-topic id="entwurfsprinzipien-fur-blockchiffren-anzahl-der-runden">
 <h2>Entwurfsprinzipien für Blockchiffren - Anzahl der Runden</h2>
-<ul class="incremental simple">
+<ul class="incremental-list simple">
 <li><p>Je größer die Anzahl der Runden ist, desto schwieriger ist es, eine Kryptoanalyse durchzuführen.</p></li>
 <li><p>Im Allgemeinen sollte das Kriterium sein, dass die Anzahl der Runden so gewählt wird, dass bekannte kryptoanalytische Bemühungen mehr Aufwand erfordern als ein einfacher Brute-Force-Schlüsselsuchangriff.</p></li>
 <li><p>Hätte DES 15 oder weniger Runden, würde die differentielle Kryptoanalyse weniger Aufwand erfordern als eine Brute-Force-Schlüsselsuche.</p></li>
 </ul>
-</div><div class="ld-slide" id="entwurfsprinzipien-fur-blockchiffren-funktion-f">
+</ld-topic><ld-topic id="entwurfsprinzipien-fur-blockchiffren-funktion-f">
 <h2>Entwurfsprinzipien für Blockchiffren - Funktion F</h2>
-<ul class="incremental simple">
+<ul class="incremental-list simple">
 <li><p>Das Herzstück einer Feistel-Blockchiffre ist die Funktion F.</p></li>
 <li><p>Je nichtlinearer F ist, desto schwieriger wird jede Art von Kryptoanalyse sein.</p></li>
 <li><p>Der Algorithmus sollte einen großen Lawineneffekt (<span class="eng">Avalanche-Property</span>) haben.</p></li>
 </ul>
-<aside class="admonition incremental smaller">
+<aside class="admonition incremental">
 <p class="admonition-title">Strict Avalanche Criterion (SAC)</p>
 <p>Besagt, dass sich jedes Ausgangsbit j einer S-Box mit der Wahrscheinlichkeit 1/2 ändern sollte, wenn ein einzelnes Eingangsbit i invertiert wird und dies für alle Paare i,j gelten muss.</p>
 </aside>
-<aside class="admonition incremental smaller">
+<aside class="admonition incremental">
 <p class="admonition-title">Bit Independence Criterion (BIC)</p>
 <p>Besagt, dass sich die Ausgangsbits j und k unabhängig voneinander ändern sollten, wenn ein einzelnes Eingangsbit i invertiert wird und dies für alle i, j und k gelten muss.</p>
 </aside>
 <ul class="incremental simple">
 <li><p>Das Einhalten der SAC- und BIC-Kriterien scheint die Wirksamkeit der Verwirrungsfunktion zu stärken.</p></li>
 </ul>
-</div><div class="ld-slide" id="entwurfsprinzipien-fur-blockchiffre-schlusselableitung">
+</ld-topic><ld-topic id="entwurfsprinzipien-fur-blockchiffre-schlusselableitung">
 <h2>Entwurfsprinzipien für Blockchiffre - Schlüsselableitung</h2>
-<ul class="incremental simple">
+<ul class="incremental-list simple">
 <li><p>Bei jeder Feistel-Blockchiffre wird der Hauptschlüssel verwendet, um einen Unterschlüssel für jede Runde zu erzeugen.</p></li>
 <li><p>Im Allgemeinen möchten wir die Unterschlüssel so wählen, dass die Schwierigkeit, einzelne Unterschlüssel abzuleiten, und die Schwierigkeit, den Hauptschlüssel wieder zurückzuerhalten, maximiert werden.</p></li>
 <li><p>Es wird vorgeschlagen, dass die Schlüsselableitungsfunktion für die Unterschlüssel (<span class="eng">Key Schedule</span>) zumindest das <strong>Strenge Lawinenkriterium</strong> und das <strong>Bit-Unabhängigkeitskriterium</strong> für Schlüssel/Ciphertext garantieren sollte.</p></li>
 </ul>
-</div><div class="new-section transition-fade ld-slide" id="mehrfachverschlusselung">
+</ld-topic><ld-topic class="new-section transition-fade" id="mehrfachverschlusselung">
 <h2>Mehrfachverschlüsselung</h2>
-</div><div class="ld-slide" id="doppelte-verschlusselung">
+</ld-topic><ld-topic id="doppelte-verschlusselung">
 <h2>Doppelte Verschlüsselung</h2>
-<object class="align-center" data="drawings/multiple_encryption/double_encryption.svg" role="img" type="image/svg+xml" width="1200px">
-</object></div><div class="ld-slide" id="meet-in-the-middle-angriff">
+<object class="align-center" data="drawings/multiple_encryption/double_encryption.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="meet-in-the-middle-angriff">
 <h2><em>Meet-in-the-Middle</em>-Angriff</h2>
-<div class="stack">
-<div class="layer">
-<div class="assessment docutils container">
-<p>Beobachtung: <span class="math">\(E(K_2,E(K_1,P)) = E(K_3,P)\)</span> ist nicht gültig. D. h. die zweifache Anwendung von DES führt zu einer Abbildung, die nicht äquivalent zu einer einfachen DES-Verschlüsselung ist.</p>
-</div>
-</div><div class="layer incremental">
+<ld-deck>
+<ld-card>
+<aside class="admonition observation">
+<p class="admonition-title">Beobachtung</p>
+<p><span class="math">\(E(K_2,E(K_1,P)) = E(K_3,P)\)</span> ist nicht gültig. D. h. die zweifache Anwendung von DES führt zu einer Abbildung, die nicht äquivalent zu einer einfachen DES-Verschlüsselung ist.</p>
+</aside>
+</ld-card><ld-card class="incremental">
 <p>Der Meet-in-the-Middle-Algorithmus greift dieses Verfahren an. Er hängt nicht von einer bestimmten Eigenschaft von DES ab, sondern funktioniert gegen jede Blockchiffre.</p>
 <ul class="incremental">
 <li><p>Möglicher Known-Plaintext-Angriff:</p>
-<ol class="arabic simple incremental">
+<ol class="arabic simple incremental-list">
 <li><p>Man berechnet <em>für alle Schlüssel</em> <span class="math">\(K_1\)</span> die Chiffretexte <span class="math">\(E(K_1,P)\)</span> und speichert diese.</p></li>
 <li><p>Man berechnet <em>für alle Schlüssel</em> <span class="math">\(K_2\)</span> die Klartexte <span class="math">\(D(K_2,C)\)</span> .</p></li>
 <li><p>Man vergleicht die beiden Ergebnisse und prüft, ob es Übereinstimmungen gibt.</p></li>
@@ -1093,16 +1070,17 @@ Entschlüsselungen/s</p></td>
 </div>
 </li>
 </ul>
-</div><div class="layer incremental">
+</ld-card><ld-card class="incremental">
 <aside class="admonition warning">
-<p class="admonition-title">Die zweifache Anwendung einer Blockchiffre ist nicht sinnvoll</p>
+<p class="admonition-title">Warnung</p>
+<p>Die zweifache Anwendung einer Blockchiffre ist nicht sinnvoll!</p>
 <p>Das Ergebnis ist, dass ein bekannter Klartextangriff gegen Doppel-DES mit einem Aufwand in der Größenordnung von <span class="math">\(2^{56}\)</span> im Durchschnitt erfolgreich ist, verglichen mit durchschnittlich <span class="math">\(2^{55}\)</span> für einen einfachen DES.</p>
 </aside>
-</div></div></div><div class="ld-slide" id="dreifache-verschlusselung">
+</ld-card></ld-deck></ld-topic><ld-topic id="dreifache-verschlusselung">
 <h2>Dreifache Verschlüsselung</h2>
 <p><strong>(Z. B. Triple-DES (3DES) mit drei Schlüsseln)</strong></p>
-<object class="align-center" data="drawings/multiple_encryption/triple_encryption.svg" role="img" type="image/svg+xml" width="100%">
-</object></div><div class="ld-slide" id="triple-des-mit-zwei-schlusseln">
+<object class="align-center" data="drawings/multiple_encryption/triple_encryption.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="triple-des-mit-zwei-schlusseln">
 <h2>Triple-DES mit zwei Schlüsseln</h2>
 <p>Die offensichtliche Antwort auf den <em>Meet-in-the-middle</em>-Angriff ist die dreifache Verschlüsselung mit drei verschiedenen Schlüsseln.</p>
 <ul class="simple">
@@ -1111,7 +1089,7 @@ Entschlüsselungen/s</p></td>
 <li><p>Als Alternative schlug Tuchman eine dreifache Verschlüsselungsmethode vor, die nur zwei Schlüssel verwendet.</p></li>
 <li><p>3DES mit zwei Schlüsseln war eine Alternative zu DES und wurde in die Schlüsselverwaltungsstandards ANSI X9.17 und ISO 8732 aufgenommen.</p></li>
 </ul>
-</div><div class="ld-slide" id="triple-des-mit-drei-schlusseln">
+</ld-topic><ld-topic id="triple-des-mit-drei-schlusseln">
 <h2>Triple-DES mit drei Schlüsseln</h2>
 <ul>
 <li><p>Es wurden mehrere Angriffe gegen 3DES mit 2 Schlüsseln entwickelt, die jedoch (noch) nicht praktikabel sind.</p></li>
@@ -1125,7 +1103,7 @@ C=E(K_3,D(K_2,E(K_1, P)))
 </li>
 <li><p>Rückwärtskompatibilität mit DES ist gegeben, wenn man <span class="math">\(K_3 = K_2\)</span> oder <span class="math">\(K_1 = K_2\)</span> einsetzt.</p></li>
 </ul>
-</div><div class="integrated-exercise transition-scale ld-slide" id="ubung">
+</ld-topic><ld-topic class="exercises transition-scale" id="ubung">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Feistelchiffre Implementieren" id="ld-exercise-1">
 <p class="ld-exercise-title rubric">Feistelchiffre Implementieren</p>
@@ -1143,7 +1121,7 @@ MTAwMDAw:swwzvP328oemu0C8ouaDFCfxaxCDqgEUuwuGNprkjzw=:ea5pSos6RlroicZP:LWcecyBBS
 <p><strong>Hinweise</strong></p>
 <p>Kümmern Sie sich nicht um Nachrichten, die größer oder kleiner als die Blockgröße sind. Dies ist nicht notwendig, um die Auswirkungen von <span class="math">\(f\)</span> oder der Verwendung eines Rundenschlüssels zu verstehen. Kümmern Sie sich nicht um einen Schlüssel, der nicht die richtige Größe hat. D. h. verwenden Sie eine Nachricht und einen Schlüssel mit der entsprechenden Größe.</p>
 <p>Um die Austauschbarkeit der Funktion f zu erreichen, können Sie je nach Sprache z. B. native Funktionen höherer Ordnung, einen Funktionszeiger oder ein Interface verwenden.</p>
-</div></div><div class="integrated-exercise ld-slide" id="ubung-1">
+</div></ld-topic><ld-topic class="exercises" id="ubung-1">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Feistelchiffre Evaluieren" id="ld-exercise-2">
 <p class="ld-exercise-title rubric">Feistelchiffre Evaluieren</p>
@@ -1157,7 +1135,7 @@ MTAwMDAw:swwzvP328oemu0C8ouaDFCfxaxCDqgEUuwuGNprkjzw=:ea5pSos6RlroicZP:LWcecyBBS
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:MS+A+fl4D/TJcTFz0V+0GVBhW4tjlBTE60oO6WOjCuI=:Fg1UOeWTYiWPKZ64:eNB7edpOXD3hVW9yexaF5X+flZzT6V14NNQAkp3POLWe0+aObDjc7b6yGrWeDWfk+Gv9l4Fi3fBYj48XU9rPUxUqnYVC/5dNRhVtIjoDqyke1qYufjqCRrBwX23QcWa/r3gJZ2/SF0FzkwRKorAkW8Ddu2MUdyo2bSbQ9tgNDXsU7dUye5MUugkUPAn2Bbn+v71vbJf4yA/FaJWmPnbMf4oALe7/JepwHxWyZBcBzJCmOjSvoXoFxoJLNCTcp0ISbxDzsS1f52odqA2ThLEXfWG4/BK6l5eCpjTvJO9qWBD8/yvKIwr35Xg5s4SedvN4urngAIf3oCVeOnHxhon6obbWlhdoImtPhe8xGTBxPEuZCSeb6o40WheC+Y0PKa+VZilIHWwvbI/Jjvxgxz9gzHGmhdeoiUnvCQQKduE6UTKD2QcpRkHvZEujUegCpnXZz1UDnlE8O31sVV9B++NeskOUQPGpGw8rT0LS/knIqVbS8JEEbQG/CqtkgQPVjErWgd0eXZ9z4ljeJG9CmZ3inolZWVbqMeZwSvQR6NWYLPMnStgsDh+97oDfydwQlVz4o2sxcqPZ/oBMId6P+u43yz9MlWd4mdp/0gbMHT2f81lG+lMTZX3V5Xh9+U8QKG4nzrNpHxq0ZYfPrNVF0p2zk+uyjS3WAZ362O0QPpkEESolKmZL48eORPZ+8jY905FZL3+Bej5xpsBjx0DVOGgghY+9Kr5SujsWD5+5QKr2</div>
 </div>
-</div>
+</ld-topic>
 </template>
 </body>
 </html>

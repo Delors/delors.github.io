@@ -4,6 +4,7 @@
  * In particular, selective highlighting of...
  * - rows (highlight-row-on-hover)
  * - identical cells (highlight-identical-cells-on-hover)
+ * - a cell and the corresponding cell in the first row/column (highlight-on-hover)
  *
  * The highlighting is also relayed to secondary windows.
  */
@@ -49,6 +50,25 @@ function afterLDListenerRegistrations() {
     // for the precise definition of cellIndex, rowIndex, and sectionRowIndex
 
     // TODO Relay the highlighting to secondary windows!
+
+    document
+        .querySelectorAll("#ld-slides-pane table.highlight-cell-on-hover")
+        .forEach((table) => {
+            function highlight(td) {
+                td.classList.add(":hover");
+            }
+            function dehighlight(td) {
+                td.classList.remove(":hover");
+            }
+
+            const tbody = table.querySelector(":scope tbody");
+            // .stub is used by rst to mark up data cells in columns that
+            // serve as row headers
+            tbody.querySelectorAll(":scope td:not(.stub)").forEach((td) => {
+                td.addEventListener("mouseover", () => highlight(td));
+                td.addEventListener("mouseleave", () => dehighlight(td));
+            });
+        });
 
     /**
      * The following highlights the current element and the element in
