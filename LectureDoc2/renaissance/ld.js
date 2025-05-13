@@ -806,6 +806,7 @@ function setupIncrementalElements(slide) {
                 Therefore, we split up the list in multiple lists which are
                 then made incremental as a whole.
              */
+            // TODO Simplify using the new prevSib (see below for an example)
             const div = ld.div({});
             list.parentElement.replaceChild(div, list);
             list.classList.remove("incremental-list");
@@ -845,6 +846,8 @@ function setupIncrementalElements(slide) {
                 item.classList.add("incremental");
             });
         });
+
+    // TODO add support for incremental table columns
 
     slide.querySelectorAll(":scope .incremental-code").forEach((pre) => {
         Array.from(pre.children).forEach((child) => {
