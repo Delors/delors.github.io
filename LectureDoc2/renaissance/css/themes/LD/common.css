@@ -183,7 +183,7 @@ dl.compact > dd {
 
     TODO Add relay to other windows
 */
-:is(ol, ul).pop-out-on-hover {
+:is(ol, ul):has(> .pop-out-on-hover) {
     perspective: 500px;
     transform-style: preserve-3d;
     overflow: visible;
@@ -195,7 +195,7 @@ dl.compact > dd {
             transition: 0.5s;
         }
 
-        &:hover {
+        &.\:hover {
             transform: translateZ(15px);
             transition: 0.5s;
 
@@ -206,7 +206,7 @@ dl.compact > dd {
     }
 }
 
-ul.negative-list > li, /* TODO rename: attention-list*/
+ul.negative-list > li, /* TODO rename: attention-list (see below)*/
 ul > li.negative-list {
     list-style-type: "❗️";
 }
@@ -1150,22 +1150,37 @@ table {
         caption-side: bottom;
     }
 
-    &.highlight-cell-on-hover,
     &.highlight-on-hover,
-    &.highlight-row-on-hover,
+    &.highlight-cell-on-hover,
+    &.highlight-cell-and-row-on-hover,
     &.highlight-identical-cells-on-hover {
         th.\:hover-related {
-            background-color: var(--gray);
-            color: var(--white);
+            --current-background-color: var(--gray);
+            background-color: var(--current-background-color);
+            --current-color: white;
+            color: var(--current-color);
         }
         td.\:hover-related {
-            background-color: var(--very-light-gray);
+            --current-background-color: var(--very-light-gray);
+            background-color: var(--current-background-color);
         }
         th.\:hover {
-            background-color: var(--light-gray);
+            --current-background-color: var(--light-gray);
+            background-color: var(--current-background-color);
         }
         td.\:hover {
-            background-color: var(--light-gray);
+            --current-background-color: var(--light-gray);
+            background-color: var(--current-background-color);
+        }
+    }
+    &.highlight-row-on-hover {
+        tr.\:hover {
+            --current-background-color: var(--light-gray);
+            background-color: var(--current-background-color);
+        }
+        tr.\:hover-related {
+            --current-background-color: var(--very-light-gray);
+            background-color: var(--current-background-color);
         }
     }
 
