@@ -249,7 +249,7 @@ function afterLDListenerRegistrations() {
          * We highlight the current element and the element in the first row
          * with the same column and in the first column with the same row.
          */
-        if (table.classList.contains("table.highlight-on-hover")) {
+        if (table.classList.contains("highlight-on-hover")) {
             function highlight(cell, isHovered) {
                 const cellIndex = cell.cellIndex; // <=> columnIndex
                 const rowIndex = cell.parentElement.rowIndex;

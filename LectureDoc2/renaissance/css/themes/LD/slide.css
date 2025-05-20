@@ -1,20 +1,19 @@
 /* LAYER: theme.ld.slide */
 
-/* 
+/*
     Styling related to slides independent of the view mode.
 */
 .ld-slide {
-
     border-radius: var(--s-border-radius);
     padding: var(--s-padding);
-    
+
     --current-color: var(--s-text-color);
     color: var(--current-color);
-    
+
     --current-background-color: var(--s-background-color);
     background-color: var(--current-background-color);
 
-    --unitless-current-base-font-size: var(--unitless-s-font-size); 
+    --unitless-current-base-font-size: var(--unitless-s-font-size);
     --current-base-font-size: var(--s-font-size);
     font-size: var(--current-base-font-size);
     font-weight: var(--s-font-weight);
@@ -49,7 +48,6 @@
         content: var(--motivation);
     }
 
-
     /* The solution will only be shown in the respective pane. */
     .ld-exercise-solution {
         display: none;
@@ -59,10 +57,9 @@
     Styling of slides which contain lecture-integrated exercises.
     */
     &.exercises {
-
         h2:first-child {
-            margin:
-                calc(var(--s-tb-padding) * -1) calc(var(--s-lr-padding) * -1) var(--s-tb-padding) calc(var(--s-lr-padding) * -1);
+            margin: calc(var(--s-tb-padding) * -1) calc(var(--s-lr-padding) * -1)
+                var(--s-tb-padding) calc(var(--s-lr-padding) * -1);
             padding: var(--s-padding);
             background: var(--light-gray);
             color: var(--dark-red);
@@ -71,12 +68,12 @@
     }
 
     .ld-exercise {
-        >p.rubric {
+        > p.rubric {
             position: relative;
             overflow: hidden;
         }
 
-        &+.ld-exercise {
+        & + .ld-exercise {
             margin-top: 0.5em;
         }
     }
@@ -87,7 +84,7 @@
         justify-content: center;
         align-items: center;
 
-        >h2 {
+        > h2 {
             width: 100%;
             margin-left: calc(-2 * var(--s-lr-padding));
             padding: 0.4em 0;
@@ -112,17 +109,17 @@
         font-size: 0.7em;
     }
 
-    >.footnote-list {
+    > .footnote-list {
         position: absolute;
         bottom: 0px;
     }
 
-    *>.footnote-list {
+    * > .footnote-list {
         margin-top: 0.75em;
         border-top: thin solid var(--dark-gray);
         padding-top: 0.2em;
 
-        >.footnote {
+        > .footnote {
             margin-bottom: 0;
 
             &:first-child {
@@ -130,7 +127,6 @@
             }
         }
     }
-
 
     /*  Generic styling for per-slide footer elements. */
     .footer-left,
@@ -150,7 +146,7 @@
         right: var(--s-lr-padding);
     }
 
-    /*  Converts a container into a generic footer element. Intended to be combined 
+    /*  Converts a container into a generic footer element. Intended to be combined
         with other classes to style the block footer. */
     .block-footer {
         bottom: 0;
@@ -169,17 +165,28 @@
         top: -0.5em;
         margin-bottom: 0;
         width: calc(100% + 2 * var(--s-lr-padding));
-    
+
         + * {
-            margin-top:0;
+            margin-top: 0;
         }
     }
-    
+
+    &.s-vertical-title {
+        display: flex;
+        flex-direction: row;
+
+        h2 {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: calc(var(--s-font-size) * 1.25);
+            text-align: center;
+        }
+    }
 
     /* TODO NOT YET READY: NOT RELAYED TO SECONDARY BROWSER */
     .scale-on-hover {
         position: absolute;
-        z-index: 1  ;
+        z-index: 1;
         right: 0;
         padding: 0.5em;
         border-radius: var(--small-border-radius);
@@ -187,10 +194,14 @@
         transform-origin: top right;
         transform: scale(0.35);
         transition: all 0.5s;
-        
+
         &:hover {
             transform: scale(1);
-            background-color: color-mix(in srgb, var(--current-background-color), transparent 35%);
+            background-color: color-mix(
+                in srgb,
+                var(--current-background-color),
+                transparent 35%
+            );
             backdrop-filter: blur(4px);
             transition: all 0.5s;
         }
