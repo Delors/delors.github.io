@@ -239,3 +239,31 @@ export function addScrollingEventListener(channel, eventTitle, scrollableElement
     },{passive: true});
 }
 
+/**
+ * Creates a deep clone of the given element. If a child has an open shadow DOM, 
+ * it will also be cloned. 
+ * 
+ * Recall that the `cloneNode` method does not clone shadow roots.
+ * 
+ * @param {HTMLElement} element - The element to clone.
+ * @returns {HTMLElement} - A deep clone of the element, including open shadow DOMs.
+ */
+export function deepCloneWithOpenShadowRoots(element) {
+    const clone = element.cloneNode(false); // ! Shallow clone !
+
+    // 1. Check if the element has an open shadow root. If so attach a shadow root to the clone and attach the children of the shadow root to the new shadow root.
+    // 2. Recursively clone the children of the element; which are effectively parameters if the element is a custom element and normal children otherwise.
+
+    if (element.shadowRoot && element.shadowRoot.mode === "open") {
+        const newShadow = clone.attachShadow({ mode: "open" });
+        element.shadowRoot.childNodes.forEach(node => {
+            newShadow.appendChild(deepCloneWithOpenShadowRoots(node));
+        });
+    }
+
+    element.childNodes.forEach(child => {
+        clone.appendChild(deepCloneWithOpenShadowRoots(child));
+    });
+
+    return clone;
+}

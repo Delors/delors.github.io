@@ -437,12 +437,14 @@ function scaleDocumentImagesAndVideos() {
             img.addEventListener("load", () => {
                 const targetWidth = img.naturalWidth / 2.5;
                 const targetHeight = img.naturalHeight / 2.5;
+                /*
                 console.log(
                     "scaling highdpi image for document view",
                     img,
                     targetWidth,
                     targetHeight,
                 );
+                */
                 img.style.width = targetWidth + "px";
                 img.style.height = targetHeight + "px";
             });
@@ -696,7 +698,7 @@ function getEncryptedExercisesPasswords() {
  * code blocks.
  *
  * To make "copy-to-clipboard" functionality work in all views, this
- * function needs to be called before the slides are duplicated per the
+ * function needs to be called before the slides are cloned per the
  * respective view.
  */
 function setupCopyToClipboard(rootNode) {
@@ -707,7 +709,7 @@ function setupCopyToClipboard(rootNode) {
         code.insertBefore(copyToClipboardButton, code.firstChild);
         copyToClipboardButton.addEventListener("click", (event) => {
             event.stopPropagation();
-            const c = code.cloneNode(true);
+            const c = code.cloneNode(true); // we won't have open shadow roots here
             const lns = c.querySelectorAll(":scope > small.ln");
             lns.forEach((ln) => c.removeChild(ln));
             const textToCopy = c.innerText;
@@ -726,9 +728,10 @@ function setupCopyToClipboard(rootNode) {
  *
  * @param {*} element An HTML DOM element.
  * @param {*} nextStepId The step id that should be used for the next element
- *            with an incremental annoation.
+ *            with an incremental annotation.
  */
 function associateAnnotationStepIds(element, nextStepId) {
+    // TODO Rename animationStepIds
     let currentStepId = nextStepId;
 
     const elementStepId = element.dataset.ldIncrementalStepId;
@@ -861,7 +864,6 @@ function setupIncrementalElements(slide) {
         });
     });
 
-    // TODO rename: associateAnimationStepIds
     associateAnnotationStepIds(slide, 1);
 
     // Bring everything to the base-state
@@ -910,7 +912,7 @@ function setupLightTable() {
     });
 
     topicTemplates.querySelectorAll("ld-topic").forEach((topic, i) => {
-        const slide = topic.cloneNode(true);
+        const slide = ld.deepCloneWithOpenShadowRoots(topic);
         slide.classList.add("ld-slide");
         slide.removeAttribute("id"); // not needed anymore (in case it was set)
 
@@ -1216,15 +1218,17 @@ function setupSlidePane() {
         with 0. However, user-facing functions assume that the first slide has
         the id 1.
     */
-    topicTemplates.querySelectorAll("ld-topic").forEach((t, i) => {
+    topicTemplates.querySelectorAll("ld-topic").forEach((topic, i) => {
+        // const clonedTopic = topic.cloneNode(true);
+        const clonedTopic = ld.deepCloneWithOpenShadowRoots(topic);
         const slide = ld.create("ld-slide", {
             id: "ld-slide-no-" + i,
-            classList: t.classList,
-            children: t.children,
+            classList: clonedTopic.classList,
+            children: clonedTopic.children,
         });
         slide.classList.add("ld-slide");
         slide.dataset.ldSlideNo = i;
-        slide.dataset.id = t.id; /* The original ID! */
+        slide.dataset.id = clonedTopic.id; /* The original ID! */
 
         setupCopyToClipboard(slide);
 
@@ -1246,7 +1250,8 @@ function setupSlidePane() {
             let presenterNoteId = 0;
             const ldPresenterNotes = ld.create("ld-presenter-notes", {});
             for (const presenterNote of presenterNotes) {
-                const clonedPresenterNote = presenterNote.cloneNode(true);
+                const clonedPresenterNote =
+                    ld.deepCloneWithOpenShadowRoots(presenterNote);
                 clonedPresenterNote.id =
                     "ld-presenter-note-" + ++presenterNoteId;
                 clonedPresenterNote.dataset.presenterNoteId = presenterNoteId;
@@ -1369,7 +1374,8 @@ function setupDocumentView() {
     const documentView = ld.div({ id: "ld-document-view" });
 
     topicTemplates.querySelectorAll("ld-topic").forEach((t, i) => {
-        const template = t.cloneNode(true);
+        //const template = t.cloneNode(true);
+        const template = ld.deepCloneWithOpenShadowRoots(t);
         template.classList.remove("ld-slide"); // not needed anymore
 
         setupCopyToClipboard(template);
@@ -2105,7 +2111,11 @@ function registerKeyboardEventListener() {
 
     document.addEventListener("keydown", (event) => {
         // let's check if the user is using an input field to type something in
-        if (document.activeElement.nodeName == "INPUT") {
+        const activeElement = document.activeElement;
+        if (activeElement.nodeName === "INPUT") {
+            return;
+        }
+        if (activeElement.contentEditable === "true") {
             return;
         }
 
