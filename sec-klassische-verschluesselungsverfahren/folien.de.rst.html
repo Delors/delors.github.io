@@ -40,7 +40,7 @@
 <dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.0.2</dd>
+<dd class="version">1.1</dd>
 <dt class="quelle">Quelle<span class="colon">:</span></dt>
 <dd class="quelle"><p>Im Wesentlichen: <em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
@@ -55,9 +55,9 @@ Created 2025 - Michael Eichberg -->
 <!-- LANGUAGE RELATED -->
 <!-- TEXT RELATED -->
 <!-- The following definitions enable "lightweight" definitions of mathematical
-expressions that resemble MathJax definitions without causing the overhead
+expressions that resemble MathJax 3.2.2 definitions without causing the overhead
 incurred by MathJax.
-Both (are intended to) change the font to the font used by MathJax.
+Both (are intended to) change the font to the font used by MathJax 3.2.2.
 "math-r" uses the normal style which is used by MathJax for numbers.
 "math-i" uses (the italic) font which is used by MathJax for other characters. -->
 <div class="supplemental">
@@ -1757,7 +1757,54 @@ Geheimtext: ZICVTWQNGRZGVTWAVZHCQYGLMGJ</pre>
 <p>Die verschlüsselte Nachricht ist: MEMATRHTGPRYETEFETEOAAT</p>
 </aside>
 <div class="supplemental">
-<p>Um die Nachricht zu entschlüsseln, wird die Nachricht in <span class="math">\(K\)</span> Zeilen geschrieben und dann in einer Diagonalen abgelesen. Die Länge einer Zeile ergibt sich aus der Länge der Nachricht (L) und der Tiefe der Chiffre (K): <span class="math">\(\lfloor L/K \rfloor\)</span>. Wobei die ersten <span class="math">\(L\bmod K\)</span> Zeilen um eins länger sind als die anderen.</p>
+<p>Um die Nachricht zu entschlüsseln, konstruieren Sie eine <em>Railfence</em> mit der entsprechenden Tiefe und Länge des Chiffretexts. Danach können Sie die Nachricht direkt ablesen.</p>
+<p>Geben Sie die folgende Nachricht: <span class="docutils literal">voeodrgy</span> und der Schlüssel sei 4.</p>
+<table class="table-data-monospaced">
+<tbody>
+<tr><th class="stub"><p>Nachricht</p></th>
+<td><p>v</p></td>
+<td><p>o</p></td>
+<td><p>e</p></td>
+<td><p>o</p></td>
+<td><p>d</p></td>
+<td><p>r</p></td>
+<td><p>g</p></td>
+<td><p>y</p></td>
+</tr>
+<tr><th class="stub"><p>Index</p></th>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+<td><p>8</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple">
+<li><p>Railfence der Tiefe 4 für eine Nachricht der Länge 8.</p></li>
+</ol>
+<pre class="literal-block">-     -
+ -   - -
+  - -
+   -</pre>
+<ol class="arabic simple" start="2">
+<li><p>Daraus ergibt sich unmittelbar welcher Buchstabe an welcher Stelle im Chriffretext gelandet ist (wir numerieren einfach die Platzhalter zeilenweise durch):</p></li>
+</ol>
+<pre class="literal-block">-     -     ⇒   1     2
+ -   - -         3   4 5
+  - -             6 7
+   -               8</pre>
+<ol class="arabic simple" start="3">
+<li><p>Ersetzen des Index mit dem Buchstaben aus der verschlüsselten Nachricht:</p></li>
+</ol>
+<pre class="literal-block">-     -       1 ⇒ v      2 ⇒ o
+ -   - -       3 ⇒ e    4 ⇒ o  5 ⇒ d
+  - -           6 ⇒ r  7 ⇒ g
+   -             8 ⇒ y</pre>
+<p>Plaintext = very good</p>
 </div></ld-topic><ld-topic id="skytale">
 <h2>Skytale</h2>
 <ul class="simple">
@@ -1886,15 +1933,15 @@ MTAwMDAw:thzfKVzOYIv2lDhVnu2gJaAiOfk/XQ9VIoII32Z5rxo=:wmKVViUa2H12pM9y:lwTQAklva
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Rail-fence Chiffre" id="ld-exercise-4">
 <p class="ld-exercise-title rubric">Rail-fence Chiffre</p>
-<p>Entschlüsseln Sie: ggettueietmsr</p>
+<p>Entschlüsseln Sie: gestugmitrtee</p>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:9uPCrl37C19TEJAGJsfYTCWlXMnWvnOkN6PLZiCoK3A=:f0KLImBn1bfuXEO8:tinj1N7bShFGlE//vvx+IHRFAULtQa+Z53Fy9k3axuIrJC+KH0Eqg4RyFQGWHdmKoqIyht+BmEM0xL1wXbhX1iokkB3jCCtW1x3DCvQjLkjrQkhwlOLy0xwGxlCRfPN4UjSe8V5P+xazLK9oQ5yUywrCHzaTn49qUpL/WBAl/UaSfClfC5/Xxcye6u/s4e2gTb36eSDOrhy7iVrQPTH4+Z7l8jwFlFpt9lYlPCqdnaAjEmc+Ifwr32je7S7I4CCdCt2XncRSk2e0KyC4epL+QfucIOV6i2a5IlS8GIORprztgXRz9at9WERvgDglTFCXw0HBFqAMJkgBEhURfy4ODwPT1+M1oF6nsoKRUI1+UUBQxA==</div>
+MTAwMDAw:AgmUuZacNd2Xg/rJz1LG3xWCfL3ArAQc8SzYz/Q1fYc=:aVjsNWOOf59qLhFg:TASae7SmYmc1LdnaryG+Q01NE1LvQrzGeCTdY4sj31y9q4rjH2nfviq9jEnKg96oYtd9kI+VVOyFhHE4R9VSPFXe3GvHG0wIbNWg+i0M8M8u3GOcJZvpL3dIYCftmBgFjAl8oRdTAq+QHZ5mpA8e/+f0csCL9tHzL3g3wNaJJQaYAVfT99cps18INOhI31GEBZwEaL4VIeTY1nrqDhyMkmMeV0DNfhmBc4tDioaFk0NkM+VG+G+hOF728RLsoDQGFqAik4eHPYCAarULThwxVa1xQTia+3+Jaunv0X9ZgTnkVT736jRqfYRTUI3ZRjrhncTqUN7r2ONhrXUngW3GzLe7Fy/FO9GQk75pbV6xtay1UqVflqlTalUh6zB1oxwIALYJsoh3UW2+4CswjM8+65KGOUrFax2tLmTBo8pfJA4waZQ3x3oeF/kLJK+QKSCIjeCDX5iKypbOkC8EVbQnAHOfT/dIezCjrpAzgMQ0yUo6BOAsxqbLzED6GbHMY6JRTh5V8S54ECjD/5QY6zhyMNAtyz9AeGlTFSsnS5MQklo+rzwgyczUPtHOzQNAke9bjuN5yASedZiWFf924Pe0ejXcuoWPzfTAThyA+fT2IdM+AQhjPMha8JccDmcpF4fu8exi6+jnzbstm9Q0fAZK5jb0kgdSs5fuNQHcsr9EJVFKCDIRPq3RVs4hL2uQeEXEwuB7eI2Brd7TodF7lLQ0cUWMXqoLW1rnDIrUpM2gkbEtpeOhjgllTg04uPDsOFZ9e4z5ap+JnJoJDhCsIVWz1MGcJKt6BZyWMC8eU1sP12P2spTnAAlxVbMU9l1ik9zXOcg0pHClpODX3SAlALUkTNg3w51tS21HwLOWbs9FUJUu3W9EvblJpCItgXouvHm3S7fuiuAA0/9B6g6cSJa6Lv0LRM5RHjX0n+XDAE6ykENmA6vLLs3nuL4CGG6/4Jhxgt3lDEY4thdftqyrQ5hnQd9NKDWSbZW7CpE3EBHos76MzaDB1vNgLpEMyqF2tVNZw5U6k7RKSZ6dWW72bEpeYqm8yOIlrPHWbY3tkrKn+vXiDgUHlD1C4NZMmL6fiLOnc4eGGDF7TiHcsHL1GRubKYQuIqX+O2OKLndAqRuxE3v2BOt+aNJyyNLr/j1c04Xs++kb78Kglwl42LmFp6GSKcLIa65ub2ntJVcTQnxlkBTVjaIk1A6RMnhf6IEpT/S/rjAloQAwHNlbIIf3g/zGdDzws/haCkz9Da3Bu78IUoCtgrP4HAkpI3GCC4N0cu6SucaOngovcIXKVKfhdkAM4XsSkob8eKUhV0OVk+5XsMNJ4+o1/AyDCt/+npGpICNZgLgQz+SQdmuhHCPKAxOvMVrcXmWh/2PZTHfzY9MkaFksWp3pDLOx+k5oHifB+8j2smIgCoIdXs62ivsVHAbvxfxjEq4VLsf2ql4CjnEXYRGPyliJySP7bWZTyFX2iRdCH/uCBvqZSYZdiI8yAmQtpLF49ydHLz//6L1mE32mty/kMl7g4IrjhC4goKv693abyNEfpG00kURG8qSpAkzwNJagQ9qVRS+TGuf78vdKrlIHUoegpMCpStMezKdJX7qtI00JKSzHQ3Ll4rxpeIzE9t6C4tSH9sk5eYhYI6Xh2TzBSekVUGZcM4m4i6Qiy0mWI+PG91rI2cA0eg==</div>
 </div>
 <div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - Rail-fence Chiffre" id="ld-exercise-5">
 <p class="ld-exercise-title rubric">Rail-fence Chiffre</p>
 <p>Verschlüsseln Sie &quot;i love crypto&quot; mit dem Schlüssel/der Tiefe 3.</p>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:KbWp/mT/gVgk+BujERY2JCq8Y8OgNm83ArxdjvVboK8=:YkUt7EtUYjTJ+Zi7:CJ0tM+m0d8R5GC3/MhH7UB50OCUxJiGrQzL24K6Dd5gcuqiGAIQdpyUjejFC3uruL2flXeMQrdg8CMm6ihCEzn85sdpjFPkFdxfPNiayjud6TP3kXGGjqzzzrqqew/vwTdavB2B7aIfithycvwHHheqHQ69CKQ/qTpq4iMAFiZTUJJPYwDrNZe0HnhG/cac41WEL5NbhE/GUkKRRhHJtpS3I</div>
+MTAwMDAw:sQ6kj7W7B4oAoF5i6GpYFWCG8n8lPXPjSbQmFAzqZCM=:2+7wqLKCkeQ1ILQC:NiXFF86EfVR/mNh0wTMHnrNYg3cztD4z+c4aRSGwSDIIX90ETxKkb0SL3hDqoWrq7NTncwjCckGFqZk/aC6q7q10c/6w3JShvSww/2VEwuE88n+P0Qw04Cu9fKMmD3bxaJjwVQYHMTik/0eJTUxiePWx3cHCKwyVdxbA61zW7XudrMDGuIciZplA9MlOC87ZDS+5EBFMO8dHY691sVRrxWem</div>
 </div>
 </ld-topic><ld-topic class="exercises" id="ubung-2">
 <h2>Übung</h2>
