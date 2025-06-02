@@ -2,30 +2,56 @@
    Core Principles of LectureDoc2:
 
     -   LectureDoc documents are always served by a server and only target
-        up-to-date browsers. This is enables us to use modern (HTML/CSS/)
-        JavaScript features (e.g., modules).
-
-    -   We store all relevant state information in a state object; this object
-        is then used to re-instantiate a LectureDoc session later on. This object
-        is saved in local storage whenever the user leaves the webpage. To make
-        it possible to associate state information with a specific document, a
-        document has to have a unique id. This id has to be set by the author
-        of the document using corresponding meta information.
-        If no id is configured, no state information will be saved.
-        Saved states always overrides information found in the document as it
-        is considered to be more current.
-
-    -   The id of the document is used to create a broadcast channel that is
-        used to communicate between different windows showing the same document.
+        up-to-date browser (Chrome, Safari and Firefox). This enables us to use modern HTML/CSS/JavaScript features (e.g., modules and web components).
 
     -   Meta information about the presentation is stored in the presentation
         object. This object is - after initialization - not mutated.
 
+    -   We store all relevant state information in a state object; this object
+        is then used to re-instantiate a LectureDoc session later on. This
+        object is saved in local storage whenever the user leaves the webpage.
+        To make this possible; i.e., to associate state information with a
+        specific document, a document has to have a unique id. This id has to
+        be set by the author of the document using corresponding meta
+        information.
+        If no id is configured, no state information will be saved.
+        Saved states always overrides information found in the document as it
+        is considered to be more current. However, the user can delete the saved
+        state.
+
     -   Information that does not need to be retained between two sessions is
-        stored in the ephemeral object.
+        stored in the ephemeral object. For example, the previously shown slide.
+        This information is required by some animations.
+
+    -   The id of the document is used to create a broadcast channel that is
+        used to synchronize different windows showing the same document.
 
     -   Modules can register for core events to interact with LectureDoc2 in a
         well-defined way.
+
+    -   When a document is opened, the initial state is determined in the
+        following way:
+
+        1. initialize state information based on those defined in the document
+        2. read state information related to the last time the document was
+           opened (i.e., state information related to the previous visit
+           override those defined in the document)
+        3. check the URL if the user requests a very specific state and apply
+           this information.
+
+    -   We use the following pattern to synchronize the state between two
+        windows:
+
+        For every method that manipulates that current state, we have two methods.
+
+        1)  a method that sends a message and then performs the state change.
+            For that, it calls the second method.
+        2)  a method which only performs the state change, but does not emit a
+            message. These methods generally have the local moniker in their name. E.g. localMoveToNextSlide.
+
+        Now, when we react to a local event we always call the first method.
+        When we handle the received message, we call the second method.
+
 */
 import * as ld from "./js/ld-lib.js";
 
@@ -65,7 +91,7 @@ async function ldCrypto() {
  *
  * // "beforeLDDOMManipulations" is called before the DOM is manipulated by
  * // LectureDoc. At this point in time the DOM is still in the original state.
- * // I.e., the slide templates are not yet copied to the respective views.
+ * // I.e., the slide templates are not yet used to create the respective views.
  * function beforeLDDOMManipulations() {
  *   console.log("performing ld-components.beforeLDDOMManipulations");
  *  ...
@@ -78,11 +104,11 @@ async function ldCrypto() {
  *
  * // "afterLDListenerRegistrations" is called after all listener registrations
  * // related to the core functionality of LectureDoc have been done.
- *
  * function afterLDListenerRegistrations() {
  *   console.log("performing ld-components.afterLDListenerRegistrations");
  *   ...
  * }
+ *
  * // Register with LectureDoc's basic events.
  * const ldEvents = lectureDoc2.ldEvents
  * ldEvents.addEventListener(
@@ -115,7 +141,7 @@ const ldEvents = {
                 this.resetSlideProgress.push(listener);
                 break;
             default:
-                console.error("Unknown event: " + event);
+                console.error("unknown event", event);
         }
     },
 };
@@ -131,19 +157,19 @@ export default lectureDoc2;
 
 const topicTemplates = document.querySelector("body > template").content;
 
-/*
-    We use a "promise chain" to call MathJax multiple times and don't
-    have to wait for the completion of the previous call.
-
-    (See MathJax documentation for more details.)
-*/
+/**
+ * We use a "promise chain" to call MathJax multiple times and don't
+ * have to wait for the completion of the previous call.
+ *
+ * (See MathJax documentation for more details.)
+ */
 let mathJaxPromise = Promise.resolve(); // Used to hold chain of typesetting calls
 
 function typesetMath(element) {
     mathJaxPromise = mathJaxPromise
         .then(() => MathJax.typesetPromise([element]))
         .then(() => console.log(`MathJax done`))
-        .catch(() => console.log("MathJax not found/used"));
+        .catch((error) => console.warn("MathJax not found/used", error));
     return mathJaxPromise;
 }
 
@@ -156,11 +182,14 @@ function typesetMath(element) {
  * This information will not be mutated after initialization.
  */
 const presentation = {
+    // TODO rename to document
     /**
      * The unique id of this document; required to store state information
-     * in local storage across multiple visits to the same document.
+     * in local storage across multiple visits to the same document. Also
+     * required to enable synchronization of multiple windows.
      *
-     * If the document id is null we will not use local storage.
+     * If the document id is null we will not use local storage and
+     * synchronizing multiple views is not possible.
      */
     id: null,
     /**
@@ -214,12 +243,12 @@ const presentation = {
  * returns to the document.
  *
  * Modules are allowed to extend this object with additional information and
- * are also allowed to read the data.
- * However, modules are not expected to change any values that are already
- * stored in the state object.
+ * are also allowed to read the data. However, modules are not expected to
+ * change any values that are already stored in the state object.
  */
 let state = {
     // the (default) state
+
     // The overall progress.
     currentSlideNo: 0,
     slideProgress: {}, // stores for each slide the number of executed animation steps
@@ -237,6 +266,8 @@ let state = {
     showDocumentView: true, // set in the document or by default in presentation
     continuousViewScrollY: 0,
 
+    // Once the user entered the master password, it is safed for later usage.
+    // We don't want users to have to enter the password over and over again.
     masterPassword: "",
 };
 
@@ -250,7 +281,7 @@ let ephemeral = {
     // The channel to communicate with other windows showing the same document.
     ldPerDocumentChannel: undefined,
 
-    // CSS Properties that we change during the presentation
+    // CSS properties that we change during the presentation
     // when the user wants to black-out the presentation.
     bodyDisplayProperty: undefined,
     rootBackgroundColorProperty: undefined,
@@ -270,7 +301,7 @@ let ephemeral = {
  * The message is a tuple with the first element being the message and the
  * second element the data.
  *
- * Posting messages is only effective if the webpage was served by a server
+ * Posting messages only works if the webpage was served by a server
  * and the document has an id.
  *
  * @param {string} msg the name of the message.
@@ -284,8 +315,8 @@ function postMessage(msg, data) {
 }
 
 /**
- * Creates a document dependent unique id based on an element id and the
- * document id.
+ * Creates a document dependent unique id based on an id and the user
+ * provided document id.
  *
  * This enables the storage of document dependent information in local
  * storage, even when all LectureDoc documents have the same origin and
@@ -330,7 +361,7 @@ function storeStateOnVisibilityHidden() {
 }
 
 /**
- * Restores the state object of this presentation.
+ * Initializes/restores the state object of this presentation.
  *
  * This method DOES NOT apply the state to the presentation.
  */
@@ -347,12 +378,16 @@ function loadState() {
     }
 
     // Check if the user wants to start the presentation at a specific slide.
-    const params = new URL(document.location).searchParams;
-    const ldSlideNo = params.get("ld-slide-no");
+    const url = new URL(document.location);
+    const hash = url.hash;
+    // Recall that user facing slide numbers start with "1" while we Internally
+    // start with "0".
+    const ldSlideNo = parseInt(hash?.substring("#slide-".length));
     if (ldSlideNo) {
-        state.currentSlideNo = Number(ldSlideNo) - 1;
+        state.currentSlideNo = ldSlideNo - 1;
+        console.log("selecting slide", state.currentSlideNo);
     }
-    const ldView = params.get("ld-view");
+    const ldView = url.searchParams.get("ld-view");
     if (ldView) {
         if (ldView === "continuous") state.showDocumentView = true;
         else if (ldView === "slides") state.showDocumentView = false;
@@ -370,26 +405,29 @@ function loadState() {
 function applyState() {
     reapplySlideProgress();
 
+    // Handle the case that the presentation was updated and is now shorter
+    // than before.
     let slideCount = lastSlideNo();
     if (state.currentSlideNo > slideCount) {
         state.currentSlideNo = slideCount;
-        console.info(`slide number: ${slideCount}`);
+        console.info(`updating slide number: ${slideCount}`);
     }
-    showSlideWithNo(state.currentSlideNo);
+
+    showSlideWithNo(state.currentSlideNo, {
+        setNewMarker: false,
+        showInitialSlide: true,
+    });
 
     updateLightTableZoomLevel(state.lightTableZoomLevel);
-    if (state.showLightTable) {
-        toggleLightTable();
-    }
+    if (state.showLightTable) toggleLightTable();
 
     if (state.showHelp) toggleDialog("help");
+
     if (state.showTableOfContents) toggleDialog("table-of-contents");
 
     if (state.showDocumentView) toggleDocumentView();
 
-    if (state.showMainSlideNumber) {
-        showMainSlideNumber(true);
-    }
+    if (state.showMainSlideNumber) showMainSlideNumber(true);
 }
 
 /**
@@ -397,8 +435,10 @@ function applyState() {
  * document as well as global LectureDoc related information.
  */
 function deleteStoredState() {
+    // LectureDoc related information
     localStorage.removeItem("ld-help-was-shown");
 
+    // presentation specific information
     if (presentation.id) {
         localStorage.removeItem(documentSpecificId("state"));
     }
@@ -413,6 +453,7 @@ function resetLectureDoc() {
     postMessage("resetLectureDoc");
     localResetLectureDoc();
 }
+
 function localResetLectureDoc() {
     console.log(`LectureDoc reset initiated`);
 
@@ -422,7 +463,9 @@ function localResetLectureDoc() {
         "visibilitychange",
         storeStateOnVisibilityHidden,
     );
+
     deleteStoredState();
+
     const url = new URL(document.location);
     url.search = "";
     url.hash = "";
@@ -430,6 +473,7 @@ function localResetLectureDoc() {
 }
 
 function scaleDocumentImagesAndVideos() {
+    // TODO Move to extra module!
     document.querySelectorAll("ld-section img").forEach((img) => {
         if (img.style.width || img.style.height) return;
 
@@ -455,7 +499,7 @@ function scaleDocumentImagesAndVideos() {
         .querySelectorAll("ld-section video:not(.no-scaling)")
         .forEach((video) => {
             if (!video.height || !video.width) {
-                console.log(
+                console.warn(
                     "cannot adapt size of video for document view: missing size information:",
                     video,
                 );
@@ -473,6 +517,7 @@ function scaleDocumentImagesAndVideos() {
 }
 
 function scaleSlideImages() {
+    // TODO Move to extra module!
     const imgs = document.querySelectorAll(".ld-slide img");
     for (const img of imgs) {
         if (img.style.width || img.style.height)
@@ -502,7 +547,6 @@ function scaleSlideImages() {
                         img.naturalHeight,
                     );
                     */
-
                     img.style.width = img.naturalWidth * 3 + "px";
                     img.style.height = img.naturalHeight * 3 + "px";
                 });
@@ -516,7 +560,7 @@ function scaleSlideImages() {
     for (const obj of objects) {
         const loadListener = () => {
             if (obj.width) {
-                console.error(
+                console.info(
                     obj.data +
                         " has an explicit width: " +
                         obj.width +
@@ -1173,6 +1217,7 @@ function localHideLaserPointer() {
 }
 
 function setupSlidePane() {
+    // TODO use custom element ld-slides-pane or just ld-slides instead of a div with #ld-slides-pane
     const slidesPane = ld.div({
         id: "ld-slides-pane",
         classes: ["ld-slide-context"],
@@ -1363,13 +1408,13 @@ function tryDecryptExercise(password, solutionWrapper, solution) {
 }
 
 function setupDocumentView() {
-    /* The documents will be rearranged in the document view as follows:
-     * <section>
+    /* Topic templates will be rearranged in the document view as follows:
+     * <ld-section>
      *   Content
      *   <footer>
      *    <div class="ld-dv-section-number">...</div>
      *   </footer>
-     * </section>
+     * </ld-section>
      */
     const documentView = ld.div({ id: "ld-document-view" });
 
@@ -1472,7 +1517,7 @@ function applyDOMfixes() {
         which is a violation of the spec and causes troubles in Chrome and
         Firefox. We have to fix this!
 
-        TODO Check scenario and handle the case where an SVG references a marker defined a previous SVG.
+        TODO Check scenario and handle the case where an SVG references a marker defined in a previous SVG.
         */
     let counter = 1;
     document.querySelectorAll("svg").forEach((svg) => {
@@ -1568,7 +1613,7 @@ function setPaneScale() {
  * using this and the `hideSlide` method. This ensures that the internal
  * state is correctly updated!
  */
-function showSlideWithNo(slideNo, setNewMarker = false) {
+function showSlideWithNo(slideNo, options) {
     if (typeof slideNo == "string" || slideNo instanceof String) {
         slideNo = parseInt(slideNo);
     }
@@ -1578,10 +1623,21 @@ function showSlideWithNo(slideNo, setNewMarker = false) {
         console.error(`slide number ${slideNo} with id ${slideId} not found`);
         return;
     }
-    return showSlide(ldSlide, setNewMarker);
+    return showSlide(ldSlide, options);
 }
 
-function showSlide(ldSlide, setNewMarker = false) {
+/**
+/* @param setNewMarker is used for animation purposes.
+ * @param updateHistory is expected to be false when the slide is shown based on the user's interaction with the history (i.e. the back/forward button is pressed).
+ */
+function showSlide(
+    ldSlide,
+    {
+        setNewMarker = false,
+        showInitialSlide = false,
+        updateHistory = true,
+    } = {},
+) {
     /* We now want to use the style based display property again: */
     ldSlide.style.removeProperty("display");
     ldSlide.style.scale = 1;
@@ -1590,12 +1646,18 @@ function showSlide(ldSlide, setNewMarker = false) {
     state.currentSlideNo = slideNo;
     document.querySelector("ld-slide-number").innerText = slideNo + 1;
 
-    // Update the URL to reflect the current slide number. (To make it
-    // possible to share the URL with others.)
-    const url = new URL(location);
-    url.searchParams.set("ld-slide-no", slideNo + 1);
-    history.pushState({}, "", url);
-
+    if (updateHistory) {
+        // Update the URL to reflect the current slide number. (To make it
+        // possible to share the URL with others.)
+        const newHash = "#slide-" + (slideNo + 1);
+        const url = new URL(location);
+        url.hash = newHash;
+        if (showInitialSlide) {
+            history.replaceState({ slideNo: slideNo }, "", url);
+        } else {
+            history.pushState({ slideNo: slideNo }, "", url);
+        }
+    }
     return ldSlide;
 }
 
@@ -1645,7 +1707,7 @@ function localMoveToNextSlide(expectedCurrentSlideNo) {
 
     if (state.currentSlideNo < lastSlideNo()) {
         hideSlideWithNo(state.currentSlideNo, true);
-        showSlideWithNo(++state.currentSlideNo, true);
+        showSlideWithNo(++state.currentSlideNo, { setNewMarker: true });
     }
 }
 
@@ -1869,14 +1931,17 @@ function jumpToSlide() {
     }
 }
 
-function goToSlideWithNo(targetSlideNo) {
-    postMessage("goToSlide", targetSlideNo);
-    return localGoToSlideWithNo(targetSlideNo);
+function goToSlideWithNo(targetSlideNo, updateHistory = true) {
+    postMessage("goToSlide", {
+        targetSlideNo: targetSlideNo,
+        updateHistory: updateHistory,
+    });
+    return localGoToSlideWithNo(targetSlideNo, updateHistory);
 }
 
-function localGoToSlideWithNo(targetSlideNo) {
+function localGoToSlideWithNo(targetSlideNo, updateHistory = true) {
     hideSlideWithNo(state.currentSlideNo);
-    return showSlideWithNo(targetSlideNo);
+    return showSlideWithNo(targetSlideNo, { updateHistory: updateHistory });
 }
 
 function localGoToSlide(targetSlide) {
@@ -1979,6 +2044,7 @@ function toggleSlideNumber() {
  * This view shows all slides in its final rendering.
  */
 function toggleDocumentView() {
+    // TODO use custom element ld-document-view instead of a div!
     const continuousViewPane = document.getElementById("ld-document-view");
     const mainPane = document.getElementById("ld-slides-pane");
     // If we currently show the slides, we update the state for `showDocumentView`
@@ -2015,8 +2081,8 @@ function toggleDocumentView() {
  * 4. use document view
  * 6. "MOST IMPORTANT" - scroll over the whole document to ensure that
  *    all slides are rendered properly; in particular those with
- *    layouts which are only rendered when they are first shown; e.g,
- *    stack-based layouts.
+ *    layouts which are only setup when they are first shown; e.g,
+ *    deck-based layouts.
  */
 function prepareForPrinting() {
     if (state.showHelp) toggleDialog("help");
@@ -2080,6 +2146,7 @@ function redrawSlide() {
     postMessage("redrawSlide", undefined);
     localRedrawSlide();
 }
+
 function localRedrawSlide() {
     if (!state.showDocumentView) {
         console.log(
@@ -2371,6 +2438,7 @@ function jumpToId(id) {
 }
 
 function localScrollSupplemental(supplementalId, scrollTop) {
+    // TODO Move to ld-supplementals module
     const supplemental = document.querySelector(
         `#ld-slides-pane ld-supplementals[data-supplementals-id="${supplementalId}"]`,
     );
@@ -2434,6 +2502,7 @@ function registerSlideInternalLinkClickedListener() {
 }
 
 function registerHoverSupplementalListener() {
+    // TODO move to module
     let supplementalsId = 1;
     document
         .querySelectorAll("#ld-slides-pane ld-supplementals")
@@ -2673,6 +2742,19 @@ function registerSwipeListener() {
     );
 }
 
+function registerHistoryChangeListener() {
+    window.addEventListener("popstate", (event) => {
+        const slideNo = event.state.slideNo;
+        if (slideNo !== undefined) {
+            goToSlideWithNo(slideNo, false);
+        } else {
+            console.warn(
+                "ignoring history pop state event due to missing slide number",
+            );
+        }
+    });
+}
+
 /**
  * Queries and manipulates the DOM to setup LectureDoc and bring the
  * presentation to the last state.
@@ -2763,6 +2845,7 @@ const onLoad = () => {
     registerSwipeListener();
     registerHoverSupplementalListener();
     registerHoverPresenterNoteListener();
+    registerHistoryChangeListener();
 
     ldEvents.afterLDListenerRegistrations.forEach((f) => f());
 
@@ -2783,7 +2866,8 @@ const onLoad = () => {
                     localMoveToNextSlide(data);
                     break;
                 case "goToSlide":
-                    localGoToSlideWithNo(data);
+                    const { targetSlideNo, updateHistory } = data;
+                    localGoToSlideWithNo(targetSlideNo, updateHistory);
                     break;
                 case "jumpToId":
                     localJumpToId(data);
@@ -2856,7 +2940,7 @@ const onLoad = () => {
     }
 };
 
-// We want to ensure that the initialization is serialized in the sense
+// We want to ensure that the initialization is done step by step in the sense
 // that the method onLoad is only called after the method onDOMContentLoaded
 // has finished. Even if executing the asynchronous method onDOMContentLoaded
 // takes a long(er) time, because it is asynchronous and lazily loads some
@@ -2867,12 +2951,12 @@ document.addEventListener("DOMContentLoaded", () => {
         onDOMContentLoaded(),
     )
         .then(() => console.log("DOM transformations finished."))
-        .catch((e) => console.log("DOM transformations failed:", e));
+        .catch((e) => console.error("DOM transformations failed:", e));
 });
 window.addEventListener("load", () => {
     LDInitializationPromise = LDInitializationPromise.then(() => onLoad())
-        .then(() => console.log("Event transformations finished."))
-        .catch((e) => console.log("Event transformations failed." + e));
+        .then(() => console.log("Event registrations finished."))
+        .catch((e) => console.error("Event registrations failed:", e));
 });
 
 /* Finish initialization of the LectureDoc2 object. */
