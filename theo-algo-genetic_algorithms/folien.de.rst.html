@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta content="de" name="lang" />
 <meta content="Michael Eichberg" name="author" />
-<meta content="&quot;genetische Algorithmen&quot;, &quot;python&quot;" name="keywords" />
+<meta content="genetische Algorithmen, Python" name="keywords" />
 <meta content="Implementierung von genetischen Algorithmen in Python" lang="de" name="description" xml:lang="de" />
-<meta content="lecture-Genetische_Algorithmen" name="id" />
+<meta content="vorlesung-genetische_algorithmen" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <meta name="version" content="LD2 GENESIS" />
 <meta name="exercises-passwords" content="MTAwMDAw:ITAWCUxbufOaTnpHnTtojaNbk1aiqiCPpyqN3PR79aY=:6L00LCmwsun5HaFw:WvpkWm47B3u+DnpXisS1ywVmJL6Kqs1lW30l8NXRHROUIGcQ6gvjdd6TsD2OLLXIXHVGQ1VzPoE/U/3gu1u/4wNZiJyT1ADCf0n2xmWK4H6vw/yjCZxNPhe0Md2F7y5SJNpoMqeI3zf/pqEKD1RpXQ1SDGZF60B5vRD8UIxhkB8GA10zlwgl4INuETgRzYcapB/aU8oFn/L9YQm0goGP3GYA/r1qcRNVCocEBkFNHuZ23uC9w1fJuGsULulOM5GHuzkAp2voQTfPshTHo3fWCrhIzhrt6cHyLdLjIOtCDIv2FstoEJ/Y6YzmEU/cN4QYa3IvSzwuDQJMF/oHZ8EgPnEUhuntPnfaoNKXc5sl6thun3n+fsPp4qdf+zWqF3UnLkn/XXOIQtq73Xv76hAqiTkFaxjIoh0a/7nQ6ZWwF5JiCxK3d152OX6u6exI08hBXJ3hZTVht7DtdZUhTY64FfFcXdE=" />
@@ -39,21 +39,6 @@
 <div class="animated-symbol ld-slide" id="genetische-algorithmen">
 <h1 class="title">Genetische Algorithmen</h1>
 
-<!-- This file is intended to be included in rst files and contains
-substitution definitions as wells as role definitions frequently
-used in LectureDoc documents.
-
-Created 2025 - Michael Eichberg -->
-<!-- SUBSTITUTIONS -->
-<!-- ANIMATION RELATED -->
-<!-- LANGUAGE RELATED -->
-<!-- TEXT RELATED -->
-<!-- The following definitions enable "lightweight" definitions of mathematical
-expressions that resemble MathJax definitions without causing the overhead
-incurred by MathJax.
-Both (are intended to) change the font to the font used by MathJax.
-"math-r" uses the normal style which is used by MathJax for numbers.
-"math-i" uses (the italic) font which is used by MathJax for other characters. -->
 <hr class="docutils" />
 <dl class="field-list simple">
 <dt>Dozent<span class="colon">:</span></dt>
@@ -337,7 +322,7 @@ Both (are intended to) change the font to the font used by MathJax.
 </div><div class="new-section transition-move-to-top ld-slide" id="beispiel-send-more-money">
 <h2>Beispiel: SEND + MORE = MONEY</h2>
 </div><div class="ld-slide" id="send-more-money">
-<h2>SEND+MORE=MONEY<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<h2>SEND+MORE=MONEY<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
 <ul>
 <li><p>Klassisches Problem der Kryptographie</p></li>
 <li><p>Jeder Buchstabe repräsentiert eine Ziffer von 0 bis 9</p></li>
@@ -362,7 +347,7 @@ M O N E Y</pre>
 <p class="rubric">Chromosomen ermöglichen Zuordnung von Buchstaben zu Ziffern</p>
 <p><strong>Idee</strong>: Verwendung von Listenindizes zur Repräsentation der Ziffern: [0,...,9]. Die Werte in der Liste entsprechen den Buchstaben; Beispiel:</p>
 <p><em>Zuordnung von Ziffern zu Buchstaben:</em></p>
-<table class="no-table-borders no-inner-borders" style="width: 100%;">
+<table class="borderless" style="width: 100%;">
 <colgroup>
 <col style="width: 18.5%" />
 <col style="width: 7.4%" />
@@ -514,7 +499,7 @@ Nachkomme 2 = [a,c,b,e,d]  # im Wesentlichen Elternteil 2,
 <p class="rubric">Fitness-Funktion</p>
 <p><strong>Idee</strong>: Eine Lösung ist besser, je näher die Summe der Ziffern von SEND und MORE an MONEY ist. D. h.:</p>
 <div class="incremental docutils container">
-<div class="smaller math">
+<div class="math smaller">
 \begin{equation*}
 \text{minimiere}(|money - (send + more)|)
 \end{equation*}
@@ -522,14 +507,14 @@ Nachkomme 2 = [a,c,b,e,d]  # im Wesentlichen Elternteil 2,
 </div>
 <div class="incremental docutils container">
 <p><strong>Feststellung</strong>: Das Ziel des generischen genetischen Algorithmus ist es, die Fitness-Funktion zu maximieren. Wir müssen somit unser Minimierungsproblem in ein Maximierungsproblem umwandeln:</p>
-<div class="smaller math">
+<div class="math smaller">
 \begin{align*}
 \text{maximiere}\left(\frac{1} { |money - (send + more)| + 1 }\right)\\
 \end{align*}
 </div>
 </div>
 <div class="incremental far-smaller docutils container">
-<p>Beispiel: Sei die Differenz <span class="math">\(1\)</span>, dann ist die Fitness <span class="math">\(1/2\)</span>; bei einer Differenz von <span class="math">\(0\)</span> ist die Fitness <span class="math">\(1\)</span> und somit maximal.</p>
+<p>Beispiel: Sei die Differenz <span class="math smaller">\(1\)</span>, dann ist die Fitness <span class="math smaller">\(1/2\)</span>; bei einer Differenz von <span class="math smaller">\(0\)</span> ist die Fitness <span class="math smaller">\(1\)</span> und somit maximal.</p>
 </div>
 </div><div class="layer incremental">
 <p class="rubric">Fitness-Funktion - Implementierung</p>

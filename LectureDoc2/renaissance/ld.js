@@ -764,6 +764,36 @@ function setupCopyToClipboard(rootNode) {
     });
 }
 
+/* IDEA W.r.t. advanced animations_:
+
+Let's imagine that we have an rst declaration such as:
+
+.. animation::
+    :transition: <CSS Definition>
+    :step-1: <CSS Properties>
+    :step-2: <CSS Properties>
+
+The CSS Properties are  typically related to position and scaling and apply to the animation element as such.
+
+which is then compiled to a  custom element:
+
+<ld-animation>
+    <ld-transition>...</ld-transition>
+    <ld-step step-id=1>...</ld-step>
+    <ld-step step-id=2>...</ld-step>
+<ld-animation>
+
+<div
+    style="
+        overflow-x: visible;
+        overflow-y: hidden;
+        scale: 0.5;
+        transform: translate(-50%, -50%);
+    "
+>
+
+*/
+
 /**
  * Walks the tree (depth-first) and associates each element that should be
  * shown incrementally with a step id.
