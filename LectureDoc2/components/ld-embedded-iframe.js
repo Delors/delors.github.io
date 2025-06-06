@@ -219,7 +219,7 @@ const embeddedIFrames = {};
  */
 const adaptEmbeddedIFrameHeight = (iframeId, reason) => {
     const iframe = embeddedIFrames[iframeId];
-    if (iframe) {
+    if (iframe && !iframe.height) {
         const htmlElement = iframe.contentWindow.document.documentElement;
         const newHeight = htmlElement.getBoundingClientRect().height + "px";
         console.log(
