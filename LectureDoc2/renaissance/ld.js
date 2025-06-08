@@ -526,11 +526,11 @@ function scaleSlideImages() {
         if (img.complete) {
             console.error(
                 "image " +
-                    img.src +
-                    " is already loaded: " +
-                    img.naturalWidth +
-                    "x" +
-                    img.naturalHeight,
+                img.src +
+                " is already loaded: " +
+                img.naturalWidth +
+                "x" +
+                img.naturalHeight,
             );
             // TODO Implement when required.
         } else {
@@ -562,9 +562,9 @@ function scaleSlideImages() {
             if (obj.width) {
                 console.info(
                     obj.data +
-                        " has an explicit width: " +
-                        obj.width +
-                        "; no scaling performed",
+                    " has an explicit width: " +
+                    obj.width +
+                    "; no scaling performed",
                 );
                 return;
             }
@@ -1181,9 +1181,9 @@ function setupUnlockPresenterNotesAndSolutionsDialog() {
                     .catch((error) => {
                         console.log(
                             "decryption using: " +
-                                currentPassword +
-                                " failed - " +
-                                error,
+                            currentPassword +
+                            " failed - " +
+                            error,
                         );
                     });
             }
@@ -1198,7 +1198,7 @@ function setupUnlockPresenterNotesAndSolutionsDialog() {
     document.getElementsByTagName("BODY")[0].prepend(unlockDialog);
     document
         .getElementById("ld-exercises-passwords-close-button")
-        .addEventListener("click", toggleExercisesPasswordsDialog);
+        .addEventListener("click", togglePasswordsDialog);
 }
 
 function setupJumpTargetDialog() {
@@ -1516,24 +1516,21 @@ function setupMenu() {
     const menuPane = document.createElement("nav");
     menuPane.id = "ld-menu";
     menuPane.className = "ld-ui";
+    const base = import.meta.resolve("./css/ui/icons/2025/");
     menuPane.innerHTML = `
-        <!-- The icons are set using css. Using img over here
-            would not work when the slides are opened locally
-            (due to the same-origin-policy) -->
-        <button type="button" id="ld-slides-button"
-                aria-label="show slides"></button>
-        <button type="button" id="ld-slides-with-nr-button"
-                aria-label="show slides with numbers"></button>
-        <button type="button" id="ld-help-button"
-                aria-label="show help"></button>
-        <button type="button" id="ld-dv-button"
-                aria-label="show document view"></button>
-        <button type="button" id="ld-table-of-contents-button"
-                aria-label="show table of contents"></button>
-        <button type="button" id="ld-light-table-button"
-                aria-label="show light-table"></button>
-        <button type="button" id="ld-exercises-passwords-button"
-                aria-label="show exercises passwords dialog"></button>
+        <button id="ld-toggle-view-button"><img src="${base}view.svg" alt="toggle view"></button>
+        <button id="ld-toggle-slide-number-button"><img src="${base}nr.svg" alt="toggle number"></button>
+        <div class="half-space"> </div>
+        <button id="ld-light-table-button"><img src="${base}lighttable.svg" alt="show light table"></button>
+        <button id="ld-table-of-contents-button"><img src="${base}table_of_contents.svg" alt="show table of contents"></button>
+        <div class="full-space"></div>
+        <button id="ld-previous-slide-button"><img src="${base}previous_slide.svg" alt="move to previous slide"></button>
+        <button id="ld-previous-animation-step-button"><img src="${base}previous.svg" alt="go back one animation step"></button>
+        <button id="ld-next-animation-step-button"><img src="${base}next.svg" alt="next animation step"></button>
+        <button id="ld-next-slide-button"><img src="${base}next_slide.svg" alt="move to next slide"></button>
+        <div class="full-space"></div>
+        <button id="ld-passwords-button"><img src="${base}key.svg" alt="show passwords dialog"></button>
+        <button id="ld-help-button"><img src="${base}question_mark.svg" alt="show-help"></button>
     `;
     document.getElementsByTagName("BODY")[0].prepend(menuPane);
 }
@@ -2007,7 +2004,7 @@ function toggleLightTable() {
     }
 }
 
-function toggleExercisesPasswordsDialog() {
+function togglePasswordsDialog() {
     // we don't want the press of the "m" key to fill the password input field
     setTimeout(() => {
         toggleDialog("exercises-passwords");
@@ -2181,8 +2178,8 @@ function localRedrawSlide() {
     if (!state.showDocumentView) {
         console.log(
             "forced rerendering of the current slide [" +
-                state.currentSlideNo +
-                "]",
+            state.currentSlideNo +
+            "]",
         );
         // Sometimes the current slide is not shown properly after
         // resetting the slide progress. This is a workaround to
@@ -2300,7 +2297,7 @@ function registerKeyboardEventListener() {
                     break;
 
                 case "m":
-                    toggleExercisesPasswordsDialog();
+                    togglePasswordsDialog();
                     break;
 
                 case "c":
@@ -2687,43 +2684,41 @@ function registerDocumentViewScrollYListener() {
 
 function registerMenuClickListener() {
     document
-        .getElementById("ld-slides-button")
-        .addEventListener("click", () => {
-            if (state.showDocumentView) {
-                toggleDocumentView();
-            }
-            showMainSlideNumber(false);
-        });
+        .getElementById("ld-toggle-view-button")
+        .addEventListener("click", toggleDocumentView);
 
     document
-        .getElementById("ld-slides-with-nr-button")
-        .addEventListener("click", () => {
-            if (state.showDocumentView) {
-                toggleDocumentView();
-            }
-            showMainSlideNumber(true);
-        });
-
-    document.getElementById("ld-dv-button").addEventListener("click", () => {
-        if (!state.showDocumentView) {
-            toggleDocumentView();
-        }
-    });
-
-    document.getElementById("ld-help-button").addEventListener("click", () => {
-        toggleDialog("help");
-    });
+        .getElementById("ld-toggle-slide-number-button")
+        .addEventListener("click", toggleSlideNumber);
 
     document
         .getElementById("ld-light-table-button")
         .addEventListener("click", toggleLightTable);
 
-    document
-        .getElementById("ld-exercises-passwords-button")
-        .addEventListener("click", toggleExercisesPasswordsDialog);
+    document.getElementById("ld-table-of-contents-button")
+        .addEventListener("click", toggleTableOfContents);
 
-    document.getElementById("ld-table-of-contents-button").onclick =
-        toggleTableOfContents;
+    document.getElementById("ld-previous-slide-button")
+        .addEventListener("click", moveToPreviousSlide);
+
+    document.getElementById("ld-previous-animation-step-button")
+        .addEventListener("click", retrogressPresentation);
+
+    document.getElementById("ld-next-animation-step-button")
+        .addEventListener("click", advancePresentation);
+
+    document.getElementById("ld-next-slide-button")
+        .addEventListener("click",moveToNextSlide);
+
+
+    document
+        .getElementById("ld-passwords-button")
+        .addEventListener("click", togglePasswordsDialog);
+
+    document.getElementById("ld-help-button").addEventListener("click", () => {
+        toggleDialog("help");
+    });
+
 }
 
 /**
@@ -2895,10 +2890,11 @@ const onLoad = () => {
                 case "moveToNextSlide":
                     localMoveToNextSlide(data);
                     break;
-                case "goToSlide":
+                case "goToSlide": {
                     const { targetSlideNo, updateHistory } = data;
                     localGoToSlideWithNo(targetSlideNo, updateHistory);
                     break;
+                }
                 case "jumpToId":
                     localJumpToId(data);
                     break;

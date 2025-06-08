@@ -4,25 +4,10 @@
 
     The menu.
 
-    The menu is a DIV element with the id ld-menu. It is placed in the top left 
+    The menu is a nav element with the id ld-menu. It is placed at the bottom center of the viewport
     and expands when the mouse hovers over it.
-
-    The icons are rendered as background images of DIV elements to make it 
-    possible to open the slides from a file.
 */
 
-@property --ld-menu-current-scale {
-    /* this enables the animation */
-    syntax: '<number>';
-    initial-value: 0.05;
-    inherits: true;
-}
-
-@media print {
-    nav#ld-menu {
-        display: none;
-    }
-}
 
 #ld-menu {
 
@@ -30,116 +15,100 @@
         display: none;
     }
 
-    --ld-menu-columns: 4;
-    --ld-menu-rows: 3;
-    --ld-menu-gap: 15px;
-    --ld-menu-padding: 15px;
-    --ld-menu-button-size: 120px;
 
-    --ld-menu-full-width: calc(var(--ld-menu-columns) * var(--ld-menu-button-size) + calc(var(--ld-menu-gap) * (var(--ld-menu-columns) - 1)) + calc(var(--ld-menu-padding) * 2));
-    --ld-menu-full-height: calc(var(--ld-menu-rows) * var(--ld-menu-button-size) + calc(var(--ld-menu-gap) * (var(--ld-menu-rows) - 1)) + calc(var(--ld-menu-padding) * 2)) *;
+    /* NAV BAR PARAMETERS */
+    --nav-bar-buttons: 10;
+    --nav-bar-full-spaces: 2;
+    --nav-bar-half-spaces: 1;
+    --nav-bar-initial-scale: 0.4;
+    --nav-bar-target-scale: 0.8;
+    --nav-bar-button-width: 36px;
+    --nav-bar-button-height: 36px;
 
-    --ld-menu-current-scale: 0.05;
-    /* required by Firefox (June 2024) */
-    --ld-menu-current-button-size: calc(var(--ld-menu-button-size) * var(--ld-menu-current-scale));
-    --ld-menu-current-gap: calc(var(--ld-menu-gap) * var(--ld-menu-current-scale));
+    /* DERIVED VALUES USED IN PROPERTIES */
+    /* => effective height: + (2*9px) = 54px */
+    --nav-bar-height: calc(var(--nav-bar-button-height) + (var(--nav-bar-button-height) / 2));
+    --nav-bar-width: calc((var(--nav-bar-buttons) + var(--nav-bar-full-spaces) + 0.5 + var(--nav-bar-half-spaces) * 0.5) * var(--nav-bar-button-width));
+    --nav-bar-distance-from-left: calc(50% - var(--nav-bar-width) / 2);
 
-    width: calc(var(--ld-menu-full-width) * var(--ld-menu-current-scale));
-    height: calc(var(--ld-menu-full-height) * var(--ld-menu-current-scale));
-    margin: 1px;
-    border-radius: calc(var(--ld-menu-padding) * var(--ld-menu-current-scale));
-    padding: calc(var(--ld-menu-padding) * var(--ld-menu-current-scale));
+    --nav-bar-hover-distance: 8px;
+    /* distance from the bottom of the viewport when hovered */
 
     position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
+    z-index: 1000;
 
-    display: grid;
-    gap: var(--ld-menu-current-gap);
-    grid-template-columns: repeat(var(--ld-menu-columns), var(--ld-menu-current-button-size));
-    grid-template-rows: repeat(var(--ld-menu-rows), var(--ld-menu-current-button-size));
+    display: flex;
 
-    background-color: var(--ld-ui-background-color);
-    box-shadow: 2px 2px 4px, -1px -1px 2px gray;
+    padding: calc(var(--nav-bar-button-width) / 4);
+    width: var(--nav-bar-width);
+    left: var(--nav-bar-distance-from-left);
+    background-color: rgba(255, 255, 255, 0.5);
 
-    transition-property: --ld-menu-current-scale, margin;
-    transition-duration: 0.5s;
-    transition-timing-function: ease-in-out;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(3px);
 
-    /*
-        The menu is nearly invisible when we are presenting a slide. 
-        When we are not presenting a slide, the menu is more visible.
-    */
-    &:not(:has(+ #ld-slides-pane[style*="display: none;"])) {
-        opacity: 0.175;
-    }
+    font-size: 100px;
+    /*just set to spot errors/
 
-    /*  The ":where" selector is required by the :hover below! */
-    &:has(+ :where(#ld-slides-pane[style*="display: none;"])) {
-        opacity: 0.5;
-        --ld-menu-current-scale: 0.1;
-    }
+            /* animated properties */
+    transition: all 0.3s ease-in-out;
+    scale: var(--nav-bar-initial-scale);
+    bottom: calc(-1 * ((1 - var(--nav-bar-initial-scale))/2 * var(--nav-bar-height) + var(--nav-bar-initial-scale) * var(--nav-bar-height) - 4px));
 
     &:hover {
-        --ld-menu-current-scale: 0.5;
-        opacity: 0.975 !important;
-        margin: 5px;
-        transition-property: --ld-menu-current-scale, margin;
-        transition-duration: 0.5s;
-        transition-timing-function: ease-in-out;
+
+        /*  This is required, to avoid a nasty flickering effect when
+            we scale the nav bar and move it away from the lower border; i.e., 
+            when we introduce some extra space between the viewport border and the nav
+            bar. In that case, it could happen that 
+            the nav bar would be scaled up when the user moves the mouse to the border until the mouse is no longer above
+            it and then would be scaled down until the pointer is again above the navbar.
+            This process would continue until the user moves the mouse away. 
+            By extending the navbar such that it always extends to the viewport
+            border, we can avoid this effect! */
+        &::after {
+            display: block;
+            content: " ";
+            position: fixed;
+            bottom: calc(-1 * (1 / var(--nav-bar-target-scale)) * var(--nav-bar-hover-distance));
+            width: var(--nav-bar-width);
+            left: var(--nav-bar-distance-from-left);
+            height: calc((1 / var(--nav-bar-target-scale)) * var(--nav-bar-hover-distance));
+            background-color: transparent;
+        }
+
+        transition: all 0.3s ease-in-out;
+        scale: var(--nav-bar-target-scale);
+        bottom: calc((-1 * (1 - var(--nav-bar-target-scale)) / 2 * var(--nav-bar-height)) + var(--nav-bar-hover-distance));
     }
 
-    > button {
+    div {
+        flex-shrink: 0;
+        flex-grow: 0;
+
+        &.full-space {
+            width: calc(var(--nav-bar-button-width));
+        }
+
+        &.half-space {
+            width: calc(var(--nav-bar-button-width) / 2);
+        }
+    }
+
+    button {
+        width: var(--nav-bar-button-width);
+        height: var(--nav-bar-button-height);
+        padding: 0;
+        border-radius: 4px;
+
         background-color: transparent;
-        background-size: cover;
+        transition: all 0.3s ease-in-out;
 
         &:hover {
-            opacity: 0.15;
-            transition: all 0.5s ease-in-out;
-            cursor: pointer;
-        }
-
-        &#ld-slides-button {
-            background-image: url('icons/slides.svg');
-            grid-column: 1;
-            grid-row: 1;
-        }
-
-        &#ld-slides-with-nr-button {
-            background-image: url('icons/slides-with-nr.svg');
-            grid-column: 2;
-            grid-row: 1;
-        }
-
-        &#ld-help-button {
-            background-image: url('icons/help.svg');
-            grid-column: 4;
-            grid-row: 1;
-        }
-
-        &#ld-dv-button {
-            background-image: url('icons/document-view.svg');
-            grid-column: 1;
-            grid-row: 2;
-        }
-
-        &#ld-table-of-contents-button {
-            background-image: url('icons/toc.svg');
-            grid-column: 4;
-            grid-row: 2;
-        }
-
-        &#ld-light-table-button {
-            background-image: url('icons/light-table.svg');
-            grid-column: 1;
-            grid-row: 3;
-        }
-
-        &#ld-exercises-passwords-button {
-            background-image: url('icons/pwds.svg');
-            grid-column: 4;
-            grid-row: 3;
+            background-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease-in-out;
         }
     }
 }
