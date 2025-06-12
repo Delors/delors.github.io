@@ -1,5 +1,5 @@
 /*
-This module provides very basic support for embedding iframes into a LectureDoc document. The primary feature that is provided is setting the html element's font size based on the context in which the iframe is embedded. I.e., an iframe that is shown in the document view will get the same font size as the surrounding text and an iframe that is shown in the slide view will get the font size used by slides unless the font sizes are explicitly clamped to the range [MIN_BASE_FONT_SIZE, MAX_BASE_FONT_SIZE].
+This module provides very basic support for embedding iframes into a LectureDoc document. The primary supported feature is setting the html element's font size based on the context in which the iframe is embedded. I.e., an iframe that is shown in the document view will get the same font size as the surrounding text and an iframe that is shown in the slide view will get the font size used by slides unless the font sizes are explicitly clamped to the range [MIN_BASE_FONT_SIZE, MAX_BASE_FONT_SIZE].
 
 The current context's font size is read from LectureDoc's current-base-font-size variable and then simply "copied" into the iframe.
 
@@ -212,7 +212,7 @@ lectureDoc2.ldEvents.addEventListener(
 const embeddedIFrames = {};
 
 /**
- * Adapts the height of the iframe to fit its content unless the height is 
+ * Adapts the height of the iframe to fit its content unless the height is
  * explicitly set.
  *
  * @param {number} i - the id of the iframe

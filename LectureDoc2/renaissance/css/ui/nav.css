@@ -8,18 +8,15 @@
     and expands when the mouse hovers over it.
 */
 
-
 #ld-menu {
-
     @media print {
         display: none;
     }
 
-
     /* NAV BAR PARAMETERS */
-    --nav-bar-buttons: 10;
+    --nav-bar-buttons: 11;
     --nav-bar-full-spaces: 2;
-    --nav-bar-half-spaces: 1;
+    --nav-bar-half-spaces: 2;
     --nav-bar-initial-scale: 0.4;
     --nav-bar-target-scale: 0.8;
     --nav-bar-button-width: 36px;
@@ -27,8 +24,16 @@
 
     /* DERIVED VALUES USED IN PROPERTIES */
     /* => effective height: + (2*9px) = 54px */
-    --nav-bar-height: calc(var(--nav-bar-button-height) + (var(--nav-bar-button-height) / 2));
-    --nav-bar-width: calc((var(--nav-bar-buttons) + var(--nav-bar-full-spaces) + 0.5 + var(--nav-bar-half-spaces) * 0.5) * var(--nav-bar-button-width));
+    --nav-bar-height: calc(
+        var(--nav-bar-button-height) + (var(--nav-bar-button-height) / 2)
+    );
+    --nav-bar-width: calc(
+        (
+                var(--nav-bar-buttons) + var(--nav-bar-full-spaces) + 0.5 +
+                    var(--nav-bar-half-spaces) * 0.5
+            ) *
+            var(--nav-bar-button-width)
+    );
     --nav-bar-distance-from-left: calc(50% - var(--nav-bar-width) / 2);
 
     --nav-bar-hover-distance: 8px;
@@ -54,33 +59,45 @@
             /* animated properties */
     transition: all 0.3s ease-in-out;
     scale: var(--nav-bar-initial-scale);
-    bottom: calc(-1 * ((1 - var(--nav-bar-initial-scale))/2 * var(--nav-bar-height) + var(--nav-bar-initial-scale) * var(--nav-bar-height) - 4px));
+    bottom: calc(
+        -1 *
+            (
+                (1 - var(--nav-bar-initial-scale)) / 2 * var(--nav-bar-height) +
+                    var(--nav-bar-initial-scale) * var(--nav-bar-height) - 4px
+            )
+    );
 
     &:hover {
-
         /*  This is required, to avoid a nasty flickering effect when
-            we scale the nav bar and move it away from the lower border; i.e., 
+            we scale the nav bar and move it away from the lower border; i.e.,
             when we introduce some extra space between the viewport border and the nav
-            bar. In that case, it could happen that 
+            bar. In that case, it could happen that
             the nav bar would be scaled up when the user moves the mouse to the border until the mouse is no longer above
             it and then would be scaled down until the pointer is again above the navbar.
-            This process would continue until the user moves the mouse away. 
+            This process would continue until the user moves the mouse away.
             By extending the navbar such that it always extends to the viewport
             border, we can avoid this effect! */
         &::after {
             display: block;
             content: " ";
             position: fixed;
-            bottom: calc(-1 * (1 / var(--nav-bar-target-scale)) * var(--nav-bar-hover-distance));
+            bottom: calc(
+                -1 * (1 / var(--nav-bar-target-scale)) * var(--nav-bar-hover-distance)
+            );
             width: var(--nav-bar-width);
             left: var(--nav-bar-distance-from-left);
-            height: calc((1 / var(--nav-bar-target-scale)) * var(--nav-bar-hover-distance));
+            height: calc(
+                (1 / var(--nav-bar-target-scale)) * var(--nav-bar-hover-distance)
+            );
             background-color: transparent;
         }
 
         transition: all 0.3s ease-in-out;
         scale: var(--nav-bar-target-scale);
-        bottom: calc((-1 * (1 - var(--nav-bar-target-scale)) / 2 * var(--nav-bar-height)) + var(--nav-bar-hover-distance));
+        bottom: calc(
+            (-1 * (1 - var(--nav-bar-target-scale)) / 2 * var(--nav-bar-height)) +
+                var(--nav-bar-hover-distance)
+        );
     }
 
     div {
@@ -105,7 +122,11 @@
         background-color: transparent;
         transition: all 0.3s ease-in-out;
 
-        &:hover {
+        &[disabled] {
+            opacity: 50%;
+        }
+
+        &:hover:not([disabled]) {
             background-color: rgba(255, 255, 255, 0.25);
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease-in-out;

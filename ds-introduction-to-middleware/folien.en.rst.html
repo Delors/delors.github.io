@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="Middleware, RPC, RMI, MoM" name="keywords" />
+<meta content="Einführung in Middleware (eng.)" lang="de" name="description" xml:lang="de" />
+<meta content="Introduction to Middleware" lang="en" name="description" xml:lang="en" />
+<meta content="lecture-distributed-systems-middleware" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
+<title>A Brief Introduction to Middleware</title>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="a-brief-introduction-to-middleware">
+<h1 class="title">A Brief Introduction to Middleware</h1>
+
+<div class="docutils container">
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+</div>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/ds-introduction-to-middleware/folien.en.rst.html">https://delors.github.io/ds-introduction-to-middleware/folien.en.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/ds-introduction-to-middleware/folien.en.rst.html.pdf">https://delors.github.io/ds-introduction-to-middleware/folien.en.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></ld-topic>
+<ld-topic class="new-section transition-fade" id="middleware-basics">
+<h2>Middleware - Basics</h2>
+</ld-topic><ld-topic id="was-ist-middleware">
+<h2>Was ist Middleware?</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Middleware is a class of software technologies that serve two purposes,</p>
+<ol class="upperroman simple">
+<li><p>reduce the complexity and</p></li>
+<li><p>manage the heterogeneity of distributed systems.</p></li>
+</ol>
+</aside>
+</ld-topic><ld-topic id="middleware-as-a-programming-abstraction">
+<h2>Middleware as a Programming Abstraction</h2>
+<ld-deck>
+<ld-card>
+<object aria-label="Positioning of Middleware" class="align-center" data="images/middleware.svg" role="img" type="image/svg+xml">
+</object></ld-card><ld-card class="incremental">
+<p>The programming abstractions offered by middleware hide some of the heterogeneity and manage some of the complexity that programmers of a distributed application have to deal with:</p>
+<ul class="incremental-list positive-list simple">
+<li><p>Middleware always masks the heterogeneity of the underlying networks and hardware.</p></li>
+<li><p>Middleware usually masks the heterogeneity of operating systems and/or programming languages.</p></li>
+<li><p>peripheral:<cite>Some middleware even masks the heterogeneity between implementations of the same middleware standard by different vendors</cite>.</p></li>
+</ul>
+</ld-card></ld-deck><div class="supplemental">
+<p class="rubric">Middlware ...</p>
+<ul class="simple">
+<li><p>A software layer above the operating system and below the application program that provides a common programming abstraction in a distributed system.</p></li>
+<li><p>A building block at a higher level than the APIs provided by the operating system (e.g. sockets)</p></li>
+</ul>
+<p class="rubric">History</p>
+<p>Old middleware standards - such as CORBA - were very complex and the implementations of different manufacturers were usually not fully compatible.</p>
+</div></ld-topic><ld-topic id="transparency-goals-of-middleware-from-a-programming-perspective">
+<h2>Transparency Goals of Middleware from a Programming Perspective</h2>
+<p>Middleware provides transparency (when programming) in relation to one or more of the following dimensions:</p>
+<ul class="simple">
+<li><p>Location</p></li>
+<li><p>Concurrency</p></li>
+<li><p>replication</p></li>
+<li><p>Failures (but only to a limited degree)</p></li>
+</ul>
+<aside class="admonition assessment">
+<p class="admonition-title">Assessment</p>
+<p>Middleware is the software that makes a distributed system (DS) programmable.</p>
+</aside>
+</ld-topic><ld-topic id="middleware-as-infrastructure">
+<h2>Middleware as Infrastructure</h2>
+<ld-deck>
+<ld-card>
+<ul class="incremental list-with-explanations">
+<li><p>Behind programming abstractions is a complex infrastructure that implements these abstractions</p>
+<p>Middleware platforms can be very complex software systems.</p>
+</li>
+<li><p>As the programming abstractions reach ever higher levels, the underlying infrastructure that implements the abstractions must grow accordingly.</p></li>
+<li><p>Additional functionality is almost always implemented through additional software layers.</p></li>
+<li><p>The additional software layers increase the scope and complexity of the infrastructure required to use the new abstractions.</p></li>
+</ul>
+<div class="supplemental">
+<p>For decades, it has been observed that middleware has become increasingly complex, to the point where the complexity was barely manageable. At these points in time, new approaches were often developed that reduced the complexity until this in turn found its way into more complex middleware products.</p>
+<p>Approaches such as REST have proven to be quite successful, but present developers with new challenges.</p>
+</div></ld-card><ld-card class="incremental">
+<p class="rubric">Non-functional Requirements</p>
+<p>The infrastructure takes care of non-functional properties that are normally ignored by data models, programming models and programming languages:</p>
+<ul class="simple">
+<li><p>Performance</p></li>
+<li><p>availability</p></li>
+<li><p>resource management</p></li>
+<li><p>reliability</p></li>
+<li><p>etc.</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Supporting Development and Operations</p>
+<p>Middleware supports additional functions that make development, maintenance and monitoring easier and more cost-effective (excerpt):</p>
+<ul class="incremental-list">
+<li><p>Logging</p></li>
+<li><p>Recovery</p></li>
+<li><p>(Programming) Language primitives for transactional delimitation</p>
+<p>(<span class="peripheral">E.g., advanced transaction models (e.g. transactional RPC) or transactional file systems</span>)</p>
+</li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic id="middleware-conceptional-historic">
+<h2>Middleware - Conceptional (historic)<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<object class="align-center" data="images/middleware-conceptual.svg" role="img" type="image/svg+xml">
+</object><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Based on: Alonso; Web services: Concepts, Architectures and Applications; Springer, 2004</p>
+</aside>
+</aside>
+<div class="supplemental">
+<p>Today, the generation of stubs and skeletons - if required at all - is now typically carried out automatically by the middleware.</p>
+</div></ld-topic><ld-topic id="evolution-of-middleware">
+<h2>Evolution of Middleware</h2>
+<ul class="simple">
+<li><p>Middleware aims to hide the details of hardware, networks and distribution at a low level.</p></li>
+<li><p>Continuing trend towards ever more powerful primitives (<em>events</em>) that have additional properties or allow more flexible use of the concept.</p></li>
+<li><p>The development and appearance for the programmer is dictated by the trends in programming languages:</p>
+<ul>
+<li><p>RPC and C</p></li>
+<li><p>CORBA and C++</p></li>
+<li><p>RMI (Corba) and Java</p></li>
+<li><p>&quot;Classic&quot; web services and XML</p></li>
+<li><p>RESTful web services and JSON</p></li>
+</ul>
+</li>
+</ul>
+</ld-topic><ld-topic class="new-section transition-scale" id="middleware-technologies">
+<h2>Middleware-Technologies</h2>
+</ld-topic><ld-topic id="remote-procedure-call-rpc">
+<h2>Remote Procedure Call (RPC)</h2>
+<div class="accentuate docutils container">
+<p>Focus: hiding network communication.</p>
+</div>
+<div class="incremental docutils container">
+<p>A process can call a procedure whose implementation is located on a remote computer:</p>
+<ul class="simple">
+<li><p>Distributed system programmers no longer have to worry about all the details of network programming (i.e. no more &quot;explicit&quot; sockets).</p></li>
+<li><p>Bridging the conceptual gap between calling local functionality via procedures and calling remote functionality via sockets.</p></li>
+</ul>
+</div>
+</ld-topic><ld-topic id="rpcs-conceptual-synchronous-communication">
+<h2>RPCs Conceptual (synchronous Communication)</h2>
+<ld-grid class="default-layout">
+<ld-cell style="align-self:auto;">
+<ul class="simple">
+<li><p>A server is a program that implements certain services.</p></li>
+<li><p>Cients want to use these services:</p>
+<ul class="incremental-list">
+<li><p>Communication takes place by sending messages (no shared memory, no shared disks, etc.)</p></li>
+<li><p>Some minimal guarantees must be given (handling of errors, call semantics, etc.)</p></li>
+</ul>
+</li>
+</ul>
+</ld-cell><ld-cell class="width-40" style="align-self:auto;">
+<object data="images/rpc_conceptual.svg" role="img" type="image/svg+xml">
+</object></ld-cell></ld-grid></ld-topic><ld-topic id="rpcs-key-issues-and-challenges">
+<h2>RPCs - Key Issues and Challenges</h2>
+<ld-deck>
+<ld-card>
+<aside class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Should remote calls be transparent or non-transparent for the developer?</p>
+</aside>
+<aside class="admonition remark">
+<p class="admonition-title">Remark</p>
+<p>A remote call is completely different from a local call; should the programmer be aware of this?</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition question">
+<p class="admonition-title">Question</p>
+<p>How can data be exchanged between machines that may use different representations for different data types?</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p>Complex data types must be linearized:</p>
+<dl class="field-list simple">
+<dt><strong>Marshalling</strong><span class="colon">:</span></dt>
+<dd><p>the process of preparing the data into a form suitable for transmission in a message.</p>
+</dd>
+<dt><strong>Unmarshalling</strong><span class="colon">:</span></dt>
+<dd><p>the process of restoring the data on arrival at its destination in order to obtain a faithful representation.</p>
+</dd>
+</dl>
+</ld-card><ld-card class="incremental">
+<p>How do you find and bind the service you actually want in a potentially large collection of services and servers?</p>
+<aside class="admonition remark">
+<p class="admonition-title">Remark</p>
+<p>The aim is that the customer does not necessarily need to know where the server is located or even which server offers the service (location transparency).</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p>How to deal with mistakes more or less elegantly:</p>
+<ul class="simple">
+<li><p>Server is down</p></li>
+<li><p>Communication is disrupted</p></li>
+<li><p>Server busy</p></li>
+<li><p>duplicate requests ...</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic id="high-level-view-at-rpc">
+<h2>High-level View at RPC</h2>
+<div class="framed docutils container">
+<p>For programmers, a &quot;remote&quot; procedure call looks and works almost identically to a &quot;local&quot; procedure call - this is how transparency is achieved.</p>
+</div>
+<div class="incremental docutils container">
+<p>To achieve transparency, RPC introduced many concepts of middleware systems:</p>
+<ul class="incremental-list list-with-explanations">
+<li><p><em>Interface Description Language</em> (IDL)</p></li>
+<li><p>Directory and naming services</p></li>
+<li><p>Dynamic binding</p></li>
+<li><p>Marshalling and unmarshalling</p></li>
+<li><p>Opaque references to refer to the same data structure or entity on the server for different calls.</p>
+<p>(The server is responsible for providing these opaque references).</p>
+</li>
+</ul>
+</div>
+</ld-topic><ld-topic id="rpc-call-semantics">
+<h2>RPC - Call Semantics</h2>
+<p>Suppose a client makes an RPC request to a service of a particular server.
+After the timeout expires, the client decides to resend the request. The final behavior depends on the semantics of the call (aka <cite>Call Semantics</cite>):</p>
+<ld-deck>
+<ld-card>
+<p class="rubric">Maybe (no guarantee)</p>
+<p>The target method may have been executed and the response message(s) were lost or the method was not executed at all because the request was lost.</p>
+<div class="peripheral docutils container">
+<p><span class="docutils literal">XMLHTTPRequests</span> and <span class="docutils literal">fetch()</span> in web browsers use this semantics.</p>
+</div>
+</ld-card><ld-card class="incremental">
+<p class="rubric">At least once</p>
+<p>The procedure will be executed as long as the server does not finally fail.</p>
+<p>However, it is possible that it will be executed more than once if the client has resent the request after a timeout.</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">At most once</p>
+<p>The procedure is either executed once or not at all. Sending the request again does not result in the procedure being executed more than once.</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Exactly once</p>
+<p>The system guarantees the same semantics as for local calls under the assumption that a crashed server will restart at some point.</p>
+<p>Orphaned calls, i.e. Calls on crashed server computers are retained so that they can later be taken over by a new server.</p>
+</ld-card></ld-deck></ld-topic><ld-topic id="rpc-assessment">
+<h2>RPC - Assessment</h2>
+<ul class="incremental-list positive-list simple">
+<li><p>RPC provides a mechanism to implement distributed applications in a simple and efficient way.</p></li>
+<li><p>RPC enables the modular and hierarchical structure of large distributed systems:</p>
+<ul>
+<li><p>Client and server are separate entities</p></li>
+<li><p>The server encapsulates and hides the details of the backend systems (such as databases)</p></li>
+</ul>
+</li>
+</ul>
+<ul class="incremental-list negative-list simple">
+<li><p>RPC is not a standard, but has been implemented in many different ways.</p></li>
+<li><p>RPC enables developers to set up distributed systems, but only solves selected aspects.</p></li>
+</ul>
+<div class="incremental docutils container">
+<p>The Network File System (NFS) and SMB are two well-known applications based on RPC.</p>
+</div>
+</ld-topic><ld-topic class="new-subsection transition-fade" id="classic-web-services-and-soap">
+<h2>Classic Web Services and SOAP</h2>
+</ld-topic><ld-topic id="integration-von-unternehmensanwendungen">
+<h2>Integration von Unternehmensanwendungen<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
+<p>The problems of enabling cross-company point-to-point integration led to the development of the next generation of middleware technologies.</p>
+<object class="align-center" data="images/web_services-and-message_brokers.svg" role="img" type="image/svg+xml">
+</object><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p>Based on <em>Web Services - Concepts, Architectures and Applications; Alonso et al.; Springer 2004</em></p>
+</aside>
+</aside>
+<div class="supplemental">
+<p>Each company uses its own &quot;concrete&quot; message broker(s) - if we want to communicate with multiple companies, we need to implement and maintain multiple adapters/solutions.</p>
+</div></ld-topic><ld-topic class="no-title center-content" id="web-services">
+<h2>Web Services</h2>
+<blockquote class="epigraph">
+<p>Webservices are self-contained, modular business applications that have open, internet-oriented, standards-based interfaces.</p>
+<p class="attribution">—UDDI Konsortium</p>
+</blockquote>
+</ld-topic><ld-topic id="web-services-protocol-stack">
+<h2>Web Services - Protocol Stack</h2>
+<object class="align-center" data="images/ws-protocol_stack.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic id="soap">
+<h2>SOAP</h2>
+<ul class="incremental-list simple">
+<li><p>SOAP is the protocol of classic web services and enables communication between applications.</p></li>
+<li><p>SOAP comprises the following parts:</p>
+<ul>
+<li><p>A message format that describes how a message can be wrapped in an XML document (envelopes, headers, body...)</p></li>
+<li><p>A set of encoding rules for data</p></li>
+<li><p>A description of how a SOAP message should be transported using the underlying transport protocol (HTTP or SMTP). How a SOAP message can be embedded in an HTTP request or in an e-mail (SMTP).</p></li>
+<li><p>A set of rules to follow when processing a SOAP message and the entities involved in this processing; which parts of the messages should be read and by whom, and what action these entities should take if they do not understand the content.</p></li>
+</ul>
+</li>
+</ul>
+<div class="supplemental">
+<p>SOAP is a further development of XML-RPC and originally stood for Simple Object Access Protocol.</p>
+<p>SOAP (from version 1.2) is a standard of the W3C.</p>
+</div></ld-topic><ld-topic id="structure-of-a-soap-message">
+<h2>Structure of a SOAP message</h2>
+<ld-grid class="default-layout">
+<ld-cell class="width-40" style="align-self:auto;">
+<object class="align-center" data="images/soap_message.svg" role="img" type="image/svg+xml">
+</object></ld-cell><ld-cell class="width-60 dd-margin-left-2em" style="align-self:auto;">
+<p>Messages are envelopes in which the application's user data is enclosed.</p>
+<p>A message has two main components:</p>
+<dl class="field-list simple">
+<dt>Header (optional)<span class="colon">:</span></dt>
+<dd><p>Intended for infrastructural data such as security or reliability.</p>
+</dd>
+<dt>Body (mandatory)<span class="colon">:</span></dt>
+<dd><p>Intended for application level data. Each part can be divided into blocks.</p>
+</dd>
+</dl>
+</ld-cell></ld-grid></ld-topic><ld-topic id="example-of-a-soap-message">
+<h2>Example of a SOAP-Message</h2>
+<pre class="code xml literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="name tag">&lt;SOAP-ENV:Envelope</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">    </span><span class="name attribute">xmlns:SOAP-ENV=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="name attribute">SOAP-ENV:encodingStyle=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;</span><span class="whitespace"> </span><span class="name tag">/&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">  </span><span class="name tag">&lt;SOAP-ENV:Header&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="name tag">&lt;t:Transaction</span><span class="whitespace"> </span><span class="name attribute">xmlns:t=</span><span class="literal string">&quot;ws-transactions-URI&quot;</span><span class="whitespace"> </span><span class="name attribute">SOAP-ENV:mustUnderstand=</span><span class="literal string">&quot;1&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">      </span>57539<span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="name tag">&lt;/t:Transaction&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">  </span><span class="name tag">&lt;/SOAP-ENV:Header&gt;</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">  </span><span class="name tag">&lt;SOAP-ENV:Body&gt;</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="name tag">&lt;m:GetLastTradePrice</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">&quot;Some-URI&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">      </span><span class="name tag">&lt;symbol&gt;</span>DEF<span class="name tag">&lt;/symbol&gt;</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="name tag">&lt;/m:GetLastTradePrice&gt;</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">  </span><span class="name tag">&lt;/SOAP-ENV:Body&gt;</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace"></span><span class="name tag">&lt;/SOAP-ENV:Envelope&gt;</span></code></pre>
+</ld-topic><ld-topic id="example-of-a-soap-request">
+<h2>Example of a SOAP-Request</h2>
+<pre class="code http literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="name function">POST</span> <span class="name namespace">/StockQuote</span> <span class="keyword reserved">HTTP</span><span class="operator">/</span><span class="literal number">1.1</span>
+</code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="name attribute">Host</span><span class="operator">:</span> <span class="literal">www.stockquoteserver.com</span>
+</code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="name attribute">Content-Type</span><span class="operator">:</span> <span class="literal">text/xml; charset=&quot;utf-8&quot;</span>
+</code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="name attribute">Content-Length</span><span class="operator">:</span> <span class="literal">nnnn</span>
+</code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="name attribute">SOAPAction</span><span class="operator">:</span> <span class="literal">&quot;Some-URI&quot;</span>
+</code><small class="ln"> 6 </small><code data-lineno=" 6 ">
+</code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="name tag">&lt;SOAP-ENV:Envelope</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">  </span><span class="name attribute">xmlns:SOAP-ENV=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">  </span><span class="name attribute">SOAP-ENV:encodingStyle=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">  </span><span class="name tag">&lt;SOAP-ENV:Body&gt;</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="name tag">&lt;m:GetLastTradePrice</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">&quot;Some-URI&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">      </span><span class="name tag">&lt;symbol&gt;</span>DIS<span class="name tag">&lt;/symbol&gt;</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="name tag">&lt;/m:GetLastTradePrice&gt;</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">  </span><span class="name tag">&lt;/SOAP-ENV:Body&gt;</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span><span class="name tag">&lt;/SOAP-ENV:Envelope&gt;</span></code></pre>
+</ld-topic><ld-topic id="example-of-a-soap-response">
+<h2>Example of a SOAP-Response</h2>
+<pre class="code http literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword reserved">HTTP</span><span class="operator">/</span><span class="literal number">1.1</span> <span class="literal number">200</span> <span class="name exception">OK</span>
+</code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="name attribute">Content-Type</span><span class="operator">:</span> <span class="literal">text/xml; charset=&quot;utf-8&quot;</span>
+</code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="name attribute">Content-Length</span><span class="operator">:</span> <span class="literal">nnnn</span>
+</code><small class="ln"> 4 </small><code data-lineno=" 4 ">
+</code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="name tag">&lt;SOAP-ENV:Envelope</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">  </span><span class="name attribute">xmlns:SOAP-ENV=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">  </span><span class="name attribute">SOAP-ENV:encodingStyle=</span><span class="literal string">&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;</span><span class="whitespace"> </span><span class="name tag">/&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="name tag">&lt;SOAP-ENV:Body&gt;</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">  </span><span class="name tag">&lt;m:GetLastTradePriceResponse</span><span class="whitespace"> </span><span class="name attribute">xmlns:m=</span><span class="literal string">&quot;Some-URI&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="name tag">&lt;Price&gt;</span>34.5<span class="name tag">&lt;/Price&gt;</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">  </span><span class="name tag">&lt;/m:GetLastTradePriceResponse&gt;</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span><span class="name tag">&lt;/SOAP-ENV:Body&gt;</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span><span class="name tag">&lt;/SOAP-ENV:Envelope&gt;</span></code></pre>
+</ld-topic><ld-topic id="web-services-standardization">
+<h2>Web Services - Standardization</h2>
+<ld-deck>
+<ld-card>
+<img alt="screenshots/ws_standards.png" class="align-right" src="screenshots/ws_standards.png" style="width: 30%;" />
+</ld-card><ld-card class="overlay incremental">
+<img alt="screenshots/ws_standards_w3c.png" class="align-left" src="screenshots/ws_standards_w3c.png" style="width: 50%;" />
+</ld-card></ld-deck></ld-topic><ld-topic class="vertical-title" id="overview">
+<h2>Overview</h2>
+<object class="align-center" data="images/genealogy-of-middleware.svg" role="img" type="image/svg+xml">
+</object></ld-topic><ld-topic class="new-section transition-move-to-top" id="messaging-and-message-oriented-communication-middleware">
+<h2>Messaging and Message-oriented Communication/Middleware</h2>
+</ld-topic><ld-topic id="zeromq">
+<h2>ZeroMQ</h2>
+<ul class="incremental-list simple">
+<li><p>ZeroMQ is a messaging infrastructure without an explicit server (&quot;broker&quot;).</p></li>
+<li><p>ZeroMQ supports connection-oriented but asynchronous communication.</p></li>
+<li><p>ZeroMQ is based on classic sockets, but adds new abstractions to enable the following messaging patterns:</p>
+<ul>
+<li><p><em>request-reply</em></p></li>
+<li><p><em>pub-sub</em> (publish-subscribe)</p></li>
+<li><p>pipeplining (<em>processing in parallel</em>)</p></li>
+<li><p>ZeroMQ enables N-to-N communication.</p></li>
+<li><p>ZeroMQ supports many programming languages; the user is responsible for the appropriate marshalling or unmarshalling.</p></li>
+</ul>
+</li>
+</ul>
+<div class="supplemental">
+<p>If, for example, the server is written in Java and the client in C, then the understanding of how a string is transferred may be different (e.g. terminated with <span class="docutils literal">null</span> or provided with an explicit length).</p>
+</div></ld-topic><ld-topic id="zeromq-messaging-patterns">
+<h2>ZeroMQ - Messaging Patterns</h2>
+<ld-scrollable>
+<object class="framed align-center" data="images/zeromq/client-server.svg" role="img" type="image/svg+xml">
+</object><object class="framed align-center" data="images/zeromq/pub-sub.svg" role="img" type="image/svg+xml">
+</object><object class="framed align-center" data="images/zeromq/pipeline.svg" role="img" type="image/svg+xml">
+</object></ld-scrollable><div class="supplemental">
+<dl class="field-list simple">
+<dt><em>Client-Server</em><span class="colon">:</span></dt>
+<dd><p>Enables the &quot;usual&quot; communication between a client and a server. However, buffering may take place if the server is not available.</p>
+</dd>
+<dt><em>Publish-Subscribe</em><span class="colon">:</span></dt>
+<dd><p>Allows clients to subscribe to a specific topic and then receive all messages published on that topic. A message with a specific topic is sent to all registered clients.</p>
+</dd>
+<dt>Pipeline<span class="colon">:</span></dt>
+<dd><p>Enables a task to be sent to exactly one worker from a set of (homogeneous) workers.</p>
+</dd>
+</dl>
+</div></ld-topic><ld-topic id="zeromq-example-publish-subscribe-publisher-java">
+<h2>ZeroMQ - Example <em>Publish-Subscribe</em>: Publisher (Java)</h2>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import static</span><span class="whitespace"> </span><span class="name namespace">java.lang.Thread.currentThread</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.SocketType</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.ZMQ</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.ZContext</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">Publisher</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">Exception</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">  </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">ZContext</span><span class="whitespace"> </span><span class="name">context</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">ZContext</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="name">ZMQ</span><span class="punctuation">.</span><span class="name attribute">Socket</span><span class="whitespace"> </span><span class="name">publisher</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">context</span><span class="punctuation">.</span><span class="name attribute">createSocket</span><span class="punctuation">(</span><span class="name">SocketType</span><span class="punctuation">.</span><span class="name attribute">PUB</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="name">publisher</span><span class="punctuation">.</span><span class="name attribute">bind</span><span class="punctuation">(</span><span class="literal string">&quot;tcp://*:5556&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="name">publisher</span><span class="punctuation">.</span><span class="name attribute">bind</span><span class="punctuation">(</span><span class="literal string">&quot;ipc://&quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">endpoint</span><span class="operator">&gt;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">    </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="operator">!</span><span class="name">currentThread</span><span class="punctuation">().</span><span class="name attribute">isInterrupted</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">      </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">zipcode</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">some</span><span class="whitespace"> </span><span class="name">zipcode</span><span class="operator">&gt;</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">      </span><span class="comment single">//  Send to all subscribers</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">      </span><span class="name">String</span><span class="whitespace"> </span><span class="name">update</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">String</span><span class="punctuation">.</span><span class="name attribute">format</span><span class="punctuation">(</span><span class="literal string">&quot;%05d %s&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">zipcode</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="name">some</span><span class="whitespace"> </span><span class="name">msg</span><span class="operator">&gt;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">      </span><span class="name">publisher</span><span class="punctuation">.</span><span class="name attribute">send</span><span class="punctuation">(</span><span class="name">update</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
+</ld-topic><ld-topic id="zeromq-example-publish-subscribe-subscriber-java">
+<h2>ZeroMQ - Example <em>Publish-Subscribe</em>: Subscriber (Java)</h2>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.StringTokenizer</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.SocketType</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.ZMQ</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">org.zeromq.ZContext</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">Subscriber</span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">static</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">(</span><span class="name">String</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">  </span><span class="keyword">try</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">ZContext</span><span class="whitespace"> </span><span class="name">context</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">ZContext</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="name">ZMQ</span><span class="punctuation">.</span><span class="name attribute">Socket</span><span class="whitespace"> </span><span class="name">subscriber</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">context</span><span class="punctuation">.</span><span class="name attribute">createSocket</span><span class="punctuation">(</span><span class="name">SocketType</span><span class="punctuation">.</span><span class="name attribute">SUB</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="name">subscriber</span><span class="punctuation">.</span><span class="name attribute">connect</span><span class="punctuation">(</span><span class="literal string">&quot;tcp://localhost:5556&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="name">subscriber</span><span class="punctuation">.</span><span class="name attribute">subscribe</span><span class="punctuation">(</span><span class="operator">&lt;</span><span class="name">zipcode</span><span class="punctuation">(</span><span class="name">Str</span><span class="punctuation">)</span><span class="operator">&gt;</span><span class="punctuation">.</span><span class="name attribute">getBytes</span><span class="punctuation">(</span><span class="name">ZMQ</span><span class="punctuation">.</span><span class="name attribute">CHARSET</span><span class="punctuation">));</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="keyword">while</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">      </span><span class="name">String</span><span class="whitespace"> </span><span class="name">string</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">subscriber</span><span class="punctuation">.</span><span class="name attribute">recvStr</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">      </span><span class="comment single">// e.g. take string apart:</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">      </span><span class="comment single">//   part1: zipcode</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">      </span><span class="comment single">//   part2: message</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">      </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">string</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="punctuation">}</span></code></pre>
+</ld-topic><ld-topic id="zeromq-example-publish-subscribe-python">
+<h2>ZeroMQ - Example <em>Publish-Subscribe</em> (Python)</h2>
+<ld-grid class="default-layout">
+<ld-cell style="align-self:auto;">
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">signal</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">time</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">zmq</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="name">signal</span><span class="operator">.</span><span class="name">signal</span><span class="punctuation">(</span><span class="name">signal</span><span class="operator">.</span><span class="name">SIGINT</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>              <span class="name">signal</span><span class="operator">.</span><span class="name">SIG_DFL</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span><span class="name">context</span> <span class="operator">=</span> <span class="name">zmq</span><span class="operator">.</span><span class="name">Context</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="name">socket</span> <span class="operator">=</span> <span class="name">context</span><span class="operator">.</span><span class="name">socket</span><span class="punctuation">(</span><span class="name">zmq</span><span class="operator">.</span><span class="name">PUB</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="name">socket</span><span class="operator">.</span><span class="name">bind</span><span class="punctuation">(</span><span class="literal string single">'tcp://*:5555'</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span><span class="keyword">for</span> <span class="name">i</span> <span class="operator word">in</span> <span class="name builtin">range</span><span class="punctuation">(</span><span class="literal number integer">5</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>    <span class="name">socket</span><span class="operator">.</span><span class="name">send</span><span class="punctuation">(</span><span class="literal string affix">b</span><span class="literal string single">'status 5'</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span>    <span class="name">socket</span><span class="operator">.</span><span class="name">send</span><span class="punctuation">(</span><span class="literal string affix">b</span><span class="literal string single">'All is well'</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span>    <span class="name">time</span><span class="operator">.</span><span class="name">sleep</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">)</span></code></pre>
+</ld-cell><ld-cell style="align-self:auto;">
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">signal</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">zmq</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="name">signal</span><span class="operator">.</span><span class="name">signal</span><span class="punctuation">(</span><span class="name">signal</span><span class="operator">.</span><span class="name">SIGINT</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>              <span class="name">signal</span><span class="operator">.</span><span class="name">SIG_DFL</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span><span class="name">context</span> <span class="operator">=</span> <span class="name">zmq</span><span class="operator">.</span><span class="name">Context</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="name">socket</span> <span class="operator">=</span> <span class="name">context</span><span class="operator">.</span><span class="name">socket</span><span class="punctuation">(</span><span class="name">zmq</span><span class="operator">.</span><span class="name">SUB</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="name">socket</span><span class="operator">.</span><span class="name">connect</span><span class="punctuation">(</span><span class="literal string single">'tcp://localhost:5555'</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="name">socket</span><span class="operator">.</span><span class="name">setsockopt</span><span class="punctuation">(</span><span class="name">zmq</span><span class="operator">.</span><span class="name">SUBSCRIBE</span><span class="punctuation">,</span> <span class="literal string affix">b</span><span class="literal string single">'status'</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span><span class="keyword">while</span> <span class="keyword constant">True</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span>    <span class="name">message</span> <span class="operator">=</span> <span class="name">socket</span><span class="operator">.</span><span class="name">recv_multipart</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span>    <span class="name builtin">print</span><span class="punctuation">(</span><span class="literal string affix">f</span><span class="literal string single">'Received: </span><span class="literal string interpol">{</span><span class="name">message</span><span class="literal string interpol">}</span><span class="literal string single">'</span><span class="punctuation">)</span></code></pre>
+</ld-cell></ld-grid><div class="supplemental">
+<p>Bzgl. des Handlings von Signalen in Python siehe auch: <a class="reference external" href="https://docs.python.org/3/library/signal.html#signal.signal">https://docs.python.org/3/library/signal.html#signal.signal</a></p>
+</div></ld-topic><ld-topic id="mom-message-oriented-middleware">
+<h2>MOM - Message Oriented Middleware</h2>
+<ul class="incremental-list list-with-explanations">
+<li><p>MOM or message-queueing systems support persistent asynchronous communication.</p></li>
+<li><p>Very large messages are supported.</p></li>
+<li><p>There is only a guarantee that messages are ultimately placed in the recipient's queue and that the messages arrive in the correct order.</p>
+<p>(In particular, there is no guarantee that the message will be read).</p>
+</li>
+<li><p>The sender and recipient are not necessarily active at the same time.</p></li>
+<li><p>Messages always have a unique recipient and virtually arbitrary content.</p></li>
+</ul>
+</ld-topic><ld-topic id="mom-basic-interface">
+<h2>MOM - Basic Interface</h2>
+<table class="highlight-row-on-hover booktabs">
+<thead>
+<tr><th class="head"><p>Operation</p></th>
+<th class="head"><p>Beschreibung</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>PUT</p></td>
+<td><p>Places a message in a specific queue.</p></td>
+</tr>
+<tr><td><p>GET</p></td>
+<td><p>Blocks at a specific queue until a message is available. Removes the first message.</p></td>
+</tr>
+<tr><td><p>POLL</p></td>
+<td><p>Checks whether a message is available in a specific queue. Removes the first message if necessary. POLL never blocks.</p></td>
+</tr>
+<tr><td><p>NOTIFY</p></td>
+<td><p>Registers a handler (<em>callback</em>) that is called when a message is added to a specific queue.</p></td>
+</tr>
+</tbody>
+</table>
+</ld-topic><ld-topic id="mom-queue-managers">
+<h2>MOM - Queue Managers</h2>
+<object aria-label="Interaction between Queue Managers" class="align-center" data="images/message-queueing.svg" role="img" type="image/svg+xml">
+</object><div class="supplemental">
+<p><em>Queue managers</em> are the central building block of message queueing systems. In general, there is (at least conceptually) one local <em>Queue Manager</em> per process. A <em>Queue Manager</em> is a process that stores and manages messages in queues. If required, it can manage several queues and forward them to other <em>Queue Managers</em>.</p>
+</div></ld-topic>
+</template>
+</body>
+</html>

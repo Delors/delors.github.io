@@ -526,11 +526,11 @@ function scaleSlideImages() {
         if (img.complete) {
             console.error(
                 "image " +
-                img.src +
-                " is already loaded: " +
-                img.naturalWidth +
-                "x" +
-                img.naturalHeight,
+                    img.src +
+                    " is already loaded: " +
+                    img.naturalWidth +
+                    "x" +
+                    img.naturalHeight,
             );
             // TODO Implement when required.
         } else {
@@ -562,9 +562,9 @@ function scaleSlideImages() {
             if (obj.width) {
                 console.info(
                     obj.data +
-                    " has an explicit width: " +
-                    obj.width +
-                    "; no scaling performed",
+                        " has an explicit width: " +
+                        obj.width +
+                        "; no scaling performed",
                 );
                 return;
             }
@@ -1181,9 +1181,9 @@ function setupUnlockPresenterNotesAndSolutionsDialog() {
                     .catch((error) => {
                         console.log(
                             "decryption using: " +
-                            currentPassword +
-                            " failed - " +
-                            error,
+                                currentPassword +
+                                " failed - " +
+                                error,
                         );
                     });
             }
@@ -1517,9 +1517,13 @@ function setupMenu() {
     menuPane.id = "ld-menu";
     menuPane.className = "ld-ui";
     const base = import.meta.resolve("./css/ui/icons/2025/");
+    const isWindowCloningPossible =
+        presentation.id && !document.URL.startsWith("file://");
     menuPane.innerHTML = `
         <button id="ld-toggle-view-button"><img src="${base}view.svg" alt="toggle view"></button>
         <button id="ld-toggle-slide-number-button"><img src="${base}nr.svg" alt="toggle number"></button>
+        <div class="half-space"> </div>
+        <button id="ld-spawn-2nd-window-button" ${isWindowCloningPossible ? "" : "disabled"}><img src="${base}two_windows.svg" alt="spawn secondary window"></button>
         <div class="half-space"> </div>
         <button id="ld-light-table-button"><img src="${base}lighttable.svg" alt="show light table"></button>
         <button id="ld-table-of-contents-button"><img src="${base}table_of_contents.svg" alt="show table of contents"></button>
@@ -2138,6 +2142,11 @@ function prepareForPrinting() {
     return sectionCount;
 }
 
+function cloneWindow() {
+    storeState();
+    window.open(window.document.URL, "_blank");
+}
+
 /**
  * Just shows a blank, black screen by setting the display property of the
  * body to "none".
@@ -2178,8 +2187,8 @@ function localRedrawSlide() {
     if (!state.showDocumentView) {
         console.log(
             "forced rerendering of the current slide [" +
-            state.currentSlideNo +
-            "]",
+                state.currentSlideNo +
+                "]",
         );
         // Sometimes the current slide is not shown properly after
         // resetting the slide progress. This is a workaround to
@@ -2319,7 +2328,7 @@ function registerKeyboardEventListener() {
                             5000,
                         );
                     }
-                    if (window.document.URL.startsWith("file://")) {
+                    if (document.URL.startsWith("file://")) {
                         showMessage(
                             "Presentation mode requires a (local) web server.",
                             5000,
@@ -2329,8 +2338,7 @@ function registerKeyboardEventListener() {
                         );
                         break;
                     }
-                    storeState();
-                    window.open(window.document.URL, "_blank");
+                    cloneWindow();
                     break;
 
                 case "t":
@@ -2695,21 +2703,29 @@ function registerMenuClickListener() {
         .getElementById("ld-light-table-button")
         .addEventListener("click", toggleLightTable);
 
-    document.getElementById("ld-table-of-contents-button")
+    document
+        .getElementById("ld-table-of-contents-button")
         .addEventListener("click", toggleTableOfContents);
 
-    document.getElementById("ld-previous-slide-button")
+    document
+        .getElementById("ld-previous-slide-button")
         .addEventListener("click", moveToPreviousSlide);
 
-    document.getElementById("ld-previous-animation-step-button")
+    document
+        .getElementById("ld-previous-animation-step-button")
         .addEventListener("click", retrogressPresentation);
 
-    document.getElementById("ld-next-animation-step-button")
+    document
+        .getElementById("ld-next-animation-step-button")
         .addEventListener("click", advancePresentation);
 
-    document.getElementById("ld-next-slide-button")
-        .addEventListener("click",moveToNextSlide);
+    document
+        .getElementById("ld-spawn-2nd-window-button")
+        ?.addEventListener("click", cloneWindow);
 
+    document
+        .getElementById("ld-next-slide-button")
+        .addEventListener("click", moveToNextSlide);
 
     document
         .getElementById("ld-passwords-button")
@@ -2718,7 +2734,6 @@ function registerMenuClickListener() {
     document.getElementById("ld-help-button").addEventListener("click", () => {
         toggleDialog("help");
     });
-
 }
 
 /**

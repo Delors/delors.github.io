@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta content="Michael Eichberg" name="author" />
-<meta content="hash functions" name="keywords" />
+<meta content="Kryptografische Hash Funktionen, SHA" name="keywords" />
 <meta content="Cryptographic Hash Functions" lang="en" name="description" xml:lang="en" />
 <meta content="Kryptografische Hashfunktionen" lang="de" name="description" xml:lang="de" />
 <meta content="lecture-security-hash_functions" name="id" />
@@ -63,8 +63,8 @@
 </ld-topic><ld-topic id="hashfunktionen">
 <h2>Hashfunktionen</h2>
 <ul class="incremental-list simple">
-<li><p>Eine Hashfunktion <span class="math">\(H\)</span> akzeptiert eine beliebig lange Nachricht <span class="math">\(M\)</span> als Eingabe und gibt einen Wert fixer Größe zurück: <span class="math">\(h = H(M)\)</span>.</p></li>
-<li><p>Wird oft zur Gewährleistung der Datenintegrität verwendet. Eine Änderung eines beliebigen Bits in <span class="math">\(M\)</span> sollte mit hoher Wahrscheinlichkeit zu einer Änderung des Hashwerts <span class="math">\(h\)</span> führen.</p></li>
+<li><p>Eine Hashfunktion <span class="math-i">H</span> akzeptiert eine beliebig lange Nachricht <span class="math-i">M</span> als Eingabe und gibt einen Wert fixer Größe zurück: <span class="math-i">h = H(M)</span>.</p></li>
+<li><p>Wird oft zur Gewährleistung der Datenintegrität verwendet. Eine Änderung eines beliebigen Bits in <span class="math-i">M</span> sollte mit hoher Wahrscheinlichkeit zu einer Änderung des Hashwerts <span class="math-i">h</span> führen.</p></li>
 <li><p>Kryptographische Hashfunktionen werden für Sicherheitsanwendungen benötigt. Mögliche Anwendungen:</p>
 <ul>
 <li><p>Authentifizierung von Nachrichten</p></li>
@@ -84,39 +84,36 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
              = 8fcf22b1f8327e3a005f0cba48dd44c8</pre>
 <aside class="admonition incremental warning">
 <p class="admonition-title">Warnung</p>
-<p>Die Verwendung von MD5 dient hier lediglich der Illustration. In realen Anwendung sollte MD5 nicht mehr verwendet werden.</p>
+<p>Die Verwendung von MD5 dient hier lediglich der Illustration. In realen Anwendung sollte MD5 nicht mehr verwendet werden, da es nachgewiesene Schwachstellen aufweist.</p>
 </aside>
-</ld-topic><ld-topic id="sicherheitsanforderungen-an-kryptografische-hashfunktion-i">
-<h2>Sicherheitsanforderungen an kryptografische Hashfunktion I</h2>
-<dl class="field-list simple">
+</ld-topic><ld-topic id="sicherheitsanforderungen-an-kryptografische-hashfunktion">
+<h2>Sicherheitsanforderungen an kryptografische Hashfunktion</h2>
+<ld-story>
+<dl class="incremental-list field-list">
 <dt>Variable Eingabegröße<span class="colon">:</span></dt>
-<dd><p>H kann auf einen Block beliebiger Größe angewendet werden.</p>
+<dd><p><span class="math-i">H</span> kann auf einen Block beliebiger Größe angewendet werden.</p>
 </dd>
 <dt>Pseudozufälligkeit<span class="colon">:</span></dt>
-<dd><p>Die Ausgabe von <span class="math">\(H\)</span> erfüllt die Standardtests für Pseudozufälligkeit.</p>
+<dd><p>Die Ausgabe von <span class="math-i">H</span> erfüllt die Standardtests für Pseudozufälligkeit.</p>
 </dd>
-</dl>
-<dl class="incremental field-list">
 <dt>Einweg Eigenschaft<span class="colon">:</span></dt>
-<dd><p>Es ist rechnerisch/praktisch nicht machbar für einen gegeben Hashwert <span class="math">\(h\)</span> ein <span class="math">\(N\)</span> zu finden so dass gilt: <span class="math">\(H(N) = h\)</span></p>
+<dd><p>Es ist rechnerisch/praktisch nicht machbar für einen gegeben Hashwert <span class="math-i">h</span> ein <span class="math-i">N</span> zu finden so dass gilt: <span class="math-i">H(N) = h</span></p>
 <p>(<span class="eng">Preimage resistant; one-way property</span>)</p>
+<ld-presenter-note data-encrypted="true">
+MTAwMDAw:jm3HQrgNpVqZ5u//VOmUcqbvnK8oley5c27aFxjN1bY=:5oVCgoht3XPPRnuM:I3R4oI/qOXB9grXbUHhvZuymNEB7ce52D770aDkHU6FCyo0CEKT7iSPPJecCel0Wka7KyFhKc1qyPeBmpx8fLfaRQTPxq7tQnrK1+SiUSigVQ00pyBwu85GFUgLAFZ8trUjjU/oUrnDFvf2p2OWjULZQxuslYUsbss14fy0IrffTB//ayaTsWpqXnf9rL6h0hBklw9Kjw9tNFavSc2JrRGhp+KKiUxiGku2V8oxtBDz2uQ==</ld-presenter-note>
 </dd>
-</dl>
-</ld-topic><ld-topic id="sicherheitsanforderungen-an-kryptografische-hashfunktion-ii">
-<h2>Sicherheitsanforderungen an kryptografische Hashfunktion II</h2>
-<dl class="field-list">
 <dt>Schwache Kollisionsresistenz<span class="colon">:</span></dt>
-<dd><p>Es ist rechnerisch nicht machbar für eine gegebene Nachricht M eine Nachricht N zu finden so dass gilt: <span class="math">\(M \neq N\)</span> mit <span class="math">\(H(M) = H(N)\)</span></p>
+<dd><p>Es ist rechnerisch nicht machbar für eine gegebene Nachricht <span class="math-i">M</span> eine Nachricht <span class="math-i">N</span> zu finden so dass gilt: <span class="math">\(M \neq N\)</span> mit <span class="math">\(H(M) = H(N)\)</span></p>
 <p>(<span class="eng">Second preimage resistant; weak collision resistant</span>)</p>
+<ld-presenter-note data-encrypted="true">
+MTAwMDAw:rH2FsqEoFvvkHHv+TdDRSAEg/FkWhvwpNxLN6lbwj1c=:yhmUQ/ru2G58nPyL:nL9tzlOKUN25Wsej9t0BJIOTgf8EG+kj8Z6D/xHU/HBfQf3cEPBlp6QSAXdRjxogOtUAkNls3ax/+Sk0u4z38UucYQHFKgPap4DlJL//nhdjed81jTbRGOlJqvqlt9BDZoEP3BoNmcK1GPf9W9MhEKnqbtlbYwvpErGyRnD01h0ckaEQbxZTyA3s36MTrRp7pd263qULb7jLUFluV4+SUEDfSDM+dQ==</ld-presenter-note>
 </dd>
-</dl>
-<dl class="incremental field-list">
 <dt>Starke Kollisionsresistenz<span class="colon">:</span></dt>
 <dd><p>Es ist rechnerisch unmöglich ein paar <span class="math">\((N,M)\)</span> zu finden so dass gilt: <span class="math">\(H(M) = H(N)\)</span>.</p>
 <p>(<span class="eng">Collision resistant; strong collision resistant</span>)</p>
 </dd>
 </dl>
-<div class="supplemental">
+</ld-story><div class="supplemental">
 <p><strong>Hintergrund</strong></p>
 <p>Im Deutschen wird auch von Urbild-Angriffen gesprochen. In dem Fall ist <em>preimage resistance</em> (d. h. die Einweg Eigenschaft) gleichbedeutend damit, dass man nicht effektiv einen „Erstes-Urbild-Angriff“ durchführen kann. Hierbei ist das Urbild die ursprüngliche Nachricht <span class="math">\(M\)</span>, die <em>gehasht</em> wurde.</p>
 <p><em>Second preimage resistance</em> ist dann gleichbedeutend damit, dass man nicht effektiv einen „Zweites-Urbild-Angriff“ durchführen kann. Es ist nicht möglich zu einer Nachricht M eine zweite Nachricht N (d. h. ein zweites Urbild) zu finden, die für eine gegebene Hashfunktion den gleich Hash aufweist.</p>
@@ -175,9 +172,9 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 </aside>
 <aside class="admonition hint">
 <p class="admonition-title">Hinweis</p>
-<p>Bei <em>Man-in-the-Middle-Angriffen</em> handelt es sich um einen Fachbegriff und häufig wird zum Beispiel Eve oder Mallory verwendet, um die Person zu bezeichnen, die den Angriff durchführt. Gelegentlich wird auch <em>Adversary-in-the-Middle</em> oder <em>Person-in-the-Middle</em> verwendet.</p>
+<p>Bei <em>Person-in-the-Middle-Angriffen</em> handelt es sich um einen Fachbegriff und häufig wird zum Beispiel Eve oder Mallory verwendet, um die Person zu bezeichnen, die den Angriff durchführt. Gelegentlich wird auch <em>Adversary-in-the-Middle</em> oder früher <em>Man-in-the-Middle</em> verwendet.</p>
 </aside>
-<p class="rubric">Message-Digests</p>
+<p class="rubric">Hashes und Message-Digests</p>
 <p>Im allgemeinen Sprachgebrauch wird auch von <span class="eng">Message Digests</span> gesprochen.</p>
 </div></ld-topic><ld-topic id="digitale-signaturen-vereinfacht">
 <h2>Digitale Signaturen - vereinfacht</h2>
@@ -214,7 +211,7 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 </dl>
 </div></ld-topic><ld-topic id="anforderungen-an-die-resistenz-von-hashfunktionen">
 <h2>Anforderungen an die Resistenz von Hashfunktionen</h2>
-<table class="incremental-table-rows highlight-line-on-hover">
+<table class="incremental-table-rows highlight-row-on-hover booktabs table-data-align-center table-body-header-align-left">
 <colgroup>
 <col style="width: 48.3%" />
 <col style="width: 17.2%" />
@@ -289,14 +286,16 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 <p>(Vorgeschlagen von Merkle.)</p>
 <object class="align-center" data="drawings/hash_functions/structure_of_secure_hash_codes.svg" role="img" type="image/svg+xml">
 </object><ul class="columns">
-<li><p><span class="math">\(IV\)</span> = Initialer Wert (Algorithmus-abhängig)</p>
-<p><span class="math">\(CV_i\)</span> = Verkettungsvariable</p>
-<p><span class="math">\(Y_i\)</span> = i-er Eingabeblock</p>
-<p><span class="math">\(f\)</span> = Kompressionsfunktion</p>
+<li><p>IV = Initialer Wert (Algorithmus-abhängig)</p>
+<p>CV<sub>
+i</sub> = Verkettungsvariable</p>
+<p>Y<sub>
+i</sub> = i-er Eingabeblock</p>
+<p>f = Kompressionsfunktion</p>
 </li>
-<li><p><span class="math">\(n\)</span> = Länge des Blocks</p>
-<p><span class="math">\(L\)</span> = Anzahl der Eingabeblöcke</p>
-<p><span class="math">\(b\)</span> = Länge des Eingabeblocks</p>
+<li><p>n = Länge des Blocks</p>
+<p>L = Anzahl der Eingabeblöcke</p>
+<p>b = Länge des Eingabeblocks</p>
 </li>
 </ul>
 <div class="supplemental">
@@ -307,10 +306,10 @@ md5(&quot;Dieses Passwort ist wirklich total sicher
 <p class="ld-exercise-title rubric">XOR als Hashfunktion</p>
 <p>Warum ist eine einfache „Hash-Funktion“, die einen 256-Bit-Hash-Wert berechnet, indem sie ein XOR über alle 256-Bit Blöcke einer Nachricht durchführt, im Allgemeinen ungeeignet?</p>
 <div class="peripheral docutils container">
-<p>Wir nehmen hier an, dass die Nachricht ein Vielfaches von 256 Bit lang ist. Falls nicht, dann wenden wir Padding an.</p>
+<p>Wir nehmen hier an, dass die Nachricht ein Vielfaches von 256 Bit lang ist. Falls nicht, dann wenden wir Padding an. Weiterhin gibt es eine 256 Bit lange Konstante, die für das hashen des ersten Blocks verwendet wird.</p>
 </div>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:nG7+UoPMpXVVIeDWRfi8HW72QnYEgcPtv04+p5b85+o=:Uvy9f07tkI2X4XnP:UEQg7gsKy7I4zy1ZI+NO6OQagS9byUF+RcjKXUuU+rPGWOHqB+EqBPHSzUnni8Xc2uNwzv+jIEedcSQoyDkhaLsYk9k+K5gXeNC7Vha3Q3KwByLnRD99CFba5XIn7u6E6bvHXB0IpDsJEbEc8otiAF2d3inz9tIaZ+VVNZ5GHqHq1Wel8/srNaU6L1WLoImV6PvoUbTjYQOT3BxGfmCt+czgOkvbKUfz/0y9LCtO1JAFpjaWXKZ4JIH4rLb589k3AgqIaJa0y8HOHPy87HwDZkIluFBfqCyslMkn/HcdRfIPQu8bml62Vdseuz5dXerihqxkDfy8M/uHu31u2b7bXtCMKPoPsBXVm/qQBjn6jKqya3RkY0UBi8zoX55dJor2wcGQsuCPmZYouXIkS5vhH69uCLcyvicI4MaXm7EiHFNtzAuCk0jzckFP8MQOjsw+2AKnoatCGEGyrUJj9iM/rAUoviU3nck73Z4OEX655GbCINv/X/OBh5vzZaBrfmt6lfrOMYwzbrah0YBGk5vGWYCTbpo+fa5mgauP031tR+DyRNbZ3LtIv+kQsAImIltXwZyOdaMKlYbINQ3CyPYAiN2JkNShncaHxspg14tJ0/LU6XVSjxUheK1eBgMljIQvX+4rDzrnmL9hR8uToPOHm1uxV+LMJKqG+3OKA14QU7TD5G5Go9JRRi9FikhmWsrC0R4bgPC0/ZNMV1amOPtqzS62yaONiDkk15mzautxmHpD+XOKOI/7ZgwvzHdjb7cnzdr9L6KbV1Tz/+7DSvMigyy6ylJVKn3Fu23QEgEf7oKb5UVU2iuPySFQzdy0znHfCaNn9fFBWwa9v5dsW1ECMU56kaeHNy4S56DysFybL9KUaKJngMNoerBBK7ZlZa9W5LoQqzimkXoJocflDYYtLfO8YJvwMi65pMI3eob1RqRupLK9MfYrivHLf5eGYq+VtqWreDq03MmrCWQ8LRsPLsyPXdG8OMV47hEHYvd5En0eC19Qo04=</div>
+MTAwMDAw:hdC3UutVa6Ic9FbH6LpJTKYug58h5nOK7AH0NyjTAdY=:6C5TLSz2WCfuvt+Q:g4MlAla7zLLSFaBxWMdNQRqStjsvcKKNy6cZFnrAgaoXTfpYV6eRZzYfIIB1E7CHKmZUEd+WMnvo+tC9+kAex6Ijwp/UcFq4Wy4IkzD3XRbMqP7UPzb6pfSzuvhIGqqUIu4jj3h5dWzAbDyjWIxLX8LngiWq9qQti4dk28zKjQLeF9S/JKwCi6J3yWky9eOKoHPrHcjzB5fYpOYe+lOzwdH+teFp1ViqFWG7UzQ++9HZGo1PHN1Gp/3SvlYMdaqWD5rXBCYgVrH6gBy8ZUgYRHIHAEz9EPKYlsUl3lZZy45ZYBxqJGhbZ+w3aQlBpmqFb5zZJXuC7XKurk2WBfg8EiAgiVz5RRjZoHpaDQLb+VH48qCWFx0TUwI7mibNK6Vj8AWyQu/OvzuprmYaFC7NJ4O8o7xTKOcC43Z2cGEXTyf8NU6+NochdNKRl+YIFxmKye31fVvZ9+8PKzXwwcA1W4jnZWBo0g7VYili7L/plaUZEEvpbXFSfKoCN4y/sRWokHA/0zvBjHDDu/gWb4zeqKVFIvzsGxvFcBXsMekKCeDb8Dw5+jGa1XlkmoKX3EXOopU2O4wzDAkdR2l5rGVBDQb+/gAyJyaVlnz/M/Ac9kE2Qn+vvq+n7Bcbzqn/hD2LUA9gMF/I8nARfhTTgONLRtLnxnYd6CHTilrzML4Q1JW4D1A+q8C+ZgSFYxhqd3fufxqsEg/TXQd4aypj+h2tn6Kc7f9qIBMzcmwuPa8quyA//F6cGs6excGS6tPSlDlAKRAcWuxGmPmSN+lqqJQsFveaHCI10eEEkH7cx6UXCw7IJSxSerElTOa3t6f2UuGXtj1dHLODfyZbQlvqx7eSbShB6+/cGYrsIrkdJW7RlIy1VwHR464YHlNWP0ZcfhVkZ2MRQSp+OYupvCtnmHV4npXMC3sAfuA69IHAdy6vdHDx/OGmMr3l709njmKEhZTOPehbHiQLEM8WABUrqMibu3lwbHfQ7fc0ym+tZjtz12THXrUgzn/6ZBrHz3rjH23Co7kdZhIUZAvXvH9iswdeAdWwIVXa1VdbeGQcKMUSOccCgW+WUvmnHaY0GU+gIv3wcbeLLzinCCxGetFbt3Ulw/ONGLN9Pc3cQlyAFIHjMh9U8R/r8IofIIdA9UwuVwR6jxFCwPJuZF4Lr0bIU4uUnBA1KnnLwvHwTcI5KquZtsKQz4lPgXqWYpeCRVqYswod7ZLSTqzq9P/Epku2+YYABMTWSduymWuhQSlHbJVCUTD5FCg/xX2ELghoewzn623UnFx3iMhbGm5Uo6pp0TWlcyL2bUyE7kZc8qxhrRt2tFVB1YnziQ6M3ommfzZq8nMfNKrkM35ApQ5s4AvdM+EslAeYhVwcw4GJVmMF/bRV6gMmplo5YnuEVEZ+nZ+iI7r7wHuHcPgU+E23poj8zaWJLXB4DNxZD5y5ZlgCZmrejZCNiDDZwLYihGhgXrcfV947amPuQe4O982ZlvSG3Wrl9PznN8MVcYI+8GHbDg//3KSDnpojIvMS1UrKSO4Yg3ue2mV70cHMa2gmFS/jr/HkCU+Ry/Pl8tcNyt87o0qLCOfsPZgFUzcPotrqMIPRlTb0lEK7G7eevMfUU3ZaM6Ze08bFdbufNNzOIL1BF8d5214rzXvg0huQwuZAaCnDKXmTtPFOTHyopstM5x/93FPu1zwgeNscZJU8Ndg8qX3wj6yizBvqACNFlSjsiGFw7Iavvx+WbilDBRQLVi8JQ7aH/Tfl</div>
 </div>
 </ld-topic><ld-topic class="exercises" id="ubung-1">
 <h2>Übung</h2>
@@ -333,7 +332,7 @@ MTAwMDAw:/ZGWPhnNIr6ESQwu+8HKkokehUYYKFURvhmzeTuLbPs=:Ho1vxOY5E6cgliGZ:vLRdYS7wv
 <p class="ld-exercise-title rubric">Irrelevanz von Second-Preimage-Resistenz und Kollisionssicherheit</p>
 <p>Warum sind <em>Second-Preimage-Resistenz</em> und Kollisionssicherheit von nachgeordneter Relevanz, wenn der Hash-Algorithmus zum Hashing von Passwörtern verwendet wird?</p>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:jUGDoPcO2YABl/QfqpZ1pcKK1GXKnJvycZXHzmQM92o=:OOtvZlmIYGLiHr+t:fHY7YJUmjHLuK35yPZ+4m9ysOTHvP1BgvRGb0WPJ5wz38IjWIgnkwLWLcyJwWZX8J9CnYGQHXtMvUnC9Ltn/YwiDMT2tTCW+PAkZKTpd0vXoOB/AETtv50swidSsX7we7qnTBDajRlhb7m47QtHJw5yCw8A1YgpCZ8WGXcuAeBUgoglKarwhj9uSr/HbOxQhX4gP95Xu9UNZRUgqyvKOkFznrccOQzgky+GUiDNdgaT4brtstnR9Xh10XVKKenuUEU6hvEv/ojhdyZrTgmIzTu9bh8obruTbenINfGhHfv2qyEOjJC5b4jTySPB0kP4Yvc9Jio9486E8uHZFIuiKgt3mqx5PapV9jL3QzWCbLRNkIrRQdInGl5hp/tM0c7wAVWCFnyXe4TXBSQLIn2o7vRGwbHYJfuL9WYg8V3lmA5Lpap93K0/BZmmGixmSj0mr5Xg4f1e/GGqN7hsVmwPUbcOudB0mwLQfGDIAAg==</div>
+MTAwMDAw:7+G8plgxqmFOYjPTXaEUKDkmC2oY8ErtzJ64hbdmmF8=:FF77Pyt3kPgDc8Pa:FuF20Jr6NhtH2VDIQgwCFm3/ENrSQhfnmXacyo7MQo3jFzbft8LOUY/Se6XLz9vjmXMF0PZP7pEVyKGuQLyQKng0PrysdrTj/SeOxg0Xvk2ClHDJt2+bsSQfWn6k66fV7D7vPxCcADSHD6sPBv3t2DVzU1s5jHw9iBOzG3OFpaLt+8A5Xofoa6ZoEoNeI1p3VMQoOwE8otcyyUPAuOQdvKs1Bzlt/MIq8ovYrG+C6TVww3tsDrKFm9wMUPPiafknmIYDx4oAXmTeHW5sr83b3vt5pCaZoHVNV1dqkV1og+6WNlcvpYDZYHW58RcGGljKkIs8pkzMBcBnQ+F2Ugz3HxQ2OgI+7QFLsLpQuzOMRbLcUopVM8M7W2HwakZ4rOKlsJKSDl+qFQ5VigjZdZ72mj/EylyVYxs814zuQH9x/OdoHexcpaaKen9dEUxUEfXfVkhg3f/YBTPlZvGGO+R0JpEw0JJtqLuqb5tSaMyWYKZUMmz2Z/SqqIs=</div>
 </div>
 </ld-topic><ld-topic class="s-vertical-title" id="sha-512-ubersicht">
 <h2><a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">SHA 512 - Übersicht</a></h2>
@@ -349,7 +348,7 @@ MTAwMDAw:jUGDoPcO2YABl/QfqpZ1pcKK1GXKnJvycZXHzmQM92o=:OOtvZlmIYGLiHr+t:fHY7YJUmj
 </object></ld-card></ld-deck><div class="supplemental">
 <ul>
 <li><p>SHA-512 nimmt eine Nachricht beliebiger Größe und gibt einen 512-Bit-Hashwert zurück.</p></li>
-<li><p>Der IV von SHA-512 besteht aus den folgenden acht 64-Bit-Zahlen:</p>
+<li><p>Der IV von SHA-512 besteht aus den folgenden acht 64-Bit-Zahlen mit Wortgröße:</p>
 <pre class="literal-block">6a09e667f3bcc908
 bb67ae8584caa73b
 3c6ef372fe94f82b
@@ -359,8 +358,8 @@ a54ff53a5f1d36f1
 1f83d9abfb41bd6b
 5be0cd19137e2179</pre>
 </li>
-<li><p>Die Addition erfolgt Wortweise modulo <span class="math">\(2^{64}\)</span>.</p></li>
-<li><p>Die Nachricht wird in 1024-Bit-Blöcke unterteilt. Die Nachricht wird - unabhängig von der tatsächlichen Länge - <em>immer</em> aufgefüllt (<span class="eng">padded</span>) und auf eine Länge  <span class="math">\(l \equiv 896 (mod\, 1024)\)</span> Bits gebracht.</p></li>
+<li><p>Die Addition erfolgt wortweise modulo 2⁶⁴.</p></li>
+<li><p>Die Nachricht wird in 1024-Bit-Blöcke unterteilt. Die Nachricht wird - unabhängig von der tatsächlichen Länge - <em>immer</em> aufgefüllt (<span class="eng">padded</span>) und auf eine Länge l ≡ 896 (mod 1024) Bits gebracht.</p></li>
 <li><p>Das Padding besteht aus einem Bit mit Wert 1, gefolgt von der notwendigen Anzahl Nullen.</p></li>
 <li><p>Am Ende wird die Länge der Nachricht als 128-Bit-Wert angehängt, um ein Vielfaches von 1024 zu erhalten.</p></li>
 </ul>
@@ -378,8 +377,9 @@ a54ff53a5f1d36f1
 </object></ld-card><ld-card class="overlay incremental">
 <object class="align-center" data="drawings/sha512-processing_a_block/constants.svg" role="img" type="image/svg+xml">
 </object></ld-card></ld-deck><div class="supplemental">
-<p>Die Additionen erfolgen Modulo <span class="math">\(2^{64}\)</span>.</p>
-<p class="rubric">Berechnung der <span class="math">\(W_i\)</span></p>
+<p>Die Additionen erfolgen Modulo 2⁶⁴.</p>
+<p class="rubric">Berechnung der W<sub>
+i</sub></p>
 <p><span class="math">\(W_0\)</span> bis <span class="math">\(W_{15}\)</span> sind die ersten 16 Wörter des 1024-Bit-Blocks. Die restlichen 64 Wörter werden wie folgt berechnet.</p>
 <p><span class="math">\(w_t = \sigma_1(w_{t-2}) + w_{t-7} + \sigma_0(w_{t-15}) + w_{t-16}\)</span></p>
 <p>Mit:</p>
@@ -577,7 +577,7 @@ K' &amp; = &amp;\begin{cases}
 </div></ld-topic><ld-topic id="hmac-berechnung-in-python">
 <h2>HMAC Berechnung in Python</h2>
 <p><strong>Implementierung</strong></p>
-<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span> <span class="name namespace">hashlib</span><span class="whitespace">
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">hashlib</span><span class="whitespace">
 </span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="name">pwd</span> <span class="operator">=</span> <span class="literal string affix">b</span><span class="literal string double">&quot;MyPassword&quot;</span><span class="whitespace">
 </span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="name">stretched_pwd</span> <span class="operator">=</span> <span class="name">pwd</span> <span class="operator">+</span> <span class="punctuation">(</span><span class="literal number integer">64</span><span class="operator">-</span><span class="name builtin">len</span><span class="punctuation">(</span><span class="name">pwd</span><span class="punctuation">))</span> <span class="operator">*</span> <span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00</span><span class="literal string double">&quot;</span><span class="whitespace">
 </span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
@@ -592,8 +592,8 @@ K' &amp; = &amp;\begin{cases}
 </span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span><span class="comment single">#        \x8f\xa6\xd6L\x94\xab\x89\x9a\x89*\xc7\x0f_no\xc1\xdc6\xfc'</span></code></pre>
 <div class="supplemental">
 <p>HMAC ist auch direkt als Bibliotheksfunktion verfügbar.</p>
-<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span> <span class="name namespace">hashlib</span><span class="whitespace">
-</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword namespace">import</span> <span class="name namespace">hmac</span><span class="whitespace">
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">hashlib</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">hmac</span><span class="whitespace">
 </span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">
 </span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="name">hash_hmac</span> <span class="operator">=</span> <span class="name">hmac</span><span class="operator">.</span><span class="name">new</span><span class="punctuation">(</span><span class="whitespace">
 </span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span>    <span class="literal string affix">b</span><span class="literal string double">&quot;MyPassword&quot;</span><span class="punctuation">,</span><span class="whitespace">

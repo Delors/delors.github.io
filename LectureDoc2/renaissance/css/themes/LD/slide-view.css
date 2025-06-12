@@ -1,14 +1,11 @@
 /* LAYER: theme.ld.slide-view */
 
 #ld-slides-pane {
-    
-    .ld-slide {
-
+    ld-slide {
         --ld-rel-max-supplemental-area-width: 85%;
         --ld-rel-max-supplemental-area-height: 85%;
 
         ld-scrollable {
-
             &::before {
                 display: inline-block;
                 float: right;
@@ -25,8 +22,8 @@
         /*  Styling of Supplemental Information
             -----------------------------------
 
-            
-            Aggregation of all supplemental information on a slide in one 
+
+            Aggregation of all supplemental information on a slide in one
             ld-supplementals element is done by Javascript.
 
             The aggregated supplemental information is then positioned on the
@@ -40,7 +37,7 @@
             border-radius: var(--s-border-radius) 0 0 var(--s-border-radius);
             padding: calc(var(--s-tb-padding) * 0.75) calc(var(--s-lr-padding) * 0.75);
             /*  The factor has to be larger than the factor used by translate
-                (see below) to ensure that the content is never visible when 
+                (see below) to ensure that the content is never visible when
                 the supplemental information is not expanded. */
 
             position: absolute;
@@ -50,28 +47,25 @@
 
             overflow-y: scroll;
 
-            --current-background-color: rgb(from var(--s-background-color) r g b / 0.5);
+            --current-background-color: rgb(from var(--s-background-color) r g b / 0.66);
             background-color: var(--current-background-color);
-            -webkit-backdrop-filter: blur(25px);
-            backdrop-filter: blur(25px);
+            backdrop-filter: blur(8px);
 
-            transform:
-                translateX(calc(100% - var(--s-lr-padding) * 0.5)) 
+            transform: translateX(calc(100% - var(--s-lr-padding) * 0.5))
                 translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
             box-shadow: var(--trbl-shadow);
             transition: 0.75s;
 
-            /*  We can't use the :hover pseudo class here, because we want to be 
+            /*  We can't use the :hover pseudo class here, because we want to be
                 able to apply the styling in the non-primary window. */
             &.hover\:ld-supplementals {
-                transform:
-                    translateX(0%) 
+                transform: translateX(0%)
                     translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
                 transition: 0.75s;
                 box-shadow: var(--trbl-shadow-dark);
             }
 
-            .supplemental+.supplemental {
+            .supplemental + .supplemental {
                 margin-top: 0.5em;
                 border-top: 1px dashed var(--dark-gray);
                 padding-top: 0.5em;
@@ -85,7 +79,7 @@
             the presenter notes are shown at the bottom.
         */
         ld-presenter-note-marker {
-            >div {
+            > div {
                 display: block;
                 position: absolute;
                 width: 1.5em;
@@ -112,7 +106,7 @@
             left: 0;
             z-index: 1;
 
-            >ld-presenter-note {
+            > ld-presenter-note {
                 padding: 0.25em 0.5em;
 
                 font-size: 38px;
@@ -147,7 +141,7 @@
             }
         }
 
-        /*  The DIV with the class ".ld-copy-to-clipboard-button" is added by 
+        /*  The DIV with the class ".ld-copy-to-clipboard-button" is added by
             programmatically by LectureDoc. */
         .ld-copy-to-clipboard-button {
             scale: 3;
@@ -155,10 +149,8 @@
             transform-origin: top right;
         }
 
-        
-        .admonition.warning>p:first-child.admonition-title {
-            animation:
-                dark-red-to-light-red-and-back 10s infinite;
+        .admonition.warning > p:first-child.admonition-title {
+            animation: dark-red-to-light-red-and-back 10s infinite;
         }
     }
 }
@@ -177,16 +169,15 @@
     }
 }
 
-
 /*
     "Styling" of Animations
 
     The following style can generally be composed with the previous styles which
-    affect the layout of the slide. 
+    affect the layout of the slide.
 
-    Recall that LectureDoc's mechanism to switch slides is to scale a slide 
-    to 0 and to scale the next slide to 1 (normally both happens instanteously). 
-    Hence, it is often necessary to "reset" the scale level to make animations 
+    Recall that LectureDoc's mechanism to switch slides is to scale a slide
+    to 0 and to scale the next slide to 1 (normally both happens instanteously).
+    Hence, it is often necessary to "reset" the scale level to make animations
     work.
 
     Currently, we support these animations:
@@ -208,10 +199,12 @@
     animation: 3s slide-move-left-in;
 }
 
-#ld-slides-pane .ld-previous-slide:has(+.ld-slide.transition-move-left.ld-current-slide) {
-    animation: 3s slide-move-left-out, 0s 3s scale-to-zero;
+#ld-slides-pane
+    .ld-previous-slide:has(+ .ld-slide.transition-move-left.ld-current-slide) {
+    animation:
+        3s slide-move-left-out,
+        0s 3s scale-to-zero;
 }
-
 
 @keyframes slide-move-left-in {
     0.1% {
@@ -251,7 +244,7 @@
     animation: 3s slide-scale-in;
 }
 
-#ld-slides-pane .ld-previous-slide:has(+.ld-slide.transition-scale.ld-current-slide) {
+#ld-slides-pane .ld-previous-slide:has(+ .ld-slide.transition-scale.ld-current-slide) {
     animation: 3s slide-scale-out;
 }
 
@@ -281,7 +274,6 @@
 }
 
 #ld-slides-pane {
-
     .ld-current-slide.transition-flip {
         perspective: 3000px;
         transform-style: preserve-3d;
@@ -290,7 +282,7 @@
         animation: 3s flip-in;
     }
 
-    .ld-previous-slide:has(+.ld-slide.ld-current-slide.transition-flip) {
+    .ld-previous-slide:has(+ .ld-slide.ld-current-slide.transition-flip) {
         perspective: 3000px;
         transform-style: preserve-3d;
         backface-visibility: hidden;
@@ -300,7 +292,6 @@
 }
 
 @keyframes flip-in {
-
     0%,
     50% {
         transform: rotateY(90deg);
@@ -332,14 +323,14 @@
     }
 }
 
-
-
 #ld-slides-pane .ld-current-slide.transition-fade {
     animation: 2s slide-fade-in;
 }
 
-#ld-slides-pane .ld-previous-slide:has(+.ld-slide.transition-fade.ld-current-slide) {
-    animation: 2s slide-fade-out, 0s 2s scale-to-zero;
+#ld-slides-pane .ld-previous-slide:has(+ .ld-slide.transition-fade.ld-current-slide) {
+    animation:
+        2s slide-fade-out,
+        0s 2s scale-to-zero;
 }
 
 @keyframes slide-fade-in {
@@ -369,8 +360,11 @@
     animation: 3s slide-move-old-to-top;
 }
 
-#ld-slides-pane .ld-previous-slide:has(+.ld-slide.transition-move-to-top.ld-current-slide) {
-    animation: 3s slide-move-bottom-to-center, 0s 3s scale-to-zero;
+#ld-slides-pane
+    .ld-previous-slide:has(+ .ld-slide.transition-move-to-top.ld-current-slide) {
+    animation:
+        3s slide-move-bottom-to-center,
+        0s 3s scale-to-zero;
 }
 
 @keyframes slide-move-old-to-top {
@@ -407,12 +401,6 @@
     }
 }
 
-
-
-
-
-
-
 /*
 
     Styling of Cheat Sheets
@@ -434,7 +422,7 @@
 
     &.ld-slide::before {
         /* to clear the default logo */
-        display:none;
+        display: none;
     }
 
     div.cheat-sheet-block,
@@ -457,7 +445,7 @@
         }
     }
 
-    div.cheat-sheet-block>.rubric:first-child {
+    div.cheat-sheet-block > .rubric:first-child {
         width: calc(100% + 10px);
         margin-bottom: 0;
         position: relative;
@@ -470,7 +458,7 @@
         background-color: var(--dhbw-red);
     }
 
-    div.cheat-sheet-block>.rubric:not(:first-child) {
+    div.cheat-sheet-block > .rubric:not(:first-child) {
         background-color: var(--dhbw-gray);
         position: relative;
         top: -5px;
@@ -481,10 +469,7 @@
         margin-bottom: 0;
     }
 
-    p.rubric+p {
+    p.rubric + p {
         margin-top: 0;
     }
 }
-
-
-
