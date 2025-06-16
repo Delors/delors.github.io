@@ -1,4 +1,4 @@
-/*
+/* 
     This style collects all styles related to ordered and unordered lists.
 */
 
@@ -22,14 +22,14 @@ ol.arabic.dhbw {
     padding-left: var(--item-counter-offset);
 
     counter-reset: item;
-
-    > li {
+    
+    >li {
         position: relative;
         padding: 0.25em;
         margin: 0.25em;
 
         background-color: var(--dhbw-light-gray);
-
+        
         counter-increment: item;
 
         &::before {
@@ -52,13 +52,11 @@ ol.arabic.dhbw {
             color: white;
         }
 
-        /* We support lists with up to 99 elements: */
-        &:nth-child(-n + 9)::before {
+        &:nth-child(-n+9)::before {
             content: "0" counter(item);
         }
 
         &:hover {
-            /* FIXME this effect is not relayed to secondary windows. */
             box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
 
             &::before {
@@ -70,15 +68,15 @@ ol.arabic.dhbw {
 }
 
 /*
-    This style is complementary to the previous one and adds a pop-out effect
+    This style is complementary to the previous one and adds a pop-out effect 
     on hover.
 */
-:is(ol, ul).pop-out-on-hover {
+:is(ol,ul).pop-out-on-hover{
     perspective: 500px;
     transform-style: preserve-3d;
     overflow: visible;
-
-    > li {
+    
+    >li {
         transition: 0.5s;
 
         &::before {
@@ -86,7 +84,6 @@ ol.arabic.dhbw {
         }
 
         &:hover {
-            /* FIXME this effect is not relayed to secondary windows. */
             transform: translateZ(15px);
             transition: 0.5s;
 
@@ -100,7 +97,7 @@ ol.arabic.dhbw {
 ul.columns {
     width: 100%;
     padding: 0;
-
+    
     list-style-type: none;
 
     display: flex;
@@ -108,20 +105,19 @@ ul.columns {
     gap: 0.25em;
     justify-content: space-between;
 
-    > li {
+    >li {
         flex-grow: 1;
         flex: 1 1 0;
         display: flex;
         flex-direction: column;
 
-        > p {
+        >p {
             margin: 0;
             padding: 0.25em;
             background-color: var(--dhbw-light-gray);
             color: black;
         }
-        > p:first-child {
-            /* the "Header" */
+        > p:first-child { /* the "Header" */
             margin-bottom: 0.25em;
             background-color: var(--dhbw-red);
             color: white;
@@ -136,15 +132,22 @@ ul.columns {
     }
 }
 
+
+
+
+
+
+
 /*
     Styling of lists where each list item has multiple paragraphs, but all - except of the first one (rst wraps each block of text belonging to a list item in a div/p element) - should be rendered in a smaller font and in gray.
 */
 /* TODO remove list-with-explanations*/
-:is(.list-with-explanations, .with-explanations) > li > *:not(:first-child) {
+:is(.list-with-explanations,.with-explanations)>li>*:not(:first-child) {
     font-size: smaller;
     color: var(--dhbw-dark-gray);
     mix-blend-mode: hard-light;
 }
+
 
 ul {
     list-style-position: outside;
@@ -192,6 +195,8 @@ ul > li.attention-list {
     list-style-type: "⚡️";
 }
 
+
+
 /*
 
 Styling of impressive lists (whatever "impressive" means in this case).
@@ -202,7 +207,9 @@ ol.impressive {
     margin-left: 1em;
     padding-left: 0;
 
+
     li {
+
         &::marker {
             color: black;
         }
@@ -226,7 +233,7 @@ ul.impressive {
     display: grid;
     grid-auto-rows: 1fr;
 
-    > li {
+    >li {
         text-align: center;
         background-color: var(--dhbw-light-gray);
         border-radius: 0.5em;

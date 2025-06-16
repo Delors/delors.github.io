@@ -45,7 +45,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.5</dd>
+<dd class="version">1.5.2</dd>
 </dl>
 <div class="supplemental">
 <dl class="field-list">
@@ -2472,7 +2472,6 @@ MTAwMDAw:lqZbOXGxb+ZCsXis3Wp9Og0sHQZCjuE6Qljks4B1hOY=:dMZsmXBK42zmmicf:v6AUm/dow
 </code><small class="ln">16 </small><code data-lineno="16 ">  <span class="punctuation">&lt;/</span><span class="name tag">template</span><span class="punctuation">&gt;&lt;/</span><span class="name tag">div</span><span class="punctuation">&gt;</span></code></pre>
 </ld-cell><ld-cell class="width-40" style="align-self:auto;">
 <p class="rubric">Eingebettet</p>
-<p>(⚠️ <span class="red">keine Spiegelung!</span>)</p>
 <div class="docutils container">
 <div>
 <h2 style="color: var(--c)">Demo</h2>
@@ -2497,6 +2496,18 @@ MTAwMDAw:lqZbOXGxb+ZCsXis3Wp9Og0sHQZCjuE6Qljks4B1hOY=:dMZsmXBK42zmmicf:v6AUm/dow
                 top: 0.1em;
                 right: 0.1em;
             }
+
+            &::after {
+                position: absolute;
+                content: "⚠️keine Spiegelung";
+                font-size: 0.6em;
+                background-color: rgba(255,200,200,0.5);
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 0.15em;
+                text-align: center;
+            }
         }
     </style>
     <style contenteditable onkeydown="event.stopPropagation()">/*:host {
@@ -2512,11 +2523,11 @@ p#the-one{color:green;}
 </div></div>
 </ld-cell></ld-grid><div class="supplemental">
 <p>Slotted Elemente befinden sich im Light DOM, werden aber visuell im Shadow DOM über <code class="html"><span class="punctuation">&lt;</span><span class="name tag">slot</span><span class="punctuation">&gt;</span></code> angezeigt.
-Ihr Layout kann nicht direkt vom Shadow DOM beeinflusst werden.
-CSS-Variablen (<code class="css"><span class="name tag">--var</span></code>) hingegen können vom Shadow DOM nach außen vererbt und vom Light DOM genutzt werden.
-Für ein slotted Element gilt grundsätzlich das CSS des Light DOMs, außer es wird über <code class="css"><span class="punctuation">::</span><span class="name decorator">slotted</span><span class="operator">(...)</span></code> gestylt.</p>
+Ihr Layout kann nicht direkt vom Shadow DOM beeinflusst werden.</p>
+<p>CSS-Variablen (<code class="css"><span class="name tag">--var</span></code>) hingegen können vom Shadow DOM nach außen vererbt und vom Light DOM genutzt werden.</p>
+<p>Für ein slotted Element gilt grundsätzlich das CSS des Light DOMs, außer es wird über <code class="css"><span class="punctuation">::</span><span class="name decorator">slotted</span><span class="operator">(...)</span></code> gestylt.</p>
 <p>Wenn ein <code class="html"><span class="punctuation">&lt;</span><span class="name tag">template</span><span class="punctuation">&gt;</span></code>-Element das Attribut <code class="html">shadowrootmode=&quot;open&quot;</code> hat, erzeugt der Browser beim Parsen automatisch einen Shadow Root für das direkt übergeordnete Element.
-Der Inhalt des <code class="html"><span class="punctuation">&lt;</span><span class="name tag">template</span><span class="punctuation">&gt;</span></code> wird in diesen Shadow Root übernommen und automatisch gerendert, sofern der Browser Declarative Shadow DOM unterstützt.</p>
+Der Inhalt des <code class="html"><span class="punctuation">&lt;</span><span class="name tag">template</span><span class="punctuation">&gt;</span></code> wird in diesen Shadow Root übernommen und automatisch gerendert, sofern der Browser deklarative Shadow DOMs unterstützt.</p>
 </div></ld-topic><ld-topic id="ausgewahlte-vererbte-css-eigenschaften">
 <h2>Ausgewählte vererbte CSS Eigenschaften</h2>
 <ld-story>
@@ -2605,7 +2616,7 @@ Der Inhalt des <code class="html"><span class="punctuation">&lt;</span><span cla
 <li><p>Was passiert beim Parsen dieses Dokuments mit dem Inhalt des <cite>template</cite>-Elements?</p></li>
 <li><p>Warum wird der Text „Hallo Welt!“ in grün dargestellt?</p></li>
 <li><p>Wie müsste man den Code ändern, damit der Text <strong>nicht</strong> mehr sichtbar ist, obwohl er im DOM vorhanden bleibt?</p></li>
-<li><p>Ergänzen Sie den Code so, dass mehrere Slots mit Namen verwendet werden. Dazu geben Sie bei den Element im Light DOM den Namen mittels des slot attributes an (z. B. <code class="html"><span class="punctuation">&lt;</span><span class="name tag">p</span> <span class="name attribute">slot</span><span class="operator">=</span><span class="literal string">&quot;footer&quot;</span><span class="punctuation">&gt;</span></code>) und referenzieren diesen dann durch die Angabe des Namens im <code class="html"><span class="punctuation">&lt;</span><span class="name tag">slot</span><span class="punctuation">&gt;</span></code> Elements (z. B. <cite>&lt;slot name=&quot;header&quot;&gt;</cite> und <cite>&lt;slot name=&quot;footer&quot;&gt;</cite>).</p></li>
+<li><p>Ergänzen Sie den Code so, dass mehrere Slots mit Namen verwendet werden. Dazu geben Sie bei den Element im Light DOM den Namen mittels des slot attributes an (z. B. <code class="html"><span class="punctuation">&lt;</span><span class="name tag">p</span> <span class="name attribute">slot</span><span class="operator">=</span><span class="literal string">&quot;footer&quot;</span><span class="punctuation">&gt;</span></code>) und referenzieren diesen dann durch die Angabe des Namens im <code class="html"><span class="punctuation">&lt;</span><span class="name tag">slot</span><span class="punctuation">&gt;</span></code> Elements (z. B. <code class="html"><span class="punctuation">&lt;</span><span class="name tag">slot</span> <span class="name attribute">name</span><span class="operator">=</span><span class="literal string">&quot;header&quot;</span><span class="punctuation">&gt;</span></code> und <code class="html"><span class="punctuation">&lt;</span><span class="name tag">slot</span> <span class="name attribute">name</span><span class="operator">=</span><span class="literal string">&quot;footer&quot;</span><span class="punctuation">&gt;</span></code>).</p></li>
 </ol>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:HDGBirUtx0WdHzVBY0lrWC2v++bhL+y9qVA6a37clDI=:vJAlFMcJQ9lAfCmI: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</div>

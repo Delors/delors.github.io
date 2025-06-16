@@ -146,12 +146,46 @@ const ldEvents = {
     },
 };
 
+const interWindowMessageHandlers = {
+    handlers: {},
+    indexedHandlers: {}, // an object mapping message identifiers (Strings) to arrays of handlers
+    addHandler: function (msg, handler) {
+        if (msg in handlers) {
+            throw new Error("handler already registered: " + msg);
+        }
+        this.handlers[msg] = handler;
+    },
+    /**
+     * Registers a handler for a specific type of event. To distinguish
+     * different handlers that use the same event type an index (int or string)
+     * is used.
+     *
+     * @param {*} msg The name of the message.
+     * @param {*} index The unique index which identifies a single handler.
+     * @param {*} handler The handler which will handle messages with the
+     *  specified id. The handler will "only" get the raw data object.
+     */
+    addIndexedHandler: function (msg, index, handler) {
+        let handlers = this.indexedHandlers[msg];
+        if (!handlers) {
+            this.indexedHandlers[msg] = handlers = {};
+        }
+        if (handlers[index]) {
+            throw new Error(
+                `handler with index already registered: ${msg}[${index}]`,
+            );
+        }
+        handlers[index] = handler;
+    },
+};
+
 /* We need to make the basic functions available here, to enable ld-components
    the registration for all basic events, before they actually happen. */
 const lectureDoc2 = {
     lib: ld,
     crypto: ldCrypto,
     ldEvents: ldEvents,
+    interWindowMessageHandlers: interWindowMessageHandlers,
 };
 export default lectureDoc2;
 
@@ -2887,96 +2921,75 @@ const onLoad = () => {
     registerHoverPresenterNoteListener();
     registerHistoryChangeListener();
 
+    const iwmHandlers = interWindowMessageHandlers.handlers;
+    iwmHandlers["advancePresentation"] = localAdvancePresentation;
+    iwmHandlers["retrogressPresentation"] = localRetrogressPresentation;
+    iwmHandlers["moveToPreviousSlide"] = localMoveToPreviousSlide;
+    iwmHandlers["moveToNextSlide"] = localMoveToNextSlide;
+    iwmHandlers["goToSlide"] = ({ targetSlideNo, updateHistory }) => {
+        localGoToSlideWithNo(targetSlideNo, updateHistory);
+    };
+    iwmHandlers["jumpToId"] = localJumpToId;
+    iwmHandlers["resetCurrentSlideProgress"] = localResetCurrentSlideProgress;
+    iwmHandlers["resetAllAnimations"] = localResetAllAnimations;
+    iwmHandlers["resetLectureDoc"] = localResetLectureDoc;
+    iwmHandlers["hideLectureDoc"] = localHideLectureDoc;
+    iwmHandlers["ensureLectureDocIsVisible"] = localEnsureLectureDocIsVisible;
+
+    iwmHandlers["decryptExercise"] = ([title, password]) => {
+        localDecryptExercise(title, password);
+    };
+
+    iwmHandlers["showLaserPointer"] = ([slideX, slideY]) => {
+        localShowLaserPointer(slideX, slideY);
+    };
+    iwmHandlers["hideLaserPointer"] = localHideLaserPointer;
+
+    iwmHandlers["addHoverSupplemental"] = (id) => {
+        document
+            .querySelector(
+                `#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`,
+            )
+            .classList.add("hover:ld-supplementals");
+    };
+    iwmHandlers["removeHoverSupplemental"] = (id) => {
+        document
+            .querySelector(
+                `#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`,
+            )
+            .classList.remove("hover:ld-supplementals");
+    };
+    iwmHandlers["supplementalScrolled"] = ([supplementalId, scrollTop]) => {
+        localScrollSupplemental(supplementalId, scrollTop);
+    };
+
+    iwmHandlers["redrawSlide"] = localRedrawSlide;
+
     ldEvents.afterLDListenerRegistrations.forEach((f) => f());
 
     if (ephemeral.ldPerDocumentChannel /* no document id - no channel */) {
         ephemeral.ldPerDocumentChannel.addEventListener("message", (event) => {
             const [msg, data] = event.data;
-            switch (msg) {
-                case "advancePresentation":
-                    localAdvancePresentation();
-                    break;
-                case "retrogressPresentation":
-                    localRetrogressPresentation();
-                    break;
-                case "moveToPreviousSlide":
-                    localMoveToPreviousSlide(data);
-                    break;
-                case "moveToNextSlide":
-                    localMoveToNextSlide(data);
-                    break;
-                case "goToSlide": {
-                    const { targetSlideNo, updateHistory } = data;
-                    localGoToSlideWithNo(targetSlideNo, updateHistory);
-                    break;
-                }
-                case "jumpToId":
-                    localJumpToId(data);
-                    break;
-
-                case "resetCurrentSlideProgress":
-                    localResetCurrentSlideProgress();
-                    break;
-                case "resetAllAnimations":
-                    localResetAllAnimations();
-                    break;
-                case "resetLectureDoc":
-                    localResetLectureDoc();
-                    break;
-
-                case "hideLectureDoc":
-                    localHideLectureDoc();
-                    break;
-                case "ensureLectureDocIsVisible":
-                    localEnsureLectureDocIsVisible();
-                    break;
-                case "decryptExercise": {
-                    const [title, password] = data;
-                    localDecryptExercise(title, password);
-                    break;
-                }
-
-                case "showLaserPointer": {
-                    const [slideX, slideY] = data;
-                    localShowLaserPointer(slideX, slideY);
-                    break;
-                }
-                case "hideLaserPointer":
-                    localHideLaserPointer();
-                    break;
-
-                case "redrawSlide":
-                    localRedrawSlide();
-                    break;
-
-                case "addHoverSupplemental": {
-                    const id = data;
-                    document
-                        .querySelector(
-                            `#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`,
-                        )
-                        .classList.add("hover:ld-supplementals");
-                    break;
-                }
-                case "removeHoverSupplemental": {
-                    const id = data;
-                    document
-                        .querySelector(
-                            `#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`,
-                        )
-                        .classList.remove("hover:ld-supplementals");
-                    break;
-                }
-                case "supplementalScrolled": {
-                    const [supplementalId, scrollTop] = data;
-                    localScrollSupplemental(supplementalId, scrollTop);
-                    break;
-                }
-
-                default:
-                    console.warn("unknown message: " + event.data);
-                    console.dir(event);
+            const handler = interWindowMessageHandlers.handlers[msg];
+            if (handler) {
+                handler(data);
+                return;
             }
+
+            const indexedHandlers =
+                interWindowMessageHandlers.indexedHandlers[msg];
+            if (indexedHandlers) {
+                const [id, handlerData] = data;
+                const indexedHandler = indexedHandlers[id];
+                if (indexedHandler) {
+                    indexedHandler(handlerData);
+                } else {
+                    console.warn("unknown message index", event);
+                }
+                return;
+            }
+
+            console.warn("unknown message", event);
         });
     }
 };
@@ -3008,6 +3021,15 @@ lectureDoc2.getState = function () {
 lectureDoc2.getEphemeral = function () {
     return ephemeral;
 };
+/**
+ * "propagateStateChange" is used by extensions (modules) to post message to the
+ * channel that is used for inter-window communication of state changes.
+ *
+ * In general the message is supposed to be an array consisting of the message
+ * type and the data [msg,data]. If the message is handled by an indexed
+ * handler, then the format is as follow: [msg,[id,data]].
+ */
+lectureDoc2.propagateStateChange = postMessage;
 lectureDoc2.prepareForPrinting = prepareForPrinting;
 lectureDoc2.getCurrentSlide = getCurrentSlide;
 

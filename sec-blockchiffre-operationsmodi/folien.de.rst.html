@@ -42,7 +42,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.2</dd>
+<dd class="version">1.3</dd>
 <dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
 <dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
 </dd>
@@ -146,7 +146,63 @@ Der vorhergehende Chiffretext wird als Eingabe für den Verschlüsselungsalgorit
 <p>Bilder von: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">White Timberwolf</a></p>
 </aside>
 </aside>
-</ld-topic><ld-topic id="probleme-bei-der-verwendung-der-verschlusselung-im-ecb-modus">
+</ld-topic><ld-topic id="padding-modi-in-blockchiffren">
+<h2>Padding-Modi in Blockchiffren</h2>
+<ld-story>
+<aside class="admonition remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Bei Blockchiffren (z. B. AES mit 128 Bit = 16 Byte Blockgröße) muss die zu verschlüsselnde Nachricht eine exakte Vielfache der Blockgröße sein. Ist das nicht der Fall, wird Padding verwendet, um die Nachricht auf eine vielfaches der Blockgröße zu bringen.</p>
+</aside>
+<p class="rubric">Ausgewählte Modi</p>
+<ul class="incremental-list">
+<li><p>PKCS#7</p>
+<p>Füllt den restlichen Block mit Bytes, deren Wert gleich der Anzahl hinzugefügter Bytes ist.</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<ul class="simple">
+<li><p>Nachricht mit 13 Byte → 3 Bytes Padding → <span class="docutils literal">03 03 03</span></p></li>
+<li><p>Nachricht mit Blocklänge (z. B. 16 Byte) → ein kompletter zusätzlicher Block mit 16 × <span class="docutils literal">0x10</span></p></li>
+</ul>
+</aside>
+</li>
+<li><p>ANSI X.923</p>
+<p>Auffüllen mit <span class="docutils literal">0x00</span>, außer dem letzten Byte, das die Anzahl Padding-Bytes angibt.</p>
+</li>
+<li><p>ISO/IEC 7816-4</p>
+<p>Beginnt mit <span class="docutils literal">0x80</span>, gefolgt von Nullen.</p>
+</li>
+<li><p>Zero Padding</p>
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Füllt mit Nullen (<span class="docutils literal">0x00</span>). Funktioniert <strong>nur</strong>, wenn die Nachricht nie mit <cite>0x00</cite> endet, sonst ist Entschlüsselung mehrdeutig!</p>
+</aside>
+</li>
+</ul>
+<div class="incremental compound">
+<p class="rubric">Verhalten bei voller Blockgröße - Zusammenfassung</p>
+<p>Angenommen, die Nachricht ist exakt 16 Byte lang (z. B. <cite>&quot;1234567890ABCDEF&quot;</cite>), so ergibt sich:</p>
+<table>
+<tbody>
+<tr><td><p><strong>Padding-Modus</strong></p></td>
+<td><p><strong>Erweiterte Nachricht (hex)</strong></p></td>
+</tr>
+<tr><td><p>PKCS#7</p></td>
+<td><p><cite>... 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10</cite></p></td>
+</tr>
+<tr><td><p>ANSI X.923</p></td>
+<td><p><cite>... 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 10</cite></p></td>
+</tr>
+<tr><td><p>ISO/IEC 7816-4</p></td>
+<td><p><cite>... 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</cite></p></td>
+</tr>
+<tr><td><p>Zero Padding</p></td>
+<td><p><cite>... 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</cite></p></td>
+</tr>
+</tbody>
+</table>
+<p>Hinweis: Bei allen Modi wird bei Nachrichten mit dem x-fachen der Blocklänge ein <strong>zusätzlicher</strong> Padding-Block hinzugefügt, um bei der Entschlüsselung korrekt erkennen zu können, ob Padding entfernt werden muss.</p>
+</div>
+</ld-story></ld-topic><ld-topic id="probleme-bei-der-verwendung-der-verschlusselung-im-ecb-modus">
 <h2>Probleme bei der Verwendung der Verschlüsselung im ECB-Modus</h2>
 <ld-deck>
 <ld-card>
