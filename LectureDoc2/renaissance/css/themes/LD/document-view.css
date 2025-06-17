@@ -1,5 +1,14 @@
 /* LAYER: theme.ld.document-view */
 
+/*  Required for Safari Technology Preview (June 2025);
+    it seems to be a regression as it was already working
+    in previous versions ... */
+@media print {
+    #ld-document-view > ld-section {
+        page-break-before: always;
+    }
+}
+
 #ld-document-view {
     --unitless-current-base-font-size: var(--unitless-d-font-size);
     --current-base-font-size: var(--d-font-size);
@@ -116,11 +125,6 @@
     }
     .ld-exercise-solution[data-encrypted] {
         display: none;
-    }
-    .ld-exercise-solution-wrapper {
-        @media print {
-            display: none;
-        }
     }
 
     /*  Numbering sections and exercises. */

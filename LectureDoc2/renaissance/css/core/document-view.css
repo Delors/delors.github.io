@@ -1,7 +1,18 @@
 /* LAYER: behavior */
 
+@media print {
+    /* !ATTENTION! Using CSS nesting doesn't work with Safari (June 2025). */
+    #ld-document-view {
+        margin: 0;
+    }
+
+    #ld-document-view input[type="password"] {
+        display: none;
+    }
+}
+
 #ld-document-view {
-    /* "display" is controlled by JavaScript: */
+    /* The "display" value is controlled by JavaScript! */
     display: none;
 
     min-width: calc(var(--ld-slide-width) / 3);
@@ -9,23 +20,12 @@
 
     overflow: hidden;
 
-    /* for symmetry reasons*/
-    @media print {
-        margin: 0;
-    }
-
     > ld-section {
         --ld-rendering-mode: section;
 
         contain: layout paint;
 
         overflow: hidden;
-
-        &:has(+ ld-section) {
-            @media print {
-                break-after: page;
-            }
-        }
     }
 
     ld-deck {
