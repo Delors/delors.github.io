@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="Code Review, HTML, CSS" name="keywords" />
+<meta content="Einführung in Code Reviews mit dem besonderen Schwerpunkt Webtechnologien (HTML, CSS und JavaScript)" lang="de" name="description" xml:lang="de" />
+<meta content="lab-code-reviews" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
+<title>Code Reviews</title>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="code-reviews">
+<h1 class="title">Code Reviews</h1>
+<dl class="docinfo">
+<dt class="dozent">Dozent<span class="colon">:</span></dt>
+<dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt class="contact">Kontakt<span class="colon">:</span></dt>
+<dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">0.1</dd>
+</dl>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/lab-codereviews/folien.de.rst.html">https://delors.github.io/lab-codereviews/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/lab-codereviews/folien.de.rst.html.pdf">https://delors.github.io/lab-codereviews/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div></ld-topic>
+<ld-topic class="new-section" id="einfuhrung">
+<h2>Einführung</h2>
+</ld-topic><ld-topic id="was-sind-code-reviews">
+<h2>Was sind Code Reviews</h2>
+<ld-deck>
+<ld-card>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Bei einem Code Review geben Entwickler Feedback zu (fremden) Code; typischerweise vor einem Merge.</p>
+<p>Code Reviews helfen dabei Fehler frühzeitig zu finden, die Qualtiät des Codes zu verbessern und sicherzustellen, dass alle Teammitglieder mit dem Code vertraut sind und verstehen wie der Code funktioniert.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Zweck von Code Reviews</p>
+<ul class="simple">
+<li><p>Qualitätssicherung</p></li>
+<li><p>Frühzeitiger Fehlererkennung</p></li>
+<li><p>Wissensverbreitung (im Team)</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic><ld-topic id="best-practices">
+<h2>Best Practices</h2>
+<div class="compound">
+<p class="rubric">für Reviewer</p>
+<ul class="simple">
+<li><p>konstruktiv und respektvoll bleiben</p></li>
+<li><p>(kleine) fokussierte Reviews bevorzugen</p></li>
+<li><p>Review mit Kontext (Anforderungen, Ziel) durchführen</p></li>
+<li><p>eigene Annahmen hinterfragen</p></li>
+<li><p>auf Verständlichkeit und Stil achten (Semantik von Bezeichnern etc.)</p></li>
+</ul>
+</div>
+<div class="incremental compound">
+<p class="rubric">für Autoren</p>
+<ul class="simple">
+<li><p>Reviews nicht persönlich nehmen</p></li>
+<li><p>Nachfragen ggf. als Hinweis verstehen für Dokumentationsmängel</p></li>
+</ul>
+</div>
+</ld-topic><ld-topic id="voraussetzung-fur-code-reviews">
+<h2>Voraussetzung für Code Reviews</h2>
+<ul class="incremental-list simple">
+<li><p>der Code ist konsistent formatiert (Code Prettifier)</p></li>
+<li><p>triviale Fehler wurden bereits behoben (Linting)</p></li>
+<li><p>der Code kompiliert</p></li>
+<li><p>(Unit-/Integrations-) Tests laufen durch</p></li>
+<li><p>Architektur und zentrale Designentscheidungen sind dokumentiert</p></li>
+</ul>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Achtung!</p>
+<p>Es macht nur Sinn Code Reviews für Code durchzuführen, der grundlegenden Qualitätsstandards genügt.</p>
+</aside>
+</ld-topic><ld-topic id="code-review-von-css">
+<h2>Code Review von CSS</h2>
+<ld-story>
+<ul class="incremental-list">
+<li><p>Konsistente Schreibweise von ....</p>
+<ul class="incremental-list simple">
+<li><p>CSS Variablen</p></li>
+<li><p>Klassennamen</p></li>
+<li><p>IDs</p></li>
+</ul>
+</li>
+<li><p>Sind die Namen (CSS Variablen, Klassennamen und IDs) verständlich und sprechend?</p>
+<p><span class="red">(Korrektes Deutsch oder Englisch!)</span></p>
+</li>
+<li><p><em>Einfachheit und Korrektheit von</em> Selektoren</p>
+<p>(Z. B. keine Verwendung von <code class="css"><span class="operator">!</span><span class="name tag">important</span></code>.)</p>
+</li>
+<li><p>Sind die Selektoren effizient?</p></li>
+<li><p>Konsistente Vorgehensweise in Hinblick auf (z. B.) Responsiveness (z. B. konsistente Verwendung von Größen (rem, rem,...) oder das Farbschema.</p></li>
+<li><p>keine Redundanzen, keine unnötigen Style Definitionen.</p></li>
+<li><p>Modularisiert</p></li>
+<li><p>Einfachheit des Layouts?</p></li>
+<li><p>Gibt es ein klares Vorgehen (Mobile-first or Desktop-first)?</p></li>
+<li><p>Werden Tools eingesetzt, um bei der Formatierung dem Linting zu helfen.</p></li>
+<li><p>Sind komplizierte Selektoren - falls notwendig - dokumentiert/begründet/nachhvollziehbar?</p></li>
+</ul>
+</ld-story></ld-topic><ld-topic id="code-reviews-von-html">
+<h2>Code Reviews von HTML</h2>
+<ld-story>
+<ul class="incremental-list">
+<li><p>Ist der HTML Code korrekt?</p>
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Folgende Aspekte (Auszug) sollten automatisiert geprüpft werden:</p>
+<p>Sind IDs einmalig, sind alle Element korrekt geschlossen, ist die Baumstruktur korrekt.</p>
+</aside>
+</li>
+<li><p>Benennung von Klassen und IDs:</p>
+<p>Sind die Namen konsistent vergeben und verständlich und korrekt geschrieben.</p>
+</li>
+<li><p>Ist die Struktur einfach nachvollziehbar oder übermäßig komplex?</p>
+<p>(Z. B. gibt es eine hohe Anzahl and verschachtelten DIVs oder gibt es eine sinnvolle Strukturierung der Überschriften?).</p>
+</li>
+<li><p>Accessibility?</p>
+<p>Nutzt der Code nur <code class="html"><span class="punctuation">&lt;</span><span class="name tag">span</span><span class="punctuation">&gt;</span></code> und <code class="html"><span class="punctuation">&lt;</span><span class="name tag">div</span><span class="punctuation">&gt;</span></code>, oder semantisches HTML?</p>
+<p>Werden ARIA Tags sinnvoll verwendet?</p>
+<p>Haben Bilder ein <code class="html">alt</code> Attribut?</p>
+</li>
+<li><p>Keine Verwendung von inlines styles?</p></li>
+<li><p>Keine Verwendung von inline JavaScript?</p></li>
+<li><p>Keine Verwendung von <code class="html"><span class="punctuation">&lt;</span><span class="name tag">br</span><span class="punctuation">&gt;</span></code> für Formatierungszwecke.</p></li>
+<li><p>Konsistente Verwendung von tags?</p>
+<p>(Z. B. ist Code immer in <code class="html"><span class="punctuation">&lt;</span><span class="name tag">pre</span><span class="punctuation">&gt;&lt;</span><span class="name tag">code</span><span class="punctuation">&gt;</span>...<span class="punctuation">&lt;/</span><span class="name tag">code</span><span class="punctuation">&gt;&lt;/</span><span class="name tag">pre</span><span class="punctuation">&gt;</span></code>?)</p>
+</li>
+<li><p>Werden Eingaben in Eingabefelder geprüft?</p></li>
+<li><p>Werden <code class="html">meta</code> Tags für die Spezifikation des Viewports sowie weiterer Metainformationen verwendet?</p></li>
+<li><p>Werden übermäßig große Bilder/Icons vermieden?</p></li>
+<li><p>Sind Links inhaltlich nachvollziehbar?</p></li>
+</ul>
+</ld-story></ld-topic><ld-topic id="code-reviews-von-javascript">
+<h2>Code Reviews von JavaScript</h2>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">lab-codereviews/folien.de.rst</span>, line 186)</p>
+<p>Title underline too short.</p>
+<pre class="literal-block">Code Reviews von JavaScript
+-------------------------</pre>
+</aside>
+<ld-story>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">lab-codereviews/folien.de.rst</span>, line None)</p>
+<p>No suitable element following &quot;class&quot; directive</p>
+<pre class="literal-block">.. class:: incremental-list</pre>
+</aside>
+</ld-story></ld-topic>
+</template>
+</body>
+</html>
