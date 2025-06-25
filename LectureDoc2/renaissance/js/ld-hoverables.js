@@ -9,7 +9,7 @@ import * as ld from "./ld-lib.js";
 
 console.log("loading ld-hoverable.js");
 
-const classes = ["pop-out-on-hover"];
+const classes = ["pop-out-on-hover", "scale-on-hover"];
 
 const hoverables = [];
 
