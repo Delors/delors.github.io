@@ -100,7 +100,7 @@
 
     /*  When we extract an exercise, we will first show an input field for the
         password, which we will replace with the solution once the password
-        was entered. When we print the PDF we won't show the solution. */
+        was entered. */
     .ld-extracted-exercise {
         margin-bottom: 0.5em;
 
@@ -123,25 +123,56 @@
             box-shadow: var(--br-shadow);
         }
     }
-    .ld-exercise-solution[data-encrypted] {
-        display: none;
+
+    .ld-exercise-solution {
+        &[data-encrypted] {
+            display: none;
+        }
+
+        &::before {
+            content: counter(section) "." counter(exercise) ".\00a0\00a0 "
+                var(--solution);
+            display: block;
+            width: 100%;
+            margin-bottom: 0.5em;
+            padding: 0em 0.25em;
+            line-height: 1.4em;
+            font-size: 1.15em;
+
+            border-radius: var(--small-border-radius);
+            background-color: var(--light-gray);
+            color: var(--white);
+            font-weight: 500;
+            text-shadow: 1px 1px 1px var(--gray);
+        }
     }
 
     /*  Numbering sections and exercises. */
     counter-reset: section;
     counter-reset: exercise;
 
-    p.ld-exercise-title::before {
-        counter-increment: exercise;
-        content: counter(section) "." counter(exercise) ".";
-
-        padding: 0 0.5em 0 0.25em;
-        margin-right: 0.25em;
-        border-radius: var(--small-border-radius) 0 0 var(--small-border-radius);
-
-        background-color: var(--light-gray);
-        color: var(--white);
+    p.ld-exercise-title {
+        --current-background-color: var(--gray);
+        background-color: var(--current-background-color);
+        --current-color: var(--white);
+        color: var(--current-color);
         text-shadow: 1px 1px 1px var(--gray);
+        border-radius: var(--small-border-radius);
+        line-height: 1.4em; /* TODO WHY????*/
+
+        &::before {
+            counter-increment: exercise;
+            content: counter(section) "." counter(exercise) ".";
+
+            padding: 0 0.25em 0 0.25em;
+            margin-right: 0.25em;
+            border-radius: var(--small-border-radius) 0 0 var(--small-border-radius);
+
+            background-color: var(--light-gray);
+            color: var(--white);
+            font-size: 1em;
+            text-shadow: 1px 1px 1px var(--gray);
+        }
     }
 
     .new-section {
