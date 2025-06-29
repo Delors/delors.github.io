@@ -1358,7 +1358,8 @@ table {
 }
 
 /*
-    Intended to be used with a container (e.g., a div) to signify that it contains an important message.
+    Intended to be used with a container (e.g., a div) to signify that it
+    contains an important message.
 */
 .exclamation-mark {
     position: relative;
@@ -1369,15 +1370,17 @@ table {
 
     background-color: var(--light-gray);
 
-    border-radius: 0.5em;
+    border-radius: var(--small-border-radius);
 
     &::before {
         position: absolute;
         left: 0;
         top: 0;
-        background-color: var(--dark-red);
+        background-color: var(--red);
         height: 100%;
         width: calc(2.5 * var(--current-base-font-size));
+        border-top-left-radius: inherit;
+        border-bottom-left-radius: inherit;
         text-align: center;
         content: "!";
         color: var(--white);
@@ -1387,7 +1390,9 @@ table {
 }
 
 /*
-    Intended to be used with a container (e.g., a div) or a container like structure (e.g. a slide) to show that is done, completed of less importance.
+    Intended to be used with a container (e.g., a div) or a container like
+    structure (e.g. a slide) to show that is "no longer relevant", "done",
+    "completed" or "of less importance".
 */
 /* PREVIOUSLY faded-to-white*/
 .fade-out {
@@ -1421,8 +1426,8 @@ table {
 /*
     Intended to be used with a container (e.g., a div) to visually accentuate it.
 */
-.accentuate {
-    /*border: thin solid var(--light-gray);*/
+/*.accentuate {
+    border: thin solid var(--light-gray);
     padding: 0.25em;
     border-radius: var(--small-border-radius);
 
@@ -1433,6 +1438,45 @@ table {
     --current-background-color: var(--dark-red);
     background-color: var(--current-background-color);
     box-shadow: var(--trbl-shadow-dark);
+}*/
+.accentuate {
+    display: block;
+    position: relative;
+
+    &::before {
+        display: block;
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: -1em;
+        height: 100%;
+        width: 1em;
+        --current-background-color: var(--red);
+        background-color: var(--current-background-color);
+        border-radius: var(--small-border-radius) 0 0 var(--small-border-radius);
+    }
+    /*&::after {
+        display: block;
+        content: " ";
+        position: absolute;
+        top: 0;
+        right: -1.25em;
+        height: 100%;
+        width: 1em;
+        --current-background-color: var(--red);
+        background-color: var(--current-background-color);
+        border-radius: 0 var(--small-border-radius) var(--small-border-radius) 0;
+    }
+    */
+    margin-left: 1em;
+    /*margin-right: 1.25em;*/
+    padding: 0.25em 0.25em;
+    font-weight: 400;
+    --current-color: var(--black);
+    color: var(--current-color);
+    --current-background-color: var(--very-light-gray);
+    background-color: var(--current-background-color);
+    border-radius: 0 var(--small-border-radius) var(--small-border-radius) 0;
 }
 
 ul.important {

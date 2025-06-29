@@ -1423,9 +1423,8 @@ function localDecryptPresenterNotes(password) {
 
 function localDecryptExercise(title, password) {
     console.info("decrypting exercise: " + title + "; password: " + password);
-    const solutionWrapper = document.querySelector(
-        `.ld-extracted-exercise[data-exercise-title='${title}'] .ld-exercise-solution-wrapper`,
-    );
+    const query = `.ld-extracted-exercise[data-exercise-title='${title}'] .ld-exercise-solution-wrapper`;
+    const solutionWrapper = document.querySelector(query);
     if (!solutionWrapper) {
         console.error("No solution wrapper found for exercise: " + title);
         return;
@@ -1495,7 +1494,7 @@ function setupDocumentView() {
             children: template.children,
         });
 
-        if (template.classList.contains("exercises")) {
+        if (template.classList.contains("exercises")) { // TODO <- do we need this?
             // Replace the encrypted solutions with password fields.
             section.querySelectorAll(":scope .ld-exercise").forEach((task) => {
                 task.classList.add("ld-extracted-exercise");
