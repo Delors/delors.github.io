@@ -1494,7 +1494,8 @@ function setupDocumentView() {
             children: template.children,
         });
 
-        if (template.classList.contains("exercises")) { // TODO <- do we need this?
+        if (template.classList.contains("exercises")) {
+            // TODO <- do we need this?
             // Replace the encrypted solutions with password fields.
             section.querySelectorAll(":scope .ld-exercise").forEach((task) => {
                 task.classList.add("ld-extracted-exercise");
@@ -2626,21 +2627,25 @@ function registerHoverPresenterNoteListener() {
             const ldPresenterNote = ldSlide.querySelector(
                 `:scope #ld-presenter-note-${noteId}`,
             );
+            // We have to handle the case where the mouse leaves the marker
+            // because the actual note is shown on top of the marker.
+            // In this case, we can't remove the hover class because this
+            // would lead to a nasty flickering effect.
+            marker.hoverCounter = 0;
             function addHover() {
+                marker.hoverCounter++;
                 ldPresenterNote.classList.add("hover:ld-presenter-note");
             }
             function removeHover(e) {
-                // We have to handle the case where the mouse leaves the marker
-                // because the actual note is shown on top of the marker.
-                // In this case, we can't remove the hover class because this
-                // would lead to a nasty flickering effect.
-                if (e.relatedTarget !== ldPresenterNote) {
+                marker.hoverCounter--;
+                if (marker.hoverCounter === 0) {
                     ldPresenterNote.classList.remove("hover:ld-presenter-note");
                 }
             }
-            ldPresenterNote.addEventListener("mouseleave", removeHover);
-            marker.addEventListener("mouseenter", addHover);
-            marker.addEventListener("mouseleave", removeHover);
+            ldPresenterNote.addEventListener("mouseover", addHover);
+            ldPresenterNote.addEventListener("mouseout", removeHover);
+            marker.addEventListener("mouseover", addHover);
+            marker.addEventListener("mouseout", removeHover);
         });
 }
 

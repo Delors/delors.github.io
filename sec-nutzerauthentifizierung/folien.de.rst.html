@@ -10,7 +10,7 @@
 <meta content="vorlesung-it-sicherheit-nutzer-authentifizierung" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <meta name="version" content="LD2 RENAISSANCE" />
-<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
+<meta name="exercises-passwords" content="MTAwMDAw:+2Fgr5DXmqzDWbHU/KNk8LLRqNOM8obT54IvkLGnyrE=:RsdTiTuulytQ9AAF:PZgz2lCoroZUp3k5lNKZG2t8D+ujkUXHZa3IGutMsJM5XqKDmhrrdt2jMnjQdXYVv7Et4y7hKPxSDyNcN3entDygKe71+XJHndJPZXjDhp4ffuVvIwx4mlk/pv9gowTNVBU1L1FKHb6vEObzDM7fc0vnsltZsKthQoTjM+eVKnASUu669lE/RMKHXXwWpZ19ICVxTphDNIqi6RrfRWYB4Vxj5nHTryoWdt2StDrhaG4z9EKSM0zkY1VepVPhRbM/Xg==" />
 <title>Nutzerauthentifizierung</title>
 <script>
     window.MathJax = {
@@ -63,11 +63,14 @@
 <ld-card>
 <aside class="admonition observation">
 <p class="admonition-title">Beobachtung</p>
-<p>Die Verwendung einer (kryptographischen) Hashfunktion alleine ist nicht ausreichend zur sicheren Benutzerauthentifizierung über eine nicht-sichere Verbindung. Eine einfache Replay-Attacke ist möglich.</p>
+<p>Die Verwendung einer (kryptographischen) Hashfunktion alleine ist nicht ausreichend zur sicheren <em>Benutzerauthentifizierung über eine nicht-sichere Verbindung</em>.</p>
+<p>Eine einfache Replay-Attacke ist möglich.</p>
 </aside>
 </ld-card><ld-card class="incremental">
-<p>Ein einfaches Challenge-Response Protokoll (<span class="ger">Herausforderung- und Antwortprotokoll</span>) basierende auf einer Hashfunktion <span class="math-i">f</span> wäre:</p>
-<table class="borderless incremental-table-rows highlight-cell-on-hover" style="width: 100%;">
+<p>Ein einfaches Protokoll basierend auf einer Hashfunktion <span class="math-i">f</span> wäre:</p>
+<div class="supplemental">
+<p>Challenge-Response Protokoll ≘ <span class="ger">Herausforderung- und Antwortprotokoll</span></p>
+</div><table class="compact borderless incremental-table-rows highlight-cell-on-hover zebra-columns" style="width: 100%;">
 <colgroup>
 <col style="width: 36.4%" />
 <col style="width: 27.3%" />
@@ -80,7 +83,7 @@
 </tr>
 </thead>
 <tbody>
-<tr><td><p>Gibt Benutzerkennung ein: <span class="math-i">ID</span></p></td>
+<tr><td><p>Gibt Benutzerkennung <span class="math-i">ID</span> ein</p></td>
 <td><p>→ sendet <span class="math-i">ID</span></p></td>
 <td><p>sucht zu <span class="math-i">ID</span> Schlüssel <span class="math-i">K</span> in der Datenbank</p></td>
 </tr>
@@ -98,13 +101,13 @@
 </tr>
 <tr><td><p>berechnet: <span class="math">\(Res'=f(K',r)\)</span></p></td>
 <td><p>→ sendet <span class="math-i">Res'</span></p></td>
-<td><p><span class="math">\(f(K,r) \stackrel{?}{=} Res'\)</span></p></td>
+<td><p><span class="math">\(f(K,r) ?= Res'\)</span></p></td>
 </tr>
 </tbody>
 </table>
 <aside class="admonition incremental question">
 <p class="admonition-title">Frage</p>
-<p>Wie bewerten Sie die Sicherheit (dieses Protokolls)?</p>
+<p>Wie bewerten Sie die Sicherheit (dieses Protokolls/Ansatzes)?</p>
 </aside>
 <ld-presenter-note data-encrypted="true">
 MTAwMDAw:Uu7tYyfRooAVNXui1qBOIF0wh7eU+3sDYTM/x7BTyf4=:yJmwV2o7ZcKVshfa:p+TEZQGK9llEzF52wOkDDvisku+B4D2PS8Rm1o94MNAOaAKNRMareynpgsrVyRplbninJqEGWlRJ5rbxOKPqV2+wxUJXEa67fLZv9wVsDVfBCFbr7+8YmecSv//GxK76HbqbbBVk9oXgB/Bzkh5Kofub/TBHuG4F8IDY4TKIYmUjXiZKJVntVJYlCo004p9YVhKrV4h6Az/c9wgrca0duY/Ri2sx04oXpE7ieofLInYyurHF7tkULh55At0Eaj3VCeTbk5CIaJ91rEYJEdJtjDTfIikeLUaXWsSBvjvrkhCkSUPYhxZvcOKjxjR5rgxgQYdJOt1ziceYjg==</ld-presenter-note>
@@ -137,7 +140,50 @@ MTAwMDAw:Uu7tYyfRooAVNXui1qBOIF0wh7eU+3sDYTM/x7BTyf4=:yJmwV2o7ZcKVshfa:p+TEZQGK9
 <p>Viele Zero-Knowledge Protokolle basieren darauf, dass man im Prinzip ein Spiel spielt, das man auch zufällig gewinnen kann. Durch die Wiederholung des Spiels wird die Wahrscheinlichkeit jedoch für permanentes zufälliges gewinnen sehr schnell sehr klein (exponentiell). Somit kann man für praktische Zwecke hinreichend sicher sein, dass der Beweisführende (im Beispiel Peggy) über das Wissen verfügt, dass er vorgibt zu besitzen, wenn er immer gewinnt.</p>
 <p>Nach <span class="math-r">20</span> Runden ist die Wahreinschlichkeit nur noch <span class="math">\(1/2^{20} = 1/1 048 576\)</span>.</p>
 <p>Mit <span class="math-r">128</span> Runden erreicht man ein Sicherheitsniveau, dass vergleichbar ist mit anderen kryptographischen Verfahren (AES-128, SHA-256, ...).</p>
-</ld-card></ld-deck></ld-topic>
+</ld-card></ld-deck></ld-topic><ld-topic id="fiat-shamir-protokoll">
+<h2>Fiat-Shamir Protokoll</h2>
+<p class="rubric">Voraussetzungen</p>
+<ul class="simple">
+<li><p>gegeben zwei zufällige Primzahlen <span class="math-i">p</span> und <span class="math-i">q</span> und <span class="math">\(n = p \cdot q\)</span></p></li>
+<li><p>Peggys geheimer Schlüssel <span class="math-i">s</span> wird dann zufällig bestimmt; <span class="math">\(s \in \mathbb{Z}_n^*\)</span> und <span class="math-i">s</span> coprimal zu <span class="math-i">n</span>.</p></li>
+<li><p>Der öffentliche Schlüssel wird dann wie folgt berechnet: <span class="math">\(v = s^{-2} \bmod n\)</span>. Der öffentlichen Schlüssel besteht dann aus den zwei Zahlen <span class="math">\(v\)</span> und <span class="math">\(n\)</span>.</p></li>
+</ul>
+<p class="rubric">Protokoll</p>
+<ld-story>
+<ol class="arabic incremental-list">
+<li><p>Peggy berechnet <span class="math">\(x\)</span> unter Verwendung einer beliebigen Zufallszahlen <span class="math">\(r \in \mathbb{Z}_n^*\)</span>:</p>
+<p><span class="math">\(x = r^2 \bmod n\)</span></p>
+<ld-presenter-note data-encrypted="true">
+MTAwMDAw:/JVAyIXkKlwcDNoZy3Li0PdUuiO3Fe1EZSv5lzVH5M8=:rMSE5ZGe5rLT/EKH:edRGUHtQkmgC0W2HeCYDqf1UeleCvsalJRWeuVSDDoatsA6huCUOPimoN9MxDrzAA/0feqpIzwc0ED3zEzXQsGyxVd0P9lAwEFTijqwiN4C11O+TUX8N0GBYs9GuhDw6feHOvL113xse5rXTSRrJmfW5V0VTZlFwMwFdGOslrQQFTmKq7aAGy7i16H92cB7yXbwnsrjyD22B77Cq+H6QRSqgdyHbRCpvUScaIcYWBv4vKXZN8hCf5OARueaNcEFRb1vFBpMJmwfEzFSjj1VZ3vr5NrKv3oq04O02XN7HabKFkLHW3aYKQMc1W2zn/dqBLHrDAoGlw8wsUU1EAttAGb/hzzWL1pJTd8q42G57C8VC4OKGOGZbYEmkGaral3bGFMXLN/OcPdLQXEc5K4T47KKW8RtioUi8xqhC7GFYfsbP4TXqsrMaY9OKkhPJbOQnbRA=</ld-presenter-note>
+</li>
+<li><p>Peggy sendet die Zahl an Victor.</p></li>
+<li><p>Victor wählt zufällig ein Bit <span class="math">\(b \in \{0, 1\}\)</span></p></li>
+<li><p>Peggy berechnet <span class="math">\(y = r \cdot s^b \bmod n\)</span></p></li>
+<li><p>Peggy sende <span class="math-i">y</span> an Victor.</p></li>
+<li><p>Victor testet:  <span class="math">\(x \cdot v^b \bmod n \stackrel{?}{=} y^2 \bmod n\)</span></p></li>
+</ol>
+</ld-story></ld-topic><ld-topic class="exercises" id="ubung-klassisches-fiat-shamir-protokoll">
+<h2>Übung - klassisches Fiat-Shamir-Protokoll</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Beispiel: Fiat-Shamir-Protokoll mit kleinen Zahlen" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">Beispiel: Fiat-Shamir-Protokoll mit kleinen Zahlen</p>
+<p>Zwei Parteien, Peggy (die sich authentifizieren möchte) und Victor (der Prüfer), führen das Fiat-Shamir-Protokoll durch. Verwenden Sie die folgenden Werte:</p>
+<ul class="simple">
+<li><p><span class="math">\(p = 3\)</span>, <span class="math">\(q = 7\)</span> → <span class="math">\(n = p \cdot q = 21\)</span></p></li>
+<li><p>Peggys geheimer Schlüssel ist <span class="math">\(s = 2\)</span></p></li>
+<li><p>Peggy wählt die Zufallszahl <span class="math">\(r = 4\)</span></p></li>
+<li><p>Victor wählt die Herausforderung <span class="math">\(b = 1\)</span></p></li>
+</ul>
+<p>Beantworten Sie folgende Fragen:</p>
+<ol class="arabic simple">
+<li><p>Berechnen Sie den öffentlichen Schlüssel <span class="math-i">v</span>.</p></li>
+<li><p>Berechnen Sie den Wert <span class="math-i">x</span>, den Peggy an Victor sendet.</p></li>
+<li><p>Berechnen Sie die Antwort <span class="math-i">y</span>, die Peggy an Victor sendet.</p></li>
+<li><p>Führen Sie die Verifikation als Victor durch</p></li>
+</ol>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:ay+yEKZXGwJPRCTWW3bgMs8gM4mRTC1fk9GMR0JNMFA=:/pUDu71kO9lwWVKD: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</div>
+</div>
+</ld-topic>
 </template>
 </body>
 </html>
