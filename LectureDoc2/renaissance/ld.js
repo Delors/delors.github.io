@@ -1494,8 +1494,7 @@ function setupDocumentView() {
             children: template.children,
         });
 
-        if (template.classList.contains("exercises")) {
-            // TODO <- do we need this?
+        if (template.classList.contains("exercises")) { // TODO <- needed?
             // Replace the encrypted solutions with password fields.
             section.querySelectorAll(":scope .ld-exercise").forEach((task) => {
                 task.classList.add("ld-extracted-exercise");
