@@ -38,7 +38,7 @@
 <dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>1.0</p>
+<dd><p>1.0.1</p>
 </dd>
 </dl>
 <div class="supplemental">
@@ -94,13 +94,13 @@
 <ld-deck>
 <ld-card>
 <object aria-label="threading.Thread" class="align-center" data="images/threads/python-threads.svg" role="img" type="image/svg+xml">
-</object></ld-card><ld-card class="overlay center-child-elements incremental">
+</object></ld-card><ld-card class="overlay center-content incremental">
 <div class="border-rounded dhbw-light-gray-background opacity-90 padding-1em text-align-center docutils container">
 <p>Die <span class="docutils literal">Process</span> API bietet eine vergleichbare Schnittstelle.</p>
 </div>
 </ld-card></ld-deck><div class="supplemental">
 <ul>
-<li><p>Threads werden in Python über die vordefinierte Klasse <span class="docutils literal">threading.Thread</span> bereitgestellt.</p></li>
+<li><p>Threads werden in Python über die vordefinierte Klasse <span class="docutils literal">threading.Thread</span> bereitgestellt. <code class="python"><span class="name">target</span></code> ist hierbei die Referenz auf das Callable Objekt, dass ausgeführt wird als Reaktion auf ein <code class="python"><span class="name">start</span></code> Aufruf.</p></li>
 <li><p>Alternativ kann ein <em>Callable</em> an ein Thread-Objekt übergeben werden.</p></li>
 <li><p>Threads beginnen ihre Ausführung erst, wenn die <span class="docutils literal">start</span>-Methode in der Thread-Klasse aufgerufen wird. Die <span class="docutils literal">Thread.start</span>-Methode ruft die <span class="docutils literal">run</span>-Methode auf. Ein direkter Aufruf der <span class="docutils literal">run</span>-Methode führt nicht zu einer nebenläufigen Ausführung.</p></li>
 <li><p>Der aktuelle Thread kann mittels der statischen Methode <span class="docutils literal">Thread.currentThread()</span> ermittelt werden.</p></li>
@@ -138,10 +138,9 @@
 </span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="keyword">if</span> <span class="name variable magic">__name__</span> <span class="operator">==</span> <span class="literal string single">'__main__'</span><span class="punctuation">:</span><span class="whitespace">
 </span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span>    <span class="name">p1</span> <span class="operator">=</span> <span class="name">Process</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="name">busy_sleep</span><span class="punctuation">)</span><span class="whitespace">
 </span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span>    <span class="name">p2</span> <span class="operator">=</span> <span class="name">Process</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="name">busy_sleep</span><span class="punctuation">)</span><span class="whitespace">
-</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>    <span class="name">p1</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span><span class="whitespace">
-</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span>    <span class="name">p2</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span><span class="whitespace">
-</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span>    <span class="name">p1</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">()</span><span class="whitespace">
-</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span>    <span class="name">p2</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">()</span></code></pre>
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>    <span class="name">p1</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span> <span class="punctuation">;</span> <span class="name">p2</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span>    <span class="name">p1</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span>    <span class="name">p2</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">()</span></code></pre>
 </ld-cell><ld-cell class="incremental" style="align-self:auto;">
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">time</span><span class="whitespace"> </span>./processes_sleep.py<span class="whitespace">
 </span>MainProcess<span class="whitespace">
@@ -156,25 +155,24 @@
 <h2>Beispiel: Multiprocessing - CPU-Bound</h2>
 <ld-grid class="default-layout">
 <ld-cell class="width-60" style="align-self:auto;">
-<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">time</span><span class="whitespace">
-</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword namespace">from</span><span class="whitespace"> </span><span class="name namespace">multiprocessing</span> \
-</code><small class="ln"> 3 </small><code data-lineno=" 3 ">  <span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">Process</span><span class="operator">,</span><span class="whitespace"> </span><span class="name namespace">current_process</span><span class="whitespace">
-</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
-</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">computation</span><span class="punctuation">():</span><span class="whitespace">
-</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>    <span class="name">j</span> <span class="operator">=</span> <span class="literal number integer">1</span><span class="whitespace">
-</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span>    <span class="keyword">for</span> <span class="name">i</span> <span class="operator word">in</span> <span class="name builtin">range</span><span class="punctuation">(</span><span class="literal number integer">100</span><span class="operator">*</span><span class="literal number integer">1000</span><span class="operator">*</span><span class="literal number integer">1000</span><span class="punctuation">):</span><span class="whitespace">
-</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span>        <span class="name">j</span> <span class="operator">+=</span> <span class="punctuation">(</span><span class="name">i</span><span class="operator">/</span><span class="name">j</span><span class="punctuation">)</span><span class="whitespace">
-</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span>    <span class="name builtin">print</span><span class="punctuation">(</span><span class="literal string double">&quot;Done:&quot;</span><span class="operator">+</span><span class="name builtin">str</span><span class="punctuation">(</span><span class="name">j</span><span class="punctuation">))</span><span class="whitespace">
-</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">
-</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name">current_process</span><span class="punctuation">()</span><span class="operator">.</span><span class="name">name</span><span class="punctuation">)</span><span class="whitespace">
-</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">
-</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span><span class="keyword">if</span> <span class="name variable magic">__name__</span> <span class="operator">==</span> <span class="literal string single">'__main__'</span><span class="punctuation">:</span><span class="whitespace">
-</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span>    <span class="name">p1</span> <span class="operator">=</span> <span class="name">Process</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="name">computation</span><span class="punctuation">)</span><span class="whitespace">
-</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span>    <span class="name">p2</span> <span class="operator">=</span> <span class="name">Process</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="name">computation</span><span class="punctuation">)</span><span class="whitespace">
-</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span>    <span class="name">p1</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span><span class="whitespace">
-</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace"></span>    <span class="name">p2</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span><span class="whitespace">
-</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace"></span>    <span class="name">p1</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">()</span><span class="whitespace">
-</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace"></span>    <span class="name">p2</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">()</span></code></pre>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">from</span><span class="whitespace"> </span><span class="name namespace">multiprocessing</span> \
+</code><small class="ln"> 2 </small><code data-lineno=" 2 ">  <span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">Process</span><span class="operator">,</span><span class="whitespace"> </span><span class="name namespace">current_process</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">computation</span><span class="punctuation">():</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span>    <span class="name">j</span> <span class="operator">=</span> <span class="literal number integer">1</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>    <span class="keyword">for</span> <span class="name">i</span> <span class="operator word">in</span> <span class="name builtin">range</span><span class="punctuation">(</span><span class="literal number integer">100</span><span class="operator">*</span><span class="literal number integer">1000</span><span class="operator">*</span><span class="literal number integer">1000</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span>        <span class="name">j</span> <span class="operator">+=</span> <span class="punctuation">(</span><span class="name">i</span><span class="operator">/</span><span class="name">j</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span>    <span class="name builtin">print</span><span class="punctuation">(</span><span class="literal string double">&quot;Done:&quot;</span><span class="operator">+</span><span class="name builtin">str</span><span class="punctuation">(</span><span class="name">j</span><span class="punctuation">))</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name">current_process</span><span class="punctuation">()</span><span class="operator">.</span><span class="name">name</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span><span class="keyword">if</span> <span class="name variable magic">__name__</span> <span class="operator">==</span> <span class="literal string single">'__main__'</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>    <span class="name">p1</span> <span class="operator">=</span> <span class="name">Process</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="name">computation</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span>    <span class="name">p2</span> <span class="operator">=</span> <span class="name">Process</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="name">computation</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span>    <span class="name">p1</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span>    <span class="name">p2</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace"></span>    <span class="name">p1</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace"></span>    <span class="name">p2</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">()</span></code></pre>
 </ld-cell><ld-cell style="align-self:auto;">
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">time</span><span class="whitespace"> </span>./processes_computation.py<span class="whitespace">
 </span>MainProcess<span class="whitespace">
@@ -338,67 +336,67 @@
 <h2>Beispiel: Thread-safe Shared Counter</h2>
 <ld-grid class="default-layout">
 <ld-cell class="width-50" style="align-self:auto;">
-<pre class="code python smaller copy-to-clipboard literal-block"><code><span class="keyword namespace">from</span><span class="whitespace"> </span><span class="name namespace">threading</span><span class="whitespace"> </span><span class="keyword namespace">import</span> <span class="name">Thread</span><span class="punctuation">,</span><span class="name">Lock</span><span class="whitespace">
-
-</span><span class="keyword">class</span><span class="whitespace"> </span><span class="name class">SharedCounter</span><span class="punctuation">:</span><span class="whitespace">
-
-</span>    <span class="keyword">def</span><span class="whitespace"> </span><span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_value</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span> <span class="operator">=</span> <span class="name">Lock</span><span class="punctuation">()</span><span class="whitespace">
-
-</span>    <span class="keyword">def</span><span class="whitespace"> </span><span class="name function">value</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
-</span>        <span class="keyword">return</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_value</span></code></pre>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">from</span><span class="whitespace"> </span><span class="name namespace">threading</span><span class="whitespace"> </span><span class="keyword namespace">import</span> <span class="name">Thread</span><span class="punctuation">,</span><span class="name">Lock</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword">class</span><span class="whitespace"> </span><span class="name class">SharedCounter</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span>    <span class="keyword">def</span><span class="whitespace"> </span><span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_value</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span> <span class="operator">=</span> <span class="name">Lock</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span>    <span class="keyword">def</span><span class="whitespace"> </span><span class="name function">value</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span>        <span class="keyword">return</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_value</span></code></pre>
 </ld-cell><ld-cell class="width-50 incremental" style="align-self:auto;">
-<pre class="code python smaller copy-to-clipboard literal-block"><code><span class="comment single"># Thread-sichere Implementierungen</span><span class="whitespace">
-</span><span class="comment single">#  von increment und decrement</span><span class="whitespace">
-
-
-</span><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">increment</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
-</span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="operator">.</span><span class="name">acquire</span><span class="punctuation">()</span><span class="whitespace">
-</span>    <span class="keyword">try</span><span class="punctuation">:</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_value</span> <span class="operator">+=</span> <span class="literal number integer">1</span><span class="whitespace">
-</span>    <span class="keyword">finally</span><span class="punctuation">:</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="operator">.</span><span class="name">release</span><span class="punctuation">()</span><span class="whitespace">
-
-</span><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">decrement</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
-</span>    <span class="keyword">with</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="punctuation">:</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_value</span> <span class="operator">-=</span> <span class="literal number integer">1</span></code></pre>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment single"># Thread-sichere Implementierungen</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="comment single"># von increment und decrement</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">increment</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="operator">.</span><span class="name">acquire</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span>    <span class="keyword">try</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_value</span> <span class="operator">+=</span> <span class="literal number integer">1</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span>    <span class="keyword">finally</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="operator">.</span><span class="name">release</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">decrement</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>    <span class="keyword">with</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">_value</span> <span class="operator">-=</span> <span class="literal number integer">1</span></code></pre>
 </ld-cell></ld-grid><div class="supplemental">
 <aside class="admonition warning">
 <p class="admonition-title">Warnung</p>
-<p>Code, der eine konkrete Sperre erzeugt, anfordert und freigibt, sollte immer lokal sein; d.h. nicht über die Code-basis verteilt sein. Auch wenn es möglich ist eine Instanz eines Locks weiterzureichen und sperren in einer Methode anzufordern und in einer anderen Methode freizugeben, so ist dies eine schlechte Praxis, da es zu ((sehr,) sehr) schwer zu findenden Fehlern führen kann.</p>
+<p>Code, der eine konkrete Sperre erzeugt, anfordert und freigibt, sollte immer lokal sein; d. h. nicht über die Codebasis verteilt sein. Auch wenn es möglich ist eine Instanz eines Locks weiterzureichen und Sperren in einer Methode anzufordern und in einer anderen Methode freizugeben, so ist dies eine schlechte Praxis, da es zu ((sehr,) sehr) schwer zu findenden Fehlern führen kann.</p>
 </aside>
 </div></ld-topic><ld-topic id="sperren-und-komplexe-ruckgabewerte">
 <h2>Sperren und komplexe Rückgabewerte</h2>
 <ld-grid class="default-layout">
 <ld-cell class="width-50" style="align-self:auto;">
-<pre class="code python smaller copy-to-clipboard literal-block"><code><span class="keyword namespace">from</span><span class="whitespace"> </span><span class="name namespace">threading</span><span class="whitespace"> </span><span class="keyword namespace">import</span> <span class="name">Thread</span><span class="punctuation">,</span><span class="name">Lock</span><span class="whitespace">
-
-</span><span class="keyword">class</span><span class="whitespace"> </span><span class="name class">SharedCoordinate</span><span class="punctuation">:</span><span class="whitespace">
-
-</span>    <span class="keyword">def</span><span class="whitespace"> </span><span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">x</span><span class="punctuation">,</span> <span class="name">y</span><span class="punctuation">):</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">x</span> <span class="operator">=</span> <span class="name">x</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">y</span> <span class="operator">=</span> <span class="name">y</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span> <span class="operator">=</span> <span class="name">Lock</span><span class="punctuation">()</span></code></pre>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword namespace">from</span><span class="whitespace"> </span><span class="name namespace">threading</span><span class="whitespace"> </span><span class="keyword namespace">import</span> <span class="name">Thread</span><span class="punctuation">,</span><span class="name">Lock</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="keyword">class</span><span class="whitespace"> </span><span class="name class">SharedCoordinate</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span>    <span class="keyword">def</span><span class="whitespace"> </span><span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">x</span><span class="punctuation">,</span> <span class="name">y</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">x</span> <span class="operator">=</span> <span class="name">x</span><span class="whitespace">
+</span></code><small class="ln">7 </small><code data-lineno="7 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">y</span> <span class="operator">=</span> <span class="name">y</span><span class="whitespace">
+</span></code><small class="ln">8 </small><code data-lineno="8 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span> <span class="operator">=</span> <span class="name">Lock</span><span class="punctuation">()</span></code></pre>
 </ld-cell><ld-cell class="width-50 incremental" style="align-self:auto;">
-<pre class="code python smaller copy-to-clipboard literal-block"><code><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">update</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">x</span><span class="punctuation">,</span> <span class="name">y</span><span class="punctuation">):</span><span class="whitespace">
-</span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="operator">.</span><span class="name">acquire</span><span class="punctuation">()</span><span class="whitespace">
-</span>    <span class="keyword">try</span><span class="punctuation">:</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">x</span> <span class="operator">=</span> <span class="name">x</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">y</span> <span class="operator">=</span> <span class="name">y</span><span class="whitespace">
-</span>    <span class="keyword">finally</span><span class="punctuation">:</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="operator">.</span><span class="name">release</span><span class="punctuation">()</span><span class="whitespace">
-
-</span><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">value</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
-</span>    <span class="keyword">with</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="punctuation">:</span><span class="whitespace">
-</span>        <span class="keyword">return</span> <span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">x</span><span class="punctuation">,</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">y</span><span class="punctuation">)</span></code></pre>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">update</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">x</span><span class="punctuation">,</span> <span class="name">y</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="operator">.</span><span class="name">acquire</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span>    <span class="keyword">try</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">x</span> <span class="operator">=</span> <span class="name">x</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">y</span> <span class="operator">=</span> <span class="name">y</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>    <span class="keyword">finally</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="operator">.</span><span class="name">release</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">value</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span>    <span class="keyword">with</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span>        <span class="keyword">return</span> <span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">x</span><span class="punctuation">,</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">y</span><span class="punctuation">)</span></code></pre>
 </ld-cell></ld-grid><div class="supplemental">
 <p>Beide Methoden müssen synchronisiert werden, damit es nicht dazu kommen kann, dass man einen ungültigen Zustand beobachten kann. Ein ungültiger Zustand wäre ein paar Koordinaten, die nicht zusammengehören. Z. B. wenn der Wert x von einem Aufruf kommt (update(100,100)) und der Wert y von einem anderen (update(200,200)); d.h. der Wert, den <span class="docutils literal">value</span> zurückliefert: <span class="docutils literal">100, 200</span> wäre.</p>
 </div></ld-topic><ld-topic class="new-subsection" id="bedingungsvariablen">
 <h2>Bedingungsvariablen</h2>
 </ld-topic><ld-topic id="bedingte-synchronisation">
 <h2>Bedingte Synchronisation</h2>
-<ul class="incremental">
+<ul class="incremental-list">
 <li><p>drückt eine Bedingung für die Reihenfolge der Ausführung von Operationen aus.</p></li>
 <li><p>z. B. können Daten erst dann aus einem Puffer entfernt werden, wenn Daten in den Puffer eingegeben wurden.</p></li>
 <li><p>Python unterstützt optionale Bedingungs-Variablen (Instanzen von <span class="docutils literal">Condition</span>), mit den klassischen Methoden <span class="docutils literal">wait</span> und <span class="docutils literal">notify</span> bzw. <span class="docutils literal">notify_all</span>.</p>
@@ -407,7 +405,7 @@
 </ul>
 </ld-topic><ld-topic id="programmierung-mit-conditions">
 <h2>Programmierung mit <span class="docutils literal">Condition</span>s</h2>
-<ld-deck class="incremental footnotesize margin-top-1em">
+<ld-deck>
 <ld-card>
 <ul class="simple">
 <li><p>Die Methoden <span class="docutils literal">wait</span> und <span class="docutils literal">notify(_all)</span> können nur verwendet werden, wenn die Sperre gehalten wird; andernfalls wird eine <span class="docutils literal">RuntimeError</span> ausgelöst.</p></li>
@@ -428,7 +426,7 @@
 </ul>
 </ld-card><ld-card class="incremental">
 <aside class="admonition warning">
-<p class="admonition-title">Wichtig</p>
+<p class="admonition-title">Warnung</p>
 <p>Wenn ein Thread aufgeweckt wird, kann er nicht davon ausgehen, dass seine Bedingung erfüllt ist!</p>
 <p>Die Bedingung ist immer in einer Schleife zu prüfen und der Thread muss ich ggf. wieder in den Wartezustand versetzen.</p>
 </aside>
@@ -445,35 +443,35 @@
 </ul>
 </ld-topic><ld-topic id="beispiel-synchronisation-mit-bedingungsvariablen">
 <h2>Beispiel: Synchronisation mit Bedingungsvariablen</h2>
-<ld-grid class="far-smaller default-layout">
+<ld-grid class="default-layout">
 <ld-cell class="width-50" style="align-self:auto;">
-<pre class="code python copy-to-clipboard literal-block"><code><span class="keyword namespace">from</span><span class="whitespace"> </span><span class="name namespace">threading</span> \
-  <span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">Condition</span><span class="operator">,</span><span class="whitespace"> </span><span class="name namespace">Lock</span><span class="whitespace">
-
-</span><span class="keyword">class</span><span class="whitespace"> </span><span class="name class">BoundedBuffer</span><span class="punctuation">:</span><span class="whitespace">
-
-</span>  <span class="keyword">def</span><span class="whitespace"> </span><span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">capacity</span><span class="punctuation">):</span><span class="whitespace">
-</span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">capacity</span> <span class="operator">=</span> <span class="name">capacity</span><span class="whitespace">
-</span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">buffer</span> <span class="operator">=</span> <span class="punctuation">[]</span><span class="whitespace">
-</span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span> <span class="operator">=</span> <span class="name">Lock</span><span class="punctuation">()</span><span class="whitespace">
-</span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_empty</span> <span class="operator">=</span> <span class="name">Condition</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="punctuation">)</span><span class="whitespace">
-</span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_full</span> <span class="operator">=</span> <span class="name">Condition</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="punctuation">)</span></code></pre>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">from</span><span class="whitespace"> </span><span class="name namespace">threading</span> \
+</code><small class="ln"> 2 </small><code data-lineno=" 2 ">  <span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">Condition</span><span class="operator">,</span><span class="whitespace"> </span><span class="name namespace">Lock</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="keyword">class</span><span class="whitespace"> </span><span class="name class">BoundedBuffer</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>  <span class="keyword">def</span><span class="whitespace"> </span><span class="name function magic">__init__</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">capacity</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">capacity</span> <span class="operator">=</span> <span class="name">capacity</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">buffer</span> <span class="operator">=</span> <span class="punctuation">[]</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span> <span class="operator">=</span> <span class="name">Lock</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_empty</span> <span class="operator">=</span> <span class="name">Condition</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span>    <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_full</span> <span class="operator">=</span> <span class="name">Condition</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">lock</span><span class="punctuation">)</span></code></pre>
 </ld-cell><ld-cell class="width-50 incremental" style="align-self:auto;">
-<pre class="code python copy-to-clipboard literal-block"><code>  <span class="keyword">def</span><span class="whitespace"> </span><span class="name function">put</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">item</span><span class="punctuation">):</span><span class="whitespace">
-</span>    <span class="keyword">with</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_full</span><span class="punctuation">:</span><span class="whitespace">
-</span>      <span class="keyword">while</span> <span class="name builtin">len</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">buffer</span><span class="punctuation">)</span> <span class="operator">==</span> \
-            <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">capacity</span><span class="punctuation">:</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_full</span><span class="operator">.</span><span class="name">wait</span><span class="punctuation">()</span><span class="whitespace">
-</span>      <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">buffer</span><span class="operator">.</span><span class="name">append</span><span class="punctuation">(</span><span class="name">item</span><span class="punctuation">)</span><span class="whitespace">
-</span>      <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_empty</span><span class="operator">.</span><span class="name">notify</span><span class="punctuation">()</span><span class="whitespace">
-
-</span>  <span class="keyword">def</span><span class="whitespace"> </span><span class="name function">get</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
-</span>    <span class="keyword">with</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_empty</span><span class="punctuation">:</span><span class="whitespace">
-</span>      <span class="keyword">while</span> <span class="name builtin">len</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">buffer</span><span class="punctuation">)</span> <span class="operator">==</span> <span class="literal number integer">0</span><span class="punctuation">:</span><span class="whitespace">
-</span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_empty</span><span class="operator">.</span><span class="name">wait</span><span class="punctuation">()</span><span class="whitespace">
-</span>      <span class="name">item</span> <span class="operator">=</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">buffer</span><span class="operator">.</span><span class="name">pop</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
-</span>      <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_full</span><span class="operator">.</span><span class="name">notify</span><span class="punctuation">()</span><span class="whitespace">
-</span>      <span class="keyword">return</span> <span class="name">item</span></code></pre>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 ">  <span class="keyword">def</span><span class="whitespace"> </span><span class="name function">put</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">,</span> <span class="name">item</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span>    <span class="keyword">with</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_full</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span>      <span class="keyword">while</span> <span class="name builtin">len</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">buffer</span><span class="punctuation">)</span> <span class="operator">==</span> \
+</code><small class="ln"> 4 </small><code data-lineno=" 4 ">            <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">capacity</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_full</span><span class="operator">.</span><span class="name">wait</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>      <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">buffer</span><span class="operator">.</span><span class="name">append</span><span class="punctuation">(</span><span class="name">item</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span>      <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_empty</span><span class="operator">.</span><span class="name">notify</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span>  <span class="keyword">def</span><span class="whitespace"> </span><span class="name function">get</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span>    <span class="keyword">with</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_empty</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span>      <span class="keyword">while</span> <span class="name builtin">len</span><span class="punctuation">(</span><span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">buffer</span><span class="punctuation">)</span> <span class="operator">==</span> <span class="literal number integer">0</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span>        <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_empty</span><span class="operator">.</span><span class="name">wait</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>      <span class="name">item</span> <span class="operator">=</span> <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">buffer</span><span class="operator">.</span><span class="name">pop</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span>      <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_full</span><span class="operator">.</span><span class="name">notify</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span>      <span class="keyword">return</span> <span class="name">item</span></code></pre>
 </ld-cell></ld-grid></ld-topic><ld-topic class="smaller" id="beispiel-synchronisation-mit-nur-einer-bedingung">
 <h2>Beispiel: Synchronisation mit nur einer Bedingung</h2>
 <ld-deck>
@@ -509,14 +507,14 @@
 </span></code><small class="ln">24 </small><code data-lineno="24 "><span class="whitespace"></span>      <span class="name builtin pseudo">self</span><span class="operator">.</span><span class="name">not_used</span><span class="operator">.</span><span class="name">notify_all</span><span class="punctuation">()</span> <span class="comment single"># notify_all() !</span><span class="whitespace">
 </span></code><small class="ln">25 </small><code data-lineno="25 "><span class="whitespace"></span>      <span class="keyword">return</span> <span class="name">item</span></code></pre>
 </ld-card><ld-card class="incremental">
-<div class="text-align-center dhbw-red bolder docutils container">
-<p>Fehlersituation, die bei der Verwendung von <span class="docutils literal">notify</span> (statt <span class="docutils literal">notify_all</span>) auftreten könnte.</p>
+<div class="red docutils container">
+<p>Fehler, der bei der Verwendung von <span class="docutils literal">notify</span> (statt <span class="docutils literal">notify_all</span>) auftreten könnte.</p>
 </div>
-<pre class="code java copy-to-clipboard literal-block"><code><span class="name">bb</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">BoundedBuffer</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">);</span><span class="whitespace">
-</span><span class="name">p1</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="name">lambda</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">bb</span><span class="punctuation">.</span><span class="name attribute">put</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">));</span><span class="whitespace"> </span><span class="name">p2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="name">lambda</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">bb</span><span class="punctuation">.</span><span class="name attribute">put</span><span class="punctuation">(</span><span class="literal number integer">2</span><span class="punctuation">))</span><span class="whitespace">
-</span><span class="name">c1</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="name">lambda</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">bb</span><span class="punctuation">.</span><span class="name attribute">get</span><span class="punctuation">());</span><span class="whitespace"> </span><span class="name">c2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="name">lambda</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">bb</span><span class="punctuation">.</span><span class="name attribute">get</span><span class="punctuation">())</span><span class="whitespace">
-</span><span class="name">c1</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace"> </span><span class="name">c2</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace"> </span><span class="name">p1</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace"> </span><span class="name">p2</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span></code></pre>
-<table class="incremental no-table-borders">
+<pre class="code python copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">bb</span> <span class="operator">=</span> <span class="name">BoundedBuffer</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name">p1</span> <span class="operator">=</span> <span class="name">Thread</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="keyword">lambda</span><span class="punctuation">:</span> <span class="name">bb</span><span class="operator">.</span><span class="name">put</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">));</span> <span class="name">p2</span> <span class="operator">=</span> <span class="name">Thread</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="keyword">lambda</span><span class="punctuation">:</span> <span class="name">bb</span><span class="operator">.</span><span class="name">put</span><span class="punctuation">(</span><span class="literal number integer">2</span><span class="punctuation">))</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="name">c1</span> <span class="operator">=</span> <span class="name">Thread</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="keyword">lambda</span><span class="punctuation">:</span> <span class="name">bb</span><span class="operator">.</span><span class="name">get</span><span class="punctuation">());</span> <span class="name">c2</span> <span class="operator">=</span> <span class="name">Thread</span><span class="punctuation">(</span><span class="name">target</span><span class="operator">=</span><span class="keyword">lambda</span><span class="punctuation">:</span> <span class="name">bb</span><span class="operator">.</span><span class="name">get</span><span class="punctuation">())</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="name">c1</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">();</span> <span class="name">c2</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">();</span> <span class="name">p1</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">();</span> <span class="name">p2</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">();</span></code></pre>
+<table class="incremental-table-rows borderless compact highlight-cell-on-hover">
 <thead>
 <tr><th class="head"></th>
 <th class="head"><p>Aktionen</p></th>
@@ -568,7 +566,7 @@
 <p>In Schritt 5 wurde (z. B.)- aufgrund des Aufrufs von <span class="docutils literal">notify</span> durch <span class="docutils literal">c1</span> - der Thread <span class="docutils literal">c2</span> aufgeweckt - anstatt des Threads <span class="docutils literal">p2</span>. Der aufgeweckte Thread <span class="docutils literal">c2</span> prüft die Bedingung (Schritt 6) und stellt fest, dass der Puffer leer ist. Er geht wieder in den Wartezustand. Jetzt warten sowohl ein Thread, der ein Wert schreiben möchte, als auch ein Thread, der einen Wert lesen möchte.</p>
 </div></ld-topic><ld-topic id="best-practices-in-hinblick-auf-synchronisation">
 <h2><em>Best Practices</em> in Hinblick auf Synchronisation</h2>
-<ul class="impressive incremental">
+<ul class="incremental-list dhbw">
 <li><p>Code, der eine Sperre hält (<span class="eng">Lock</span>) sollte so kurz (zeitlich) wie möglich gehalten werden.</p>
 <p>(D. h. der Code zwischen <span class="docutils literal">Lock.acquire()</span> und <span class="docutils literal">Lock.release()</span>)</p>
 </li>
@@ -576,11 +574,11 @@
 </ul>
 </ld-topic><ld-topic class="no-title center-content" id="ressourcen-immer-in-der-gleichen-reihenfolge-sperren">
 <h2>Ressourcen immer in der gleichen Reihenfolge sperren</h2>
-<ul class="impressive simple">
-<li><p>Wenn zwei (oder mehr) Threads bzw. Prozesse auf die gleichen Ressourcen in unterschiedlicher Reihenfolge zugreifen und entsprechende Sperren halten bzw. anfordern, kann es zu einem Deadlock kommen.</p></li>
-</ul>
-<aside class="admonition warning incremental">
-<p class="admonition-title">Zu Beachten</p>
+<div class="accentuate docutils container">
+<p>Wenn zwei (oder mehr) Threads bzw. Prozesse auf die gleichen Ressourcen in unterschiedlicher Reihenfolge zugreifen und entsprechende Sperren halten bzw. anfordern, kann es zu einem Deadlock kommen.</p>
+</div>
+<aside class="admonition warning">
+<p class="admonition-title">Warnung</p>
 <p><strong>Ressourcen immer in der gleichen Reihenfolge sperren</strong>, um Deadlocks zu vermeiden.</p>
 </aside>
 </ld-topic><ld-topic class="no-title center-child-elements transition-scale" id="alternative-synchronisationsmechanismen">
