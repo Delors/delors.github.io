@@ -10,7 +10,7 @@
 <meta content="lecture-security-public_key_cryptography" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <meta name="version" content="LD2 RENAISSANCE" />
-<meta name="exercises-passwords" content="MTAwMDAw:9ObrIh9DelriLE3kP6jh3Nxa/3bTpcg4mFzb8vKFLo0=:6UDNWw9eYm5GzI6A:imFscmxlvYXG7IlxeeLtuuecqTD2Qhe8ai/pHmsZe2kcLqc8RRX4mPI+UrDeoM8KrUlVFAC1mWAAaQ+JAEDFnTEamRXkm7rIPzrPB3dseXH121W1wf4G3NGLf9DfWFKSYVgo0AYR1wIYQuF00fmtkjixgRkfe2dD+gx0uM9VVuGxq1A3JbMQ1tbweA4mMfoDdCAwxjv2V+yVY3w482N8M4aEeSYJEznLHAvOnbxpA29E86TLS608Bu9dt5ER4jkwNYcyt/tmzw5KpPVEzVhdZL49KtMiMzccizzJOwiNc/j7gFZk3VOcy7QSkidaU7zR3KEw7Bx5ZvZFi+BAEFFJ4PXXFr+QPIVfPuTh+2lcVhrRC+yr4F5rnY+wSOWQ0a/awl9s8zyzKidqQUMauPJrrWBWUx/wWCM4pHUWIj1rFqGig7fT5fPfG5prPc2+0eU4ug9MDMYbD5zWYFWca+ZwJvf98Zs0Z/hoUK+dkpKAEY2GK1x7HJ/o2BOzrI6ZLuMEn+zYH61E/xwNPUwbQxw=" />
+<meta name="exercises-passwords" content="MTAwMDAw:qm6mMKMUJ02Sm4uItA49l+CtnVULyRmb5zWUFmbj2cg=:V2mwxpPVz7fKQGrX:ZiNMBniHAoV+0xgICngZx+ZiBgsUJuUcKkDy155lEFJNQW5bQh/ExLUOgWrgJimQFe9gUzO5mdwB/X017VEF9YnPK00mUDL/GgqGWh45L/cz/0zuWaz6Aeerj8NnixL5uYs/PM3kMfvvYd/xf/Stzj8LzOwvAxvY03kTfLuJLw1SEPC6HDs092Pjei3qJF55j1dTVozM6cVfNNx9UntM0HMoeIXBxP/elFu+fWh6owfw2+LnbyMbZ6xYznOziNgchzvv71XynGgK6qrdLw6Ekz7KRHNJfR4vnv2BPApYQpxYkZEwyYHnmJ6ZdtFwkpfvgNbLCkLvCNRpXY3A5yd8mOKWRLXpaGvbdQt1V+XFe7QhjVTzNyTicpsbFPCJreL3uU8Qe7MJrc3/Sj4mS0Cl5TyoScqes/9bF9wAcLS7nuLEf3yfhYuWcpvkFwvrJuAwvQkX+9fUqC9uAW1a9NER+8va+wx0+9Nr+6HVmnasdQ6SX1cfg8Rk/rZvtD5SW6DR/J0uf4saGqjkSyu82h9iugOJPFMBxuL4Ej40CzMiXqUdcYt+tEkiFZCeYcvut6IQR9sXiW7gzJkIYsfCQN0gc5aTGuUYR9fp0yh//rDgkrahwWaTvgXoQgUOS9EHRBbQHKU+posJOaSd5NY+ZQdAsF/4B1f9Rq0u9CNR3xY=" />
 <title>Public-Key-Kryptographie und RSA</title>
 <script>
     window.MathJax = {
@@ -232,38 +232,41 @@
 </aside>
 </ld-card></ld-deck></ld-topic><ld-topic id="anforderungen-an-public-key-algorithmen">
 <h2>Anforderungen an Public-Key-Algorithmen</h2>
-<ul class="incremental-list simple">
-<li><p>Für eine Partei <span class="math">\(B\)</span> ist es rechnerisch einfach, ein Schlüsselpaar (bestehend aus öffentlicher Schlüssel <span class="math">\(PU_b\)</span> und privater Schlüssel <span class="math">\(PR_b\)</span>) zu erzeugen.</p></li>
-<li><p>Für einen Absender <span class="math">\(A\)</span> ist es rechnerisch einfach, bei Kenntnis des öffentlichen Schlüssels von <span class="math">\(B\)</span> und der zu verschlüsselnden Nachricht den entsprechenden Chiffretext zu erzeugen.</p></li>
-<li><p>Für den Empfänger <span class="math">\(B\)</span> ist es rechnerisch einfach, den resultierenden Chiffretext mit Hilfe des privaten Schlüssels zu entschlüsseln, um die ursprüngliche Nachricht wiederherzustellen.</p></li>
+<ul class="incremental-list positive-list simple">
+<li><p>Für eine Partei <span class="math">\(B\)</span> ist es <em>rechnerisch einfach</em>, ein Schlüsselpaar (bestehend aus öffentlicher Schlüssel <span class="math">\(PU_b\)</span> und privater Schlüssel <span class="math">\(PR_b\)</span>) zu erzeugen.</p></li>
+<li><p>Für einen Absender <span class="math">\(A\)</span> ist es <em>rechnerisch einfach</em>, bei Kenntnis des öffentlichen Schlüssels von <span class="math">\(B\)</span> und der zu verschlüsselnden Nachricht den entsprechenden Chiffretext zu erzeugen.</p></li>
+<li><p>Für den Empfänger <span class="math">\(B\)</span> ist es <em>rechnerisch einfach</em>, den resultierenden Chiffretext mit Hilfe des privaten Schlüssels zu entschlüsseln, um die ursprüngliche Nachricht wiederherzustellen.</p></li>
+<li><p>Die beiden Schlüssel können in beliebiger Reihenfolge verwendet werden.</p></li>
+</ul>
+<ul class="incremental-list negative-list simple">
 <li><p>Für einen Angreifer, der den öffentlichen Schlüssel kennt, ist es <em>rechnerisch unmöglich</em>, den privaten Schlüssel zu ermitteln.</p></li>
 <li><p>Für einen Angreifer, der den öffentlichen Schlüssel und einen Chiffretext kennt, ist es <em>rechnerisch unmöglich</em>, die ursprüngliche Nachricht wiederherzustellen.</p></li>
-<li><p>Die beiden Schlüssel können in beliebiger Reihenfolge verwendet werden.</p></li>
 </ul>
 </ld-topic><ld-topic id="anforderungen-an-public-key-algorithmen-1">
 <h2>Anforderungen an Public-Key-Algorithmen</h2>
-<ul class="incremental-list">
-<li><p>Benötigt wird eine Falltürfunktion (<span class="eng">Trapdoor one-way function</span>)</p>
-<div class="s-font-size-90 docutils container">
-<p>Eine Einwegfunktion ist im Allgemeinen eine Funktion, bei der jeder Funktionswert eine eindeutige Umkehrung hat, wobei die <em>Berechnung der Funktion einfach</em> ist, während die <em>Bestimmung der Umkehrfunktion praktisch undurchführbar ist</em>.</p>
+<aside class="admonition repetition">
+<p class="admonition-title">Wiederholung</p>
+<p>Eine Einwegfunktion ist im Allgemeinen eine Funktion, bei der jeder Funktionswert <span class="math-i">Y</span> eine eindeutige Umkehrung hat, wobei die <em>Berechnung der Funktion einfach</em> ist, während die <em>Bestimmung der Umkehrfunktion praktisch undurchführbar ist</em>.</p>
 <ul class="simple">
 <li><p><span class="math">\(Y = f(X)\)</span> einfach</p></li>
 <li><p><span class="math">\(X = f^{–1}(Y)\)</span> „unmöglich“</p></li>
 </ul>
-</div>
-</li>
+</aside>
+<ld-story>
+<ul class="incremental-list">
+<li><p>Benötigt wird jedoch eine Falltürfunktion (<span class="eng">Trapdoor one-way function</span>); d. h. eine Einwegfunktion die effizient umkehrbar ist, <strong>wenn ein Geheimnis bekannt ist</strong>.</p></li>
 <li><p>Eine Einwegfunktion mit Falltür ist eine Familie invertierbarer Funktionen <span class="math">\(f_k\)</span>, für die gilt:</p>
-<div class="s-font-size-90 docutils container">
+<blockquote>
 <ul class="simple">
 <li><p><span class="math">\(Y = f_k(X)\)</span> einfach, wenn <span class="math-i">k</span> und <span class="math-i">X</span> bekannt sind.</p></li>
 <li><p><span class="math">\(X = f_k^{–1}(Y)\)</span> einfach,  wenn <span class="math-i">k</span> und <span class="math-i">Y</span> bekannt sind.</p></li>
 <li><p><span class="math">\(X = f_k^{–1}(Y)\)</span> unmöglich, wenn <span class="math-i">Y</span> bekannt ist, aber <span class="math-i">k</span> nicht.</p></li>
 </ul>
-</div>
+</blockquote>
 </li>
 <li><p>Ein praktisches Public-Key-Verfahren hängt von einer geeigneten Trapdoor-Einwegfunktion ab.</p></li>
 </ul>
-<div class="supplemental">
+</ld-story><div class="supplemental">
 <p>Ein Falltürfunktion lässt sich nicht trivial umkehren; bzw. die Umkehrung erfordert spezielle (weitergehende) Informationen; d. h. die Falltür.</p>
 </div></ld-topic><ld-topic id="public-key-kryptoanalyse">
 <h2>Public-Key-Kryptoanalyse</h2>
@@ -293,7 +296,66 @@
 </ul>
 </ld-topic><ld-topic class="new-section transition-scale" id="public-key-algorithmen">
 <h2>Public-Key Algorithmen</h2>
-</ld-topic><ld-topic id="rivest-shamir-adleman-rsa-algorithm">
+</ld-topic><ld-topic id="idee-bzgl-schlusseltauschverfahren">
+<h2>Idee bzgl. Schlüsseltauschverfahren</h2>
+<p class="rubric">Schlüssel wird gemeinsam konstruiert</p>
+<ld-story>
+<ul class="incremental-list">
+<li><p>es gibt eine öffentliche Zahl <span class="math-i">s</span> und eine öffentlich bekannte Funktion <span class="math-i">F</span>, die kommutativ ist.</p></li>
+<li><p>A und B überlegen sich je eine geheime Zahl <span class="math-i">a</span> und <span class="math-i">b</span></p></li>
+<li><p>A berechnet <span class="math">\(F(a, s)\)</span> und sendet das Ergebnis an B</p></li>
+<li><p>B berechnet <span class="math">\(F(b, s)\)</span> und sendet das Ergebnis an A</p></li>
+<li><p>Aus den geheimen und bekanntgegebenen Werten wird der Schlüssel berechnet:</p>
+<p>A berechnet <span class="math">\(K = F(a, F(b,s))\)</span></p>
+<p>B berechnet <span class="math">\(K = F(b, F(a,s))\)</span></p>
+</li>
+</ul>
+<ul class="incremental-list negative-list">
+<li><p>Angreifer M kennt <span class="math-i">F</span> und <span class="math-i">s</span>.</p>
+<p>Der Angreifer kann/könnte ggf. berechnen <span class="math">\(K = F(F(a,s),F^{-1}(F(b,s),s))\)</span></p>
+</li>
+<li><p>Die Sicherheit beruht auf der Annahme, dass die Umkehrung der Funktion <span class="math-i">F(x, s)</span> nach <span class="math-i">x</span> nicht effizient möglich ist – selbst wenn <span class="math-i">s</span> bekannt ist.</p>
+<div class="supplemental">
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p class="rubric">Falls <span class="math">\(F\)</span> invertierbar ist</p>
+<p>Sei <span class="math">\(a = 3\)</span>, <span class="math">\(b = 5\)</span> und <span class="math">\(s = 4\)</span>.</p>
+<p>Sei unsere Funktion <span class="math">\(F\)</span>: <span class="math">\(F(x,y) = x + y\)</span></p>
+<p>Dann ist <span class="math">\(F(a, F(b,s)) = F(a, b + s) = a + b + s = 3 + 5 + 4 = 12\)</span> und <span class="math">\(F(b, F(a,s)) = F(b, a + s) = b + a + s = 5 + 3 + 4 = 12\)</span>.</p>
+<p>Der Angreifer kann nun folgende Rechnung durchführen, da <span class="math-i">s</span> bekannt ist:</p>
+<p><span class="math">\(F(F(a,s),F_s^{-1}(F(b,s))) =\)</span></p>
+<p><span class="math">\(F(7,F_s^{-1}(9)) =\)</span></p>
+<p><span class="math">\(F(7,5) = 12\)</span></p>
+<p>Da <span class="math">\(s = 4\)</span> bekannt ist, kann ein Angreifer die Umkehrfunktion leicht bestimmen und es gilt: <span class="math">\(F_{s=4}^{-1}(x) = x - 4\)</span></p>
+</aside>
+</div></li>
+</ul>
+</ld-story></ld-topic><ld-topic id="diffie-hellmann-merkle-schlusseltausch">
+<h2>Diffie-Hellmann(-Merkle)-Schlüsseltausch</h2>
+<ld-story>
+<ul class="incremental-list simple">
+<li><p>ermöglich es zwei Kommunikationspartnern, über eine öffentliche (abhörbare) Leitung einen gemeinsamen (Sitzungs-)Schlüssel zu vereinbaren</p></li>
+<li><p>der Sitzungsschlüssel wird dann für ein symmetrisches Verschlüsselungsverfahren verwendet</p></li>
+<li><p>veröffentlicht im Jahr 1976</p></li>
+<li><p>Ablauf:</p>
+<ol class="arabic simple">
+<li><p>Gegeben sein eine Primzahl <span class="math-i">p</span> und ein Erzeuger (Generator) <span class="math">\(s \in \mathbb{Z}_p^*\)</span></p></li>
+<li><p>Beide Kommunikationspartner wählen eine Zahl <span class="math-i">a</span> bzw. <span class="math-i">b</span> für die gilt  <span class="math">\(a,b \in \mathbb{Z}_{p-1}\)</span></p></li>
+<li><p>A berechnet <span class="math">\(\alpha = s^a \bmod p\)</span> und B berechnet <span class="math">\(\beta = s^b \bmod p\)</span></p></li>
+<li><p>A und B senden sich gegenseitig ihre Ergebnisse zu</p></li>
+<li><p>Der Schlüssel wird dann wie folgt berechnet: <span class="math">\(K = \alpha^b \bmod p = \beta^a \bmod p\)</span></p></li>
+</ol>
+</li>
+<li><p>Die Sicherheit des Diffie-Hellman-Protokolls beruht auf der Schwierigkeit des diskreten Logarithmusproblems. Das Problem aus <span class="math">\(g^x \equiv y \mod p\)</span> den Exponenten <span class="math-i">x</span> zu finden, ist in großen Gruppen praktisch schwer lösbar.</p></li>
+</ul>
+<aside class="admonition incremental warning">
+<p class="admonition-title">Warnung</p>
+<p>Klassisches Diffie-Hellmann kann von zukünftigen leistungsstarken Quantenrechnern unter Einsatz des Shor Algorithmus potentiell gebrochen werden.</p>
+<p>„Nachfolger“ ist zum Beispiel CRYSTALS-Kyber.</p>
+</aside>
+</ld-story><div class="supplemental">
+<p><span class="math">\(\mathbb{Z}_p^*\)</span> ist die multiplikative Gruppe modulo <span class="math">\(p\)</span>; ist <span class="math">\(p\)</span> eine Primzahl, dann ist die Gruppe zyklisch. Damit der gemeinsam berechnete Schlüssel den gesamten Wertebereich von <span class="math">\(\mathbb{Z}_p^*\)</span> abdecken kann, muss <span class="math">\(s\)</span> ein Erzeuger dieser Gruppe sein; d. h. <span class="math">\(s^x \bmod p\)</span> mit <span class="math">\(x \in \mathbb{Z}_{p-1}\)</span> erzeugt alle Element der Gruppe. Ist <span class="math">\(s\)</span> kein Erzeuger, so ist der Schlüsselraum auf eine echte Untergruppe eingeschränkt, was die kryptografische Sicherheit verringert. Die Anzahl der Erzeuger einer Gruppe <span class="math">\(\mathbb{Z}_p^*\)</span> (auch primitive Wurzeln genannt)  ist gegeben durch: <span class="math">\(\varphi(p - 1)\)</span> wobei <span class="math">\(\varphi\)</span> die Eulersche Totientenfunktion ist.</p>
+</div></ld-topic><ld-topic id="rivest-shamir-adleman-rsa-algorithm">
 <h2>Rivest-Shamir-Adleman (RSA) Algorithm</h2>
 <ul class="incremental-list list-with-explanations">
 <li><p>Entwickelt 1977 am MIT von Ron Rivest, Adi Shamir und Len Adleman.</p></li>
@@ -692,13 +754,22 @@ ex\; mod\; \phi(n) &amp; = &amp; 1
 </ul>
 </ld-topic><ld-topic class="exercises transition-fade" id="ubung">
 <h2>Übung</h2>
-<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Square-and-Multiply" id="ld-exercise-1">
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Diffie-Hellmann(-Merkle)" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">Diffie-Hellmann(-Merkle)</p>
+<p>Führen Sie das DH-Verfahren von Hand durch. Die gemeinsame Primzahl <span class="math">\(p\)</span> sei <span class="math">\(17\)</span>, <span class="math">\(s\)</span> sei <span class="math">\(7\)</span>. Alice wählt <span class="math">\(a = 5\)</span>, Bob wählt <span class="math">\(b = 6\)</span>.</p>
+<p>Welche Werte werden ausgetauscht, wie lautet der Schlüssel?</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:YFH/MpjdhEDIOta+Ep9sWq2DE+MmdEyGo/9McRH7SAY=:H+1ElxHLF/jf4OqH:euCJBMJ1wqsLCSywb6WC4DumiYhhJFZva7QcJwXgc+mz0GLb3gSMGoH01srjjYWAO1hexxUXUqiBiEOel5u83MKNK2KomtVGptoTblw3JMeMCTaZP0SbqR+/k6iusH6BgpaGr7zf0BlpjYppa2P7W5k3kfn1gOB1PkrGQyxFfKmxGnlory9BypJfPOWrD9KOZ8OPvAozzwnut1hZ6d0ZInzI4tRCVZgpk1xbSGuKenHLHGmpSxdCJM5y2a6aWhi3HNuf2tgAiYtAlhAOQIbqgQn6HzyK9xn33BqpUI9MJj/PcUB360k6UsHY/f+cNDKf5HfoKyNVgr1UiHRl2oxRyMGVb/aXEd2NJKmXzCbrU/aWy4hW/ko2HMS6oXiWfvj+7OxoyncW+g==</div>
+</div>
+</ld-topic><ld-topic class="exercises transition-fade" id="ubung-1">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Square-and-Multiply" id="ld-exercise-2">
 <p class="ld-exercise-title rubric">Square-and-Multiply</p>
 <p>Führen Sie den Square-and-Multiply Algorithmus Schritt-für-Schritt für <span class="math">\(3^{17}\, mod\, 23\)</span> aus.</p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:+JlRaoxGKnYqAD6hA3tWdwr2izuFRwZh8lgO6lFeB44=:ZE2971IeoEYGeCbR:QhJ9hNMYim02KBfFgP8kwRKxJFmhpwkQooFCtW0VNbblK9Fv/emt12KVIT6+lR95CQgql8MNTd1b5vEJPGOe4OPn+wcn/rG47204SOte1d669/ENQMHZMdc4EWW9/oLTc2A6KZT9hcGeRdeAcGXm0NAKyjWY3jt5ZMbc/EMUKAxNFNtvckP7PoRpYE5W8vnSST+z0doaRmdPV5DNLkA2C2F7RcYhl0w3LMIdX1pCTD5YRJ+/bhiswpLesFPElATwhnHjNkRFB385csVZxLMv8gZpeHjA6Ntn8Mo=</div>
 </div>
-<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Nachrichtenentschlüsselung" id="ld-exercise-2">
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Nachrichtenentschlüsselung" id="ld-exercise-3">
 <p class="ld-exercise-title rubric">Nachrichtenentschlüsselung</p>
 <p>Entschlüsseln sie die folgende mit RSA verschlüsselte Nachricht</p>
 <div class="math">
@@ -725,9 +796,9 @@ MTAwMDAw:HDOzNnjL5YrwM87iz258Ft+l5r/LqqZQmVuyLMZjSQA=:BBaQkJeNsSIkzyMa:7v0gWSNhF
 <pre class="code python copy-to-clipboard far-smaller literal-block"><code><span class="name">bstr</span> <span class="operator">=</span> <span class="name builtin">bin</span><span class="punctuation">(</span><span class="name">m</span><span class="punctuation">)</span> <span class="comment single"># the string will start with '0b'</span><span class="whitespace">
 </span><span class="name">chars</span> <span class="operator">=</span> <span class="punctuation">[</span><span class="name">bstr</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">:</span><span class="name">i</span><span class="operator">+</span><span class="literal number integer">7</span><span class="punctuation">]</span> <span class="keyword">for</span> <span class="name">i</span> <span class="operator word">in</span> <span class="name builtin">range</span><span class="punctuation">(</span><span class="literal number integer">2</span><span class="punctuation">,</span> <span class="name builtin">len</span><span class="punctuation">(</span><span class="name">bstr</span><span class="punctuation">)</span><span class="operator">-</span><span class="literal number integer">1</span><span class="punctuation">,</span> <span class="literal number integer">7</span><span class="punctuation">)]</span> <span class="comment single"># Segmentierung in 7-Bit-Blöcke</span><span class="whitespace">
 </span><span class="literal string double">&quot;&quot;</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">(</span><span class="name builtin">list</span><span class="punctuation">(</span><span class="name builtin">map</span><span class="punctuation">(</span><span class="keyword">lambda</span> <span class="name">x</span> <span class="punctuation">:</span> <span class="name builtin">chr</span><span class="punctuation">(</span><span class="name builtin">int</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">,</span><span class="literal number integer">2</span><span class="punctuation">)),</span> <span class="name">chars</span><span class="punctuation">)))</span> <span class="comment single"># Umwandlung in ASCII-Zeichen und Konkatenation</span></code></pre>
-</div></ld-topic><ld-topic class="exercises transition-fade" id="ubung-1">
+</div></ld-topic><ld-topic class="exercises transition-fade" id="ubung-2">
 <h2>Übung</h2>
-<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Verschlüsselung mit RSA" id="ld-exercise-3">
+<div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Verschlüsselung mit RSA" id="ld-exercise-4">
 <p class="ld-exercise-title rubric">Verschlüsselung mit RSA</p>
 <p>Verschlüsseln Sie eine Nachricht mit RSA mit selber gewählten Parametern.</p>
 <p>D. h., wählen Sie 2 kleine Primzahlen, berechnen Sie dann <span class="math">\(e\)</span>, <span class="math">\(d\)</span>, <span class="math">\(n\)</span>. Verschlüsseln Sie dann die Nachricht (d. h. einen (eher) kleinen Wert) mit dem öffentlichen Schlüssel einer anderen Person und senden Sie der Person die verschlüsselte Nachricht. Die Zielperson soll Ihre Nachricht entschlüsseln.</p>
