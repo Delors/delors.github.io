@@ -506,27 +506,56 @@ function localResetLectureDoc() {
     location.replace(url);
 }
 
+
+function scaleImageOnLoad(img, scalingFactor) {
+    // TODO Move to extra module!
+    if (scalingFactor) {
+        img.addEventListener("load", () => {
+            const targetWidth = img.naturalWidth * scalingFactor;
+            const targetHeight = img.naturalHeight * scalingFactor;
+            
+            console.log(
+                `scaling image (${img.naturalWidth} x ${img.naturalHeight}) by ${scalingFactor}`,
+                img,
+                targetWidth,
+                targetHeight,
+            );
+            
+            img.style.width = targetWidth + "px";
+            img.style.height = targetHeight + "px";
+        });
+    }
+}
+
 function scaleDocumentImagesAndVideos() {
+    // TODO Move to extra module!
+    const slideToDocumentScalingFactor = parseInt(window.getComputedStyle(document.getElementById("ld-document-view")).minWidth) / presentation.slide.width;
+
+    console.log(`slide to document scaling factor: ${slideToDocumentScalingFactor}`);
+
     // TODO Move to extra module!
     document.querySelectorAll("ld-section img").forEach((img) => {
         if (img.style.width || img.style.height) return;
+        const classList = img.classList
 
-        if (img.classList.contains("highdpi")) {
-            img.addEventListener("load", () => {
-                const targetWidth = img.naturalWidth / 2.5;
-                const targetHeight = img.naturalHeight / 2.5;
-                /*
-                console.log(
-                    "scaling highdpi image for document view",
-                    img,
-                    targetWidth,
-                    targetHeight,
-                );
-                */
-                img.style.width = targetWidth + "px";
-                img.style.height = targetHeight + "px";
-            });
-        }
+        let scalingFactor = undefined;
+
+        /* see scaleSlideImages for documentation */
+        for (const clazz of img.classList) {
+                if (clazz.startsWith("scale-")) {
+                    const factor = parseInt(clazz.slice(6))/100;
+                    if (!isNaN(factor)) {
+                        scaleImageOnLoad(img, factor * slideToDocumentScalingFactor);
+                    }
+                    break;
+                }
+            }
+
+        // TODO get rid of it - replace by scale-3
+        if (classList.contains("highdpi"))
+            scalingFactor = 0.4;
+
+        scaleImageOnLoad(img, scalingFactor);
     });
 
     document
@@ -560,30 +589,49 @@ function scaleSlideImages() {
         if (img.complete) {
             console.error(
                 "image " +
-                    img.src +
-                    " is already loaded: " +
-                    img.naturalWidth +
-                    "x" +
-                    img.naturalHeight,
+                img.src +
+                " is already loaded: " +
+                img.naturalWidth +
+                "x" +
+                img.naturalHeight,
             );
             // TODO Implement when required.
         } else {
-            if (!img.classList.contains("highdpi")) {
-                console.info("waiting for image " + img.src + " to load");
-                img.addEventListener("load", () => {
-                    /*
-                    console.info(
-                        "image " +
-                        img.src +
-                        " has been loaded: " +
-                        img.naturalWidth +
-                        "x" +
-                        img.naturalHeight,
-                    );
-                    */
-                    img.style.width = img.naturalWidth * 3 + "px";
-                    img.style.height = img.naturalHeight * 3 + "px";
-                });
+            /*  The user specifies the scaling factor such that the user gets 
+                the desired size of the image on the slide.
+                In the continuous view, the scaling factor is adapted to reflect 
+                the difference between the size of slides and the maximum 
+                width of the document view.
+
+                I.e., let's assume an image has 5000*2000 Pixels and we want
+                it on the slide. Let's further assume that a slide has a nominal 
+                resolution of 1920x1080 Pixel. In this case, the scaling factor
+                (specified by the user) has to be (at most) = 0.384. 
+                
+                If the maximum width of the document view is, however, just 
+                600 Pixel, the 0.384 will be multiplied by 0.3125 (600/1920) to 
+                get the final scaling factor of 0.12 for the document view.
+
+                For technical reasons the user specified the scaling in percent!
+             */
+            let isScaled = false;
+            for (const clazz of img.classList) {
+                if (clazz.startsWith("scale-")) {
+                    const factor = parseInt(clazz.slice(6))/100;
+                    if (!isNaN(factor)) {
+                        scaleImageOnLoad(img, factor);
+                    } else {
+                        console.error("img with invalid scaling factor:", img, factor);
+                    }
+                    isScaled = true;
+                    break;
+                } else if (clazz === "highdpi") {
+                    isScaled = true;
+                    break;
+                }
+            }
+            if (!isScaled) { // FIXME The images are made for the document view... get rid of it
+                scaleImageOnLoad(img, 3);
             }
         }
     }
@@ -596,9 +644,9 @@ function scaleSlideImages() {
             if (obj.width) {
                 console.info(
                     obj.data +
-                        " has an explicit width: " +
-                        obj.width +
-                        "; no scaling performed",
+                    " has an explicit width: " +
+                    obj.width +
+                    "; no scaling performed",
                 );
                 return;
             }
@@ -1215,9 +1263,9 @@ function setupUnlockPresenterNotesAndSolutionsDialog() {
                     .catch((error) => {
                         console.log(
                             "decryption using: " +
-                                currentPassword +
-                                " failed - " +
-                                error,
+                            currentPassword +
+                            " failed - " +
+                            error,
                         );
                     });
             }
@@ -2220,8 +2268,8 @@ function localRedrawSlide() {
     if (!state.showDocumentView) {
         console.log(
             "forced rerendering of the current slide [" +
-                state.currentSlideNo +
-                "]",
+            state.currentSlideNo +
+            "]",
         );
         // Sometimes the current slide is not shown properly after
         // resetting the slide progress. This is a workaround to
