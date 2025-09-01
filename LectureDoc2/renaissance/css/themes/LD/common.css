@@ -50,7 +50,7 @@ ld-deck {
             counter-reset: deck -1;
         }
 
-        > ld-card {
+        >ld-card {
             counter-increment: deck;
 
             position: relative;
@@ -77,6 +77,7 @@ ld-deck {
 }
 
 ld-grid {
+
     /*  The default layout is (at the moment) a flex based layout. */
     &.default-layout {
         display: flex;
@@ -85,7 +86,7 @@ ld-grid {
         align-items: flex-start;
         gap: 1em;
 
-        > ld-cell {
+        >ld-cell {
             display: block;
         }
     }
@@ -158,6 +159,7 @@ ul.columns {
     &.evenly-spaced {
         justify-content: space-evenly;
     }
+
     &.left-aligned {
         justify-content: flex-start;
     }
@@ -175,10 +177,10 @@ li,
 .compact li,
 .compact ul,
 .compact ol,
-.simple > li p,
-dl.simple > dd,
-.compact > li p,
-dl.compact > dd {
+.simple>li p,
+dl.simple>dd,
+.compact>li p,
+dl.compact>dd {
     margin-top: 0em;
     margin-bottom: 0.25em;
 }
@@ -192,7 +194,7 @@ dl.compact > dd {
     transform-style: preserve-3d;
     overflow: visible;
 
-    > li {
+    >li {
         transition: 0.5s;
 
         &::before {
@@ -210,36 +212,42 @@ dl.compact > dd {
     }
 }
 
-ul.negative-list > li, /* TODO rename: attention-list (see below)*/
-ul > li.negative-list {
+ul.negative-list>li,
+/* TODO rename: attention-list (see below)*/
+ul>li.negative-list {
     list-style-type: "❗️";
 }
 
-ul.positive-list > li, /* TODO rename: check-list*/
-ul > li.positive-list {
+ul.positive-list>li,
+/* TODO rename: check-list*/
+ul>li.positive-list {
     list-style-type: "✓";
 }
 
-ul.question-list > li, /* TODO rename: */
-ul > li.question-list {
+ul.question-list>li,
+/* TODO rename: */
+ul>li.question-list {
     list-style-type: " ? ";
 }
 
-ul.attention-list > li, /* TODO rename: */
-ul > li.attention-list {
+ul.attention-list>li,
+/* TODO rename: */
+ul>li.attention-list {
     list-style-type: "⚡️";
 }
 
-.list-with-explanations > li > *:not(:first-child) {
+.list-with-explanations>li>*:not(:first-child) {
     margin-top: -0.3em;
     font-size: smaller;
     color: var(--dark-gray);
     mix-blend-mode: hard-light;
 }
-.list-with-details > li > *:not(:first-child) {
+
+.list-with-details>li>*:not(:first-child) {
     font-size: smaller;
 }
-.list-with-sublists > li > :is(ol, ul) {
+
+.list-with-sublists>li> :is(ol, ul) {
     margin: 0;
     font-size: smaller;
 }
@@ -308,18 +316,19 @@ dl.field-list {
         margin-bottom: 0;
     }
 
-    + dl.field-list {
+    +dl.field-list {
         margin-top: 0;
     }
 }
+
 dl.option-list,
 dl.docinfo {
     display: flow-root;
 }
 
-dl.field-list > dt,
-dl.option-list > dt,
-dl.docinfo > dt {
+dl.field-list>dt,
+dl.option-list>dt,
+dl.docinfo>dt {
     font-weight: 500;
     clear: left;
     float: left;
@@ -329,23 +338,23 @@ dl.docinfo > dt {
 }
 
 /* Offset for field content (corresponds to the --field-name-limit option) */
-dl.field-list > dd,
-dl.option-list > dd,
-dl.docinfo > dd {
+dl.field-list>dd,
+dl.option-list>dd,
+dl.docinfo>dd {
     margin-left: 9em;
     /* ca. 14 chars in the test examples, fit all Docinfo fields */
 }
 
 /* start nested lists on new line */
-dd > dl:first-child,
-dd > ul:first-child,
-dd > ol:first-child {
+dd>dl:first-child,
+dd>ul:first-child,
+dd>ol:first-child {
     clear: left;
 }
 
 /* start field-body on a new line after long field names */
-dl.field-list > dd > *:first-child,
-dl.option-list > dd > *:first-child {
+dl.field-list>dd>*:first-child,
+dl.option-list>dd>*:first-child {
     display: inline-block;
     width: 100%;
     margin: 0;
@@ -357,12 +366,12 @@ dl.docinfo pre.address {
     margin: 0.5em 0;
 }
 
-dl.docinfo > dd.authors > p {
+dl.docinfo>dd.authors>p {
     margin: 0;
 }
 
 /* Option Lists */
-dl.option-list > dt {
+dl.option-list>dt {
     font-weight: normal;
 }
 
@@ -394,43 +403,43 @@ dl.option-list > dt {
     padding-left: 1em;
 }
 
-.citation > .label {
+.citation>.label {
     margin-left: -2em;
 }
 
-.footnote > .label {
+.footnote>.label {
     margin-left: -1.7em;
     position: absolute;
 }
 
-.footnote.superscript > .label {
+.footnote.superscript>.label {
     margin-left: -1em;
 }
 
-.footnote > .label + *,
-.citation > .label + * {
+.footnote>.label+*,
+.citation>.label+* {
     display: inline-block;
     margin-top: 0;
     vertical-align: top;
 }
 
-.footnote > .backrefs + *,
-.citation > .backrefs + * {
+.footnote>.backrefs+*,
+.citation>.backrefs+* {
     margin-top: 0;
 }
 
-.footnote > .label + p,
-.footnote > .backrefs + p,
-.citation > .label + p,
-.citation > .backrefs + p {
+.footnote>.label+p,
+.footnote>.backrefs+p,
+.citation>.label+p,
+.citation>.backrefs+p {
     display: inline;
     vertical-align: inherit;
 }
 
 /* superscript footnotes */
 a[role="doc-noteref"].superscript,
-.footnote.superscript > .label,
-.footnote.superscript > .backrefs {
+.footnote.superscript>.label,
+.footnote.superscript>.backrefs {
     vertical-align: super;
     font-size: smaller;
     line-height: 1;
@@ -442,15 +451,15 @@ a[role="doc-noteref"].superscript,
     list-style-type: none;
 }
 
-a[role="doc-noteref"].superscript > .fn-bracket,
-.footnote.superscript > .label > .fn-bracket {
+a[role="doc-noteref"].superscript>.fn-bracket,
+.footnote.superscript>.label>.fn-bracket {
     /* hide brackets in display but leave for copy/paste */
     display: inline-block;
     width: 0;
     overflow: hidden;
 }
 
-[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+[role="doc-noteref"].superscript+[role="doc-noteref"].superscript {
     padding-left: 0.15em;
     /* separate consecutive footnote references */
     /* TODO: unfortunately, "+" also selects with text between the references. */
@@ -460,7 +469,7 @@ a[role="doc-noteref"].superscript > .fn-bracket,
     user-select: none;
 }
 
-.backrefs > a {
+.backrefs>a {
     font-style: italic;
 }
 
@@ -488,7 +497,7 @@ p.system-message-title {
         margin-bottom: 0.5em;
     }
 
-    > p:first-child.admonition-title {
+    >p:first-child.admonition-title {
         position: relative;
         left: -0.5em;
         width: calc(100% + 1em);
@@ -504,7 +513,7 @@ p.system-message-title {
         color: var(--current-color);
         text-shadow: var(--gray) -1px -1px 1px;
 
-        & + * {
+        &+* {
             margin-top: 0.15em;
         }
 
@@ -521,7 +530,7 @@ p.system-message-title {
         }
     }
 
-    > *:last-child {
+    >*:last-child {
         margin-bottom: 0;
     }
 
@@ -530,7 +539,7 @@ p.system-message-title {
 
         --current-background-color: var(--very-light-green);
 
-        > p:first-child.admonition-title {
+        >p:first-child.admonition-title {
             --current-background-color: var(--green);
             --current-color: var(--white);
         }
@@ -541,7 +550,7 @@ p.system-message-title {
 
         --current-background-color: var(--very-light-red);
 
-        > p:first-child.admonition-title {
+        >p:first-child.admonition-title {
             --current-color: var(--white);
             --current-background-color: var(--dark-red);
         }
@@ -552,7 +561,7 @@ p.system-message-title {
 
         --current-background-color: var(--very-light-gray);
 
-        > p:first-child.admonition-title {
+        >p:first-child.admonition-title {
             --current-background-color: var(--gray);
             text-align: center;
         }
@@ -563,7 +572,7 @@ p.system-message-title {
 
         --current-background-color: var(--very-light-blue);
 
-        > p:first-child.admonition-title {
+        >p:first-child.admonition-title {
             --current-background-color: var(--blue);
 
             &::before {
@@ -578,7 +587,7 @@ p.system-message-title {
 
         --current-background-color: var(--very-light-blue);
 
-        > p:first-child.admonition-title {
+        >p:first-child.admonition-title {
             --current-background-color: var(--light-blue);
 
             &::before {
@@ -593,7 +602,7 @@ p.system-message-title {
 
         --current-background-color: var(--light-orange);
 
-        > p:first-child.admonition-title {
+        >p:first-child.admonition-title {
             --current-color: var(--white);
             --current-background-color: var(--dark-orange);
         }
@@ -604,7 +613,7 @@ p.system-message-title {
 
         --current-background-color: var(--very-light-red);
 
-        > p:first-child.admonition-title {
+        >p:first-child.admonition-title {
             --current-background-color: var(--red);
             --current-color: var(--white);
 
@@ -620,7 +629,7 @@ p.system-message-title {
 
         --current-background-color: var(--very-light-blue);
 
-        > p:first-child.admonition-title {
+        >p:first-child.admonition-title {
             --current-background-color: var(--blue);
 
             &::before {
@@ -659,7 +668,7 @@ p.system-message-title {
         /* The first two elements ("p"s) markup the generic title (e.g., "Tip")
         and the user chosen Title; we markup both in a section title. */
 
-        > p:first-child.admonition-title {
+        >p:first-child.admonition-title {
             --current-background-color: var(--red);
             margin-bottom: 0;
 
@@ -669,7 +678,7 @@ p.system-message-title {
                 content: "💡";
             }
 
-            + p {
+            +p {
                 position: relative;
                 left: -0.5em;
 
@@ -693,7 +702,7 @@ p.system-message-title {
 
         --current-background-color: var(--very-light-green);
 
-        > p:first-child.admonition-title {
+        >p:first-child.admonition-title {
             --current-background-color: var(--green);
             --current-color: var(--white);
         }
@@ -704,12 +713,11 @@ p.system-message-title {
 
         --current-background-color: var(--very-light-yellow);
 
-        > p:first-child.admonition-title {
+        >p:first-child.admonition-title {
             --current-background-color: var(--dark-yellow);
             --current-color: var(--dark-gray);
-            color: var(
-                --current-color
-            ); /* TODO move to general admonition definition! */
+            color: var(--current-color);
+            /* TODO move to general admonition definition! */
             text-shadow: none;
         }
     }
@@ -733,7 +741,7 @@ p.sidebar-subtitle {
     margin-top: -0.5em;
 }
 
-h1 + p.subtitle {
+h1+p.subtitle {
     font-size: 1.6em;
 }
 
@@ -746,7 +754,7 @@ p:last-child {
     margin-bottom: 0;
 }
 
-details > p:last-child {
+details>p:last-child {
     margin-bottom: 1em;
 }
 
@@ -767,8 +775,9 @@ span.problematic {
     font-family: var(--pre-font-family);
     white-space: pre-wrap;
 }
+
 /* do not wrap at hyphens and similar: */
-.literal > span.pre {
+.literal>span.pre {
     white-space: nowrap;
 }
 
@@ -822,7 +831,7 @@ figcaption {
     color: var(--dark-gray);
     padding: 0.5em;
 
-    > .legend {
+    >.legend {
         font-style: normal;
         font-size: smaller;
         color: var(--gray);
@@ -869,6 +878,7 @@ pre.code {
         margin-bottom: 0;
     }
 }
+
 svg text.code,
 code,
 pre.code {
@@ -879,28 +889,40 @@ pre.code {
     --class-color: #9a6324;
 
     --comment-color: #696969;
-    --comment-preprocfile-color: #ffe119; /* Bright Yellow */
-    --comment-preproc-color: #bcf60c; /* Lime Green */
-    --comment-shadow-color: #fffac8; /* Pale Yellow */
+    --comment-preprocfile-color: #ffe119;
+    /* Bright Yellow */
+    --comment-preproc-color: #bcf60c;
+    /* Lime Green */
+    --comment-shadow-color: #fffac8;
+    /* Pale Yellow */
 
-    --function-color: #494949; /* Dark Gray */
+    --function-color: #494949;
+    /* Dark Gray */
 
-    --keyword-color: #4363d8; /* Strong Blue */
+    --keyword-color: #4363d8;
+    /* Strong Blue */
     --keyword-constant-color: #3232fc;
     --keyword-namespace-color: #31bcc9;
     --keyword-type-color: #0000ff;
 
-    --literal-color: #911eb4; /* Purple */
+    --literal-color: #911eb4;
+    /* Purple */
 
-    --name-color: #008080; /* Teal */
-    --namespace-color: #3cb44b; /* Strong Green */
-    --number-color: #f032e6; /* Magenta */
+    --name-color: #008080;
+    /* Teal */
+    --namespace-color: #3cb44b;
+    /* Strong Green */
+    --number-color: #f032e6;
+    /* Magenta */
 
-    --operator-color: #f58231; /* Orange */
+    --operator-color: #f58231;
+    /* Orange */
 
-    --variable-color: #3cb44b; /* Strong Green */
+    --variable-color: #3cb44b;
+    /* Strong Green */
 
-    --punctuation-color: #e6194b; /* Strong Red */
+    --punctuation-color: #e6194b;
+    /* Strong Red */
 
     --tag-color: #fda8a8;
 
@@ -908,9 +930,11 @@ pre.code {
     --color-XXX: #46f0f0;
     --color-ZZZ: #e6beff;
 
-    --code-color: var(--black); /* the default color*/
+    --code-color: var(--black);
+    /* the default color*/
     color: var(--code-color);
-    fill: var(--code-color); /* for SVGs*/
+    fill: var(--code-color);
+    /* for SVGs*/
 
     &.html {
         color: var(--gray);
@@ -941,7 +965,8 @@ pre.code {
     .comment {
         font-weight: 100;
         color: var(--comment-color);
-        fill: var(--comment-color); /* for styling SVGs */
+        fill: var(--comment-color);
+        /* for styling SVGs */
         text-shadow:
             2px 2px 3px var(--comment-shadow-color),
             -1px -1px 4px var(--gray);
@@ -973,22 +998,26 @@ pre.code {
 
     .keyword {
         color: var(--keyword-color);
-        fill: var(--keyword-color); /* for styling text in SVGs */
+        fill: var(--keyword-color);
+        /* for styling text in SVGs */
         font-weight: 700;
 
         &.type {
             color: var(--keyword-type-color);
-            fill: var(--keyword-type-color); /* for styling SVG s*/
+            fill: var(--keyword-type-color);
+            /* for styling SVG s*/
         }
 
         &.namespace {
             color: var(--keyword-namespace-color);
-            fill: var(--keyword-namespace-color); /* for styling SVGs */
+            fill: var(--keyword-namespace-color);
+            /* for styling SVGs */
         }
 
         &.constant {
             color: var(--keyword-constant-color);
-            fill: var(--keyword-constant-color); /* for styling SVGs */
+            fill: var(--keyword-constant-color);
+            /* for styling SVGs */
         }
     }
 
@@ -1036,7 +1065,8 @@ pre.code {
 
         &.variable {
             color: var(--variable-color);
-            fill: var(--variable-color); /* for styling SVGs*/
+            fill: var(--variable-color);
+            /* for styling SVGs*/
             font-weight: 500;
             text-shadow: 1px 1px 1px var(--dark-gray);
             text-decoration-line: underline;
@@ -1049,11 +1079,13 @@ pre.code {
             font-weight: 200;
 
             color: var(--literal-color);
-            fill: var(--literal-color); /* for styling SVGs */
+            fill: var(--literal-color);
+            /* for styling SVGs */
 
             &.affix {
                 color: var(--literal-color);
-                fill: var(--literal-color); /* for styling SVGs */
+                fill: var(--literal-color);
+                /* for styling SVGs */
                 font-style: italic;
                 text-decoration: dotted underline;
             }
@@ -1061,13 +1093,15 @@ pre.code {
 
         &.number {
             color: var(--number-color);
-            fill: var(--number-color); /* for styling SVGs */
+            fill: var(--number-color);
+            /* for styling SVGs */
         }
     }
 
     .operator {
         color: var(--operator-color);
-        fill: var(--operator-color); /* for styling SVGs */
+        fill: var(--operator-color);
+        /* for styling SVGs */
         font-weight: 900;
         text-shadow: 2px 2px 2px var(--dark-gray);
 
@@ -1078,7 +1112,8 @@ pre.code {
 
     .punctuation {
         color: var(--punctuation-color);
-        fill: var(--punctuation-color); /* for styling SVGs */
+        fill: var(--punctuation-color);
+        /* for styling SVGs */
     }
 
     /*  Issues related to Pygments (i.e., when using rst2LectureDoc):
@@ -1115,7 +1150,7 @@ table {
         padding: 0 1ex;
     }
 
-    > caption {
+    >caption {
         text-align: left;
         font-size: 0.9em;
         margin-bottom: 0.2em;
@@ -1130,15 +1165,18 @@ table {
     &.table-data-align-right td {
         text-align: right;
     }
+
     &.table-header-align-left th,
     &.table-data-align-left td {
         text-align: left;
     }
+
     &.table-header-align-center th,
     &.table-data-align-center td {
         text-align: center;
     }
-    &.table-body-header-align-left > tbody > tr > th {
+
+    &.table-body-header-align-left>tbody>tr>th {
         text-align: left;
     }
 
@@ -1201,17 +1239,19 @@ table {
 
     &.zebra-columns {
         border: 0;
+
         td,
         th {
             border: 0;
             padding: 0.5em 0.25em;
         }
-        tr > *:nth-child(odd) {
+
+        tr>*:nth-child(odd) {
             --current-background-color: var(--very-light-gray);
             background-color: var(--current-background-color);
         }
 
-        tr > *:nth-child(even) {
+        tr>*:nth-child(even) {
             --current-background-color: var(--white);
             background-color: var(--current-background-color);
         }
@@ -1282,27 +1322,32 @@ table {
             --current-color: white;
             color: var(--current-color);
         }
+
         td.\:hover-related {
             box-shadow: var(--trbl-shadow-dark);
             --current-background-color: var(--very-light-gray);
             background-color: var(--current-background-color);
         }
+
         th.\:hover {
             box-shadow: var(--trbl-shadow);
             --current-background-color: var(--light-gray);
             background-color: var(--current-background-color);
         }
+
         td.\:hover {
             box-shadow: var(--trbl-shadow);
             --current-background-color: var(--light-gray);
             background-color: var(--current-background-color);
         }
     }
+
     &.highlight-row-on-hover {
         tr.\:hover {
             --current-background-color: var(--light-gray);
             background-color: var(--current-background-color);
         }
+
         tr.\:hover-related {
             --current-background-color: var(--very-light-gray);
             background-color: var(--current-background-color);
@@ -1330,7 +1375,7 @@ table {
             text-align: justify;
             hyphens: auto;
 
-            /* style the "comment" column */
+            /* styling of the "comment" column */
             &:first-of-type:not(:empty) {
                 max-width: 25%;
                 padding-top: 0.15em;
@@ -1342,14 +1387,14 @@ table {
                 color: var(--current-color);
                 vertical-align: text-top;
                 text-align: right;
-                border-radius: var(--medium-border-radius) 0 0
-                    var(--medium-border-radius);
+                border-radius: var(--medium-border-radius) 0 0 var(--medium-border-radius);
                 font-size: smaller;
                 font-weight: 300;
             }
         }
 
         td {
+
             /* the intermediate columns */
             &:not(:first-of-type):not(:empty) {
                 font-family: var(--text-font-family);
@@ -1366,8 +1411,8 @@ table {
     align-items: center;
 }
 
-/** Intended to be used a the section/slide level. */
-.summary > h2:first-child {
+/** Intended to be used as the section/slide level. */
+.summary>h2:first-child {
     text-align: center;
     position: relative;
     --current-background-color: var(--dark-red);
@@ -1474,6 +1519,7 @@ table {
         background-color: var(--current-background-color);
         border-radius: var(--small-border-radius) 0 0 var(--small-border-radius);
     }
+
     /*&::after {
         display: block;
         content: " ";
@@ -1503,7 +1549,7 @@ ul.important {
     margin-left: 0;
     padding-left: 0;
 
-    > li {
+    >li {
         position: relative;
         --current-background-color: var(--very-light-red);
         background-color: var(--current-background-color);
@@ -1546,4 +1592,43 @@ p video,
 figure img,
 figure video {
     display: inline;
+}
+
+
+/*
+
+    Styling of index cards
+
+*/
+
+.index-card {
+    display: inline-block;
+    font-family: bradley hand, cursive;
+    background-color: var(--very-light-yellow);
+    color: var(--blue);
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    max-width: 70ch;
+    min-width: 20ch;
+    margin: auto;
+    box-shadow: var(--trbl-shadow-dark);
+    border-radius: 0.25em;
+
+    >:is(p, div.line-block) {
+        margin-top: 0.1em;
+        margin-bottom: 0.1em;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid gray;
+        }
+
+        &:nth-child(1) {
+            border-bottom: 3px solid black;
+            text-align: right;
+            padding-right: 0.5em;
+            margin: 0;
+        }
+    }
 }

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;LLMs&quot;, &quot;Prompting&quot;" name="keywords" />
+<meta content="Software Engineering - Code Generierung mit LLMs" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-se-using-llms" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:ugxcf/R5XsZC+ZWTXYEmZreq0w==" />
+<title>Software Engineering - Code Generierung mit LLMs</title>
+
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="footnote-reference-1">
+<h1 class="title">Software Engineering - Code Generierung mit LLMs<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h1>
+
+<p>Eine allererste Einführung</p>
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>0.0.1</p>
+</dd>
+</dl>
+<div class="supplemental">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/se-using-llms/folien.de.rst.html">https://delors.github.io/se-using-llms/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/se-using-llms/folien.de.rst.html.pdf">https://delors.github.io/se-using-llms/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Erstellt unter Zuhilfenahme von ChatGPT</p>
+</aside>
+</aside>
+</ld-topic>
+<ld-topic class="transition-scale" id="prompting-strategien-fur-code-generierung-mit-llms">
+<h2>Prompting-Strategien für Code-Generierung mit LLMs</h2>
+<ld-story>
+<dl class="incremental-list field-list">
+<dt>Klare Aufgabenstellung<span class="colon">:</span></dt>
+<dd><p>Programmiersprache und gewünschte Bibliotheken benennen.</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>Schreibe eine Funktion in <em>Python</em>, die … mit <em>NumPy</em> …</p>
+</aside>
+</dd>
+<dt>Struktur vorgeben<span class="colon">:</span></dt>
+<dd><p>Erwünschte Signatur oder Interfaces spezifizieren</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>Implementiere <code class="python"><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">sort_list</span><span class="punctuation">(</span><span class="name">xs</span><span class="punctuation">:</span> <span class="name builtin">list</span><span class="punctuation">[</span><span class="name builtin">int</span><span class="punctuation">])</span> <span class="operator">-&gt;</span> <span class="name builtin">list</span><span class="punctuation">[</span><span class="name builtin">int</span><span class="punctuation">]:</span></code></p>
+</aside>
+</dd>
+<dt>Schrittweise Anleitungen<span class="colon">:</span></dt>
+<dd><p>Erst Algorithmus erklären lassen, dann den Code generieren.</p>
+<p>Hilft bei komplexen Problemen (Divide &amp; Conquer im Prompt).</p>
+</dd>
+<dt>Beispiele nutzen<span class="colon">:</span></dt>
+<dd><p>„Few-Shot Prompting“ mit kleinen Code-Snippets als Vorlage.</p>
+<p>Fördert Einhaltung von Stil, Syntax und Konventionen.</p>
+</dd>
+<dt>Fehlervermeidung<span class="colon">:</span></dt>
+<dd><p>Auf Testfälle im Prompt hinweisen: „Der Code muss diese Tests bestehen …“</p>
+</dd>
+<dt>Iterative Verfeinerung<span class="colon">:</span></dt>
+<dd><p>Erst groben Entwurf generieren, dann gezielt Verbesserungen anfordern</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<p>„Optimiere die Laufzeit“ oder „Füge Typannotationen hinzu“.</p>
+</aside>
+</dd>
+</dl>
+</ld-story></ld-topic><ld-topic id="typische-stolperfallen-beim-code-prompting">
+<h2>Typische Stolperfallen beim Code-Prompting</h2>
+<ld-story>
+<dl class="incremental-list field-list">
+<dt>Unpräzise Sprache<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>Keine Programmiersprache/Technologien angegeben → Modell wählt zufällig.</p></li>
+<li><p>Lösung: Sprache und Version im Prompt festlegen</p></li>
+</ul>
+</dd>
+<dt>Fehlende Constraints<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>Ohne Funktionssignatur oder Interfaces generiert LLM „freie“ Lösungen</p></li>
+<li><p>Lösung: Signaturen, Klassen oder API-Vorgaben angeben</p></li>
+</ul>
+</dd>
+<dt>Vermischte Anforderungen<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>Prompt enthält Code + Prosa → Antwort enthält unnötige Erklärungen</p></li>
+<li><p>Lösung: explizit nur <em>Codeblock</em> anfordern</p></li>
+</ul>
+</dd>
+<dt>Zu komplex in einem Schritt<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>Lange Prompts mit vielen Bedingungen führen zu Fehlern</p></li>
+<li><p>Lösung: Problem in mehrere Teilaufgaben aufsplitten</p></li>
+</ul>
+<div class="supplemental">
+<p>Modernere LLMs können immer besser mit komplexen Prommpts umgehen und hier sind auch weitere Verbesserungen zu erwarten!</p>
+</div></dd>
+<dt>Keine Tests spezifiziert<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>Modell weiß nicht, wann Lösung „korrekt“ ist</p></li>
+<li><p>Lösung: Testfälle im Prompt beilegen</p></li>
+</ul>
+</dd>
+<dt>Übermäßiges Vertrauen<span class="colon">:</span></dt>
+<dd><ul class="negative-list simple">
+<li><p>Generierter Code wird ohne Überprüfung übernommen!</p></li>
+<li><p>Lösung: Immer Review, Linting und Tests durchführen. Insbesondere Versionen von externen Bibliotheken überprüfen, diese sind häufig nicht aktuell oder veraltet.</p></li>
+</ul>
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Beim Einbiden von Tools oder Bibliotheken ist die Zielbibliothek immer zu prüfen! Am Besten einen Dependency-Manager verwenden.</p>
+</aside>
+</dd>
+</dl>
+</ld-story></ld-topic>
+</template>
+</body>
+</html>
