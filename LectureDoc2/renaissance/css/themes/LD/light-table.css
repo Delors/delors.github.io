@@ -3,7 +3,11 @@
 #ld-light-table-dialog {
     ld-deck {
         transform-style: preserve-3d;
-        transform: translateY(5px) perspective(2500px) rotateX(50deg) scale(0.9);
+        
+        /* Apply 3D transform if not all but the first child are overlays. */
+        &:has(>:not(:first-child, .overlay)) {
+            transform: translateY(5px) perspective(2500px) rotateX(50deg) scale(0.9);
+        }
 
         > * {
             /*  Recall that all child elements of a deck are associated with 
@@ -16,6 +20,10 @@
                 calc(120px - (var(--ld-deck-child-count) - 1) * 10px),
                 5px
             );
+
+            &.overlay {
+                --ld-deck-child-offset: 0px;
+            }
 
             transform: translateZ(
                 calc(
