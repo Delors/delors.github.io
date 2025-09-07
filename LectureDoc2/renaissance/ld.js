@@ -80,7 +80,7 @@ async function ldCrypto() {
 }
 
 /**
- * Central registry for all events that are triggered by LectureDoc.
+ * Central registry for all events emitted by LectureDoc.
  * Use ldEvents.addEventListener(<event>,<listener>) to register a listener
  * for a specific event.
  *
@@ -150,7 +150,7 @@ const interWindowMessageHandlers = {
     handlers: {},
     indexedHandlers: {}, // an object mapping message identifiers (Strings) to arrays of handlers
     addHandler: function (msg, handler) {
-        if (msg in handlers) {
+        if (msg in this.handlers) {
             throw new Error("handler already registered: " + msg);
         }
         this.handlers[msg] = handler;
@@ -506,21 +506,20 @@ function localResetLectureDoc() {
     location.replace(url);
 }
 
-
 function scaleImageOnLoad(img, scalingFactor) {
     // TODO Move to extra module!
     if (scalingFactor) {
         img.addEventListener("load", () => {
             const targetWidth = img.naturalWidth * scalingFactor;
             const targetHeight = img.naturalHeight * scalingFactor;
-            
+
             console.log(
                 `scaling image (${img.naturalWidth} x ${img.naturalHeight}) by ${scalingFactor}`,
                 img,
                 targetWidth,
                 targetHeight,
             );
-            
+
             img.style.width = targetWidth + "px";
             img.style.height = targetHeight + "px";
         });
@@ -529,31 +528,39 @@ function scaleImageOnLoad(img, scalingFactor) {
 
 function scaleDocumentImagesAndVideos() {
     // TODO Move to extra module!
-    const slideToDocumentScalingFactor = parseInt(window.getComputedStyle(document.getElementById("ld-document-view")).minWidth) / presentation.slide.width;
+    const slideToDocumentScalingFactor =
+        parseInt(
+            window.getComputedStyle(document.getElementById("ld-document-view"))
+                .minWidth,
+        ) / presentation.slide.width;
 
-    console.log(`slide to document scaling factor: ${slideToDocumentScalingFactor}`);
+    console.log(
+        `slide to document scaling factor: ${slideToDocumentScalingFactor}`,
+    );
 
     // TODO Move to extra module!
     document.querySelectorAll("ld-section img").forEach((img) => {
         if (img.style.width || img.style.height) return;
-        const classList = img.classList
+        const classList = img.classList;
 
         let scalingFactor = undefined;
 
         /* see scaleSlideImages for documentation */
         for (const clazz of img.classList) {
-                if (clazz.startsWith("scale-")) {
-                    const factor = parseInt(clazz.slice(6))/100;
-                    if (!isNaN(factor)) {
-                        scaleImageOnLoad(img, factor * slideToDocumentScalingFactor);
-                    }
-                    break;
+            if (clazz.startsWith("scale-")) {
+                const factor = parseInt(clazz.slice(6)) / 100;
+                if (!isNaN(factor)) {
+                    scaleImageOnLoad(
+                        img,
+                        factor * slideToDocumentScalingFactor,
+                    );
                 }
+                break;
             }
+        }
 
         // TODO get rid of it - replace by scale-3
-        if (classList.contains("highdpi"))
-            scalingFactor = 0.4;
+        if (classList.contains("highdpi")) scalingFactor = 0.4;
 
         scaleImageOnLoad(img, scalingFactor);
     });
@@ -581,7 +588,7 @@ function scaleDocumentImagesAndVideos() {
 
 function scaleSlideImages() {
     // TODO Move to extra module!
-    const imgs = document.querySelectorAll(".ld-slide img");
+    const imgs = document.querySelectorAll("ld-slide img");
     for (const img of imgs) {
         if (img.style.width || img.style.height)
             // if we have explicit sizing of the image, we don't want to change it
@@ -589,11 +596,11 @@ function scaleSlideImages() {
         if (img.complete) {
             console.error(
                 "image " +
-                img.src +
-                " is already loaded: " +
-                img.naturalWidth +
-                "x" +
-                img.naturalHeight,
+                    img.src +
+                    " is already loaded: " +
+                    img.naturalWidth +
+                    "x" +
+                    img.naturalHeight,
             );
             // TODO Implement when required.
         } else {
@@ -617,11 +624,15 @@ function scaleSlideImages() {
             let isScaled = false;
             for (const clazz of img.classList) {
                 if (clazz.startsWith("scale-")) {
-                    const factor = parseInt(clazz.slice(6))/100;
+                    const factor = parseInt(clazz.slice(6)) / 100;
                     if (!isNaN(factor)) {
                         scaleImageOnLoad(img, factor);
                     } else {
-                        console.error("img with invalid scaling factor:", img, factor);
+                        console.error(
+                            "img with invalid scaling factor:",
+                            img,
+                            factor,
+                        );
                     }
                     isScaled = true;
                     break;
@@ -630,23 +641,24 @@ function scaleSlideImages() {
                     break;
                 }
             }
-            if (!isScaled) { // FIXME The images are made for the document view... get rid of it
+            if (!isScaled) {
+                // FIXME The images are made for the document view... get rid of it
                 scaleImageOnLoad(img, 3);
             }
         }
     }
 
     const objects = document.querySelectorAll(
-        ".ld-slide object[role='img'][type='image/svg+xml']",
+        "ld-slide object[role='img'][type='image/svg+xml']",
     );
     for (const obj of objects) {
         const loadListener = () => {
             if (obj.width) {
                 console.info(
                     obj.data +
-                    " has an explicit width: " +
-                    obj.width +
-                    "; no scaling performed",
+                        " has an explicit width: " +
+                        obj.width +
+                        "; no scaling performed",
                 );
                 return;
             }
@@ -1068,8 +1080,11 @@ function setupLightTable() {
     });
 
     topicTemplates.querySelectorAll("ld-topic").forEach((topic, i) => {
-        const slide = ld.deepCloneWithOpenShadowRoots(topic);
-        slide.classList.add("ld-slide");
+        const clonedTopic = ld.deepCloneWithOpenShadowRoots(topic);
+        const slide = ld.create("ld-slide", {
+            classList: clonedTopic.classList,
+            children: clonedTopic.children,
+        });
         slide.removeAttribute("id"); // not needed anymore (in case it was set)
 
         const slideScaler = ld.div({
@@ -1263,9 +1278,9 @@ function setupUnlockPresenterNotesAndSolutionsDialog() {
                     .catch((error) => {
                         console.log(
                             "decryption using: " +
-                            currentPassword +
-                            " failed - " +
-                            error,
+                                currentPassword +
+                                " failed - " +
+                                error,
                         );
                     });
             }
@@ -1383,7 +1398,6 @@ function setupSlidePane() {
             classList: clonedTopic.classList,
             children: clonedTopic.children,
         });
-        slide.classList.add("ld-slide");
         slide.dataset.ldSlideNo = i;
         slide.dataset.id = clonedTopic.id; /* The original ID! */
 
@@ -1542,7 +1556,8 @@ function setupDocumentView() {
             children: template.children,
         });
 
-        if (template.classList.contains("exercises")) { // TODO <- needed?
+        if (template.classList.contains("exercises")) {
+            // TODO <- needed?
             // Replace the encrypted solutions with password fields.
             section.querySelectorAll(":scope .ld-exercise").forEach((task) => {
                 task.classList.add("ld-extracted-exercise");
@@ -2268,8 +2283,8 @@ function localRedrawSlide() {
     if (!state.showDocumentView) {
         console.log(
             "forced rerendering of the current slide [" +
-            state.currentSlideNo +
-            "]",
+                state.currentSlideNo +
+                "]",
         );
         // Sometimes the current slide is not shown properly after
         // resetting the slide progress. This is a workaround to
@@ -2506,7 +2521,7 @@ function registerSlideClickedListener() {
  */
 function localJumpToSlideWithElementWithId(id) {
     const slide = document.querySelector(
-        `#ld-slides-pane .ld-slide:has(#${id})`,
+        `#ld-slides-pane ld-slide:has(#${id})`,
     );
     if (!slide) {
         return undefined;
@@ -2514,7 +2529,7 @@ function localJumpToSlideWithElementWithId(id) {
     localGoToSlide(slide);
 
     // ensure that all elements up to the target element are visible.
-    const target = document.querySelector(`#ld-slides-pane .ld-slide #${id}`);
+    const target = document.querySelector(`#ld-slides-pane ld-slide #${id}`);
     while (getComputedStyle(target).visibility == "hidden") {
         localAdvancePresentation();
     }
@@ -2526,7 +2541,7 @@ function localJumpToSlideWithElementWithId(id) {
  */
 function localJumpToSlideWithId(id) {
     const slide = document.querySelector(
-        `#ld-slides-pane .ld-slide[data-id="${id}"]`,
+        `#ld-slides-pane ld-slide[data-id="${id}"]`,
     );
     if (!slide) {
         return undefined;
@@ -2670,7 +2685,7 @@ function registerHoverPresenterNoteListener() {
 
             const noteId = marker.dataset.presenterNoteId;
 
-            const ldSlide = marker.closest(".ld-slide");
+            const ldSlide = marker.closest("ld-slide");
             const ldPresenterNote = ldSlide.querySelector(
                 `:scope #ld-presenter-note-${noteId}`,
             );
@@ -2683,7 +2698,7 @@ function registerHoverPresenterNoteListener() {
                 marker.hoverCounter++;
                 ldPresenterNote.classList.add("hover:ld-presenter-note");
             }
-            function removeHover(e) {
+            function removeHover() {
                 marker.hoverCounter--;
                 if (marker.hoverCounter === 0) {
                     ldPresenterNote.classList.remove("hover:ld-presenter-note");

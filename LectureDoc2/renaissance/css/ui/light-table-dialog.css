@@ -6,14 +6,14 @@
 
     .ld-dialog-header {
         max-width: initial;
-        
+
         justify-content: space-between;
         align-items: center;
 
         #ld-light-table-slides-count {
             color: var(--ld-ui-color);
         }
-        
+
         #ld-light-table-search-input {
             flex-grow: 1;
             flex-shrink: 1;
@@ -23,13 +23,13 @@
             margin-right: var(--ld-ui-border-radius);
 
             border-radius: var(--ld-ui-small-border-radius);
-            padding: 3px 4px 3px 4px;
+            padding: 3px 4px;
         }
     }
 
     #ld-light-table-slides {
         flex-grow: 1;
-        
+
         margin: 0.5em var(--ld-ui-border-radius);
         overflow-y: scroll;
 
@@ -49,49 +49,51 @@
             margin: 3px;
             overflow: hidden;
             scroll-snap-align: start;
-    
+
             /*  The class .hide is programmatically associated with slides when the user 
                 searches for slides. */
             &.ld-light-table-slide-pane-hide {
                 width: 0;
                 margin: 0;
                 scale: 0;
-                transition: width 0ms 750ms, scale 750ms ease-out;
+                transition:
+                    width 0ms 750ms,
+                    scale 750ms ease-out;
             }
 
             .ld-light-table-slide-scaler {
                 position: absolute;
                 scale: var(--ld-lt-zoom-level);
 
-                .ld-slide {
+                ld-slide {
                     position: absolute;
                 }
             }
-        
+
             .ld-light-table-slide-overlay {
                 width: calc(var(--ld-slide-width) * var(--ld-lt-zoom-level));
                 height: calc(var(--ld-slide-height) * var(--ld-lt-zoom-level));
 
                 position: absolute;
-                top: 0px;
-                left: 0px;
-            
-                background-color: rgba(0, 0, 0, 0.2);
+                top: 0;
+                left: 0;
+
+                /* We use flex here, to make it easy to align slide number: */
+                display: flex;
+                align-items: end;
+                justify-content: right;
+
+                background-color: rgb(0 0 0 / 20%);
                 opacity: 1;
                 &:hover {
                     opacity: 0;
                 }
                 transition: opacity 333ms ease-in;
 
-                /* We use flex here, to make it easy to align slide number: */
-                display: flex; 
-                align-items: end; 
-                justify-content: right;
-
                 > .ld-light-table-slide-number {
-                    display: block; 
-                    color: rgba(0,0,0,0.75); 
-                    text-shadow: 1px 2px 1px rgba(255,255,255,0.5); 
+                    display: block;
+                    color: rgb(0 0 0 / 75%);
+                    text-shadow: 1px 2px 1px rgb(255 255 255 / 50%);
                     font-size: calc(var(--ld-ui-font-size) * 1.3);
                     margin-right: 0.25em;
                 }
@@ -111,11 +113,8 @@
             label {
                 margin-right: 0.5em;
 
-                color: var(--ld-ui-color)
-            }   
+                color: var(--ld-ui-color);
+            }
         }
     }
 }
-
-
-

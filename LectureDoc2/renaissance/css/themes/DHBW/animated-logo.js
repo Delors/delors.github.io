@@ -1,10 +1,10 @@
 /**
  * This module adds an animated DHBW logo to the title slide.
- * 
+ *
  * When importing this module, it will automatically register with LectureDoc's
  * basic events registry.
- * 
- * @author Michael Eichberg 
+ *
+ * @author Michael Eichberg
  * @version 2025-02-20
  */
 
@@ -101,23 +101,24 @@ const logoTemplate = `
             <div class="side right"></div>
         </div>
     </dhbw-logo>
-    `
-
+    `;
 
 function afterLDDOMManipulations() {
     const template = document.createElement("template");
     template.innerHTML = logoTemplate;
-    const slide = document.querySelector("#ld-slides-pane ld-slide:has(h1).animated-logo")
+    const slide = document.querySelector(
+        "#ld-slides-pane ld-slide:has(h1).animated-logo",
+    );
     const logoElement = template.content.cloneNode(true);
     // There will always be at most one h1 element per slide set.
     // Hence, we can simply add the content and don't need a shadow DOM.
     slide.prepend(logoElement);
 }
 
-
 /*
  * Register with LectureDoc's basic events.
  */
 lectureDoc2.ldEvents.addEventListener(
-    "afterLDDOMManipulations", 
-    afterLDDOMManipulations);
+    "afterLDDOMManipulations",
+    afterLDDOMManipulations,
+);

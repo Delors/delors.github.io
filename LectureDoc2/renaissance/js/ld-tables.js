@@ -15,27 +15,6 @@ import * as ld from "./ld-lib.js";
 
 console.log("loading ld-tables.js");
 
-/**
- * This method is called before the DOM is manipulated by LectureDoc.
- *
- * At this point in time the DOM is still in the original state. I.e.,
- * the slide templates are not yet copied to the respective views.
- */
-function beforeLDDOMManipulations() {
-    /*
-    console.log("performing ld-components.beforeLDDOMManipulations");
-    */
-    // empty for now
-}
-
-function afterLDDOMManipulations() {
-    /*
-    console.log("performing ld-components.afterLDDOMManipulations");
-
-    */
-    // empty for now
-}
-
 const tables = [];
 
 /**

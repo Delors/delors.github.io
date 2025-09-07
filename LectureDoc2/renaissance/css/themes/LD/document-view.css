@@ -5,7 +5,7 @@
     in previous versions ... */
 @media print {
     #ld-document-view > ld-section {
-        page-break-before: always;
+        break-before: page;
     }
 }
 
@@ -28,14 +28,13 @@
         &.exercises,
         &.new-section {
             > h2 {
+                border-radius: 0.25em;
                 padding: 0.25em;
 
                 font-family: var(--large-text-font-family);
                 font-weight: 300;
                 font-size: 2em;
                 text-align: center;
-
-                border-radius: 0.25em;
             }
         }
 
@@ -94,7 +93,7 @@
         line-height: var(--d-supplemental-line-height);
 
         & + .supplemental {
-            margin-top: 0em;
+            margin-top: 0;
         }
     }
 
@@ -107,8 +106,9 @@
         + .ld-extracted-exercise {
             border-top: solid 1px var(--light-gray);
             padding-top: 0.5em;
+
             @media print {
-                page-break-before: always;
+                break-before: page;
             }
         }
 
@@ -135,7 +135,7 @@
             display: block;
             width: 100%;
             margin-bottom: 0.5em;
-            padding: 0em 0.25em;
+            padding: 0 0.25em;
             line-height: 1.4em;
             font-size: 1.15em;
 
@@ -164,9 +164,10 @@
             counter-increment: exercise;
             content: counter(section) "." counter(exercise) ".";
 
-            padding: 0 0.25em 0 0.25em;
+            padding: 0 0.25em;
             margin-right: 0.25em;
-            border-radius: var(--small-border-radius) 0 0 var(--small-border-radius);
+            border-radius: var(--small-border-radius) 0 0
+                var(--small-border-radius);
 
             background-color: var(--light-gray);
             color: var(--white);

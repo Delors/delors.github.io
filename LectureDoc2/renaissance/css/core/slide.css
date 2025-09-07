@@ -1,7 +1,7 @@
 /*  CSS LAYER: behavior */
 
 /*  Core styling of slides. */
-.ld-slide {
+ld-slide {
     --ld-rendering-mode: slide;
 
     contain: layout paint size;
@@ -37,19 +37,148 @@
     }
     */
 
+    /* We simulate a deck by creating a CSS Grid with a single cell and 
+    assigning all cards the same cell. To ensure that the cards are shown in 
+    the correct order, we also associate each card with its corresponding z-index.
+    */
     ld-deck {
-        /*display: block; moved to common */
+        /*  Every deck creates a unique stacking context. This enables us 
+            to put the "cards" of a deck on top of each other. To enable a
+            perfect overlay, all "cards" are given the same size as the deck. 
+            
+            Because every direct child element is treated as a card and
+            will get the size of the deck, elements which need an explicit size 
+            of their own (e.g., images) need to be put into a generic container.
+            */
         position: relative;
+        z-index: 0;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas: "stack";
+
         width: 100%;
 
-        > ld-card {
-            position: absolute;
-            /* The width and height is set using JavaScript! */
+        /*  Let's count the number of child elements.
+
+            The idea is based on the following discussion:
+            https://stackoverflow.com/questions/8720931/can-css-detect-the-number-of-children-an-element-has */
+        &:has(> :last-child:nth-child(1)) {
+            --ld-deck-child-count: 1;
+        }
+        &:has(> :last-child:nth-child(2)) {
+            --ld-deck-child-count: 2;
+        }
+        &:has(> :last-child:nth-child(3)) {
+            --ld-deck-child-count: 3;
+        }
+        &:has(> :last-child:nth-child(4)) {
+            --ld-deck-child-count: 4;
+        }
+        &:has(> :last-child:nth-child(5)) {
+            --ld-deck-child-count: 5;
+        }
+        &:has(> :last-child:nth-child(6)) {
+            --ld-deck-child-count: 6;
+        }
+        &:has(> :last-child:nth-child(7)) {
+            --ld-deck-child-count: 7;
+        }
+        &:has(> :last-child:nth-child(8)) {
+            --ld-deck-child-count: 8;
+        }
+        &:has(> :last-child:nth-child(9)) {
+            --ld-deck-child-count: 9;
+        }
+        &:has(> :last-child:nth-child(10)) {
+            --ld-deck-child-count: 10;
+        }
+        &:has(> :last-child:nth-child(11)) {
+            --ld-deck-child-count: 11;
+        }
+        &:has(> :last-child:nth-child(12)) {
+            --ld-deck-child-count: 12;
+        }
+        &:has(> :last-child:nth-child(13)) {
+            --ld-deck-child-count: 13;
+        }
+        &:has(> :last-child:nth-child(14)) {
+            --ld-deck-child-count: 14;
+        }
+        &:has(> :last-child:nth-child(15)) {
+            --ld-deck-child-count: 15;
+        }
+
+        /*
+        First, we associate the nth-child layer with a custom data attribute 
+        index that we then use in the css calculations!
+
+        See https://crinkles.dev/writing/a-nth-child-css-trick/
+        See https://crinkles.dev/writing/use-the-child-element-count-in-css/ 
+        */
+        > * {
+            /* We set  the card's index using CSS nth-child queries. 
+            Currently we support up to 15 "cards" per deck. The index directly
+            determines the card's z-index. 
+            --ld-deck-child-index: 0;
+            */
+
+            &:nth-child(1) {
+                --ld-deck-child-index: 1;
+            }
+            &:nth-child(2) {
+                --ld-deck-child-index: 2;
+            }
+            &:nth-child(3) {
+                --ld-deck-child-index: 3;
+            }
+            &:nth-child(4) {
+                --ld-deck-child-index: 4;
+            }
+            &:nth-child(5) {
+                --ld-deck-child-index: 5;
+            }
+            &:nth-child(6) {
+                --ld-deck-child-index: 6;
+            }
+            &:nth-child(7) {
+                --ld-deck-child-index: 7;
+            }
+            &:nth-child(8) {
+                --ld-deck-child-index: 8;
+            }
+            &:nth-child(9) {
+                --ld-deck-child-index: 9;
+            }
+            &:nth-child(10) {
+                --ld-deck-child-index: 10;
+            }
+            &:nth-child(11) {
+                --ld-deck-child-index: 11;
+            }
+            &:nth-child(12) {
+                --ld-deck-child-index: 12;
+            }
+            &:nth-child(13) {
+                --ld-deck-child-index: 13;
+            }
+            &:nth-child(14) {
+                --ld-deck-child-index: 14;
+            }
+            &:nth-child(15) {
+                --ld-deck-child-index: 15;
+            }
+
+            grid-area: stack;
+            width: 100%;
+            height: 100%;
+            z-index: var(--ld-deck-child-index);
 
             clear: both;
             overflow: hidden;
 
-            &:not(.overlay):not(.s-overlay) {
+            &:not(.overlay, .s-overlay) {
                 background-color: var(--current-background-color);
             }
         }

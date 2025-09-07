@@ -14,7 +14,7 @@
                 z-index: 1;
                 content: "⇡\A⇣";
                 white-space: pre;
-                color: rgba(150, 150, 150, 0.5);
+                color: rgb(150 150 150 / 50%);
                 text-shadow: 1px 1px 2px var(--white);
             }
         }
@@ -35,7 +35,8 @@
             max-height: var(--ld-rel-max-supplemental-area-height);
             margin: 0;
             border-radius: var(--s-border-radius) 0 0 var(--s-border-radius);
-            padding: calc(var(--s-tb-padding) * 0.75) calc(var(--s-lr-padding) * 0.75);
+            padding: calc(var(--s-tb-padding) * 0.75)
+                calc(var(--s-lr-padding) * 0.75);
             /*  The factor has to be larger than the factor used by translate
                 (see below) to ensure that the content is never visible when
                 the supplemental information is not expanded. */
@@ -47,7 +48,9 @@
 
             overflow-y: scroll;
 
-            --current-background-color: rgb(from var(--s-background-color) r g b / 0.66);
+            --current-background-color: rgb(
+                from var(--s-background-color) r g b / 66%
+            );
             background-color: var(--current-background-color);
             backdrop-filter: blur(8px);
 
@@ -60,7 +63,9 @@
                 able to apply the styling in the non-primary window. */
             &.hover\:ld-supplementals {
                 transform: translateX(0%)
-                    translateY(calc(var(--ld-slide-height) * 0.5 - (100% * 0.5)));
+                    translateY(
+                        calc(var(--ld-slide-height) * 0.5 - (100% * 0.5))
+                    );
                 transition: 0.75s;
                 box-shadow: var(--trbl-shadow-dark);
             }
@@ -91,8 +96,8 @@
 
                 font-weight: bolder;
                 text-align: center;
-                border-radius: 25% 25%;
-                background-color: rgba(180, 180, 250, 0.5);
+                border-radius: 25%;
+                background-color: rgb(180 180 250 / 50%);
                 mix-blend-mode: multiply;
                 color: black;
                 text-shadow: 1px 1px 2px white;
@@ -105,7 +110,6 @@
             bottom: 5px;
             left: 5px;
             z-index: 1;
-            /*border: thin solid rgba(0, 0, 0, 0.5);*/
             overflow: hidden;
             border-radius: var(--medium-border-radius);
 
@@ -113,7 +117,7 @@
                 display: none;
                 padding: 0.25em 0.5em;
                 font-size: 38px;
-                --current-background-color: rgba(50, 50, 80, 0.75);
+                --current-background-color: rgb(50 50 80 / 75%);
                 background-color: var(--current-background-color);
                 color: white;
                 text-shadow: 1px 1px 2px black;
@@ -130,7 +134,6 @@
                     font-size: smaller;
                 }
 
-                -webkit-backdrop-filter: blur(4px);
                 backdrop-filter: blur(4px);
 
                 /* The custom class .hover is added/removed programmatically. */
@@ -199,21 +202,21 @@
 }
 
 #ld-slides-pane
-    .ld-previous-slide:has(+ .ld-slide.transition-move-left.ld-current-slide) {
+    .ld-previous-slide:has(+ ld-slide.transition-move-left.ld-current-slide) {
     animation:
         3s slide-move-left-out,
         0s 3s scale-to-zero;
 }
 
 @keyframes slide-move-left-in {
+    /* It works beautifully with 0.1% and awfully with 0%: */
     0.1% {
-        /* it works beautifully with 0.1% and awfully with 0%...*/
         translate: 100%;
         opacity: 0;
     }
 
     70% {
-        opacity: 100%;
+        opacity: 1;
     }
 
     100% {
@@ -229,11 +232,11 @@
     }
 
     30% {
-        opacity: 100%;
+        opacity: 1;
     }
 
     100% {
-        opacity: 0%;
+        opacity: 0;
         scale: 1;
         translate: -100%;
     }
@@ -243,7 +246,8 @@
     animation: 3s slide-scale-in;
 }
 
-#ld-slides-pane .ld-previous-slide:has(+ .ld-slide.transition-scale.ld-current-slide) {
+#ld-slides-pane
+    .ld-previous-slide:has(+ ld-slide.transition-scale.ld-current-slide) {
     animation: 3s slide-scale-out;
 }
 
@@ -254,7 +258,7 @@
     }
 
     100% {
-        opacity: 100%;
+        opacity: 1;
         scale: 1;
     }
 }
@@ -263,11 +267,11 @@
     0% {
         scale: 1;
         /* reset the scale level to make the slide visible (again) */
-        opacity: 100%;
+        opacity: 1;
     }
 
     100% {
-        opacity: 0%;
+        opacity: 0;
         scale: 0.5;
     }
 }
@@ -281,7 +285,7 @@
         animation: 3s flip-in;
     }
 
-    .ld-previous-slide:has(+ .ld-slide.ld-current-slide.transition-flip) {
+    .ld-previous-slide:has(+ ld-slide.ld-current-slide.transition-flip) {
         perspective: 3000px;
         transform-style: preserve-3d;
         backface-visibility: hidden;
@@ -295,12 +299,12 @@
     50% {
         transform: rotateY(90deg);
         scale: 1;
-        opacity: 25%;
+        opacity: 0.25;
     }
 
     100% {
         transform: rotateY(0deg);
-        opacity: 100%;
+        opacity: 1;
     }
 }
 
@@ -311,13 +315,13 @@
 
     0.1% {
         transform: rotateY(0deg);
-        opacity: 100%;
+        opacity: 1;
         scale: 1;
     }
 
     100% {
         transform: rotateY(-180deg);
-        opacity: 0%;
+        opacity: 0;
         scale: 1;
     }
 }
@@ -326,7 +330,8 @@
     animation: 2s slide-fade-in;
 }
 
-#ld-slides-pane .ld-previous-slide:has(+ .ld-slide.transition-fade.ld-current-slide) {
+#ld-slides-pane
+    .ld-previous-slide:has(+ ld-slide.transition-fade.ld-current-slide) {
     animation:
         2s slide-fade-out,
         0s 2s scale-to-zero;
@@ -338,7 +343,7 @@
     }
 
     100% {
-        opacity: 100;
+        opacity: 1;
     }
 }
 
@@ -360,7 +365,7 @@
 }
 
 #ld-slides-pane
-    .ld-previous-slide:has(+ .ld-slide.transition-move-to-top.ld-current-slide) {
+    .ld-previous-slide:has(+ ld-slide.transition-move-to-top.ld-current-slide) {
     animation:
         3s slide-move-bottom-to-center,
         0s 3s scale-to-zero;
@@ -374,7 +379,7 @@
     }
 
     70% {
-        opacity: 100%;
+        opacity: 1;
     }
 
     100% {
@@ -390,11 +395,11 @@
     }
 
     30% {
-        opacity: 100%;
+        opacity: 1;
     }
 
     100% {
-        opacity: 0%;
+        opacity: 0;
         scale: 1;
         translate: 0 -100%;
     }
@@ -413,13 +418,13 @@
     justify-content: space-between;
     align-content: space-between;
     align-items: flex-start;
-    gap: 6px 6px;
+    gap: 6px;
+    border-radius: 6px;
+    padding: 3px;
     font-size: 16px;
     background-color: black;
-    padding: 3px;
-    border-radius: 6px;
 
-    &.ld-slide::before {
+    &ld-slide::before {
         /* to clear the default logo */
         display: none;
     }
@@ -433,13 +438,14 @@
         background-color: white;
 
         &.title {
-            margin: 0;
-            padding: 4px;
             /* We have a different font-size and hence have to update the width! */
             width: calc(var(--ld-slide-width) / 8 - 6px);
+            margin: 0;
+            padding: 4px;
+
             background-color: var(--dhbw-light-gray);
-            font-size: 2em;
             color: var(--dhbw-red);
+            font-size: 2em;
             text-shadow: 1px 1px 2px var(--dhbw-gray);
         }
     }
@@ -453,7 +459,7 @@
         color: whitesmoke;
         border-radius: 8px 8px 0 0;
         font-size: larger;
-        padding: 0.3em 0em 0.3em 0.25em;
+        padding: 0.3em 0 0.3em 0.25em;
         background-color: var(--dhbw-red);
     }
 
@@ -464,7 +470,7 @@
         left: -5px;
         color: whitesmoke;
         width: calc(100% + 10px);
-        padding: 0.15em 0em 0.15em 0.25em;
+        padding: 0.15em 0 0.15em 0.25em;
         margin-bottom: 0;
     }
 

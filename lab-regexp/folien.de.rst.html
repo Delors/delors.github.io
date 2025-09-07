@@ -9,24 +9,23 @@
 <meta content="lab-regexp" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <meta content="WirklichSchwierig!" name="exercises-master-password" />
-<meta name="version" content="LD2 GENESIS" />
+<meta name="version" content="LD2 RENAISSANCE" />
 <title>Reguläre Ausdrücke</title>
 
-    <script src="../LectureDoc2/genesis/ld-core.js" type="module"></script>
+    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
 
-    <script src="../LectureDoc2/genesis/ld-components.js" type="module"></script>
+    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
 
-    <link rel="stylesheet" href="../LectureDoc2/genesis/ld.css" />
-
-    <link rel="stylesheet" href="../LectureDoc2/genesis/themes/DHBW/theme.css" />
-
-    <link rel="stylesheet" href="../LectureDoc2/genesis/ld-ui.css" />
-
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
     
 </head>
 <body>
 <template>
-<div class="ld-slide" id="regulare-ausdrucke">
+<ld-topic id="regulare-ausdrucke">
 <h1 class="title">Reguläre Ausdrücke</h1>
 <dl class="docinfo">
 <dt class="dozent">Dozent<span class="colon">:</span></dt>
@@ -47,58 +46,50 @@
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
-</div></div>
-<div class="ld-slide" id="regulare-ausdrucke-wiederholung">
+</div></ld-topic>
+<ld-topic id="regulare-ausdrucke-wiederholung">
 <h2>Reguläre Ausdrücke (Wiederholung)</h2>
-<ul class="incremental simple">
+<ul class="incremental-list simple">
 <li><p>Reguläre Ausdrücke (<span class="eng">regular expressions</span>) sind ein Standardwerkzeug. Wir verwenden diese z. B. um Wörterbücher, Leaks und weitere Kontextinformationen zu verarbeiten.</p></li>
 <li><p>Reguläre Ausdrücke können insbesondere zum Patternmatching auf Textdaten genutzt werden.</p></li>
 <li><p>Reguläre Ausdrücke beschreiben reguläre Sprachen und können durch einen endlichen Automaten erkannt werden.</p></li>
 <li><p>Reguläre Ausdrücke - in der Standardeinstellung - nehmen immer einen maximalen Musterabgleich vor (<span class="eng">greedy matching / eager matching</span>).</p></li>
 </ul>
-</div><div class="ld-slide" id="regulare-ausdrucke-zeichenklassen">
+</ld-topic><ld-topic id="regulare-ausdrucke-zeichenklassen">
 <h2>Reguläre Ausdrücke - Zeichenklassen</h2>
-<div class="scrollable docutils container">
-<div class="incremental docutils container">
+<ld-deck>
+<ld-card>
 <p>Buchstaben und Zahlen können direkt in einem regulären Ausdruck verwenden, um entsprechenden Text zu finden. Zum Beispiel steht <span class="docutils literal">&quot;a&quot;</span> für das Zeichen <span class="docutils literal">a</span>.</p>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;a&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span></p>
-</div>
-<div class="incremental line-above docutils container">
+</ld-card><ld-card class="incremental">
 <p>Der Punkt repräsentiert ein beliebiges Zeichen - außer den Zeilenumbruch.</p>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;a.&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">ab</span></p>
-</div>
-<div class="incremental line-above docutils container">
+</ld-card><ld-card class="incremental">
 <p>Klassen von Zeichen können in eckigen Klammern angegeben werden &quot;[]&quot;.</p>
-<blockquote>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abcdefg&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;[acg]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span>, <span class="docutils literal">c</span>, <span class="docutils literal">g</span></p>
 <p>Klassen können auch durch Bereiche beschrieben werden (<span class="docutils literal"><span class="pre">a-z</span></span>, <span class="docutils literal"><span class="pre">A-Z</span></span>, <span class="docutils literal"><span class="pre">0-9</span></span>):</p>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;ab12xy&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span>, <span class="docutils literal">b</span>, <span class="docutils literal">x</span>, <span class="docutils literal">y</span></p>
-</blockquote>
-</div>
-<div class="incremental line-above docutils container">
+</ld-card><ld-card class="incremental">
 <p>Welche Buchstaben genau durch eine Klasse repräsentiert werden hängt von den Spracheinstellungen ab!</p>
 <pre class="code bash literal-block"><code><span class="name variable">LANG</span><span class="operator">=</span>de_DE.UTF-8<span class="punctuation">;</span><span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;aä&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span>, <span class="docutils literal">ä</span></p>
 <p>aber</p>
 <pre class="code bash literal-block"><code><span class="name variable">LANG</span><span class="operator">=</span>C<span class="punctuation">;</span><span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;aä&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
 <p>findet „nur“: <span class="docutils literal">a</span></p>
-</div>
-<div class="incremental line-above docutils container">
+</ld-card><ld-card class="incremental">
 <p>Die Negation einer Klasse wird durch an ein <span class="docutils literal">^</span> direkt am Anfang der Klasse erzwungen.</p>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc123&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[^a-z]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">1</span>, <span class="docutils literal">2</span>, <span class="docutils literal">3</span></p>
-</div>
-</div>
-</div><div class="ld-slide" id="regulare-ausdrucke-escapezeichen">
+</ld-card></ld-deck></ld-topic><ld-topic id="regulare-ausdrucke-escapezeichen">
 <h2>Reguläre Ausdrücke - Escapezeichen</h2>
 <p>Der Backslash <span class="docutils literal">\</span> dient als Escapezeichen für Sonderzeichen.</p>
 <pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc-123[a-z]&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;\[a-z\]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal"><span class="pre">[a-z]</span></span> <span class="peripheral">(aber nicht &quot;abc&quot;)</span></p>
-</div><div class="ld-slide" id="regulare-ausdrucke-anker">
+</ld-topic><ld-topic id="regulare-ausdrucke-anker">
 <h2>Reguläre Ausdrücke - Anker</h2>
 <p><span class="docutils literal">^</span>: Steht für den Anfang einer Zeile.</p>
 <p><span class="docutils literal">$</span>: steht für das Ende einer Zeile.</p>
@@ -110,9 +101,9 @@
 </span>abcY<span class="whitespace">
 </span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;XbcYbc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;.bc</span>$<span class="literal string double">&quot;</span><span class="whitespace">
 </span>Ybc</code></pre>
-</div><div class="ld-slide" id="regulare-ausdrucke-quantifizierung">
+</ld-topic><ld-topic id="regulare-ausdrucke-quantifizierung">
 <h2>Reguläre Ausdrücke - Quantifizierung</h2>
-<div class="scrollable docutils container">
+<ld-story>
 <p><span class="docutils literal">*</span>: &quot;null oder mehr&quot; Vorkommen des vorherigen Zeichens oder Musters.</p>
 <p><span class="docutils literal">+</span>: &quot;ein oder mehr&quot; Vorkommen des vorherigen Zeichens oder Musters.</p>
 <p><span class="docutils literal">?</span>: &quot;null oder ein&quot; Vorkommen des vorherigen Zeichens oder Musters.</p>
@@ -131,8 +122,7 @@
 </span>aa<span class="whitespace">
 </span>aaa</code></pre>
 </div>
-</div>
-</div><div class="ld-slide" id="regulare-ausdrucke-alternativen">
+</ld-story></ld-topic><ld-topic id="regulare-ausdrucke-alternativen">
 <h2>Reguläre Ausdrücke - Alternativen</h2>
 <p><span class="docutils literal">|</span> trennt  verschiedene Alternativen.</p>
 <pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;HundMausAffe&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;Hund|Affe&quot;</span><span class="whitespace">
@@ -145,7 +135,7 @@
 </span><span class="comment single"># Perl compatible
 </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Schifffahrt&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string double">&quot;Schiff|Schifffahrt&quot;</span><span class="whitespace">
 </span>Schiff</code></pre>
-</div><div class="ld-slide" id="regulare-ausdrucke-klammern">
+</ld-topic><ld-topic id="regulare-ausdrucke-klammern">
 <h2>Reguläre Ausdrücke - Klammern</h2>
 <p><span class="docutils literal">()</span> dienen der Gruppierung von Teilausdrücken und der Referenzierbarkeit bzw. Rückreferenzen.</p>
 <p>Beispiel: der folgende Ausdruck findet Zeichenketten, die mit dem Zeichen aufhören mit dem sie begonnen haben.</p>
@@ -153,7 +143,7 @@
 </span>XaaaaX<span class="whitespace">
 
 </span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;XaaaaY&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;^(.).*\1</span>$<span class="literal string double">&quot;</span></code></pre>
-</div><div class="ld-slide" id="regulare-ausdrucke-lookahead">
+</ld-topic><ld-topic id="regulare-ausdrucke-lookahead">
 <h2>Reguläre Ausdrücke - Lookahead</h2>
 <p><span class="docutils literal"><span class="pre">(?=...)</span></span>: ist ein positiver Lookahead und stellt sicher, dass ein bestimmtes Muster im Text folgt, ohne es selbst in das Ergebnis aufzunehmen.</p>
 <p><span class="docutils literal"><span class="pre">(?!...)</span></span>: ist ein negativer Lookahead und stellt sicher, dass ein bestimmtes Muster im Text <em>nicht</em> folgt.</p>
@@ -162,7 +152,7 @@
 
 </span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;HundKatzeHundMaus&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string single">'Hund(?!Katze).{1,2}'</span><span class="whitespace">
 </span>HundMa</code></pre>
-</div><div class="transition-scale integrated-exercise ld-slide" id="fingerubungen">
+</ld-topic><ld-topic class="transition-scale exercises" id="fingerubungen">
 <h2>Fingerübungen</h2>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Schmetterling in Rockyou" id="ld-exercise-1">
 <p class="ld-exercise-title rubric">Schmetterling in Rockyou</p>
@@ -182,7 +172,7 @@ MTAwMDAw:DI4bTNbEPfukzjlilX0MOKJQsQ948+r0ozvFovGrtVo=:qliGG6RDRgHQitEr:LKDRqjxkq
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:74jc1apfRpUgTZQVXFcpXJ6lLpKH31Vu0/ssAYQSGXo=:oXH4suQiscwDAy60:tAvY6RR+I2caZEbFLiXtrbBuQoc7K5ba1GKJCUw9ZR1IsfEo1KVmumSg7DtRgyPEdbqWwEqf09wuLb/71/Cw2ODf88C8l2m3uYaDMZx5vEB3AYgPlrQyCckYJoN7oGd5p+m6y7WpbUkYyp2ogTXGeDRcs9/DW9pLchcGJfY14nZ7WodtJcS6MhE2zxpLygDHlJhvaTsnjcz0RKQ2wCVpKNNrkYOx54y63R+1NFgZ2rE4IkrLfUS0zYgGh2Ck9yM6CCg9xHzQkV0gYOMrz1GC6/3Ytyooc21/R7KEJG6pPsjeiknc7jcTkSoyTe3tVUzxe9OcYum4yALJjbbmzcInODXUZNivRDT0zW2FsTglE5GDfHwM/p/OYOSxARv4lbTdbg5gsYTr+FVugTaCtZRKQqdePiIoCQ==</div>
 </div>
-</div>
+</ld-topic>
 </template>
 </body>
 </html>
