@@ -121,7 +121,7 @@ async function ldCrypto() {
  *      "afterLDListenerRegistrations",
  *      afterLDListenerRegistrations);
  */
-const ldEvents = {
+export const ldEvents = {
     beforeLDDOMManipulations: [],
     afterLDDOMManipulations: [],
     afterLDListenerRegistrations: [],
@@ -179,9 +179,13 @@ const interWindowMessageHandlers = {
     },
 };
 
-/* We need to make the basic functions available here, to enable ld-components
-   the registration for all basic events, before they actually happen. */
-const lectureDoc2 = {
+/** Makes the basic datastructures and functions available.
+
+    Enables ld-components the registration for all basic events, before they actually happen.
+
+    (Primarily available for backward compatibility and debugging purposes. Modern components can directly use the exported functions and methods.)
+    */
+export const lectureDoc2 = {
     lib: ld,
     crypto: ldCrypto,
     ldEvents: ldEvents,
@@ -504,186 +508,6 @@ function localResetLectureDoc() {
     url.search = "";
     url.hash = "";
     location.replace(url);
-}
-
-function scaleImageOnLoad(img, scalingFactor) {
-    // TODO Move to extra module!
-    if (scalingFactor) {
-        img.addEventListener("load", () => {
-            const targetWidth = img.naturalWidth * scalingFactor;
-            const targetHeight = img.naturalHeight * scalingFactor;
-
-            console.log(
-                `scaling image (${img.naturalWidth} x ${img.naturalHeight}) by ${scalingFactor}`,
-                img,
-                targetWidth,
-                targetHeight,
-            );
-
-            img.style.width = targetWidth + "px";
-            img.style.height = targetHeight + "px";
-        });
-    }
-}
-
-function scaleDocumentImagesAndVideos() {
-    // TODO Move to extra module!
-    const slideToDocumentScalingFactor =
-        parseInt(
-            window.getComputedStyle(document.getElementById("ld-document-view"))
-                .minWidth,
-        ) / presentation.slide.width;
-
-    console.log(
-        `slide to document scaling factor: ${slideToDocumentScalingFactor}`,
-    );
-
-    // TODO Move to extra module!
-    document.querySelectorAll("ld-section img").forEach((img) => {
-        if (img.style.width || img.style.height) return;
-        const classList = img.classList;
-
-        let scalingFactor = undefined;
-
-        /* see scaleSlideImages for documentation */
-        for (const clazz of img.classList) {
-            if (clazz.startsWith("scale-")) {
-                const factor = parseInt(clazz.slice(6)) / 100;
-                if (!isNaN(factor)) {
-                    scaleImageOnLoad(
-                        img,
-                        factor * slideToDocumentScalingFactor,
-                    );
-                }
-                break;
-            }
-        }
-
-        // TODO get rid of it - replace by scale-3
-        if (classList.contains("highdpi")) scalingFactor = 0.4;
-
-        scaleImageOnLoad(img, scalingFactor);
-    });
-
-    document
-        .querySelectorAll("ld-section video:not(.no-scaling)")
-        .forEach((video) => {
-            if (!video.height || !video.width) {
-                console.warn(
-                    "cannot adapt size of video for document view: missing size information:",
-                    video,
-                );
-                return;
-            }
-            const newHeight = video.height / 3;
-            const newWidth = video.width / 3;
-            console.log(
-                `adapting size of video (height: ${video.height} -> ${newHeight}; width: (${video.width} -> ${newWidth}):`,
-                video,
-            );
-            video.height = newHeight;
-            video.width = newWidth;
-        });
-}
-
-function scaleSlideImages() {
-    // TODO Move to extra module!
-    const imgs = document.querySelectorAll("ld-slide img");
-    for (const img of imgs) {
-        if (img.style.width || img.style.height)
-            // if we have explicit sizing of the image, we don't want to change it
-            continue;
-        if (img.complete) {
-            console.error(
-                "image " +
-                    img.src +
-                    " is already loaded: " +
-                    img.naturalWidth +
-                    "x" +
-                    img.naturalHeight,
-            );
-            // TODO Implement when required.
-        } else {
-            /*  The user specifies the scaling factor such that the user gets 
-                the desired size of the image on the slide.
-                In the continuous view, the scaling factor is adapted to reflect 
-                the difference between the size of slides and the maximum 
-                width of the document view.
-
-                I.e., let's assume an image has 5000*2000 Pixels and we want
-                it on the slide. Let's further assume that a slide has a nominal 
-                resolution of 1920x1080 Pixel. In this case, the scaling factor
-                (specified by the user) has to be (at most) = 0.384. 
-                
-                If the maximum width of the document view is, however, just 
-                600 Pixel, the 0.384 will be multiplied by 0.3125 (600/1920) to 
-                get the final scaling factor of 0.12 for the document view.
-
-                For technical reasons the user specified the scaling in percent!
-             */
-            let isScaled = false;
-            for (const clazz of img.classList) {
-                if (clazz.startsWith("scale-")) {
-                    const factor = parseInt(clazz.slice(6)) / 100;
-                    if (!isNaN(factor)) {
-                        scaleImageOnLoad(img, factor);
-                    } else {
-                        console.error(
-                            "img with invalid scaling factor:",
-                            img,
-                            factor,
-                        );
-                    }
-                    isScaled = true;
-                    break;
-                } else if (clazz === "highdpi") {
-                    isScaled = true;
-                    break;
-                }
-            }
-            if (!isScaled) {
-                // FIXME The images are made for the document view... get rid of it
-                scaleImageOnLoad(img, 3);
-            }
-        }
-    }
-
-    const objects = document.querySelectorAll(
-        "ld-slide object[role='img'][type='image/svg+xml']",
-    );
-    for (const obj of objects) {
-        const loadListener = () => {
-            if (obj.width) {
-                console.info(
-                    obj.data +
-                        " has an explicit width: " +
-                        obj.width +
-                        "; no scaling performed",
-                );
-                return;
-            }
-            const svg = obj.contentDocument.querySelector("svg");
-            svg.style.overflow = "visible";
-            // const width = svg.scrollWidth; <== doesn't work with Firefox
-            // const height = svg.scrollHeight; <== doesn't work with Firefox
-            const width = svg.width.baseVal.value;
-            const height = svg.height.baseVal.value;
-            console.info(
-                "svg " + obj.data + " has been loaded: " + width + "x" + height,
-            );
-            obj.style.width = width * 3 + "px";
-            obj.style.height = height * 3 + "px";
-            obj.removeEventListener("load", loadListener);
-        };
-        if (obj.contentDocument) {
-            console.log("svg " + obj.data + " is already loaded");
-            loadListener();
-        } else {
-            console.info("waiting for svg " + obj.data + " to load");
-
-            obj.addEventListener("load", loadListener);
-        }
-    }
 }
 
 /**
@@ -1555,6 +1379,7 @@ function setupDocumentView() {
             classList: template.classList,
             children: template.children,
         });
+        section.dataset.no = i;
 
         if (template.classList.contains("exercises")) {
             // TODO <- needed?
@@ -1639,56 +1464,11 @@ function setupMenu() {
  * Fixes issues related to the copying of the slide templates.
  */
 function applyDOMfixes() {
-    /*  Due to the copying of the slide templates, the ids in inline SVGs
-        (e.g. for defining and referencing markers) are no longer unique,
-        which is a violation of the spec and causes troubles in Chrome and
-        Firefox. We have to fix this!
-
-        TODO Check scenario and handle the case where an SVG references a marker defined in a previous SVG.
-        */
-    let counter = 1;
-    document.querySelectorAll("svg").forEach((svg) => {
-        const svgURLIds = new Map(); // maps old url(#id) to new url(#id)
-        const svgIDs = new Map(); // maps old id to new id
-        svg.querySelectorAll("[id]").forEach((element) => {
-            const oldId = element.id;
-            const newId = element.id + "-" + counter++;
-            element.id = newId;
-            svgURLIds.set("url(#" + oldId + ")", "url(#" + newId + ")");
-            svgIDs.set("#" + oldId, "#" + newId);
-        });
-        svgURLIds.forEach((newId, oldId) => {
-            const refs = `.//@*[.="${oldId}"]`;
-            const it = document.evaluate(
-                refs,
-                svg,
-                null,
-                XPathResult.ANY_TYPE,
-                null,
-            );
-            let attr,
-                attrs = [];
-            while ((attr = it.iterateNext())) attrs.push(attr);
-            attrs.forEach((ref) => {
-                ref.textContent = newId;
-            });
-        });
-        svgIDs.forEach((newId, oldId) => {
-            const refs = `.//@*[.="${oldId}"]`; // TODO Why can't I use href="${#oldId}"?
-            const it = document.evaluate(
-                refs,
-                svg,
-                null,
-                XPathResult.ANY_TYPE,
-                null,
-            );
-            let attr,
-                attrs = [];
-            while ((attr = it.iterateNext())) attrs.push(attr);
-            attrs.forEach((ref) => {
-                ref.textContent = newId;
-            });
-        });
+    /*  We have to ensure that global svgs are still at the
+        beginning of the document. */
+    document.body.querySelectorAll(":scope > svg").forEach((svgNode) => {
+        document.body.removeChild(svgNode);
+        document.body.prepend(svgNode);
     });
 }
 
@@ -1819,7 +1599,7 @@ function hideSlideWithNo(slideNo, setOldMarker = false) {
  *
  * In general, `advancePresentation` should be called.
  */
-function moveToNextSlide() {
+export function moveToNextSlide() {
     const currentSlideNo = state.currentSlideNo;
     postMessage("moveToNextSlide", currentSlideNo);
     localMoveToNextSlide(currentSlideNo);
@@ -1838,7 +1618,7 @@ function localMoveToNextSlide(expectedCurrentSlideNo) {
     }
 }
 
-function moveToPreviousSlide() {
+export function moveToPreviousSlide() {
     const currentSlideNo = state.currentSlideNo;
     postMessage("moveToPreviousSlide", currentSlideNo);
     localMoveToPreviousSlide(currentSlideNo);
@@ -1914,7 +1694,7 @@ function getElementsToAnimate(slide) {
  * is made by making the respective element visible. I.e., the whole
  * progress is implicitly covered by the visible and hidden elements.
  */
-function advancePresentation() {
+export function advancePresentation() {
     postMessage("advancePresentation", undefined);
     localAdvancePresentation();
 }
@@ -1931,7 +1711,7 @@ function localAdvancePresentation() {
         setSlideProgress(slide, i + 1);
     }
 }
-function retrogressPresentation() {
+export function retrogressPresentation() {
     postMessage("retrogressPresentation", undefined);
     localRetrogressPresentation();
 }
@@ -2058,7 +1838,7 @@ function jumpToSlide() {
     }
 }
 
-function goToSlideWithNo(targetSlideNo, updateHistory = true) {
+export function goToSlideWithNo(targetSlideNo, updateHistory = true) {
     postMessage("goToSlide", {
         targetSlideNo: targetSlideNo,
         updateHistory: updateHistory,
@@ -2170,7 +1950,7 @@ function toggleSlideNumber() {
  *
  * This view shows all slides in its final rendering.
  */
-function toggleDocumentView() {
+export function toggleDocumentView() {
     // TODO use custom element ld-document-view instead of a div!
     const continuousViewPane = document.getElementById("ld-document-view");
     const mainPane = document.getElementById("ld-slides-pane");
@@ -2259,7 +2039,7 @@ function localHideLectureDoc() {
     document.body.style.display = "none";
 }
 
-function ensureLectureDocIsVisible() {
+export function ensureLectureDocIsVisible() {
     postMessage("ensureLectureDocIsVisible", undefined);
     return localEnsureLectureDocIsVisible();
 }
@@ -2450,7 +2230,6 @@ function registerKeyboardEventListener() {
                     console.debug("unhandled: " + event.key);
             }
         } else {
-            console.log(event + " " + event.key);
             switch (event.key) {
                 case 37:
                 case "ArrowLeft":
@@ -2481,39 +2260,36 @@ function registerSlideClickedListener() {
     // - links,
     // - buttons and
     // - the "ld-copy-to-clipboard-button" icon // FIXME: make this a button
-    document
-        .querySelectorAll(
-            "#ld-slides-pane :is(a,button,div.ld-copy-to-clipboard-button,video)",
-        )
-        .forEach((e) => {
-            e.addEventListener(
-                "click",
-                (event) => {
-                    event["interactive_element_clicked"] = true;
-                },
-                { capture: true },
-            );
-        });
+    const sp = document.getElementById("ld-slides-pane");
+    sp.querySelectorAll(
+        ":scope :is(a,button,div.ld-copy-to-clipboard-button,video)",
+    ).forEach((e) => {
+        e.addEventListener(
+            "click",
+            (event) => {
+                event["interactive_element_clicked"] = true;
+            },
+            { capture: true },
+        );
+    });
 
-    document
-        .getElementById("ld-slides-pane")
-        .addEventListener("click", (event) => {
-            if (event.interactive_element_clicked) return;
+    sp.addEventListener("click", (event) => {
+        if (event.interactive_element_clicked) return;
 
-            // Let's check if the user is currently selecting text - we don't want
-            // to interfere with that!
-            if (window.getSelection().anchorNode != null) {
-                return;
-            }
+        // Let's check if the user is currently selecting text - we don't want
+        // to interfere with that!
+        if (window.getSelection().anchorNode != null) {
+            return;
+        }
 
-            /* Let's determine if we have clicked on the left or right part. */
-            if (event.pageX < window.innerWidth / 2) {
-                moveToPreviousSlide();
-                showMessage("⬅︎", 400);
-            } else {
-                advancePresentation();
-            }
-        });
+        /* Let's determine if we have clicked on the left or right part. */
+        if (event.pageX < window.innerWidth / 2) {
+            moveToPreviousSlide();
+            showMessage("⬅︎", 400);
+        } else {
+            advancePresentation();
+        }
+    });
 }
 
 /**
@@ -2836,52 +2612,6 @@ function registerMenuClickListener() {
     });
 }
 
-/**
- * Some initial support for swipe gestures.
- */
-function registerSwipeListener() {
-    let xDown = null;
-    let yDown = null;
-
-    document.addEventListener(
-        "touchstart",
-        function (evt) {
-            ensureLectureDocIsVisible();
-            xDown = evt.changedTouches[0].clientX;
-            yDown = evt.changedTouches[0].clientY;
-        },
-        false,
-    );
-
-    document.addEventListener(
-        "touchend",
-        function (evt) {
-            let xUp = evt.changedTouches[0].clientX;
-            let yUp = evt.changedTouches[0].clientY;
-
-            let xDiff = xDown - xUp;
-            let yDiff = yDown - yUp;
-            console.log("touch event (x,y): ", xDiff, yDiff);
-            if (Math.abs(xDiff) > Math.abs(yDiff)) {
-                if (xDiff < -10) {
-                    retrogressPresentation();
-                } else if (xDiff > 10) {
-                    advancePresentation();
-                }
-            } else {
-                if (yDiff < -10) {
-                    retrogressPresentation();
-                } else if (yDiff > 10) {
-                    advancePresentation();
-                }
-            }
-            xDown = null;
-            yDown = null;
-        },
-        false,
-    );
-}
-
 function registerHistoryChangeListener() {
     window.addEventListener("popstate", (event) => {
         const slideNo = event.state.slideNo;
@@ -2903,11 +2633,18 @@ const onDOMContentLoaded = async () => {
     initDocumentId();
     initSlideDimensions();
 
-    await import("./js/ld-tables.js");
-    await import("./js/ld-decks.js");
-    await import("./js/ld-scrollables.js");
-    await import("./js/ld-stories.js");
-    await import("./js/ld-hoverables.js");
+    await import("./js/ld-images.js");
+
+    try {
+        await import("./js/ld-tables.js");
+        await import("./js/ld-decks.js");
+        await import("./js/ld-scrollables.js");
+        await import("./js/ld-stories.js");
+        await import("./js/ld-hoverables.js");
+        await import("./js/ld-pointer-events.js");
+    } catch (e) {
+        console.error("failed to load LectureDoc component:", e);
+    }
 
     ldEvents.beforeLDDOMManipulations.forEach((f) => f());
 
@@ -2938,17 +2675,13 @@ const onDOMContentLoaded = async () => {
     setupTableOfContents();
     setupHelp();
     setupJumpTargetDialog();
+    setupMenu();
     setupDocumentView();
     setupSlidePane();
-    setupMenu();
-
-    scaleSlideImages();
-    scaleDocumentImagesAndVideos();
-
     /*
     Update rendering related information.
     */
-    setPaneScale(); // done to improve the initial rendering behavior
+    setPaneScale();
 
     /*  Due to the copying of the slide templates, some things (e.g.,
         no longer unique ids), need to be fixed. */
@@ -2982,7 +2715,6 @@ const onLoad = () => {
     registerLightTableCloseListener();
     registerHelpCloseListener();
     registerMenuClickListener();
-    registerSwipeListener();
     registerHoverSupplementalListener();
     registerHoverPresenterNoteListener();
     registerHistoryChangeListener();
@@ -3098,6 +2830,7 @@ lectureDoc2.getEphemeral = function () {
 lectureDoc2.propagateStateChange = postMessage;
 lectureDoc2.prepareForPrinting = prepareForPrinting;
 lectureDoc2.getCurrentSlide = getCurrentSlide;
+lectureDoc2.toggleDocumentView = toggleDocumentView;
 
 /*
     For debugging purposes and interoperability with Applescript.

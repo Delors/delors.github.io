@@ -32,6 +32,8 @@
     
 </head>
 <body>
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-defs"><defs><marker id="arrow"     viewBox="0 0 10 10" refX="10" refY="5"     markerUnits="strokeWidth"     markerWidth="4" markerHeight="4"     orient="auto-start-reverse">     <path d="M 0 0 L 10 5 L 0 10 z" /></marker> <g id="star">     <polygon         class="star"         points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9"         fill="gold"         style="transform: scale(0.05)"/></g></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-style"><style>.std-line {     stroke:rgb(0,0,0);     stroke-width:0.2ch;     stroke-dasharray: 1 1; }</style></svg>
 <template>
 <ld-topic id="lecturedoc-2-tutorial">
 <h1 class="title"><span class="math">\(LectureDoc^2\)</span> Tutorial</h1>
@@ -403,7 +405,7 @@ MTAwMDAw:4gyldBaAd3z4VBYQyh5aUNWR2pM1NRobyoZkaRGs9Jk=:lWqcMhRrXULSinCo:Z9OfqZi+I
 <h2>Image in the Background (Hack)</h2>
 <ld-deck>
 <ld-card>
-<img alt="ld_base_example/tag_cloud.png" class="align-center" src="ld_base_example/tag_cloud.png" style="width: 100%;" />
+<img alt="ld_base_example/tag_cloud.webp" class="align-center" src="ld_base_example/tag_cloud.webp" style="width: 100%;" />
 </ld-card><ld-card class="overlay incremental">
 <aside class="admonition backdrop-blur margin-0-5em example">
 <p class="admonition-title">Example</p>
@@ -416,7 +418,7 @@ MTAwMDAw:4gyldBaAd3z4VBYQyh5aUNWR2pM1NRobyoZkaRGs9Jk=:lWqcMhRrXULSinCo:Z9OfqZi+I
 </span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">
 </span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span><span class="punctuation">    ..</span> <span class="operator word">card</span><span class="punctuation">::</span><span class="whitespace">
 </span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">
-</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="punctuation">        ..</span> <span class="operator word">image</span><span class="punctuation">::</span> ld_base_example/tag_cloud.png<span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="punctuation">        ..</span> <span class="operator word">image</span><span class="punctuation">::</span> ld_base_example/tag_cloud.webp<span class="whitespace">
 </span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span>            <span class="name class">:width:</span> 100%<span class="whitespace">
 </span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span>            <span class="name class">:align:</span> center<span class="whitespace">
 </span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">
@@ -424,6 +426,95 @@ MTAwMDAw:4gyldBaAd3z4VBYQyh5aUNWR2pM1NRobyoZkaRGs9Jk=:lWqcMhRrXULSinCo:Z9OfqZi+I
 </span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">
 </span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span>        Content on the slide...</code></pre>
 </aside>
+</ld-card></ld-deck></ld-topic><ld-topic id="inline-svgs">
+<h2>Inline SVGs</h2>
+<ld-deck>
+<ld-card>
+<p>Inline SVGs are fully supported by LectureDoc, but styles
+and definitions that are used in multiple inline SVGs have to be centralized!</p>
+<p>This is due to the copying of the slide templates which - if you use ids to reference definitions in the SVGs - makes them no longer unique. This is a violation of the spec and causes troubles in Chrome and Firefox.</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Adding Shared Definitions</p>
+<p>To add shared SVG definitions, use the <code class="rst"><span class="punctuation">..</span> <span class="operator word">meta</span><span class="punctuation">::</span></code> directive and the <code class="rst"><span class="name class">:svg-defs:</span></code> property.</p>
+<aside class="admonition example">
+<p class="admonition-title">Example</p>
+<pre class="code rst copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="name class">:svg-defs:</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span>    &lt;marker id=&quot;arrow&quot;<span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span>        viewBox=&quot;0 0 10 10&quot; refX=&quot;10&quot; refY=&quot;5&quot;<span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span>        markerUnits=&quot;strokeWidth&quot;<span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span>        markerWidth=&quot;4&quot; markerHeight=&quot;4&quot;<span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span>        orient=&quot;auto-start-reverse&quot;&gt;<span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span>        &lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; /&gt;&lt;/marker&gt;<span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span>    &lt;g id=&quot;star&quot;&gt;<span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span>        &lt;polygon<span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span>            class=&quot;star&quot;<span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span>            points=&quot;12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9&quot;<span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span>            fill=&quot;gold&quot;<span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>            style=&quot;transform: scale(0.05)&quot;/&gt;&lt;/g&gt;</code></pre>
+</aside>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Defining Shared Styles</p>
+<p>To add shared SVG styles, use the <code class="rst"><span class="punctuation">..</span> <span class="operator word">meta</span><span class="punctuation">::</span></code> directive and the <code class="rst"><span class="name class">:svg-style:</span></code> property.</p>
+<aside class="admonition example">
+<p class="admonition-title">Example</p>
+<pre class="code rst copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name class">:svg-style:</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>    .std-line {<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span>        stroke:rgb(0,0,0);<span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span>        stroke-width:0.2ch;<span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span>        stroke-dasharray: 1 1;<span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span>    }</code></pre>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Example</p>
+<p>Use of the previously defined class <span class="docutils literal"><span class="pre">std-line</span></span> (line 7), <span class="docutils literal">star</span> (<code class="html">href=&quot;#star&quot;</code> line 8) and <span class="docutils literal">arrow</span> (<code class="html">marker-end=&quot;url(#arrow)&quot;</code> line 11).</p>
+<pre class="code html copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="punctuation">&lt;</span><span class="name tag">div</span>    <span class="name attribute">style</span><span class="operator">=</span><span class="literal string">&quot;width: 90ch; height:16ch&quot;</span><span class="punctuation">&gt;</span>
+</code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="punctuation">&lt;</span><span class="name tag">svg</span>    <span class="name attribute">version</span><span class="operator">=</span><span class="literal string">&quot;1.1&quot;</span> <span class="name attribute">xmlns</span><span class="operator">=</span><span class="literal string">&quot;http://www.w3.org/2000/svg&quot;</span>
+</code><small class="ln"> 3 </small><code data-lineno=" 3 ">        <span class="name attribute">viewBox</span><span class="operator">=</span><span class="literal string">&quot;0 0 48 8&quot;</span> <span class="name attribute">font-size</span><span class="operator">=</span><span class="literal string">&quot;0.75&quot;</span>  <span class="punctuation">&gt;</span>
+</code><small class="ln"> 4 </small><code data-lineno=" 4 ">    <span class="punctuation">&lt;</span><span class="name tag">rect</span>   <span class="name attribute">width</span><span class="operator">=</span><span class="literal string">&quot;4&quot;</span> <span class="name attribute">height</span><span class="operator">=</span><span class="literal string">&quot;1&quot;</span> <span class="name attribute">x</span><span class="operator">=</span><span class="literal string">&quot;8&quot;</span> <span class="name attribute">y</span><span class="operator">=</span><span class="literal string">&quot;3&quot;</span> <span class="name attribute">rx</span><span class="operator">=</span><span class="literal string">&quot;1&quot;</span> <span class="name attribute">ry</span><span class="operator">=</span><span class="literal string">&quot;1&quot;</span>
+</code><small class="ln"> 5 </small><code data-lineno=" 5 ">            <span class="name attribute">style</span><span class="operator">=</span><span class="literal string">&quot;fill:darkblue&quot;</span> <span class="punctuation">/&gt;</span>
+</code><small class="ln"> 6 </small><code data-lineno=" 6 ">    <span class="punctuation">&lt;</span><span class="name tag">line</span>   <span class="name attribute">x1</span><span class="operator">=</span><span class="literal string">&quot;4&quot;</span> <span class="name attribute">y1</span><span class="operator">=</span><span class="literal string">&quot;3.5&quot;</span> <span class="name attribute">x2</span><span class="operator">=</span><span class="literal string">&quot;8&quot;</span> <span class="name attribute">y2</span><span class="operator">=</span><span class="literal string">&quot;3.5&quot;</span>
+</code><small class="ln"> 7 </small><code data-lineno=" 7 ">            <span class="name attribute">class</span><span class="operator">=</span><span class="literal string">&quot;std-line&quot;</span>
+</code><small class="ln"> 8 </small><code data-lineno=" 8 ">            <span class="name attribute">marker-end</span><span class="operator">=</span><span class="literal string">&quot;url(#arrow)&quot;</span><span class="punctuation">/&gt;</span>
+</code><small class="ln"> 9 </small><code data-lineno=" 9 ">    <span class="punctuation">&lt;</span><span class="name tag">rect</span>   <span class="name attribute">width</span><span class="operator">=</span><span class="literal string">&quot;8&quot;</span> <span class="name attribute">height</span><span class="operator">=</span><span class="literal string">&quot;1&quot;</span> <span class="name attribute">x</span><span class="operator">=</span><span class="literal string">&quot;14&quot;</span> <span class="name attribute">y</span><span class="operator">=</span><span class="literal string">&quot;6&quot;</span> <span class="name attribute">rx</span><span class="operator">=</span><span class="literal string">&quot;1&quot;</span> <span class="name attribute">ry</span><span class="operator">=</span><span class="literal string">&quot;1&quot;</span>
+</code><small class="ln">10 </small><code data-lineno="10 ">            <span class="name attribute">style</span><span class="operator">=</span><span class="literal string">&quot;fill:darkorange&quot;</span> <span class="punctuation">/&gt;</span>
+</code><small class="ln">11 </small><code data-lineno="11 ">    <span class="punctuation">&lt;</span><span class="name tag">use</span>    <span class="name attribute">href</span><span class="operator">=</span><span class="literal string">&quot;#star&quot;</span> <span class="name attribute">x</span><span class="operator">=</span><span class="literal string">&quot;21&quot;</span> <span class="name attribute">y</span><span class="operator">=</span><span class="literal string">&quot;6&quot;</span> <span class="punctuation">/&gt;</span>
+</code><small class="ln">12 </small><code data-lineno="12 "><span class="punctuation">&lt;/</span><span class="name tag">svg</span><span class="punctuation">&gt;</span>
+</code><small class="ln">13 </small><code data-lineno="13 "><span class="punctuation">&lt;/</span><span class="name tag">div</span><span class="punctuation">&gt;</span></code></pre>
+</aside>
+<div class="supplemental">
+<p>The example also demonstrates how to define an SVG whose size is completely dependent on the size of the surrounding font-size.</p>
+</div></ld-card><ld-card class="incremental">
+<aside class="admonition example">
+<p class="admonition-title">Example</p>
+<p>Rendered SVG</p>
+<div    style="width: 90ch; height:16ch">
+<svg    version="1.1" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 48 8" font-size="0.75"  >
+    <rect   width="4" height="1" x="8" y="3" rx="1" ry="1"
+            style="fill:darkblue" />
+    <line   x1="12" y1="3.5" x2="14" y2="6.5"
+            class="std-line"
+            marker-end="url(#arrow)"/>
+    <rect   width="8" height="1" x="14" y="6" rx="1" ry="1"
+            style="fill:darkorange" />
+    <use    href="#star" x="21" y="6" />
+</svg>
+</div></aside>
+</ld-card></ld-deck></ld-topic><ld-topic id="embedding-images">
+<h2>Embedding Images</h2>
+<p>In general, embeddings images is done using the image directive. However, due to the fact that we render the topic once as classical slides and once in a document-oriented way, it is important to understand how LectureDoc handles images.</p>
+<ld-deck>
+<ld-card>
+<p class="rubric">General Guidelines</p>
+<p>In general an image should be designed/generated/created with its usage on a slide in mind. That is, an image should fit on a slide with a <em>logical resolution</em> of 1900 by 1080/1200 pixels. Hence, if text is found on the image it should not be smaller than 30px; ideally it should use the same font size as used by the slide. Those images should then be added to the document using the image directive. In this case it is optional to specify the width and/or height. Such images will be automatically scaled by LectureDoc when the content is shown in the document view. The scaling factor is determined by the ratio between the default font-size used for the document and the default font-size used for the slides.</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">HighDPI Images</p>
+<p>As said, images are generally assumed to have a resolution that fits a slide. However, in many cases the source image may have a resolution that is (much) higher. In this case, it is possible to scale the image using the directive's width and/or height attribute. LectureDoc will then update the width and height attributes when shown in document mode.
+This requires that the images' width and heights are given in pixels.</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Images/SVGs With Font-size Dependent Sizing</p>
+<p>SVGs where the size is (alread) dependent on the font-size should not specify any width or height attributes.</p>
 </ld-card></ld-deck></ld-topic>
 </template>
 </body>

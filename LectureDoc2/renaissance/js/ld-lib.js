@@ -63,6 +63,23 @@ export function div({
     return div;
 }
 
+/* Not used so far; but may be useful in the future:
+export function svg({
+    id = undefined,
+    classes = undefined,
+    parent = undefined,
+    children = undefined,
+}) {
+    const svg = document.createElement("svg");
+    // Never required? svg.xmlns = "http://www.w3.org/2000/svg";
+    if (id) div.id = id;
+    if (classes) div.classList.add(...classes);
+    if (parent) parent.appendChild(svg);
+    if (children) svg.append(...children);
+    return svg;
+}
+*/
+
 /**
  * Generate (additional) cells for a row in a table with the given index.
  *
