@@ -21,7 +21,14 @@ function scaleImageOnLoad(img, scalingFactor) {
     }
 }
 
-function scaleDocumentImagesAndVideos() {
+/** Scales images and videos within a specific scope. The default scope is "ld-section". 
+ * 
+ * The scope can be changed by providing a different CSS selector as an argument.
+ * 
+*/
+function scaleDocumentImagesAndVideos(rootElement = document.getElementById("ld-document-view")) {
+    const getUnit = /([^0-9]+$)/;
+
     const slideToDocumentScalingFactor =
         parseInt(
             window.getComputedStyle(document.getElementById("ld-document-view"))
@@ -32,20 +39,26 @@ function scaleDocumentImagesAndVideos() {
         `slide to document scaling factor: ${slideToDocumentScalingFactor}`,
     );
 
-    document.querySelectorAll("ld-section img").forEach((img) => {
-        const getUnit = /([^0-9]+$)/;
+    rootElement.querySelectorAll(`:scope img`).forEach((img) => {
         let done = false;
         if (img.style.width) {
             done = true;
-            img.style.width =
-                parseFloat(img.style.width) * slideToDocumentScalingFactor +
-                getUnit.exec(img.style.width)[1];
+            const unit = getUnit.exec(img.style.width)[1];
+            if (unit !== "%") {
+                img.style.width =
+                    parseFloat(img.style.width) * slideToDocumentScalingFactor +
+                    unit;
+            }
         }
         if (img.style.height) {
             done = true;
-            img.style.height =
-                parseFloat(img.style.height) * slideToDocumentScalingFactor +
-                getUnit.exec(img.style.height)[1];
+            const unit = getUnit.exec(img.style.height)[1];
+            if (unit !== "%") {
+                img.style.height =
+                    parseFloat(img.style.height) *
+                        slideToDocumentScalingFactor +
+                    unit;
+            }
         }
         if (!done) {
             scaleImageOnLoad(img, slideToDocumentScalingFactor);
@@ -53,21 +66,35 @@ function scaleDocumentImagesAndVideos() {
         }
     });
 
-    document
-        .querySelectorAll("ld-section object[role='img'][type='image/svg+xml']")
+    rootElement
+        .querySelectorAll(`:scope object[role='img'][type='image/svg+xml']`)
         .forEach((object) => {
             const loadListener = () => {
-                if (object.width || object.height) {
-                    console.error(
-                        svg.data +
-                            " has an explicit width or height: " +
-                            svg.width +
-                            "x" +
-                            svg.height +
-                            "; no scaling performed",
-                    );
+                let done = false;
+                if (object.width) {
+                    done = true;
+                    const unit = getUnit.exec(object.width)[1];
+                    if (unit !== "%") {
+                        object.width =
+                            parseFloat(object.width) *
+                                slideToDocumentScalingFactor +
+                            unit;
+                    }
+                }
+                if (object.height) {
+                    done = true;
+                    const unit = getUnit.exec(object.height)[1];
+                    if (unit !== "%") {
+                        object.height =
+                            parseFloat(object.height) *
+                                slideToDocumentScalingFactor +
+                            unit;
+                    }
+                }
+                if (done) {
                     return;
                 }
+
                 const svg = object.contentDocument.querySelector("svg");
                 svg.style.overflow = "visible";
                 // const width = svg.scrollWidth; <== doesn't work with Firefox
@@ -97,31 +124,40 @@ function scaleDocumentImagesAndVideos() {
             }
         });
 
-    document
-        .querySelectorAll("ld-section video:not(.no-scaling)")
+    rootElement
+        .querySelectorAll(`:scope video:not(.no-scaling)`) // TODO what is the scenario for "no-scaling"?
         .forEach((video) => {
             if (!video.height || !video.width) {
-                console.error(
-                    "cannot adapt size of video for document view: missing size information:",
+                console.warn(
+                    "cannot adapt size of video for document view due to missing size information",
                     video,
                 );
                 return;
             }
             const newHeight = video.height / 3;
             const newWidth = video.width / 3;
-            console.log(
-                `adapting size of video (height: ${video.height} -> ${newHeight}; width: (${video.width} -> ${newWidth}):`,
-                video,
-            );
-            video.height = newHeight;
-            video.width = newWidth;
+            if (newHeight && newWidth) {
+                console.log(
+                    `adapting size of video (height: ${video.height} -> ${newHeight}; width: (${video.width} -> ${newWidth}):`,
+                    video,
+                );
+                video.height = newHeight;
+                video.width = newWidth;
+            } else {
+                console.warn(
+                    `cannot adapt size of video for document view due to unsupported size information: {${video.width}x${video.height}}`,
+                    video,
+                );
+            }
         });
 
     // TODO add handling for inline svgs with a size that is not font-size based
 }
 
 function scaleSlideImages() {
-    /* We have the general policy that we do nothing with images on slides. */
+    /*  We have the general policy that we do nothing with images on slides. I.e., 
+        we assume that all images are created by a user w.r.t. putting it on a  
+        slide. */
 }
 
 const ldEvents = lectureDoc2.ldEvents;
@@ -130,3 +166,4 @@ ldEvents.addEventListener(
     "afterLDDOMManipulations",
     scaleDocumentImagesAndVideos,
 );
+ldEvents.addEventListener("afterDecryptExercise", scaleDocumentImagesAndVideos);

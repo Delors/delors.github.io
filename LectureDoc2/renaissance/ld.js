@@ -113,19 +113,26 @@ async function ldCrypto() {
  * const ldEvents = lectureDoc2.ldEvents
  * ldEvents.addEventListener(
  *      "beforeLDDOMManipulations",
- *      beforeLDDOMManipulations);
+ *      <function beforeLDDOMManipulations()>);
  * ldEvents.addEventListener(
  *      "afterLDDOMManipulations",
- *      afterLDDOMManipulations);
+ *      <function afterLDDOMManipulations()>);
  * ldEvents.addEventListener(
  *      "afterLDListenerRegistrations",
- *      afterLDListenerRegistrations);
+ *      <function afterLDListenerRegistrations()>);
+ * ldEvents.addEventListener(
+ *     "resetSlideProgress",
+ *     <function resetSlideProgress(<ld-slide Element>)>);
+ * ldEvents.addEventListener(
+ *      "afterDecryptExercise",
+ *      <function afterDecryptExercise(<.ld-exercise-solution Element>)>);
  */
 export const ldEvents = {
     beforeLDDOMManipulations: [],
     afterLDDOMManipulations: [],
     afterLDListenerRegistrations: [],
     resetSlideProgress: [],
+    afterDecryptExercise: [],
     addEventListener: function (event, listener) {
         switch (event) {
             case "beforeLDDOMManipulations":
@@ -140,6 +147,9 @@ export const ldEvents = {
             case "resetSlideProgress":
                 this.resetSlideProgress.push(listener);
                 break;
+            case "afterDecryptExercise":
+                this.afterDecryptExercise.push(listener);
+                break;                
             default:
                 console.error("unknown event", event);
         }
@@ -1346,6 +1356,7 @@ function tryDecryptExercise(password, solutionWrapper, solution) {
             solution.innerHTML = decrypted;
             setupCopyToClipboard(solution);
             typesetMath(solution);
+            ldEvents.afterDecryptExercise.forEach((f) => f(solution));
 
             // The first child is the input field!
             solutionWrapper.firstElementChild.remove(); //Child(passwordField);
