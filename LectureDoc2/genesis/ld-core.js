@@ -732,7 +732,7 @@ function setupExercisesPasswordsDialog() {
             </div>`
     }
 
-    document.getElementsByTagName("BODY")[0].prepend(exercisesPasswordsDialog);
+    document.body.prepend(exercisesPasswordsDialog);
     document.
         getElementById("ld-exercises-passwords-close-button").
         addEventListener("click", toggleExercisesPasswordsDialog);

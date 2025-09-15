@@ -149,7 +149,7 @@ export const ldEvents = {
                 break;
             case "afterDecryptExercise":
                 this.afterDecryptExercise.push(listener);
-                break;                
+                break;
             default:
                 console.error("unknown event", event);
         }
@@ -212,12 +212,22 @@ const topicTemplates = document.querySelector("body > template").content;
  * (See MathJax documentation for more details.)
  */
 let mathJaxPromise = Promise.resolve(); // Used to hold chain of typesetting calls
+let mathJaxNotAvailable = false;
 
 function typesetMath(element) {
+    if (mathJaxNotAvailable) {
+         return null;
+    }
+
     mathJaxPromise = mathJaxPromise
         .then(() => MathJax.typesetPromise([element]))
         .then(() => console.log(`MathJax done`))
-        .catch((error) => console.warn("MathJax not found/used", error));
+        .catch((error) => {
+            if (!mathJaxNotAvailable) {
+                mathJaxNotAvailable = true;
+                console.warn("MathJax not found/used", error);
+            }
+        });
     return mathJaxPromise;
 }
 
@@ -230,7 +240,7 @@ function typesetMath(element) {
  * This information will not be mutated after initialization.
  */
 const presentation = {
-    // TODO rename to document
+    // TODO rename to something like document
     /**
      * The unique id of this document; required to store state information
      * in local storage across multiple visits to the same document. Also
@@ -1054,69 +1064,66 @@ function setupUnlockPresenterNotesAndSolutionsDialog() {
         passwordInput.addEventListener("input", async (e) => {
             const currentPassword = e.target.value;
             if (currentPassword.length > 2) {
-                ldCrypto()
-                    .then((ldCrypto) => {
-                        return ldCrypto.decryptAESGCMPBKDF(
-                            encryptedExercisesPasswords,
-                            currentPassword,
-                        );
-                    })
-                    .then((decrypted) => {
-                        contentArea.removeChild(passwordInput);
+                try {
+                    const crypto = await ldCrypto();
+                    const decrypted = await crypto.decryptAESGCMPBKDF(
+                        encryptedExercisesPasswords,
+                        currentPassword,
+                    );
 
-                        state.masterPassword = currentPassword;
+                    contentArea.removeChild(passwordInput);
 
-                        localDecryptPresenterNotes(currentPassword);
+                    state.masterPassword = currentPassword;
 
-                        const decryptedPasswords = JSON.parse(decrypted);
-                        if (decryptedPasswords.length === 0) {
-                            console.info("No exercise passwords unlocked.");
-                            unlockDialog.querySelector(
-                                ":scope .ld-dialog-title",
-                            ).innerHTML = "Presenter Notes";
-                            contentArea.innerHTML =
-                                "<strong>Unlocked.</strong>";
-                            return;
-                        }
-                        const exercisesPasswords =
-                            decryptedPasswords[0]["passwords"];
-                        const passwordsTable = ld.convertToTable(
-                            exercisesPasswords,
-                            (i) => {
-                                // FIXME make this a button
-                                const div = ld.div({
-                                    classes: ["ld-unlock-global"],
-                                });
-                                div.addEventListener("click", () =>
-                                    decryptExercise(
-                                        exercisesPasswords[i][0],
-                                        exercisesPasswords[i][1],
-                                    ),
-                                );
-                                const td = ld.create("td", { children: [div] });
-                                return [td];
-                            },
-                        );
+                    localDecryptPresenterNotes(currentPassword);
 
-                        for (let i = 0; i < exercisesPasswords.length; i++) {
-                            localDecryptExercise(
-                                exercisesPasswords[i][0],
-                                exercisesPasswords[i][1],
-                            );
-                        }
-                        contentArea.appendChild(passwordsTable);
+                    const decryptedPasswords = JSON.parse(decrypted);
+                    if (decryptedPasswords.length === 0) {
+                        console.info("No exercise passwords unlocked.");
                         unlockDialog.querySelector(
                             ":scope .ld-dialog-title",
-                        ).innerHTML = "Exercises Passwords";
-                    })
-                    .catch((error) => {
-                        console.log(
-                            "decryption using: " +
-                                currentPassword +
-                                " failed - " +
-                                error,
+                        ).innerHTML = "Presenter Notes";
+                        contentArea.innerHTML = "<strong>Unlocked.</strong>";
+                        return;
+                    }
+                    const exercisesPasswords =
+                        decryptedPasswords[0]["passwords"];
+                    const passwordsTable = ld.convertToTable(
+                        exercisesPasswords,
+                        (i) => {
+                            // FIXME make this a button
+                            const div = ld.div({
+                                classes: ["ld-unlock-global"],
+                            });
+                            div.addEventListener("click", () =>
+                                decryptExercise(
+                                    exercisesPasswords[i][0],
+                                    exercisesPasswords[i][1],
+                                ),
+                            );
+                            const td = ld.create("td", { children: [div] });
+                            return [td];
+                        },
+                    );
+
+                    for (let i = 0; i < exercisesPasswords.length; i++) {
+                        localDecryptExercise(
+                            exercisesPasswords[i][0],
+                            exercisesPasswords[i][1],
                         );
-                    });
+                    }
+                    contentArea.appendChild(passwordsTable);
+                    unlockDialog.querySelector(
+                        ":scope .ld-dialog-title",
+                    ).innerHTML = "Exercises Passwords";
+                } catch (error) {
+                    console.log(
+                        // `decryption using: ${currentPassword} failed: `,
+                        // we don't want to log the current passwort attempts!
+                        `decryption with current password failed: `,
+                        error,
+                    );
+                }
             }
         });
     } else {
@@ -1126,7 +1133,7 @@ function setupUnlockPresenterNotesAndSolutionsDialog() {
             </div>`;
     }
 
-    document.getElementsByTagName("BODY")[0].prepend(unlockDialog);
+    document.body.prepend(unlockDialog);
     document
         .getElementById("ld-exercises-passwords-close-button")
         .addEventListener("click", togglePasswordsDialog);
@@ -1291,7 +1298,7 @@ function setupSlidePane() {
     body.prepend(slidesPane);
 }
 
-function decryptExercise(title, password) {
+async function decryptExercise(title, password) {
     postMessage("decryptExercise", [title, password]);
     localDecryptExercise(title, password);
 }
@@ -1307,13 +1314,13 @@ function localDecryptPresenterNotes(password) {
         .querySelectorAll(":scope ld-presenter-note[data-encrypted='true']")
         .forEach(async (presenterNote) => {
             const crypto = await ldCrypto();
-            const html = await crypto.decryptAESGCMPBKDF(
+            const decryptedNote = await crypto.decryptAESGCMPBKDF(
                 presenterNote.innerText.trim(),
                 password,
             );
-            presenterNote.innerHTML = html;
-            typesetMath(presenterNote);
+            presenterNote.innerHTML = decryptedNote;
             delete presenterNote.dataset.encrypted;
+            typesetMath(presenterNote);
         });
 }
 
@@ -1338,33 +1345,35 @@ function localDecryptExercise(title, password) {
  * @param HTMLDivElement solutionWrapper
  * @param HTMLDivElement solution
  */
-function tryDecryptExercise(password, solutionWrapper, solution) {
+async function tryDecryptExercise(password, solutionWrapper, solution) {
     console.assert(solutionWrapper !== null);
     console.assert(solution !== null);
 
     if (!solution.dataset.encrypted) {
         return;
     }
-    ldCrypto()
-        .then((ldCrypto) => {
-            return ldCrypto.decryptAESGCMPBKDF(
-                solution.innerText.trim(),
-                password,
-            );
-        })
-        .then((decrypted) => {
-            solution.innerHTML = decrypted;
-            setupCopyToClipboard(solution);
-            typesetMath(solution);
-            ldEvents.afterDecryptExercise.forEach((f) => f(solution));
+    try {
+        const crypto = await ldCrypto();
+        const decrypted = await crypto.decryptAESGCMPBKDF(
+            solution.innerText.trim(),
+            password,
+        );
 
-            // The first child is the input field!
-            solutionWrapper.firstElementChild.remove(); //Child(passwordField);
-            delete solution.dataset.encrypted;
-        })
-        .catch((error) => {
-            console.log("wrong password: " + password + " - " + error);
-        });
+        // The first child is the input field!
+        solutionWrapper.firstElementChild.remove(); //Child(passwordField);
+        delete solution.dataset.encrypted;
+
+        solution.innerHTML = decrypted;
+        setupCopyToClipboard(solution);
+        typesetMath(solution);
+        ldEvents.afterDecryptExercise.forEach((f) => f(solution));
+    } catch (error) {
+        console.log(
+            "decryption using password ${password} failed for solution: ",
+            solution,
+            error,
+        );
+    }
 }
 
 function setupDocumentView() {
@@ -1392,37 +1401,34 @@ function setupDocumentView() {
         });
         section.dataset.no = i;
 
-        if (template.classList.contains("exercises")) {
-            // TODO <- needed?
-            // Replace the encrypted solutions with password fields.
-            section.querySelectorAll(":scope .ld-exercise").forEach((task) => {
-                task.classList.add("ld-extracted-exercise");
-                const solution = task.querySelector(
-                    ":scope .ld-exercise-solution",
-                );
-                if (solution) {
-                    solution.parentElement.removeChild(solution);
+        // Process Embedded Exercises
+        // ------------------------------------------
+        // Add password fields before the encrypted solutions.
+        section.querySelectorAll(":scope .ld-exercise").forEach((task) => {
+            task.classList.add("ld-extracted-exercise");
+            const solution = task.querySelector(":scope .ld-exercise-solution");
+            if (solution) {
+                solution.parentElement.removeChild(solution);
 
-                    const passwordField = createPasswordInput();
-                    const solutionWrapper = ld.div({
-                        classes: ["ld-exercise-solution-wrapper"],
-                        parent: task,
-                        children: [passwordField, solution],
-                    });
+                const passwordField = createPasswordInput();
+                const solutionWrapper = ld.div({
+                    classes: ["ld-exercise-solution-wrapper"],
+                    parent: task,
+                    children: [passwordField, solution],
+                });
 
-                    passwordField.addEventListener("input", (e) => {
-                        const currentPassword = e.target.value;
-                        if (currentPassword.length > 2) {
-                            tryDecryptExercise(
-                                currentPassword,
-                                solutionWrapper,
-                                solution,
-                            );
-                        }
-                    });
-                }
-            });
-        }
+                passwordField.addEventListener("input", async (e) => {
+                    const currentPassword = e.target.value;
+                    if (currentPassword.length > 2) {
+                        tryDecryptExercise(
+                            currentPassword,
+                            solutionWrapper,
+                            solution,
+                        );
+                    }
+                });
+            }
+        });
 
         const footer = ld.create("footer", {
             innerHTML: `<div class="ld-dv-section-number">${i + 1}</div>`,
