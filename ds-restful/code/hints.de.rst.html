@@ -3,70 +3,68 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="version" content="LD2 GENESIS" />
+<meta name="version" content="LD2 RENAISSANCE" />
 <title>Hints</title>
 
-    <script src="../../LectureDoc2/genesis/ld-core.js" type="module"></script>
+    <script src="../../LectureDoc2/src/ld.js" type="module"></script>
 
-    <script src="../../LectureDoc2/genesis/ld-components.js" type="module"></script>
+    <link rel="stylesheet" href="../../LectureDoc2/src/ld.css" />
 
-    <link rel="stylesheet" href="../../LectureDoc2/genesis/ld.css" />
-
-    <link rel="stylesheet" href="../../LectureDoc2/genesis/themes/DHBW/theme.css" />
-
-    <link rel="stylesheet" href="../../LectureDoc2/genesis/ld-ui.css" />
-
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../../LectureDoc2/src/css/themes/dhbw.css") layer(theme)</style>
     
 </head>
 <body>
 <template>
-<div class="ld-slide" id="hints">
+<ld-topic id="hints">
 <h1 class="title">Hints</h1>
 
-</div>
-<div class="ld-slide" id="falls-es-zu-einem-eaddrinuse-kommt">
+</ld-topic>
+<ld-topic id="falls-es-zu-einem-eaddrinuse-kommt">
 <h2>Falls es zu einem EADDRINUSE kommt</h2>
 <p>Um die PID des Prozesses zu finden, die den Port (hier: Port 5000) nutzt:</p>
-<pre class="code bash literal-block"><code>$<span class="whitespace"> </span>lsof<span class="whitespace"> </span>-i<span class="whitespace"> </span>:5000<span class="whitespace">
-</span>$<span class="whitespace"> </span>ls<span class="whitespace"> </span>-e<span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>&lt;PID&gt;</code></pre>
-</div><div class="ld-slide" id="senden-von-http-post-mit-hilfe-von-curl">
+<pre class="code bash literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span>lsof<span class="whitespace"> </span>-i<span class="whitespace"> </span>:5000<span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>$<span class="whitespace"> </span>ls<span class="whitespace"> </span>-e<span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>&lt;PID&gt;</code></pre>
+</ld-topic><ld-topic id="senden-von-http-post-mit-hilfe-von-curl">
 <h2>Senden von HTTP POST mit Hilfe von CURL</h2>
 <div class="section" id="request">
 <h3>Request</h3>
-<pre class="code bash far-far-smaller literal-block"><code>$<span class="whitespace"> </span>curl<span class="whitespace"> </span>-X<span class="whitespace"> </span>POST<span class="whitespace"> </span>-H<span class="whitespace"> </span><span class="literal string double">&quot;Content-Type: application/json&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
-</span><span class="whitespace">  </span>-d<span class="whitespace"> </span><span class="literal string single">'{&quot;user4&quot;: {&quot;name&quot;: &quot;Jango&quot;, &quot;password&quot;: &quot;luke&quot;, &quot;job&quot;: &quot;headhunter&quot;, &quot;id&quot;: 4}}'</span><span class="whitespace"> </span><span class="literal string escape">\
-</span><span class="whitespace">  </span>http://localhost:4080/</code></pre>
-</div><div class="section" id="response">
+<pre class="code bash literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span>curl<span class="whitespace"> </span>-X<span class="whitespace"> </span>POST<span class="whitespace"> </span>-H<span class="whitespace"> </span><span class="literal string double">&quot;Content-Type: application/json&quot;</span><span class="whitespace"> </span><span class="literal string escape">\
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="literal string escape"></span><span class="whitespace">  </span>-d<span class="whitespace"> </span><span class="literal string single">'{&quot;user4&quot;: {&quot;name&quot;: &quot;Jango&quot;, &quot;password&quot;: &quot;luke&quot;, &quot;job&quot;: &quot;headhunter&quot;, &quot;id&quot;: 4}}'</span><span class="whitespace"> </span><span class="literal string escape">\
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="literal string escape"></span><span class="whitespace">  </span>http://localhost:4080/</code></pre>
+</ld-topic><div class="section" id="response">
 <h3>Response</h3>
-<div class="scrollable docutils container">
-<pre class="code json far-smaller literal-block"><code><span class="punctuation">{</span><span class="whitespace">
-    </span><span class="name tag">&quot;user1&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
-        </span><span class="name tag">&quot;name&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;dingo&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;password&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;1234&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;job&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;dealer&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;id&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="whitespace">
-    </span><span class="punctuation">},</span><span class="whitespace">
-    </span><span class="name tag">&quot;user2&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
-        </span><span class="name tag">&quot;name&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;bingo&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;password&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;0987&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;job&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;farmer&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;id&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="whitespace">
-    </span><span class="punctuation">},</span><span class="whitespace">
-    </span><span class="name tag">&quot;user3&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
-        </span><span class="name tag">&quot;name&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;ringo&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;password&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;asdf&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;job&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;boss&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;id&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">3</span><span class="whitespace">
-    </span><span class="punctuation">},</span><span class="whitespace">
-    </span><span class="name tag">&quot;user4&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
-        </span><span class="name tag">&quot;name&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;Jango&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;password&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;luke&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;job&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;headhunter&quot;</span><span class="punctuation">,</span><span class="whitespace">
-        </span><span class="name tag">&quot;id&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">4</span><span class="whitespace">
-    </span><span class="punctuation">}</span><span class="whitespace">
-</span><span class="punctuation">}</span></code></pre>
-</div>
-</div></div>
+<ld-scrollable>
+<pre class="code json literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">    </span><span class="name tag">&quot;user1&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">        </span><span class="name tag">&quot;name&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;dingo&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">        </span><span class="name tag">&quot;password&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;1234&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">        </span><span class="name tag">&quot;job&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;dealer&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">        </span><span class="name tag">&quot;id&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="punctuation">},</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="name tag">&quot;user2&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">        </span><span class="name tag">&quot;name&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;bingo&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">        </span><span class="name tag">&quot;password&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;0987&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">        </span><span class="name tag">&quot;job&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;farmer&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">        </span><span class="name tag">&quot;id&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">    </span><span class="punctuation">},</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="name tag">&quot;user3&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">        </span><span class="name tag">&quot;name&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;ringo&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">        </span><span class="name tag">&quot;password&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;asdf&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">        </span><span class="name tag">&quot;job&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;boss&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace">        </span><span class="name tag">&quot;id&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">3</span><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace">    </span><span class="punctuation">},</span><span class="whitespace">
+</span></code><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace">    </span><span class="name tag">&quot;user4&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">21 </small><code data-lineno="21 "><span class="whitespace">        </span><span class="name tag">&quot;name&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;Jango&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln">22 </small><code data-lineno="22 "><span class="whitespace">        </span><span class="name tag">&quot;password&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;luke&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln">23 </small><code data-lineno="23 "><span class="whitespace">        </span><span class="name tag">&quot;job&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string double">&quot;headhunter&quot;</span><span class="punctuation">,</span><span class="whitespace">
+</span></code><small class="ln">24 </small><code data-lineno="24 "><span class="whitespace">        </span><span class="name tag">&quot;id&quot;</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">4</span><span class="whitespace">
+</span></code><small class="ln">25 </small><code data-lineno="25 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">26 </small><code data-lineno="26 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-scrollable></ld-topic></ld-topic>
 </template>
 </body>
 </html>

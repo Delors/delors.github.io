@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="en" name="lang" />
+<meta content="Michael Eichberg" name="author" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>LectureDoc2</title>
+
+    <script src="../../LectureDoc2/src/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../../LectureDoc2/src/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../../LectureDoc2/src/css/themes/dhbw.css") layer(theme)</style>
+    
+</head>
+<body>
+<template>
+<ld-topic id="lecturedoc2">
+<h1 class="title">LectureDoc2</h1>
+
+<p>LectureDoc2 is an authoring system for lecture material which makes use of modern HTML, CSS and JavaScript. LectureDoc is also very well suited to create normal presentations; its main target is however the creation of lecture material.</p>
+<p>LectureDoc makes it trivial to embed math and source code by relying on established projects (e.g. MathJax and HighlightJS).</p>
+</ld-topic>
+<ld-topic id="using-lecturedoc">
+<h2>Using LectureDoc</h2>
+<p>LectureDoc documents have to be served by a web server, because it makes use of modern JavaScript features which are not available when opening the document directly in a browser due to security reasons.</p>
+<p>Starting a simple webserver, which is sufficient for most use cases, can be done using Python 3:</p>
+<pre class="code bash literal-block"><code>python3<span class="whitespace"> </span>-m<span class="whitespace"> </span>http.server<span class="whitespace"> </span>-d<span class="whitespace"> </span>&lt;PATH<span class="whitespace"> </span>TO<span class="whitespace"> </span>ROOT<span class="whitespace"> </span>FOLDER&gt;</code></pre>
+<p>Alternatively, the node.js
+<a class="reference external" href="https://www.npmjs.com/package/http-server">http-server</a> (from npm) can be used:</p>
+<pre class="code bash literal-block"><code>http-server<span class="whitespace"> </span>-p<span class="whitespace"> </span><span class="literal number">8888</span><span class="whitespace"> </span>-c-1<span class="whitespace"> </span>-g<span class="whitespace"> </span>--cors<span class="operator">=</span><span class="literal string double">&quot;Access-Control-Allow-Origin:*&quot;</span><span class="whitespace"> </span>--no-dotfiles<span class="whitespace">  </span>&lt;PATH/TO/ROOT/FOLDER&gt;</code></pre>
+</ld-topic><ld-topic id="how-to">
+<h2>How To</h2>
+<ld-scrollable>
+<p>A LectureDoc document is basically a plain HTML5 document with a very simple structure. All functionality is enabled using CSS and JavaScript. The most basic presentation would be:</p>
+<pre class="code html literal-block"><code><span class="comment preproc">&lt;!doctype html&gt;</span>
+<span class="punctuation">&lt;</span><span class="name tag">html</span> <span class="name attribute">lang</span><span class="operator">=</span><span class="literal string">&quot;en&quot;</span><span class="punctuation">&gt;</span>
+    <span class="punctuation">&lt;</span><span class="name tag">head</span><span class="punctuation">&gt;</span>
+        <span class="punctuation">&lt;</span><span class="name tag">meta</span> <span class="name attribute">charset</span><span class="operator">=</span><span class="literal string">&quot;UTF-8&quot;</span><span class="punctuation">&gt;</span>
+        <span class="punctuation">&lt;</span><span class="name tag">meta</span> <span class="name attribute">name</span><span class="operator">=</span><span class="literal string">&quot;viewport&quot;</span> <span class="name attribute">content</span><span class="operator">=</span><span class="literal string">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="punctuation">&gt;</span>
+        <span class="punctuation">&lt;</span><span class="name tag">script</span> <span class="name attribute">src</span><span class="operator">=</span><span class="literal string">&quot;../ld.js&quot;</span> <span class="name attribute">type</span><span class="operator">=</span><span class="literal string">&quot;module&quot;</span><span class="punctuation">&gt;&lt;/</span><span class="name tag">script</span><span class="punctuation">&gt;</span>
+        <span class="punctuation">&lt;</span><span class="name tag">link</span> <span class="name attribute">rel</span><span class="operator">=</span><span class="literal string">&quot;stylesheet&quot;</span> <span class="name attribute">href</span><span class="operator">=</span><span class="literal string">&quot;../ld.css&quot;</span><span class="punctuation">&gt;</span>
+    <span class="punctuation">&lt;/</span><span class="name tag">head</span><span class="punctuation">&gt;</span>
+
+    <span class="punctuation">&lt;</span><span class="name tag">body</span><span class="punctuation">&gt;</span>
+        <span class="punctuation">&lt;</span><span class="name tag">template</span><span class="punctuation">&gt;</span>
+            <span class="punctuation">&lt;</span><span class="name tag">ld-topic</span><span class="punctuation">&gt;</span>
+                <span class="punctuation">&lt;</span><span class="name tag">strong</span><span class="punctuation">&gt;</span>Title of your presentation.<span class="punctuation">&lt;/</span><span class="name tag">strong</span><span class="punctuation">&gt;</span>
+            <span class="punctuation">&lt;/</span><span class="name tag">ld-topic</span><span class="punctuation">&gt;</span>
+            <span class="punctuation">&lt;</span><span class="name tag">ld-topic</span><span class="punctuation">&gt;</span>
+                <span class="punctuation">&lt;</span><span class="name tag">h1</span><span class="punctuation">&gt;</span>A Slide!<span class="punctuation">&lt;/</span><span class="name tag">h1</span><span class="punctuation">&gt;</span>
+                <span class="punctuation">&lt;</span><span class="name tag">p</span><span class="punctuation">&gt;</span>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Esse asperiores eos facilis quod, veritatis blanditiis aut
+                    delectus doloremque minima voluptate id ipsa sapiente.
+                <span class="punctuation">&lt;/</span><span class="name tag">p</span><span class="punctuation">&gt;</span>
+            <span class="punctuation">&lt;/</span><span class="name tag">ld-topic</span><span class="punctuation">&gt;</span>
+            <span class="punctuation">&lt;</span><span class="name tag">ld-topic</span><span class="punctuation">&gt;</span>
+                <span class="punctuation">&lt;</span><span class="name tag">p</span><span class="punctuation">&gt;</span>The following list is shown incrementally.<span class="punctuation">&lt;/</span><span class="name tag">p</span><span class="punctuation">&gt;</span>
+                <span class="punctuation">&lt;</span><span class="name tag">ul</span> <span class="name attribute">class</span><span class="operator">=</span><span class="literal string">&quot;incremental-list&quot;</span><span class="punctuation">&gt;</span>
+                    <span class="punctuation">&lt;</span><span class="name tag">li</span><span class="punctuation">&gt;</span>This<span class="punctuation">&lt;/</span><span class="name tag">li</span><span class="punctuation">&gt;</span>
+                    <span class="punctuation">&lt;</span><span class="name tag">li</span><span class="punctuation">&gt;</span>is it<span class="punctuation">&lt;/</span><span class="name tag">li</span><span class="punctuation">&gt;</span>
+                    <span class="punctuation">&lt;</span><span class="name tag">li</span><span class="punctuation">&gt;</span>- a Test<span class="punctuation">&lt;/</span><span class="name tag">li</span><span class="punctuation">&gt;</span>
+                <span class="punctuation">&lt;/</span><span class="name tag">ul</span><span class="punctuation">&gt;</span>
+            <span class="punctuation">&lt;/</span><span class="name tag">ld-topic</span><span class="punctuation">&gt;</span>
+            <span class="punctuation">&lt;</span><span class="name tag">ld-topic</span><span class="punctuation">&gt;</span>
+                <span class="punctuation">&lt;</span><span class="name tag">div</span>
+                    <span class="name attribute">style</span><span class="operator">=</span><span class="literal string">&quot;
+                        height: 100%;
+                        width: 100%;
+                        background-color: black;
+                        color: white;
+                    &quot;</span><span class="punctuation">&gt;</span>
+                    Final page.
+                <span class="punctuation">&lt;/</span><span class="name tag">div</span><span class="punctuation">&gt;</span>
+            <span class="punctuation">&lt;/</span><span class="name tag">ld-topic</span><span class="punctuation">&gt;</span>
+        <span class="punctuation">&lt;/</span><span class="name tag">template</span><span class="punctuation">&gt;</span>
+    <span class="punctuation">&lt;/</span><span class="name tag">body</span><span class="punctuation">&gt;</span>
+<span class="punctuation">&lt;/</span><span class="name tag">html</span><span class="punctuation">&gt;</span></code></pre>
+<p>As seen in the above example, a stylesheet related to the rendering of the controls need to be imported along with some JavaScript files which enable the base functionality. Support for math equations and syntax highlighting of code needs additional imports. See the advanced example for that.</p>
+<p>The body of the HTML document should have only one template element with topics as child elements. The slides and the document view is created based on the ld-topic elements. When LectureDoc is initialized, the user-interface related elements will automatically be created.</p>
+<p>In general, we highly recommend to author your slides in reStructuredText and use <span class="docutils literal">rst2ld</span> to create your slide set. <span class="docutils literal">rst2ld</span> offers a wide range of features that makes using LectureDoc fun to use.</p>
+</ld-scrollable></ld-topic><ld-topic id="controlling-the-initial-appearance">
+<h2>Controlling the initial appearance</h2>
+<ul>
+<li><p>When you want to show the light table directly when opening the presentation add the following meta tag to the head of the document.</p>
+<pre class="code html literal-block"><code><span class="punctuation">&lt;</span><span class="name tag">meta</span> <span class="name attribute">name</span><span class="operator">=</span><span class="literal string">&quot;ld-show-light-table&quot;</span> <span class="name attribute">content</span><span class="operator">=</span><span class="literal string">&quot;true&quot;</span><span class="punctuation">&gt;</span></code></pre>
+</li>
+<li><p>To start the presentation with a different slide than the first one, use the following meta tag.</p>
+<pre class="code html literal-block"><code><span class="punctuation">&lt;</span><span class="name tag">meta</span> <span class="name attribute">name</span><span class="operator">=</span><span class="literal string">&quot;first-slide&quot;</span> <span class="name attribute">content</span><span class="operator">=</span><span class="literal string">&quot;5&quot;</span><span class="punctuation">&gt;</span></code></pre>
+<div class="docutils container">
+<ul class="simple">
+<li><p>if content is an int value then the corresponding slide will be shown. (The first slide has the value 1).</p></li>
+<li><p>if content is &quot;<cite>last</cite>&quot; the last slide will be shown.</p></li>
+<li><p>if content is &quot;<cite>last-viewed</cite>&quot; the last viewed slide will be shown. Uses the browser's local storage for storing the slide number; may not work in all situations. Requires that the document has a unique id. The id can be set using: <code>&lt;meta name=&quot;id&quot; content=&quot;(unique id)&quot;&gt;</code>.</p></li>
+</ul>
+</div>
+</li>
+</ul>
+</ld-topic><ld-topic id="slide-design">
+<h2>Slide Design</h2>
+<p>In general, no hard restrictions have to be followed regarding the design of your slides.
+However, the width, height, position, display and scale properties of slides (<span class="docutils literal"><span class="pre">div.ld-slide</span></span>) are used by LectureDoc and must not be &quot;styled&quot; in custom style sheets.</p>
+</ld-topic><ld-topic id="non-goals">
+<h2>Non-Goals</h2>
+<div class="section" id="broad-compatibility">
+<h3>Broad compatibility</h3>
+<p>LectureDoc does not strive for maximum compatibility with all (past) browsers. I.e., as of 2024, it is only regularly tested on the most modern versions of Chrome, Safari and Firefox. In general, LectureDoc will not use features not fully supported by one of these browsers. Hence, in practice only mature features are going to be used. However, feel free to open a pull-request if something can be improved without introducing strong dependencies on specific browsers or adding compatibility layers with old browsers.</p>
+</ld-topic></ld-topic>
+</template>
+</body>
+</html>

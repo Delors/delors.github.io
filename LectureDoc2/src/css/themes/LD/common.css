@@ -1,0 +1,1676 @@
+/* LAYER: theme.ld */
+
+/* This style sheet is partially based on:
+
+   Minimal style sheet for the HTML output of Docutils created by Günter Milde (2022-06-19) which in turn is based on html4css1.css by
+   David Goodger (2015, 2021).
+*/
+
+table:has(+ *),
+object:has(+ *),
+ld-grid:has(+ *),
+div.compound:has(+ *),
+div.container:has(+ *),
+p:has(+ *),
+blockquote:has(+ *) {
+    margin-bottom: var(--default-bottom-margin);
+}
+
+object[role="img"] {
+    display: block;
+
+    &.opaque {
+        background-color: var(--current-background-color);
+    }
+}
+
+mjx-container[display="true"] {
+    margin: 0.5em 0 !important;
+}
+
+ul {
+    list-style-type: "▫️";
+}
+
+.epigraph {
+    font-family: var(--theme-serif-font-family);
+    font-style: italic;
+    font-variant-ligatures: common-ligatures no-discretionary-ligatures
+        contextual;
+}
+
+ld-deck {
+    &:has(+ *) {
+        margin-bottom: var(--default-bottom-margin);
+    }
+
+    &.numbered {
+        counter-reset: deck;
+
+        &.from-zero {
+            counter-reset: deck -1;
+        }
+
+        > ld-card {
+            counter-increment: deck;
+
+            position: relative;
+            margin-top: 1em;
+            border-top: thin solid var(--dark-gray);
+            padding-top: 0.75em;
+
+            &::before {
+                content: counter(deck);
+                display: inline-block;
+                position: absolute;
+                top: 0;
+                right: 0;
+                border-right: thin solid var(--dark-gray);
+                border-radius: 0 0 0 0.5em;
+                padding: 0.05em 0.25em;
+
+                background-color: var(--dark-gray);
+                color: var(--white);
+                text-shadow: -1px -1px 2px var(--light-gray);
+            }
+        }
+    }
+}
+
+ld-grid {
+    /*  The default layout is (at the moment) a flex based layout. */
+    &.default-layout {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1em;
+
+        > ld-cell {
+            display: block;
+        }
+    }
+}
+
+/*  ----------------------------------------------------------------------------
+    Adds the styling for the functionality to copy code to the clipboard.
+
+    The base functionality is implemented in LectureDoc.
+*/
+.code.copy-to-clipboard {
+    position: relative;
+
+    /*  The DIV with the class ".ld-copy-to-clipboard-button" is added by
+        programmatically by LectureDoc. */
+    .ld-copy-to-clipboard-button {
+        content: url("copy_to_clipboard.svg");
+        width: 27px;
+        height: 27px;
+
+        position: absolute;
+        right: 18px;
+        top: 18px;
+
+        opacity: 0;
+        transition: 500ms;
+    }
+
+    &:hover .ld-copy-to-clipboard-button {
+        opacity: 1;
+        transition: 750ms;
+    }
+}
+
+/* Lists */
+
+ul.horizontal {
+    display: flex;
+    gap: 0 2em;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+}
+
+/* compact and simple lists: no margin between items */
+li,
+.simple li,
+.simple ul,
+.simple ol,
+.compact li,
+.compact ul,
+.compact ol,
+.simple > li p,
+dl.simple > dd,
+.compact > li p,
+dl.compact > dd {
+    margin-top: 0;
+    margin-bottom: 0.25em;
+}
+
+/*  Provides a very simple means to "misuse" a list to arrange content in
+    columns.
+
+    In rst it has to be used like so:
+
+    .. class:: columns (left-aligned-columns|evenly-spaced-columns)?
+
+    - first column
+    - second column
+    - ...
+*/
+ul.columns {
+    /* TODO Consolidate columns and column-list! */
+    list-style: none;
+
+    display: flex;
+    padding: 0;
+    margin: 0;
+
+    gap: 1em;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    &.evenly-spaced {
+        justify-content: space-evenly;
+    }
+
+    &.left-aligned {
+        justify-content: flex-start;
+    }
+
+    li {
+        margin-bottom: 0;
+    }
+}
+
+/*
+    This style is complementary to the previous one and adds a pop-out effect
+    on hover.
+*/
+:is(ol, ul):has(> .pop-out-on-hover) {
+    perspective: 500px;
+    transform-style: preserve-3d;
+    overflow: visible;
+
+    > li {
+        transition: 0.5s;
+
+        &::before {
+            transition: 0.5s;
+        }
+
+        &.\:hover {
+            transform: translateZ(15px);
+            transition: 0.5s;
+
+            &::before {
+                transition: 0.5s;
+            }
+        }
+    }
+}
+
+ul.negative-list>li,
+/* TODO rename: attention-list (see below)*/
+ul>li.negative-list {
+    list-style-type: "❗️";
+}
+
+ul.positive-list>li,
+/* TODO rename: check-list*/
+ul>li.positive-list {
+    list-style-type: "✓";
+}
+
+ul.question-list>li,
+/* TODO rename: */
+ul>li.question-list {
+    list-style-type: " ? ";
+}
+
+ul.attention-list>li,
+/* TODO rename: */
+ul>li.attention-list {
+    list-style-type: "⚡️";
+}
+
+.list-with-explanations > li > *:not(:first-child) {
+    margin-top: -0.3em;
+    font-size: smaller;
+    color: var(--dark-gray);
+    mix-blend-mode: hard-light;
+}
+
+.list-with-details > li > *:not(:first-child) {
+    font-size: smaller;
+}
+
+.list-with-sublists > li > :is(ol, ul) {
+    margin: 0;
+    font-size: smaller;
+}
+
+ul {
+    list-style-position: outside;
+    padding-left: 0.85em;
+}
+
+ol.loweralpha {
+    list-style: lower-alpha;
+    list-style-position: outside;
+    padding-left: 0;
+    margin-left: 1.5em;
+}
+
+ol.upperalpha {
+    list-style: upper-alpha;
+}
+
+ol.lowerroman {
+    list-style: lower-roman;
+}
+
+ol.upperroman {
+    list-style: upper-roman;
+    list-style-position: outside;
+    padding-left: 0;
+    margin-left: 1.5em;
+}
+
+ol.arabic {
+    list-style: decimal;
+    list-style-position: outside;
+    padding-left: 1.5em;
+}
+
+ol.arabic.long-list {
+    list-style-position: outside;
+    padding-left: 2.25em;
+}
+
+li {
+    padding-left: 0;
+}
+
+/* Definition Lists and Derivatives */
+dt .classifier {
+    font-style: italic;
+}
+
+dt .classifier:before {
+    font-style: normal;
+    margin: 0.5em;
+    content: ":";
+}
+
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list {
+    display: flow-root;
+
+    /* There will be no extra-margin between two field-lists. */
+
+    &:has(+ dl.field-list) {
+        margin-bottom: 0;
+    }
+
+    + dl.field-list {
+        margin-top: 0;
+    }
+}
+
+dl.option-list,
+dl.docinfo {
+    display: flow-root;
+}
+
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+    font-weight: 500;
+    clear: left;
+    float: left;
+    margin: 0;
+    padding: 0;
+    padding-right: 0.2em;
+}
+
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+    margin-left: 9em;
+    /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+    clear: left;
+}
+
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child {
+    display: inline-block;
+    width: 100%;
+    margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+    font: inherit;
+    margin: 0.5em 0;
+}
+
+dl.docinfo > dd.authors > p {
+    margin: 0;
+}
+
+/* Option Lists */
+dl.option-list > dt {
+    font-weight: normal;
+}
+
+.no-title :is(h1, h2):first-child {
+    display: none;
+}
+
+.emph {
+    font-weight: bolder;
+    color: var(--emph-color);
+}
+
+.footnote,
+.citation {
+    margin: 1em 0;
+}
+
+/* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation {
+    padding-left: 2em;
+}
+
+.footnote {
+    padding-left: 1.7em;
+}
+
+.footnote.superscript {
+    padding-left: 1em;
+}
+
+.citation > .label {
+    margin-left: -2em;
+}
+
+.footnote > .label {
+    margin-left: -1.7em;
+    position: absolute;
+}
+
+.footnote.superscript > .label {
+    margin-left: -1em;
+}
+
+.footnote > .label + *,
+.citation > .label + * {
+    display: inline-block;
+    margin-top: 0;
+    vertical-align: top;
+}
+
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+    margin-top: 0;
+}
+
+.footnote > .label + p,
+.footnote > .backrefs + p,
+.citation > .label + p,
+.citation > .backrefs + p {
+    display: inline;
+    vertical-align: inherit;
+}
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+    vertical-align: super;
+    font-size: smaller;
+    line-height: 1;
+}
+
+/* Table of Contents */
+.contents ul.auto-toc {
+    /* section numbers present */
+    list-style-type: none;
+}
+
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+    /* hide brackets in display but leave for copy/paste */
+    display: inline-block;
+    width: 0;
+    overflow: hidden;
+}
+
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+    padding-left: 0.15em;
+    /* separate consecutive footnote references */
+    /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+.backrefs {
+    user-select: none;
+}
+
+.backrefs > a {
+    font-style: italic;
+}
+
+span.option {
+    white-space: nowrap;
+}
+
+p.topic-title,
+p.system-message-title {
+    font-weight: bold;
+}
+
+.admonition {
+    border: 1px solid var(--semi-light-gray);
+    border-top: 0;
+    border-radius: var(--small-border-radius);
+
+    padding: 0 0.5em 0.25em 0.5em;
+
+    background-color: var(--current-background-color);
+    color: var(--current-color);
+
+    /* Control spacing around an admonition */
+    &:has(+ *) {
+        margin-bottom: 0.5em;
+    }
+
+    > p:first-child.admonition-title {
+        position: relative;
+        left: -0.5em;
+        width: calc(100% + 1em);
+        padding: 0 0.5em;
+        height: 1.1lh;
+        margin-bottom: 0;
+
+        border-radius: var(--small-border-radius) var(--small-border-radius) 0 0;
+
+        --current-background-color: var(--semi-light-gray);
+        background-color: var(--current-background-color);
+        --current-color: var(--white);
+        color: var(--current-color);
+        text-shadow: var(--gray) -1px -1px 1px;
+
+        & + * {
+            margin-top: 0.15em;
+        }
+
+        &::before {
+            display: inline-block;
+            height: 1.1lh;
+            width: 1.25ch;
+            text-align: center;
+            position: relative;
+            left: -0.5em;
+
+            padding: 0 0.5em;
+            border-radius: var(--small-border-radius) 0 0 0;
+        }
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+
+    &.hint {
+        border: none;
+
+        --current-background-color: var(--very-light-green);
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--green);
+            --current-color: var(--white);
+        }
+    }
+
+    &.warning {
+        border: none;
+
+        --current-background-color: var(--very-light-red);
+
+        > p:first-child.admonition-title {
+            --current-color: var(--white);
+            --current-background-color: var(--dark-red);
+        }
+    }
+
+    &.summary {
+        border: none;
+
+        --current-background-color: var(--very-light-gray);
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--gray);
+            text-align: center;
+        }
+    }
+
+    &.question {
+        border: none;
+
+        --current-background-color: var(--very-light-blue);
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--blue);
+
+            &::before {
+                content: "?";
+                background-color: var(--light-blue);
+            }
+        }
+    }
+
+    &.answer {
+        border: none;
+
+        --current-background-color: var(--very-light-blue);
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--light-blue);
+
+            &::before {
+                content: "✓";
+                background-color: var(--blue);
+            }
+        }
+    }
+
+    &.attention {
+        border: none;
+
+        --current-background-color: var(--light-orange);
+
+        > p:first-child.admonition-title {
+            --current-color: var(--white);
+            --current-background-color: var(--dark-orange);
+        }
+    }
+
+    &.important {
+        border: none;
+
+        --current-background-color: var(--very-light-red);
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--red);
+            --current-color: var(--white);
+
+            &::before {
+                content: "!!";
+                background-color: var(--dark-red);
+            }
+        }
+    }
+
+    &.observation {
+        border: none;
+
+        --current-background-color: var(--very-light-blue);
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--blue);
+
+            &::before {
+                content: "🔎";
+            }
+        }
+    }
+
+    &.proof {
+        position: relative;
+
+        &::after {
+            position: absolute;
+            bottom: 0.35em;
+            right: 0.3em;
+
+            /* End an end of proof marker at the end. */
+            content: "∎";
+        }
+    }
+
+    &.note {
+        float: right;
+        margin-left: 1em;
+
+        &:has(+) {
+            margin-bottom: 1em;
+        }
+
+        background-color: inherit;
+    }
+
+    &.tip {
+        border-top: none;
+
+        /* The first two elements ("p"s) markup the generic title (e.g., "Tip")
+        and the user chosen Title; we markup both in a section title. */
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--red);
+            margin-bottom: 0;
+
+            text-shadow: none;
+
+            &::before {
+                content: "💡";
+            }
+
+            + p {
+                position: relative;
+                left: -0.5em;
+
+                width: calc(100% + 1em);
+
+                margin-top: 0;
+
+                padding: 0.2em 0.5em 0.2em 2.25em;
+
+                --current-background-color: var(--red);
+                background-color: var(--current-background-color);
+                color: var(--white);
+
+                font-weight: 500;
+            }
+        }
+    }
+
+    &.hint {
+        border: none;
+
+        --current-background-color: var(--very-light-green);
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--green);
+            --current-color: var(--white);
+        }
+    }
+
+    &.example {
+        border: none;
+
+        --current-background-color: var(--very-light-yellow);
+
+        > p:first-child.admonition-title {
+            --current-background-color: var(--dark-yellow);
+            --current-color: var(--dark-gray);
+            color: var(--current-color);
+            /* TODO move to general admonition definition! */
+            text-shadow: none;
+        }
+    }
+}
+
+p.sidebar-title,
+p.rubric {
+    font-weight: normal;
+    font-size: 1.15em;
+    font-family: var(--theme-large-serif-font-family);
+}
+
+p.rubric {
+    padding: 0;
+}
+
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+    font-weight: bold;
+    margin-top: -0.5em;
+}
+
+h1 + p.subtitle {
+    font-size: 1.6em;
+}
+
+/* Nested Paragraphs */
+p:first-child {
+    margin-top: 0;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+details > p:last-child {
+    margin-bottom: 1em;
+}
+
+a.toc-backref {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+span.problematic {
+    color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+    font-family: var(--pre-font-family);
+    white-space: pre-wrap;
+}
+
+/* do not wrap at hyphens and similar: */
+.literal > span.pre {
+    white-space: nowrap;
+}
+
+/* Alignment */
+.align-left {
+    text-align: left;
+    margin-right: auto;
+}
+
+.align-center {
+    /* works if the child element does not override margin-left or margin-right. */
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.align-right {
+    text-align: right;
+    margin-left: auto;
+}
+
+.align-top {
+    vertical-align: top;
+}
+
+.align-middle {
+    vertical-align: middle;
+}
+
+.align-bottom {
+    vertical-align: bottom;
+}
+
+/* Text Blocks */
+.topic {
+    margin: 1em 2em;
+}
+
+/* reset inner alignment in figures and tables */
+figure.align-left,
+figure.align-right,
+table.align-left,
+table.align-center,
+table.align-right {
+    text-align: inherit;
+}
+
+figcaption {
+    font-size: smaller;
+    font-style: italic;
+    color: var(--dark-gray);
+    padding: 0.5em;
+
+    > .legend {
+        font-style: normal;
+        font-size: smaller;
+        color: var(--gray);
+        text-align: left;
+    }
+}
+
+.sidebar,
+.system-message {
+    margin-bottom: 0.5em;
+    padding: 0.35em 0.6em;
+    border: thin solid;
+    border-radius: 0.2em;
+}
+
+div.line-block {
+    display: block;
+}
+
+div.line-block div.line-block {
+    margin-left: 0;
+}
+
+blockquote {
+    border-radius: var(--small-border-radius);
+}
+
+/*
+
+    Styling Code
+
+    See also:
+    https://pygments.org/docs/tokens/#module-pygments.token
+
+    For the possible tokens.
+
+*/
+pre.code {
+    padding: 0;
+
+    margin: 0 0 0.75em 0;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+svg text.code,
+code,
+pre.code {
+    --attribute-color: #800000;
+
+    --builtin-color: #6383f8;
+
+    --class-color: #9a6324;
+
+    --comment-color: #696969;
+    /* Bright Yellow */
+    --comment-preprocfile-color: #ffe119;
+
+    /* Lime Green */
+    --comment-preproc-color: #bcf60c;
+
+    /* Pale Yellow */
+    --comment-shadow-color: #fffac8;
+
+    /* Dark Gray */
+    --function-color: #494949;
+
+    /* Strong Blue */
+    --keyword-color: #4363d8;
+
+    --keyword-constant-color: #3232fc;
+    --keyword-namespace-color: #31bcc9;
+    --keyword-type-color: blue;
+
+    /* Purple */
+    --literal-color: #911eb4;
+
+    /* Teal */
+    --name-color: #008080;
+
+    /* Strong Green */
+    --namespace-color: #3cb44b;
+
+    /* Magenta */
+    --number-color: #f032e6;
+
+    /* Orange */
+    --operator-color: #f58231;
+
+    /* Strong Green */
+    --variable-color: #3cb44b;
+
+    /* Strong Red */
+    --punctuation-color: #e6194b;
+
+    --tag-color: #fda8a8;
+
+    /* RESERVED */
+    --color-yyy: #46f0f0;
+    --color-zzz: #e6beff;
+
+    /* The default color: */
+    --code-color: var(--black);
+
+    color: var(--code-color);
+    /* For SVGs: */
+    fill: var(--code-color);
+
+    &.html {
+        color: var(--gray);
+    }
+
+    /*  styling line numbers */
+    .ln {
+        color: var(--dark-gray);
+        font-size: inherit;
+        margin-right: 0.25em;
+        background-color: lavender;
+        padding-left: 0.25em;
+        display: inline-block;
+        border-right: thin solid var(--dark-gray);
+        text-shadow: 1px 1px 1px var(--white);
+
+        &:first-of-type {
+            border-radius: 0.33em 0 0 0;
+        }
+
+        &:last-of-type {
+            border-radius: 0 0 0 0.33em;
+        }
+
+        &:only-of-type {
+            border-radius: 0.33em 0 0 0.33em;
+        }
+    }
+
+    /*  styling the code (sorted alphabetically) */
+
+    .comment {
+        font-weight: 100;
+        color: var(--comment-color);
+        /* For styling SVGs: */
+        fill: var(--comment-color);
+
+        text-shadow:
+            2px 2px 3px var(--comment-shadow-color),
+            -1px -1px 4px var(--gray);
+
+        &.preproc {
+            color: var(--comment-preproc-color);
+        }
+
+        &.preprocfile {
+            font-weight: 600;
+            font-style: italic;
+            color: var(--comment-preprocfile-color);
+            text-decoration: dashed underline;
+        }
+    }
+
+    .deleted {
+        background-color: #deb0a1;
+    }
+
+    .heading {
+        font-weight: bold;
+        text-shadow: 2px 2px 4px white;
+    }
+
+    .inserted {
+        background-color: #a3d289;
+    }
+
+    .keyword {
+        color: var(--keyword-color);
+        /* For styling text in SVGs: */
+        fill: var(--keyword-color);
+        font-weight: 700;
+
+        &.type {
+            color: var(--keyword-type-color);
+            /* For text in SVGs: */
+            fill: var(--keyword-type-color);
+        }
+
+        &.namespace {
+            color: var(--keyword-namespace-color);
+            /* For text in SVGs: */
+            fill: var(--keyword-namespace-color);
+        }
+
+        &.constant {
+            color: var(--keyword-constant-color);
+            /* For text in SVGs: */
+            fill: var(--keyword-constant-color);
+        }
+    }
+
+    .name {
+        color: var(--name-color);
+        fill: var(--name-color);
+
+        &.attribute {
+            color: var(--attribute-color);
+            font-style: italic;
+        }
+
+        &.builtin {
+            color: var(--builtin-color);
+            font-weight: 900;
+            text-shadow: 2px 2px 2px var(--dark-gray);
+
+            &.pseudo {
+                text-decoration-style: wavy;
+                text-decoration-line: underline;
+                text-decoration-color: var(--builtin-color);
+                text-decoration-thickness: 1px;
+            }
+        }
+
+        &.class {
+            color: var(--class-color);
+        }
+
+        &.function {
+            color: var(--function-color);
+            font-style: italic;
+        }
+
+        &.namespace {
+            color: var(--namespace-color);
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        &.tag {
+            color: var(--tag-color);
+            text-shadow: 1px 1px 1px var(--dark-gray);
+        }
+
+        &.variable {
+            color: var(--variable-color);
+            /* For text in SVGs: */
+            fill: var(--variable-color);
+            font-weight: 500;
+            text-shadow: 1px 1px 1px var(--dark-gray);
+            text-decoration-line: underline;
+        }
+    }
+
+    .literal {
+        &.string {
+            font-weight: 200;
+
+            color: var(--literal-color);
+            /* For text in SVGs: */
+            fill: var(--literal-color);
+
+            &.affix {
+                color: var(--literal-color);
+                /* For text in SVGs: */
+                fill: var(--literal-color);
+                font-style: italic;
+                text-decoration: dotted underline;
+            }
+        }
+
+        &.number {
+            color: var(--number-color);
+            /* For text in SVGs: */
+            fill: var(--number-color);
+        }
+    }
+
+    .operator {
+        color: var(--operator-color);
+        /* For text in SVGs: */
+        fill: var(--operator-color);
+        font-weight: 900;
+        text-shadow: 2px 2px 2px var(--dark-gray);
+
+        &.word {
+            font-style: italic;
+        }
+    }
+
+    .punctuation {
+        color: var(--punctuation-color);
+        /* For text in SVGs: */
+        fill: var(--punctuation-color);
+    }
+
+    /*  Issues related to Pygments (i.e., when using rst2LectureDoc):
+
+        Whitespace is identified differently in different languages.
+        Hence, decent support requires language dependent styling.
+    .whitespace {
+        text-decoration-style: dashed;
+        text-decoration-line: underline;
+        text-decoration-color: var(--builtin-color);
+        text-decoration-thickness: 1px;
+
+        / *
+        &:not(:empty):not(:last-child)::before {
+            display: inline;
+            content: "␣";
+        }
+        * /
+    }
+    */
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+
+    th {
+        font-weight: 500;
+    }
+
+    td,
+    th {
+        border: thin solid silver;
+        padding: 0 1ex;
+    }
+
+    > caption {
+        text-align: left;
+        font-size: 0.9em;
+        margin-bottom: 0.2em;
+    }
+
+    &.captionbelow {
+        caption-side: bottom;
+    }
+
+    /* [genesis] table-cell-align-right */
+    &.table-header-align-right th,
+    &.table-data-align-right td {
+        text-align: right;
+    }
+
+    &.table-header-align-left th,
+    &.table-data-align-left td {
+        text-align: left;
+    }
+
+    &.table-header-align-center th,
+    &.table-data-align-center td {
+        text-align: center;
+    }
+
+    &.table-body-header-align-left > tbody > tr > th {
+        text-align: left;
+    }
+
+    &.table-data-monospaced td {
+        font-family: var(--theme-monospaced-font-family);
+    }
+
+    /* ONLY WORKS IF THE TABLE IS IN A SCROLLABLE ELEMENT! */
+    &.sticky-header thead th {
+        position: sticky;
+        top: 0;
+        background-color: rgb(from var(--current-background-color) r g b / 75%);
+        border-bottom: 1px solid var(--current-color);
+        backdrop-filter: blur(2px);
+    }
+
+    &.compact {
+        line-height: 1.15em;
+
+        td,
+        th {
+            padding: 0.1em;
+        }
+    }
+
+    &.ultra-compact {
+        line-height: 1em;
+
+        td,
+        th {
+            padding: 0.05em;
+        }
+    }
+
+    &.borderless td,
+    &.borderless th {
+        border: 0;
+        padding: 0;
+        padding-right: 0.5em;
+        /* separate table cells */
+    }
+
+    /* "booktabs" style (no vertical lines) */
+    &.booktabs {
+        border: 0;
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+
+        td,
+        th {
+            border: 0;
+            border-bottom: thin solid silver;
+        }
+
+        th {
+            border-bottom: thin solid darkgray;
+        }
+    }
+
+    &.zebra-columns {
+        border: 0;
+
+        td,
+        th {
+            border: 0;
+            padding: 0.5em 0.25em;
+        }
+
+        tr > *:nth-child(odd) {
+            --current-background-color: var(--very-light-gray);
+            background-color: var(--current-background-color);
+        }
+
+        tr > *:nth-child(even) {
+            --current-background-color: var(--white);
+            background-color: var(--current-background-color);
+        }
+    }
+
+    /*
+    &.zebra {
+        border: 0;
+        td,th {
+            border: 0;
+            padding: 0.5em 0.25em;
+        }
+        tr:nth-child(odd) {
+            --current-background-color: var(--very-light-gray);
+            background-color: var(--current-background-color);
+        }
+
+        tr:nth-child(even) {
+            --current-background-color: var(--white);
+            background-color: var(--current-background-color);
+        }
+    }
+
+    &.matrix {
+        border: 0;
+        td,th {
+            border: 0;
+            padding: 0.5em 0.25em;
+        }
+
+        tr:nth-child(odd) {
+            th:nth-child(odd),
+            td:nth-child(odd) {
+            --current-background-color: var(--very-light-gray);
+            background-color: var(--current-background-color);
+            }
+            th:nth-child(even),
+            td:nth-child(even) {
+            --current-background-color: var(--white);
+            background-color: var(--current-background-color);
+        }
+        }
+
+        tr:nth-child(even) {
+            th:nth-child(odd),
+            td:nth-child(odd) {
+            --current-background-color: var(--white);
+            background-color: var(--current-background-color);
+        }
+
+            th:nth-child(even),
+            td:nth-child(even)     {
+            --current-background-color: var(--very-light-gray);
+            background-color: var(--current-background-color);
+            }
+    }
+    }
+    */
+
+    &.highlight-on-hover,
+    &.highlight-cell-on-hover,
+    &.highlight-cell-and-row-on-hover,
+    &.highlight-identical-cells-on-hover {
+        th.\:hover-related {
+            box-shadow: var(--trbl-shadow-dark);
+            --current-background-color: var(--gray);
+            background-color: var(--current-background-color);
+            --current-color: white;
+            color: var(--current-color);
+        }
+
+        td.\:hover-related {
+            box-shadow: var(--trbl-shadow-dark);
+            --current-background-color: var(--very-light-gray);
+            background-color: var(--current-background-color);
+        }
+
+        th.\:hover {
+            box-shadow: var(--trbl-shadow);
+            --current-background-color: var(--light-gray);
+            background-color: var(--current-background-color);
+        }
+
+        td.\:hover {
+            box-shadow: var(--trbl-shadow);
+            --current-background-color: var(--light-gray);
+            background-color: var(--current-background-color);
+        }
+    }
+
+    &.highlight-row-on-hover {
+        tr.\:hover {
+            --current-background-color: var(--light-gray);
+            background-color: var(--current-background-color);
+        }
+
+        tr.\:hover-related {
+            --current-background-color: var(--very-light-gray);
+            background-color: var(--current-background-color);
+        }
+    }
+
+    /*
+
+        The class "annotated-text" can be used in combination with tables to make
+        them look like as if we have a text document with some paragraphs with some
+        comments to the side.
+
+    */
+
+    &.annotated-text {
+        border: none;
+        box-shadow: none;
+        border-collapse: separate;
+        border-spacing: 0 0.5em;
+
+        td,
+        th {
+            border: 0;
+            padding-bottom: 0;
+            text-align: justify;
+            hyphens: auto;
+
+            /* styling of the "comment" column */
+            &:first-of-type:not(:empty) {
+                max-width: 25%;
+                padding-top: 0.15em;
+                padding-bottom: 0;
+
+                --current-background-color: var(--gray);
+                background-color: var(--current-background-color);
+                --current-color: var(--white);
+                color: var(--current-color);
+                vertical-align: text-top;
+                text-align: right;
+                border-radius: var(--medium-border-radius) 0 0
+                    var(--medium-border-radius);
+                font-size: smaller;
+                font-weight: 300;
+            }
+        }
+
+        td {
+            /* The intermediate columns: */
+            &:not(:first-of-type, :empty) {
+                font-family: var(--text-font-family);
+            }
+        }
+    }
+}
+
+/* Intended to be used with a container or container-like structure (e.g. a slide) */
+.center-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/** Intended to be used as the section/slide level. */
+.summary > h2:first-child {
+    text-align: center;
+    position: relative;
+    --current-background-color: var(--dark-red);
+    background-color: var(--current-background-color);
+    color: var(--light-gray);
+    text-shadow: -1px -1px 2px var(--black);
+}
+
+/*
+    Intended to be used with a container (e.g., a div) to signify that it
+    contains an important message.
+*/
+.exclamation-mark {
+    position: relative;
+    min-height: 2.75lh;
+
+    padding: calc(0.5 * var(--current-base-font-size));
+    padding-left: calc(3 * var(--current-base-font-size));
+
+    background-color: var(--light-gray);
+
+    border-radius: var(--small-border-radius);
+
+    &::before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: var(--red);
+        height: 100%;
+        width: calc(2.5 * var(--current-base-font-size));
+        border-top-left-radius: inherit;
+        border-bottom-left-radius: inherit;
+        text-align: center;
+        content: "!";
+        color: var(--white);
+        font-size: 2lh;
+        font-weight: bold;
+    }
+}
+
+/*
+    Intended to be used with a container (e.g., a div) or a container like
+    structure (e.g. a slide) to show that is "no longer relevant", "done",
+    "completed" or "of less importance".
+*/
+/* PREVIOUSLY faded-to-white*/
+.fade-out {
+    position: relative;
+
+    &::after {
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        background-color: var(--current-background-color);
+        opacity: 0.5;
+    }
+}
+
+.framed {
+    border: thin solid var(--light-gray);
+    --current-background-color: var(--very-very-light-gray);
+    background-color: var(--current-background-color);
+    padding: 0.5em;
+    border-radius: var(--small-border-radius);
+
+    &:has(+ *) {
+        margin-bottom: 0.5em;
+    }
+}
+
+/*
+    Intended to be used with a container (e.g., a div) to visually accentuate it.
+*/
+/*.accentuate {
+    border: thin solid var(--light-gray);
+    padding: 0.25em;
+    border-radius: var(--small-border-radius);
+
+    font-weight: 400;
+
+    --current-color: var(--white);
+    color: var(--current-color);
+    --current-background-color: var(--dark-red);
+    background-color: var(--current-background-color);
+    box-shadow: var(--trbl-shadow-dark);
+}*/
+.accentuate {
+    display: block;
+    position: relative;
+
+    &::before {
+        display: block;
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: -1em;
+        height: 100%;
+        width: 1em;
+
+        border-radius: var(--small-border-radius) 0 0 var(--small-border-radius);
+        --current-background-color: var(--red);
+        background-color: var(--current-background-color);
+    }
+
+    margin-left: 1em;
+    border-radius: 0 var(--small-border-radius) var(--small-border-radius) 0;
+    padding: 0.25em;
+    font-weight: 300;
+    --current-color: var(--black);
+    color: var(--current-color);
+    text-shadow: 1px 1px 1px var(--white);
+    --current-background-color: var(--very-light-gray);
+    background-color: var(--current-background-color);
+}
+
+ul.important {
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+
+    > li {
+        position: relative;
+        --current-background-color: var(--very-light-red);
+        background-color: var(--current-background-color);
+        border-radius: 0.5em;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        padding-left: 1.5em;
+
+        &::before {
+            position: absolute;
+            content: " ";
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 1em;
+            --current-background-color: var(--dark-red);
+            background-color: var(--current-background-color);
+        }
+    }
+}
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img,
+header,
+footer,
+main,
+aside,
+nav,
+section,
+figure,
+video,
+details {
+    display: block;
+}
+
+/* inline images */
+p img,
+p video,
+figure img,
+figure video {
+    display: inline;
+}
+
+/*
+
+    Styling of index cards
+
+*/
+
+.index-card {
+    display: inline-block;
+    font-family: "Bradley Hand", cursive;
+    background-color: var(--very-light-yellow);
+    color: var(--blue);
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    max-width: 70ch;
+    min-width: 20ch;
+    margin: auto;
+    box-shadow: var(--trbl-shadow-dark);
+    border-radius: 0.25em;
+
+    > :is(p, div.line-block) {
+        margin: 0.1em 0.5em;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid gray;
+        }
+
+        &:nth-child(1) {
+            border-bottom: 3px solid black;
+            text-align: right;
+            padding-right: 0.5em;
+            margin: 0;
+        }
+    }
+}
+
+/* Styling of LLM Chats */
+
+.llm-chat {
+    padding-top: 0.5em;
+
+    pre.code {
+        font-size: 80%;
+        padding: 0.25em;
+        border-radius: 0.25em;
+        border: thin solid var(--gray);
+    }
+}
+
+.llm-chat-agent {
+    --llm-chat-actor: "Agent";
+}
+
+.llm-chat-user {
+    --llm-chat-actor: "User";
+
+    --current-background-color: var(--gray);
+    background-color: var(--current-background-color);
+    color: var(--very-light-gray);
+}
+
+.llm-chat-user,
+.llm-chat-agent {
+    position: relative;
+    border-radius: var(--small-border-radius);
+    border: thin solid var(--gray);
+    padding: var(--s-padding);
+    overflow-x: clip;
+
+    &::before {
+        position: absolute;
+        top: -0.25ch;
+        right: 0.25em;
+        content: var(--llm-chat-actor);
+        color: var(--very-light-gray);
+        font-size: 60%;
+        text-shadow: 0.1em 0.1em 0.1em var(--black);
+        display: block;
+    }
+}
+
+.screenshot {
+    box-shadow: 0.1ch 0.1ch 1ch 1ch rgb(0 0 0 / 15%);
+}

@@ -20,15 +20,15 @@
 </script>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
 
-    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+    <script src="../LectureDoc2/src/ld.js" type="module"></script>
 
-    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+    <link rel="stylesheet" href="../LectureDoc2/src/ld.css" />
 
     
     <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
-         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+         <link rel="stylesheet" href="../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
  -->
-         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme)</style>
     
 </head>
 <body>
@@ -44,7 +44,7 @@
 <dt class="version">Version<span class="colon">:</span></dt>
 <dd class="version">1.0.1</dd>
 </dl>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://delors.github.io/ds-basic-concepts/folien.en.rst.html">https://delors.github.io/ds-basic-concepts/folien.en.rst.html</a></p>
@@ -54,7 +54,8 @@
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
-</div></ld-topic>
+</div>
+</ld-topic>
 <ld-topic class="center-content" id="section-1">
 <h2></h2>
 <p>The following concepts are of central importance for the development of distributed systems and are implemented in many current middleware products.</p>
@@ -135,9 +136,10 @@ In an interview with Reuters, Munro [at Defcon] cited a recent incident in which
 </li>
 <li><p>Mutual exchange of time stamps between the server computers is supported (NTP is symmetrical).</p></li>
 </ul>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>However, the time of an NTP server is only updated if the requesting server has a higher <em>stratum</em>value (i.e. is potentially less precise) than the requested server. The requesting server then receives the stratum value of the queried server <span class="math-r">+1</span>.</p>
-</div></ld-topic><ld-topic id="time-calculation-of-the-round-trip-time-and-the-time-difference">
+</div>
+</ld-topic><ld-topic id="time-calculation-of-the-round-trip-time-and-the-time-difference">
 <h2>Time: Calculation of the round trip time and the time difference</h2>
 <table style="width: 100%;">
 <tbody>
@@ -169,7 +171,7 @@ In an interview with Reuters, Munro [at Defcon] cited a recent incident in which
 <p class="admonition-title">Attention!</p>
 <p>Exact clock synchronization cannot be achieved in an asynchronous system!</p>
 </aside>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>It is assumed that time passes at virtually the same speed on both computers. The time difference between the two computers is therefore constant.</p>
 <p><span class="math">\((T3 - T2)\)</span> is the time required by the server for processing.</p>
 <p>The round trip time (RTT) is the time it takes for a signal to travel from one computer to another and back.</p>
@@ -182,7 +184,8 @@ In an interview with Reuters, Munro [at Defcon] cited a recent incident in which
 <li><p>Time for copying buffers (load-dependent)</p></li>
 </ul>
 <p>Due to these problems, a consistent, realistic global snapshot cannot be realised.</p>
-</div></ld-topic><ld-topic id="example-of-calculating-the-time-difference">
+</div>
+</ld-topic><ld-topic id="example-of-calculating-the-time-difference">
 <h2>Example of Calculating the Time Difference</h2>
 <div class="incremental docutils container">
 <p>Let the latency be 5 ms and the processing time 2 ms.</p>
@@ -205,9 +208,10 @@ In an interview with Reuters, Munro [at Defcon] cited a recent incident in which
 <p>We only need a globally unique sequence of events, i.e. we need timestamps.</p>
 <p>However, not all events influence each other, i.e. they are causally independent.</p>
 </aside>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>It is important to know what happened before and what happened after, but it is not important that we know exactly when (time) something happened.</p>
-</div></ld-topic><ld-topic id="lamport-uhren-logical-clocks">
+</div>
+</ld-topic><ld-topic id="lamport-uhren-logical-clocks">
 <h2>Lamport-Uhren (<em>logical clocks</em>)</h2>
 <aside class="admonition definition">
 <p class="admonition-title">Definition</p>
@@ -228,9 +232,10 @@ In an interview with Reuters, Munro [at Defcon] cited a recent incident in which
 <p>The result is a partial ordering of the events.</p>
 <p>A consistent snapshot contains the corresponding send event for each receive event.</p>
 </div>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Lamport clocks are one way of supporting <em>totally-ordered multicasts</em>, which is particularly necessary in combination with replication.</p>
-</div></ld-topic><ld-topic class="exercises transition-scale" id="exercise">
+</div>
+</ld-topic><ld-topic class="exercises transition-scale" id="exercise">
 <h2>Exercise</h2>
 <ld-scrollable>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Lamport-Clocks" id="ld-exercise-1">
@@ -267,7 +272,7 @@ MTAwMDAw:s+SFJ3qhNVqo1CryHGxIR2reImRDXBiyjb8ItdbbnJ8=:VSkV4aPqXLevjrYH:peZZZ8vt0
 <div class="framed incremental docutils container">
 <p>We need an <em>Atomic Commit Protocol</em>.</p>
 </div>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p class="rubric">Repetition: Transactions</p>
 <p>A transaction ensures the reliable processing of persistent data - even in error situations. The central feature is the guarantee of the ACID properties (Atomicity, Consistency, Isolation, Durability).</p>
 <p>At the end of a transaction, either a commit or abort / rollback takes place.</p>
@@ -280,7 +285,8 @@ MTAwMDAw:s+SFJ3qhNVqo1CryHGxIR2reImRDXBiyjb8ItdbbnJ8=:VSkV4aPqXLevjrYH:peZZZ8vt0
 <li><p>fault localization: limiting the propagation of faults</p></li>
 <li><p>masking errors: developing mechanisms that ensure that a system functions correctly despite an error (and possibly corrects an error)</p></li>
 </ol>
-</div></ld-topic><ld-topic id="two-phase-commit-protocol-2pc">
+</div>
+</ld-topic><ld-topic id="two-phase-commit-protocol-2pc">
 <h2>Two-Phase Commit Protocol - 2PC</h2>
 <p>Participants are (1) those (<span class="math">\(P_i\)</span>), who manage the distributed data, and (2) a coordinator (<span class="math">\(K\)</span>), who controls the protocol. (<span class="math">\(K\)</span> may itself be one of the <span class="math">\(P_i\)</span>)</p>
 <ol class="arabic simple incremental">
@@ -300,9 +306,10 @@ MTAwMDAw:s+SFJ3qhNVqo1CryHGxIR2reImRDXBiyjb8ItdbbnJ8=:VSkV4aPqXLevjrYH:peZZZ8vt0
 </ul>
 </li>
 </ol>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>The 2-PC protocol is not error-resistant, i.e. it can recognise errors but cannot necessarily correct them. To handle some error scenarios, results (especially READY and COMMIT) must be recorded in a persistent <em>write-ahead</em> log file.</p>
-</div></ld-topic><ld-topic id="cap-theorem">
+</div>
+</ld-topic><ld-topic id="cap-theorem">
 <h2>CAP Theorem<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
 <p>In <strong>distributed</strong> (<em>database</em>)<em>systems</em>, only two of the following three properties can be guaranteed at the same time:</p>
 <ld-grid class="default-layout">
@@ -326,7 +333,7 @@ MTAwMDAw:s+SFJ3qhNVqo1CryHGxIR2reImRDXBiyjb8ItdbbnJ8=:VSkV4aPqXLevjrYH:peZZZ8vt0
 <p>2000 Brewer(Conjecture), 2002 Gilbert and Lynch(Proof)</p>
 </aside>
 </aside>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>The CAP theorem <em>only</em> refers to distributed systems. Network partitioning can always occur in such systems. Therefore, partition tolerance is a natural property and you can often only choose between consistency and availability.</p>
 <p>Which properties are important in which scenarios?</p>
 <dl class="field-list simple">
@@ -337,7 +344,8 @@ MTAwMDAw:s+SFJ3qhNVqo1CryHGxIR2reImRDXBiyjb8ItdbbnJ8=:VSkV4aPqXLevjrYH:peZZZ8vt0
 <dd><p>Consistency and partition tolerance</p>
 </dd>
 </dl>
-</div></ld-topic><ld-topic class="exercises transition-move-to-top" id="exercise-1">
+</div>
+</ld-topic><ld-topic class="exercises transition-move-to-top" id="exercise-1">
 <h2>Exercise</h2>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Two-Phase-Commit" id="ld-exercise-2">
 <p class="ld-exercise-title rubric">Two-Phase-Commit</p>

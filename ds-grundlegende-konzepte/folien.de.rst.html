@@ -20,15 +20,15 @@
 </script>
 <script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
 
-    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+    <script src="../LectureDoc2/src/ld.js" type="module"></script>
 
-    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+    <link rel="stylesheet" href="../LectureDoc2/src/ld.css" />
 
     
     <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
-         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+         <link rel="stylesheet" href="../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
  -->
-         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme)</style>
     
 </head>
 <body>
@@ -44,7 +44,7 @@
 <dt class="version">Version<span class="colon">:</span></dt>
 <dd class="version">1.0.2</dd>
 </dl>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://delors.github.io/ds-grundlegende-konzepte/folien.de.rst.html">https://delors.github.io/ds-grundlegende-konzepte/folien.de.rst.html</a></p>
@@ -54,7 +54,8 @@
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
-</div></ld-topic>
+</div>
+</ld-topic>
 <ld-topic class="center-content" id="section-1">
 <h2></h2>
 <p>Die folgenden Konzepte sind für die Entwicklung verteilter Systeme von zentraler Bedeutung und sind in vielen aktuellen Middlewareprodukten umgesetzt.</p>
@@ -135,9 +136,10 @@ In an interview with Reuters, Munro [at Defcon] cited a recent incident in which
 </li>
 <li><p>Wechselseitiger Austausch von Zeitstempeln zwischen den Server-Rechnern wird unterstützt (NTP ist symmetrisch).</p></li>
 </ul>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Aktualisierung der Zeit eines NTP Servers erfolgt aber nur wenn der anfragende Server einen höheren <em>Stratum</em>wert hat (d. h. potentiell unpräziser ist) als der angefragte Server. Der anfragende Server erhält danach den Stratumwert des abgefragten Servers <span class="math">\(+1\)</span>.</p>
-</div></ld-topic><ld-topic id="zeit-berechnung-der-round-trip-time-und-der-zeitdifferenz-des-gangunterschieds">
+</div>
+</ld-topic><ld-topic id="zeit-berechnung-der-round-trip-time-und-der-zeitdifferenz-des-gangunterschieds">
 <h2>Zeit: Berechnung der Round-Trip-Time und der Zeitdifferenz/des Gangunterschieds</h2>
 <table style="width: 100%;">
 <tbody>
@@ -169,7 +171,7 @@ Gangunterschied: x = \frac{(T_2 - T_1) - (T_4 - T_3)}{2}
 <p class="admonition-title">Achtung!</p>
 <p>Eine exakte Uhrensynchronisation ist in einem asynchronem System nicht realisierbar!</p>
 </aside>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Es wird die Annahme getroffen, dass die Zeit auf beiden Rechnern quasi gleichschnell vergeht. Die Zeitdifferenz zwischen den beiden Rechnern ist also konstant.</p>
 <p><span class="math">\((T3 - T2)\)</span> ist die Zeit, die der Server zum Bearbeiten benötigt.</p>
 <p>Die Round-Trip-Time (RTT) ist die Zeit, die ein Signal benötigt, um von einem Rechner zum anderen und zurückzugelangen.</p>
@@ -182,7 +184,8 @@ Gangunterschied: x = \frac{(T_2 - T_1) - (T_4 - T_3)}{2}
 <li><p>Zeit zum Kopieren von Puffern (lastabhängig)</p></li>
 </ul>
 <p>Aufgrund der Probleme ist ein konsistenter, realistischer globaler Schnappschuss nicht realisierbar.</p>
-</div></ld-topic><ld-topic id="beispiel-zur-berechnung-des-gangunterschieds">
+</div>
+</ld-topic><ld-topic id="beispiel-zur-berechnung-des-gangunterschieds">
 <h2>Beispiel zur Berechnung des Gangunterschieds</h2>
 <div class="incremental docutils container">
 <p>Sei die Latenz 5 ms und die Bearbeitungszeit 2 ms.</p>
@@ -204,9 +207,10 @@ Gangunterschied: x = \frac{(T_2 - T_1) - (T_4 - T_3)}{2}
 <p>Wir benötigen nur eine global eindeutige Reihenfolge der Ereignisse; d. h. wir benötigten Zeitstempel.</p>
 <p>Jedoch beeinflussen sich nicht alle Ereignisse untereinander; d. h. sind kausal unabhängig.</p>
 </div>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Es ist wichtig zu wissen, was vorher und was nachher passiert ist, aber es ist nicht wichtig, dass wir wissen wann genau (Uhrzeit) etwas passiert ist.</p>
-</div></ld-topic><ld-topic id="lamport-uhren-logical-clocks">
+</div>
+</ld-topic><ld-topic id="lamport-uhren-logical-clocks">
 <h2>Lamport-Uhren (<em>logical clocks</em>)</h2>
 <aside class="admonition definition">
 <p class="admonition-title">Definition</p>
@@ -227,9 +231,10 @@ Gangunterschied: x = \frac{(T_2 - T_1) - (T_4 - T_3)}{2}
 <p>Resultat: es ergibt sich eine partielle Ordnung (partial ordering) der Ereignisse.</p>
 <p>Ein konsistenter Schnappschuss enthält zu jedem Empfangs- das entsprechende Sendeereignis.</p>
 </div>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Lamport Uhren sind eine Möglichkeit, um <em>Totally-ordered Multicasts</em> zu unterstützen, was insbesondere im Zusammenhang mit Replication von Nöten ist.</p>
-</div></ld-topic><ld-topic class="exercises transition-scale" id="ubung">
+</div>
+</ld-topic><ld-topic class="exercises transition-scale" id="ubung">
 <h2>Übung</h2>
 <ld-scrollable>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Lamport-Uhren" id="ld-exercise-1">
@@ -266,7 +271,7 @@ MTAwMDAw:V1DWansxpFWXH9saA2cbA90NpBcdO2hI9QGzlzH83j8=:EG0c0Fpl/olEs7Kx:VBmLIwqwW
 <div class="framed incremental docutils container">
 <p>Wir brauchen ein <em>Atomic Commit Protocol</em>.</p>
 </div>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p class="rubric">Wiederholung: Transaktionen</p>
 <p>Eine Transaktion stellt die zuverlässige Bearbeitung persistenter Daten sicher – auch in Fehlersituationen. Zentrales Merkmal ist die Garantie der ACID-Eigenschaften (Atomicity, Consistency, Isolation, Durability).</p>
 <p>Am Ende einer Transaktion findet entweder ein commit oder abort / rollback statt.</p>
@@ -279,7 +284,8 @@ MTAwMDAw:V1DWansxpFWXH9saA2cbA90NpBcdO2hI9QGzlzH83j8=:EG0c0Fpl/olEs7Kx:VBmLIwqwW
 <li><p>Fehlereingrenzung: Begrenzung der Fehlerausbreitung</p></li>
 <li><p>Maskierung von Fehlern: Entwicklung von Mechanismen, die sicherstellen, dass ein System trotz eines Fehlers korrekt funktioniert (und möglicherweise einen Fehler korrigiert)</p></li>
 </ol>
-</div></ld-topic><ld-topic id="two-phase-commit-protocol-2pc">
+</div>
+</ld-topic><ld-topic id="two-phase-commit-protocol-2pc">
 <h2>Two-Phase Commit Protocol - 2PC</h2>
 <p>Teilnehmer sind (1) die Partizipanten (<span class="math">\(P_i\)</span>), welche die verteilten Daten verwalten, und (2) ein Koordinator, (<span class="math">\(K\)</span>) der die Steuerung des Protokolls übernimmt. (<span class="math">\(K\)</span> darf selbst einer der <span class="math">\(P_i\)</span> sein)</p>
 <ol class="arabic simple incremental">
@@ -299,9 +305,10 @@ MTAwMDAw:V1DWansxpFWXH9saA2cbA90NpBcdO2hI9QGzlzH83j8=:EG0c0Fpl/olEs7Kx:VBmLIwqwW
 </ul>
 </li>
 </ol>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Das 2-PC Protokoll ist nicht Fehlerresistent. d. h. es kann Fehler erkennen, aber nicht zwangsläufig korrigieren. Um einige Fehlerszenarien zu behandeln, müssen Ergebnisse (insbesondere READY und COMMIT) in einem persistenten <em>write-ahead</em> Log-File festgehalten werden.</p>
-</div></ld-topic><ld-topic id="cap-theorem">
+</div>
+</ld-topic><ld-topic id="cap-theorem">
 <h2>CAP Theorem<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
 <p>In <strong>verteilten</strong> (<em>Datenbank-</em>)<em>Systemen</em> können nur zwei der drei folgenden Eigenschaften gleichzeitig garantiert werden:</p>
 <ld-grid class="default-layout">
@@ -325,7 +332,7 @@ MTAwMDAw:V1DWansxpFWXH9saA2cbA90NpBcdO2hI9QGzlzH83j8=:EG0c0Fpl/olEs7Kx:VBmLIwqwW
 <p>2000 Brewer(Vermutung), 2002 Gilbert und Lynch(Beweis)</p>
 </aside>
 </aside>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Das CAP Theorem bezieht sich „nur“ auf verteilte Systeme. In solchen Systemen kann es immer zu Netzwerkpartitionierungen kommen. Deswegen ist Partitionstoleranz eine natürliche Eigenschaft und man kann häufig „nur“ zwischen Konsistenz und Verfügbarkeit wählen.</p>
 <p>Welche Eigenschaften sind in welchen Szenarien wichtig?</p>
 <dl class="field-list simple">
@@ -336,7 +343,8 @@ MTAwMDAw:V1DWansxpFWXH9saA2cbA90NpBcdO2hI9QGzlzH83j8=:EG0c0Fpl/olEs7Kx:VBmLIwqwW
 <dd><p>Konsistenz und Partitionstoleranz</p>
 </dd>
 </dl>
-</div></ld-topic><ld-topic class="exercises transition-move-to-top" id="ubung-1">
+</div>
+</ld-topic><ld-topic class="exercises transition-move-to-top" id="ubung-1">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Two-Phase-Commit" id="ld-exercise-2">
 <p class="ld-exercise-title rubric">Two-Phase-Commit</p>

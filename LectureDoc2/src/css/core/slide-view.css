@@ -1,0 +1,67 @@
+/* LAYER: behavior */
+
+#ld-slides-pane {
+    --ld-rendering-mode: slides-pane;
+
+    height: 100dvh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /*  In general, we don't want accidental interaction with the slides, such
+        as selecting texts/elements when giving a presentation.
+
+        However, in the Javascript code we reenable interaction with selected
+        elements such as links to enable inter-slide navigation. */
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+
+    ld-slide {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 100%;
+
+        position: absolute;
+        /*  To show only one slide, we scale all other slides to a size of 0.
+            This makes them effectively invisible without removing them from the
+            DOM as it would be the case when we would set display to none.
+            The latter would also make animations impossible (as of 2023).
+
+            Compared to using the display property (i.e., none <-> block) this
+            has a number of advantages:
+            - counters, e.g., for section titles work as expected.
+            - the scale property can be easily animated and enables various
+              animations.
+
+            Using "display: hidden" would be an alternative that would support
+            numbering, but would make animations hard(er) (as of 2023). */
+        scale: 0;
+    }
+
+    /* Presenter Notes */
+    ld-presenter-note-marker[data-encrypted="true"] {
+        display: none;
+    }
+}
+
+/*  ----------------------------------------------------------------------------
+
+        Styling the slide number which is adjacent to the slide view.
+*/
+
+ld-slide-number {
+    /* set by core: display: none <-> block */
+    display: none;
+
+    position: fixed;
+    bottom: 0.25em;
+    right: 0.5em;
+    z-index: 1;
+
+    font-size: 24px;
+
+    /* The following ensures that the number is always visible. */
+    color: black;
+    text-shadow: 1px 1px 1px white;
+}

@@ -12,15 +12,15 @@
 <meta name="exercises-passwords" content="MTAwMDAw:JDIKJ8N+OAwdxxQ0fjDPEECvVT8mIATdksy2nrM6n9I=:J1jomt9NIgeUrSPz:McxYK94OujlffN6h+UGr9RlgxinRi3fRhLJuoh3Hqh4ShOZqvZNEqVMGdTxJFbCk9UTavdS2Iw5cFBPTjvbmba1sUoSnf9DoL5San1YPHK/6+hMh291gVRg7dm5GTLTYTyP1mGAwxxZnirXcySAUkkRZyzdb2MDGqCY7fcmWezu1TofuXQG6Z05TZPHB/S58Na2WWmPSEcupy8WwoN3b5dtPyNk63zltMwGp+WybrE6HvDWeTvtegbhV78+bEh4OsJn7+6wd5GGI1rxdbtR0M1mfz3aPiy0EdH0ScPaUi++Fua1+h0TWd6P//MdPtTwRRevhEnJmzeXKHTLnL2S6zJRyqgH007QWjqI1AZck1ryYvwPzoS7aYhWOIt7gFZNx+/FEFzmG0jjF16TQcoXTxF8lmF44mg==" />
 <title>Reverse Engineering 101</title>
 
-    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+    <script src="../LectureDoc2/src/ld.js" type="module"></script>
 
-    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+    <link rel="stylesheet" href="../LectureDoc2/src/ld.css" />
 
     
     <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
-         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+         <link rel="stylesheet" href="../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
  -->
-         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme)</style>
     
 </head>
 <body>
@@ -36,7 +36,7 @@
 <dt class="version">Version<span class="colon">:</span></dt>
 <dd class="version">1.0.1</dd>
 </dl>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://delors.github.io/sec-reversing101/folien.de.rst.html">https://delors.github.io/sec-reversing101/folien.de.rst.html</a></p>
@@ -46,7 +46,8 @@
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
-</div></ld-topic>
+</div>
+</ld-topic>
 <ld-topic id="vorerfahrungen">
 <h2>Vorerfahrungen?</h2>
 <ul class="incremental-list simple">
@@ -64,9 +65,10 @@
 <li><p>die Analyse von Kommunikationsprotokollen proprietärer Software</p></li>
 </ul>
 </div>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Vom Reverse Engineering ist das <strong>Reengineering</strong> zu unterscheiden. Im Fall von letzteren geht es „nur“ darum die Funktionalität eines bestehenden Systems mit neuen Techniken wiederherzustellen.</p>
-</div></ld-topic><ld-topic id="zweck-von-reverse-engineering">
+</div>
+</ld-topic><ld-topic id="zweck-von-reverse-engineering">
 <h2>Zweck von Reverse Engineering</h2>
 <ul class="incremental-list simple">
 <li><p>Herstellung von Interoperabilität</p></li>
@@ -265,11 +267,12 @@
 <li><p>CFR (Java <span class="docutils literal">.class</span> Dateien)</p></li>
 <li><p>IntelliJ</p></li>
 </ul>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Mittels Decompiler ist es ggf. möglich Code, der zum Beispiel ursprünglich in Kotlin oder Scala geschrieben und für die JVM kompiliert wurde, als Java Code zurückzubekommen.</p>
 <p>Die Ergebnisse sind für Analysezwecke zwar häufig ausreichend gut – von funktionierendem Code jedoch ggf. (sehr) weit entfernt.</p>
 <p><a class="reference external" href="https://decompiler.com">decompiler.com</a> unterstützt eine große Anzahl ausführbaren Dateien.</p>
-</div><aside class="admonition incremental hint">
+</div>
+<aside class="admonition incremental hint">
 <p class="admonition-title">Hinweis</p>
 <p>Decompiler sind generell sehr hilfreich, aber gleichzeitig auch sehr fehlerbehaftet. Vieles, dass im Binärcode möglich ist, hat auf der Ebene des Sourcecodes keine Entsprechung.</p>
 <p>Zum Beispiel unterstützt Java Bytecode beliebige Sprünge. Solche Code wird aber durch normale Programme, die z. B. in Java, Kotlin, Scala oder Clojure geschrieben wurden, nicht erzeugt. Decompiler kommen mit solchem Code in der Regel nicht (gut) zurecht.</p>
@@ -301,12 +304,13 @@
 <li><p>x64dbg (Windows, Open-Source)</p></li>
 <li><p>jdb (Java Debugger)</p></li>
 </ul>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p class="rubric">Hardware Debugger</p>
 <p>Für das Debuggen von Hardware gibt es entsprechende Werkzeuge, z. B.
 <a class="reference external" href="https://www.lauterbach.com">Lauterbach Hardware Debugger</a> (kommerziell und sehr teuer).</p>
 <p>Mittels solcher Werkzeuge ist es möglich die Ausführung von Hardware Schritt für Schritt (<span class="eng">single step mode`</span>) zu verfolgen und den Zustand der Hardware (Speicher und Register) zu inspizieren. Dies erfordert jedoch häufig eine JTAG Schnittstelle oder etwas vergleichbares.</p>
-</div></ld-topic><ld-topic class="new-section transition-fade" id="erschwerung-des-reverse-engineering">
+</div>
+</ld-topic><ld-topic class="new-section transition-fade" id="erschwerung-des-reverse-engineering">
 <h2>Erschwerung des Reverse Engineering</h2>
 </ld-topic><ld-topic class="new-subsection" id="obfuscation-verschleierung">
 <h2>Obfuscation (<span class="ger">Verschleierung</span>)</h2>
@@ -330,13 +334,14 @@
 <li><p>[Java] Proguard / Dexguard</p></li>
 <li><p>[C/C++] <a class="reference external" href="https://www.star-force.com/products/starforce-crypto/">Star Force</a></p></li>
 </ul>
-</ld-story><div class="supplemental">
+</ld-story><div class="supplemental docutils container">
 <p>Gerade im Umfeld von klassischen <em>Binaries</em> für Windows, Mac und Linux erhöhen Compiler Optimierungen, z. B. von C/C++ und Rust Compilern (<span class="docutils literal"><span class="pre">-O2</span> / <span class="pre">-O3</span></span>), bereits den Aufwand, der notwendig ist den Code zu verstehen, erheblich.</p>
 <aside class="admonition hint">
 <p class="admonition-title">Hinweis</p>
 <p>Einen ambitionierten und entsprechend ausgestatteten Angreifer wird <strong>Code Obfuscation</strong> bremsen, aber sicher nicht vollständig ausbremsen und das Vorhaben verteilen.</p>
 </aside>
-</div></ld-topic><ld-topic id="obfuscation-techniken-auszug">
+</div>
+</ld-topic><ld-topic id="obfuscation-techniken-auszug">
 <h2>Obfuscation - Techniken (Auszug)</h2>
 <ld-story>
 <ul class="incremental-list">
@@ -355,7 +360,7 @@
 <li><p>Den relevanten Teil der Anwendung komprimieren und verschlüsseln und erst bei Verwendung entpacken und entschlüsseln.</p></li>
 <li><p>...</p></li>
 </ul>
-</ld-story><div class="supplemental">
+</ld-story><div class="supplemental docutils container">
 <p>Obfuscation auf Source Code Ebene:
 <a class="reference external" href="https://www.ioccc.org/">International Obfuscated C Code Contest</a></p>
 <p><strong>Umstellen von Instruktionen</strong></p>
@@ -363,7 +368,8 @@
 <p><strong>Verschleierung von Strings</strong></p>
 <p>Das Verschleiern von Strings kann insbesondere das Reversen von Binärcode erschweren, da ein Angreifer häufig „nur“ an einer ganz bestimmten Funktionalität interessiert ist und dann Strings ggf. einen sehr guten Einstiegspunkt für die weitergehende Analyse bieten.</p>
 <p>Stellen Sie sich eine komplexe Java Anwendung vor, in der alle Namen von Klassen, Methoden und Attributen durch einzelne oder kurze Sequenzen von Buchstaben ersetzt wurden und sie suchen danach wie von der Anwendung Passworte verarbeitet werden. Handelt es sich um eine GUI Anwendung, dann wäre zum Beispiel die Suche nach Text, der in den Dialogen vorkommt (z. B. <span class="docutils literal">&quot;Password&quot;</span>) z. B. ein sehr guter Einstiegspunkt.</p>
-</div></ld-topic><ld-topic class="new-subsection" id="verschlusselung-von-bytecode-und-java-class-loader">
+</div>
+</ld-topic><ld-topic class="new-subsection" id="verschlusselung-von-bytecode-und-java-class-loader">
 <h2>Verschlüsselung von Bytecode und Java Class Loader</h2>
 </ld-topic><ld-topic id="classloader">
 <h2><span class="docutils literal">ClassLoader</span></h2>
@@ -496,10 +502,11 @@
 </span><span class="error">└─────┘</span></code></pre>
 </ld-cell></ld-grid></blockquote>
 </div>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Eine Methode muss einen Stack begrenzter Höhe aufweisen. Code, für den die Stackhöhe nicht berechenbar ist, wird vom Compiler abgelehnt. (Zum Beispiel ein <span class="docutils literal">bipush</span> in einer Endlosschleife.)
 Die benötigte Höhe des Stacks wird vom Compiler berechnet und von der JVM überprüft.</p>
-</div></ld-topic><ld-topic id="java-bytecode-methodenaufrufe-und-lokale-variablen">
+</div>
+</ld-topic><ld-topic id="java-bytecode-methodenaufrufe-und-lokale-variablen">
 <h2>Java Bytecode - Methodenaufrufe und lokale Variablen</h2>
 <ul class="incremental-list simple">
 <li><p>Die Java Virtual Machine verwendet lokale Variablen zur Übergabe von Parametern beim Methodenaufruf.</p></li>
@@ -508,9 +515,10 @@ D. h. in der aufrufenden Methode werden die Parameter vom Stack geholt und in 
 <li><p>Beim Aufruf von <em>Instanzmethoden</em> wird die lokale Variable 0 dazu verwendet, um die Referenz (<code class="java"><span class="keyword">this</span></code>) auf das Objekt zu übergeben, auf dem die Instanzmethode aufgerufen wird.
 Anschließend werden alle Parameter in aufeinanderfolgenden lokalen Variablen übergeben, beginnend mit der lokalen Variable 1.</p></li>
 </ul>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Die Anzahl der benötigten lokalen Variablen wird vom Compiler berechnet und von der JVM überprüft.</p>
-</div></ld-topic><ld-topic id="beispiel-default-constructor-in-java-bytecode">
+</div>
+</ld-topic><ld-topic id="beispiel-default-constructor-in-java-bytecode">
 <h2>Beispiel: <em>Default Constructor</em> In Java Bytecode</h2>
 <p>Ein <em>Constructor</em> welcher keine expliziten Parameter hat und nur den super Konstruktor aufruft.</p>
 <pre class="code java literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="comment single">// Method descriptor ()V</span><span class="whitespace">
@@ -524,9 +532,10 @@ Anschließend werden alle Parameter in aufeinanderfolgenden lokalen Variablen ü
 </span><span class="name">Local</span><span class="whitespace"> </span><span class="name">variable</span><span class="whitespace"> </span><span class="name">table</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="operator">[</span><span class="name">pc</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">pc</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">5</span><span class="operator">]</span><span class="whitespace">  </span><span class="name">local</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="keyword">this</span><span class="whitespace">
                                       </span><span class="name">index</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace">
                                       </span><span class="name">type</span><span class="punctuation">:</span><span class="whitespace">  </span><span class="name">de</span><span class="punctuation">.</span><span class="name attribute">dhbw</span><span class="punctuation">.</span><span class="name attribute">simplesecurepp</span><span class="punctuation">.</span><span class="name attribute">Main</span></code></pre>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Es gibt weitere Metainformationen, die „nur“ für Debugging-Zwecke benötigt werden, z. B. Informationen über die ursprünglich Quelle des Codes oder die sogenannte &quot;Local Variable Type Table&quot; in Hinblick auf generische Typinformationen. Solche Informationen werden häufig vor Auslieferung entfernt bzw. nicht hineinkompiliert.</p>
-</div></ld-topic><ld-topic id="beispiel-aufruf-einer-komplexeren-methode">
+</div>
+</ld-topic><ld-topic id="beispiel-aufruf-einer-komplexeren-methode">
 <h2>Beispiel: Aufruf einer komplexeren Methode</h2>
 <pre class="code java literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment single">// Method descriptor ([Ljava/lang/String;)V</span><span class="whitespace">
 </span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="comment single">// Stack: 5, Locals: 8</span><span class="whitespace">

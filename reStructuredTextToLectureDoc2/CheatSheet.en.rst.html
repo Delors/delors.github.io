@@ -4,28 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta content="Michael Eichberg" name="author" />
-<meta content="LectureDoc2, &quot;Cheat Sheet&quot;, DHBW" name="keywords" />
-<meta content="Cheat Sheet für die Generierung von Vorlesungsunterlagen mit LectureDoc2 im DHBW Corporate Design." lang="de" name="description" xml:lang="de" />
+<meta content="LectureDoc2, &quot;Cheat Sheet&quot;" name="keywords" />
+<meta content="Cheat Sheet für die Verwendung von LectureDoc2 in Kombination mit rst2ld." lang="de" name="description" xml:lang="de" />
 <meta content="ld2-dhbw-cheat-sheet" name="id" />
 <meta content="2560x1440" name="slide-dimensions" />
-<meta name="version" content="LD2 GENESIS" />
+<meta name="version" content="LD2 RENAISSANCE" />
 <title>LectureDoc2 Cheat Sheet (DHBW Corporate Design)</title>
 
-    <script src="../LectureDoc2/genesis/ld-core.js" type="module"></script>
+    <script src="../LectureDoc2/src/ld.js" type="module"></script>
 
-    <script src="../LectureDoc2/genesis/ld-components.js" type="module"></script>
+    <link rel="stylesheet" href="../LectureDoc2/src/ld.css" />
 
-    <link rel="stylesheet" href="../LectureDoc2/genesis/ld.css" />
-
-    <link rel="stylesheet" href="../LectureDoc2/genesis/themes/DHBW/theme.css" />
-
-    <link rel="stylesheet" href="../LectureDoc2/genesis/ld-ui.css" />
-
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme)</style>
     
 </head>
 <body>
 <template>
-<div class="cheat-sheet-8-columns ld-slide" id="lecturedoc2-cheat-sheet-dhbw-corporate-design">
+<ld-topic class="cheat-sheet-8-columns" id="lecturedoc2-cheat-sheet-dhbw-corporate-design">
 <h1 class="title">LectureDoc2 Cheat Sheet (DHBW Corporate Design)</h1>
 
 <div class="cheat-sheet-block docutils container">
@@ -43,7 +42,7 @@
 <p class="rubric">Vertical Titles</p>
 <p>Add the class <span class="docutils literal"><span class="pre">vertical-title</span></span> to rotate the title and to change the layout of the slide to a column-based layout. To get back to a row based layout add a container with the class <span class="docutils literal"><span class="pre">width-100</span></span>.</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> vertical-title<span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> vertical-title<span class="whitespace">
 
 </span><span class="generic heading">&lt;Slide Title&gt;</span>
 <span class="generic heading">----------------</span>
@@ -61,7 +60,7 @@
 <p class="rubric">Vertically Centered Content</p>
 <p>Use the class <span class="docutils literal"><span class="pre">center-child-elements</span></span>.</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> center-child-elements<span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> center-child-elements<span class="whitespace">
 </span>           no-title<span class="whitespace">
 </span>           smaller-slide-title<span class="whitespace">
 
@@ -76,10 +75,10 @@
 </div>
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Exercises and Solutions</p>
-<p>Associate the class <span class="docutils literal"><span class="pre">integrated-exercise</span></span> with a slide to indicate that the slide contains an exercise.</p>
+<p>Associate the class <span class="docutils literal">exercises</span> with a slide to indicate that the slide contains an exercise.</p>
 <p>Use the directive <span class="docutils literal">.. exercise::</span> to add an exercise. To add a solution use the custom directive <span class="docutils literal">.. solution::</span> inside of an exercise block and specify the password (optional) using the attribute <span class="docutils literal">:pwd:</span>.</p>
 <p class="rubric">Example (Solution in supplemental information)</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">exercise</span><span class="punctuation">::</span> <span class="name tag">&lt;Title&gt;</span><span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">exercise</span><span class="punctuation">::</span> <span class="name tag">&lt;Title&gt;</span><span class="whitespace">
 
 </span>   &lt;Description of the exercise.&gt;<span class="whitespace">
 
@@ -95,7 +94,7 @@
 <p class="rubric">Table of Contents</p>
 <p>A navigable table of contents can be created using standard <span class="docutils literal">rst</span> techniques.</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="generic heading">Table of Contents</span>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="generic heading">Table of Contents</span>
 <span class="generic heading">------------------</span>
 
 <span class="literal number">-</span> <span class="literal string">`Section 1 Title`_</span><span class="whitespace">
@@ -104,7 +103,7 @@
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Footnotes</p>
 <p><span class="docutils literal"><span class="pre">[#]_</span></span> and <span class="docutils literal">.. [#]</span> create footnotes.</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="generic heading">Test\ [#]_</span>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="generic heading">Test\ [#]_</span>
 <span class="generic heading">-----------------</span>
 <span class="whitespace">
 </span><span class="punctuation">..</span> <span class="name tag">[#]</span> <span class="name variable">`test.org`</span></code></pre>
@@ -117,7 +116,7 @@
 <p class="rubric">References</p>
 <p>Use standard rst references.</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="generic heading">...</span>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="generic heading">...</span>
 <span class="generic heading">Like described in [Eic24]_ ...</span>
 <span class="generic heading">...</span>
 <span class="whitespace">
@@ -130,20 +129,20 @@
 <p class="rubric">Copy to Clipboard</p>
 <p>Add <span class="docutils literal"><span class="pre">copy-to-clipboard</span></span> to a code block to enable copying code to the clipboard.</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">code</span><span class="punctuation">::</span> java<span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">code</span><span class="punctuation">::</span> java<span class="whitespace">
 </span>   <span class="name class">:class:</span> copy-to-clipboard<span class="whitespace">
 
 </span>   public static void main(...)</code></pre>
 </div>
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Fade-out Content</p>
-<p>Add the class <span class="docutils literal"><span class="pre">faded-to-white</span></span> to a container to whiten the content.</p>
+<p>Add the class <span class="docutils literal"><span class="pre">fade-out</span></span> to a container to whiten the content.</p>
 </div>
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Supplemental Information</p>
 <p>Use the directive <span class="docutils literal">supplemental</span> for respective information.</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">supplemental</span><span class="punctuation">::</span><span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">supplemental</span><span class="punctuation">::</span><span class="whitespace">
 
 </span>   &lt;Text&gt;</code></pre>
 </div>
@@ -176,7 +175,7 @@
 <li><p>Add <span class="docutils literal"><span class="pre">positive-list</span></span> to use &quot;✓&quot; for bullet points.</p></li>
 </ul>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="literal number">-</span> Point 1<span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="literal number">-</span> Point 1<span class="whitespace">
 
 </span><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> negative-list list-with-explanations<span class="whitespace">
 </span><span class="literal number">-</span> Point 2<span class="whitespace">
@@ -191,7 +190,7 @@
 <p><span class="docutils literal"><span class="pre">box-shadow</span></span> adds a shadow.</p>
 <p><span class="docutils literal"><span class="pre">rounded-corners</span></span> the corners will be rounded.</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">container</span><span class="punctuation">::</span> margin-top-1em<span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">container</span><span class="punctuation">::</span> margin-top-1em<span class="whitespace">
 </span>               line-above<span class="whitespace">
 </span>               padding-top-1em<span class="whitespace">
 </span>               box-shadow<span class="whitespace">
@@ -211,7 +210,7 @@
 <p>Available slide transitions:
 <span class="docutils literal"><span class="pre">transition-move-left</span></span>, <span class="docutils literal"><span class="pre">transition-scale</span></span>, <span class="docutils literal"><span class="pre">transition-fade</span></span>, <span class="docutils literal"><span class="pre">transition-move-to-top</span></span></p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> transition-move-left<span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> transition-move-left<span class="whitespace">
 
 </span><span class="generic heading">&lt;Slide Title&gt;</span>
 <span class="generic heading">----------------</span></code></pre>
@@ -220,7 +219,7 @@
 <p class="rubric">Revealing Slide Content</p>
 <p>All elements with the class <span class="docutils literal">incremental</span> are revealed incrementally.</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> incremental<span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> incremental<span class="whitespace">
 </span>
 <span class="literal number">-</span> Item 1 - Part 1<span class="whitespace">
 </span>  <span class="name attribute">:incremental:</span><span class="name variable">`Item 1 - Part 2`</span><span class="whitespace">
@@ -230,7 +229,7 @@
 <p class="rubric">Column-based Layouts</p>
 <p>Use <span class="docutils literal"><span class="pre">two-columns</span></span> and <span class="docutils literal"><span class="pre">three-columns</span></span> for respective layouts.</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">container</span><span class="punctuation">::</span> two-columns<span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">container</span><span class="punctuation">::</span> two-columns<span class="whitespace">
 
 </span><span class="punctuation">   ..</span> <span class="operator word">container</span><span class="punctuation">::</span> column no-separator<span class="whitespace">
 
@@ -247,24 +246,24 @@
 <p class="rubric">Images in Stacked Layouts</p>
 <p>To avoid that a parent element of a floating element is collapsed add the class <span class="docutils literal">clearfix</span> to the parent element; i. e., when a layer just contains a floating image.</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">stack</span><span class="punctuation">::</span><span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">deck</span><span class="punctuation">::</span><span class="whitespace">
 
-</span><span class="punctuation">  ..</span> <span class="operator word">layer</span><span class="punctuation">::</span> clearfix<span class="whitespace">
+</span><span class="punctuation">  ..</span> <span class="operator word">card</span><span class="punctuation">::</span> clearfix<span class="whitespace">
 
 </span><span class="punctuation">     ..</span> <span class="operator word">image</span><span class="punctuation">::</span> <span class="name tag">&lt;p1.svg&gt;</span><span class="whitespace">
 </span>        <span class="name class">:align:</span> left<span class="whitespace">
 
-</span><span class="punctuation">  ..</span> <span class="operator word">layer</span><span class="punctuation">::</span> overlay<span class="whitespace">
+</span><span class="punctuation">  ..</span> <span class="operator word">card</span><span class="punctuation">::</span> overlay<span class="whitespace">
 
 </span><span class="punctuation">     ..</span> <span class="operator word">image</span><span class="punctuation">::</span> <span class="name tag">&lt;p2.svg&gt;</span><span class="whitespace">
 
-</span><span class="punctuation">   ..</span> <span class="operator word">layer</span><span class="punctuation">::</span> incremental warning<span class="whitespace">
+</span><span class="punctuation">   ..</span> <span class="operator word">card</span><span class="punctuation">::</span> warning<span class="whitespace">
 
 </span>      &lt;Content&gt;</code></pre>
 </div>
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Semantic-based Text Markup</p>
-<p><span class="docutils literal">minor</span>: for less important text.
+<p><span class="docutils literal">peripheral</span>: for less important text.
 <span class="docutils literal">obsolete</span>: for obsolete statements.
 <span class="docutils literal">ger</span>: to markup German Words.
 <span class="docutils literal">eng</span>: to markup English words.</p>
@@ -280,7 +279,7 @@
 <p class="rubric">Background Colors</p>
 <p><span class="docutils literal"><span class="pre">red-background</span></span>, <span class="docutils literal"><span class="pre">dhbw-gray-background</span></span>, <span class="docutils literal"><span class="pre">dhbw-light-gray-background</span></span>, <span class="docutils literal"><span class="pre">white-background</span></span>, <span class="docutils literal"><span class="pre">blue-background</span></span>, <span class="docutils literal"><span class="pre">light-green-background</span></span>, <span class="docutils literal"><span class="pre">green-background</span></span>, <span class="docutils literal"><span class="pre">yellow-background</span></span></p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="name attribute">:dhbw-red:</span><span class="name variable">`Red Text.`</span></code></pre>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="name attribute">:dhbw-red:</span><span class="name variable">`Red Text.`</span></code></pre>
 </div>
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Fine-grained Control (Try to avoid!)</p>
@@ -290,7 +289,7 @@
 <p class="rubric">Hiding slides (⚠️ rst2ld only)</p>
 <p>Use <span class="docutils literal"><span class="pre">hide-slide</span></span> to exempt it from slide generation.</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> hide-slide<span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> hide-slide<span class="whitespace">
 
 </span><span class="generic heading">&lt;Hidden Slide &gt;</span>
 <span class="generic heading">-----------------</span></code></pre>
@@ -302,7 +301,7 @@
 <p><span class="docutils literal"><span class="pre">slide-dimensions</span></span> the slides dimension (default: &quot;1920x1200&quot;).</p>
 <p><span class="docutils literal"><span class="pre">first-slide</span></span> Determines the first slide that is shown (e.g., &lt;Slide Number&gt; or &quot;last-viewed&quot;).</p>
 <p class="rubric">Example</p>
-<pre class="code rst smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">meta</span><span class="punctuation">::</span><span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">meta</span><span class="punctuation">::</span><span class="whitespace">
 </span>  <span class="name class">:id:</span> <span class="name tag">&lt;unique id&gt;</span><span class="whitespace">
 </span>  <span class="name class">:slide-dimensions:</span> 2560x1440<span class="whitespace">
 </span>  <span class="name class">:first-slide:</span> last-viewed</code></pre>
@@ -312,7 +311,7 @@
 2</sup></p>
 <p>A cheat-sheet is a slide with the class <span class="docutils literal"><span class="pre">cheat-sheet-8-columns</span></span>.</p>
 <p class="rubric">Template</p>
-<pre class="code rst far-smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> cheat-sheet-8-columns<span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">class</span><span class="punctuation">::</span> cheat-sheet-8-columns<span class="whitespace">
 
 </span>   &lt;Title&gt;<span class="whitespace">
 </span>   -------<span class="whitespace">
@@ -326,7 +325,7 @@
 <div class="cheat-sheet-block docutils container">
 <p class="rubric">Useful Role and Substitution Definitions</p>
 <p class="rubric">Template</p>
-<pre class="code rst far-smaller copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">role</span><span class="punctuation">::</span> incremental<span class="whitespace">
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">role</span><span class="punctuation">::</span> incremental<span class="whitespace">
 </span><span class="punctuation">..</span> <span class="operator word">role</span><span class="punctuation">::</span> eng<span class="whitespace">
 </span><span class="punctuation">..</span> <span class="operator word">role</span><span class="punctuation">::</span> ger<span class="whitespace">
 </span><span class="punctuation">..</span> <span class="operator word">role</span><span class="punctuation">::</span> peripheral<span class="whitespace">
@@ -352,7 +351,7 @@
 <p><a class="reference external" href="http://www.michael-eichberg.de/teaching.html">Example Slide Sets</a></p>
 </div>
 </div>
-</div>
+</ld-topic>
 </template>
 </body>
 </html>

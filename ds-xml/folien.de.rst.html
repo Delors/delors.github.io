@@ -12,15 +12,15 @@
 <meta name="exercises-passwords" content="MTAwMDAw:8VwRvLMdgnKVNQ4dN5vSf92BosilGQtDHZJxd+z6rWc=:lqa1RY6bP7DbU7n+:pjKFYhgYBNUJ/5gUDlDR7kdy3O4Cf8Q+gqvTGkqU1/e4+xfOEwIXIRjeiTp+UAuQAc7x7DdOgbf/0YKFVWxqX/rIqBJt/UvwXbrXU52yRDo1UiPmJJC7TLW5iEF/Tq5Gx0AEpcX/4A9FTduIbXciDbfyFtAL725pCMVXWlvzOBnBNoRIZso9oDTeJklc+5izp/uWISyWLsuNkZvyUo3GfokAeGVqixWy+z4MKPerJKNKfjWMg4Nb/Xcupdx6hRJDPpfCcbVHPuYmZu1codLV3O/2vrLrosAZomAhJT4pIX1avBlDPrDtMgCGJKYpHl4dh0GNSS/edSd9zltuQAxj62NZKQ5+YBjF5UH5kZw8" />
 <title>XML (eXtensible Markup Language) und XPath</title>
 
-    <script src="../LectureDoc2/renaissance/ld.js" type="module"></script>
+    <script src="../LectureDoc2/src/ld.js" type="module"></script>
 
-    <link rel="stylesheet" href="../LectureDoc2/renaissance/ld.css" />
+    <link rel="stylesheet" href="../LectureDoc2/src/ld.css" />
 
     
     <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
-         <link rel="stylesheet" href="../LectureDoc2/renaissance/css/themes/dhbw.css" layer="theme" />
+         <link rel="stylesheet" href="../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
  -->
-         <style>@import url("../LectureDoc2/renaissance/css/themes/dhbw.css") layer(theme)</style>
+         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme)</style>
     
 </head>
 <body>
@@ -36,7 +36,7 @@
 <dt class="version">Version<span class="colon">:</span></dt>
 <dd class="version">1.0.2</dd>
 </dl>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://delors.github.io/ds-xml/folien.de.rst.html">https://delors.github.io/ds-xml/folien.de.rst.html</a></p>
@@ -46,7 +46,8 @@
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
 </dl>
-</div></ld-topic>
+</div>
+</ld-topic>
 <ld-topic class="new-section transition-fade" id="xml-extensible-markup-language">
 <h2>XML (eXtensible Markup Language)</h2>
 </ld-topic><ld-topic id="markup-languages">
@@ -67,10 +68,11 @@
 </ul>
 </li>
 </ul>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Auch wenn Markup-Sprachen für Menschen lesbar sind, sind sie in erster Linie für Maschinen gedacht. Darüber hinaus sollte im Allgemeinen vermieden werden, dass der Markup dem Formatieren dient/zum formatieren verwendet wird.</p>
 <p>YAML hat keinen Dokumentenfokus und ist nicht (mehr) als Markup-Sprache klassifiziert.</p>
-</div></ld-topic><ld-topic id="xml-hintergrund">
+</div>
+</ld-topic><ld-topic id="xml-hintergrund">
 <h2>XML - Hintergrund</h2>
 <ul class="incremental-list">
 <li><p>Aufbauend auf <strong>Standard Generalized Markup Language (SGML)</strong></p>
@@ -78,7 +80,7 @@
 <li><p>SGML ist Standardisiert als ISO 8879:1986</p></li>
 <li><p>In SGML ist die Basis für jedes Dokument eine Formatbeschreibung mit Hilfe einer <em>Document type definition</em> (DTD)</p>
 <p>Beschreibt welche Elemente es gibt und wie diese ineinander geschachtelt werden können</p>
-<pre class="code DTD far-smaller literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword">&lt;!ELEMENT</span> <span class="name tag">note</span> <span class="operator">(</span><span class="name tag">head</span><span class="operator">,</span><span class="name tag">body</span><span class="operator">)</span><span class="keyword">&gt;</span>
+<pre class="code DTD literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword">&lt;!ELEMENT</span> <span class="name tag">note</span> <span class="operator">(</span><span class="name tag">head</span><span class="operator">,</span><span class="name tag">body</span><span class="operator">)</span><span class="keyword">&gt;</span>
 </code><small class="ln">2 </small><code data-lineno="2 "><span class="keyword">&lt;!ELEMENT</span> <span class="name tag">head</span> <span class="operator">(</span><span class="keyword constant">#PCDATA</span><span class="operator">)</span><span class="keyword">&gt;</span>
 </code><small class="ln">3 </small><code data-lineno="3 "><span class="keyword">&lt;!ELEMENT</span> <span class="name tag">body</span> <span class="operator">(</span><span class="keyword constant">#PCDATA</span><span class="operator">)</span><span class="keyword">&gt;</span></code></pre>
 </li>
@@ -105,7 +107,7 @@
 <p>XML 1.1: <a class="reference external" href="https://www.w3.org/TR/2006/REC-xml11-20060816/">https://www.w3.org/TR/2006/REC-xml11-20060816/</a> (nur für Spezialfälle)</p>
 </aside>
 </aside>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>In Hinblick auf XML betrachten wir Dokumente als Instanzen von Informationen, die eine Struktur haben. Unter dieser Perspektive ist vieles ein Dokument:</p>
 <ul class="simple">
 <li><p>Artikel, Bücher, Notizen, Gedichte, Romane</p></li>
@@ -119,7 +121,8 @@
 <li><p>es gibt nur ein Wurzelelement</p></li>
 <li><p>Element überlappen sich nicht; d. h. für alle Elemente (außer dem Wurzelelement) gilt: Befindet sich das Start-Tag im Inhalt eines anderen Elements, so befindet sich das End-Tag im Inhalt desselben Elements. Es ergibt sich somit ein Baum.</p></li>
 </ul>
-</div></ld-topic><ld-topic id="was-bietet-xml">
+</div>
+</ld-topic><ld-topic id="was-bietet-xml">
 <h2>Was bietet XML?</h2>
 <ul class="incremental-list simple">
 <li><p>Internationalisierung durch die Verwendung von Unicode.</p></li>
@@ -129,14 +132,15 @@
 <li><p>Hierarchische Struktur.</p></li>
 <li><p>Erweiterbarkeit.</p></li>
 </ul>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Wie auch in HTML (HyperText Markup Language) kann auch in XML jedes Zeichen als Referenz auf ein Unicode-Zeichen kodiert werden.</p>
 <aside class="admonition example">
 <p class="admonition-title">Beispiel</p>
 <pre class="code xml literal-block"><code><span class="name entity">&amp;#x2200;&amp;#x03b1;&amp;#x2208;&amp;#x0393;</span></code></pre>
 <p>entspricht:</p>
 &#x2200;&#x03b1;&#x2208;&#x0393;</aside>
-</div></ld-topic><ld-topic id="xml-dokument-beispiel">
+</div>
+</ld-topic><ld-topic id="xml-dokument-beispiel">
 <h2>XML Dokument - Beispiel</h2>
 <pre class="code xml copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="comment preproc">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot; ?&gt;</span><span class="whitespace">
 </span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name tag">&lt;lehrveranstaltungen</span><span class="whitespace"> </span><span class="name attribute">status=</span><span class="literal string">&quot;akkreditiert&quot;</span><span class="name tag">&gt;</span><span class="whitespace">
@@ -165,9 +169,10 @@
 </dd>
 </dl>
 </div>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Die Spezifikationen bzgl. <span class="docutils literal">encoding</span> (Kodierung des Dokuments) und <span class="docutils literal">standalone</span> (Ist das Dokument von anderen Dokumenten abhängig) sind <em>nur</em> Pseudoattribute, da sie zum Prolog des Dokuments gehören.</p>
-</div></ld-topic><ld-topic id="xml-dokument-allgemeine-struktur">
+</div>
+</ld-topic><ld-topic id="xml-dokument-allgemeine-struktur">
 <h2>XML Dokument - allgemeine Struktur</h2>
 <ld-deck>
 <ld-card>
@@ -192,7 +197,7 @@
 </div>
 </li>
 </ul>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>EBNF (<em>Extended Backus-Naur Form</em>) 101:</p>
 <ul class="simple">
 <li><p>'+' bedeutet 'eins oder mehr',</p></li>
@@ -205,7 +210,8 @@
 <li><p>[c-c] ist eine Zeichenklasse und steht für ein einzelnes Zeichen im angegebenen Bereich.</p></li>
 </ul>
 <p>EBNFs sind eng mit regulären Ausdrücke verwandt. EBNFs können jedoch auch rekursive Strukturen beschreiben und werden häufig für die Beschreibung von Programmiersprachen verwendet.</p>
-</div></ld-topic><ld-topic id="elemente">
+</div>
+</ld-topic><ld-topic id="elemente">
 <h2>Elemente</h2>
 <ul class="incremental-list simple">
 <li><p>Im Allgemeinen bestehen Elemente aus einem Start-Tag (z. B. <span class="docutils literal">&lt;start&gt;</span>), seinem Inhalt und einem End-Tag (z. B. <span class="docutils literal">&lt;/start&gt;</span>).</p></li>
@@ -328,9 +334,10 @@
 </span><span class="name tag">&lt;/c:pseudocode&gt;</span></code></pre>
 <p>Dies gilt nur für Element- und Attributnamen.</p>
 </div>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Jedes Präfix, das &quot;xml&quot; enthält, ist für das W3C reserviert.</p>
-</div></ld-topic><ld-topic id="xml-prafixe-und-namensraume">
+</div>
+</ld-topic><ld-topic id="xml-prafixe-und-namensraume">
 <h2>XML Präfixe und Namensräume</h2>
 <ul class="simple">
 <li><p>Präfixe müssen durch assoziierte Präfixe mit Namensräumen deklariert werden, <em>bevor</em> sie verwendet werden.</p></li>
@@ -346,11 +353,12 @@
 </li>
 <li><p><em>Bevor</em> bedeutet, dass der Präfix auf dem Element, in dem das Präfix vorkommt - oder auf einem Vorgängerelement - deklariert werden muss.</p></li>
 </ul>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Das Präfix <span class="docutils literal">xml</span> ist vordefiniert und die URI ist: <span class="docutils literal"><span class="pre">http://www.w3.org/XML/1998/namespace</span></span>.</p>
 <p>Mit Hilfe einer URI (Uniform Resource Identifier) wird ein Namensraum identifiziert. Die URI muss nicht aufgelöst werden können.</p>
 <p>URI-Werte können Webadressen sein (z. B. <span class="docutils literal"><span class="pre">http://youdomain.com</span></span>), aber auch andere Werte wie URNs (Namen): <span class="docutils literal"><span class="pre">urn:...</span></span> oder andere Schemata: <span class="docutils literal"><span class="pre">scheme:scheme-specific-part</span></span>.</p>
-</div></ld-topic><ld-topic id="default-namespace">
+</div>
+</ld-topic><ld-topic id="default-namespace">
 <h2><em>Default Namespace</em></h2>
 <ul class="simple">
 <li><p>Der Standardnamensraum kann vorgegeben werden.</p></li>
@@ -369,13 +377,14 @@
 </aside>
 </li>
 </ul>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>Mit <span class="docutils literal"><span class="pre">xmlns=&quot;&quot;</span></span> kann der gesetzte Standardnamensraum aufgehoben werden.</p>
 <aside class="admonition attention">
 <p class="admonition-title">Achtung!</p>
 <p>Attribute ohne Präfix befinden sich immer im leeren Namensraum, d. h. sie haben keinen Namensraum</p>
 </aside>
-</div></ld-topic><ld-topic id="geltungsbereich-von-namensraumen">
+</div>
+</ld-topic><ld-topic id="geltungsbereich-von-namensraumen">
 <h2>Geltungsbereich von Namensräumen<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
 <ul class="simple">
 <li><p>Der Geltungsbereich einer Deklaration eines Namensraums ist das Element, in dem sie vorkommt.</p></li>
@@ -519,7 +528,7 @@ MTAwMDAw:PBbfQv4oELR4/v2NfiSXOR27rzHPbPp425bDKyTpagY=:Nv7twcezOfXQQ9nh:rSC2coBx/
 <p>Wählt das untergeordnete Element <span class="docutils literal">modul</span> des Dokumentenelements <span class="docutils literal">lehrveranstaltungen</span> aus.</p>
 </li>
 <li><p>XPath-Ausdrücke müssen nicht bei der Wurzel starten:</p>
-<pre class="code xslt far-smaller literal-block"><code>modul/vorlesung</code></pre>
+<pre class="code xslt literal-block"><code>modul/vorlesung</code></pre>
 <p>Wählt das <span class="docutils literal">vorlesung</span>-Kinderelement des <span class="docutils literal">modul</span>-Elements aus.</p>
 </li>
 </ul>
@@ -532,12 +541,12 @@ MTAwMDAw:PBbfQv4oELR4/v2NfiSXOR27rzHPbPp425bDKyTpagY=:Nv7twcezOfXQQ9nh:rSC2coBx/
 <ul class="incremental">
 <li><p>Beispiel</p>
 <p>Sei das folgende XML-Dokument gegeben:</p>
-<pre class="code xml far-smaller literal-block"><code><span class="name tag">&lt;modul&gt;</span><span class="whitespace">
+<pre class="code xml literal-block"><code><span class="name tag">&lt;modul&gt;</span><span class="whitespace">
     </span><span class="name tag">&lt;vorlesung&gt;</span>Eins<span class="name tag">&lt;/vorlesung&gt;</span><span class="whitespace">
     </span><span class="name tag">&lt;vorlesung&gt;</span>Zwei<span class="name tag">&lt;/vorlesung&gt;</span><span class="whitespace">
 </span><span class="name tag">&lt;/modul&gt;</span></code></pre>
 <p>Dann gibt der folgende Ausdruck zwei <span class="docutils literal">vorlesung</span>-Elemente zurück:</p>
-<pre class="code xslt far-smaller literal-block"><code>/modul/vorlesung</code></pre>
+<pre class="code xslt literal-block"><code>/modul/vorlesung</code></pre>
 </li>
 </ul>
 <aside class="footnote-list brackets">
@@ -580,7 +589,7 @@ MTAwMDAw:PBbfQv4oELR4/v2NfiSXOR27rzHPbPp425bDKyTpagY=:Nv7twcezOfXQQ9nh:rSC2coBx/
 <p class="admonition-title">Hinweis</p>
 <p>Die Präfixbindung wird außerhalb des Ausdrucks definiert (i. d. R. anwendungsspezifisch).</p>
 </aside>
-<div class="supplemental">
+<div class="supplemental docutils container">
 <p>In dem gezeigten Beispiel müsste die Anwendung die Präfixe (<span class="docutils literal">dhbw</span> und <span class="docutils literal">i</span>) mit den entsprechenden Namensräumen verknüpfen.</p>
 <p class="rubric">kein Präfix = kein Namensraum</p>
 <p>Ein Namenstest innerhalb eines Pfadausdrucks, der kein Präfix spezifiziert ist nur für  Namen ohne Namensraum erfolgreich!</p>
@@ -596,7 +605,8 @@ MTAwMDAw:PBbfQv4oELR4/v2NfiSXOR27rzHPbPp425bDKyTpagY=:Nv7twcezOfXQQ9nh:rSC2coBx/
   </span><span class="name tag">&lt;title&gt;</span>Ich<span class="whitespace"> </span>habe<span class="whitespace"> </span>einen<span class="whitespace"> </span>Namensraum...<span class="name tag">&lt;/title&gt;</span><span class="whitespace">
 </span><span class="name tag">&lt;/m:section&gt;</span></code></pre>
 <p><em>Der Namensabgleich basiert auf dem lokalen Namen und dem Namen des Namensraums.</em></p>
-</div></ld-topic><ld-topic id="wildcards-in-xpath">
+</div>
+</ld-topic><ld-topic id="wildcards-in-xpath">
 <h2><em>Wildcards</em> in xPath</h2>
 <ul class="simple">
 <li><p><span class="docutils literal">*</span> wird als Platzhalter für Namen verwendet werden.</p></li>
@@ -605,13 +615,13 @@ MTAwMDAw:PBbfQv4oELR4/v2NfiSXOR27rzHPbPp425bDKyTpagY=:Nv7twcezOfXQQ9nh:rSC2coBx/
 <li><p>Beispiele:</p>
 <ul class="incremental-list">
 <li><p>Alle Elemente, die in einem <span class="docutils literal">modul</span>-Element enthalten sind:</p>
-<pre class="code xslt far-smaller literal-block"><code>/modul/*</code></pre>
+<pre class="code xslt literal-block"><code>/modul/*</code></pre>
 </li>
 <li><p>Alle Attribute eines <span class="docutils literal">vorlesung</span>-Elements:</p>
-<pre class="code xslt far-smaller literal-block"><code>/modul/vorlesung/&#64;*</code></pre>
+<pre class="code xslt literal-block"><code>/modul/vorlesung/&#64;*</code></pre>
 </li>
 <li><p>Verwendung von Namensräumen:</p>
-<pre class="code xslt far-smaller literal-block"><code>/dhbw:modul/dhbw:*<span class="whitespace">
+<pre class="code xslt literal-block"><code>/dhbw:modul/dhbw:*<span class="whitespace">
 </span>/dhbw:modul/dhbw:vorlesung/&#64;i:*</code></pre>
 </li>
 </ul>
@@ -689,7 +699,7 @@ MTAwMDAw:PBbfQv4oELR4/v2NfiSXOR27rzHPbPp425bDKyTpagY=:Nv7twcezOfXQQ9nh:rSC2coBx/
 </ul>
 <aside class="admonition incremental example">
 <p class="admonition-title">Beispiel</p>
-<pre class="code xslt far-smaller literal-block"><code>lehrveranstaltungen//vorlesung[&#64;mhb='123']/..</code></pre>
+<pre class="code xslt literal-block"><code>lehrveranstaltungen//vorlesung[&#64;mhb='123']/..</code></pre>
 <p>Wählt alle <span class="docutils literal">vorlesung</span>-Elemente mit dem Attribut <span class="docutils literal">mhb</span> und dem Wert <span class="docutils literal">123</span>, die Nachkommen des <span class="docutils literal">lehrveranstaltungen</span>-Elements sind aus.</p>
 </aside>
 </ld-topic><ld-topic id="auswahl-von-knoten-die-keine-elemente-oder-attribute-sind">
@@ -805,7 +815,7 @@ MTAwMDAw:PBbfQv4oELR4/v2NfiSXOR27rzHPbPp425bDKyTpagY=:Nv7twcezOfXQQ9nh:rSC2coBx/
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:6z/ZPIP/kscntd2k5kudzLHrA2xCQfQQwvRRVAs96cw=:B9Z3vJjZIxktcDYc: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</div>
 </div>
-</ld-story><div class="supplemental">
+</ld-story><div class="supplemental docutils container">
 <p class="rubric">Voraussetzungen</p>
 <p><strong>Installation von node.js</strong></p>
 <p>Installieren Sie node.js von <a class="reference external" href="https://nodejs.org/en">https://nodejs.org/en</a> (Version 21 und 22 sind getestet). Benutzen Sie bitte <em>eine getestet Version</em>!</p>
@@ -819,7 +829,8 @@ MTAwMDAw:6z/ZPIP/kscntd2k5kudzLHrA2xCQfQQwvRRVAs96cw=:B9Z3vJjZIxktcDYc:/y6a77nHS
 <p><a class="reference external" href="https://gist.github.com/Delors/189629b86265463e4a625924a9f705c8">https://gist.github.com/Delors/189629b86265463e4a625924a9f705c8</a></p>
 <p>(Speichern Sie das Script in der Datei <span class="docutils literal">xpaths_evaluator.js</span> und führen Sie es mit <span class="docutils literal">node xpaths_evaluator.js &lt;xpath specifications&gt;</span> aus.)</p>
 <p>In der Datei finden Sie am Anfang eine Beschreibung wie die Dateien auszusehen haben. Alternativ können Sie auch die XML Datei <a class="reference external" href="https://gist.github.com/Delors/89e57bd0665f66376cac0cbdf359fa83">demo.xml</a> und die Datei <a class="reference external" href="https://gist.github.com/Delors/aee6eb48450657a5ae22e530580548b2">demo.xpaths.json</a> herunterladen und als Grundlage nutzen.</p>
-</div></ld-topic>
+</div>
+</ld-topic>
 </template>
 </body>
 </html>
