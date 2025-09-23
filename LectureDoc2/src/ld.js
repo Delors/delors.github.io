@@ -305,9 +305,9 @@ const presentation = {
  * change any values that are already stored in the state object.
  */
 let state = {
-    // the (default) state
+    // contains the (default) state
 
-    // The overall progress.
+    // The overall progress
     currentSlideNo: 0,
     slideProgress: {}, // stores for each slide the number of executed animation steps
 
@@ -333,6 +333,8 @@ let state = {
  * Short lived information that is not preserved during reloads.
  */
 let ephemeral = {
+    currentSlidePaneScale: undefined,
+
     // The following information is required to enable animations.
     previousSlide: undefined,
 
@@ -1523,13 +1525,12 @@ function getCurrentSlideNo() {
  * I.e., this function should be called to rescale the slide whenever the
  * viewport changes.
  */
-function setPaneScale() {
+function setSlidesPaneScale() {
     const w_scale = window.innerWidth / presentation.slide.width;
     const h_scale = window.innerHeight / presentation.slide.height;
-    document.getElementById("ld-slides-pane").style.scale = Math.min(
-        w_scale,
-        h_scale,
-    );
+    const newSlidePaneScale = Math.min(        w_scale,        h_scale    );
+    document.getElementById("ld-slides-pane").style.scale = newSlidePaneScale;
+    ephemeral.currentSlidePaneScale = newSlidePaneScale;
 }
 
 /**
@@ -2268,7 +2269,7 @@ function registerKeyboardEventListener() {
 function registerViewportResizeListener() {
     document.defaultView.addEventListener("resize", () => {
         ensureLectureDocIsVisible();
-        setPaneScale();
+        setSlidesPaneScale();
     });
 }
 
@@ -2698,7 +2699,7 @@ const onDOMContentLoaded = async () => {
     /*
     Update rendering related information.
     */
-    setPaneScale();
+    setSlidesPaneScale();
 
     /*  Due to the copying of the slide templates, some things (e.g.,
         no longer unique ids), need to be fixed. */
