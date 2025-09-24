@@ -216,7 +216,7 @@ let mathJaxNotAvailable = false;
 
 function typesetMath(element) {
     if (mathJaxNotAvailable) {
-         return null;
+        return null;
     }
 
     mathJaxPromise = mathJaxPromise
@@ -1528,7 +1528,7 @@ function getCurrentSlideNo() {
 function setSlidesPaneScale() {
     const w_scale = window.innerWidth / presentation.slide.width;
     const h_scale = window.innerHeight / presentation.slide.height;
-    const newSlidePaneScale = Math.min(        w_scale,        h_scale    );
+    const newSlidePaneScale = Math.min(w_scale, h_scale);
     document.getElementById("ld-slides-pane").style.scale = newSlidePaneScale;
     ephemeral.currentSlidePaneScale = newSlidePaneScale;
 }
