@@ -3,7 +3,7 @@
 /**
  * Implements support for touch events.
  */
-import {
+import lectureDoc2, {
     ldEvents,
     ensureLectureDocIsVisible,
     retrogressPresentation,
@@ -28,8 +28,29 @@ function computeDistance(p1, p2) {
  * Swipe left and right advance/retrogress the presentation.
  * Pinch changes to the document view.
  */
-function handleSwipeAndPinchInSlideView() {
+function handleSwipeAndPinchAndZoomInSlideView() {
     const originalLocations = new Map();
+
+    const slideZoom = {
+        /*  IsZoomed is true if the slide is currently zoomed 
+            in or the user at least started a zoom gesture; 
+            in such cases, we will never leave the slide view 
+            on pinch end as this give a negative user experience. */
+        isZoomed: false,
+        /*  The initial scale when starting a pinch and zoom 
+            gesture; used as a reference point. */
+        scale: undefined,
+    };
+    /*  When the user performed a pinch and zoom gesture it may
+        happen that - when the user lifts the fingers slightly 
+        asynchronously - we "immediately" get another single 
+        finger touch event and would then advance/retrogress 
+        in the presentation, which is generally not what the 
+        user expects.
+
+        Hence, after a pinch-and-zoom gesture the user is now 
+        required to start over again.*/
+    let wasPinchAndZoom = false;
 
     let eventScheduled = false;
 
@@ -40,9 +61,11 @@ function handleSwipeAndPinchInSlideView() {
         if (!eventScheduled) {
             eventScheduled = true;
             setTimeout(() => {
-                eventScheduled = false;
-                ensureLectureDocIsVisible();
-                f();
+                requestAnimationFrame(() => {
+                    eventScheduled = false;
+                    ensureLectureDocIsVisible();
+                    f();
+                });
             }, 200);
         }
     }
@@ -60,19 +83,22 @@ function handleSwipeAndPinchInSlideView() {
     }
 
     function touchmoveHandler(event) {
-        //console.log("touchmove", event, originalLocations);
         event.preventDefault();
 
-        if (originalLocations.size == 1) {
+        if (originalLocations.size == 1 && !wasPinchAndZoom) {
             const touch = event.changedTouches[0];
             const originalLocation = originalLocations.get(touch.identifier);
             const deltaX = touch.clientX - originalLocation.x;
             const deltaY = touch.clientY - originalLocation.y;
+            if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
+                originalLocation.x = touch.clientX;
+                originalLocation.y = touch.clientY;
+            }
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 if (deltaX < -10) {
-                    schedule(retrogressPresentation);
-                } else if (deltaX > 10) {
                     schedule(advancePresentation);
+                } else if (deltaX > 10) {
+                    schedule(retrogressPresentation);
                 }
             } else {
                 // let's move to the previous / next slide
@@ -83,6 +109,29 @@ function handleSwipeAndPinchInSlideView() {
                 }
             }
         } else if (originalLocations.size == 2) {
+            wasPinchAndZoom = true;
+            const slidesPane = document.getElementById("ld-slides-pane");
+            const nominalSlidePaneScale =
+                lectureDoc2.getEphemeral().currentSlidePaneScale;
+
+            // We store the initial scale when we start zooming to enable the
+            // the user to zoom in and out relative to this zoom level while
+            // keeping the fingers on the screen.
+            let baseScale = slideZoom.scale;
+            if (!baseScale) {
+                slideZoom.scale = baseScale = slidesPane.style.scale;
+                // The precision used by CSS is less than the calculated value
+                // given by LD.
+                // So we need to account for that to detect if we have already
+                // zoomed in or not!
+                if (
+                    baseScale >
+                    Math.round(nominalSlidePaneScale * 10000) / 10000
+                ) {
+                    slideZoom.isZoomed = true;
+                }
+            }
+
             const oldDistance = computeDistance(...originalLocations.values());
 
             // We don't want to update the original locations to ensure
@@ -96,13 +145,48 @@ function handleSwipeAndPinchInSlideView() {
                     y: touch.clientY,
                 });
             }
-
             const newDistance = computeDistance(...currentLocations.values());
 
-            if (newDistance + 20 < oldDistance) {
+            let newScale = baseScale * (newDistance / oldDistance);
+            // console.log(`nominalSlidePaneScale: ${nominalSlidePaneScale}, baseScale: ${baseScale}, newScale: ${newScale}, slideZoom.isZoomed: ${slideZoom.isZoomed}`);
+            if (newScale < nominalSlidePaneScale && !slideZoom.isZoomed) {
                 // It may happen that the we get many touches at once and
                 // we only want to react to the first pinch
-                schedule(toggleDocumentView);
+
+                schedule(() => {
+                    slidesPane.style.scale = nominalSlidePaneScale;
+                    slidesPane.style.transform = ""; // removeProperty("transformOrigin") doesn't work here in Safari on iPadOS
+                    toggleDocumentView();
+                });
+            } else {
+                slideZoom.isZoomed = true;
+
+                // compute the center point between the two fingers
+                const firstTouch = currentLocations.values().next();
+                const secondTouch = currentLocations.values().next();
+                const centerX = (firstTouch.value.x + secondTouch.value.x) / 2;
+                const centerY = (firstTouch.value.y + secondTouch.value.y) / 2;
+                console.log(`centerX: ${centerX}, centerY: ${centerY}`);
+
+                // We want to zoom into the center point between the two fingers.
+                // However, we have to account for the current zoom level;
+                // the location is always relative to the top left corner of the
+                // slide.
+                slidesPane.style.transform = `translate(${centerX / nominalSlidePaneScale}px, ${centerY / nominalSlidePaneScale}px)`;
+
+                slidesPane.style.scale = Math.max(
+                    nominalSlidePaneScale,
+                    newScale,
+                );
+
+                // When we snap back to the nominal scale, we also snap back to the
+                // center.
+                if (
+                    Math.round(nominalSlidePaneScale * 10000) / 10000 >=
+                    newScale
+                ) {
+                    slidesPane.style.transform = ""; // see above
+                }
             }
         }
     }
@@ -114,6 +198,13 @@ function handleSwipeAndPinchInSlideView() {
             const touch = touches[i];
             originalLocations.delete(touch.identifier);
             //console.log("touchend", touch.identifier);
+        }
+        if (originalLocations.size < 2) {
+            slideZoom.isZoomed = false;
+            slideZoom.scale = undefined;
+        }
+        if (originalLocations.size == 0) {
+            wasPinchAndZoom = false;
         }
     }
 
@@ -219,5 +310,5 @@ ldEvents.addEventListener(
 );
 ldEvents.addEventListener(
     "afterLDListenerRegistrations",
-    handleSwipeAndPinchInSlideView,
+    handleSwipeAndPinchAndZoomInSlideView,
 );
