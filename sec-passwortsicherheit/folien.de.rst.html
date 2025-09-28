@@ -41,7 +41,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2.2.1</dd>
+<dd class="version">2.2.2</dd>
 </dl>
 <div class="supplemental docutils container">
 <dl class="field-list">
@@ -76,7 +76,7 @@
 </ld-story><div class="supplemental docutils container">
 <p class="rubric">Hintergrund</p>
 <p>Obwohl an vielen Stellen versucht wird Passwörter aus vielen Gründen zurück zu drängen, so ist die Verwendung noch allgegenwärtig und in machen Bereichen ist auch nicht unmittelbar eine Ablösung zu erkennen.</p>
-<p>Biometrie ist zum Beispiel in machen Bereichen kein Ersatz für Passwörter und wird - wenn überhaupt - nur ergänzend genommen. So ist es zum Beispiel im deutschen Recht erlaubt/möglich einem Beschuldigten sein Smartphone bei Bedarf vor das Gesicht zu halten, um es zu entsperren (Stand 2023). Je nach Qualität des Fingerabdrucksensors können ggf. auch genommene Fingerabdrücke verwendet werden. Möchte der Beschuldigte jedoch das Passwort nicht freiwillig nennen, dann besteht keine direkte weitere Handhabe.</p>
+<p>Biometrie ist zum Beispiel in machen Bereichen kein Ersatz für Passwörter und wird - wenn überhaupt - nur ergänzend genommen. So ist es zum Beispiel im deutschen Recht erlaubt/möglich einem Beschuldigten sein Smartphone bei Bedarf vor das Gesicht zu halten, um es zu entsperren (Stand 2025). Je nach Qualität des Fingerabdrucksensors können ggf. auch genommene Fingerabdrücke verwendet werden. Möchte der Beschuldigte jedoch das Passwort nicht freiwillig nennen, dann besteht keine direkte weitere Handhabe.</p>
 </div>
 </ld-topic><ld-topic id="passwortbasierte-angriffe-auf-unternehmen">
 <h2>Passwortbasierte Angriffe auf Unternehmen</h2>
@@ -650,22 +650,22 @@ Varonis security researcher Dolev Taler, who has been credited with discovering 
 </ld-topic><ld-topic id="berechnung-der-ersten-runde-des-pbkdf2-hmac">
 <h2>Berechnung der ersten Runde des PBKDF2-HMAC</h2>
 <p>Bei einer Runde und passenden Blockgrößen ist das Ergebnis der PBKDF2 somit gleich mit der Berechnung des HMACs wenn der Salt um die Nummer des Blocks <span class="docutils literal">\x00\x00\x00\x01</span> ergänzt wurde.</p>
-<p><strong>Implementierung in Python</strong></p>
-<pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">hashlib</span><span class="whitespace">
-</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="name">pwd</span> <span class="operator">=</span> <span class="literal string affix">b</span><span class="literal string double">&quot;MyPassword&quot;</span><span class="whitespace">
-</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="name">stretched_pwd</span> <span class="operator">=</span> <span class="name">pwd</span> <span class="operator">+</span> <span class="punctuation">(</span><span class="literal number integer">64</span><span class="operator">-</span><span class="name builtin">len</span><span class="punctuation">(</span><span class="name">pwd</span><span class="punctuation">))</span> <span class="operator">*</span> <span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00</span><span class="literal string double">&quot;</span><span class="whitespace">
-</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
-</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="name">ikeypad</span> <span class="operator">=</span> <span class="name builtin">bytes</span><span class="punctuation">(</span><span class="name builtin">map</span><span class="punctuation">(</span><span class="keyword">lambda</span> <span class="name">x</span> <span class="punctuation">:</span> <span class="name">x</span> <span class="operator">^</span> <span class="literal number hex">0x36</span> <span class="punctuation">,</span> <span class="name">stretched_pwd</span><span class="punctuation">))</span> <span class="comment single"># xor with ipad</span><span class="whitespace">
-</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span><span class="name">okeypad</span> <span class="operator">=</span> <span class="name builtin">bytes</span><span class="punctuation">(</span><span class="name builtin">map</span><span class="punctuation">(</span><span class="keyword">lambda</span> <span class="name">x</span> <span class="punctuation">:</span> <span class="name">x</span> <span class="operator">^</span> <span class="literal number hex">0x5c</span> <span class="punctuation">,</span> <span class="name">stretched_pwd</span><span class="punctuation">))</span> <span class="comment single"># xor with opad</span><span class="whitespace">
-</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">
-</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span><span class="name">hash1</span> <span class="operator">=</span> <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">(</span><span class="name">ikeypad</span><span class="operator">+</span><span class="literal string affix">b</span><span class="literal string double">&quot;JustASalt&quot;</span><span class="operator">+</span><span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00\x00\x00\x01</span><span class="literal string double">&quot;</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span><span class="whitespace">
-</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="name">hmac</span>  <span class="operator">=</span> <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">(</span><span class="name">okeypad</span><span class="operator">+</span><span class="name">hash1</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span></code></pre>
+<ld-story>
+<p class="rubric">Implementierung in Python</p>
+<pre class="code python copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">hashlib</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name">pwd</span> <span class="operator">=</span> <span class="literal string affix">b</span><span class="literal string double">&quot;MyPassword&quot;</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="name">stretched_pwd</span> <span class="operator">=</span> <span class="name">pwd</span> <span class="operator">+</span> <span class="punctuation">(</span><span class="literal number integer">64</span><span class="operator">-</span><span class="name builtin">len</span><span class="punctuation">(</span><span class="name">pwd</span><span class="punctuation">))</span> <span class="operator">*</span> <span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00</span><span class="literal string double">&quot;</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="name">ikeypad</span> <span class="operator">=</span> <span class="name builtin">bytes</span><span class="punctuation">(</span><span class="name builtin">map</span><span class="punctuation">(</span><span class="keyword">lambda</span> <span class="name">x</span> <span class="punctuation">:</span> <span class="name">x</span> <span class="operator">^</span> <span class="literal number hex">0x36</span> <span class="punctuation">,</span> <span class="name">stretched_pwd</span><span class="punctuation">))</span> <span class="comment single"># xor with ipad</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span><span class="name">okeypad</span> <span class="operator">=</span> <span class="name builtin">bytes</span><span class="punctuation">(</span><span class="name builtin">map</span><span class="punctuation">(</span><span class="keyword">lambda</span> <span class="name">x</span> <span class="punctuation">:</span> <span class="name">x</span> <span class="operator">^</span> <span class="literal number hex">0x5c</span> <span class="punctuation">,</span> <span class="name">stretched_pwd</span><span class="punctuation">))</span> <span class="comment single"># xor with opad</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace">
+</span></code><small class="ln">7 </small><code data-lineno="7 "><span class="whitespace"></span><span class="name">hash1</span> <span class="operator">=</span> <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">(</span><span class="name">ikeypad</span><span class="operator">+</span><span class="literal string affix">b</span><span class="literal string double">&quot;JustASalt&quot;</span><span class="operator">+</span><span class="literal string affix">b</span><span class="literal string double">&quot;</span><span class="literal string escape">\x00\x00\x00\x01</span><span class="literal string double">&quot;</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">8 </small><code data-lineno="8 "><span class="whitespace"></span><span class="name">hmac</span>  <span class="operator">=</span> <span class="name">hashlib</span><span class="operator">.</span><span class="name">sha256</span><span class="punctuation">(</span><span class="name">okeypad</span><span class="operator">+</span><span class="name">hash1</span><span class="punctuation">)</span><span class="operator">.</span><span class="name">digest</span><span class="punctuation">()</span></code></pre>
 <div class="incremental docutils container">
-<p><strong>Ergebnis</strong></p>
-<pre class="code text literal-block"><code>hmac = b'h\x88\xc2\xb6X\xb7\xcb\x9c\x90\xc2R\xf8\xb1\xf7\x10
-         \xb2L\x8a\xba\xfb\x9e|\x16\x87\x87\x0e\xad\xa1\xe1:9\xca'</code></pre>
+<p class="rubric">Ergebnis</p>
+<pre class="code text literal-block"><small class="ln">1 </small><code data-lineno="1 ">hmac = b'h\x88\xc2\xb6X\xb7\xcb\x9c\x90\xc2R\xf8\xb1\xf7\x10
+</code><small class="ln">2 </small><code data-lineno="2 ">        \xb2L\x8a\xba\xfb\x9e|\x16\x87\x87\x0e\xad\xa1\xe1:9\xca'</code></pre>
 </div>
-<div class="supplemental docutils container">
+</ld-story><div class="supplemental docutils container">
 <p>HMAC ist auch direkt als Bibliotheksfunktion verfügbar.</p>
 <pre class="code python copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">hashlib</span><span class="whitespace">
 </span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">hmac</span><span class="whitespace">
@@ -748,8 +748,8 @@ MTAwMDAw:OYz2UB9NrCLqatbdpB84gQIY5SXafs7Bnb9aOsN9/Ro=:Dxkg78AuI4TFcYxc:K+zYXL43P
 <p>1234567</p>
 <p>111111</p>
 <p>1234567890</p>
-<p>123123</p>
 </ld-cell><ld-cell class="width-33 text-align-center" style="align-self:auto;">
+<p>123123</p>
 <p>abc123</p>
 <p>1234</p>
 <p>password1</p>
@@ -758,9 +758,9 @@ MTAwMDAw:OYz2UB9NrCLqatbdpB84gQIY5SXafs7Bnb9aOsN9/Ro=:Dxkg78AuI4TFcYxc:K+zYXL43P
 <p>000000</p>
 <p>qwerty123</p>
 <p>zaq12wsx</p>
+</ld-cell><ld-cell class="width-33 text-align-center" style="align-self:auto;">
 <p>dragon</p>
 <p>sunshine</p>
-</ld-cell><ld-cell class="width-33 text-align-center" style="align-self:auto;">
 <p>princess</p>
 <p>letmein</p>
 <p>654321</p>
@@ -768,9 +768,6 @@ MTAwMDAw:OYz2UB9NrCLqatbdpB84gQIY5SXafs7Bnb9aOsN9/Ro=:Dxkg78AuI4TFcYxc:K+zYXL43P
 <p>27653</p>
 <p>1qaz2wsx</p>
 <p>123321</p>
-<p>qwertyuiop</p>
-<p>superman</p>
-<p>asdfghjkl</p>
 </ld-cell></ld-grid><div class="supplemental docutils container">
 <p><strong>Hinweise</strong></p>
 <ul class="simple">
@@ -1177,10 +1174,7 @@ MTAwMDAw:GUcXZe9o8jdIEXW+UPoJzBk0lY4kgGHn4Nce5OJ9cZs=:1JkS6NQRe9vTnKnt:UK+rHU6ie
 <h2>PCFG - Analyse - Beispiel</h2>
 <ld-story>
 <p>Im ersten Schritt werden die Produktionswahrscheinlichkeiten von Basisstrukturen, Ziffernfolgen, Sonderzeichenfolgen und Alpha-Zeichenfolgen ermittelt. (Z. Bsp.:
-<span class="docutils literal">!cat123</span> <span class="math">\(\Rightarrow\)</span> S<sub>
-1</sub>L<sub>
-3</sub>D<sub>
-3</sub>)</p>
+<span class="docutils literal">!cat123</span> <span class="math">\(\Rightarrow\)</span> S<sub>1</sub>L<sub>3</sub>D<sub>3</sub>)</p>
 <table class="incremental highlight-line-on-hover">
 <colgroup>
 <col style="width: 25.0%" />

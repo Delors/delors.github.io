@@ -35,15 +35,19 @@
 <template>
 <ld-topic id="erzeugung-von-zufallsbits-und-stromchiffren">
 <h1 class="title">Erzeugung von Zufallsbits und Stromchiffren</h1>
-<dl class="docinfo simple">
+<dl class="docinfo">
 <dt class="dozent">Dozent<span class="colon">:</span></dt>
 <dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
 </dd>
-<dt class="basierend-auf">Basierend auf<span class="colon">:</span></dt>
-<dd class="basierend-auf"><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
-</dd>
+<dt class="contact">Kontakt<span class="colon">:</span></dt>
+<dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
 <dd class="version">2.4.2</dd>
+</dl>
+<dl class="sources field-list simple">
+<dt>Quellen<span class="colon">:</span></dt>
+<dd><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p>
+</dd>
 </dl>
 <div class="supplemental docutils container">
 <dl class="field-list">
@@ -452,24 +456,28 @@ MTAwMDAw:YpcBItDGAwftnWnyPCyMsOFpo3wM1BtJeaD32GeJpxA=:ExZzXJtaJW49irf4:hZqTOV/ov
 <h2>Entropie</h2>
 </ld-topic><ld-topic id="quellen-der-entropie">
 <h2>Quellen der Entropie</h2>
+<ld-deck>
+<ld-card>
 <ul class="simple">
 <li><p>Ein echter Zufallszahlengenerator (TRNG) verwendet eine nicht-deterministische Quelle zur Erzeugung von Zufälligkeit.</p></li>
-</ul>
-<ul class="incremental-list">
 <li><p>Die meisten funktionieren durch Messung unvorhersehbarer natürlicher Prozesse, wie z. B. Impulsdetektoren für ionisierende Strahlung, Gasentladungsröhren und undichte Kondensatoren.</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<ul>
 <li><p>Intel CPUs verwenden seit 2012 (Ivy Bridge) thermisches Rauschen als Quelle. Dies geschieht durch Verstärkung der an nicht angesteuerten Widerständen gemessenen Spannung.</p>
-<p>Auslesen ist mit dem RDRAND Befehl möglich bzw. (neuer) mit dem RDSEED Befehl.</p>
+<p>Auslesen ist mit dem <code class="asm nasm"><span class="name function">RDRAND</span></code> Befehl möglich bzw. (neuer) mit dem <code class="asm nasm"><span class="name function">RDSEED</span></code> Befehl.</p>
 </li>
 <li><p>AMD und ARM CPUs bieten vergleichbare Funktionen. Auf aktuellen AMD CPUs dauert es ca. 2500 Clock Cycles für die Generierung eines 64 Bit Wertes.</p></li>
 </ul>
 <div class="supplemental docutils container">
-<p>Die Befehle RDRAND und RDSEED erfüllen die Anforderungen von NIST SP 800-90A, FIPS 140-2, und ANSI X9.82.</p>
+<p>Die Befehle <code class="asm nasm"><span class="name function">RDRAND</span></code> und <code class="asm nasm"><span class="name function">RDSEED</span></code> erfüllen die Anforderungen von NIST SP 800-90A, FIPS 140-2, und ANSI X9.82.</p>
 </div>
 <aside class="admonition incremental attention">
 <p class="admonition-title">Achtung!</p>
-<p>Es gibt <em>Vermutungen</em>, dass diese Funktionen absichtlich kompromitiert wurden. <a class="reference external" href="https://www.theregister.com/2013/12/09/freebsd_abandoning_hardware_randomness/">FreeBSD</a> hat 2013 die Verwendung wieder eingestellt. Linux nutzt diese nur ergänzend.</p>
+<p>Es gibt <em>Vermutungen</em>, dass diese Funktionen absichtlich kompromitiert wurden.</p>
+<p><a class="reference external" href="https://www.theregister.com/2013/12/09/freebsd_abandoning_hardware_randomness/">FreeBSD</a> hat 2013 die Verwendung wieder eingestellt. Linux nutzt diese nur ergänzend.</p>
 </aside>
-</ld-topic><ld-topic id="nist-and-partners-use-quantum-mechanics-to-make-a-factory-for-random-numbers">
+</ld-card></ld-deck></ld-topic><ld-topic id="nist-and-partners-use-quantum-mechanics-to-make-a-factory-for-random-numbers">
 <h2>NIST and Partners Use Quantum Mechanics to Make a Factory for Random Numbers<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
 <blockquote class="epigraph">
 <p><strong>NIST and its partners at the University of Colorado Boulder built the first random number generator that uses quantum entanglement to produce verifiable random numbers.</strong></p>
@@ -582,18 +590,14 @@ MTAwMDAw:PSt8GSZRuyWaOY96wf3VQdPKQkkOy6wPtaDtA+/iKZ8=:+AC5qXvQTmAobo0m:S6Utbxfzz
 <object aria-label="Typical Stream Cipher" class="align-center" data="drawings/stream_ciphers/typical_stream_cipher.svg" role="img" type="image/svg+xml">
 </object><ld-grid class="default-layout">
 <ld-cell class="width-20" style="align-self:auto;">
-<p>Klartext: p<sub>
-i</sub></p>
-<p>Chiffretext: c<sub>
-i</sub></p>
-<p>Schlüsselstrom: z<sub>
-i</sub></p>
+<p>Klartext: p<sub>i</sub></p>
+<p>Chiffretext: c<sub>i</sub></p>
+<p>Schlüsselstrom: z<sub>i</sub></p>
 </ld-cell><ld-cell class="width-20" style="align-self:auto;">
 <p>Schlüssel: K</p>
 <p>Initialisierungswert: IV</p>
 </ld-cell><ld-cell class="width-50" style="align-self:auto;">
-<p>Zustand: σ<sub>
-i</sub></p>
+<p>Zustand: σ<sub>i</sub></p>
 <p>Funktion zur Berechnung des nächsten Zustands: f</p>
 <p>Schlüsselstromfunktion: g</p>
 </ld-cell></ld-grid><div class="supplemental docutils container">
@@ -705,10 +709,8 @@ i</sub></p>
 <p>Anwendung der vierten Formel:</p>
 <pre class="code java literal-block"><code><span class="name">c</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">c</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">d</span><span class="whitespace">   </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number hex">0x77777777</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal number hex">0x01234567</span><span class="whitespace">
             </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number hex">0x789abcde</span><span class="whitespace">
-
 </span><span class="name">b</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">b</span><span class="whitespace"> </span><span class="operator">^</span><span class="whitespace"> </span><span class="name">c</span><span class="whitespace">   </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number hex">0x01020304</span><span class="whitespace"> </span><span class="operator">^</span><span class="whitespace"> </span><span class="literal number hex">0x789abcde</span><span class="whitespace">
             </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number hex">0x7998bfda</span><span class="whitespace">
-
 </span><span class="name">b</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">b</span><span class="whitespace"> </span><span class="operator">&lt;&lt;&lt;</span><span class="whitespace"> </span><span class="literal number integer">7</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number hex">0x7998bfda</span><span class="whitespace"> </span><span class="operator">&lt;&lt;&lt;</span><span class="whitespace"> </span><span class="literal number integer">7</span><span class="whitespace">
             </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number hex">0xcc5fed3c</span></code></pre>
 </ld-cell></ld-grid><div class="supplemental docutils container">

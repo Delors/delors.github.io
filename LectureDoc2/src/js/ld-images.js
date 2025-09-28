@@ -72,6 +72,8 @@ function scaleDocumentImagesAndVideos(
         .querySelectorAll(`:scope object[role='img'][type='image/svg+xml']`)
         .forEach((object) => {
             const loadListener = () => {
+                object.removeEventListener("load", loadListener);
+                
                 let done = false;
                 if (object.width) {
                     done = true;
@@ -115,7 +117,6 @@ function scaleDocumentImagesAndVideos(
                     width * slideToDocumentScalingFactor + "px";
                 object.style.height =
                     height * slideToDocumentScalingFactor + "px";
-                object.removeEventListener("load", loadListener);
             };
             if (object.contentDocument) {
                 console.log("svg " + object.data + " is already loaded");

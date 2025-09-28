@@ -9,7 +9,6 @@ ld-slide {
 
     --current-color: var(--s-text-color);
     color: var(--current-color);
-
     --current-background-color: var(--s-background-color);
     background-color: var(--current-background-color);
 
@@ -19,19 +18,31 @@ ld-slide {
     font-weight: var(--s-font-weight);
     line-height: var(--s-line-height);
 
-    h1 {
-        position: relative;
-        left: calc(var(--s-lr-padding) * -1);
-        width: calc(100% + var(--s-lr-padding));
-        margin-top: calc(var(--s-lr-padding));
-        border-radius: 0 var(--s-border-radius) var(--s-border-radius) 0;
-        padding: calc(var(--s-tb-padding) * 1.5) var(--s-lr-padding);
+    &:first-of-type {
+        /* Special styling for the title slide! */
+        dl {
+            dd {
+                margin-left: 6em;
+            }
 
-        background-color: var(--dark-gray);
-        color: var(--white);
-        text-shadow: -1px -1px 2px var(--gray);
-        font-size: calc(var(--s-font-size) * 2.5);
-        font-weight: var(--s-title-font-weight);
+            &.sources {
+                color: var(--gray);
+            }
+        }
+
+        h1 {
+            position: relative;
+            left: calc(var(--s-lr-padding) * -1);
+            width: calc(100% + var(--s-lr-padding));
+            margin-top: var(--s-lr-padding);
+            border-radius: 0 var(--s-border-radius) var(--s-border-radius) 0;
+            padding: calc(var(--s-tb-padding) * 2.5) var(--s-lr-padding);
+
+            background-color: var(--dark-gray);
+            color: var(--white);
+            font-size: calc(var(--s-font-size) * 2.5);
+            font-weight: var(--s-title-font-weight);
+        }
     }
 
     .supplemental {
@@ -43,14 +54,16 @@ ld-slide {
     &.repetition::before {
         position: absolute;
         top: 0;
-        right: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: calc(var(--s-font-size) / 3);
         z-index: 1;
-        padding: 0.25em 2.5em;
-        border-bottom: 1px solid var(--dark-red);
-        transform: translateX(28%) translateY(90%) rotate(45deg);
-
-        color: var(--dark-red);
-        background-color: rgb(var(--s-background-color-rgb-values) / 75%);
+        padding: 0.1em 0.5em 0.1em 1.5em;
+        text-align: center;
+        border-radius: 0 0 9.6px 9.6px;
+        letter-spacing: 125%;
+        background-color: var(--semi-light-gray);
+        color: var(--white);
         backdrop-filter: blur(2px);
     }
 
@@ -98,21 +111,18 @@ ld-slide {
     }
 
     &.new-subsection {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        align-content: center;
 
         > h2:first-child {
-            width: 100%;
-            margin-left: calc(-2 * var(--s-lr-padding));
-            padding: 0.4em 0;
+            width: calc(100% + var(--s-lr-padding));
+            margin-left: calc(-1 * var(--s-lr-padding));
+            padding: calc(var(--s-tb-padding) * 1.75) var(--s-lr-padding);
             border-radius: 0 var(--s-border-radius) var(--s-border-radius) 0;
 
-            color: var(--light-gray);
-            background-color: var(--dark-gray);
+            color: var(--dark-gray);
+            background-color: var(--semi-light-gray);
 
-            font-size: 1.666em;
+            font-size: 1.5em;
             text-align: center;
         }
     }

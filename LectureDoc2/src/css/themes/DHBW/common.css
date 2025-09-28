@@ -17,8 +17,8 @@ a:hover {
  * text.
  */
 ol.arabic.dhbw {
-    --item-counter-width: 3ch; /* to have room for "two" numbers */
-    --item-counter-offset: calc(var(--item-counter-width) + 0.5ch);
+    --item-counter-width: 2em; /* to have room for "two" numbers */
+    --item-counter-offset: calc(var(--item-counter-width));
 
     list-style-type: none;
 
@@ -28,9 +28,10 @@ ol.arabic.dhbw {
 
     > li {
         position: relative;
-        padding: 0.25em;
-        margin: 0.25em;
+        padding: 0.2em 0.4em;
+        margin: 0.2em;
 
+        border-radius: 0 var(--small-border-radius) var(--small-border-radius) 0;
         background-color: var(--dhbw-very-light-gray);
 
         counter-increment: item;
@@ -47,13 +48,13 @@ ol.arabic.dhbw {
             width: var(--item-counter-width);
             height: 100%;
 
-            padding: 0.25em;
+            padding: 0.2em;
 
             text-align: center;
-            font-family: menlo, monospace;
-            font-weight: 600;
+            font-weight: 500;
             background-color: var(--dhbw-red);
-            border-radius: 0.2em 0 0 0.2em;
+            border-radius: var(--small-border-radius) 0 0
+                var(--small-border-radius);
             color: white;
         }
 
@@ -63,11 +64,10 @@ ol.arabic.dhbw {
 
         /* TODO Relay hover! */
         &:hover {
-            box-shadow: 1px 1px 6px rgb(0 0 0 / 50%);
+            box-shadow: 6px 0px 3px -3px rgb(0 0 0 / 50%);
 
             &::before {
                 background-color: var(--dhbw-dark-red);
-                box-shadow: 1px 1px 6px rgb(0 0 0 / 50%);
             }
         }
     }
@@ -98,15 +98,18 @@ ul.column-list.dhbw {
         }
         > p:first-child {
             /* the "Header" */
-            margin-bottom: 0.25em;
             background-color: var(--dhbw-red);
-            color: white;
-            font-family: var(--theme-large-serif-font-family);
-            font-weight: 600;
-            border-radius: 0.2em 0.2em 0 0;
+            color: var(--white);
+            font-weight: 500;
+            border-radius: var(--small-border-radius) var(--small-border-radius)
+                0 0;
+            line-height: calc(
+                var(--s-line-height) - 0.1 * var(--s-line-height)
+            );
         }
         > p:last-child {
-            border-radius: 0 0 0.2em 0.2em;
+            border-radius: 0 0 var(--small-border-radius)
+                var(--small-border-radius);
             flex-grow: 1;
         }
     }
