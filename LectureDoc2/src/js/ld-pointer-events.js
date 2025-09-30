@@ -1,7 +1,5 @@
-// TODO Streamline code!
-
 /**
- * Implements support for touch events.
+ * Implements support for touch events in the slide view and the document view.
  */
 import lectureDoc2, {
     ldEvents,
@@ -12,9 +10,28 @@ import lectureDoc2, {
     moveToNextSlide,
     goToSlideWithNo,
     toggleDocumentView,
+    showSectionWithNo,
 } from "./../ld.js";
 
 console.log("loading ld-pointer-events.js");
+
+let eventScheduled = false;
+
+// To improve usability, we fold events. Otherwise, the user may easily
+// skip over dozens of slides/animation steps, which is generally
+// undesirable.
+function schedule(f, delay = 200) {
+    if (!eventScheduled) {
+        eventScheduled = true;
+        setTimeout(() => {
+            requestAnimationFrame(() => {
+                eventScheduled = false;
+                ensureLectureDocIsVisible();
+                f();
+            });
+        }, delay);
+    }
+}
 
 function computeDistance(p1, p2) {
     // we use the euclidean distance formula
@@ -23,189 +40,212 @@ function computeDistance(p1, p2) {
     return Math.hypot(dx, dy);
 }
 
-/**
- * Swipe up and down go to the next/previous slide.
- * Swipe left and right advance/retrogress the presentation.
- * Pinch changes to the document view.
- */
-function handleSwipeAndPinchAndZoomInSlideView() {
+function updateLocations(originalLocations, touches) {
+    // A TouchList is not iterable, so we need to use a for loop!
+    for (let i = 0; i < touches.length; i++) {
+        const touch = touches[i];
+        originalLocations.set(touch.identifier, {
+            x: touch.clientX,
+            y: touch.clientY,
+        });
+    }
+}
+
+function deleteLocations(originalLocations, touches) {
+    for (let i = 0; i < touches.length; i++) {
+        const touch = touches[i];
+        originalLocations.delete(touch.identifier);
+    }
+}
+
+function handlePinchInSlideView() {
     const originalLocations = new Map();
 
-    const slideZoom = {
-        /*  IsZoomed is true if the slide is currently zoomed 
-            in or the user at least started a zoom gesture; 
-            in such cases, we will never leave the slide view 
-            on pinch end as this give a negative user experience. */
-        isZoomed: false,
-        /*  The initial scale when starting a pinch and zoom 
-            gesture; used as a reference point. */
-        scale: undefined,
-    };
-    /*  When the user performed a pinch and zoom gesture it may
-        happen that - when the user lifts the fingers slightly 
-        asynchronously - we "immediately" get another single 
-        finger touch event and would then advance/retrogress 
-        in the presentation, which is generally not what the 
-        user expects.
-
-        Hence, after a pinch-and-zoom gesture the user is now 
-        required to start over again.*/
-    let wasPinchAndZoom = false;
-
-    let eventScheduled = false;
-
-    // To improve usability, we fold events. Otherwise, the user may easily
-    // skip over dozens of slides/animation steps, which is generally
-    // undesirable.
-    function schedule(f) {
-        if (!eventScheduled) {
-            eventScheduled = true;
-            setTimeout(() => {
-                requestAnimationFrame(() => {
-                    eventScheduled = false;
-                    ensureLectureDocIsVisible();
-                    f();
-                });
-            }, 200);
-        }
-    }
+    let abortGesture = false;
 
     function touchstartHandler(event) {
-        const touches = event.changedTouches;
-        for (let i = 0; i < touches.length; i++) {
-            const touch = touches[i];
-            //console.log("touchstart", touch.identifier);
-            originalLocations.set(touch.identifier, {
-                x: touch.clientX,
-                y: touch.clientY,
-            });
+        updateLocations(originalLocations, event.changedTouches);
+        if (originalLocations.size > 2) {
+            abortGesture = true;
         }
+        console.log(`touchstart: ${originalLocations}`);
     }
 
     function touchmoveHandler(event) {
+        if (originalLocations.size != 2) {
+            // We only care about two-finger gestures!
+            return;
+        }
+
         event.preventDefault();
 
-        if (originalLocations.size == 1 && !wasPinchAndZoom) {
-            const touch = event.changedTouches[0];
-            const originalLocation = originalLocations.get(touch.identifier);
+        if (abortGesture) {
+            return;
+        }
+
+        const oldDistance = computeDistance(...originalLocations.values());
+        // We don't want to update the original locations to ensure
+        // that we detect very slow pinch gestures!
+        const currentLocations = structuredClone(originalLocations);
+        updateLocations(currentLocations, event.changedTouches);
+        const newDistance = computeDistance(...currentLocations.values());
+
+        if (oldDistance < newDistance - 20) {
+            // The user started zooming in...
+            abortGesture = true;
+        } else if (oldDistance > newDistance + 20) {
+            const slideNO = event.target.closest("ld-slide").dataset.ldSlideNo;
+            console.log(
+                `pinch detected - switching to document view and showing section ${slideNO}`,
+            );
+            schedule(() => {
+                toggleDocumentView();
+                // we have to defer "showSectionWithNo" to ensure that
+                // the document view is visible when we call it.
+                requestAnimationFrame(() => showSectionWithNo(Number(slideNO)));
+            });
+            abortGesture = true;
+        }
+    }
+
+    function touchendHandler(event) {
+        deleteLocations(originalLocations, event.changedTouches);
+
+        if (originalLocations.size == 0) {
+            abortGesture = false;
+        }
+    }
+
+    const slidesPane = document.querySelector("#ld-slides-pane");
+    slidesPane.addEventListener("touchstart", touchstartHandler);
+    slidesPane.addEventListener("touchmove", touchmoveHandler);
+    slidesPane.addEventListener("touchcancel", touchendHandler);
+    slidesPane.addEventListener("touchend", touchendHandler);
+}
+
+ldEvents.addEventListener(
+    "afterLDListenerRegistrations",
+    handlePinchInSlideView,
+);
+
+/**
+ * Swipe up and down go to the next/previous slide.
+ * Swipe left and right advance/retrogress the presentation.
+ * Scrubbing left with one finger retrogresses the presentation, scrubbing right
+ * advances it. (This is the opposite of the swipe gesture.)
+ */
+function handleSwipeAndScrubInSlideView() {
+    const originalLocations = new Map();
+
+    const Gestures = Object.freeze({
+        NONE: Symbol("none"),
+        SWIPE: Symbol("swipe"),
+        SCRUB: Symbol("scrub"),
+        IGNORED: Symbol("ignored"),
+    });
+
+    let gestureInProgress = Gestures.NONE;
+
+    function touchstartHandler(event) {
+        if (originalLocations.size == 0) {
+            gestureInProgress = Gestures.NONE;
+        }
+
+        const touches = event.changedTouches;
+        updateLocations(originalLocations, touches);
+
+        if (originalLocations.size >= 2) {
+            // We only support one-finger gestures for swiping and scrubbing.
+            // Hence, when we have two or more fingers on the screen, we
+            // don't want to do anything anymore until the user lifts all
+            // fingers.
+            gestureInProgress = Gestures.IGNORED;
+        }
+
+        /*
+        console.log(
+            `touchstart: ${originalLocations.size} fingers; gestureInProgress: ${gestureInProgress.toString()}`,
+        );
+        */
+    }
+
+    let lastTouchMoveEvent = undefined;
+    let originalLocation = undefined;
+
+    function touchmoveHandler(event) {
+        if (originalLocations.size === 1) {
+            event.preventDefault();
+        }
+
+        // This is true if the user used two or more fingers or aborted the
+        // gesture.
+        if (gestureInProgress === Gestures.IGNORED) {
+            return;
+        }
+
+        // We want to track the difference between the "current" location and
+        // the last location of the finger when we handle the event.
+        lastTouchMoveEvent = event.changedTouches[0];
+        originalLocation = originalLocations.get(lastTouchMoveEvent.identifier);
+
+        /*
+        console.log(
+            `touchmove: ${originalLocations.size} fingers; gestureInProgress: ${gestureInProgress.toString()}; lastTouchMoveEvent: ${lastTouchMoveEvent.identifier}`,
+        );
+        */
+
+        schedule(() => {
+            if (gestureInProgress === Gestures.IGNORED) {
+                return;
+            }
+
+            const touch = lastTouchMoveEvent;
             const deltaX = touch.clientX - originalLocation.x;
             const deltaY = touch.clientY - originalLocation.y;
             if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
                 originalLocation.x = touch.clientX;
                 originalLocation.y = touch.clientY;
             }
+
+            // Let's check if we have a swipe or a scrub gesture.
+            // We have a swipe gesture if the user lifted the finger in the
+            // meantime and hence, the original locations map is empty.
+            if (gestureInProgress === Gestures.NONE) {
+                if (originalLocations.get(touch.identifier)) {
+                    gestureInProgress = Gestures.SCRUB;
+                } else {
+                    gestureInProgress = Gestures.SWIPE;
+                }
+            }
+            /*console.log(
+                `touchmove (deferred handler): ${originalLocations.size} fingers; gestureInProgress: ${gestureInProgress.toString()}; deltaX: ${deltaX}; deltaY: ${deltaY}`,
+            );
+            */
+
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 if (deltaX < -10) {
-                    schedule(advancePresentation);
+                    gestureInProgress === Gestures.SWIPE
+                        ? advancePresentation()
+                        : retrogressPresentation();
                 } else if (deltaX > 10) {
-                    schedule(retrogressPresentation);
+                    gestureInProgress === Gestures.SWIPE
+                        ? retrogressPresentation()
+                        : advancePresentation();
                 }
             } else {
                 // let's move to the previous / next slide
                 if (deltaY < -10) {
-                    schedule(moveToNextSlide);
+                    moveToNextSlide();
                 } else if (deltaY > 10) {
-                    schedule(moveToPreviousSlide);
+                    moveToPreviousSlide();
                 }
             }
-        } else if (originalLocations.size == 2) {
-            wasPinchAndZoom = true;
-            const slidesPane = document.getElementById("ld-slides-pane");
-            const nominalSlidePaneScale =
-                lectureDoc2.getEphemeral().currentSlidePaneScale;
-
-            // We store the initial scale when we start zooming to enable the
-            // the user to zoom in and out relative to this zoom level while
-            // keeping the fingers on the screen.
-            let baseScale = slideZoom.scale;
-            if (!baseScale) {
-                slideZoom.scale = baseScale = slidesPane.style.scale;
-                // The precision used by CSS is less than the calculated value
-                // given by LD.
-                // So we need to account for that to detect if we have already
-                // zoomed in or not!
-                if (
-                    baseScale >
-                    Math.round(nominalSlidePaneScale * 10000) / 10000
-                ) {
-                    slideZoom.isZoomed = true;
-                }
-            }
-
-            const oldDistance = computeDistance(...originalLocations.values());
-
-            // We don't want to update the original locations to ensure
-            // that we detect very slow pinch gestures!
-            const currentLocations = structuredClone(originalLocations);
-            const touches = event.changedTouches;
-            for (let i = 0; i < touches.length; i++) {
-                const touch = touches[i];
-                currentLocations.set(touch.identifier, {
-                    x: touch.clientX,
-                    y: touch.clientY,
-                });
-            }
-            const newDistance = computeDistance(...currentLocations.values());
-
-            let newScale = baseScale * (newDistance / oldDistance);
-            // console.log(`nominalSlidePaneScale: ${nominalSlidePaneScale}, baseScale: ${baseScale}, newScale: ${newScale}, slideZoom.isZoomed: ${slideZoom.isZoomed}`);
-            if (newScale < nominalSlidePaneScale && !slideZoom.isZoomed) {
-                // It may happen that the we get many touches at once and
-                // we only want to react to the first pinch
-
-                schedule(() => {
-                    slidesPane.style.scale = nominalSlidePaneScale;
-                    slidesPane.style.transform = ""; // removeProperty("transformOrigin") doesn't work here in Safari on iPadOS
-                    toggleDocumentView();
-                });
-            } else {
-                slideZoom.isZoomed = true;
-
-                // compute the center point between the two fingers
-                const firstTouch = currentLocations.values().next();
-                const secondTouch = currentLocations.values().next();
-                const centerX = (firstTouch.value.x + secondTouch.value.x) / 2;
-                const centerY = (firstTouch.value.y + secondTouch.value.y) / 2;
-                console.log(`centerX: ${centerX}, centerY: ${centerY}`);
-
-                // We want to zoom into the center point between the two fingers.
-                // However, we have to account for the current zoom level;
-                // the location is always relative to the top left corner of the
-                // slide.
-                slidesPane.style.transform = `translate(${centerX / nominalSlidePaneScale}px, ${centerY / nominalSlidePaneScale}px)`;
-
-                slidesPane.style.scale = Math.max(
-                    nominalSlidePaneScale,
-                    newScale,
-                );
-
-                // When we snap back to the nominal scale, we also snap back to the
-                // center.
-                if (
-                    Math.round(nominalSlidePaneScale * 10000) / 10000 >=
-                    newScale
-                ) {
-                    slidesPane.style.transform = ""; // see above
-                }
-            }
-        }
+        }, 200);
     }
 
     function touchendHandler(event) {
-        // A TouchList is not iterable, so we need to use a for loop!
-        const touches = event.changedTouches;
-        for (let i = 0; i < touches.length; i++) {
-            const touch = touches[i];
-            originalLocations.delete(touch.identifier);
-            //console.log("touchend", touch.identifier);
-        }
-        if (originalLocations.size < 2) {
-            slideZoom.isZoomed = false;
-            slideZoom.scale = undefined;
-        }
-        if (originalLocations.size == 0) {
-            wasPinchAndZoom = false;
-        }
+        // The touch gesture is identified by touchStart and touchMove events.
+        deleteLocations(originalLocations, event.changedTouches);
     }
 
     for (const slide of document.querySelectorAll("ld-slide")) {
@@ -215,52 +255,33 @@ function handleSwipeAndPinchAndZoomInSlideView() {
         slide.addEventListener("touchend", touchendHandler);
     }
 }
+ldEvents.addEventListener(
+    "afterLDListenerRegistrations",
+    handleSwipeAndScrubInSlideView,
+);
 
 function handleZoomInDocumentView() {
     const originalLocations = new Map();
 
-    let eventScheduled = false;
-
-    // To improve usability, we fold events. Otherwise, the user may easily
-    // skip over dozens of slides/animation steps, which is generally
-    // undesirable.
-    function schedule(f) {
-        if (!eventScheduled) {
-            eventScheduled = true;
-            setTimeout(() => {
-                eventScheduled = false;
-                ensureLectureDocIsVisible();
-                f();
-            }, 200);
-        }
-    }
-
     function touchstartHandler(event) {
-        const touches = event.changedTouches;
-        for (let i = 0; i < touches.length; i++) {
-            const touch = touches[i];
-            //console.log("touchstart", touch.identifier);
-            originalLocations.set(touch.identifier, {
-                x: touch.clientX,
-                y: touch.clientY,
-            });
-        }
+        updateLocations(originalLocations, event.changedTouches);
     }
 
     function touchmoveHandler(event) {
-        //console.log("touchmove", event, originalLocations);
-
         if (originalLocations.size == 2) {
             // We don't want to prevent standard scroll events using one finger!
             // Hence, we only prevent the default action when we have two
             // fingers on the screen.
-            // TODO Implement support for zooming in in the slide view
             event.preventDefault();
 
             const oldDistance = computeDistance(...originalLocations.values());
 
-            // We don't want to update the original locations to ensure
-            // that we detect very slow zoom gestures!
+            // Overall, we only want to switch to the slide view when
+            // the user definitively performs a zoom-in gesture. Therefore, we
+            // ignore small "zoom-in" gestures of less than 20 pixels.
+            // Hence, we don't want to update the original locations to ensure
+            // that we detect very slow zoom gestures, where the distance
+            // increases slowly.
             const currentLocations = structuredClone(originalLocations);
             const touches = event.changedTouches;
             for (let i = 0; i < touches.length; i++) {
@@ -287,13 +308,7 @@ function handleZoomInDocumentView() {
     }
 
     function touchendHandler(event) {
-        // A TouchList is not iterable, so we need to use a for loop!
-        const touches = event.changedTouches;
-        for (let i = 0; i < touches.length; i++) {
-            const touch = touches[i];
-            originalLocations.delete(touch.identifier);
-            //console.log("touchend", touch.identifier);
-        }
+        deleteLocations(originalLocations, event.changedTouches);
     }
 
     for (const section of document.querySelectorAll("ld-section")) {
@@ -307,8 +322,4 @@ function handleZoomInDocumentView() {
 ldEvents.addEventListener(
     "afterLDListenerRegistrations",
     handleZoomInDocumentView,
-);
-ldEvents.addEventListener(
-    "afterLDListenerRegistrations",
-    handleSwipeAndPinchAndZoomInSlideView,
 );

@@ -73,7 +73,7 @@ function scaleDocumentImagesAndVideos(
         .forEach((object) => {
             const loadListener = () => {
                 object.removeEventListener("load", loadListener);
-                
+
                 let done = false;
                 if (object.width) {
                     done = true;

@@ -294,6 +294,9 @@ const presentation = {
     showHelp: true,
 };
 
+const HasTouchScreen = window.matchMedia("(pointer: coarse)").matches;
+console.log(`uses touchscreen: ${HasTouchScreen}`);
+
 /**
  * Captures the current state of the presentation.
 
@@ -311,7 +314,7 @@ let state = {
     currentSlideNo: 0,
     slideProgress: {}, // stores for each slide the number of executed animation steps
 
-    showMainSlideNumber: false,
+    showMainSlideNumber: HasTouchScreen,
     showHelp: false,
     showTableOfContents: false,
 
@@ -431,7 +434,7 @@ function loadState() {
         const newState = JSON.parse(jsonState);
         if (newState) {
             state = newState;
-            // console.debug(`${presentation.id} state loaded: ${jsonState}`);
+            console.debug(`${presentation.id} state loaded: ${jsonState}`);
         } else {
             // console.debug(`${presentation.id} no previous state found`);
         }
@@ -1834,6 +1837,14 @@ function updateJumpTarget(number) {
     document.getElementById("ld-jump-target-current").innerText += number;
     document.getElementById("ld-jump-target-dialog").showModal();
 }
+
+export function showSectionWithNo(sectionNo) {
+    window.scrollTo(
+        0,
+        document.getElementById("ld-section-no-" + sectionNo).offsetTop,
+    );
+}
+
 function jumpToSlide() {
     const ld_goto_number = document.getElementById("ld-jump-target-current");
     const slideNo =
@@ -1845,11 +1856,7 @@ function jumpToSlide() {
         const targetSlideNo = slideNo > lastSlideNo() ? lastSlideNo() : slideNo;
 
         if (state.showDocumentView) {
-            window.scrollTo(
-                0,
-                document.getElementById("ld-section-no-" + targetSlideNo)
-                    .offsetTop,
-            );
+            showSectionWithNo(targetSlideNo);
         } else {
             goToSlideWithNo(targetSlideNo);
         }
