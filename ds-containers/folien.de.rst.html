@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="&quot;Virtualisierung&quot;, &quot;Container&quot;, &quot;Docker&quot;, &quot;Deployment&quot;" name="keywords" />
+<meta content="Distributed Systems - Virtualisierung und Container" lang="de" name="description" xml:lang="de" />
+<meta content="lecture-ds-containers" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:B1QtQROtLY96iTk7FP7dIURQNpQEhENsXXEnGRexAcU=:9ADdZ6yy1Ho4C030:t94oT4YXFTG5AohwIwCie3ei+JOVlicwuI0S1hb4rspB8BPuuZ6NMrV+hyFsTFJa55doXMMAXujJt9/OKA2QS3oIcpLHeQvNUB7//vBrCDVcIkEkeNhOSxdAydaIMbXJVuPPu8+OM8MkYbcUp1Wy0JmY7gTjFVAARg9kyePDF/i5zrXpfVbdrd+4EGgf4rO0/3yTPwCIbET/RwHO7hNiDFO632UXpG/J0nQ4NH7ZU8+Y0ozVu/Za2gjixuIF" />
+<title>Verteilte Systeme - Virtualisierung und Container</title>
+
+    <script src="../LectureDoc2/src/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/src/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
+    
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-defs"><defs><marker     id="arrow"     viewBox="0 0 10 10"     refX="8"     refY="5"     markerWidth="6"     markerHeight="6"     orient="auto-start-reverse">     <path d="M 0 0 L 10 5 L 0 10 z" fill="#111"/> </marker> <marker     id="arrow-blue"     viewBox="0 0 10 10"     refX="8"     refY="5"     markerWidth="6"     markerHeight="6"     orient="auto-start-reverse">     <path d="M 0 0 L 10 5 L 0 10 z" fill="#0066cc"/> </marker></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-style"><style>svg {     font-family: "Noto Sans Display"; } .container-box { fill: #e6f3ff; stroke: #0066cc; stroke-width: 0.1; } .vm-box { fill: #fff2e6; stroke: #ff6600; stroke-width: 0.1; } .host-box { fill: #f0f0f0; stroke: #333; stroke-width: 0.1; } .app-box { fill: #e6ffe6; stroke: #00cc66; stroke-width: 0.1; } .text-label {  fill: #333; } .title-label { font-weight: bold; fill: #333; }</style></svg>
+<template>
+<ld-topic id="verteilte-systeme-virtualisierung-und-container">
+<h1 class="title">Verteilte Systeme - Virtualisierung und Container</h1>
+
+<p>Eine Einführung in moderne Deployment-Technologien</p>
+<dl class="field-list simple">
+<dt>Dozent<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt>Kontakt<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.0</p>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/ds-containers/folien.de.rst.html">https://delors.github.io/ds-containers/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/ds-containers/folien.de.rst.html.pdf">https://delors.github.io/ds-containers/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div>
+</ld-topic>
+<ld-topic class="new-section transition-fade" id="einfuhrung-in-virtualisierung-und-container">
+<h2>Einführung in Virtualisierung und Container</h2>
+</ld-topic>
+<ld-topic id="virtualisierung-allg-definition">
+<h2>Virtualisierung - allg. Definition</h2>
+<blockquote class="epigraph">
+<p>Virtualisierung bezeichnet in der Informatik die <strong>Nachbildung eines Hard- oder Software-Objekts durch ein ähnliches Objekt vom selben Typ mit Hilfe einer Abstraktionsschicht</strong>.</p>
+<p><span class="incremental">Dadurch lassen sich virtuelle (d. h. nicht-physische) Geräte oder Dienste wie emulierte Hardware, Betriebssysteme, Datenspeicher oder Netzwerkressourcen erzeugen.</span></p>
+<p><span class="incremental">Dies erlaubt es etwa, Computer-Ressourcen (insbesondere im Server-Bereich) transparent zusammenzufassen oder aufzuteilen, oder ein Betriebssystem innerhalb eines anderen auszuführen. Dadurch können u. a. mehrere Betriebssysteme auf einem physischen Server oder „Host“ ausgeführt werden.</span></p>
+<p class="attribution">—<a class="reference external" href="https://de.wikipedia.org/wiki/Virtualisierung_(Informatik)">Stand 5. Oktober 2025 - Wikipedia</a></p>
+</blockquote>
+</ld-topic>
+<ld-topic id="motivation-warum-virtualisierung">
+<h2>Motivation - Warum Virtualisierung?</h2>
+<aside class="admonition observation">
+<p class="admonition-title">Beobachtung</p>
+<p>Moderne Softwareentwicklung steht vor verschiedenen Herausforderungen:</p>
+<ul class="incremental-list simple">
+<li><p><strong>Heterogene Umgebungen</strong>: Software muss auf verschiedenen Betriebssystemen und Hardware-Konfigurationen laufen.</p></li>
+<li><p><strong>Skalierbarkeit</strong>: (Server-)Anwendungen müssen flexibel skalieren können.</p></li>
+<li><p><strong>Isolation</strong>: Verschiedene (Server-)Anwendungen sollen sich nicht gegenseitig beeinträchtigen.</p></li>
+<li><p><strong>Portabilität</strong>: Code soll einfach zwischen verschiedenen Umgebungen übertragbar sein.</p></li>
+<li><p><strong>Ressourceneffizienz</strong>: Hardware soll optimal genutzt werden.</p></li>
+</ul>
+<div class="framed incremental docutils container">
+<p>Virtualisierung und Containerisierung bieten Lösungen für diese Herausforderungen.</p>
+</div>
+</aside>
+</ld-topic>
+<ld-topic id="was-ist-virtualisierung">
+<h2>Was ist Virtualisierung?</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p><strong>Virtualisierung</strong><a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> ermöglicht es mehrere virtuelle Maschinen (VMs) oder Container auf einer physischen Hardware auszuführen.</p>
+</aside>
+<ld-deck class="incremental">
+<ld-card>
+<p class="rubric">Ziel der Virtualisierung</p>
+<ul class="incremental-list simple">
+<li><p>Abstraktion der Hardware</p></li>
+<li><p>Isolation zwischen Anwendungen</p></li>
+<li><p>Optimale Ressourcennutzung</p></li>
+<li><p>Flexibilität bei der Bereitstellung</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Arten der Virtualisierung</p>
+<ul class="incremental-list simple">
+<li><p><strong>Bare-Metal Virtualisierung</strong>: Virtualisierung direkt auf der Hardware</p></li>
+<li><p><strong>Hosted Virtualisierung</strong>: Virtualisierung auf einem Host-Betriebssystem</p></li>
+<li><p><strong>Containervirtualisierung</strong>: Virtualisierung von Systemressourcen eines Betriebssystems, teilt sich jedoch den Kernel mit dem Host-Betriebssytem.</p></li>
+<li><p><strong>Anwendungsvirtualisierung</strong>: Ausführung einer Anwendung in einer exclusiven, teilweise oder vollständig isolierten virtuellen Umgebung.</p></li>
+</ul>
+</ld-card></ld-deck><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Im Folgenden konzentrieren wir uns auf Virtualisierung von serverseitigen Anwendungen und von Softwareentwicklung.</p>
+</aside>
+</aside>
+</ld-topic>
+<ld-topic id="traditionelle-vs-virtualisierte-architektur">
+<h2>Traditionelle vs. Virtualisierte Architektur</h2>
+<div class="align-center"><div style="width: 80ch; height: 25ch; container-type:size;">
+<svg viewBox="0 0 60 20" font-size="1" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- Traditional Architecture -->
+    <g class="incremental">
+        <text class="title-label" x="8" y="2">Traditionelle Architektur</text>
+
+        <!-- Host OS -->
+        <rect class="host-box" width="12" height="3" x="2" y="4" rx="1"/>
+        <text class="text-label" x="5" y="5.8">Host OS</text>
+
+        <!-- Apps -->
+        <rect class="app-box" width="3" height="2" x="3" y="8" rx="0.5"/>
+        <text class="text-label" x="3.5" y="9.3" >App 1</text>
+
+        <rect class="app-box" width="3" height="2" x="7" y="8" rx="0.5"/>
+        <text class="text-label" x="7.5" y="9.3" >App 2</text>
+
+        <rect class="app-box" width="3" height="2" x="11" y="8" rx="0.5"/>
+        <text class="text-label" x="11.5" y="9.3" >App 3</text>
+
+        <rect class="host-box" width="17" height="2" x="3" y="16" rx="0.5"/>
+        <text class="text-label" x="3.5" y="17.3">Physische Hardware</text>
+    </g>
+
+    <!-- Virtualized Architecture -->
+    <g class="incremental">
+        <text class="title-label" x="33.5" y="2">Virtualisierte Architektur</text>
+
+        <!-- Hypervisor -->
+        <rect class="host-box" width="12" height="3" x="33" y="4" rx="0.5"/>
+        <text class="text-label" x="33.5" y="5.8">Hypervisor</text>
+
+        <!-- VMs -->
+        <rect class="vm-box" width="3.5" height="4" x="33" y="8" rx="0.5"/>
+        <text class="text-label" x="33.5" y="9.5" >VM 1</text>
+        <rect class="app-box" width="2" height="1.5" x="33.5" y="10.5" rx="0.3"/>
+        <text class="text-label" x="33.8" y="11.2" >OS</text>
+
+        <rect class="vm-box" width="3.5" height="4" x="37.5" y="8" rx="0.5"/>
+        <text class="text-label" x="38" y="9.5" >VM 2</text>
+        <rect class="app-box" width="2" height="1.5" x="38" y="10.5" rx="0.3"/>
+        <text class="text-label" x="38.3" y="11.2" >OS</text>
+
+        <rect class="vm-box" width="3.5" height="4" x="42" y="8" rx="0.5"/>
+        <text class="text-label" x="42.5" y="9.5" >VM 3</text>
+        <rect class="app-box" width="2" height="1.5" x="42.5" y="10.5" rx="0.3"/>
+        <text class="text-label" x="42.8" y="11.2" >OS</text>
+
+        <rect class="host-box" width="17" height="2" x="33" y="16" rx="0.5"/>
+        <text class="text-label" x="33.5" y="17.3">Physische Hardware</text>
+    </g>
+
+
+    <!-- Arrows -->
+    <g class="incremental">
+        <line x1="30" y1="10" x2="32" y2="10" style="stroke: #666; stroke-width: 0.1" marker-end="url(#arrow)"/>
+        <text class="text-label" x="30" y="9.5" >Virtualisierung</text>
+    </g>
+</svg>
+</div></div></ld-topic>
+<ld-topic id="bare-metal-virtualisierung">
+<h2>Bare-Metal Virtualisierung</h2>
+<ld-deck>
+<ld-card>
+<p>Bei der <strong>Bare-Metal Virtualisierung</strong> (auch Type-1 Hypervisor) läuft die Virtualisierungsschicht direkt auf der Hardware, ohne ein Host-Betriebssystem.</p>
+<ld-deck>
+<ld-card>
+<p class="rubric"><span class="green">Vorteile</span></p>
+<ul class="incremental-list positive-list simple">
+<li><p><strong>Bessere Performance</strong>: Kein Overhead durch Host-OS</p></li>
+<li><p><strong>Höhere Sicherheit</strong>: Weniger Angriffsfläche</p></li>
+<li><p><strong>Direkter Hardware-Zugriff</strong>: Optimale Ressourcennutzung</p></li>
+<li><p><strong>Enterprise-fähig</strong>: Für produktive Umgebungen geeignet</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric"><span class="red">Nachteile</span></p>
+<ul class="incremental-list negative-list simple">
+<li><p><strong>Komplexität</strong>: Schwerer zu installieren und zu verwalten</p></li>
+<li><p><strong>Hardware-Abhängigkeit</strong>: Hardware-Unterstützung erforderlich</p></li>
+<li><p><strong>Kosten</strong>: ggf. Lizenzkosten für Hypervisor-Software</p></li>
+</ul>
+</ld-card></ld-deck></ld-card><ld-card class="incremental">
+<p><strong>Beispiele für Bare-Metal Hypervisoren:</strong></p>
+<ul class="simple">
+<li><p>Xen</p></li>
+<li><p>VMware vSphere/ESXi</p></li>
+<li><p>Microsoft Hyper-V (Server)</p></li>
+<li><p>Citrix Hypervisor</p></li>
+<li><p>...</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="hosted-virtualisierung">
+<h2>Hosted Virtualisierung</h2>
+<ld-deck>
+<ld-card>
+<p>Bei der <strong>Hosted Virtualisierung</strong> (auch Type-2 Hypervisor) läuft die Virtualisierungsschicht als Anwendung auf einem Host-Betriebssystem.</p>
+<ld-deck>
+<ld-card>
+<p class="rubric"><span class="green">Vorteile</span></p>
+<ul class="incremental-list positive-list simple">
+<li><p><strong>Einfache Installation</strong>: Wie normale Software</p></li>
+<li><p><strong>Flexibilität</strong>: Verschiedene Host-Betriebssysteme möglich (ggf. über Hardwarearchitekturgrenzen hinweg)</p></li>
+<li><p><strong>Entwicklungsumgebung</strong>: Ideal für Tests und Entwicklung</p></li>
+<li><p><strong>Benutzerfreundlich</strong>: Grafische Oberflächen verfügbar</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric"><span class="red">Nachteile</span></p>
+<ul class="incremental-list negative-list simple">
+<li><p><strong>Performance-Overhead</strong>: Host-OS verbraucht Ressourcen</p></li>
+<li><p><strong>Sicherheitsrisiken</strong>: Host-OS als zusätzliche Angriffsfläche</p></li>
+<li><p><strong>Begrenzte Skalierbarkeit</strong>: Weniger VMs pro Host möglich</p></li>
+</ul>
+</ld-card></ld-deck></ld-card><ld-card class="incremental">
+<p><strong>Beispiele für Hosted Hypervisoren:</strong></p>
+<ul class="simple">
+<li><p>Qemu (Open Source - kann Virtualisierung und Emulation)<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></li>
+<li><p>VMware Workstation</p></li>
+<li><p>Oracle VirtualBox</p></li>
+<li><p>Parallels Desktop</p></li>
+<li><p>...</p></li>
+</ul>
+</ld-card></ld-deck><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p>Qemu kann auch zusammen mit KVM betrieben werden.</p>
+</aside>
+</aside>
+</ld-topic>
+<ld-topic class="new-section transition-fade" id="container-technologien">
+<h2>Container-Technologien</h2>
+</ld-topic>
+<ld-topic id="was-sind-container">
+<h2>Was sind Container?</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p><strong>Container</strong> sind leichtgewichtige, portable Einheiten, die Anwendungen zusammen mit allen notwendigen Abhängigkeiten (Code, Runtime, Bibliotheken) verpacken. Sie teilen sich den Kernel des Host-Betriebssystems, bieten aber isolierte Prozess- und Nutzerbereiche, wodurch Anwendungen unabhängig voneinander laufen können.</p>
+</aside>
+<div class="incremental docutils container">
+<p><strong>Beispiele für die Isolierung (Linux)</strong></p>
+<ul class="simple">
+<li><p><strong>Namespaces</strong>: Isolation von Nutzern, Prozessen, Netzwerk, Dateisystem</p></li>
+<li><p><strong>Control Groups (cgroups)</strong>: Ressourcenbeschränkung (CPU, Speicher, ...)</p></li>
+<li><p><strong>Union File Systems</strong>: Effiziente Speicherung von Layern</p></li>
+</ul>
+</div>
+<div class="supplemental docutils container">
+<p class="rubric">Beispiele für Container-Isolierung unter Linux</p>
+<dl class="field-list simple">
+<dt>Namespaces<span class="colon">:</span></dt>
+<dd><p>Isolieren unterschiedliche Systemressourcen, sodass Prozesse in einem Container „ihre eigene Welt“ sehen: Jeder Container hat seine eigenen Benutzer- und Gruppen und sieht nur seine eigenen Prozesse. Prozesse aus anderen Containern oder dem Host sind unsichtbar. Container haben eigene Netzwerkschnittstellen, IP-Adressen und Ports und können z. B. auf Port 80 lauschen, ohne Host oder andere Container zu stören. Weiterhin hat jeder Container eine eigene Sicht auf das Dateisystem. Ein Container kann sein Root-Dateisystem haben, ohne den Host oder andere Container zu verändern.</p>
+</dd>
+<dt>Control Groups (cgroups)<span class="colon">:</span></dt>
+<dd><p>Regeln und beschränken Ressourcennutzung, um fairen Zugriff zu gewährleisten: Insbesondere CPU-Zeit, Speicherbenutzung und Netzwerk und I/O Limits.</p>
+</dd>
+<dt>Union File Systems (UnionFS / OverlayFS)<span class="colon">:</span></dt>
+<dd><p>Ermöglichen effiziente, schichtweise Speicherung, da zum Beispiel das Basis-Image + Container-spezifische Änderungen als separate Layer gespeichert werden.</p>
+</dd>
+</dl>
+</div>
+</ld-topic>
+<ld-topic id="container-vs-virtual-machines">
+<h2>Container vs. Virtual Machines</h2>
+<div class="align-center"><div style="width: 80ch; height: 30ch; container-type:size;">
+<svg viewBox="0 0 60 24" font-size="1" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- Virtual Machine Architecture -->
+    <g class="incremental">
+        <text class="title-label" x="8" y="2">Virtual Machine</text>
+
+        <!-- Apps -->
+        <rect class="app-box" width="2.5" height="1.5" x="2" y="4" rx="0.3"/>
+        <text class="text-label" x="2.2" y="4.8">App</text>
+
+        <rect class="app-box" width="2.5" height="1.5" x="5" y="4" rx="0.3"/>
+        <text class="text-label" x="5.2" y="4.8">App</text>
+
+        <!-- Guest OS -->
+        <rect class="vm-box" width="12" height="2" x="2" y="6" rx="0.5"/>
+        <text class="text-label" x="6" y="7.3">Guest OS</text>
+
+        <!-- Hypervisor -->
+        <rect class="host-box" width="12" height="2" x="2" y="9" rx="0.5"/>
+        <text class="text-label" x="6" y="10.3">Hypervisor</text>
+
+        <!-- Host OS -->
+        <rect class="host-box" width="12" height="2" x="2" y="12" rx="0.5"/>
+        <text class="text-label" x="6" y="13.3">Host OS</text>
+    </g>
+
+    <!-- Container Architecture -->
+    <g class="incremental">
+        <text class="title-label" x="38" y="2">Container</text>
+
+        <!-- Apps -->
+        <rect class="app-box" width="2.5" height="1.5" x="32" y="4" rx="0.3"/>
+        <text class="text-label" x="32.2" y="4.8">App</text>
+
+        <rect class="app-box" width="2.5" height="1.5" x="35" y="4" rx="0.3"/>
+        <text class="text-label" x="35.2" y="4.8">App</text>
+
+        <rect class="app-box" width="2.5" height="1.5" x="38" y="4" rx="0.3"/>
+        <text class="text-label" x="38.2" y="4.8">App</text>
+
+        <rect class="app-box" width="2.5" height="1.5" x="41" y="4" rx="0.3"/>
+        <text class="text-label" x="41.2" y="4.8">App</text>
+
+        <!-- Container Runtime -->
+        <rect class="container-box" width="12" height="3" x="32" y="6" rx="0.5"/>
+        <text class="text-label" x="35" y="7.8">Container Runtime</text>
+        <text class="text-label" x="35" y="8.5" >(Docker, containerd)</text>
+
+        <!-- Host OS -->
+        <rect class="host-box" width="12" height="2" x="32" y="10" rx="0.5"/>
+        <text class="text-label" x="36" y="11.3">Host OS</text>
+    </g>
+
+    <!-- Hardware -->
+    <rect class="host-box" width="56" height="2" x="2" y="18" rx="1"/>
+    <text class="text-label" x="28" y="19.3">Physische Hardware</text>
+
+    <!-- Resource Usage -->
+    <g class="incremental">
+        <text class="title-label" x="2" y="22">Ressourcennutzung</text>
+        <text class="text-label" x="2" y="23.2" >VM: Vollständiges OS pro Instanz</text>
+        <text class="text-label" x="32" y="23.2" >Container: Geteiltes Host-OS</text>
+    </g>
+</svg>
+</div></div></ld-topic>
+<ld-topic id="vergleich-container-vs-vms">
+<h2>Vergleich: Container vs. VMs</h2>
+<ld-grid class="dd-margin-left-2em default-layout">
+<ld-cell style="align-self:auto;">
+<p class="rubric">Virtual Machines</p>
+<dl class="incremental-list field-list simple">
+<dt><span class="green">Vorteile</span><span class="colon">:</span></dt>
+<dd><ul class="positive-list simple">
+<li><p>Vollständige Isolation</p></li>
+<li><p>Verschiedene Betriebssysteme möglich</p></li>
+<li><p>Hohe Sicherheit</p></li>
+</ul>
+</dd>
+<dt><span class="red">Nachteile</span><span class="colon">:</span></dt>
+<dd><ul class="negative-list simple">
+<li><p>Hoher Ressourcenverbrauch</p></li>
+<li><p>Langsame Startzeiten</p></li>
+<li><p>Komplexe Verwaltung</p></li>
+<li><p>Weniger portabel</p></li>
+</ul>
+</dd>
+</dl>
+</ld-cell><ld-cell style="align-self:auto;">
+<p class="rubric">Container</p>
+<dl class="incremental-list field-list simple">
+<dt><span class="green">Vorteile</span><span class="colon">:</span></dt>
+<dd><ul class="positive-list simple">
+<li><p>Schneller Start</p></li>
+<li><p>Geringer Ressourcenverbrauch</p></li>
+<li><p>Hohe Portabilität</p></li>
+<li><p>Einfache Skalierung</p></li>
+</ul>
+</dd>
+<dt><span class="red">Nachteile</span><span class="colon">:</span></dt>
+<dd><ul class="negative-list simple">
+<li><p>Weniger Isolation</p></li>
+<li><p>Gleiches Betriebssystem erforderlich</p></li>
+<li><p>Sicherheitsrisiken bei Root-Zugriff</p></li>
+<li><p>Abhängigkeit vom Host-OS</p></li>
+</ul>
+</dd>
+</dl>
+</ld-cell></ld-grid></ld-topic>
+<ld-topic class="new-section" id="containerisierung-mit-docker">
+<h2>Containerisierung mit Docker</h2>
+</ld-topic>
+<ld-topic id="docker-container-infrastruktur">
+<h2>Docker - Container-Infrastruktur</h2>
+<p><strong>Docker</strong> ist eine Open-Source-Plattform zur Entwicklung, Bereitstellung und Verwaltung von containerisierten Anwendungen.</p>
+<ld-deck>
+<ld-card>
+<p class="rubric">Docker-Komponenten</p>
+<ul class="incremental-list simple">
+<li><p><strong>Docker Engine</strong>: Runtime für Container</p></li>
+<li><p><strong>Docker Images</strong>: Vorlagen für Container</p></li>
+<li><p><strong>Docker Containers</strong>: Laufende Instanzen</p></li>
+<li><p><strong>Docker Registry</strong>: Repository für Images</p></li>
+<li><p><strong>Docker Compose</strong>: Orchestrierung mehrerer Container</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Docker-Architektur</p>
+<ul class="incremental-list simple">
+<li><p><strong>Docker Daemon</strong>: Hintergrundprozess der Images lädt sowie Container verwaltet und steuert</p></li>
+<li><p><strong>Docker Client</strong>: Kommandozeilen-Tool zum Interagieren mit dem Daemon.</p></li>
+<li><p><strong>Docker Registry</strong>: Speicher für Images</p></li>
+<li><p><strong>Docker Hub</strong>: Öffentliche Registry</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="docker-architektur">
+<h2>Docker-Architektur</h2>
+<div class="align-center"><div style="width: 70ch; height: 20ch; container-type:size;">
+<svg viewBox="0 0 50 16" font-size="1" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- Docker Client -->
+    <g class="incremental">
+        <rect class="app-box" width="8" height="2" x="2" y="2" rx="0.5"/>
+        <text class="text-label" x="4.5" y="3.3">Docker Client</text>
+        <text class="text-label" x="4" y="3.8" >(CLI, API)</text>
+    </g>
+
+    <!-- Docker Daemon -->
+    <g class="incremental">
+        <rect class="container-box" width="12" height="4" x="12" y="2" rx="0.5"/>
+        <text class="text-label" x="15" y="3.5">Docker Daemon</text>
+        <text class="text-label" x="14" y="4.2" >(Docker Engine)</text>
+        <text class="text-label" x="15" y="4.8" >- Images</text>
+        <text class="text-label" x="15" y="5.3" >- Containers</text>
+    </g>
+
+    <!-- Docker Registry -->
+    <g class="incremental">
+        <rect class="vm-box" width="8" height="2" x="26" y="2" rx="0.5"/>
+        <text class="text-label" x="28.5" y="3.3">Docker Registry</text>
+    </g>
+
+    <!-- Host OS -->
+    <rect class="host-box" width="46" height="2" x="2" y="8" rx="0.5"/>
+    <text class="text-label" x="23" y="9.3">Host Operating System</text>
+
+    <!-- Hardware -->
+    <rect class="host-box" width="46" height="2" x="2" y="11" rx="0.5"/>
+    <text class="text-label" x="23" y="12.3">Hardware</text>
+
+    <!-- Containers -->
+    <g class="incremental">
+        <rect class="app-box" width="4" height="2" x="12" y="6" rx="0.3"/>
+        <text class="text-label" x="13" y="7.2" >Container 1</text>
+
+        <rect class="app-box" width="4" height="2" x="17" y="6" rx="0.3"/>
+        <text class="text-label" x="18" y="7.2" >Container 2</text>
+
+        <rect class="app-box" width="4" height="2" x="22" y="6" rx="0.3"/>
+        <text class="text-label" x="23" y="7.2" >Container 3</text>
+    </g>
+
+    <!-- Arrows -->
+    <g class="incremental">
+        <line x1="10" y1="3" x2="12" y2="3" style="stroke: #666; stroke-width: 0.1" marker-end="url(#arrow-blue)"/>
+        <line x1="24" y1="3" x2="26" y2="3" style="stroke: #666; stroke-width: 0.1" marker-end="url(#arrow-blue)"/>
+        <line x1="26" y1="3" x2="24" y2="3" style="stroke: #666; stroke-width: 0.1" marker-end="url(#arrow-blue)"/>
+    </g>
+</svg>
+</div></div></ld-topic>
+<ld-topic id="docker-images-und-container">
+<h2>Docker-Images und Container</h2>
+<p>Ein <strong>Docker-Image</strong> ist eine unveränderliche Vorlage, die alle notwendigen Komponenten für eine Anwendung enthält.</p>
+<ld-deck>
+<ld-card>
+<p class="rubric">Image-Eigenschaften</p>
+<ul class="incremental-list simple">
+<li><p><strong>Layered Architecture</strong>: Images bestehen aus mehreren Layern</p></li>
+<li><p><strong>Immutable</strong>: Images können nicht verändert werden</p></li>
+<li><p><strong>Portable</strong>: Funktionieren auf verschiedenen Systemen</p></li>
+<li><p><strong>Versioned</strong>: Verschiedene Versionen eines Images möglich</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Container-Lifecycle</p>
+<ul class="incremental-list simple">
+<li><p><strong>Create</strong>: Container aus Image erstellen</p></li>
+<li><p><strong>Start</strong>: Container starten</p></li>
+<li><p><strong>Run</strong>: Container ausführen</p></li>
+<li><p><strong>Stop</strong>: Container stoppen</p></li>
+<li><p><strong>Remove</strong>: Container löschen</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="docker-befehle">
+<h2>Docker-Befehle</h2>
+<dl class="incremental-list field-list simple">
+<dt>Image-Verwaltung<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p><code class="console"><span class="generic output">docker pull &lt;image&gt;</span></code> - Image herunterladen</p></li>
+<li><p><code class="console"><span class="generic output">docker images</span></code> - Alle Images anzeigen</p></li>
+<li><p><code class="console"><span class="generic output">docker build -t &lt;name&gt; .</span></code> - Image erstellen</p></li>
+<li><p><code class="console"><span class="generic output">docker rmi &lt;image&gt;</span></code> - Image löschen</p></li>
+</ul>
+</dd>
+<dt>Container-Verwaltung<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p><code class="console"><span class="generic output">docker run &lt;image&gt;</span></code> - Container starten</p></li>
+<li><p><code class="console"><span class="generic output">docker ps</span></code> - Laufende Container anzeigen</p></li>
+<li><p><code class="console"><span class="generic output">docker stop &lt;container&gt;</span></code> - Container stoppen</p></li>
+<li><p><code class="console"><span class="generic output">docker rm &lt;container&gt;</span></code> - Container löschen</p></li>
+</ul>
+</dd>
+<dt>Informationen<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p><code class="console"><span class="generic output">docker logs &lt;container&gt;</span></code> - Container-Logs anzeigen</p></li>
+<li><p><code class="console"><span class="generic output">docker exec -it &lt;container&gt; /bin/bash</span></code> - In Container einloggen</p></li>
+</ul>
+</dd>
+</dl>
+</ld-topic>
+<ld-topic class="new-section transition-fade" id="container-orchestrierung">
+<h2>Container Orchestrierung</h2>
+</ld-topic>
+<ld-topic id="was-ist-container-orchestrierung">
+<h2>Was ist Container Orchestrierung?</h2>
+<p><strong>Container Orchestrierung</strong> ist die Automatisierung der Bereitstellung, Verwaltung, Skalierung und Vernetzung von Container-Anwendungen.</p>
+<div class="framed incremental docutils container">
+<p>Gegenstand der Orchestrierung:</p>
+<ul class="incremental-list simple">
+<li><p><strong>Deployment</strong>: Automatische Bereitstellung von Containern</p></li>
+<li><p><strong>Scaling</strong>: Dynamische Skalierung basierend auf Last</p></li>
+<li><p><strong>Load Balancing</strong>: Verteilung der Anfragen</p></li>
+<li><p><strong>Service Discovery</strong>: Auffinden von Services</p></li>
+<li><p><strong>Health Monitoring</strong>: Überwachung der Container-Gesundheit</p></li>
+<li><p><strong>Rolling Updates</strong>: Updates ohne Downtime</p></li>
+</ul>
+</div>
+</ld-topic>
+<ld-topic id="container-orchestrierungs-tools">
+<h2>Container Orchestrierungs-Tools</h2>
+<ld-grid class="default-layout">
+<ld-cell class="width-30" style="align-self:auto;">
+<p class="rubric">Kubernetes</p>
+<ul class="incremental-list simple">
+<li><p><strong>Open Source</strong> von Google</p></li>
+<li><p><strong>De-facto Standard</strong> für Container Orchestrierung</p></li>
+<li><p><strong>Umfangreiche Features</strong></p></li>
+<li><p><strong>Große Community</strong></p></li>
+<li><p><strong>Komplexe Einrichtung</strong></p></li>
+</ul>
+</ld-cell><ld-cell class="width-30 incremental" style="align-self:auto;">
+<p class="rubric">Docker Swarm</p>
+<ul class="incremental-list simple">
+<li><p><strong>Native Docker-Lösung</strong></p></li>
+<li><p><strong>Einfache Einrichtung</strong></p></li>
+<li><p><strong>Weniger Features</strong> als Kubernetes</p></li>
+<li><p><strong>Gut für kleinere Projekte</strong></p></li>
+<li><p><strong>Einfache Verwaltung</strong></p></li>
+</ul>
+</ld-cell><ld-cell class="width-30 incremental" style="align-self:auto;">
+<p class="rubric">Apache Mesos</p>
+<ul class="incremental-list simple">
+<li><p><strong>Distributed Systems Kernel</strong></p></li>
+<li><p><strong>Unterstützt verschiedene Frameworks</strong></p></li>
+<li><p><strong>Hochskalierbar</strong></p></li>
+<li><p><strong>Komplexe Architektur</strong></p></li>
+<li><p><strong>Weniger verbreitet</strong></p></li>
+</ul>
+</ld-cell></ld-grid></ld-topic>
+<ld-topic class="transition-fade" id="exemplarische-verwendung-von-docker">
+<h2>Exemplarische Verwendung von Docker</h2>
+<ld-story>
+<p class="rubric">Docker-basiertes Deployment einer Web-Anwendung</p>
+<p>Entwicklung und Deployment einer einfachen Web-Anwendung mit Docker.</p>
+<ol class="arabic simple incremental-list">
+<li><p><strong>Docker-Installation prüfen</strong></p></li>
+<li><p><strong>Einfache Web-Anwendung erstellen</strong></p></li>
+<li><p><strong>Dockerfile erstellen</strong></p></li>
+<li><p><strong>Docker-Image bauen</strong></p></li>
+<li><p><strong>Container starten und testen</strong></p></li>
+<li><p>[<strong>Docker Compose für Multi-Container-Setup</strong>]</p></li>
+</ol>
+<div class="incremental compound">
+<p class="rubric">Schritt 1: Docker-Installation prüfen</p>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="comment single"># Docker-Version prüfen
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="comment single"></span>docker<span class="whitespace"> </span>--version<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="comment single"># Docker-Status prüfen
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="comment single"></span>docker<span class="whitespace"> </span>info<span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace">
+</span></code><small class="ln">7 </small><code data-lineno="7 "><span class="whitespace"></span><span class="comment single"># Ersten Container testen
+</span></code><small class="ln">8 </small><code data-lineno="8 "><span class="comment single"></span>docker<span class="whitespace"> </span>run<span class="whitespace"> </span>hello-world</code></pre>
+</div>
+<div class="incremental compound">
+<p class="rubric">Schritt 2: Web-Anwendung erstellen (<span class="docutils literal">index.html</span>)</p>
+<pre class="code html copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment preproc">&lt;!DOCTYPE html&gt;</span>
+</code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="punctuation">&lt;</span><span class="name tag">html</span><span class="punctuation">&gt;</span>
+</code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="punctuation">&lt;</span><span class="name tag">head</span><span class="punctuation">&gt;&lt;</span><span class="name tag">title</span><span class="punctuation">&gt;</span>Docker Demo App<span class="punctuation">&lt;/</span><span class="name tag">title</span><span class="punctuation">&gt;&lt;/</span><span class="name tag">head</span><span class="punctuation">&gt;</span>
+</code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="punctuation">&lt;</span><span class="name tag">body</span><span class="punctuation">&gt;</span>
+</code><small class="ln"> 5 </small><code data-lineno=" 5 ">    <span class="punctuation">&lt;</span><span class="name tag">h2</span><span class="punctuation">&gt;</span>Willkommen zur Docker-Demo!<span class="punctuation">&lt;/</span><span class="name tag">h2</span><span class="punctuation">&gt;</span>
+</code><small class="ln"> 6 </small><code data-lineno=" 6 ">    <span class="punctuation">&lt;</span><span class="name tag">p</span><span class="punctuation">&gt;</span>Diese Anwendung läuft in einem Docker-Container.<span class="punctuation">&lt;/</span><span class="name tag">p</span><span class="punctuation">&gt;</span>
+</code><small class="ln"> 7 </small><code data-lineno=" 7 ">    <span class="punctuation">&lt;</span><span class="name tag">p</span><span class="punctuation">&gt;</span>Aktuelle-Zeit: <span class="punctuation">&lt;</span><span class="name tag">span</span> <span class="name attribute">id</span><span class="operator">=</span><span class="literal string">&quot;time&quot;</span><span class="punctuation">&gt;&lt;/</span><span class="name tag">span</span><span class="punctuation">&gt;&lt;/</span><span class="name tag">p</span><span class="punctuation">&gt;</span>
+</code><small class="ln"> 8 </small><code data-lineno=" 8 ">    <span class="punctuation">&lt;</span><span class="name tag">script</span><span class="punctuation">&gt;</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">        </span><span class="name builtin">document</span><span class="punctuation">.</span><span class="name other">getElementById</span><span class="punctuation">(</span><span class="literal string single">'time'</span><span class="punctuation">).</span><span class="name other">textContent</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">            </span><span class="operator word">new</span><span class="whitespace"> </span><span class="name builtin">Date</span><span class="punctuation">().</span><span class="name other">toLocaleString</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="punctuation">&lt;/</span><span class="name tag">script</span><span class="punctuation">&gt;</span>
+</code><small class="ln">12 </small><code data-lineno="12 "><span class="punctuation">&lt;/</span><span class="name tag">body</span><span class="punctuation">&gt;</span>
+</code><small class="ln">13 </small><code data-lineno="13 "><span class="punctuation">&lt;/</span><span class="name tag">html</span><span class="punctuation">&gt;</span></code></pre>
+</div>
+<div class="incremental compound">
+<p class="rubric">Schritt 3: <span class="docutils literal">Dockerfile</span> erstellen</p>
+<pre class="code dockerfile copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment"># Basis-Image verwenden (Alpine-Linux mit einem vorinstallierten nginx)</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword">FROM</span><span class="whitespace"> </span><span class="literal string">nginx:alpine</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="comment"># Arbeitsverzeichnis setzen innerhalb des Containers</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="keyword">WORKDIR</span><span class="whitespace"> </span><span class="literal string">/usr/share/nginx/html</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span><span class="comment"># HTML-Datei kopieren (kopiert lokale Datei in den Container relativ zum WORKDIR)</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span><span class="keyword">COPY</span><span class="whitespace"> </span>index.html<span class="whitespace"> </span>.<span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="comment"># Port 80 freigeben</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="keyword">EXPOSE</span><span class="whitespace"> </span><span class="literal string">80</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span><span class="comment"># Nginx im Vordergrund starten (da sich sond der Docker-Container gleich beendet)</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span><span class="keyword">CMD</span><span class="whitespace"> </span><span class="punctuation">[</span><span class="literal string double">&quot;nginx&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string double">&quot;-g&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string double">&quot;daemon off;&quot;</span><span class="punctuation">]</span></code></pre>
+</div>
+<div class="incremental compound">
+<p class="rubric">Schritt 4: Docker-Image bauen</p>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="comment single"># Image bauen mit dem Tag &quot;webapp-demo&quot;
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="comment single"></span>docker<span class="whitespace"> </span>build<span class="whitespace"> </span>-t<span class="whitespace"> </span>webapp-demo<span class="whitespace"> </span>.<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="comment single"># Images anzeigen
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="comment single"></span>docker<span class="whitespace"> </span>images<span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace">
+</span></code><small class="ln">7 </small><code data-lineno="7 "><span class="whitespace"></span><span class="comment single"># Image-Details anzeigen
+</span></code><small class="ln">8 </small><code data-lineno="8 "><span class="comment single"></span>docker<span class="whitespace"> </span>inspect<span class="whitespace"> </span>webapp-demo</code></pre>
+</div>
+<div class="incremental compound">
+<p class="rubric">Schritt 5: Container starten und testen</p>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment single"># Container mit dem Namen &quot;webapp-container&quot; im Hintergrund (-d) starten
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="comment single"></span>docker<span class="whitespace"> </span>run<span class="whitespace"> </span>-d<span class="whitespace"> </span>-p<span class="whitespace"> </span><span class="literal number">8080</span>:80<span class="whitespace"> </span>--name<span class="whitespace"> </span>webapp-container<span class="whitespace"> </span>webapp-demo<span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="comment single"># Container-Status prüfen
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="comment single"></span>docker<span class="whitespace"> </span>ps<span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span><span class="comment single"># In Browser testen: http://localhost:8080
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="comment single"></span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="comment single"># Container-Logs anzeigen
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="comment single"></span>docker<span class="whitespace"> </span>logs<span class="whitespace"> </span>webapp-container<span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span><span class="comment single"># Container stoppen
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="comment single"></span>docker<span class="whitespace"> </span>stop<span class="whitespace"> </span>webapp-container<span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span><span class="comment single"># Container (nicht Container-Image) löschen
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="comment single"></span>docker<span class="whitespace"> </span>rm<span class="whitespace"> </span>webapp-container</code></pre>
+</div>
+<div class="incremental compound">
+<p class="rubric">Schritt 6: Docker Compose für Multi-Container (<span class="docutils literal"><span class="pre">docker-compose.yml</span></span>)</p>
+<pre class="code yaml copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="name tag">version</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal string">'3.8'</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="name tag">services</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="name tag">web</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="name tag">build</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal scalar plain">.</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="name tag">ports</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation indicator">[</span><span class="literal string">&quot;8080:80&quot;</span><span class="punctuation indicator">]</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="name tag">depends_on</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation indicator">[</span><span class="name variable">db</span><span class="punctuation indicator">]</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="name tag">environment</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation indicator">[</span><span class="name variable">DB_HOST=db</span><span class="punctuation indicator">]</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="name tag">db</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="name tag">image</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="literal scalar plain">postgres:13</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="name tag">environment</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation indicator">[</span><span class="name variable">POSTGRES_DB=demo</span><span class="punctuation indicator">,</span><span class="whitespace"> </span><span class="name variable">POSTGRES_USER=demo</span><span class="punctuation indicator">,</span><span class="whitespace"> </span><span class="name variable">POSTGRES_PASSWORD=demo123</span><span class="punctuation indicator">]</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="name tag">volumes</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation indicator">[</span><span class="name variable">postgres_data</span><span class="punctuation indicator">:</span><span class="name variable">/var/lib/postgresql/data</span><span class="punctuation indicator">]</span><span class="whitespace"> </span><span class="comment single"># persistent</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span><span class="name tag">volumes</span><span class="punctuation">:</span><span class="whitespace"> </span><span class="punctuation indicator">{</span><span class="name variable">postgres_data</span><span class="punctuation indicator">:}</span></code></pre>
+</div>
+<div class="incremental compound">
+<p class="rubric">Schritt 7: Anwendung (bestehend aus mehreren Containern) starten:</p>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment single"># Multi-Container-Setup starten
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="comment single"></span>docker-compose<span class="whitespace"> </span>up<span class="whitespace"> </span>-d<span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="comment single"># Status prüfen
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="comment single"></span>docker-compose<span class="whitespace"> </span>ps<span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span><span class="comment single"># Logs anzeigen
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="comment single"></span>docker-compose<span class="whitespace"> </span>logs<span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span><span class="comment single"># Setup stoppen
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="comment single"></span>docker-compose<span class="whitespace"> </span>down</code></pre>
+</div>
+</ld-story></ld-topic>
+<ld-topic class="new-section" id="zusammenfassung">
+<h2>Zusammenfassung</h2>
+</ld-topic>
+<ld-topic id="konzepte">
+<h2>Konzepte</h2>
+<ul class="incremental-list simple">
+<li><p><strong>Virtualisierung</strong> ermöglicht effiziente Nutzung von Hardware-Ressourcen</p></li>
+<li><p><strong>Container</strong> bieten leichtgewichtige Alternative zu VMs</p></li>
+<li><p><strong>Docker</strong> ist der Standard für Container-Plattformen</p></li>
+<li><p><strong>Orchestrierung</strong> automatisiert das Management von Container-Anwendungen</p></li>
+<li><p><strong>Multi-Container-Setups</strong> ermöglichen komplexe Anwendungsarchitekturen</p></li>
+</ul>
+</ld-topic>
+<ld-topic id="best-practices-fur-docker">
+<h2>Best Practices für Docker</h2>
+<ld-deck>
+<ld-card>
+<p class="rubric">Image-Erstellung</p>
+<ul class="incremental-list simple">
+<li><p><strong>Non-Root User</strong> für Sicherheit</p></li>
+<li><p><strong>Layer-Caching</strong> optimieren</p></li>
+<li><p><strong>Security Updates</strong> regelmäßig durchführen</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Container-Management</p>
+<ul class="incremental-list simple">
+<li><p><strong>Health Checks</strong> implementieren</p></li>
+<li><p><strong>Resource Limits</strong> setzen</p></li>
+<li><p><strong>Logging</strong> konfigurieren</p></li>
+<li><p><strong>Backup-Strategien</strong> für Volumes</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Sicherheit</p>
+<ul class="incremental-list simple">
+<li><p><strong>Minimale Images</strong> verwenden</p></li>
+<li><p><strong>Secrets</strong> nicht im Image speichern</p></li>
+<li><p><strong>Network Policies</strong> definieren</p></li>
+<li><p><strong>Regelmäßige Aktualisierungen</strong> durchführen</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="ausblick">
+<h2>Ausblick</h2>
+<div class="accentuate docutils container">
+<p>Die Container-Technologie entwickelt sich weiter:</p>
+<ul class="incremental-list simple">
+<li><p><strong>Serverless Container</strong> (AWS Fargate, Azure Container Instances)</p></li>
+<li><p><strong>WebAssembly (WASM)</strong> als Alternative zu Container</p></li>
+<li><p><strong>Edge Computing</strong> mit Container-Technologie</p></li>
+<li><p><strong>GitOps</strong> für automatisiertes Deployment</p></li>
+<li><p><strong>Service Mesh</strong> für Microservice-Kommunikation</p></li>
+</ul>
+</div>
+<aside class="admonition incremental conclusion">
+<p class="admonition-title">Schlussfolgerung</p>
+<p>Container und Virtualisierung sind fundamentale Technologien für moderne Softwareentwicklung und -deployment. Die praktische Anwendung mit Docker bietet eine solide Grundlage für weiterführende Themen wie Kubernetes und Cloud-Native-Entwicklung.</p>
+</aside>
+</ld-topic>
+<ld-topic class="exercises" id="ubung-erste-schritte">
+<h2>Übung: Erste Schritte</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Webserver im Docker Container" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">Webserver im Docker Container</p>
+<p><em>Loggen Sie sich auf dem Server ein</em> und versuchen Sie alle Schritte nachvollzuziehen, die notwendig sind, um einen Docker Image mit Nginx zu bauen und danach zu starten. Orientieren Sie sich an dem Beispiel aus den Vorlesungsfolien, aber nutzen Sie eine eigene <span class="docutils literal">index.html</span>.</p>
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Spezifzieren Sie beim Start des Containers ein Portmapping (z.B. <span class="docutils literal">8100:80</span>) passend zu den Ihnen zugeteilten Ports!</p>
+</aside>
+<p>Stellen Sie sicher, dass Ihr Server läuft in dem Sie die Webseite aufrufen.</p>
+<p>Verfolgen Sie das Log, um die Zugriffe auf Ihre Webseite zu sehen.</p>
+</div>
+</ld-topic>
+<ld-topic class="exercises" id="ubung-node-js-im-container">
+<h2>Übung: Node.js im Container</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Node.js Server im Container laufen lassen" id="ld-exercise-2">
+<p class="ld-exercise-title rubric">Node.js Server im Container laufen lassen</p>
+<ol class="arabic">
+<li><p>Kopieren Sie die Ressourcen (<a class="reference external" href="code/nodejs-exercise/player.html">player.html</a>, <a class="reference external" href="code/nodejs-exercise/admin.html">admin.html</a>, <a class="reference external" href="code/nodejs-exercise/game.js">game.js</a>, <a class="reference external" href="code/nodejs-exercise/package.json">package.json</a>) auf Ihren Server in ein neu angelegtes Verzeichnis</p></li>
+<li><p>Erstellen Sie ein Dockerfile, dass <a class="reference external" href="https://github.com/nodejs/docker-node/blob/main/README.md">node.js</a> enthält und alle Ressourcen in das Docker-Image kopiert.</p></li>
+<li><p>Passen Sie das Dockerfile so an, dass beim Bauen des Docker-Images die benötigten Bibliotheken mit installiert werden.
+Sie müssen dafür den Befehl <span class="docutils literal">npm install <span class="pre">--production</span></span> während des Bauens mit Hilfe von <span class="docutils literal">RUN</span> im Script ausführen.</p></li>
+<li><p>Passen Sie den Kommandozeilenbefehl (<span class="docutils literal">CMD</span>) so an, dass der Node Server passend gestartet wird.</p>
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Die Anwendung läuft Standardmäßig auf Port 8800.</p>
+</aside>
+</li>
+</ol>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:JLjDxdZdsk5Dy+Msw7w7buDIvy3aQ/OEPZBs3Sk1ww4=:5l8tiC40W/ZWnpI/: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</div>
+</div>
+</ld-topic>
+</template>
+</body>
+</html>
