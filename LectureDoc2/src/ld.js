@@ -1459,6 +1459,7 @@ function setupMenu() {
     const menuPane = document.createElement("nav");
     menuPane.id = "ld-menu";
     menuPane.className = "ld-ui";
+    menuPane.setAttribute("popover","auto");
     const base = import.meta.resolve("./css/ui/icons/2025/");
     const isWindowCloningPossible =
         presentation.id && !document.URL.startsWith("file://");
@@ -1479,7 +1480,13 @@ function setupMenu() {
         <button id="ld-passwords-button"><img src="${base}key.svg" alt="show passwords dialog"></button>
         <button id="ld-help-button"><img src="${base}question_mark.svg" alt="show-help"></button>
     `;
-    document.getElementsByTagName("BODY")[0].prepend(menuPane);
+    const menuPopoverButton = ld.create("button", {
+        id: "ld-menu-popover-button", 
+        classList: ["ld-ui"], innerHTML: `☰`},
+    );
+    menuPopoverButton.setAttribute("popovertarget","ld-menu");
+    document.body.prepend(menuPane);            // order in which the buttons
+    document.body.prepend(menuPopoverButton);    // are added matters!
 }
 
 /**
