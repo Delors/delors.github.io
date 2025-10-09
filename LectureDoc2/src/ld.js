@@ -47,10 +47,12 @@
         1)  a method that sends a message and then performs the state change.
             For that, it calls the second method.
         2)  a method which only performs the state change, but does not emit a
-            message. These methods generally have the local moniker in their name. E.g. localMoveToNextSlide.
+            message. These methods generally have the local moniker in their 
+            name. E.g. localMoveToNextSlide.
 
         Now, when we react to a local event we always call the first method.
-        When we handle the received message, we call the second method.
+        When we handle the received message, we call the second method to avoid
+        unlimited bouncing of messages.
 
 */
 import * as ld from "./js/ld-lib.js";
@@ -191,9 +193,11 @@ const interWindowMessageHandlers = {
 
 /** Makes the basic datastructures and functions available.
 
-    Enables ld-components the registration for all basic events, before they actually happen.
+    Enables ld-components the registration for all basic events, before they 
+    actually happen.
 
-    (Primarily available for backward compatibility and debugging purposes. Modern components can directly use the exported functions and methods.)
+    (Primarily available for backward compatibility and debugging purposes. 
+    Modern components can directly use the exported functions and methods.)
     */
 export const lectureDoc2 = {
     lib: ld,
@@ -211,7 +215,7 @@ const topicTemplates = document.querySelector("body > template").content;
  *
  * (See MathJax documentation for more details.)
  */
-let mathJaxPromise = Promise.resolve(); // Used to hold chain of typesetting calls
+let mathJaxPromise = Promise.resolve(); // Holds the chain of typesetting calls
 let mathJaxNotAvailable = false;
 
 function typesetMath(element) {
@@ -1298,9 +1302,11 @@ function setupSlidePane() {
     });
 
     typesetMath(slidesPane);
-    const body = document.querySelector("BODY");
+    const body = document.body;
     body.prepend(ld.create("ld-slide-number", {}));
     body.prepend(slidesPane);
+    // the default mode is the slide-view
+    body.dataset["ldMode"] = "slide-view";
 }
 
 async function decryptExercise(title, password) {
@@ -1459,34 +1465,46 @@ function setupMenu() {
     const menuPane = document.createElement("nav");
     menuPane.id = "ld-menu";
     menuPane.className = "ld-ui";
-    menuPane.setAttribute("popover","auto");
+    menuPane.setAttribute("popover", "auto");
     const base = import.meta.resolve("./css/ui/icons/2025/");
     const isWindowCloningPossible =
         presentation.id && !document.URL.startsWith("file://");
     menuPane.innerHTML = `
-        <button id="ld-toggle-view-button"><img src="${base}view.svg" alt="toggle view"></button>
-        <button id="ld-toggle-slide-number-button"><img src="${base}nr.svg" alt="toggle number"></button>
+        <button id="ld-toggle-view-button">
+            <img src="${base}view.svg" alt="toggle view"></button>
+        <button id="ld-toggle-slide-number-button" data-ld-mode="slide-view">
+            <img src="${base}nr.svg" alt="toggle number"></button>
         <div class="half-space"> </div>
-        <button id="ld-spawn-2nd-window-button" ${isWindowCloningPossible ? "" : "disabled"}><img src="${base}two_windows.svg" alt="spawn secondary window"></button>
+        <button id="ld-spawn-2nd-window-button" ${isWindowCloningPossible ? "" : "disabled"}>
+            <img src="${base}two_windows.svg" alt="spawn secondary window"></button>
         <div class="half-space"> </div>
-        <button id="ld-light-table-button"><img src="${base}lighttable.svg" alt="show light table"></button>
-        <button id="ld-table-of-contents-button"><img src="${base}table_of_contents.svg" alt="show table of contents"></button>
+        <button id="ld-light-table-button">
+            <img src="${base}lighttable.svg" alt="show light table"></button>
+        <button id="ld-table-of-contents-button">
+            <img src="${base}table_of_contents.svg" alt="show table of contents"></button>
+        <div class="full-space"  data-ld-mode="slide-view"></div>
+        <button id="ld-previous-slide-button"  data-ld-mode="slide-view">
+            <img src="${base}previous_slide.svg" alt="move to previous slide"></button>
+        <button id="ld-previous-animation-step-button"  data-ld-mode="slide-view">
+            <img src="${base}previous.svg" alt="go back one animation step"></button>
+        <button id="ld-next-animation-step-button"  data-ld-mode="slide-view">
+            <img src="${base}next.svg" alt="next animation step"></button>
+        <button id="ld-next-slide-button"  data-ld-mode="slide-view">
+            <img src="${base}next_slide.svg" alt="move to next slide"></button>
         <div class="full-space"></div>
-        <button id="ld-previous-slide-button"><img src="${base}previous_slide.svg" alt="move to previous slide"></button>
-        <button id="ld-previous-animation-step-button"><img src="${base}previous.svg" alt="go back one animation step"></button>
-        <button id="ld-next-animation-step-button"><img src="${base}next.svg" alt="next animation step"></button>
-        <button id="ld-next-slide-button"><img src="${base}next_slide.svg" alt="move to next slide"></button>
-        <div class="full-space"></div>
-        <button id="ld-passwords-button"><img src="${base}key.svg" alt="show passwords dialog"></button>
-        <button id="ld-help-button"><img src="${base}question_mark.svg" alt="show-help"></button>
+        <button id="ld-passwords-button">
+            <img src="${base}key.svg" alt="show passwords dialog"></button>
+        <button id="ld-help-button">
+            <img src="${base}question_mark.svg" alt="show-help"></button>
     `;
     const menuPopoverButton = ld.create("button", {
-        id: "ld-menu-popover-button", 
-        classList: ["ld-ui"], innerHTML: `☰`},
-    );
-    menuPopoverButton.setAttribute("popovertarget","ld-menu");
-    document.body.prepend(menuPane);            // order in which the buttons
-    document.body.prepend(menuPopoverButton);    // are added matters!
+        id: "ld-menu-popover-button",
+        classList: ["ld-ui"],
+        innerHTML: `☰`,
+    });
+    menuPopoverButton.setAttribute("popovertarget", "ld-menu");
+    document.body.prepend(menuPane); // order in which the buttons
+    document.body.prepend(menuPopoverButton); // are added matters!
 }
 
 /**
@@ -1990,6 +2008,7 @@ export function toggleDocumentView() {
     // and then actually perform the change.
     state.showDocumentView = getComputedStyle(mainPane).display == "flex";
     if (state.showDocumentView) {
+        document.body.dataset["ldMode"] = "document-view";
         mainPane.style.display = "none";
         continuousViewPane.style.display = "block";
         setTimeout(() => {
@@ -1999,6 +2018,7 @@ export function toggleDocumentView() {
             window.scrollTo(0, state.continuousViewScrollY);
         });
     } else {
+        document.body.dataset["ldMode"] = "slide-view";
         continuousViewPane.style.display = "none";
         mainPane.style.display = "flex";
     }
@@ -2863,6 +2883,9 @@ lectureDoc2.propagateStateChange = postMessage;
 lectureDoc2.prepareForPrinting = prepareForPrinting;
 lectureDoc2.getCurrentSlide = getCurrentSlide;
 lectureDoc2.toggleDocumentView = toggleDocumentView;
+lectureDoc2.resetCurrentSlideProgress = resetCurrentSlideProgress;
+lectureDoc2.resetAllAnimations = resetAllAnimations;
+lectureDoc2.resetLectureDoc = resetLectureDoc;
 
 /*
     For debugging purposes and interoperability with Applescript.
