@@ -33,6 +33,40 @@ function schedule(f, delay = 200) {
     }
 }
 
+/**
+ * Checks if the content of the current element or a parent element
+ * is actually scrollable. For that the content has to overflow the
+ * client's height and the overflow property has to allow for scrolling.
+ */
+function scrollableElement(element) {
+    const isYScrollable = element.scrollHeight > element.clientHeight;
+    if (isYScrollable) {
+        const overflowY = window.getComputedStyle(element).overflowY;
+        switch (overflowY) {
+            case "auto":
+            case "scroll":
+                return true;
+            // case "visible"   => not scrollable
+            // case "clip"      => not scrollable
+            // case "hidden"    => programmatically scrollable
+        }
+    }
+    const isXScrollable = element.scrollWidth > element.clientWidth;
+    if (isXScrollable) {
+        const overflowX = window.getComputedStyle(element).overflowX;
+        switch (overflowX) {
+            case "auto":
+            case "scroll":
+                return true;
+        }
+    }
+    if (element.parentElement && element.parentElement !== document.body) {
+        return scrollableElement(element.parentElement);
+    } else {
+        return false;
+    }
+}
+
 function computeDistance(p1, p2) {
     // we use the euclidean distance formula
     const dx = p2.x - p1.x;
@@ -68,7 +102,6 @@ function handlePinchInSlideView() {
         if (originalLocations.size > 2) {
             abortGesture = true;
         }
-        console.log(`touchstart: ${originalLocations}`);
     }
 
     function touchmoveHandler(event) {
@@ -129,8 +162,11 @@ ldEvents.addEventListener(
 );
 
 /**
+ * Handles scrub and swipe gestures on non-scrollable elements.
+ * 
  * Swipe up and down go to the next/previous slide.
- * Swipe left and right advance/retrogress the presentation.
+ * Swipe left and right advances/retrogress the presentation.
+ *
  * Scrubbing left with one finger retrogresses the presentation, scrubbing right
  * advances it. (This is the opposite of the swipe gesture.)
  */
@@ -139,6 +175,11 @@ function handleSwipeAndScrubInSlideView() {
 
     const Gestures = Object.freeze({
         NONE: Symbol("none"),
+        SCROLLABLE:
+            /*  Indicates that the touch is done on a scrollable element; 
+                therefore, we don't want to interfere with it to get the
+                the browser's default scrolling behavior. */
+            Symbol("scrollable"),
         SWIPE: Symbol("swipe"),
         SCRUB: Symbol("scrub"),
         IGNORED: Symbol("ignored"),
@@ -154,25 +195,36 @@ function handleSwipeAndScrubInSlideView() {
         const touches = event.changedTouches;
         updateLocations(originalLocations, touches);
 
+        /*
+        console.log(
+            "touch on",
+            toches[0].target,
+            "scrollable",
+            scrollableElement(touches[0].target),
+        );
+        */
+
         if (originalLocations.size >= 2) {
             // We only support one-finger gestures for swiping and scrubbing.
             // Hence, when we have two or more fingers on the screen, we
             // don't want to do anything anymore until the user lifts all
             // fingers.
             gestureInProgress = Gestures.IGNORED;
+        } else if (scrollableElement(touches[0].target)) {
+            // We need to check if the touch started over an element for which
+            // LectureDoc's handlers should not be used.
+            gestureInProgress = Gestures.SCROLLABLE;
         }
-
-        /*
-        console.log(
-            `touchstart: ${originalLocations.size} fingers; gestureInProgress: ${gestureInProgress.toString()}`,
-        );
-        */
     }
 
     let lastTouchMoveEvent = undefined;
     let originalLocation = undefined;
 
     function touchmoveHandler(event) {
+        if (gestureInProgress === Gestures.SCROLLABLE) {
+            return;
+        }
+
         if (originalLocations.size === 1) {
             event.preventDefault();
         }
@@ -187,12 +239,6 @@ function handleSwipeAndScrubInSlideView() {
         // the last location of the finger when we handle the event.
         lastTouchMoveEvent = event.changedTouches[0];
         originalLocation = originalLocations.get(lastTouchMoveEvent.identifier);
-
-        /*
-        console.log(
-            `touchmove: ${originalLocations.size} fingers; gestureInProgress: ${gestureInProgress.toString()}; lastTouchMoveEvent: ${lastTouchMoveEvent.identifier}`,
-        );
-        */
 
         schedule(() => {
             if (gestureInProgress === Gestures.IGNORED) {
@@ -218,7 +264,10 @@ function handleSwipeAndScrubInSlideView() {
                 }
             }
             /*console.log(
-                `touchmove (deferred handler): ${originalLocations.size} fingers; gestureInProgress: ${gestureInProgress.toString()}; deltaX: ${deltaX}; deltaY: ${deltaY}`,
+                `touchmove (deferred handler): 
+                    ${originalLocations.size} fingers; 
+                    gestureInProgress: ${gestureInProgress.toString()}; 
+                    deltaX: ${deltaX}; deltaY: ${deltaY}`,
             );
             */
 
