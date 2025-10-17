@@ -411,60 +411,88 @@
 
 */
 
-.cheat-sheet-8-columns {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: space-between;
-    align-items: flex-start;
-    gap: 6px;
-    border-radius: 6px;
-    padding: 3px;
-    font-size: 16px;
-    background-color: black;
+ld-slide.cheat-sheet {
 
-    &ld-slide::before {
+    border-radius: 0;
+
+    &#ld-slide-no-0::before {
         /* to clear the default logo */
         display: none;
     }
 
+    &::after {
+        /* to clear the default slide number */
+        content : "LD2";
+        position: absolute;
+        z-index: -1;
+        bottom: -200px;
+        right: 25px;
+        font-size: 50em;
+        font-weight: 900;
+        color: var(--very-light-gray);
+        text-shadow: 2px 2px 4px var(--light-gray);
+    }
+/*
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 6px;
+    */
+    padding: 6px;
+    display: block;
+    column-count: 8;
+    column-gap: 6px;
+    column-fill: auto;
+    block-size: calc(var(--ld-slide-height) - 2 * 6px);
+    
+    background-color: var(--white);
+    font-size: 14px;
+
+
+    div.cheat-sheet-block {
+        break-inside: auto;
+        box-shadow: 1px 1px 4px var(--dark-gray);
+        
+    }
+
     div.cheat-sheet-block,
-    h1 {
-        width: calc(var(--ld-slide-width) / 8 - 6px);
-        padding: 4px;
-        border-radius: 4px;
-        overflow: hidden;
-        background-color: white;
+    h1{
+        /* width: calc((var(--ld-slide-width) - 2 * 6px - 7 * 6px) / 8); 
+        flex-grow: 1;*/
+        width: 100%;
+        
+        left: 0;
+        padding: 6px;
+        border-radius: 6px 6px 0 0;
+        
+        
 
         &.title {
-            /* We have a different font-size and hence have to update the width! */
-            width: calc(var(--ld-slide-width) / 8 - 6px);
             margin: 0;
             padding: 4px;
-
-            background-color: var(--dhbw-light-gray);
-            color: var(--dhbw-red);
+            color: var(--red);
+            background-color: var(--white);
             font-size: 2em;
-            text-shadow: 1px 1px 2px var(--dhbw-gray);
+            text-shadow: -1px -1px 1px var(--dark-gray);
         }
     }
 
     div.cheat-sheet-block > .rubric:first-child {
-        width: calc(100% + 10px);
+        width: calc(100% + 12px);
         margin-bottom: 0;
         position: relative;
-        top: -5px;
-        left: -5px;
+        top: -6px;
+        left: -6px;
         color: whitesmoke;
-        border-radius: 8px 8px 0 0;
+        border-radius: 6px 6px 0 0;
         font-size: larger;
         padding: 0.3em 0 0.3em 0.25em;
-        background-color: var(--dhbw-red);
+        background-color: var(--red);
     }
 
     div.cheat-sheet-block > .rubric:not(:first-child) {
-        background-color: var(--dhbw-gray);
+        background-color: var(--gray);
         position: relative;
         top: -5px;
         left: -5px;

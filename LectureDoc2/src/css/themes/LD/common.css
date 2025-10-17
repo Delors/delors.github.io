@@ -513,12 +513,13 @@ p.system-message-title {
         &::before {
             display: inline-block;
             height: 1.1lh;
-            width: 1.25ch;
+            width: 1.5em;
             text-align: center;
             position: relative;
             left: -0.5em;
+            /*transform: translateX(-50%) translateY(-50%);*/
 
-            padding: 0 0.5em;
+            padding: 0;
             border-radius: var(--small-border-radius) 0 0 0;
         }
     }
@@ -527,16 +528,6 @@ p.system-message-title {
         margin-bottom: 0;
     }
 
-    &.hint {
-        border: none;
-
-        --current-background-color: var(--very-light-green);
-
-        > p:first-child.admonition-title {
-            --current-background-color: var(--green);
-            --current-color: var(--white);
-        }
-    }
 
     &.warning {
         border: none;
@@ -546,8 +537,24 @@ p.system-message-title {
         > p:first-child.admonition-title {
             --current-color: var(--white);
             --current-background-color: var(--dark-red);
+
+            &::before {
+                content: "◬";
+                background-color: var(--light-red);
+            }
         }
     }
+
+    &.repetition {
+
+        > p:first-child.admonition-title {
+            &::before {
+                content: "↻";
+                background-color: var(--light-gray);
+            }
+        }
+    }
+
 
     &.summary {
         border: none;
@@ -556,7 +563,11 @@ p.system-message-title {
 
         > p:first-child.admonition-title {
             --current-background-color: var(--gray);
-            text-align: center;
+
+            &::before {
+                content: "▤";
+                background-color: var(--light-gray);
+            }
         }
     }
 
@@ -598,6 +609,12 @@ p.system-message-title {
         > p:first-child.admonition-title {
             --current-color: var(--white);
             --current-background-color: var(--dark-orange);
+
+            &::before {
+                content: "▲";
+                background-color: var(--orange);
+                color: var(--white);
+            }
         }
     }
 
@@ -626,13 +643,24 @@ p.system-message-title {
             --current-background-color: var(--blue);
 
             &::before {
-                content: "🔎";
+                content: "⦿";
+               background-color: var(--light-blue);
             }
         }
     }
 
     &.proof {
         position: relative;
+
+        > p:first-child.admonition-title {
+
+            &::before {
+                content: "■";
+                color: var(--white);
+                text-shadow: -1px -1px 1px var(--dark-gray);
+                background-color: var(--dark-gray);
+            }
+        }
 
         &::after {
             position: absolute;
@@ -653,6 +681,14 @@ p.system-message-title {
         }
 
         background-color: inherit;
+
+        > p:first-child.admonition-title {
+            &::before {
+                content: "◎"; /* Alternative: 🗒️*/
+                color: var(--white);
+                text-shadow: -1px -1px 1px var(--dark-gray);
+            }
+        }
     }
 
     &.tip {
@@ -663,29 +699,11 @@ p.system-message-title {
 
         > p:first-child.admonition-title {
             --current-background-color: var(--red);
-            margin-bottom: 0;
-
-            text-shadow: none;
 
             &::before {
                 content: "💡";
-            }
-
-            + p {
-                position: relative;
-                left: -0.5em;
-
-                width: calc(100% + 1em);
-
-                margin-top: 0;
-
-                padding: 0.2em 0.5em 0.2em 2.25em;
-
-                --current-background-color: var(--red);
-                background-color: var(--current-background-color);
-                color: var(--white);
-
-                font-weight: 500;
+                text-shadow: -1px -1px 1px var(--dark-gray);
+                background-color: var(--light-red);
             }
         }
     }
@@ -698,6 +716,13 @@ p.system-message-title {
         > p:first-child.admonition-title {
             --current-background-color: var(--green);
             --current-color: var(--white);
+
+            &::before {
+                content: "※";
+                color: var(--white);
+                text-shadow: -1px -1px 1px var(--dark-gray);
+                background-color: var(--light-green);
+            }
         }
     }
 
@@ -710,10 +735,87 @@ p.system-message-title {
             --current-background-color: var(--dark-yellow);
             --current-color: var(--dark-gray);
             color: var(--current-color);
-            /* TODO move to general admonition definition! */
+            
             text-shadow: none;
+
+            &::before {
+                content: "⤷";
+                color: var(--very-light-gray);
+                text-shadow: -1px -1px 1px var(--dark-gray);
+                background-color: var(--light-yellow);
+            }
         }
     }
+
+    /* TODO Define a CSS Var "--admonition-icon" and use that one... */
+
+    &.conclusion {
+        
+        > p:first-child.admonition-title {
+            
+            &::before {
+                content: "∴";
+                color: var(--white);
+                text-shadow: -1px -1px 1px var(--dark-gray);
+                background-color: var(--light-gray);
+            }
+        }
+    }
+
+    &.definition {
+        
+        > p:first-child.admonition-title {
+            
+            &::before {
+                content: "≝";
+                color: var(--white);
+                text-shadow: -1px -1px 1px var(--dark-gray);
+                background-color: var(--light-gray);
+            }
+        }
+    }
+
+    &.theorem {
+        
+        > p:first-child.admonition-title {
+            
+            &::before {
+                content: "⊞";
+                color: var(--white);
+                text-shadow: -1px -1px 1px var(--dark-gray);
+                background-color: var(--light-gray);
+            }
+        }
+    }
+
+
+    &.remark {
+        
+        > p:first-child.admonition-title {
+            
+            &::before {
+                content: "⬩";
+                color: var(--white);
+                text-shadow: -1px -1px 1px var(--dark-gray);
+                background-color: var(--light-gray);
+            }
+        }
+    }
+
+    &.remember {
+        
+        > p:first-child.admonition-title {
+            
+            &::before {
+                content: "✪";
+                color: var(--white);
+                text-shadow: -1px -1px 1px var(--dark-gray);
+                background-color: var(--light-gray);
+            }
+        }
+    }
+    
+
 }
 
 p.sidebar-title,
@@ -849,6 +951,7 @@ div.line-block div.line-block {
 }
 
 blockquote {
+    border: 1px solid var(--light-gray);
     border-radius: var(--small-border-radius);
 }
 
