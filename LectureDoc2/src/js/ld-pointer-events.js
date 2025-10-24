@@ -163,7 +163,7 @@ ldEvents.addEventListener(
 
 /**
  * Handles scrub and swipe gestures on non-scrollable elements.
- * 
+ *
  * Swipe up and down go to the next/previous slide.
  * Swipe left and right advances/retrogress the presentation.
  *
