@@ -158,14 +158,18 @@ export const ldEvents = {
     },
 };
 
-const interWindowMessageHandlers = {
+export const interWindowMessageHandlers = {
     handlers: {},
-    indexedHandlers: {}, // an object mapping message identifiers (Strings) to arrays of handlers
-    addHandler: function (msg, handler) {
-        if (msg in this.handlers) {
-            throw new Error("handler already registered: " + msg);
+    indexedHandlers: {}, // mapping message identifiers (Strings) to arrays of handlers
+    addHandler(msg, handler) {
+        if (!this.handlers[msg]) {
+            this.handlers[msg] = [handler];
+        } else {
+            this.handlers[msg].push(handler);
         }
-        this.handlers[msg] = handler;
+        console.log(
+            `registered ${this.handlers[msg].length}. message handler for "${msg}" messages.`,
+        );
     },
     /**
      * Registers a handler for a specific type of event. To distinguish
@@ -2693,6 +2697,7 @@ const onDOMContentLoaded = async () => {
         await import("./js/ld-scrollables.js");
         await import("./js/ld-stories.js");
         await import("./js/ld-hoverables.js");
+        await import("./js/ld-popovers.js");
         await import("./js/ld-pointer-events.js");
     } catch (e) {
         console.error("failed to load LectureDoc component:", e);
@@ -2771,58 +2776,60 @@ const onLoad = () => {
     registerHoverPresenterNoteListener();
     registerHistoryChangeListener();
 
-    const iwmHandlers = interWindowMessageHandlers.handlers;
-    iwmHandlers["advancePresentation"] = localAdvancePresentation;
-    iwmHandlers["retrogressPresentation"] = localRetrogressPresentation;
-    iwmHandlers["moveToPreviousSlide"] = localMoveToPreviousSlide;
-    iwmHandlers["moveToNextSlide"] = localMoveToNextSlide;
-    iwmHandlers["goToSlide"] = ({ targetSlideNo, updateHistory }) => {
+    const iwmHandler = interWindowMessageHandlers.addHandler.bind(
+        interWindowMessageHandlers,
+    );
+    iwmHandler("advancePresentation", localAdvancePresentation);
+    iwmHandler("retrogressPresentation", localRetrogressPresentation);
+    iwmHandler("moveToPreviousSlide", localMoveToPreviousSlide);
+    iwmHandler("moveToNextSlide", localMoveToNextSlide);
+    iwmHandler("goToSlide", ({ targetSlideNo, updateHistory }) => {
         localGoToSlideWithNo(targetSlideNo, updateHistory);
-    };
-    iwmHandlers["jumpToId"] = localJumpToId;
-    iwmHandlers["resetCurrentSlideProgress"] = localResetCurrentSlideProgress;
-    iwmHandlers["resetAllAnimations"] = localResetAllAnimations;
-    iwmHandlers["resetLectureDoc"] = localResetLectureDoc;
-    iwmHandlers["hideLectureDoc"] = localHideLectureDoc;
-    iwmHandlers["ensureLectureDocIsVisible"] = localEnsureLectureDocIsVisible;
+    });
+    iwmHandler("jumpToId", localJumpToId);
+    iwmHandler("resetCurrentSlideProgress", localResetCurrentSlideProgress);
+    iwmHandler("resetAllAnimations", localResetAllAnimations);
+    iwmHandler("resetLectureDoc", localResetLectureDoc);
+    iwmHandler("hideLectureDoc", localHideLectureDoc);
+    iwmHandler("ensureLectureDocIsVisible", localEnsureLectureDocIsVisible);
 
-    iwmHandlers["decryptExercise"] = ([title, password]) => {
+    iwmHandler("decryptExercise", ([title, password]) => {
         localDecryptExercise(title, password);
-    };
+    });
 
-    iwmHandlers["showLaserPointer"] = ([slideX, slideY]) => {
+    iwmHandler("showLaserPointer", ([slideX, slideY]) => {
         localShowLaserPointer(slideX, slideY);
-    };
-    iwmHandlers["hideLaserPointer"] = localHideLaserPointer;
+    });
+    iwmHandler("hideLaserPointer", localHideLaserPointer);
 
-    iwmHandlers["addHoverSupplemental"] = (id) => {
+    iwmHandler("addHoverSupplemental", (id) => {
         document
             .querySelector(
                 `#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`,
             )
             .classList.add("hover:ld-supplementals");
-    };
-    iwmHandlers["removeHoverSupplemental"] = (id) => {
+    });
+    iwmHandler("removeHoverSupplemental", (id) => {
         document
             .querySelector(
                 `#ld-slides-pane ld-supplementals[data-supplementals-id="${id}"]`,
             )
             .classList.remove("hover:ld-supplementals");
-    };
-    iwmHandlers["supplementalScrolled"] = ([supplementalId, scrollTop]) => {
+    });
+    iwmHandler("supplementalScrolled", ([supplementalId, scrollTop]) => {
         localScrollSupplemental(supplementalId, scrollTop);
-    };
+    });
 
-    iwmHandlers["redrawSlide"] = localRedrawSlide;
+    iwmHandler("redrawSlide", localRedrawSlide);
 
     ldEvents.afterLDListenerRegistrations.forEach((f) => f());
 
     if (ephemeral.ldPerDocumentChannel /* no document id - no channel */) {
         ephemeral.ldPerDocumentChannel.addEventListener("message", (event) => {
             const [msg, data] = event.data;
-            const handler = interWindowMessageHandlers.handlers[msg];
-            if (handler) {
-                handler(data);
+            const handlers = interWindowMessageHandlers.handlers[msg];
+            if (handlers) {
+                handlers.forEach((handler) => handler(data));
                 return;
             }
 

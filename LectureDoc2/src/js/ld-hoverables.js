@@ -4,7 +4,7 @@
  *
  * This information is also relayed to secondary windows.
  */
-import lectureDoc2 from "./../ld.js";
+import { lectureDoc2, interWindowMessageHandlers } from "./../ld.js";
 import * as ld from "./ld-lib.js";
 
 console.log("loading ld-hoverable.js");
@@ -20,7 +20,7 @@ function afterLDDOMManipulations() {
         .forEach((hoverableList) => {
             hoverableList.classList.remove("pop-out-on-hover");
             Array.from(hoverableList.children).forEach((li) => {
-                console.log("adding pop-out-on-hover", li);
+                // console.log("adding pop-out-on-hover to list element", li);
                 li.classList.add("pop-out-on-hover");
             });
         });
@@ -44,36 +44,23 @@ function afterLDListenerRegistrations() {
     // Keep Windows in Sync ----------------------------------------------------
     // If a document channel exits, we will listen to hovering events and
     // send them to the other windows.
-    const channel = lectureDoc2.getEphemeral().ldPerDocumentChannel;
-    if (channel /* recall: no document id - no channel */) {
-        channel.addEventListener("message", (event) => {
-            const [msg, data] = event.data;
-            switch (msg) {
-                case "resetCurrentSlideProgress": {
-                    const ldSlide = lectureDoc2.getCurrentSlide();
-                    ldSlide
-                        .querySelectorAll(`:scope ${elementSelector}`)
-                        .forEach((e) => {
-                            e.classList.remove(":hover");
-                        });
-                    break;
-                }
-                case "hoverElement": {
-                    event.stopImmediatePropagation();
-                    console.log("received hover message", data);
-
-                    const [elementId, isHovered] = data;
-
-                    const element = hoverables.at(parseInt(elementId));
-                    if (isHovered) {
-                        element.classList.add(":hover");
-                    } else {
-                        element.classList.remove(":hover");
-                    }
-                }
-            }
+    interWindowMessageHandlers.addHandler("resetCurrentSlideProgress", () => {
+        const ldSlide = lectureDoc2.getCurrentSlide();
+        ldSlide.querySelectorAll(`:scope ${elementSelector}`).forEach((e) => {
+            e.classList.remove(":hover");
         });
-    }
+    });
+    interWindowMessageHandlers.addHandler("hoverElement", (data) => {
+        const [elementId, isHovered] = data;
+        const element = hoverables.at(parseInt(elementId));
+        if (isHovered) {
+            element.classList.add(":hover");
+        } else {
+            element.classList.remove(":hover");
+        }
+    });
+
+    const channel = lectureDoc2.getEphemeral().ldPerDocumentChannel;
 
     function addHoverState(hoveredElement) {
         hoveredElement.classList.add(":hover");
@@ -99,9 +86,9 @@ function afterLDListenerRegistrations() {
         }
     }
 
-    console.log("hoverables", hoverables);
+    // console.log("hoverables", hoverables);
     hoverables.forEach((element) => {
-        console.log("registering hover listener", element);
+        //console.log("registering hover listener", element);
         element.addEventListener("mouseenter", () => addHoverState(element));
         element.addEventListener("mouseleave", () => removeHoverState(element));
     });
