@@ -34,7 +34,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.0.1</dd>
+<dd class="version">1.0.2</dd>
 </dl>
 <div class="supplemental docutils container">
 <dl class="field-list">
@@ -148,16 +148,17 @@
 <p>Gegeben sei eine App zum Ver- und Entschlüsseln von Dateien sowie ein paar verschlüsselte Dateien. Mögliche erste Schritte vor der Analyse von Binärcode:</p>
 <ld-deck>
 <ld-card>
-<ul class="simple">
-<li><p>Die ausführbare Datei ggf. mit <span class="docutils literal">file</span> (oder sogar mit <span class="docutils literal">binwalk</span>) überprüfen (z. B. wie wurde die Datei kompiliert und für welches Betriebssystem und Architektur)</p></li>
+<ul>
+<li><p>Die ausführbare Datei ggf. mit <span class="docutils literal">file</span> (oder sogar mit <span class="docutils literal">binwalk</span>) überprüfen (z. B. wie wurde die Datei kompiliert und für welches Betriebssystem und Architektur)</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<pre class="code bash literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span>file<span class="whitespace"> </span>/usr/bin/openssl<span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>/usr/bin/openssl:<span class="whitespace"> </span>Mach-O<span class="whitespace"> </span>universal<span class="whitespace"> </span>binary<span class="whitespace"> </span>with<span class="whitespace"> </span><span class="literal number">2</span><span class="whitespace"> </span>archi...<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span>/usr/bin/openssl<span class="whitespace"> </span><span class="operator">(</span><span class="keyword">for</span><span class="whitespace"> </span>architecture<span class="whitespace"> </span>x86_64<span class="operator">)</span>:<span class="whitespace">     </span>Mach-O<span class="whitespace"> </span><span class="literal number">64</span>-bit<span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span>/usr/bin/openssl<span class="whitespace"> </span><span class="operator">(</span><span class="keyword">for</span><span class="whitespace"> </span>architecture<span class="whitespace"> </span>arm64e<span class="operator">)</span>:<span class="whitespace">     </span>Mach-O<span class="whitespace"> </span><span class="literal number">64</span>-bit</code></pre>
+</aside>
+</li>
 </ul>
-<blockquote>
-<p>Beispiel:</p>
-<pre class="code bash literal-block"><code>$<span class="whitespace"> </span>file<span class="whitespace"> </span>/usr/bin/openssl<span class="whitespace">
-</span>/usr/bin/openssl:<span class="whitespace"> </span>Mach-O<span class="whitespace"> </span>universal<span class="whitespace"> </span>binary<span class="whitespace"> </span>with<span class="whitespace"> </span><span class="literal number">2</span><span class="whitespace"> </span>archi...<span class="whitespace">
-</span>/usr/bin/openssl<span class="whitespace"> </span><span class="operator">(</span><span class="keyword">for</span><span class="whitespace"> </span>architecture<span class="whitespace"> </span>x86_64<span class="operator">)</span>:<span class="whitespace"> </span>Mach-O<span class="whitespace"> </span><span class="literal number">64</span>-bit<span class="whitespace">
-</span>/usr/bin/openssl<span class="whitespace"> </span><span class="operator">(</span><span class="keyword">for</span><span class="whitespace"> </span>architecture<span class="whitespace"> </span>arm64e<span class="operator">)</span>:<span class="whitespace"> </span>Mach-O<span class="whitespace"> </span><span class="literal number">64</span>-bit</code></pre>
-</blockquote>
 </ld-card><ld-card class="incremental">
 <ul>
 <li><p>Die Dateien mit einem (guten) Hexeditor auf Auffälligkeiten untersuchen.</p>
@@ -271,7 +272,10 @@
 </ld-topic>
 <ld-topic id="decompiler">
 <h2>Decompiler</h2>
-<p>Überführt (maschinenlesbarem) Binärcode <em>bestmöglich</em> in Hochsprache (meist C ähnlich oder Java). Eine <em>kleine</em> Auswahl von verfügbaren Werkzeugen:</p>
+<p>Überführt (maschinenlesbarem) Binärcode <em>bestmöglich</em> in Hochsprache (meist C ähnlich oder Java).</p>
+<ld-deck>
+<ld-card>
+<p>Eine <em>kleine</em> Auswahl von verfügbaren Werkzeugen:</p>
 <ul class="simple">
 <li><p>Hex-Rays IDAPro (kommerziell)</p></li>
 <li><p><a class="reference external" href="https://ghidra-sre.org/">Ghidra</a> (unterstützt fast jede Platform; die Ergebnisse sind sehr unterschiedlich.)</p></li>
@@ -279,16 +283,17 @@
 <li><p>CFR (Java <span class="docutils literal">.class</span> Dateien)</p></li>
 <li><p>IntelliJ</p></li>
 </ul>
-<div class="supplemental docutils container">
+</ld-card><ld-card class="incremental">
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Decompiler sind generell sehr hilfreich, aber gleichzeitig auch sehr fehlerbehaftet. Vieles, dass im Binärcode möglich ist, hat auf der Ebene des Sourcecodes keine Entsprechung.</p>
+<p>Zum Beispiel unterstützt Java Bytecode beliebige Sprünge. Solche Code wird aber durch normale Programme, die z. B. in Java, Kotlin, Scala oder Clojure geschrieben wurden, nicht erzeugt. Decompiler kommen deswegen mit solchem Code in der Regel nicht (gut) zurecht.</p>
+</aside>
+</ld-card></ld-deck><div class="supplemental docutils container">
 <p>Mittels Decompiler ist es ggf. möglich Code, der zum Beispiel ursprünglich in Kotlin oder Scala geschrieben und für die JVM kompiliert wurde, als Java Code zurückzubekommen.</p>
 <p>Die Ergebnisse sind für Analysezwecke zwar häufig ausreichend gut – von funktionierendem Code jedoch ggf. (sehr) weit entfernt.</p>
 <p><a class="reference external" href="https://decompiler.com">decompiler.com</a> unterstützt eine große Anzahl ausführbaren Dateien.</p>
 </div>
-<aside class="admonition incremental hint">
-<p class="admonition-title">Hinweis</p>
-<p>Decompiler sind generell sehr hilfreich, aber gleichzeitig auch sehr fehlerbehaftet. Vieles, dass im Binärcode möglich ist, hat auf der Ebene des Sourcecodes keine Entsprechung.</p>
-<p>Zum Beispiel unterstützt Java Bytecode beliebige Sprünge. Solche Code wird aber durch normale Programme, die z. B. in Java, Kotlin, Scala oder Clojure geschrieben wurden, nicht erzeugt. Decompiler kommen mit solchem Code in der Regel nicht (gut) zurecht.</p>
-</aside>
 </ld-topic>
 <ld-topic id="cfr-decompiler">
 <h2>cfr Decompiler</h2>
@@ -338,20 +343,24 @@
 <ld-story>
 <ul class="incremental-list simple">
 <li><p>Techniken, die dazu dienen das Reverse Engineering zu erschweren.</p></li>
-<li><p>Häufig eingesetzt ...</p></li>
-</ul>
-<ul class="incremental-list simple">
+<li><p>Häufig eingesetzt ...</p>
+<ul class="incremental-list">
 <li><p>von Malware</p></li>
 <li><p>Adware (im Kontext von Android ein häufig beobachtetes Phänomen)</p></li>
 <li><p>zum Schutz geistigen Eigentums</p></li>
 <li><p>für DRM / Durchsetzung von Kopierrechten</p></li>
 <li><p>zur Prävention von „Cheating“ (insbesondere im Umfeld von Online Games)</p></li>
 <li><p>Wenn das Programm als Source Code vertrieben wird bzw. vertrieben werden muss (JavaScript)</p></li>
+</ul>
+</li>
 <li><p>Arbeiten auf Quellcode oder Maschinencode Ebene</p></li>
 <li><p>Grenze zwischen <em>Code Minimization</em>, <em>Code Optimization</em> und <em>Code Obfuscation</em> ist fließend.</p></li>
-<li><p>Mögliche Werkzeuge (ohne Wertung der Qualität/Effektivität):</p></li>
+<li><p>Mögliche Werkzeuge (ohne Wertung der Qualität/Effektivität):</p>
+<ul>
 <li><p>[Java] Proguard / Dexguard</p></li>
 <li><p>[C/C++] <a class="reference external" href="https://www.star-force.com/products/starforce-crypto/">Star Force</a></p></li>
+</ul>
+</li>
 </ul>
 </ld-story><div class="supplemental docutils container">
 <p>Gerade im Umfeld von klassischen <em>Binaries</em> für Windows, Mac und Linux erhöhen Compiler Optimierungen, z. B. von C/C++ und Rust Compilern (<span class="docutils literal"><span class="pre">-O2</span> / <span class="pre">-O3</span></span>), bereits den Aufwand, der notwendig ist den Code zu verstehen, erheblich.</p>
@@ -403,7 +412,7 @@
 <li><p><span class="docutils literal">ClassLoader</span> stehen in einer Hierarchie.</p></li>
 <li><p><span class="docutils literal">ClassLoader</span> können genutzt werden, um:</p>
 <ul class="simple">
-<li><p>ein Programm dynamisch zu erweitern (Plug-ins</p></li>
+<li><p>ein Programm dynamisch zu erweitern (Plug-ins)</p></li>
 <li><p>um Klassen zu laden, die zur Laufzeit generiert wurden</p></li>
 <li><p>um den Bytecode zu manipulieren, bevor er von der JVM ausgeführt wird.</p></li>
 </ul>

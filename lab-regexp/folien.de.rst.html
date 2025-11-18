@@ -20,7 +20,7 @@
     <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
          <link rel="stylesheet" href="../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
  -->
-         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme)</style>
+         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
     
 </head>
 <body>
@@ -34,7 +34,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.2.1</dd>
+<dd class="version">1.3</dd>
 </dl>
 <div class="supplemental docutils container">
 <dl class="field-list">
@@ -48,112 +48,154 @@
 </dl>
 </div>
 </ld-topic>
-<ld-topic id="regulare-ausdrucke-wiederholung">
-<h2>Reguläre Ausdrücke (Wiederholung)</h2>
-<ul class="incremental-list simple">
-<li><p>Reguläre Ausdrücke (<span class="eng">regular expressions</span>) sind ein Standardwerkzeug. Wir verwenden diese z. B. um Wörterbücher, Leaks und weitere Kontextinformationen zu verarbeiten.</p></li>
-<li><p>Reguläre Ausdrücke können insbesondere zum Patternmatching auf Textdaten genutzt werden.</p></li>
-<li><p>Reguläre Ausdrücke beschreiben reguläre Sprachen und können durch einen endlichen Automaten erkannt werden.</p></li>
-<li><p>Reguläre Ausdrücke - in der Standardeinstellung - nehmen immer einen maximalen Musterabgleich vor (<span class="eng">greedy matching / eager matching</span>).</p></li>
+<ld-topic class="repetition" id="regulare-ausdrucke-1">
+<h2>Reguläre Ausdrücke</h2>
+<ul class="incremental-list list-with-explanations simple">
+<li><p>Reguläre Ausdrücke (<span class="eng">regular expressions</span>) sind ein Standardwerkzeug zum Patternmatching auf Textdaten.</p>
+<ul>
+<li><p>Wir verwenden diese z. B. zum Suchen und Ersetzen in Textdateien,</p></li>
+<li><p>im Rahmen der Entwicklung von Lexern und Parsern,</p></li>
+<li><p>um Eingaben zu überprüfen (Sanitizing) oder</p></li>
+<li><p>um Wörterbücher, Leaks und weitere Kontextinformationen zu Passwortkandidaten zu verarbeiten.</p></li>
 </ul>
-</ld-topic><ld-topic id="regulare-ausdrucke-zeichenklassen">
+</li>
+<li><p>Reguläre Ausdrücke beschreiben reguläre Sprachen und können durch einen endlichen Automaten erkannt werden.</p></li>
+<li><p>Reguläre Ausdrücke nehmen - im Normalfall - immer einen maximalen Musterabgleich vor (<span class="eng">greedy matching / eager matching</span>).</p></li>
+</ul>
+</ld-topic>
+<ld-topic class="new-section" id="schreiben-von-regularen-ausdrucken">
+<h2>Schreiben von regulären Ausdrücken</h2>
+<div class="section-subtitle docutils container">
+<p>Fokus ist hier auf grundlegende reguläre Ausdrücke.</p>
+</div>
+<div class="supplemental docutils container">
+<p><span class="peripheral">Es gibt verschiedene Dialekte von regulären Ausdrücken. Hier wird der Dialekt verwendet, der von GNU grep mit der Option -E (Extended Regular Expressions) unterstützt wird. Einige Beispiele verwenden Perl-kompatible reguläre Ausdrücke (PCRE), die mit grep -P genutzt werden können.</span></p>
+</div>
+</ld-topic>
+<ld-topic id="regulare-ausdrucke-zeichenklassen">
 <h2>Reguläre Ausdrücke - Zeichenklassen</h2>
 <ld-deck>
 <ld-card>
 <p>Buchstaben und Zahlen können direkt in einem regulären Ausdruck verwenden, um entsprechenden Text zu finden. Zum Beispiel steht <span class="docutils literal">&quot;a&quot;</span> für das Zeichen <span class="docutils literal">a</span>.</p>
-<pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;a&quot;</span></code></pre>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;a&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span></p>
 </ld-card><ld-card class="incremental">
 <p>Der Punkt repräsentiert ein beliebiges Zeichen - außer den Zeilenumbruch.</p>
-<pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;a.&quot;</span></code></pre>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;a.&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">ab</span></p>
 </ld-card><ld-card class="incremental">
 <p>Klassen von Zeichen können in eckigen Klammern angegeben werden &quot;[]&quot;.</p>
-<pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abcdefg&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;[acg]&quot;</span></code></pre>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;abcdefg&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-E<span class="whitespace"> </span><span class="literal string double">&quot;[acg]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span>, <span class="docutils literal">c</span>, <span class="docutils literal">g</span></p>
 <p>Klassen können auch durch Bereiche beschrieben werden (<span class="docutils literal"><span class="pre">a-z</span></span>, <span class="docutils literal"><span class="pre">A-Z</span></span>, <span class="docutils literal"><span class="pre">0-9</span></span>):</p>
-<pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;ab12xy&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name builtin">echo</span><span class="whitespace"> </span>-n<span class="whitespace"> </span><span class="literal string double">&quot;ab12xy&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span>, <span class="docutils literal">b</span>, <span class="docutils literal">x</span>, <span class="docutils literal">y</span></p>
 </ld-card><ld-card class="incremental">
 <p>Welche Buchstaben genau durch eine Klasse repräsentiert werden hängt von den Spracheinstellungen ab!</p>
-<pre class="code bash literal-block"><code><span class="name variable">LANG</span><span class="operator">=</span>de_DE.UTF-8<span class="punctuation">;</span><span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;aä&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name variable">LANG</span><span class="operator">=</span>de_DE.UTF-8<span class="punctuation">;</span><span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;aä&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">a</span>, <span class="docutils literal">ä</span></p>
 <p>aber</p>
-<pre class="code bash literal-block"><code><span class="name variable">LANG</span><span class="operator">=</span>C<span class="punctuation">;</span><span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;aä&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name variable">LANG</span><span class="operator">=</span>C<span class="punctuation">;</span><span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;aä&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[a-z]&quot;</span></code></pre>
 <p>findet „nur“: <span class="docutils literal">a</span></p>
 </ld-card><ld-card class="incremental">
 <p>Die Negation einer Klasse wird durch an ein <span class="docutils literal">^</span> direkt am Anfang der Klasse erzwungen.</p>
-<pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc123&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[^a-z]&quot;</span></code></pre>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc123&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;[^a-z]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal">1</span>, <span class="docutils literal">2</span>, <span class="docutils literal">3</span></p>
-</ld-card></ld-deck></ld-topic><ld-topic id="regulare-ausdrucke-escapezeichen">
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="regulare-ausdrucke-escapezeichen">
 <h2>Reguläre Ausdrücke - Escapezeichen</h2>
 <p>Der Backslash <span class="docutils literal">\</span> dient als Escapezeichen für Sonderzeichen.</p>
-<pre class="code bash literal-block"><code><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc-123[a-z]&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;\[a-z\]&quot;</span></code></pre>
+<pre class="code bash copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abc-123[a-z]&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;\[a-z\]&quot;</span></code></pre>
 <p>findet: <span class="docutils literal"><span class="pre">[a-z]</span></span> <span class="peripheral">(aber nicht &quot;abc&quot;)</span></p>
-</ld-topic><ld-topic id="regulare-ausdrucke-anker">
+</ld-topic>
+<ld-topic id="regulare-ausdrucke-anker">
 <h2>Reguläre Ausdrücke - Anker</h2>
 <p><span class="docutils literal">^</span>: Steht für den Anfang einer Zeile.</p>
 <p><span class="docutils literal">$</span>: steht für das Ende einer Zeile.</p>
-<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abcabcabc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;abc&quot;</span><span class="whitespace">
-</span>abc<span class="whitespace">
-</span>abc<span class="whitespace">
-</span>abc<span class="whitespace">
-</span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abcY_abcZ&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;^abc.&quot;</span><span class="whitespace">
-</span>abcY<span class="whitespace">
-</span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;XbcYbc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;.bc</span>$<span class="literal string double">&quot;</span><span class="whitespace">
-</span>Ybc</code></pre>
-</ld-topic><ld-topic id="regulare-ausdrucke-quantifizierung">
+<pre class="code bash literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abcabcabc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;abc&quot;</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>abc<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span>abc<span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span>abc<span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abcY_abcZ&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;^abc.&quot;</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span>abcY<span class="whitespace">
+</span></code><small class="ln">7 </small><code data-lineno="7 "><span class="whitespace"></span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;XbcYbc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;.bc</span>$<span class="literal string double">&quot;</span><span class="whitespace">
+</span></code><small class="ln">8 </small><code data-lineno="8 "><span class="whitespace"></span>Ybc</code></pre>
+</ld-topic>
+<ld-topic id="regulare-ausdrucke-quantifizierung">
 <h2>Reguläre Ausdrücke - Quantifizierung</h2>
 <ld-story>
 <p><span class="docutils literal">*</span>: &quot;null oder mehr&quot; Vorkommen des vorherigen Zeichens oder Musters.</p>
 <p><span class="docutils literal">+</span>: &quot;ein oder mehr&quot; Vorkommen des vorherigen Zeichens oder Musters.</p>
 <p><span class="docutils literal">?</span>: &quot;null oder ein&quot; Vorkommen des vorherigen Zeichens oder Musters.</p>
-<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;aa*&quot;</span><span class="whitespace">
-</span>a,<span class="whitespace"> </span>aa,<span class="whitespace"> </span>aaa<span class="whitespace">
-</span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;aa+&quot;</span><span class="whitespace">
-</span>aa,<span class="whitespace"> </span>aaa<span class="whitespace">
-</span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;a?&quot;</span><span class="whitespace">
-</span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a</code></pre>
+<pre class="code bash literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;aa*&quot;</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>a,<span class="whitespace"> </span>aa,<span class="whitespace"> </span>aaa<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;aa+&quot;</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span>aa,<span class="whitespace"> </span>aaa<span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;a?&quot;</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a,<span class="whitespace"> </span>a</code></pre>
 <div class="incremental line-above docutils container">
-<p><span class="docutils literal">{X,Y}</span>: zwischen X und Y Vorkommen des vorherigen Zeichens oder Musters. Die obere Grenze ist optional, um zum Beispiel X und mehr Vorkommen zu finden.</p>
-<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;a{2,2}&quot;</span><span class="whitespace">
-</span>aa<span class="whitespace">
-</span>aa<span class="whitespace">
-</span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;a{2,3}&quot;</span><span class="whitespace">
-</span>aa<span class="whitespace">
-</span>aaa</code></pre>
+<p><span class="docutils literal">{X,Y}</span>: zwischen <span class="docutils literal">X</span> und <span class="docutils literal">Y</span> Vorkommen des vorherigen Zeichens oder Musters. Die obere Grenze ist optional, um zum Beispiel <span class="docutils literal">X</span> und mehr Vorkommen zu finden.</p>
+<pre class="code bash literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;a{2,2}&quot;</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>aa<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span>aa<span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Sa--aa--aaaE&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;a{2,3}&quot;</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span>aa<span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span>aaa</code></pre>
 </div>
-</ld-story></ld-topic><ld-topic id="regulare-ausdrucke-alternativen">
+</ld-story></ld-topic>
+<ld-topic id="regulare-ausdrucke-alternativen">
 <h2>Reguläre Ausdrücke - Alternativen</h2>
 <p><span class="docutils literal">|</span> trennt  verschiedene Alternativen.</p>
-<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;HundMausAffe&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;Hund|Affe&quot;</span><span class="whitespace">
-</span>Hund<span class="whitespace">
-</span>Affe</code></pre>
-<p class="incremental">Aufgrund des „gierigem“ Musterabgleichs ist bei dem Abgleich von Alternativen generell darauf zu achten, dass zuerst auf den letzten Abgleich geprüft wird.</p>
-<pre class="code bash incremental literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Schifffahrt&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;Schiff|Schifffahrt&quot;</span><span class="whitespace">
-</span>Schifffahrt<span class="whitespace">
-
-</span><span class="comment single"># Perl compatible
-</span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Schifffahrt&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string double">&quot;Schiff|Schifffahrt&quot;</span><span class="whitespace">
-</span>Schiff</code></pre>
-</ld-topic><ld-topic id="regulare-ausdrucke-klammern">
+<pre class="code bash literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;HundMausAffe&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;Hund|Affe&quot;</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>Hund<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span>Affe</code></pre>
+<p class="incremental">Aufgrund des „gierigem“ Musterabgleichs ist bei dem Abgleich von Alternativen im Allgemeinen darauf zu achten, dass zuerst auf längere bzw. spezifischere Muster geprüft wird. Die Regeln sind jedoch</p>
+<pre class="code bash incremental literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Schifffahrt&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;Schiff|Schifffahrt&quot;</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>Schifffahrt<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="comment single"># Perl compatible (requires GNU grep)
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="comment single"></span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;Schifffahrt&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string double">&quot;Schiff|Schifffahrt&quot;</span><span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span>Schiff</code></pre>
+</ld-topic>
+<ld-topic id="regulare-ausdrucke-klammern">
 <h2>Reguläre Ausdrücke - Klammern</h2>
-<p><span class="docutils literal">()</span> dienen der Gruppierung von Teilausdrücken und der Referenzierbarkeit bzw. Rückreferenzen.</p>
+<p><span class="docutils literal">()</span> dienen der Gruppierung von Teilausdrücken und der Referenzierbarkeit bzw. Rückreferenzen mittel <span class="docutils literal">$</span>&lt;NR&gt; wobei NR die Nummer der Gruppe ist.</p>
 <p>Beispiel: der folgende Ausdruck findet Zeichenketten, die mit dem Zeichen aufhören mit dem sie begonnen haben.</p>
-<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;XaaaaX&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;^(.).*\1</span>$<span class="literal string double">&quot;</span><span class="whitespace">
-</span>XaaaaX<span class="whitespace">
-
-</span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;XaaaaY&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;^(.).*\1</span>$<span class="literal string double">&quot;</span></code></pre>
-</ld-topic><ld-topic id="regulare-ausdrucke-lookahead">
+<pre class="code bash literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;XaaaaX&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;^(.).*\1</span>$<span class="literal string double">&quot;</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>XaaaaX<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;XaaaaY&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string double">&quot;^(.).*\1</span>$<span class="literal string double">&quot;</span></code></pre>
+</ld-topic>
+<ld-topic id="regulare-ausdrucke-lookahead">
 <h2>Reguläre Ausdrücke - Lookahead</h2>
 <p><span class="docutils literal"><span class="pre">(?=...)</span></span>: ist ein positiver Lookahead und stellt sicher, dass ein bestimmtes Muster im Text folgt, ohne es selbst in das Ergebnis aufzunehmen.</p>
 <p><span class="docutils literal"><span class="pre">(?!...)</span></span>: ist ein negativer Lookahead und stellt sicher, dass ein bestimmtes Muster im Text <em>nicht</em> folgt.</p>
-<pre class="code bash literal-block"><code>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;HundKatzeHundMaus&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string single">'Hund(?=Katze).{1,2}'</span><span class="whitespace">
-</span>HundKa<span class="whitespace">
-
-</span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;HundKatzeHundMaus&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string single">'Hund(?!Katze).{1,2}'</span><span class="whitespace">
-</span>HundMa</code></pre>
-</ld-topic><ld-topic class="transition-scale exercises" id="fingerubungen">
+<pre class="code bash literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;HundKatzeHundMaus&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string single">'Hund(?=Katze).{1,2}'</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>HundKa<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;HundKatzeHundMaus&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string single">'Hund(?!Katze).{1,2}'</span><span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span>HundMa</code></pre>
+</ld-topic>
+<ld-topic id="regulare-ausdrucke-non-capturing-groups">
+<h2>Reguläre Ausdrücke - <em>Non-capturing Groups</em></h2>
+<p><span class="docutils literal"><span class="pre">(?:...)</span></span>: definiert eine Gruppe, die nicht für Rückreferenzen verwendet wird. (Primär für Effizienz.)</p>
+<pre class="code bash literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string double">&quot;abcabc&quot;</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Po<span class="whitespace"> </span><span class="literal string single">'(?:abc){2}'</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>abcabc</code></pre>
+</ld-topic>
+<ld-topic id="regulare-ausdrucke-eager-vs-lazy-matching">
+<h2>Reguläre Ausdrücke - <em>Eager vs. Lazy Matching</em></h2>
+<p><span class="docutils literal">*?</span>: match 0 oder mehr Vorkommen des vorherigen Zeichens oder Musters, aber so wenige wie möglich/nötig</p>
+<p><span class="docutils literal">+?</span>: match 1 oder mehr Vorkommen des vorherigen Zeichens oder Musters, aber so wenige wie möglich/nötig</p>
+<p><span class="docutils literal"><span class="pre">(??)</span></span>: match 0 oder 1 Vorkommen des vorherigen Zeichens oder Musters, aber so wenige wie möglich/nötig</p>
+<pre class="code bash literal-block"><small class="ln">1 </small><code data-lineno="1 ">$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string single">'&lt;div&gt;Hallo&lt;/div&gt;&lt;div&gt;Welt&lt;/div&gt;'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string single">'&lt;.*?&gt;'</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span>&lt;div&gt;<span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span>&lt;/div&gt;<span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span>&lt;div&gt;<span class="whitespace">
+</span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span>&lt;/div&gt;<span class="whitespace">
+</span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span>$<span class="whitespace"> </span><span class="name builtin">echo</span><span class="whitespace"> </span><span class="literal string single">'&lt;div&gt;Hallo&lt;/div&gt;&lt;div&gt;Welt&lt;/div&gt;'</span><span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>grep<span class="whitespace"> </span>-Eo<span class="whitespace"> </span><span class="literal string single">'&lt;.*&gt;'</span><span class="whitespace">
+</span></code><small class="ln">7 </small><code data-lineno="7 "><span class="whitespace"></span>&lt;div&gt;Hallo&lt;/div&gt;&lt;div&gt;Welt&lt;/div&gt;</code></pre>
+</ld-topic>
+<ld-topic class="transition-scale exercises" id="fingerubungen">
 <h2>Fingerübungen</h2>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Schmetterling in Rockyou" id="ld-exercise-1">
 <p class="ld-exercise-title rubric">Schmetterling in Rockyou</p>
@@ -169,9 +211,15 @@ MTAwMDAw:DI4bTNbEPfukzjlilX0MOKJQsQ948+r0ozvFovGrtVo=:qliGG6RDRgHQitEr:LKDRqjxkq
 </div>
 <div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Wiederholungen von Sequenzen in Passwörtern" id="ld-exercise-3">
 <p class="ld-exercise-title rubric">Wiederholungen von Sequenzen in Passwörtern</p>
-<p>Finden Sie alle Passworte, in denen eine Sequenz mit mindestens 3 Zeichen wiederholt wird, z. B. „TestTest“` oder „1AffeIstAffe#“.</p>
+<p>Finden Sie alle Passworte, in denen eine Sequenz mit mindestens 3 Zeichen wiederholt wird, z. B. „TestTest“ oder „1AffeIstAffe#“.</p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:74jc1apfRpUgTZQVXFcpXJ6lLpKH31Vu0/ssAYQSGXo=:oXH4suQiscwDAy60:tAvY6RR+I2caZEbFLiXtrbBuQoc7K5ba1GKJCUw9ZR1IsfEo1KVmumSg7DtRgyPEdbqWwEqf09wuLb/71/Cw2ODf88C8l2m3uYaDMZx5vEB3AYgPlrQyCckYJoN7oGd5p+m6y7WpbUkYyp2ogTXGeDRcs9/DW9pLchcGJfY14nZ7WodtJcS6MhE2zxpLygDHlJhvaTsnjcz0RKQ2wCVpKNNrkYOx54y63R+1NFgZ2rE4IkrLfUS0zYgGh2Ck9yM6CCg9xHzQkV0gYOMrz1GC6/3Ytyooc21/R7KEJG6pPsjeiknc7jcTkSoyTe3tVUzxe9OcYum4yALJjbbmzcInODXUZNivRDT0zW2FsTglE5GDfHwM/p/OYOSxARv4lbTdbg5gsYTr+FVugTaCtZRKQqdePiIoCQ==</div>
+</div>
+<div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Kein Sonderzeichen danach" id="ld-exercise-4">
+<p class="ld-exercise-title rubric">Kein Sonderzeichen danach</p>
+<p>Finden Sie alle Buchstabensequenzen mit ein bis drei Zeichen, bei denen das letzte Zeichen nicht gefolgt wird von einem Sonderzeichen (z. B. <span class="docutils literal">ab</span> und <span class="docutils literal">de</span> in „<span class="docutils literal">abc_def_</span>“).</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:+doRbrthrLT3+fIvTZw6w9NPMQlhPJ/q0svOjDSfhvw=:LYF+6ftcUwfqcyNn:Hp40IQrFWYdTCzYyWrz2Few+vryG7mvbgBppICyJEp4WLFJymZuv43gEfk2MCrZCeZLrODi36LEzL0xem7wX5WqTczfnUWwr36xXBUGhz5cPmVk9hMzj2x+59JiAeZc/1Xo0BbOKwFOnmgp1eHdjrJt+x1qqGguM4k/NdGmfekYwN0BuslrIcm8Uyy3fXmjSPhCaRlUC5QZl+5wNdMeUtudCDF8Ipv0ANHvkcE5DD0s4BcpZCc6ctQXfVd+PC4r7QV2N6zh5LnJCjiv1CG/SffAHplRm1y7U5vFskHGZfPCtCaHh7fVLid9MdNMV16eA+Ww6jd9wXbAKnSaMedRQigWy2j2LJKiPkLP2vrQ8o7ZUzxzxXuxVoavkS+EpIWIrPKqwiWaANniuqwJbno/HEWEb68BqJciuKFDD6mNKkq/odHLAkmrqjxJrLeyrJuyFu8NPE+Tey+PBQ8oSEcP2K/dJOoXULG0wxnwSGHVCe9vsNJWkLfEnYljlhsGIc0up5OefAlIDdv1ZSe1IqUMaSBKaaY9+nkTl6Ptsh7b3SQVH0gyr0pS04WWlw4egULDx3be7IoniU8gvsdRYPYKdgJflaIz6VRN3TGf2z5DllLow44NsBDEJHx4CBxmtIBDFlA3yScvKgiDqkvcv1iqQf0KDzPiDVlISi4Y9e/XhTwvRisalRE9+nKz7rnddnfy3CD7lcIQF7DHxWMOK/ugOJjRE5ZDPAITS3+sU2gmjTZit/DD009KlLuZneiFR8jCPpBjqIzIf9opg72hjDnErWeBo4A==</div>
 </div>
 </ld-topic>
 </template>
