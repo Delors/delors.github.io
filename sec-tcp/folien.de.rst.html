@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="TCP, DDoS" name="keywords" />
+<meta content="Network Security - Eine Einführung in die Sicherheit von (verteilten) Systemen" lang="de" name="description" xml:lang="de" />
+<meta content="it-security-tcp-vorlesung" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:fl8Ut60DF2xsYmwBPZv3YwQSU6fMXWTRWhU55DcLy08=:z0eVRFGFwRGuZu9u:+xfm1JAH1L9Ay+AyW+NSTqrBUS1fC6sr0o0jVeGly52zmMCsAfZSXCYL1QrjfGT+kE3qRlhM9tqZTuUMHkUBc5MCcfikf/mJpHZH1DUxiTvOaTApjzRO9bMtO3lx4voYc9aNAYVuF+a1m6vRnttkiZ9VQbNp2TmYdzdFldO9WmfYW3ne8GDIl3CQlnHAuyJrWjCTeKNiF/rB5qs1UwfwVES3846ZH/3b7mNyRr6dW//guZ/LK0tiwxtFKwqMiYyQZADR2K8o3j73mXZcyWeUlzgTjYqe+d1RHr16oNAK4XoKPpedPh3zY1Bp0pbibjg3HE4qilKuqbXIFCM8Tjw=" />
+<title>Aspekte der Netzwerksicherheit: Transmission Control Protocol (TCP)</title>
+
+    <script src="../LectureDoc2/src/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/src/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
+    
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-defs"><defs><marker     id="arrow"     viewBox="0 0 10 10"     refX="10"     refY="5"     markerWidth="8"     markerHeight="8"     orient="auto-start-reverse">     <path d="M 0 0 L 10 5 L 0 10 z" /> </marker></defs></svg>
+<template>
+<ld-topic id="aspekte-der-netzwerksicherheit-transmission-control-protocol-tcp">
+<h1 class="title">Aspekte der Netzwerksicherheit: Transmission Control Protocol (TCP)</h1>
+<dl class="docinfo">
+<dt class="dozent">Dozent<span class="colon">:</span></dt>
+<dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt class="contact">Kontakt<span class="colon">:</span></dt>
+<dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">1.3.7</dd>
+</dl>
+<dl class="sources field-list simple">
+<dt>Quellen<span class="colon">:</span></dt>
+<dd><p>Folien von Prof. Dr. Henning Pagnia bzgl. Netzwerksicherheit</p>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/sec-tcp/folien.de.rst.html">https://delors.github.io/sec-tcp/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/sec-tcp/folien.de.rst.html.pdf">https://delors.github.io/sec-tcp/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div>
+</ld-topic>
+<ld-topic class="repetition" id="tcp-grundlagen">
+<h2>TCP Grundlagen</h2>
+<ul class="incremental-list simple">
+<li><p>Protokoll der Schicht 4 (Transport Layer) basiert auf IP</p></li>
+<li><p>verbindungsorientierte Kommunikation zweier Rechner im Internet zuverlässig und geordnet:</p>
+<ul class="incremental-list">
+<li><p>Verwerfen von Duplikaten und fehlerhaft übertragener Pakete</p></li>
+<li><p>automatisches Wiederversenden fehlender Pakete</p></li>
+<li><p>Nachrichtenpuffer: Daten werden in korrekter Reihenfolge an Applikation zugestellt</p></li>
+</ul>
+</li>
+<li><p>Verbindungsaufbau immer zwischen zwei Sockets (Socket-Adresse: IP Adresse und 16 Bit-Port-Nummer)</p></li>
+</ul>
+</ld-topic>
+<ld-topic class="repetition" id="aufbau-einer-tcp-verbindung">
+<h2>Aufbau einer TCP Verbindung</h2>
+<p>Dreifacher Handshake:</p>
+<div class="supplemental docutils container">
+<p><strong>Terminologie</strong>:</p>
+<dl class="field-list simple">
+<dt>SYN<span class="colon">:</span></dt>
+<dd><p><span class="eng">synchronize (session establishment)</span></p>
+</dd>
+<dt>ACK<span class="colon">:</span></dt>
+<dd><p><span class="eng">acknowledge</span></p>
+</dd>
+<dt>RST<span class="colon">:</span></dt>
+<dd><p><span class="eng">reset</span></p>
+</dd>
+</dl>
+<p><strong>Verbindungsaufbau - Ablauf</strong>:</p>
+<ol class="arabic simple">
+<li><p>Client sendet SYN Paket mit initialer Sequenznummer (hier) 1000 an den Server.</p></li>
+<li><p>Server sendet ein SYN-ACK Paket mit seiner initialen Sequenznummer (hier) 2000 und ein ACK mit der Sequenznummer 1001 (initiale Sequenznummer des Clients +1) an den Client</p></li>
+<li><p>Client sendet ein ACK Paket mit Sequenznummer 2001 (initiale Sequenznummer des Servers +1) an den Server; danach ist die Verbindung aufgebaut.</p></li>
+</ol>
+<p>Das Betriebssystem sollte die initialen Sequenznummern zufällig wählen, so dass ein Angreifer diese nicht leicht vorhersagen kann. Beide Seiten haben eigene Sequenznummern, die unabhängig voneinander sind.</p>
+<p>Bei einer laufenden Verbindung werden die Sequenznummern inkrementiert und es ist nicht (mehr) erkennbar wer die Verbindung aufgebaut hat.</p>
+</div>
+<div class="center-child-elements"><div style="width: 76ch; height: 40ch"; container-type:size;">
+<svg viewBox="100 0 1140 600" font-size="36" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <text x="125" y="75" style="font-weight: bolder">Client</text>
+    <line x1="200" y1="100" x2="200" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <text x="925" y="75" style="font-weight: bolder">Server</text>
+    <line x1="1000" y1="100" x2="1000" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="200" y1="400" x2="200" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="1000" y1="400" x2="1000" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+
+    <text x="500" y="65" transform="rotate(6.6)">SYN(1000)</text>
+    <line x1="200" y1="110" x2="1000" y2="190" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+    <g class="incremental">
+    <text x="270" y="300" transform="rotate(-6.6)">SYN(2000), ACK(1001)</text>
+    <line x1="1000" y1="200" x2="200" y2="290" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+    </g>
+
+    <g class="incremental">
+    <text x="555" y="315" transform="rotate(6.6)">ACK(2001)</text>
+    <line x1="200" y1="300" x2="1000" y2="390" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+    </g>
+</svg>
+</div></div></ld-topic>
+<ld-topic class="repetition" id="ports-bei-tcp">
+<h2>Ports bei TCP</h2>
+<ul class="incremental-list simple">
+<li><p>Port-Nummern werden für die Kommunikation zwischen zwei Diensten/Prozessen verwendet</p></li>
+<li><p>Ports sind 16 Bit Zahlen (0-65535)</p></li>
+<li><p>(Unix) Ports &lt; 1024 sind privilegiert (nur root kann diese öffnen)</p></li>
+<li><p>einige Port-Nummern sind Standarddiensten zugeordnet</p></li>
+</ul>
+</ld-topic>
+<ld-topic class="repetition" id="port-nummern-einiger-standarddienste">
+<h2>Port-Nummern einiger Standarddienste <a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<p><strong>Ungeschützte Dienste</strong> (Kommunikation findet ohne Verschlüsselung statt.)</p>
+<table class="highlight-row-on-hover">
+<colgroup>
+<col style="width: 13.3%" />
+<col style="width: 80.0%" />
+<col style="width: 6.7%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>Protokoll</p></th>
+<th class="head"><p>Dienst</p></th>
+<th class="head"><p>Portnummer</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>ftp</p></td>
+<td><p>Dateitransfer</p></td>
+<td><p>21</p></td>
+</tr>
+<tr><td><p>smtp</p></td>
+<td><p>Simple Mail Transfer Protocol</p></td>
+<td><p>25</p></td>
+</tr>
+<tr><td><p>dns</p></td>
+<td><p>Domain Name System</p></td>
+<td><p>53</p></td>
+</tr>
+<tr><td><p>http</p></td>
+<td><p>Hypertext Transfer Protocol</p></td>
+<td><p>80</p></td>
+</tr>
+<tr><td><p>login</p></td>
+<td><p>Login auf entfernte Rechner</p></td>
+<td><p>513</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Geschützte Dienste</strong> (Die Kommunikation ist verschlüsselt.)</p>
+<table class="highlight-row-on-hover incremental">
+<colgroup>
+<col style="width: 13.3%" />
+<col style="width: 80.0%" />
+<col style="width: 6.7%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>Protokoll</p></th>
+<th class="head"><p>Dienst</p></th>
+<th class="head"><p>Portnummer</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>ssh</p></td>
+<td><p>Secure Shell</p></td>
+<td><p>22</p></td>
+</tr>
+<tr><td><p>https</p></td>
+<td><p>HTTP über Secure Socket Layer</p></td>
+<td><p>443</p></td>
+</tr>
+<tr><td><p>smtps</p></td>
+<td><p>SMTP über Secure Socket Layer</p></td>
+<td><p>465</p></td>
+</tr>
+<tr><td><p>imaps</p></td>
+<td><p>IMAP über Secure Socket Layer</p></td>
+<td><p>993</p></td>
+</tr>
+<tr><td><p>pop3s</p></td>
+<td><p>POP3 über Secure Socket Layer</p></td>
+<td><p>995</p></td>
+</tr>
+</tbody>
+</table>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.iana.org/assignments/service-names-port-numbers">Port numbers assigned by IANA</a></p>
+</aside>
+</aside>
+</ld-topic>
+<ld-topic id="angriffe-auf-tcp-motivation">
+<h2>Angriffe auf TCP - Motivation</h2>
+<ul class="incremental-list list-with-explanations">
+<li><p>Netzwerkprogrammierung mit TCP ist relativ komfortabel.</p></li>
+<li><p>Viele Dienste sind mit TCP implementiert.</p>
+<p>Insbesondere in der Anfangszeit hatten viele TCP Dienste sowohl technische als auch konzeptionelle Schwachstellen. Einige dieser Schwachstellen sind bis heute nicht behoben.</p>
+</li>
+<li><p>Das Auffinden von angreifbaren Diensten kann mit Hilfe von Port Scans systematisch erfolgen.</p>
+<p>Server haben heutzutage im Allgemeinen alle nicht verwendeten Dienste geschlossen.</p>
+</li>
+</ul>
+</ld-topic>
+<ld-topic id="port-scans-tcp-connect-scan">
+<h2>Port Scans: TCP Connect Scan</h2>
+<ld-grid class="default-layout">
+<ld-cell class="width-50 incremental" style="align-self:auto;">
+<p class="rubric">Vorgehen</p>
+<p>Aufbau vollständiger Verbindungen zu allen bzw. zu ausgewählten Ports.</p>
+</ld-cell><ld-cell class="width-50" style="align-self:auto;">
+<div style="width: 36ch; height:18ch; container-type:size;">
+<svg viewBox="0 0 1200 600" font-size="48" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <text x="125" y="75" style="font-weight: bolder">Scanner</text>
+    <line x1="200" y1="100" x2="200" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <text x="925" y="75" style="font-weight: bolder">Server</text>
+    <line x1="1000" y1="100" x2="1000" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="200" y1="400" x2="200" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="1000" y1="400" x2="1000" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+
+    <text x="500" y="65" transform="rotate(6.6)">SYN</text>
+    <line x1="200" y1="110" x2="1000" y2="190" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+    <text x="390" y="300" transform="rotate(-6.6)">SYN / ACK</text>
+    <line x1="1000" y1="200" x2="200" y2="290" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+    <text x="555" y="315" transform="rotate(6.6)">ACK</text>
+    <line x1="200" y1="300" x2="1000" y2="390" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+</svg>
+</div></ld-cell></ld-grid><aside class="admonition incremental assessment">
+<p class="admonition-title">Bewertung</p>
+<ul class="simple">
+<li><p>simpelster Port Scan</p></li>
+<li><p>große Entdeckungsgefahr (Scan selbst ist kein Angriff)</p></li>
+<li><p>mögliche Verbesserung: zwischen dem Scannen mehrerer Ports Pausen einstreuen (Wie lange?)</p></li>
+</ul>
+</aside>
+</ld-topic>
+<ld-topic id="port-scans-tcp-syn-scan">
+<h2>Port Scans: TCP SYN Scan</h2>
+<ld-grid class="default-layout">
+<ld-cell class="width-50 incremental" style="align-self:auto;">
+<p class="rubric">Vorgehen</p>
+<ol class="arabic simple">
+<li><p>Senden eines TCP-Segments mit gesetztem SYN-Flag an einen Port</p></li>
+<li><p>falls der <em>Port offen</em> ist, kommt SYN/ACK zurück danach RST senden</p></li>
+<li><p>falls der <em>Port nicht offen</em> ist, kommt RST (oder nichts) zurück</p></li>
+</ol>
+</ld-cell><ld-cell class="widh-50" style="align-self:auto;">
+<div style="width: 36ch; height:18ch; container-type:size;">
+<svg viewBox="0 0 1200 600" font-size="48" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <text x="125" y="75" style="font-weight: bolder">Scanner</text>
+    <line x1="200" y1="100" x2="200" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <text x="925" y="75" style="font-weight: bolder">Server</text>
+    <line x1="1000" y1="100" x2="1000" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="200" y1="400" x2="200" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="1000" y1="400" x2="1000" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+
+    <text x="500" y="65" transform="rotate(6.6)">SYN</text>
+    <line x1="200" y1="110" x2="1000" y2="190" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+    <text x="390" y="300" transform="rotate(-6.6)">SYN / ACK</text>
+    <line x1="1000" y1="200" x2="200" y2="290" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+    <text x="555" y="315" transform="rotate(6.6)">RST</text>
+    <line x1="200" y1="300" x2="1000" y2="390" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+</svg>
+</div></ld-cell></ld-grid><aside class="admonition incremental assessment">
+<p class="admonition-title">Bewertung</p>
+<ul class="simple">
+<li><p>kein vollständiger Verbindungsaufbau</p></li>
+<li><p>meist nicht protokolliert</p></li>
+<li><p>geringe(re) Entdeckungsgefahr</p></li>
+</ul>
+</aside>
+</ld-topic>
+<ld-topic id="port-scans-stealth-scans">
+<h2>Port Scans: Stealth Scans</h2>
+<dl class="field-list">
+<dt>Vorgehen<span class="colon">:</span></dt>
+<dd><p>Versenden eines für den Verbindungsaufbau ungültigen TCP-Segments an einen Port:</p>
+<ul class="incremental simple">
+<li><p>NULL-Scan (keine Flags)</p></li>
+<li><p>ACK-Scan (ACK-Flag)</p></li>
+<li><p>FIN-Scan (FIN-Flag)</p></li>
+<li><p>XMAS-Scan (alle Flags)</p></li>
+</ul>
+<p class="incremental">Laut RFC kommt RST zurück, falls der Port offen ist. (Reaktion ist de-facto aber abhängig vom Betriebssystem und oft kommt keine Antwort zurück.)</p>
+</dd>
+</dl>
+<aside class="admonition incremental assessment">
+<p class="admonition-title">Bewertung</p>
+<ul class="simple">
+<li><p>Zugriff wird meist nicht protokolliert</p></li>
+<li><p>Scan bleibt unbemerkt</p></li>
+</ul>
+</aside>
+<div class="supplemental docutils container">
+<p><strong>XMAS-Scan</strong>:</p>
+<p>Bei diesem Scan sind alle Flags gesetzt; ein XMAS-Scan wird auch als Christmas-Tree-Scan bezeichnet, da das Paket erleuchtet ist wie ein Weihnachtsbaum.</p>
+</div>
+</ld-topic>
+<ld-topic id="port-scans-idle-scan">
+<h2>Port Scans: Idle Scan <a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
+<p>Bei allen bisher betrachteten Scans kann der Scanner prinzipiell identifiziert werden. Unter Verwendung eines sog. Zombies geht es auch anders:</p>
+<ld-grid class="default-layout">
+<ld-cell class="width-50" style="align-self:auto;">
+<p>Sondiere IP ID des Zombies:</p>
+<object aria-label="Idle Scan - Schritte 1-2" data="images/idle-scan/idle-scan-step1.svg" role="img" type="image/svg+xml">
+</object></ld-cell><ld-cell class="width-50 fade-out" style="align-self:auto;">
+<p>Starte Scan:</p>
+<object aria-label="Idle Scan - Schritte 3-5" data="images/idle-scan/idle-scan-step2.svg" role="img" type="image/svg+xml">
+</object></ld-cell></ld-grid><div class="supplemental docutils container">
+<dl class="field-list simple">
+<dt>Zombie<span class="colon">:</span></dt>
+<dd><p>ein Rechner (Computer, Drucker oder anderes IoT Gerät) im Internet <em>möglichst ohne eigenen Netzverkehr</em> und mit <em>altem</em> Betriebssystem, bei dem die IP ID in vorhersehbarer Weise inkrementiert wird. (Bei modernen Betriebssystemen ist die IP ID zufällig, <strong>konstant</strong> oder sogar <span class="docutils literal">null</span>.)</p>
+</dd>
+<dt>Grundlegende Idee<span class="colon">:</span></dt>
+<dd><p>Der Zombie sendet ein RST Paket zurück, da er kein SYN gesendet hat und kein SYN/ACK erwarte. Dadurch erfährt der Angreifer die aktuelle IP ID des Zombies. Über diesen Seitenkanal - d. h. die Veränderung der IP ID des Zombies - kann der Angreifer nun den Zustand des Ports auf dem Zielrechner ermitteln.</p>
+</dd>
+</dl>
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Sollte ein Intrusion Detection System vorhanden sein, so wird dieses den Zombie als Angreifer identifizieren.</p>
+</aside>
+<p class="rubric">Hintergrund - IP ID</p>
+<p>Das Feld <em>IP Identifikation (IP ID)</em> dient der Identifizierung einer Gruppe von Fragmenten eines einzelnen IP-Datagramms.</p>
+<object aria-label="IPv4 Packet" class="align-left" data="images-external/IPv4_Packet-en.svg" role="img" type="image/svg+xml">
+</object><div class="peripheral docutils container">
+<p>By Michel Bakni - Postel, J. (September 1981) RFC 791, IP Protocol, DARPA Internet Program Protocol Specification, p. 1 DOI: 10.17487/RFC0791., CC BY-SA 4.0, <a class="reference external" href="https://commons.wikimedia.org/w/index.php?curid=79949694">https://commons.wikimedia.org/w/index.php?curid=79949694</a></p>
+</div>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://nmap.org/book/idlescan.html">NMap Book</a></p>
+</aside>
+</aside>
+</ld-topic>
+<ld-topic id="port-scans-idle-scan-1">
+<h2>Port Scans: Idle Scan</h2>
+<ld-grid class="default-layout">
+<ld-cell class="width-50" style="align-self:auto;">
+<p>Starte Scan:</p>
+<object aria-label="Idle Scan - Schritte 3-5" data="images/idle-scan/idle-scan-step2.svg" role="img" type="image/svg+xml">
+</object></ld-cell><ld-cell class="width-50" style="align-self:auto;">
+<p>Sondiere IP ID des Zombies:</p>
+<object aria-label="Idle Scan - Schritt 6" data="images/idle-scan/idle-scan-step3.svg" role="img" type="image/svg+xml">
+</object></ld-cell></ld-grid></ld-topic>
+<ld-topic id="port-scans-idle-scan-zusammenfassung">
+<h2>Port Scans: Idle Scan - Zusammenfassung</h2>
+<ul>
+<li><p>Angreifer sendet SYN/ACK Paket an Zombie</p></li>
+<li><p>der Zombie antwortet mit RST und enthüllt seine IP ID (<span class="eng">IP Fragment Identification Number</span>).</p></li>
+<li><p>Angreifer sendet SYN („mit IP vom Zombie“) an Port des Servers:</p>
+<p>[<strong>Port offen</strong>] Der Zielrechner antwortet mit SYN/ACK an den Zombie, wenn der Port offen ist. Der Zombie antwortet darauf mit RST an den Server, da er kein SYN gesendet hat und kein SYN/ACK erwartet und <em>erhöht seine IP ID</em>.</p>
+<p>[<strong>Port geschlossen</strong>] Der Zielrechner antwortet mit RST an den Zombie, wenn der Port geschlossen ist. Dies wird vom Zombie ignoriert.</p>
+</li>
+<li><p>Der Angreifer sendet wieder ein SYN/ACK an den Zombie, um die IP ID zu erfahren.</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Mit einem IDLE Scan kann nicht unterschieden werden, ob der Port geschlossen oder gefiltert ist.</p>
+</div>
+</ld-topic>
+<ld-topic id="port-scans-mit-nmap">
+<h2>Port Scans mit nmap</h2>
+<ul class="incremental-list simple">
+<li><p>alle Arten von Port-Scans möglich</p></li>
+<li><p>auch OS fingerprinting</p></li>
+<li><p>u. U. sogar Ermittlung der Versionsnummern von Diensten</p></li>
+</ul>
+<pre class="code bash incremental literal-block"><code>$<span class="whitespace"> </span>nmap<span class="whitespace"> </span><span class="literal number">192</span>.168.178.121<span class="whitespace"> </span>-Pn<span class="whitespace">
+</span>Starting<span class="whitespace"> </span>Nmap<span class="whitespace"> </span><span class="literal number">7</span>.94<span class="whitespace"> </span><span class="operator">(</span><span class="whitespace"> </span>https://nmap.org<span class="whitespace"> </span><span class="operator">)</span><span class="whitespace"> </span>at<span class="whitespace"> </span><span class="literal number">2023</span>-12-14<span class="whitespace"> </span><span class="literal number">13</span>:16<span class="whitespace"> </span>PST<span class="whitespace">
+</span>Nmap<span class="whitespace"> </span>scan<span class="whitespace"> </span>report<span class="whitespace"> </span><span class="keyword">for</span><span class="whitespace"> </span>Michaels-MacBook-Pro<span class="whitespace"> </span><span class="operator">(</span><span class="literal number">192</span>.168.178.121<span class="operator">)</span><span class="whitespace">
+</span>Host<span class="whitespace"> </span>is<span class="whitespace"> </span>up<span class="whitespace"> </span><span class="operator">(</span><span class="literal number">0</span>.0056s<span class="whitespace"> </span>latency<span class="operator">)</span>.<span class="whitespace">
+</span>Not<span class="whitespace"> </span>shown:<span class="whitespace"> </span><span class="literal number">995</span><span class="whitespace"> </span>filtered<span class="whitespace"> </span>tcp<span class="whitespace"> </span>ports<span class="whitespace"> </span><span class="operator">(</span>no-response<span class="operator">)</span><span class="whitespace">
+</span>PORT<span class="whitespace">     </span>STATE<span class="whitespace"> </span>SERVICE<span class="whitespace">
+</span><span class="literal number">53</span>/tcp<span class="whitespace">   </span>open<span class="whitespace">  </span>domain<span class="whitespace">
+</span><span class="literal number">88</span>/tcp<span class="whitespace">   </span>open<span class="whitespace">  </span>kerberos-sec<span class="whitespace">
+</span><span class="literal number">445</span>/tcp<span class="whitespace">  </span>open<span class="whitespace">  </span>microsoft-ds<span class="whitespace">
+</span><span class="literal number">5000</span>/tcp<span class="whitespace"> </span>open<span class="whitespace">  </span>upnp<span class="whitespace">
+</span><span class="literal number">7000</span>/tcp<span class="whitespace"> </span>open<span class="whitespace">  </span>afs3-fileserver</code></pre>
+<div class="supplemental docutils container">
+<p><strong>OS-Fingerprinting</strong></p>
+<p>Beim OS-Fingerprinting werden Datenpakete analysiert, die aus einem Netzwerk stammen, um Informationen für spätere Angriffe zu gewinnen. Durch die Erkennung des Betriebssystems, mit dem ein Netzwerk arbeitet, haben Hacker es leichter, Schwachstellen zu finden und auszunutzen. OS-Fingerprinting kann auch Konfigurationsattribute von entfernten Geräten sammeln. Diese Art von Aufklärungsangriff ist in der Regel (einer) der erste(n) Schritt(e).</p>
+<p>Es gibt zwei Arten von OS-Fingerprinting: (1) Aktiv und (2) passiv.</p>
+<blockquote>
+<ol class="arabic simple">
+<li><p>Bei einem aktiven OS-Fingerprinting-Versuch senden die Angreifer ein Paket an das Zielsystem und warten auf eine Antwort, um den Inhalt des TCP-Pakets zu analysieren.</p></li>
+<li><p>Bei einem passiven Versuch agieren die Angreifer eher als &quot;Schnüffler&quot;, der keine absichtlichen Änderungen oder Aktionen im Netzwerk vornimmt. Passives OS-Fingerprinting ist ein unauffälligerer, aber wesentlich langsamerer Prozess.</p></li>
+</ol>
+</blockquote>
+</div>
+</ld-topic>
+<ld-topic id="port-knocking">
+<h2>Port Knocking</h2>
+<ul class="incremental-list list-with-explanations">
+<li><p>Ein Knock-Daemon versteckt offene Ports auf dem Server.</p></li>
+<li><p>Zugriffe auf alle Ports werden im Log-File protokolliert.</p></li>
+<li><p>Knock-Daemon beobachtet das Log-File.</p></li>
+<li><p>Erst nach Erkennen einer vordefinierten (Einmal-)Klopfsequenz öffnet der Knock-Daemon den gewünschten Port für diesen Client.</p></li>
+<li><p>Client kann nun die Verbindung aufbauen.</p></li>
+<li><p>Weiterentwicklung: TCP Stealth</p>
+<p>In diesem Fall werden offene Ports dadurch versteckt, dass sie nur auf spezielle SYN-Pakete mit bestimmten Sequenznummern reagieren. Die Sequenznummern sind ggf. kryptografisch abgesichert und basieren auf vorher ausgetauschten Schlüsseln.</p>
+</li>
+</ul>
+<div class="supplemental docutils container">
+<p><strong>Weiterführend</strong></p>
+<p>Alternativen zu einer Knock-Sequenz ist zum Beispiel, dass der Port nur dann als offen gilt, wenn die IP ID eine bestimmte Sequenznummer aufweist.</p>
+<p>M.Krzywinski: Port Knocking: Network Authentication Across Closed Ports in SysAdmin Magazine 12: 12-17. (2003)</p>
+</div>
+</ld-topic>
+<ld-topic id="connection-hijacking">
+<h2>Connection Hijacking</h2>
+<p>Angreifer übernimmt eine bestehende - zum Beispiel eine bereits durch (Einmal-)Passwort authentisierte - Verbindung.</p>
+<object aria-label="Connection Hijacking (einfache Variante)" class="align-center" data="images/connection-hijacking.svg" role="img" type="image/svg+xml">
+</object><div class="supplemental docutils container">
+<p>TCP/IP-Hijacking ist eine Form eines Person-in-the-Middle-Angriffs. Der Angreifer bestimmt erst die IP-Adressen der beiden Sitzungsteilnehmer.</p>
+<p>Danach gibt es mehrere Möglichkeiten:</p>
+<ul>
+<li><p>Der Angreifer schickt (&quot;in einer Pause&quot;) ein Paket mit der passenden Sequenznummer an den Server.</p>
+<p><em>(Dies kann dann in einem ACK-Storm enden, was ggf. unterbunden werden muss (zum Beispiel durch das Senden eines RSTs), oder ignoriert werden kann.)</em></p>
+</li>
+<li><p>Der Angreifer macht einen Client mit einem DoS-Angriff unerreichbar, um sich dann mit dem Anderen zu verbinden, indem er die Netzwerk-ID des ausgeschalteten Clients nutzt.</p></li>
+</ul>
+</div>
+</ld-topic>
+<ld-topic id="denial-of-service-dos-angriffe">
+<h2>Denial-of-Service (DoS) Angriffe</h2>
+<p>Ziel des Angreifers: Lahmlegen eines Dienstes oder des ganzen Systems ...</p>
+<ul class="simple">
+<li><p>durch Ausnutzen von Schwachstellen (<span class="eng">vulnerabilities</span>) wie z. B. Buffer Overflows</p></li>
+<li><p>durch Generierung von Überlast (Ausschöpfen von RAM, CPU, Netzwerkbandbreite, ...)</p></li>
+</ul>
+<aside class="admonition incremental example">
+<p class="admonition-title">Beispiel</p>
+<p class="rubric">Ping-of-Death</p>
+<p>(Historisch: aus dem Jahr 1997)</p>
+<p>Ein <span class="docutils literal">ping</span> (vgl. Internet Control Message Protocol (ICMP)) verwendet üblicherweise kleine Nachrichten, aber die verwendete Länge ist einstellbar.</p>
+<p>Falls die Länge zu groß ist ⇒ Buffer Overflow ⇒ Systemabsturz!</p>
+<p>Variante: mittels Fragmentierung ließen sich generell übergroße IP-Pakete (&gt;65,536 Byte) erstellen.</p>
+</aside>
+</ld-topic>
+<ld-topic id="denial-of-service-syn-flooding-angriff">
+<h2>Denial-of-Service: SYN-flooding Angriff</h2>
+<ul class="incremental-list">
+<li><p>Angriff auf Design</p></li>
+<li><p>Angreifer sendet eine Verbindungsaufbauanforderung (gesetztes SYN-Flag) an Zielmaschine</p></li>
+<li><p>Server generiert eine halboffene TCP-Verbindung</p></li>
+<li><p>Angreifer wiederholt in schneller Folge dieses erste Paket zum Verbindungsaufbau</p>
+<p>⇒ vollständiges Füllen der internen Systemtabelle</p>
+<p>⇒ Anfragen normaler Benutzer werden zurückgewiesen</p>
+</li>
+<li><p>Angreifer verwendet i. Allg. IP-Spoofing weswegen Firewalls wirkungslos sind.</p></li>
+<li><p>Abwehr: SYN-Cookies</p></li>
+</ul>
+</ld-topic>
+<ld-topic id="syn-cookies-d-j-bernstein">
+<h2><a class="reference external" href="https://cr.yp.to/syncookies.html">SYN-Cookies - D J. Bernstein</a></h2>
+<p>SYN-Cookies sind speziell konstruiert initiale Sequenznummern.</p>
+<ld-deck>
+<ld-card>
+<div style="width:72ch;height:27ch">
+<svg viewBox="100 0 1600 600" font-size="36" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <text x="150" y="75" style="font-weight: bolder">Client</text>
+    <line x1="200" y1="100" x2="200" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="200" y1="400" x2="200" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+
+    <text x="1450" y="75" style="font-weight: bolder">Server</text>
+    <line x1="1500" y1="100" x2="1500" y2="400" style="stroke:rgb(0,0,0);stroke-width:3" />
+    <line x1="1500" y1="400" x2="1500" y2="550" stroke-dasharray="5,5" style="stroke:rgb(0,0,0);stroke-width:3" />
+
+    <text x="500" y="75" transform="rotate(4.25)">SYN(1000)</text>
+    <line x1="200" y1="110" x2="1500" y2="190" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+</svg>
+</div></ld-card><ld-card class="overlay incremental">
+<div style="width:72ch;height:27ch">
+<svg viewBox="100 0 1600 600" font-size="36"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <text x="270" y="290" transform="rotate(-4.25)">SYN(with cookie), ACK(1001)</text>
+    <line x1="1500" y1="200" x2="200" y2="290" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+</svg>
+</div><p>Der Cookie ermöglicht es, dass keine Informationen im Speicher gehalten werden müssen. Der Cookie encodiert die Informationen, die der Server benötigt, um die Verbindung aufzubauen: Client IP, time window, etc.</p>
+</ld-card><ld-card class="overlay incremental">
+<div style="width:72ch;height:27ch">
+<svg  viewBox="100 0 1600 600" font-size="36"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <text x="555" y="325" transform="rotate(4.2)">ACK(with cookie(+1))</text>
+    <line x1="200" y1="300" x2="1500" y2="390" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+
+    <text x="1515" y="340" >Validierung</text>
+    <text x="1515" y="390" >des Cookie</text>
+    <line x1="1600" y1="400" x2="1600" y2="455" style="stroke:rgb(0,0,0);stroke-width:3" marker-end="url(#arrow)"/>
+    <text x="1515" y="490" >ggf. </text>
+    <text x="1515" y="540" >Verbindungs-</text>
+    <text x="1515" y="590" >aufbau</text>
+</svg>
+</div></ld-card></ld-deck></ld-topic>
+<ld-topic id="distributed-denial-of-service-ddos-angriff">
+<h2>Distributed Denial-of-Service (DDoS) Angriff</h2>
+<p>Opfer wird von sehr vielen Angreifern mit Nachrichten überflutet.</p>
+<div class="incremental docutils container">
+<p>Ein Beispiel: Smurf-Angriff:</p>
+<object aria-label="Smurf Angriff" class="align-center" data="images/smurf-angriff.svg" role="img" type="image/svg+xml">
+</object></div>
+</ld-topic>
+<ld-topic id="distributed-denial-of-service-ddos-angriff-1">
+<h2>Distributed Denial-of-Service (DDoS) Angriff</h2>
+<ul class="incremental-list simple">
+<li><p>Bot-Netze (Botnetze) werden verwendet, um DDoS-Angriffe durchzuführen.</p></li>
+<li><p>Bot-Netze können viele 10.000 Rechner umfassen.</p></li>
+<li><p>IoT Geräte sind besonders beliebt (z. B. IP-Kameras, Smart-TVs, Smart-Home Geräte, ...), da diese oft nicht ausreichend geschützt sind und trotzdem permanent mit dem Internet verbunden sind.</p></li>
+<li><p>Beliebte Ziele:</p>
+<ul>
+<li><p>Onlinespieleserver</p></li>
+<li><p>Banking-Portale</p></li>
+<li><p>politische Webseiten</p></li>
+</ul>
+</li>
+<li><p>Firewalls und Intrusion Detection Systeme sind meist wirkungslos, da die Angriffe von vielen verschiedenen IP-Adressen kommen.</p></li>
+</ul>
+</ld-topic>
+<ld-topic id="distributed-reflected-denial-of-service-angriff">
+<h2>Distributed-Reflected-Denial-of-Service Angriff</h2>
+<ld-deck>
+<ld-card>
+<ld-grid class="default-layout">
+<ld-cell class="width-50" style="align-self:auto;">
+<p>Idee eines (DRDoS) Angriffs</p>
+<ul class="incremental-list list-with-explanations">
+<li><p>Es wird eine Anfrage an einen Server gesendet, die eine große Antwort auslöst.</p>
+<div class="supplemental docutils container">
+<p>Z. B. hat(te) der NTP Monlist Befehl eine Antwort, die ca. 200 Fach größer ist als die Anfrage!</p>
+</div>
+</li>
+<li><p>Mittels IP-Spoofing wird die IP-Adresse des Opfers als Absenderadresse verwendet.</p></li>
+<li><p>Es werden insbesondere Dienste basierend auf UDP verwendet, da hier keine Verbindung aufgebaut werden muss.</p></li>
+</ul>
+</ld-cell><ld-cell class="width-50" style="align-self:auto;">
+<object aria-label="DRDoS Angriff" class="align-center" data="images/drdos.svg" role="img" type="image/svg+xml">
+</object></ld-cell></ld-grid></ld-card><ld-card class="incremental">
+<ul class="simple">
+<li><p>Nehmen einen signifikanten Teil aller DDoS-Angriffe ein.</p></li>
+<li><p>Die Tatsache, dass die Sender legitime Server sind, erschwert die Abwehr.</p></li>
+<li><p><span class="eng">Egress Filtering</span> kann helfen, die Verwendung von IP-Spoofing zu verhindern.</p></li>
+</ul>
+</ld-card></ld-deck><div class="supplemental docutils container">
+<p>Bereits im Jahr 2018 wurde ein Angriff mit einer Bandbreite von 1,7 TBit/s beobachtet.</p>
+<dl class="field-list simple">
+<dt>Egress Filtering<span class="colon">:</span></dt>
+<dd><p>Der Router verwirft alle Pakete, die eine Absenderadresse verwenden, die nicht aus dem eigenen Netzwerk stammt.</p>
+</dd>
+</dl>
+</div>
+</ld-topic>
+<ld-topic id="distributed-denial-of-service-angriffe-ddos">
+<h2>Distributed-Denial-of-Service-Angriffe (DDoS)</h2>
+<ld-deck>
+<ld-card>
+<blockquote class="epigraph">
+<p>[...] Google's DDoS Response Team has observed the trend that distributed denial-of-service (DDoS) attacks are <strong>increasing exponentially in size</strong>. Last year, we blocked the largest DDoS attack recorded at the time. This August [2023], we stopped an even larger DDoS attack — 7½ times larger — that also used new techniques to try to disrupt websites and Internet services.</p>
+<p>This new series of DDoS attacks reached <strong>a peak of 398 million requests per second (rps)</strong>, and relied on a novel HTTP/2 “Rapid Reset” technique based on stream multiplexing that has affected multiple Internet infrastructure companies. By contrast, last year's largest-recorded DDoS attack peaked at 46 million rps.</p>
+<p class="attribution">—<a class="reference external" href="https://cloud.google.com/blog/products/identity-security/google-cloud-mitigated-largest-ddos-attack-peaking-above-398-million-rps">Okt. 2023 - DDoS Attack with 398 Million RPS</a></p>
+</blockquote>
+</ld-card><ld-card class="incremental">
+<blockquote class="epigraph">
+<p>Cloudflare hat Mitte Mai den &quot;größten jemals registrierten&quot; Denial-of-Service-Angriff (DDoS) mit [...] 7,3 Terabit pro Sekunde (TBit/s) blockiert. [...] Diese Attacke war demnach rund 12 Prozent größer als der vorherige Rekord und lieferte ein massives Datenvolumen von 37,4 Terabyte in nur 45 Sekunden. [...]</p>
+<p>Stellen Sie sich vor, Sie könnten mit Ihrem Smartphone 12,5 Millionen hochauflösende Fotos schießen und hätten nie einen vollen Speicherplatz.&quot; Und das alles in 45 Sekunden.</p>
+<p>[...] Mitgewirkt hätten über 122.145 Quell-IP-Adressen, die sich über 5433 autonome Netzwerksysteme in 161 Ländern erstreckten.</p>
+<p class="attribution">—<a class="reference external" href="https://www.heise.de/news/Junk-Traffic-Flut-Rekord-DDoS-Angriff-auf-Provider-mit-7-3-TBit-s-10455216.html">22.06.2025 Heise.de - Rekord DDoS Angriff</a></p>
+</blockquote>
+</ld-card><ld-card class="incremental">
+<blockquote class="epigraph">
+<p>[...] Der letzte rekordverdächtige Überlastungsangriff ist noch gar nicht so lange her, da vermeldet Cloudflare schon den nächsten beobachteten Spitzenwert. Am Montag erreichte ein Distributed-Denial-of-Service-Angriff (DDoS) in der Spitze eine Last von 11,5 Terabit pro Sekunde. Das entspricht umgerechnet mehr als 1,4 Terabyte je Sekunde oder dem Inhalt von 184 randvollen DVDs.</p>
+<p>[...] Dabei sendeten die Angreifer 5,1 Milliarden Pakete pro Sekunde (Bpps). Bei letzterer handelte es sich demnach um eine UDP-Flood-Attacke, die ihren Ausgangspunkt hauptsächlich in der Google-Cloud hatte. Die Zeitspanne, die der Höchstlast-Angriff einnahm, war etwa 35 Sekunden lang, schreibt Cloudflare weiter.</p>
+<p class="attribution">—<a class="reference external" href="https://www.heise.de/news/Ueberlastungsattacke-erreicht-11-5-TBit-pro-Sekunde-10630141.html">03.09.2025 - Heise.de: Überlastungsattacke erreicht 11,5 TBit pro Sekunde</a></p>
+</blockquote>
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="distributed-denial-of-service-angriffe-beispiele">
+<h2>Distributed Denial-of-Service Angriffe - Beispiele</h2>
+<ul class="simple">
+<li><p><strong>TCP Stack Attacks</strong> SYN, FIN, RST, ACK, SYN-ACK, URG-PSH, other combinations of TCP Flags, slow TCP attacks</p></li>
+<li><p><strong>Application Attacks</strong>:HTTP GET/POST Floods, slow HTTP Attacks, SIP Invite Floods, DNS Attacks, HTTPS Protocol Attacks</p></li>
+<li><p><strong>SSL/TLS Attacks</strong>: Malformed SSL Floods, SSL Renegotiation, SSL Session Floods</p></li>
+<li><p><strong>DNS Cache Poisoning</strong></p></li>
+<li><p><strong>Reflection Amplification Flood Attacks</strong>: TCP, UDP, ICMP, DNS, mDNS, SSDP, NTP, NetBIOS, RIPv1, rpcbind, SNMP, SQL RS, Chargen, L2TP, Microsoft SQL Resolution Service</p></li>
+<li><p><strong>Fragmentation Attacks</strong>: Teardrop, Targa3, Jolt2, Nestea</p></li>
+<li><p><strong>Vulnerability Attacks</strong></p></li>
+<li><p><strong>Resource Exhaustion Attacks</strong>: Slowloris, Pyloris, LOIC, etc.</p></li>
+<li><p><strong>Flash Crowd Protection</strong></p></li>
+<li><p><strong>Attacks on Gaming Protocols</strong></p></li>
+</ul>
+</ld-topic>
+<ld-topic id="schutz-vor-ddos-angriffen-on-site-masznahmen">
+<h2>Schutz vor DDoS-Angriffen: On-Site Maßnahmen</h2>
+<ul class="incremental-list list-with-sublists simple">
+<li><p>Aufrüsten der Ressourcen (z. B. Bandbreite, CPU, RAM, ...)</p></li>
+<li><p>Exemplarische Sofortmaßnahmen bei aktivem Angriff:</p>
+<ul class="incremental-list">
+<li><p>Whitelisting von IP-Adressen von besonders wichtigen Clients</p></li>
+<li><p>Blacklisting von IP-Adressen aus bestimmten Bereichen</p></li>
+<li><p>Captchas</p></li>
+<li><p>Überprüfung der Browser-Echtheit</p></li>
+</ul>
+</li>
+<li><p>Anti-DDos Appliances</p></li>
+</ul>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Achtung!</p>
+<p>Diese Maßnahmen sind häufig teuer und ggf. begrenzt effektiv; wenn der Angriff die verfügbare Bandbreite übersteigt, sind diese Maßnahmen darüber hinaus wirkungslos.</p>
+</aside>
+</ld-topic>
+<ld-topic id="schutz-vor-ddos-angriffen-off-site-masznahmen">
+<h2>Schutz vor DDoS-Angriffen: Off-Site Maßnahmen</h2>
+<ul class="incremental-list list-with-explanations">
+<li><p>Einbinden des ISP</p></li>
+<li><p>Einbinden spezialisierter Dienstleister</p>
+<p>(Im Angriffsfall wird mittels BGP-Rerouting der Traffic an den Dienstleister umgeleitet, der dann die DDos Attacke filtert.)</p>
+</li>
+<li><p>Content-Delivery-Networks (CDNs) für statische Inhalte (z. B. Cloudflare, Akamai, ...)</p></li>
+<li><p>Distributed Clouds</p></li>
+</ul>
+</ld-topic>
+<ld-topic class="exercises transition-move-left" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Port Scans - IDLE Scan" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">Port Scans - IDLE Scan</p>
+<ul class="simple">
+<li><p>Warum kann bei einem IDLE Scan nicht festgestellt werden weshalb ein Port geschlossen oder gefiltert ist?</p></li>
+<li><p>Welchen Wert hat die IP ID des Zombies, der einem IDLE Scan durchführt, wenn der Zielport offen bzw. geschlossen ist, wenn der Scanner diesen wieder abfragt?</p></li>
+</ul>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:2WQaKOj4e2CdV0NJ2iY7KvuFuG+Gc/Jnfv8s0TZ5fis=:C61fb6FMkFLmaPR2:xJ7lv5GQCPMvRTdXEu0youGaU0KZRZLCDVBxwNNutRBcO3GgVaQZL2jU42pI8+2mBe//5YfMT4ya3ej4j+huE6aWBKQCnq/cx5tw0IGMdHYS7dHIgRCZOsy+KQkDeUSiGnFkSlU0F10vBhRsvUiRGd0X5MoNh+19aZmVbPF1g4mtdgbqe+wT8ewmCg1EZiXyJR/q/EZ4/vNN6Naw3Zbe8SXvJ39UttgSUEbsHelKCi0jT7Pc5Q8vhGf3nBBMZTiwAnyDR47ITU+vpwtLxwLg/BkLCp3b4L1eRZzVhvAGDXZbdGKe+fyTtgMxTfjTj4SlyUn23iLcPftsbFmd7WYEWWTvoM0Mi+QcJBXq360Tu1Dwt9JtizOEvMRZLI1eSy/n/REntm+rPt2b4NqcFTYhJy9ReFVuC/g3c1XglSpxcPMnVp7aEmHDTgNprzMnjx4ce3vRzx5VuWgf/BTVWNWRZ1WWO2x7nSWgEBkcYooGZHtN12IBPU/vCBeN+eGzG1b2bIFAUcXwDwLRgvcwK6u8/bCgWQ4odMCIn3CBkmIjgvCIlL7IypAcaNMGlYAeKwCDw+bGUqM/IJ1VJ147YuPq97/Sg4w3bvuKJ9ZRY5DcjLkk18CamhXFDOqPrDAz6jtvDRXBP6WNH/pZJuq/fr/WyT7kvnCh3TmuLnbrzDbo</div>
+</div>
+</ld-topic>
+<ld-topic class="exercises transition-move-left" id="ubung-1">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - DDoS" id="ld-exercise-2">
+<p class="ld-exercise-title rubric">DDoS</p>
+<ol class="arabic simple">
+<li><p>Welches Problem entsteht wenn zum Schutze vor Angriffen auf die Verfügbarkeit die Ressourcen von IT-Systemen und deren Internet-Anbindung erhöht werden?</p></li>
+<li><p>Recherchieren Sie was ein „Low and Slow Angriff“ ist.</p></li>
+<li><p>Wo kann überall „Egress filtering“ statt finden.</p></li>
+</ol>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:eWtW4GR5zcor/oEQdXQcdON/t5dqa81TePWTx0ZIwvI=:Fj1EzfWg3I4sqbkA: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</div>
+</div>
+</ld-topic>
+</template>
+</body>
+</html>

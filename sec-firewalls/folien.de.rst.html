@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="IDS, Firewalls" name="keywords" />
+<meta content="Network Security - Eine Einführung in die Sicherheit von (verteilten) Systemen" lang="de" name="description" xml:lang="de" />
+<meta content="it-security-firewalls-vorlesung" name="id" />
+<meta content="last-viewed" name="first-slide" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<meta name="exercises-passwords" content="MTAwMDAw:lmzfMm4Jzgys7NMRw+5dez1TTmB7/eQ0a/JGX++ZRNw=:IaWy7o/p1dznoGdI:H7y0fIL9PvIwR7pl/OnjmE4pRkVXUXfkVEyTqtcxB92gc4b+PfMPnuF8S/nshrPLvwrgnmvGKZ9N8qnXi7LTolBSvmwHx4PE3CwYN2HPL3JR6KcaMxH/Jt2wDQ1IdTPZXzhX8V41uEzFlQJC6yjmQTdU94nsMXuUZxl2vlZThnAmkhF9J/3qhoQd8/sIf3gF+XHiUwwm2p8=" />
+<title>Aspect der Sicherheit von verteilten Systemen: Firewalls</title>
+
+    <script src="../LectureDoc2/src/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/src/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
+    
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-defs"><defs><marker     id="arrow"     viewBox="0 0 10 10"     refX="10"     refY="5"     markerWidth="8"     markerHeight="8"     orient="auto-start-reverse">     <path d="M 0 0 L 10 5 L 0 10 z" /> </marker></defs></svg>
+<template>
+<ld-topic id="aspect-der-sicherheit-von-verteilten-systemen-firewalls">
+<h1 class="title">Aspect der Sicherheit von verteilten Systemen: Firewalls</h1>
+<dl class="docinfo">
+<dt class="dozent">Dozent<span class="colon">:</span></dt>
+<dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
+</dd>
+<dt class="contact">Kontakt<span class="colon">:</span></dt>
+<dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">1.3.7</dd>
+</dl>
+<dl class="sources field-list simple">
+<dt>Quellen<span class="colon">:</span></dt>
+<dd><p>Folien von Prof. Dr. Henning Pagnia bzgl. Netzwerksicherheit</p>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<dl class="field-list">
+<dt>Folien<span class="colon">:</span></dt>
+<dd><p>[HTML] <a class="reference external" href="https://delors.github.io/sec-firewalls/folien.de.rst.html">https://delors.github.io/sec-firewalls/folien.de.rst.html</a></p>
+<p>[PDF] <a class="reference external" href="https://delors.github.io/sec-firewalls/folien.de.rst.html.pdf">https://delors.github.io/sec-firewalls/folien.de.rst.html.pdf</a></p>
+</dd>
+<dt>Fehler melden<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+</div>
+</ld-topic>
+<ld-topic class="new-section transition-fade" id="firewalls">
+<h2>Firewalls</h2>
+</ld-topic>
+<ld-topic id="unabhangiges-netz-ideale-situation">
+<h2>Unabhängiges Netz - „Ideale Situation“</h2>
+<object aria-label="Ideale Situation" class="align-center" data="images/firewalls/all-save.svg" role="img" type="image/svg+xml">
+</object><dl class="incremental-list field-list simple">
+<dt>Vorteile<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>keinerlei Angriffsmöglichkeiten von außen</p></li>
+</ul>
+</dd>
+<dt>Nachteile<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>kein Schutz gegen Insider</p></li>
+<li><p>kein Zugang zum Internet</p></li>
+</ul>
+</dd>
+</dl>
+<div class="supplemental docutils container">
+<p>Wie bereits diskutiert gibt es auch Angriffsmuster gegen Air-Gapped-Systeme. Ein Beispiel ist der Stuxnet-Wurm, der sich initial über USB-Sticks verbreitet.</p>
+<p>Wenn man kein Zugang zum Internet hat, dann hat man zum Beispiel kein Zugriff auf externe Dienste wie NTP und das Einspielen von Updates ist nur über Umwege möglich.</p>
+</div>
+</ld-topic>
+<ld-topic id="von-der-notwendigkeit-des-schutzes-von-rechnern">
+<h2>Von der Notwendigkeit des Schutzes von Rechnern</h2>
+<blockquote class="epigraph">
+<p>[...] Züger und sein Team hätten [...] erst kürzlich ein Experiment durchgeführt, [...]. Sie hätten einen Computer &quot;ohne jeglichen Schutz&quot; mit dem Internet verbunden, um zu sehen, wie lange es dauere, bis er befallen sei. Konkrete Details zur Konfiguration dieses Systems werden zwar nicht genannt, angeblich war der Rechner aber schon nach 20 Minuten infiltriert.</p>
+<p class="attribution">—<a class="reference external" href="https://www.golem.de/news/iot-hacker-missbrauchen-zahnbuersten-fuer-ddos-angriffe-2402-181921.html">Golem.de 6.2.2024</a></p>
+</blockquote>
+</ld-topic>
+<ld-topic id="schutzschicht-zwischen-internem-und-externem-netz">
+<h2>Schutzschicht zwischen internem und externem Netz</h2>
+<object aria-label="Schutzschicht zwischen internem und externem Netz" class="align-center" data="images/firewalls/firewall.svg" role="img" type="image/svg+xml">
+</object><ul class="simple">
+<li><p>Kontrolle des Nachrichtenverkehrs durch Filterung</p></li>
+<li><p>begrenzte Isolation mit begrenztem Schutz</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Eine Firewall schafft zwischen verbundenen Netzen Sicherheitsdomänen mit unterschiedlichem Schutzbedarf. Eine wichtige Teilaufgabe ist das Ausarbeiten von Sicherheitsrichtlinien.</p>
+</div>
+</ld-topic>
+<ld-topic id="realisierung-von-virtual-private-networks-vpn">
+<h2>Realisierung von Virtual Private Networks (VPN)</h2>
+<object aria-label="Realisierung von Virtual Private Networks (VPN)" class="align-center" data="images/firewalls/vpn.svg" role="img" type="image/svg+xml">
+</object><ul class="simple">
+<li><p>Aufbau einer scheinbar privaten Verbindung von Firmenteilnetzen über das (öffentliche) Internet.</p></li>
+<li><p>Zusätzliche Verbindungsverschlüsselung zwischen den Firewalls.</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Ziel ist es aktive und passive Angriffe zu unterbinden.
+Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Informationen liefern über die Verbindungen liefern.</p>
+</div>
+</ld-topic>
+<ld-topic id="kommerzielle-vpns-fur-endnutzer">
+<h2>Kommerzielle VPNs für Endnutzer</h2>
+<object aria-label="Einsatz von Virtual Private Networks (VPN) für Privatnutzer" class="align-center" data="images/firewalls/vpn-commercial.svg" role="img" type="image/svg+xml">
+</object><div class="supplemental docutils container">
+<p><strong>Motivation</strong></p>
+<ul class="simple">
+<li><p>Schutz der Privatsphäre; der ISP kennt nicht mehr die Webseiten, die man aufruft.</p></li>
+<li><p>Die IP-Adresse des Nutzers ist den aufgerufenen Webseiten nicht mehr bekannt und kann deswegen der Umgehung von Geo-Blocking dienen.</p></li>
+</ul>
+<p><strong>Nachteile?</strong></p>
+<ul class="simple">
+<li><p>Vertrauen in den VPN-Anbieter muss vorhanden sein. Insbesondere, beim Einsatz zum Stärken der Privatsphäre, muss der VPN-Anbieter vertrauenswürdig sein und sollte ein so genannter „no-log“ Anbieter sein.</p></li>
+<li><p>Es gibt auch (scheinbar kostenlose) VPN-Anbieter, die die Daten der Nutzer dann aber verkaufen (ehemals: <a class="reference external" href="https://techcrunch.com/2019/02/21/facebook-removes-onavo/?guccounter=1&amp;guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&amp;guce_referrer_sig=AQAAAGVIppEgEOd9Z0FoMbmk2TCleRmD9wCMWDmIzGYEjIo1c7Cmz8NpiSoibthFG5IZQzmZ-kiJq-5Wj1bj21byh7YUrC_aSJJk1Bapwz80GSgzLFS-LHCF2OOetUYLSKwEG7W75znuqJJBJcNTTbtJ1UGB95Yu90saK9aIIkEywcRq">Facebook Onavo</a>).</p></li>
+</ul>
+</div>
+</ld-topic>
+<ld-topic id="schutz-auf-den-schichten-des-tcp-ip-stacks">
+<h2>Schutz auf den Schichten des TCP/IP Stacks</h2>
+<p>Zentraler Schutz des gesamten internen Netzwerks durch:</p>
+<ul class="incremental-list">
+<li><p>Paket Filter (<span class="eng">Packet Filtering</span>)</p>
+<ul class="list-with-explanations">
+<li><p>Blockieren bestimmter IP-Empfänger-Adressen (extern / intern)</p></li>
+<li><p>Blockieren bestimmter IP-Absender-Adressen (extern / intern)</p>
+<p>(z. B. aus dem Internet mit internen IP-Absender-Adressen)</p>
+</li>
+<li><p>Blockieren bestimmter Dienste; ggf. nur für bestimmte IP-Adressen</p></li>
+</ul>
+</li>
+<li><p>Filter auf Anwendungsebene (<span class="eng">Application-level Filtering</span>)</p>
+<ul class="list-with-explanations">
+<li><p>inhaltsbezogene Filterung der Verkehrsdaten eines Dienstes</p>
+<p>(z. B. Virenfilter oder Spamfilter)</p>
+</li>
+<li><p>wirkungslos bei verschlüsselten Verkehrsdaten</p></li>
+</ul>
+</li>
+<li><p>Protokollierungsmöglichkeit der Kommunikation von / nach extern</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Firewalls (alleine) können die Struktur des Netzwerks nicht verbergen.</p>
+</div>
+</ld-topic>
+<ld-topic id="dos-attacke-auf-anwendungsebene">
+<h2>DoS Attacke auf Anwendungsebene</h2>
+<blockquote class="epigraph">
+<p>[...] Angriff auf die Kleinen</p>
+<p>Waren bei früheren Spamangriffen massenhaft Accounts auf der größten Mastodon-Instanz <span class="docutils literal">mastodon.social</span> angelegt worden, die dann von dort ihre Inhalte verbreiteten, trifft es nun nicht die größte, sondern die kleinsten. Automatisiert werden dabei Instanzen ausgesucht, auf denen eine Registrierung ohne Überprüfung und sogar ohne ein Captcha möglich ist. Das können etwa solche mit wenigen Accounts sein, die von Enthusiasten etwa für eine Gemeinde betrieben werden. Waren die Verantwortlichen in den vergangenen Tagen nicht aufmerksam, wurden diese Instanzen dann regelrecht überrannt. Die Spam-Accounts verschickten massenhaft Nachrichten mit einem Bild des namensgebenden Frühstücksfleischs und Links zu Discord-Servern, die wohl lahmgelegt werden sollten.</p>
+<p class="attribution">—<a class="reference external" href="https://www.heise.de/news/Mastodon-Spamwelle-zeigt-Schwaechen-auf-und-weckt-Sorge-vor-schlimmerer-Methode-9632055.html">Mastodon: Spamwelle zeigt Schwächen auf [...]</a></p>
+</blockquote>
+</ld-topic>
+<ld-topic id="realisierungsmoglichkeiten-von-firewalls">
+<h2>Realisierungsmöglichkeiten von Firewalls</h2>
+<ul class="incremental-list simple">
+<li><p>Hardware-Firewall</p>
+<ul>
+<li><p>Screening Router</p></li>
+<li><p>Application Gateway (auch Bastion Host)</p>
+<ul>
+<li><p>(Reverse-)Proxy-Server für bestimmte Dienste</p></li>
+<li><p>Endpunkt aus Sicht von Client-Software (HTTP-Browser, EMail, ...)</p></li>
+<li><p>spezialisierte Server-Software</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Software-Firewall (<em>Personal Firewall</em>)</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Im Falle eines <span class="eng">Bastion Host</span>, ist dies der einzige unmittelbar aus dem Internet erreichbare Rechner.</p>
+</div>
+</ld-topic>
+<ld-topic id="dual-homed-host">
+<h2>Dual-Homed Host</h2>
+<div class="encapsulate-floats compound">
+<object aria-label="Dual-Homed Host" class="align-right" data="images/firewalls/dual-homed-host.svg" role="img" type="image/svg+xml">
+</object><p><strong>Aufbau</strong></p>
+<ul class="simple">
+<li><p>zwei Netzwerkkarten: ggf. private interne Adressen</p></li>
+<li><p>Screening Router &amp; Gate: Packet Filter und Application-Level Filter</p></li>
+<li><p>Proxy-Dienste installieren</p></li>
+<li><p>Benutzer-Logins von extern</p></li>
+</ul>
+</div>
+<aside class="admonition incremental important">
+<p class="admonition-title">Wichtig</p>
+<p>Bei der Konfiguration der Netzwerkkarten gilt:</p>
+<p><em>IP-Pakete nicht automat. weiterleiten</em></p>
+</aside>
+</ld-topic>
+<ld-topic id="screening-router">
+<h2>Screening Router</h2>
+<ld-grid class="default-layout">
+<ld-cell class="width-60" style="align-self:auto;">
+<p><strong>Aufbau</strong></p>
+<p>Programmierbarer Hardwarerouter mit simplen Filterfunktionen:</p>
+<ul class="simple">
+<li><p>nur Paket-Header prüfen</p></li>
+<li><p>schnelle Auswertung ermöglicht hohen Durchsatz</p></li>
+<li><p>Realisierung eines Packet Filters</p></li>
+</ul>
+<aside class="admonition incremental assessment">
+<p class="admonition-title">Bewertung</p>
+<ul class="columns simple">
+<li><ul class="positive-list incremental">
+<li><p>einfach und billig</p></li>
+<li><p>flexibel</p></li>
+</ul>
+</li>
+<li><ul class="negative-list incremental">
+<li><p>schwer zu testen</p></li>
+<li><p>Protokollierung</p></li>
+<li><p>Fernwartung</p></li>
+<li><p>keine Inhaltsfilterung</p></li>
+</ul>
+</li>
+</ul>
+</aside>
+</ld-cell><ld-cell class="width-40" style="align-self:auto;">
+<object aria-label="Screening Router" class="align-center" data="images/firewalls/screening-router.svg" role="img" type="image/svg+xml">
+</object></ld-cell></ld-grid></ld-topic>
+<ld-topic id="screened-host">
+<h2>Screened Host</h2>
+<object aria-label="Screened Host" class="align-right" data="images/firewalls/screened-host.svg" role="img" type="image/svg+xml">
+</object><p><strong>Aufbau</strong></p>
+<ul class="simple">
+<li><p>Screening Router blockiert:</p>
+<ul>
+<li><p>Pakete von / an interne Rechner (nicht Gate)</p></li>
+<li><p>Source-Routed Pakete</p></li>
+</ul>
+</li>
+<li><p>von extern nur Gate sichtbar</p></li>
+<li><p>Pakete von intern nur via Gate</p></li>
+<li><p>Gate bietet Proxy-Server (z. B. für E-Mail)</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p><em>Source-Routed Pakete</em> sind Pakete, die den Weg durch das Netzwerk explizit angeben. (<em>Source-routing</em> wird auch als <em>Path Addressing</em> bezeichnet und wird im Allgemeinen als Sicherheitsproblem angesehen.)</p>
+<p>Gibt es für eine bestimmte Anwendung kein Application-level Proxy, dann kann auf einen für TCP/UDP generischen Proxy zurückgegriffen werden. Dieser arbeitet auf dem Session Layer und kann nur die Header-Informationen auswerten. Es handelt sich dann um ein <span class="eng">Circuit-level Proxy/Gateway</span>. Im Vergleich zu einem Application-level Proxy ist die Sicherheit geringer, da der Circuit-level Proxy nicht in der Lage ist, die Daten zu interpretieren.</p>
+<p>Ein allgemeines Problem ist, dass viele Anwendungen auf generische Protokolle wie HTTP aufsetzen. Weiterhin betreiben einige Anwendungen „Port Hopping“, d. h. sie wechseln den Port wenn der Standardport nicht offen ist.</p>
+<p>Eine Anforderung an „Next-generation Firewalls“ ist, dass diese die Analyse von den Daten einer Anwendung unabhängig vom Port und Protokoll ermöglichen.</p>
+</div>
+</ld-topic>
+<ld-topic id="konfiguration-eines-gateways">
+<h2>Konfiguration eines Gateways</h2>
+<p>Das Ziel der Konfiguration muss eine minimale angreifbare Oberfläche sein.</p>
+<ul class="incremental-list simple">
+<li><p>Abschalten aller nicht-benötigten Netzdienste</p></li>
+<li><p>Löschen aller nicht benötigter Programme</p></li>
+<li><p>Rechte von <span class="docutils literal">/bin/sh</span> auf 500 setzen</p></li>
+<li><p>Rechte aller Systemverzeichnisse auf 711 setzen</p></li>
+<li><p>keine regulären Benutzerkennungen</p></li>
+<li><p>root-Login mit Einmal-Passwortsystem bzw. 2-Faktor Authentifizierung</p></li>
+<li><p>setzen von Platten- und Prozess-Quotas</p></li>
+<li><p>volle Protokollierung, möglichst auf Hardcopy-Gerät</p></li>
+<li><p>möglichst sichere, stabile und regelmäßig aktualisierte Betriebssystemversion einsetzen</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Die Rechte von <span class="docutils literal">/bin/sh</span> auf 500 setzen bedeutet, dass nur der Eigentümer (root) es ausführen kann.</p>
+<p>Default:</p>
+<pre class="code sh literal-block"><code>$<span class="whitespace"> </span>ls<span class="whitespace"> </span>-al<span class="whitespace"> </span>/bin/sh<span class="whitespace">
+</span>-rwxr-xr-x<span class="whitespace">  </span><span class="literal number">1</span><span class="whitespace"> </span>root<span class="whitespace">  </span>wheel<span class="whitespace">  </span><span class="literal number">101232</span><span class="whitespace"> </span>Oct<span class="whitespace">  </span><span class="literal number">1</span><span class="whitespace"> </span><span class="literal number">06</span>:10<span class="whitespace"> </span>/bin/sh</code></pre>
+</div>
+</ld-topic>
+<ld-topic id="screened-subnet">
+<h2>Screened Subnet</h2>
+<object aria-label="Screened Subnet" class="align-right" data="images/firewalls/screened-subnet.svg" role="img" type="image/svg+xml">
+</object><p><strong>Aufbau</strong></p>
+<ul class="incremental-list simple">
+<li><p>interner Screening Router als weiterer Schutzwall</p>
+<ul>
+<li><p>blockiert Dienste, die nicht einmal bis zum Gate gelangen sollen</p></li>
+<li><p>lässt nur Pakete zum / vom Gate durch</p></li>
+</ul>
+</li>
+<li><p>äußeres Netz realisiert Demilitarisierte Zone (DMZ) für HTTP-Server, Mail-Server, ...</p></li>
+</ul>
+</ld-topic>
+<ld-topic class="new-section transition-fade" id="intrusion-detection-systeme-ids">
+<h2>Intrusion Detection Systeme (IDS)</h2>
+</ld-topic>
+<ld-topic id="intrusion-detection-systeme-ids-1">
+<h2>Intrusion Detection Systeme (IDS)</h2>
+<aside class="admonition definition">
+<p class="admonition-title">Definition</p>
+<p>Ein IDS ist ein Gerät (meist ein speziell konfigurierter Rechner), das vielfältige Techniken zur Erkennung von Angriffen anwendet und Angriffe meldet und ggf. abwehrt, in dem (z. B.) die Firewall automatisch umkonfiguriert wird.</p>
+</aside>
+<div class="incremental compound">
+<p><strong>Motivation</strong></p>
+<ul class="incremental-list simple">
+<li><p>Firewalls alleine sind zu statisch und deswegen häufig nicht ausreichend</p></li>
+<li><p>bessere Aufzeichnung und flexiblere Erkennung notwendig</p></li>
+<li><p>angepasste Reaktion notwendig</p></li>
+</ul>
+</div>
+<div class="incremental compound">
+<p><strong>Umsetzung</strong></p>
+<p>An verschiedenen, neuralgischen Stellen werden spezielle Sensoren platziert, die (hier) den Netzwerkverkehr überwachen und verdächtige Aktivitäten melden.</p>
+</div>
+<div class="supplemental docutils container">
+<p>Miteinander verwandt bzw. typischerweise in einem Produkt zu finden:</p>
+<ul class="simple">
+<li><p>Intrusion Detection (IDS)</p></li>
+<li><p>Intrusion Response (IRS)</p></li>
+<li><p>Intrusion Prevention (IPS)</p></li>
+</ul>
+</div>
+</ld-topic>
+<ld-topic id="ids-erkennungstechniken">
+<h2>IDS-Erkennungstechniken</h2>
+<ul class="incremental-list simple">
+<li><p>Signaturerkennung</p></li>
+<li><p>statistische Analyse</p></li>
+<li><p>Anomalieerkennung</p></li>
+</ul>
+<aside class="admonition incremental">
+<p class="admonition-title">Probleme</p>
+<ul class="simple">
+<li><p>Fälschlicherweise gemeldete Angriffe (false positives)</p></li>
+<li><p>nicht gemeldete Angriffe (false negatives) (insbesondere bei neuartigen Angriffen)</p></li>
+<li><p>Echtzeitanforderung, insbesondere bei Hochgeschwindigkeitsnetzen</p></li>
+<li><p>Aufzeichnung bei Netzwerken mit Switches ( ⇒ spez. SPAN Port)</p></li>
+<li><p>Sensoren sollen unbeobachtbar sein (<em>stealth</em>)</p></li>
+</ul>
+</aside>
+<div class="supplemental docutils container">
+<p>SPAN (<span class="eng">Switched Port Analyzer</span>) Ports sind spezielle Ports auf Switches, die bestimmten Verkehr (z. B. bestimmte Pakete) die über ein Switch gehen, an einen definierten Port weiterleiten können. An diesem Port kann dann eine Analyse des Verkehrs durchgeführt werden / ein Sensor angeschlossen werden.</p>
+</div>
+</ld-topic>
+<ld-topic class="exercises transition-move-left" id="ubung">
+<h2>Übung</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Firewalls" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">Firewalls</p>
+<ol class="arabic simple">
+<li><p>Was sind Vorteile eines Dual Homed Host gegenüber einem Paketfilter? Was sind die Nachteile?</p></li>
+<li><p>Benennen Sie zwei konzeptionelle Grenzen von Firewalls. D. h. zwei Szenarien gegen die Firewalls nicht schützen können.</p></li>
+<li><p>Für welche der folgenden Cybersicherheitsstrategien können Firewalls eingesetzt werden:</p>
+<ol class="arabic simple">
+<li><p>Angriffe vermeiden</p></li>
+<li><p>Angriffe erkennen</p></li>
+<li><p>Angriffe abwehren/Angriffen entgegenwirken</p></li>
+<li><p>Reaktion auf Angriffe</p></li>
+</ol>
+</li>
+<li><p>Sie werden beauftragt die Firewall so einzurichten, dass Mails mit Schadsoftware nicht durchgelassen werden. Wie reagieren Sie?</p></li>
+</ol>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:Kh7lNq7EFVTrowf7br86PbqT2MJ9/qa5WW1Lhm2UU48=:8gc5/QkFVMjZIkKw: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</div>
+</div>
+</ld-topic>
+</template>
+</body>
+</html>
