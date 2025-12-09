@@ -369,21 +369,27 @@
 </ld-topic>
 <ld-topic id="ausgewahlte-angriffe-angriffsmethoden-und-bedrohungsszenarien">
 <h2>Ausgewählte Angriffe, Angriffsmethoden und Bedrohungsszenarien</h2>
+<ld-grid class="default-layout">
+<ld-cell class="width-50" style="align-self:auto;">
 <ul class="incremental-list simple">
-<li><p><em>Backdoors</em> (<span class="ger">Hintertüren</span>)</p></li>
+<li><p>Backdoors (<span class="ger">Hintertüren</span>)</p></li>
 <li><p>(Distributed-)Denial-of-service Angriffe</p></li>
 <li><p>Direct-access Angriffe (d. h. physischer Angriff auf das System)</p></li>
-<li><p><em>Eavesdropping</em> (<span class="ger">Abhören</span>)</p></li>
+<li><p>Eavesdropping (<span class="ger">Abhören</span>)</p></li>
 <li><p>Malware</p></li>
+<li><p>Ransomware</p></li>
 <li><p>Person-in-the-middle Angriffe</p></li>
-<li><p>Privilege escalation (unterschieden werden: horizontale und vertikale)</p></li>
-<li><p><em>Side-channel attacks</em> (<span class="ger">Seitenkanalangriffe</span>)</p></li>
-<li><p>Spoofing (z. B. IP-Spoofing) (<span class="ger">Vortäuschen</span>)</p></li>
 <li><p>Social-Engineering (z. B. Phishing)</p></li>
-<li><p>Advanced Persistent Threats (APT)</p></li>
-<li><p><em>Store-now, Decrypt-later</em> (<span class="ger">Speichere jetzt, Entschlüssele später</span>)</p></li>
 </ul>
-<div class="supplemental docutils container">
+</ld-cell><ld-cell class="width-50" style="align-self:auto;">
+<ul class="incremental-list simple">
+<li><p>Privilege escalation (horizontal bzw. vertikal)</p></li>
+<li><p>Side-channel attacks (<span class="ger">Seitenkanalangriffe</span>)</p></li>
+<li><p>Spoofing (z. B. IP-Spoofing) (<span class="ger">Vortäuschen</span>)</p></li>
+<li><p>Advanced Persistent Threats (APT)</p></li>
+<li><p>Store-now, Decrypt-later (<span class="ger">Speichere jetzt, Entschlüssele später</span>)</p></li>
+</ul>
+</ld-cell></ld-grid><div class="supplemental docutils container">
 <dl class="field-list simple">
 <dt>Vertikale Privilege Escalation<span class="colon">:</span></dt>
 <dd><p>Der Angreifer erhält Zugriff auf höhere Rechte, die er vorher nicht hatte.</p>
@@ -534,6 +540,36 @@ curl <span style="position:absolute;top:-100px;left:-1000px">-f "does.not.exist"
 <p class="attribution">—Juli, 2024 - Zusammenfassung: <a class="reference external" href="https://technews.acm.org/archives.cfm?fo=2024-07-jul/jul-29-2024.html">ACM</a>; Original: <a class="reference external" href="https://www.bloomberg.com/news/articles/2024-07-26/ferrari-narrowly-dodges-deepfake-scam-simulating-deal-hungry-ceo">‘I Need to Identify You': How One Question Saved Ferrari From a Deepfake Scam - Bloomberg</a></p>
 </blockquote>
 </ld-topic>
+<ld-topic id="cve-2024-3094-liblzma-backdoor-in-openssh">
+<h2><a class="reference external" href="https://nvd.nist.gov/vuln/detail/CVE-2024-3094">CVE-2024-3094</a> - <span class="docutils literal">liblzma</span> Backdoor in OpenSSH<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a><a class="brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></h2>
+<ul class="incremental-list column-list dhbw list-with-details">
+<li><p>Ziel</p>
+<p>Das Verhalten von SSH bei der Authentifikation so zu verändern, dass es dem Angreifer Zugang zum System erlaubt.</p>
+<p>Zur Absicherung der Backdoor ist diese über ein Zertifikat abgesichert.</p>
+</li>
+<li><p>Wie verbreitet?</p>
+<p>Die Bibliothek <span class="docutils literal">liblzma</span> wurde so angepasst, dass diese eine Backdoor in SSH einbaut.</p>
+<p>Der Schadcode ist nur in den Tarballs zu finden - nicht im SourceCode im GIT. Der eigentliche Schadcode wurde versteckt in <em>Testfixtures</em>.</p>
+<p>Der Code wurde so entworfen, dass bekannte Werkzeuge (<em>Valgrind</em>) keine Probleme erkennen.</p>
+<p>Die Bibliothek wurde nur in bestimmten Situationen von OpenSSH verwendet.</p>
+</li>
+<li><p>Bewertung</p>
+<p><em>CVSS Base Score</em>: 10.0 (kritisch)</p>
+<p><em>Entstandener Schaden</em>: vermutlich gering, da (gerade noch) keine offiziellen Releases (von Debian, Ubuntu, etc.) betroffen waren.</p>
+<p><strong>Dem Angriff ging ein sehr langer Social-Engineering Angriff voraus</strong>, weswegen mit höherer Wahrscheinlichkeit ein „State-sponsored Actor“ dahintersteckt.</p>
+</li>
+</ul>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.innoq.com/de/podcast/030-xz-open-ssh-backdoor/transcript/">InnoQ  Podcast</a></p>
+</aside>
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.ssh.com/blog/a-recap-of-the-openssh-and-xz-liblzma-incident#:~:text=The%20harsh%20fact%20is%20that,by%20one%20of%20its%20maintainers">SSH Blob</a></p>
+</aside>
+</aside>
+</ld-topic>
 <ld-topic id="ausgewahlte-social-engineering-angriffe">
 <h2>Ausgewählte Social-Engineering Angriffe</h2>
 <ld-story>
@@ -661,6 +697,8 @@ curl <span style="position:absolute;top:-100px;left:-1000px">-f "does.not.exist"
 </ld-topic>
 <ld-topic id="bug-bounty-programme">
 <h2>Bug-Bounty-Programme</h2>
+<ld-deck>
+<ld-card>
 <blockquote class="epigraph">
 <p><strong>Microsoft to offer hackers millions in Zero Day Quest event</strong></p>
 <p>Microsoft on Tuesday unveiled Zero Day Quest, a bug bounty event offering up to $4 million in rewards to security researchers.</p>
@@ -668,7 +706,13 @@ curl <span style="position:absolute;top:-100px;left:-1000px">-f "does.not.exist"
 <p>[...] Zero Day Quest is the &quot;largest of its kind&quot; and will offer a potential $4 million in awards for research into cloud and AI, which he described as &quot;high-impact areas.&quot;</p>
 <p class="attribution">—19.11.2024 <a class="reference external" href="https://www.techtarget.com/searchsecurity/news/366616078/Microsoft-to-offer-hackers-millions-in-Zero-Day-Quest-event">Techtarget</a></p>
 </blockquote>
-<div class="supplemental docutils container">
+</ld-card><ld-card class="incremental">
+<blockquote class="epigraph">
+<p><strong>Apple Security Bounty</strong></p>
+<p>Rewards reaching $2 million for exploit chains similar to those used in sophisticated, real-world attacks. And with bonuses, potential maximum rewards of over $5M.</p>
+<p class="attribution">—Last Visited 5. Dezember 2025 <a class="reference external" href="https://security.apple.com/bounty/">Apple Security Research</a></p>
+</blockquote>
+</ld-card></ld-deck><div class="supplemental docutils container">
 <p>Bug-Bounty-Programme sind Initiativen, die Einzelpersonen oder Forschergruppen für das Finden und Melden von Softwarefehlern belohnen. Diese Programme werden häufig von Softwareanbietern initiiert, um die Sicherheit ihrer Produkte zu verbessern.</p>
 </div>
 </ld-topic>
@@ -747,7 +791,7 @@ curl <span style="position:absolute;top:-100px;left:-1000px">-f "does.not.exist"
 </ul>
 </ld-topic>
 <ld-topic id="von-nis2-betroffene-off-und-priv-einrichtungen">
-<h2>Von NIS2 betroffene öff. und priv. Einrichtungen<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
+<h2>Von NIS2 betroffene öff. und priv. Einrichtungen<a class="brackets" href="#footnote-4" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></h2>
 <blockquote>
 <p>Folgende Organisation mit mehr als 50 Mitarbeitern und einem Umsatz von mehr als 10 Millionen Euro müssen die NIS-2-Richtlinie einhalten (obligatorisch).</p>
 </blockquote>
@@ -789,8 +833,8 @@ curl <span style="position:absolute;top:-100px;left:-1000px">-f "does.not.exist"
 <p>Bis zum 17. April 2025 erstellen die Mitgliedstaaten eine Liste von wesentlichen und wichtigen Einrichtungen und von Einrichtungen, die Domänennamen-Registrierungsdienste erbringen und aktualisieren sie gegebenenfalls regelmäßig — spätestens alle 2 Jahre.</p>
 </div>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-4">4</a><span class="fn-bracket">]</span></span>
 <p><a class="reference external" href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32022L2555#d1e32-143-1">Details siehe Anhang I und II der NIS 2 Richtlinie</a></p>
 </aside>
 </aside>

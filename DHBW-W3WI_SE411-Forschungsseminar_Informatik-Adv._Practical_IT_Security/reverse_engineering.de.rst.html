@@ -38,7 +38,7 @@
 <dd><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw-mannheim.de">michael.eichberg&#64;dhbw-mannheim.de</a>, Raum 149B</p>
 </dd>
 <dt>Version<span class="colon">:</span></dt>
-<dd><p>23SEB (<strong>Work in Progress</strong>)</p>
+<dd><p>23SEB</p>
 </dd>
 </dl>
 </ld-topic>
@@ -46,70 +46,247 @@
 <h2>Einführung</h2>
 <ld-deck>
 <ld-card>
-<p>Ziel dieser Aufgabe ist es einen ersten Einblick in den Bereich des Software Reverse Engineering zu bekommen. Da es beim Reverse Engineering auch darum gehen kann Schutzsysteme - z. B. durch das Aufdecken von Schwachstellen oder durch Brute-Force - zu umgehen, ist dies auch in diesem Fall Ihre Aufgabe.</p>
+<p>Ziel dieser Aufgabe ist es einen ersten Einblick in den Bereich des Software Reverse Engineering zu bekommen. Da es beim Reverse Engineering auch darum gehen kann Schutzsysteme zu analysieren - z. B. durch das Aufdecken von Schwachstellen oder durch Brute-Force - ist dies auch in diesem Fall Ihre Aufgabe.</p>
 </ld-card><ld-card class="incremental">
-<p>Für diese Aufgaben ist es ggf. notwendig (ein bisschen) Code zu schreiben. Für die Abgabe können Sie ggf. Ihren Code in folgenden Sprachen abgeben: Java (ggf. als Script), Python, Scala, C, C++, Rust, JavaScript, TypeScript, Prolog, Bash oder Zsh. Weitere Sprachen sind ggf. nach Rücksprache möglich.</p>
+<p>Für diese Aufgaben ist es ggf. notwendig (ein bisschen) Code zu schreiben.</p>
+<p>Für die Abgabe können Sie ggf. Ihren Code in folgenden Sprachen abgeben: Java (ggf. als Skript), Python, Scala, C, C++, Rust, JavaScript, TypeScript, Prolog, Bash oder Zsh. Weitere Sprachen sind ggf. nach Rücksprache möglich.</p>
 </ld-card><ld-card class="incremental">
-<p>Für die Bewertung gilt: Auch wenn Sie das Ziel nicht erreichen, dann sollten Sie auf jeden Fall eine Beschreibung des Weges und ggf. des bisherigen Codes einreichen.</p>
+<p>Für die Bewertung gilt: Auch wenn Sie das Ziel nicht erreichen, dann sollten Sie auf jeden Fall eine Beschreibung des bisherigen Weges und ggf. des bisherigen Codes einreichen.</p>
 </ld-card><ld-card class="incremental">
 <p>Es ist im Rahmen des Reverse Engineering fast immer so, dass mehrere Wege zum Ziel führen. Sollte ein Weg nicht erfolgreich sein, dann probieren Sie einen anderen. Das Wichtigste ist Beharrlichkeit!</p>
-<p>Es steht ihnen vollkommen frei welchen Weg sie gehen. Im Rahmen dieser Aufgaben dürfen Sie auch AI Assistenten frei einsetzen. Es ist jedoch bei der Abgabe erforderlich explizit darauf hinzuweisen.</p>
-</ld-card><ld-card class="incremental">
-<aside class="admonition important">
+<p>Es steht ihnen vollkommen frei welchen Weg sie gehen.</p>
+<aside class="admonition incremental important">
 <p class="admonition-title">Wichtig</p>
-<p>Sollten Sie das Ziel erreichen, dann führen Sie eine Bewertung Ihrer Lösung durch. Die Bewertung muss besprechen wie wahrscheinlich es ist, dass Sie mit Ihrer Lösung in anderen Fällen - bei Verwendung der selben Software - auch erfolgreich sein werden bzw. welches die begrenzenden Faktoren sind. D. h. es muss klar werden welcher Aufwand in einem vergleichbaren Fall notwendig wäre, um das Ziel zu erreichen.</p>
+<p>Im Rahmen dieser Aufgaben dürfen Sie AI Assistenten frei einsetzen. Es ist jedoch bei der Abgabe erforderlich explizit darauf hinzuweisen in welcher Weise Sie AI Assistenten eingesetzt haben.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Im Rahmen des Reverse Engineering kann es immer mal wieder vorkommen, dass Ihnen eine Aufgabe mehr oder weniger liegt. Fokussieren Sie sich deswegen nicht zu sehr auf die Punkte sondern fokussieren Sie sich darauf wo sie glauben am Besten Fortschritte erzielen zu können.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Für die Analyse der nativen Binärdateien können Sie gerne Werkzeuge wie Ghidra, Radare2 oder ähnliche verwenden. Ggf. ist der Einsatz von Kali Linux hilfreich. Ghidra kann dort einfach mit <code class="console"><span class="generic output">sudo apt install ghidra</span></code> installiert werden. Die Binaries wurden alle in einer VM getestet und laufen dort problemlos. Ggf. ist die Emulation (!) von ARM64 oder x86_64 erforderlich.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Sollten Sie Probleme haben die nativen Binärdateien auszuführen, dann nutzen Sie ggf. das Tool <span class="docutils literal">file</span> um herauszufinden, für welche Architektur die entsprechende Binärdatei kompiliert wurde und welche Bibliotheken ggf. fehlen bzw. installiert werden müssen.</p>
+<p><span class="gray">(Es gibt zum Beispiel verschiedene Implementationen der C Standardbibliothek. Diese können sich in Details unterscheiden, was dazu führen kann, dass eine Binärdatei nicht ausgeführt werden kann und es dann zu - teilweise sehr verwirrenden - Fehlermeldungen kommt.)</span></p>
+</aside>
+</ld-card><ld-card class="incremental">
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Die Analyse von Java Class Dateien kann zum Beispiel über FenFlower (eingebaut in IntelliJ IDEA; als Plug-in für VS Code verfügbar) oder CFR erfolgen.</p>
 </aside>
 </ld-card></ld-deck></ld-topic>
 <ld-topic id="bewertung">
 <h2>Bewertung</h2>
 <ld-story>
-<table class="booktabs" style="width: 100%;">
+<table class="booktabs table-header-align-left" style="width: 100%;">
 <thead>
 <tr><th class="head"><p>Aufgabe</p></th>
 <th class="head"><p>Punkte</p></th>
 </tr>
 </thead>
 <tbody>
-<tr><td><p>...</p></td>
-<td><p>1</p></td>
+<tr><td><p>EncryptMe</p></td>
+<td><p>8</p></td>
+</tr>
+<tr><td><p>EncryptMe2</p></td>
+<td><p>8</p></td>
+</tr>
+<tr><td><p>Secure24v1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr><td><p>Secure24v2</p></td>
+<td><p>7</p></td>
+</tr>
+<tr><td><p>EphemeralSafe</p></td>
+<td><p>12</p></td>
+</tr>
+<tr><td></td>
+<td><p>∑ <strong>40</strong></p></td>
 </tr>
 </tbody>
 </table>
 <aside class="admonition incremental important">
 <p class="admonition-title">Wichtig</p>
-<p><strong>Es ist lediglich erforderlich XXX Punkte zu holen, um diesen Teil mit 100% Erfolg gewertet zu bekommen.</strong></p>
+<p><strong>Es ist lediglich erforderlich 25 Punkte zu holen, um diesen Teil mit 100% Erfolg gewertet zu bekommen.</strong></p>
 <p>Überschüssige Punkte können nicht übertragen werden.</p>
 </aside>
-<aside class="admonition incremental remark">
-<p class="admonition-title">Bemerkung</p>
-<p>Im Rahmen des Reverse Engineering kann es immer mal wieder vorkommen, dass Ihnen eine Aufgabe mehr oder weniger liegt. Sie sollten deswegen die Punkte erst einmal außen vor lassen.</p>
-</aside>
 </ld-story></ld-topic>
-<ld-topic id="abgaben">
-<h2>Abgaben</h2>
+<ld-topic id="abgaben-pro-aufgabe">
+<h2>Abgaben (Pro Aufgabe)</h2>
+<p>Die Punkte pro Teilabgabe hängen von der konkreten Aufgabe ab.</p>
 <ld-deck>
 <ld-card>
+<p class="rubric">Verschlüsselungsalgorithmus</p>
+<p>Beschreiben Sie wie die Verschlüsselung funktioniert. Falls mehrere Dinge verschlüsselt sind, dann gilt dies für alle Teile.</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Schwachstellenbeschreibung</p>
+<p>Beschreiben Sie mit Ihren eigenen Worten die Schwachstelle, die Sie identifiziert/ausgenutzt haben, um die Aufgabe zu lösen.</p>
+</ld-card><ld-card class="incremental">
 <p class="rubric">Lösungswegbeschreibungen</p>
 <ld-deck>
 <ld-card>
 <p>Für jede Aufgabe müssen Sie Ihren Weg genau beschreiben, da dieser essentieller Bestandteil der Prüfung ist.</p>
+<p>Wenn Sie während des Prozesses auf (magische/relevante) Konstanten gestoßen sind, dann sollten Sie diese ebenfalls dokumentieren. Sollten Sie charakteristische Werte berechnet haben, dann müssen diese ebenfalls dokumentiert werden.</p>
+<p>Die Lösungswegbeschreibung enthält jedweden Code, den Sie entwickelt haben bzw. haben lassen, um die Aufgabe zu lösen.</p>
 </ld-card></ld-deck><div class="supplemental docutils container">
 <p class="rubric">Nicht-standard Werkzeuge</p>
 <p>Entwickeln Sie selber Tools/Skript, dann dokumentieren Sie diese (d. h. den Quellcode).</p>
 <p>Laden und kompilieren Sie Skripte aus dem Internet, dann dokumentieren Sie die Quellen und ggf. die Schritte, um das Skript zu nutzen.</p>
 </div>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Bewertung der Lösung in Hinblick auf Generalisierbarkeit</p>
+<p>Führen Sie eine Bewertung Ihrer Lösung durch. Die Bewertung muss besprechen wie wahrscheinlich es ist, dass Sie mit Ihrer Lösung in anderen Fällen - bei Verwendung der selben Software - auch erfolgreich sein werden bzw. welches die begrenzenden Faktoren sind. D. h. es muss klar werden welcher Aufwand in einem vergleichbaren Fall notwendig wäre, um das Ziel zu erreichen oder ob dies nicht genau abgeschätzt werden kann bzw. ggf. eine Anpassung Ihrer Lösung notwendig ist. Betrachten Sie ggf. nicht nur den aktuellen Zustand sondern auch wie es in der Zukunft aussehen könnte.</p>
 </ld-card></ld-deck></ld-topic>
-<ld-topic class="exercises" id="ephermalsafe">
-<h2>EphermalSafe</h2>
+<ld-topic class="exercises" id="encryptme-8-punkte">
+<h2>EncryptMe [8 Punkte]</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Mit EncryptMe verschlüsselte Datei entschlüsseln" id="ld-exercise-1">
+<p class="ld-exercise-title rubric">Mit EncryptMe verschlüsselte Datei entschlüsseln</p>
+<p>Ziel dieser Aufgabe ist es die Datei zu entschlüsseln. Die Verschlüsselung ist mit der Software <span class="docutils literal">encryptme</span> durchgeführt worden.</p>
 <aside class="admonition hint">
 <p class="admonition-title">Hinweis</p>
-<p>Diese Aufgabe ist ggf. nicht nur eine Reverse Engineering Aufgabe. Es ist ggf. erforderlich den Netzwerkverkehr zu beobachten, um entscheidende Informationen zu erhalten. Alternativen sind auf jeden Fall auch möglich. Sie können davon ausgehen, dass zum Lösen etwas “Scripting” erforderlich ist.</p>
-<p>Jede Datei ist mit einem anderen Passwort verschlüsselt und enthält andere Daten.</p>
-<p>Zur Ausführung des Codes ist ggf. Java 25 erforderlich.</p>
-<p>Sollten Sie UTM unter Mac OS verwenden, um aus einer VM heraus auf den Server an der DHBW zuzugreifen, dann ist es ggf. notwendig die Netzwerkkonfiguration auf “emulated Vlan” bzw. “bridged” umzustellen. Andernfalls können Sie ggf. nicht den Server erreichen.</p>
-<p>Um den Netzwerkverkehr zu beobachten können Sie TCPDump oder (empfohlen) Wireshark verwenden. Denken Sie daran, dass Wireshark ggf. mit Administratorrechten (“sudo” unter Linux/Mac) ausgeführt werden muss, um auf alle Schnittstellen zugreifen zu können.</p>
+<p>Die Software liegt sowohl als ARM als auch als x86_64 Version vor. Beide sind in der Lage die Datei zu entschlüsseln und funktional identisch. Sollten Sie also mit einer der Architekturen vertrauter sein, dann verwenden Sie diese.</p>
+</aside>
+</div>
+</ld-topic>
+<ld-topic class="exercises" id="encryptme2-8-punkte">
+<h2>EncryptMe2 [8 Punkte]</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Mit EncryptMe2 verschlüsselte Datei entschlüsseln" id="ld-exercise-2">
+<p class="ld-exercise-title rubric">Mit EncryptMe2 verschlüsselte Datei entschlüsseln</p>
+<p>Ziel dieser Aufgabe ist es die Datei zu entschlüsseln. Die Verschlüsselung ist mit der Software <span class="docutils literal">encryptme2</span> durchgeführt worden.</p>
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Die Software liegt sowohl als ARM als auch als x86_64 Version vor. Beide sind in der Lage die Datei zu entschlüsseln und funktional identisch. Sollten Sie also mit einer der Architekturen vertrauter sein, dann verwenden Sie diese.</p>
+</aside>
+</div>
+</ld-topic>
+<ld-topic class="exercises" id="secure24v1-5-punkte">
+<h2>Secure24v1 [5 Punkte]</h2>
+<p>Ihnen liegt eine verschlüsselte Datei vor: <span class="docutils literal">Message.odp.encrypted</span>, die mit dem Program <span class="docutils literal">Secure24v1</span> verschlüsselt wurde. Informationen zum verwendeten Passwort liegen nur begrenzt vor. Es ist davon auszugehen, dass das Passwort sicher ist. Es liegt Ihnen aber noch die Datei <span class="docutils literal">key</span> vor. Weiterhin ist davon auszugehen, dass die verschlüsselte Datei tatsächlich eine OpenOffice/LibreOffice Präsentation ist.</p>
+<p>Analysieren Sie die Anwendung, um einen möglichen Ansatzpunkt zu finden, um die Datei erfolgreich zu entschlüsseln.</p>
+<aside class="admonition background">
+<p class="admonition-title">Hintergrund</p>
+<p>Informationen über den Aufbau von OpenOffice Dateien finden sich zum Beispiel hier:</p>
+<blockquote>
+<p><a class="reference external" href="http://docs.oasis-open.org/office/v1.0/OpenDocument-v1.0-os.pdf">http://docs.oasis-open.org/office/v1.0/OpenDocument-v1.0-os.pdf</a></p>
+</blockquote>
+<p>Insbesondere Abschnitt 17 enthält Informationen zum Aufbau von entsprechenden Dateien und wie diese erkannt werden können.</p>
 </aside>
 </ld-topic>
+<ld-topic class="exercises" id="secure24v2-7-punkte">
+<h2>Secure24v2 [7 Punkte]</h2>
+<p>Neben dem Programm <span class="docutils literal">secure24v2</span> liegen die beiden Dateien: <span class="docutils literal">Text.encrypted</span> und <span class="docutils literal">key</span> vor.</p>
+<p>In diesem Falle sind keinerlei Informationen über das Passwort bekannt. Beim Inhalt ist davon auszugehen, dass es sich um eine einfache Textdatei handelt.
+Ziel ist die Entschlüsselung der Datei.</p>
+</ld-topic>
+<ld-topic class="exercises" id="ephemeralsafe-12-punkte">
+<h2>EphemeralSafe [12 Punkte]</h2>
+<ld-scrollable>
+<p>Im Rahmen einer forensischen Analyse der Daten einer sichergestellten Festplatte wurde ein neues Program <em>EphemeralSafe</em> gefunden. Die Informationen, die Sie im Rahmen einer Recherche finden konnten, besagen, dass das Programm besonders sicher ist und eine Ver-/Entschlüsselung von Daten nur bei bestehender Internetverbindung möglich ist. Als besonderes Feature wird angepriesen, dass verschlüsselte Daten nicht mehr entschlüsselt werden können sobald den Betreibern mitgeteilt wurde, dass der Dateninhaber sich in einer für ihn unpässlichen Situation befindet. Selbstverständlich garantiert der Betreiber, dass er niemals die Daten seiner Nutzer entschlüsseln kann und dass er auch Missbrauch etc. versucht zu entdecken und ggf. pro-aktiv Accounts schließt.</p>
+<p>Ihnen wird das Java Programm übergeben sowie eine verschlüsselte Datei und die Information über den mutmaßlichen Lizenzschlüssel des Nutzer.</p>
+<p>Aus Logdaten wissen Sie, dass der Server auf folgender Adresse läuft (nur aus dem DHBW Netzwerk bzw. über VPN erreichbar):</p>
+<blockquote>
+<p>141.72.13.52:3000</p>
+</blockquote>
+<p>Von den Ermittlern erhalten Sie weiterhin die Information, dass alle bisher ermittelten Passwort einfach waren.</p>
+<p>Ziel dieser Aufgabe ist es die Ihnen zugeordnete Datei zu entschlüsseln. Jeder hat einen passenden Lizenzschlüssel, der zur Nutzung der Software erforderlich ist. Das erste Segment des Lizenzschlüssels ist dem Dateinamen angehängt.</p>
+<p class="rubric">Lizenzschlüssel</p>
+<table class="booktabs table-header-align-left monospaced font-size-80" style="width: 100%;">
+<thead>
+<tr><th class="head"><p>ID</p></th>
+<th class="head"><p>Lizenzschlüssel</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>1</p></td>
+<td><p>557118900-RRiTTSS_667789900-RRDSSTT_667789900-RRSSSTT_667788990-RRSKSTT</p></td>
+</tr>
+<tr><td><p>2</p></td>
+<td><p>132117890-ABDJWWW_134567890-ABDJWWW_123456780-ABDJWWW_123456780-ABDJWWW</p></td>
+</tr>
+<tr><td><p>3</p></td>
+<td><p>198054321-ZYXWVUT_098765421-ZYXWVUT_098765321-ZYXWVUT_098765321-ZYXWVUT</p></td>
+</tr>
+<tr><td><p>4</p></td>
+<td><p>112663355-AABBCDD_112334455-ABBCCDD_112233455-ABBCCDD_112234455-AABBCDD</p></td>
+</tr>
+<tr><td><p>5</p></td>
+<td><p>662222200-XDXYYZZ_667889900-XDSYYZZ_667889900-XXYPYZZ_667789900-XdXYYZZ</p></td>
+</tr>
+<tr><td><p>6</p></td>
+<td><p>557788900-RRiTTSS_667789900-RRDSSTT_667789900-RRSSSTT_667788990-RRSKSTT</p></td>
+</tr>
+<tr><td><p>7</p></td>
+<td><p>132467890-ABDJWWW_134567890-ABDJWWW_123456780-ABDJWWW_123456780-ABDJWWW</p></td>
+</tr>
+<tr><td><p>8</p></td>
+<td><p>197654321-ZYXWVUT_098765421-ZYXWVUT_098765321-ZYXWVUT_098765321-ZYXWVUT</p></td>
+</tr>
+<tr><td><p>9</p></td>
+<td><p>112664455-AABBCDD_112334455-ABBCCDD_112233455-ABBCCDD_112234455-AABBCDD</p></td>
+</tr>
+<tr><td><p>10</p></td>
+<td><p>667458900-XDXYYZZ_667889900-XDSYYZZ_667889900-XXYPYZZ_667789900-XdXYYZZ</p></td>
+</tr>
+<tr><td><p>11</p></td>
+<td><p>223346766-EETFFGG_223445566-EEDFFGG_223345566-EQEFFGG_223344566-EEGFFGG</p></td>
+</tr>
+<tr><td><p>12</p></td>
+<td><p>334400077-HHIGJKK_344556677-HHIDJKK_334456677-HHIJAKK_334455667-HHdIJKK</p></td>
+</tr>
+<tr><td><p>13</p></td>
+<td><p>443567788-LLMMNiN_455667788-LDLMMNN_445567788-LLMSMNN_445567788-LLGMMNN</p></td>
+</tr>
+<tr><td><p>14</p></td>
+<td><p>588877899-OOPGPQQ_556678899-ODOPPQQ_556678899-OOPQPQQ_556677889-OOPPQMQ</p></td>
+</tr>
+<tr><td><p>15</p></td>
+<td><p>660988900-RRiSSTT_667789900-RRDSSTT_667789900-RRSSSTT_667788990-RRSKSTT</p></td>
+</tr>
+<tr><td><p>16</p></td>
+<td><p>667788900-RRiTTSS_667789900-RRDSSTT_667789900-RRSSSTT_667788990-RRSKSTT</p></td>
+</tr>
+<tr><td><p>17</p></td>
+<td><p>123467890-ABDJWWW_134567890-ABDJWWW_123456780-ABDJWWW_123456780-ABDJWWW</p></td>
+</tr>
+<tr><td><p>18</p></td>
+<td><p>097654321-ZYXWVUT_098765421-ZYXWVUT_098765321-ZYXWVUT_098765321-ZYXWVUT</p></td>
+</tr>
+<tr><td><p>19</p></td>
+<td><p>112334455-AABBCDD_112334455-ABBCCDD_112233455-ABBCCDD_112234455-AABBCDD</p></td>
+</tr>
+<tr><td><p>20</p></td>
+<td><p>667788900-XDXYYZZ_667889900-XDSYYZZ_667889900-XXYPYZZ_667789900-XdXYYZZ</p></td>
+</tr>
+<tr><td><p>21</p></td>
+<td><p>223344566-EETFFGG_223445566-EEDFFGG_223345566-EQEFFGG_223344566-EEGFFGG</p></td>
+</tr>
+<tr><td><p>22</p></td>
+<td><p>334456677-HHIGJKK_344556677-HHIDJKK_334456677-HHIJAKK_334455667-HHdIJKK</p></td>
+</tr>
+<tr><td><p>23</p></td>
+<td><p>445667788-LLMMNiN_455667788-LDLMMNN_445567788-LLMSMNN_445567788-LLGMMNN</p></td>
+</tr>
+<tr><td><p>24</p></td>
+<td><p>556677899-OOPGPQQ_556678899-ODOPPQQ_556678899-OOPQPQQ_556677889-OOPPQMQ</p></td>
+</tr>
+<tr><td><p>25</p></td>
+<td><p>667788900-RRiSSTT_667789900-RRDSSTT_667789900-RRSSSTT_667788990-RRSKSTT</p></td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Diese Aufgabe ist ggf. nicht nur eine Reverse Engineering Aufgabe. Es ist ggf. erforderlich den Netzwerkverkehr zu beobachten, um entscheidende Informationen zu erhalten. Alternativen sind auf jeden Fall auch möglich.</p>
+<p>Sollten Sie UTM unter Mac OS verwenden, um aus einer VM heraus auf den Server an der DHBW zuzugreifen, dann ist es ggf. notwendig die Netzwerkkonfiguration auf <em>emulated Vlan</em> bzw. <em>bridged</em> umzustellen. Andernfalls können Sie ggf. nicht den Server erreichen.</p>
+<p>Um den Netzwerkverkehr zu beobachten können Sie TCPDump oder (empfohlen) Wireshark verwenden. Denken Sie daran, dass Wireshark ggf. mit Administratorrechten (“sudo” unter Linux/Mac) ausgeführt werden muss, um auf alle Schnittstellen zugreifen zu können.</p>
+</aside>
+</ld-scrollable></ld-topic>
 </template>
 </body>
 </html>
