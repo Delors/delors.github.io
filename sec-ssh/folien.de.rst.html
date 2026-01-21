@@ -34,7 +34,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.3.7</dd>
+<dd class="version">1.4</dd>
 </dl>
 <dl class="sources field-list simple">
 <dt>Quellen<span class="colon">:</span></dt>
@@ -56,7 +56,7 @@
 <ld-topic id="secure-shell-ssh-1">
 <h2><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc4254">Secure Shell (SSH)</a></h2>
 <p><strong>Verschlüsselte Verbindung</strong></p>
-<p>SSH ermöglicht die sichere Fernanmeldung von einem Computer bei einem anderen (typischerweise über TCP über Port 22). Es bietet mehrere Optionen für eine starke Authentifizierung und schützt die Sicherheit und Integrität der Kommunikation durch starke Verschlüsselung</p>
+<p>SSH ermöglicht die sichere Fernanmeldung von einem Computer bei einem anderen (typischerweise über TCP über Port 22). Es bietet mehrere Optionen für eine starke Authentifizierung und schützt die Sicherheit und Integrität der Kommunikation durch starke Verschlüsselung.</p>
 <div class="incremental compound">
 <p><strong>Ablauf</strong></p>
 <ol class="arabic simple">
@@ -102,6 +102,19 @@
 <p>Im Falle von SSH gibt es kein initiales Vertrauen zwischen Server und Client.</p>
 </div>
 </ld-topic>
+<ld-topic id="secure-shell-ssh-authentifizierung-mittels-passwort">
+<h2>Secure Shell (SSH) - Authentifizierung mittels Passwort</h2>
+<ld-scrollable>
+<figure class="align-center">
+<object aria-label="SSH Protokoll" data="external/SSH-sequence-password.svg" role="img" type="image/svg+xml" width="1850px">
+</object><figcaption>
+<p><a class="reference external" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC 4.0</a> - <a class="reference external" href="https://commons.wikimedia.org/wiki/File:SSH-sequence-password.svg">Aleksey Valov - 29 February 2016</a></p>
+<div class="legend">
+<p>The font was changed to &quot;Noto Sans Display&quot; for better compatibility.</p>
+</div>
+</figcaption>
+</figure>
+</ld-scrollable></ld-topic>
 <ld-topic id="secure-shell-ssh-verbindungsaufbau-beispiel">
 <h2>Secure Shell (SSH) - Verbindungsaufbau - Beispiel</h2>
 <ld-scrollable>
@@ -149,6 +162,87 @@ debug1: Entering interactive session.
 debug1: Sending environment.
 debug1: Sending env LANG = en_US.UTF-8</code></pre>
 </ld-scrollable></ld-topic>
+<ld-topic id="secure-shell-unterstutzte-transport-verschlusselungsverfahren">
+<h2>Secure Shell - <a class="reference external" href="https://www.openssh.org/specs.html">Unterstützte Transport-Verschlüsselungsverfahren</a></h2>
+<p><strong>OpenSSH_10.2p1</strong></p>
+<ld-scrollable>
+<table class="sticky-header">
+<thead>
+<tr><th class="head"><p>Cipher Name</p></th>
+<th class="head"><p>Status</p></th>
+<th class="head"><p>Beschreibung</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>3des-cbc</p></td>
+<td><p>DEPRECATED</p></td>
+<td><p>three-key 3DES in CBC mode</p></td>
+</tr>
+<tr><td><p>aes256-cbc</p></td>
+<td><p>LEGACY</p></td>
+<td><p>AES in CBC mode, with a 256-bit key</p></td>
+</tr>
+<tr><td><p>aes192-cbc</p></td>
+<td><p>LEGACY</p></td>
+<td><p>AES with a 192-bit key</p></td>
+</tr>
+<tr><td><p>aes128-cbc</p></td>
+<td><p>LEGACY</p></td>
+<td><p>AES with a 128-bit key</p></td>
+</tr>
+<tr><td><p>aes128-ctr</p></td>
+<td><p>RECOMMENDED</p></td>
+<td><p>AES in CTR mode with a 128-bit key</p></td>
+</tr>
+<tr><td><p>aes192-ctr</p></td>
+<td><p>RECOMMENDED</p></td>
+<td><p>AES in CTR mode with a 192-bit key</p></td>
+</tr>
+<tr><td><p>aes256-ctr</p></td>
+<td><p>RECOMMENDED</p></td>
+<td><p>AES in CTR mode with a 256-bit key</p></td>
+</tr>
+<tr><td><p><a class="reference external" href="mailto:aes128-gcm&#64;openssh.com">aes128-gcm&#64;openssh.com</a></p></td>
+<td><p>RECOMMENDED</p></td>
+<td><p>AES in Galois/Counter Mode (GCM) with a 128-bit key</p></td>
+</tr>
+<tr><td><p><a class="reference external" href="mailto:aes256-gcm&#64;openssh.com">aes256-gcm&#64;openssh.com</a></p></td>
+<td><p>RECOMMENDED</p></td>
+<td><p>AES in Galois/Counter Mode (GCM) with a 256-bit key</p></td>
+</tr>
+<tr><td><p><a class="reference external" href="mailto:chacha20-poly1305&#64;openssh.com">chacha20-poly1305&#64;openssh.com</a></p></td>
+<td><p>RECOMMENDED</p></td>
+<td><p>ChaCha20 stream cipher with Poly1305 MAC</p></td>
+</tr>
+</tbody>
+</table>
+<div class="legend docutils container">
+<dl class="field-list simple">
+<dt>DEPRECATED<span class="colon">:</span></dt>
+<dd><p>Unterstützt, aber standardmäßig deaktiviert.</p>
+</dd>
+<dt>LEGACY<span class="colon">:</span></dt>
+<dd><p>Unterstützt für Rückwärtskompatibilität, aber nicht empfohlen.</p>
+</dd>
+<dt>RECOMMENDED<span class="colon">:</span></dt>
+<dd><p>Empfohlen für den Einsatz.</p>
+</dd>
+</dl>
+</div>
+</ld-scrollable><div class="supplemental docutils container">
+<p><strong>Anmerkung</strong></p>
+<p>CBC-Modi sind anfällig für bestimmte Angriffe (z. B. Padding-Oracle-Angriffe) und werden insbesondere für Rückwärtskompatibilität unterstützt.</p>
+<p><strong>Algorithmen unterstützt von älteren OpenSSH-Versionen</strong></p>
+<ul class="simple">
+<li><p>blowfish-cbc , Blowfish in CBC mode</p></li>
+<li><p>twofish256-cbc , Twofish in CBC mode,with a 256-bit key</p></li>
+<li><p>serpent256-cbc   , Serpent in CBC mode, with a 256-bit key</p></li>
+<li><p>arcfour          , the ARCFOUR stream cipher with a 128-bit key</p></li>
+<li><p>idea-cbc         , IDEA in CBC mode</p></li>
+<li><p>cast128-cbc      , CAST-128 in CBC mode</p></li>
+</ul>
+</div>
+</ld-topic>
 <ld-topic id="secure-shell-ssh-risiken-durch-mangelnde-schlusselverwaltung">
 <h2>Secure Shell (SSH) - Risiken durch mangelnde Schlüsselverwaltung</h2>
 <ul class="incremental-list simple">
@@ -200,6 +294,13 @@ It [The Terrapin attack] manipulates sequence numbers during the handshake proce
 [...]</p>
 <p>By Bill Toulas</p>
 <p class="attribution">—<a class="reference external" href="https://www.bleepingcomputer.com/news/security/nearly-11-million-ssh-servers-vulnerable-to-new-terrapin-attacks/">January 3, 2024 10:06 AM</a></p>
+</blockquote>
+</ld-topic>
+<ld-topic id="ssh-und-quantencomputer">
+<h2>SSH und Quantencomputer</h2>
+<blockquote class="epigraph">
+<p>[...] ssh(1): add a warning when the connection negotiates a non-post quantum key agreement algorithm.</p>
+<p class="attribution">—<a class="reference external" href="https://www.openssh.org/releasenotes.html">OpenSSH 10.1 Release Notes</a></p>
 </blockquote>
 </ld-topic>
 </template>
