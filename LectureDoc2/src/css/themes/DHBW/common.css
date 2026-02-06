@@ -24,20 +24,21 @@ ol.arabic.dhbw {
 
     padding-left: var(--item-counter-offset);
 
-    counter-reset: item;
-
     > li {
         position: relative;
         padding: 0.2em 0.4em;
-        margin: 0.2em;
+        /* margin: 0.2em; removed to get a good left-alignment with the text, but didn't check if there is another requirement   */
 
         border-radius: 0 var(--small-border-radius) var(--small-border-radius) 0;
         background-color: var(--dhbw-very-light-gray);
 
-        counter-increment: item;
+        > p:last-child {
+            /* TODO there are some conflicts in the CSS rules, which require this rule... drop after consolidation*/
+            margin-bottom: 0;
+        }
 
         &::before {
-            content: counter(item);
+            content: counter(list-item, decimal-leading-zero);
 
             display: inline-block;
             box-sizing: border-box;
@@ -58,12 +59,7 @@ ol.arabic.dhbw {
             color: white;
         }
 
-        &:nth-child(-n + 9)::before {
-            content: "0" counter(item);
-        }
-
-        /* TODO Relay hover! */
-        &:hover {
+        &.\:hover {
             box-shadow: 6px 0px 3px -3px rgb(0 0 0 / 50%);
 
             &::before {
@@ -73,28 +69,61 @@ ol.arabic.dhbw {
     }
 }
 
-ul.column-list.dhbw {
-    width: 100%;
-    padding: 0;
-
+ul.dhbw {
     list-style-type: none;
-
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 0.25em;
+    padding: 0;
+    margin: 0;
+
+    > li {
+        display: block;
+        position: relative;
+
+        margin: 0;
+        padding: 0.25em;
+        border-radius: var(--small-border-radius);
+        overflow: hidden;
+
+        background-color: var(--dhbw-very-light-gray);
+
+        > p {
+            &:first-child {
+                position: relative;
+                top: -0.25em;
+                left: -0.25em;
+
+                margin: 0;
+                padding: 0.25em;
+                width: calc(100% + 0.5em);
+
+                background-color: var(--dhbw-red);
+                color: var(--white);
+            }
+            &:not(:last-child) {
+                margin-bottom: 0.05em;
+            }
+        }
+    }
+}
+
+ul.column-list.dhbw {
+    flex-direction: row;
+    width: 100%;
     justify-content: space-between;
     align-items: stretch;
 
     > li {
-        display: flex;
-        flex: 1 1 0;
-        flex-direction: column;
+        flex: 1;
 
         > p {
             margin: 0;
-            padding: 0.25em;
             background-color: var(--dhbw-very-light-gray);
             color: black;
+        }
+        > p:not(:first-child) + p {
+            margin-top: 0.25em;
         }
         > p:first-child {
             /* the "Header" */
@@ -111,6 +140,76 @@ ul.column-list.dhbw {
             border-radius: 0 0 var(--small-border-radius)
                 var(--small-border-radius);
             flex-grow: 1;
+        }
+    }
+}
+
+table.dhbw {
+    border-collapse: separate;
+    border-spacing: 0;
+
+    > thead {
+        --current-background-color: var(--dhbw-red);
+        --current-text-color: var(--white);
+
+        > tr > th,
+        > tr > td {
+            background-color: var(--current-background-color);
+            color: var(--current-text-color);
+
+            + td,
+            + th {
+                border-left: thin solid var(--white);
+            }
+        }
+
+        /* Ensure the header background is clipped to the rounded corners. */
+        > tr:first-child > :first-child {
+            border-top-left-radius: var(--small-border-radius);
+        }
+        > tr:first-child > :last-child {
+            border-top-right-radius: var(--small-border-radius);
+        }
+    }
+
+    /* Zebra striping: apply to body rows (and to direct tr as fallback). */
+    > tbody > tr,
+    > tr {
+        > td {
+            border: thin solid var(--dhbw-very-light-gray);
+
+            + td {
+                border-left: thin solid var(--dhbw-light-gray);
+            }
+        }
+
+        &:nth-child(odd) {
+            --current-background-color: var(--dhbw-very-light-gray);
+            background-color: var(--current-background-color);
+
+            > th {
+                --current-background-color: var(--dhbw-gray);
+                background-color: var(--current-background-color);
+                --current-text-color: var(--white);
+                color: var(--current-text-color);
+            }
+
+            > td {
+                border: thin solid var(--white);
+
+                + td {
+                    border-left: thin solid var(--white);
+                }
+            }
+        }
+
+        &:last-child {
+            > :first-child {
+                border-bottom-left-radius: var(--small-border-radius);
+            }
+            > :last-child {
+                border-bottom-right-radius: var(--small-border-radius);
+            }
         }
     }
 }

@@ -35,12 +35,15 @@
 }
 
 /**
- * Common definitions used by inline SVGs.
+ * Multiple SVG elements may reference common definitions (e.g., markers). In this case,
+ * the definitions must be defined only once in the document; otherwise, the SVGs will not
+ * render correctly, because of potentially duplicate IDs.
+ * However, these definitions must not be visible and must not affect the layout of the page.
  */
 .svg-global-defs,
 .svg-global-style {
     /*  display: none;
-        This property MUST NOT BE USED. If used defs (e.g. markers) that are
+        This property MUST NOT BE USED. If used, defs (e.g. markers) that are
         defined "here" and referenced by other elements by means of URLs will
         not be rendered. */
     /*  Though the SVG is effectively empty, we still have to make sure that it

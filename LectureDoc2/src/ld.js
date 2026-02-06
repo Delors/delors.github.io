@@ -153,10 +153,14 @@ export const ldEvents = {
                 this.afterDecryptExercise.push(listener);
                 break;
             default:
-                console.error("unknown event", event);
+                throw new Error("unknown ldEvent: " + event);
         }
     },
 };
+
+export function registerLDEventListener(event, listener) {
+    ldEvents.addEventListener(event, listener);
+}
 
 export const interWindowMessageHandlers = {
     handlers: {},

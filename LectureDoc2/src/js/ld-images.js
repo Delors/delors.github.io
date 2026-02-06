@@ -1,4 +1,4 @@
-import lectureDoc2 from "./../ld.js";
+import { lectureDoc2, registerLDEventListener } from "./../ld.js";
 
 console.log("loading ld-images.js");
 
@@ -163,10 +163,9 @@ function scaleSlideImages() {
         slide. */
 }
 
-const ldEvents = lectureDoc2.ldEvents;
-ldEvents.addEventListener("afterLDDOMManipulations", scaleSlideImages);
-ldEvents.addEventListener(
+registerLDEventListener("afterLDDOMManipulations", scaleSlideImages);
+registerLDEventListener(
     "afterLDDOMManipulations",
     scaleDocumentImagesAndVideos,
 );
-ldEvents.addEventListener("afterDecryptExercise", scaleDocumentImagesAndVideos);
+registerLDEventListener("afterDecryptExercise", scaleDocumentImagesAndVideos);
