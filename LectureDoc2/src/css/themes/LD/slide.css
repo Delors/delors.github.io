@@ -7,16 +7,18 @@ ld-slide {
     border-radius: var(--s-border-radius);
     padding: var(--s-padding);
 
-    --current-color: var(--s-text-color);
-    color: var(--current-color);
-    --current-background-color: var(--s-background-color);
-    background-color: var(--current-background-color);
+    --current-fg-color: var(--fg-color);
+    --current-rel-fg-color: var(--current-fg-color);
+    color: var(--current-rel-fg-color);
+    --current-bg-color: var(--bg-color);
+    --current-rel-bg-color: var(--current-bg-color);
+    background-color: var(--current-rel-bg-color);
 
     --unitless-current-base-font-size: var(--unitless-s-font-size);
-    --current-base-font-size: var(--s-font-size);
+    --current-base-font-size: calc(
+        var(--unitless-current-base-font-size) * 1px
+    );
     font-size: var(--current-base-font-size);
-    font-weight: var(--s-font-weight);
-    line-height: var(--s-line-height);
 
     &:first-of-type {
         /* Special styling for the title slide! */
@@ -26,7 +28,7 @@ ld-slide {
             }
 
             &.sources {
-                color: var(--gray);
+                color: var(--peripheral-fg-color);
             }
         }
 
@@ -57,11 +59,13 @@ ld-slide {
         top: 0;
         left: 50%;
         transform: translateX(-50%);
-        font-size: calc(var(--s-font-size) / 3);
         z-index: 1;
+
         padding: 0.1em 0.5em 0.1em 1.5em;
-        text-align: center;
         border-radius: 0 0 9.6px 9.6px;
+
+        font-size: calc(var(--s-font-size) / 3);
+        text-align: center;
         letter-spacing: 125%;
         background-color: var(--semi-light-gray);
         color: var(--white);
@@ -121,8 +125,10 @@ ld-slide {
             padding-left: calc(2.5 * var(--s-lr-padding));
             border-radius: var(--small-border-radius);
 
-            --current-background-color: var(--very-very-light-blue);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--very-very-light-red);
+            background-color: var(--current-bg-color);
+            --current-fg-color: var(--very-dark-red);
+            color: var(--current-fg-color);
 
             &::before {
                 content: "✎";
@@ -277,12 +283,11 @@ ld-slide {
     */
     li.pop-out-list-item-on-hover {
         transition: 0.5s;
-    
+
         &.\:hover {
             transform: scale(1.04);
         }
     }
-
 
     /* IMPROVE Currently, the position is fixed. */
     .scale-on-hover {
@@ -302,7 +307,7 @@ ld-slide {
 
             background-color: color-mix(
                 in srgb,
-                var(--current-background-color),
+                var(--current-bg-color),
                 transparent 35%
             );
             backdrop-filter: blur(4px);

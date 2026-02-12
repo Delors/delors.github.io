@@ -2,9 +2,55 @@
 
 /* This style sheet is partially based on:
 
-   Minimal style sheet for the HTML output of Docutils created by Günter Milde (2022-06-19) which in turn is based on html4css1.css by
-   David Goodger (2015, 2021).
+   Minimal style sheet for the HTML output of Docutils 
+   created by Günter Milde (2022-06-19) 
+   which in turn is based on html4css1.css 
+   created by David Goodger (2015, 2021).
 */
+
+html {
+    background-color: white;
+}
+
+body {
+    background-color: var(--body-bg-color);
+
+    font-family: var(--default-font-family);
+
+    font-size: var(--current-base-font-size);
+    font-weight: var(--font-weight);
+    line-height: var(--line-height);
+}
+
+code {
+    font-family: var(--code-font-family);
+    font-size: 0.9em;
+}
+
+pre,
+kbd,
+samp {
+    font-family: var(--pre-font-family);
+    font-size: 0.9em;
+}
+
+p {
+    hyphens: auto;
+}
+
+a:link,
+a:visited {
+    color: var(--link-fg-color);
+}
+a:hover {
+    text-decoration: underline;
+}
+
+blockquote {
+    --current-bg-color: var(--blockquote-bg-color);
+    --current-rel-bg-color: var(--current-bg-color);
+    background-color: var(--current-rel-bg-color);
+}
 
 table:has(+ *),
 object:has(+ *),
@@ -20,7 +66,7 @@ object[role="img"] {
     display: block;
 
     &.opaque {
-        background-color: var(--current-background-color);
+        background-color: var(--current-rel-bg-color);
     }
 }
 
@@ -451,52 +497,66 @@ p.system-message-title {
     font-weight: bold;
 }
 
+* {
+    color: var(--current-rel-fg-color);
+}
+
 .admonition {
-    border: 1px solid var(--semi-light-gray);
-    border-top: 0;
-    border-radius: var(--small-border-radius);
+    /* Need to be set by the respective admonition. */
+    --admonition-icon: none;
 
-    padding: 0 0.5em 0.25em 0.5em;
-
-    background-color: var(--current-background-color);
-    color: var(--current-color);
+    overflow: hidden;
 
     /* Control spacing around an admonition */
     &:has(+ *) {
-        margin-bottom: 0.5em;
+        margin-bottom: var(--default-bottom-margin);
     }
+    border: 1px solid var(--border-color);
+    border-radius: var(--small-border-radius);
+
+    padding: 0 var(--default-container-padding)
+        calc(var(--default-container-padding) / 2)
+        var(--default-container-padding);
+
+    /* Reset our relative colors to "the" new background color. */
+    --current-rel-bg-color: var(--current-bg-color);
+    background-color: var(--current-rel-bg-color);
+    --current-rel-fg-color: var(--current-fg-color);
+    color: var(--current-rel-fg-color);
 
     > p:first-child.admonition-title {
         position: relative;
-        left: -0.5em;
-        width: calc(100% + 1em);
-        padding: 0 0.5em;
-        height: 1.1lh;
+        left: calc(var(--default-container-padding) * -1);
+        width: calc(100% + calc(var(--default-container-padding) * 2) + 2px);
+        padding: 0 var(--default-container-padding);
         margin-bottom: 0;
 
-        border-radius: var(--small-border-radius) var(--small-border-radius) 0 0;
-
-        --current-background-color: var(--semi-light-gray);
-        background-color: var(--current-background-color);
-        --current-color: var(--white);
-        color: var(--current-color);
-        text-shadow: var(--gray) -1px -1px 1px;
-
-        & + * {
-            margin-top: 0.15em;
-        }
+        --current-rel-bg-color: var(--container-header-bg-color);
+        background-color: var(--current-rel-bg-color);
+        --current-rel-fg-color: var(--container-header-fg-color);
+        text-shadow: var(--default-text-shadow-dimensions)
+            var(--container-header-text-shadow-color);
 
         &::before {
-            display: inline-block;
-            height: 1.1lh;
-            width: 1.5em;
-            text-align: center;
-            position: relative;
-            left: -0.5em;
-            /*transform: translateX(-50%) translateY(-50%);*/
+            content: var(--admonition-icon);
 
-            padding: 0;
-            border-radius: var(--small-border-radius) 0 0 0;
+            position: relative;
+            left: calc(var(--default-container-padding) * -1);
+
+            display: inline-block;
+            height: inherit;
+            width: 1.5em;
+
+            --current-rel-bg-color: var(--container-header-icon-bg-color);
+            background-color: var(--current-rel-bg-color);
+            --current-rel-fg-color: var(--container-header-icon-fg-color);
+            color: var(--current-rel-fg-color);
+
+            text-align: center;
+        }
+
+        & + * {
+            margin-top: 0.15em; /* there is an implicit +0.1em due to the line height */
         }
     }
 
@@ -504,275 +564,175 @@ p.system-message-title {
         margin-bottom: 0;
     }
 
-    &.warning {
-        border: none;
+    /*
 
-        --current-background-color: var(--very-light-red);
+        Admonition specific configuration.
 
-        > p:first-child.admonition-title {
-            --current-color: var(--white);
-            --current-background-color: var(--dark-red);
+    */
 
-            &::before {
-                content: "◬";
-                background-color: var(--light-red);
-            }
-        }
+    &.danger {
+        --admonition-icon: "⊘";
+    }
+
+    &.legend {
+        --admonition-icon: "Ⓛ";
+    }
+    &.background {
+        --admonition-icon: "▧";
+    }
+
+    &.conclusion {
+        --admonition-icon: "∴";
+    }
+
+    &.definition {
+        --admonition-icon: "≝";
+    }
+
+    &.theorem {
+        --admonition-icon: "⊞";
+    }
+
+    &.remark {
+        --admonition-icon: "⬩";
+    }
+
+    &.remember {
+        --admonition-icon: "✪";
     }
 
     &.repetition {
-        > p:first-child.admonition-title {
-            &::before {
-                content: "↻";
-                background-color: var(--light-gray);
-            }
-        }
+        --admonition-icon: "↻";
+    }
+
+    &.warning {
+        --admonition-icon: "◬";
+
+        border: 0;
     }
 
     &.summary {
-        border: none;
+        --admonition-icon: "▤";
 
-        --current-background-color: var(--very-light-gray);
-
-        > p:first-child.admonition-title {
-            --current-background-color: var(--gray);
-
-            &::before {
-                content: "▤";
-                background-color: var(--light-gray);
-            }
-        }
+        --current-bg-color: var(--summary-bg-color);
+        --current-fg-color: var(--summary-fg-color);
     }
 
     &.question {
+        --admonition-icon: "?";
+
         border: none;
 
-        --current-background-color: var(--very-light-blue);
-
-        > p:first-child.admonition-title {
-            --current-background-color: var(--blue);
-
-            &::before {
-                content: "?";
-                background-color: var(--light-blue);
-            }
-        }
+        --current-bg-color: var(--question-bg-color);
+        --current-fg-color: var(--question-fg-color);
     }
 
     &.answer {
+        --admonition-icon: "✓";
+
         border: none;
 
-        --current-background-color: var(--very-light-blue);
-
-        > p:first-child.admonition-title {
-            --current-background-color: var(--light-blue);
-
-            &::before {
-                content: "✓";
-                background-color: var(--blue);
-            }
-        }
+        --current-bg-color: var(--answer-bg-color);
+        --current-fg-color: var(--answer-fg-color);
     }
 
     &.attention {
+        --admonition-icon: "▲";
+
         border: none;
 
-        --current-background-color: var(--light-orange);
-
-        > p:first-child.admonition-title {
-            --current-color: var(--white);
-            --current-background-color: var(--dark-orange);
-
-            &::before {
-                content: "▲";
-                background-color: var(--orange);
-                color: var(--white);
-            }
-        }
+        --current-bg-color: var(--attention-bg-color);
+        --current-fg-color: var(--attention-fg-color);
     }
 
     &.important {
+        --admonition-icon: "!!";
+
         border: none;
 
-        --current-background-color: var(--very-light-red);
-
-        > p:first-child.admonition-title {
-            --current-background-color: var(--red);
-            --current-color: var(--white);
-
-            &::before {
-                content: "!!";
-                background-color: var(--dark-red);
-            }
-        }
+        --current-bg-color: var(--important-bg-color);
+        --current-fg-color: var(--important-fg-color);
     }
 
     &.observation {
+        --admonition-icon: "⦿";
+
         border: none;
 
-        --current-background-color: var(--very-light-blue);
-
-        > p:first-child.admonition-title {
-            --current-background-color: var(--blue);
-
-            &::before {
-                content: "⦿";
-                background-color: var(--light-blue);
-            }
-        }
+        --current-bg-color: var(--observation-bg-color);
+        --current-fg-color: var(--observation-fg-color);
     }
 
     &.proof {
-        position: relative;
+        --admonition-icon: "■";
 
-        > p:first-child.admonition-title {
-            &::before {
-                content: "■";
-                color: var(--white);
-                text-shadow: -1px -1px 1px var(--dark-gray);
-                background-color: var(--dark-gray);
-            }
-        }
+        position: relative;
 
         &::after {
             position: absolute;
             bottom: 0.35em;
             right: 0.3em;
 
-            /* End an end of proof marker at the end. */
+            /* Add an end of proof marker at the end. */
             content: "∎";
         }
     }
 
-    &.note {
-        float: right;
-        margin-left: 1em;
+    &.deprecated {
+        border: none;
 
-        &:has(+) {
-            margin-bottom: 1em;
-        }
+        --current-bg-color: var(--deprecated-bg-color);
+        --current-fg-color: var(--deprecated-fg-color);
+    }
+
+    &.assessment {
+        --admonition-icon: "⚑";
+    }
+
+    &.note {
+        --admonition-icon: "◎";
+
+        float: right;
+
+        margin-left: var(--default-box-margin);
 
         background-color: inherit;
-
-        > p:first-child.admonition-title {
-            &::before {
-                content: "◎"; /* Alternative: 🗒️*/
-                color: var(--white);
-                text-shadow: -1px -1px 1px var(--dark-gray);
-            }
-        }
     }
 
     &.tip {
-        border-top: none;
+        --admonition-icon: "💡";
 
-        /* The first two elements ("p"s) markup the generic title (e.g., "Tip")
-        and the user chosen Title; we markup both in a section title. */
-
-        > p:first-child.admonition-title {
-            --current-background-color: var(--red);
-
-            &::before {
-                content: "💡";
-                text-shadow: -1px -1px 1px var(--dark-gray);
-                background-color: var(--light-red);
-            }
-        }
+        border: none;
+        --current-bg-color: var(--tip-bg-color);
+        --current-fg-color: var(--tip-fg-color);
     }
 
     &.hint {
+        --admonition-icon: "※";
+
         border: none;
 
-        --current-background-color: var(--very-light-green);
-
-        > p:first-child.admonition-title {
-            --current-background-color: var(--green);
-            --current-color: var(--white);
-
-            &::before {
-                content: "※";
-                color: var(--white);
-                text-shadow: -1px -1px 1px var(--dark-gray);
-                background-color: var(--light-green);
-            }
-        }
+        --current-bg-color: var(--hint-bg-color);
+        --current-fg-color: var(--hint-fg-color);
     }
 
     &.example {
+        --admonition-icon: "⧉";
+
         border: none;
 
-        --current-background-color: var(--very-light-yellow);
-
-        > p:first-child.admonition-title {
-            --current-background-color: var(--dark-yellow);
-            --current-color: var(--dark-gray);
-            color: var(--current-color);
-
-            text-shadow: none;
-
-            &::before {
-                content: "⤷";
-                color: var(--very-light-gray);
-                text-shadow: -1px -1px 1px var(--dark-gray);
-                background-color: var(--light-yellow);
-            }
-        }
+        --current-bg-color: var(--example-bg-color);
+        --current-fg-color: var(--example-fg-color);
     }
 
-    /* TODO Define a CSS Var "--admonition-icon" and use that one... */
+    &.error {
+        border: none;
 
-    &.conclusion {
-        > p:first-child.admonition-title {
-            &::before {
-                content: "∴";
-                color: var(--white);
-                text-shadow: -1px -1px 1px var(--dark-gray);
-                background-color: var(--light-gray);
-            }
-        }
-    }
+        --current-bg-color: var(--error-bg-color);
+        --current-fg-color: var(--error-fg-color);
 
-    &.definition {
         > p:first-child.admonition-title {
-            &::before {
-                content: "≝";
-                color: var(--white);
-                text-shadow: -1px -1px 1px var(--dark-gray);
-                background-color: var(--light-gray);
-            }
-        }
-    }
-
-    &.theorem {
-        > p:first-child.admonition-title {
-            &::before {
-                content: "⊞";
-                color: var(--white);
-                text-shadow: -1px -1px 1px var(--dark-gray);
-                background-color: var(--light-gray);
-            }
-        }
-    }
-
-    &.remark {
-        > p:first-child.admonition-title {
-            &::before {
-                content: "⬩";
-                color: var(--white);
-                text-shadow: -1px -1px 1px var(--dark-gray);
-                background-color: var(--light-gray);
-            }
-        }
-    }
-
-    &.remember {
-        > p:first-child.admonition-title {
-            &::before {
-                content: "✪";
-                color: var(--white);
-                text-shadow: -1px -1px 1px var(--dark-gray);
-                background-color: var(--light-gray);
-            }
+            text-align: center;
         }
     }
 }
@@ -991,9 +951,9 @@ pre.code {
     --color-zzz: #e6beff;
 
     /* The default color: */
-    --code-color: var(--black);
+    --code-color: var(--current-rel-fg-color);
 
-    line-height: min(var(--s-line-height), 1.3);
+    line-height: var(--code-line-height);
     color: var(--code-color);
     /* For SVGs: */
     fill: var(--code-color);
@@ -1014,15 +974,16 @@ pre.code {
         text-shadow: 1px 1px 1px var(--white);
 
         &:first-of-type {
-            border-radius: 0.33em 0 0 0;
+            border-radius: var(--small-border-radius) 0 0 0;
         }
 
         &:last-of-type {
-            border-radius: 0 0 0 0.33em;
+            border-radius: 0 0 0 var(--small-border-radius);
         }
 
         &:only-of-type {
-            border-radius: 0.33em 0 0 0.33em;
+            border-radius: var(--small-border-radius) 0 0
+                var(--small-border-radius);
         }
     }
 
@@ -1257,8 +1218,8 @@ table {
     &.sticky-header thead th {
         position: sticky;
         top: 0;
-        background-color: rgb(from var(--current-background-color) r g b / 75%);
-        border-bottom: 1px solid var(--current-color);
+        background-color: rgb(from var(--current-bg-color) r g b / 75%);
+        border-bottom: 1px solid var(--current-fg-color);
         backdrop-filter: blur(2px);
     }
 
@@ -1315,13 +1276,13 @@ table {
         }
 
         tr > *:nth-child(odd) {
-            --current-background-color: var(--very-light-gray);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--very-light-gray);
+            background-color: var(--current-bg-color);
         }
 
         tr > *:nth-child(even) {
-            --current-background-color: var(--white);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--white);
+            background-color: var(--current-bg-color);
         }
     }
 
@@ -1333,13 +1294,13 @@ table {
             padding: 0.5em 0.25em;
         }
         tr:nth-child(odd) {
-            --current-background-color: var(--very-light-gray);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--very-light-gray);
+            background-color: var(--current-bg-color);
         }
 
         tr:nth-child(even) {
-            --current-background-color: var(--white);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--white);
+            background-color: var(--current-bg-color);
         }
     }
 
@@ -1353,27 +1314,27 @@ table {
         tr:nth-child(odd) {
             th:nth-child(odd),
             td:nth-child(odd) {
-            --current-background-color: var(--very-light-gray);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--very-light-gray);
+            background-color: var(--current-bg-color);
             }
             th:nth-child(even),
             td:nth-child(even) {
-            --current-background-color: var(--white);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--white);
+            background-color: var(--current-bg-color);
         }
         }
 
         tr:nth-child(even) {
             th:nth-child(odd),
             td:nth-child(odd) {
-            --current-background-color: var(--white);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--white);
+            background-color: var(--current-bg-color);
         }
 
             th:nth-child(even),
             td:nth-child(even)     {
-            --current-background-color: var(--very-light-gray);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--very-light-gray);
+            background-color: var(--current-bg-color);
             }
     }
     }
@@ -1385,40 +1346,40 @@ table {
     &.highlight-identical-cells-on-hover {
         th.\:hover-related {
             box-shadow: var(--trbl-shadow-dark);
-            --current-background-color: var(--gray);
-            background-color: var(--current-background-color);
-            --current-color: white;
-            color: var(--current-color);
+            --current-bg-color: var(--gray);
+            background-color: var(--current-bg-color);
+            --current-fg-color: white;
+            color: var(--current-fg-color);
         }
 
         td.\:hover-related {
             box-shadow: var(--trbl-shadow-dark);
-            --current-background-color: var(--very-light-gray);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--very-light-gray);
+            background-color: var(--current-bg-color);
         }
 
         th.\:hover {
             box-shadow: var(--trbl-shadow);
-            --current-background-color: var(--light-gray);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--light-gray);
+            background-color: var(--current-bg-color);
         }
 
         td.\:hover {
             box-shadow: var(--trbl-shadow);
-            --current-background-color: var(--light-gray);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--light-gray);
+            background-color: var(--current-bg-color);
         }
     }
 
     &.highlight-row-on-hover {
         tr.\:hover {
-            --current-background-color: var(--light-gray);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--light-gray);
+            background-color: var(--current-bg-color);
         }
 
         tr.\:hover-related {
-            --current-background-color: var(--very-light-gray);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--very-light-gray);
+            background-color: var(--current-bg-color);
         }
     }
 
@@ -1449,10 +1410,10 @@ table {
                 padding-top: 0.15em;
                 padding-bottom: 0;
 
-                --current-background-color: var(--gray);
-                background-color: var(--current-background-color);
-                --current-color: var(--white);
-                color: var(--current-color);
+                --current-bg-color: var(--gray);
+                background-color: var(--current-bg-color);
+                --current-fg-color: var(--white);
+                color: var(--current-fg-color);
                 vertical-align: text-top;
                 text-align: right;
                 border-radius: var(--medium-border-radius) 0 0
@@ -1483,8 +1444,8 @@ table {
 .summary > h2:first-child {
     text-align: center;
     position: relative;
-    --current-background-color: var(--dark-red);
-    background-color: var(--current-background-color);
+    --current-bg-color: var(--dark-red);
+    background-color: var(--current-bg-color);
     color: var(--light-gray);
     text-shadow: -1px -1px 2px var(--black);
 }
@@ -1537,15 +1498,15 @@ table {
         width: 100%;
         height: 100%;
 
-        background-color: var(--current-background-color);
+        background-color: var(--current-bg-color);
         opacity: 0.4;
     }
 }
 
 .framed {
     border: thin solid var(--light-gray);
-    --current-background-color: var(--very-very-light-gray);
-    background-color: var(--current-background-color);
+    --current-bg-color: var(--very-very-light-gray);
+    background-color: var(--current-bg-color);
     padding: 0.5em;
     border-radius: var(--small-border-radius);
 
@@ -1564,10 +1525,10 @@ table {
 
     font-weight: 400;
 
-    --current-color: var(--white);
-    color: var(--current-color);
-    --current-background-color: var(--dark-red);
-    background-color: var(--current-background-color);
+    --current-fg-color: var(--white);
+    color: var(--current-fg-color);
+    --current-bg-color: var(--dark-red);
+    background-color: var(--current-bg-color);
     box-shadow: var(--trbl-shadow-dark);
 }*/
 .accentuate {
@@ -1584,19 +1545,19 @@ table {
         width: 1em;
 
         border-radius: var(--small-border-radius) 0 0 var(--small-border-radius);
-        --current-background-color: var(--red);
-        background-color: var(--current-background-color);
+        --current-bg-color: var(--red);
+        background-color: var(--current-bg-color);
     }
 
     margin-left: 1em;
     border-radius: 0 var(--small-border-radius) var(--small-border-radius) 0;
     padding: 0.25em;
     font-weight: 300;
-    --current-color: var(--black);
-    color: var(--current-color);
+    --current-fg-color: var(--black);
+    color: var(--current-fg-color);
     text-shadow: 1px 1px 1px var(--white);
-    --current-background-color: var(--very-light-gray);
-    background-color: var(--current-background-color);
+    --current-bg-color: var(--very-light-gray);
+    background-color: var(--current-bg-color);
 }
 
 ul.important {
@@ -1606,8 +1567,8 @@ ul.important {
 
     > li {
         position: relative;
-        --current-background-color: var(--very-light-red);
-        background-color: var(--current-background-color);
+        --current-bg-color: var(--very-light-red);
+        background-color: var(--current-bg-color);
         border-radius: 0.5em;
         margin-top: 0.5em;
         padding: 0.5em;
@@ -1620,8 +1581,8 @@ ul.important {
             left: 0;
             height: 100%;
             width: 1em;
-            --current-background-color: var(--dark-red);
-            background-color: var(--current-background-color);
+            --current-bg-color: var(--dark-red);
+            background-color: var(--current-bg-color);
         }
     }
 }
@@ -1649,6 +1610,48 @@ figure video {
     display: inline;
 }
 
+iframe {
+    /*  Necessary to get rid of some extra-whitespace below the iframe */
+    display: block;
+
+    /*  Since we don't know anything/want to make any assumptions about the 
+        iframe content, we set the background color to white to have a fixed
+        reference frame. */
+    background-color: white;
+}
+
+.embedded-iframe {
+    overflow: hidden;
+
+    /*margin: var(--trbl-shadow-margin);
+    box-shadow: var(--trbl-shadow);*/
+    border: 1px solid var(--border-color);
+    border-radius: var(--small-border-radius);
+}
+
+figure.align-left,
+img.align-left,
+video.align-left,
+object.align-left {
+    clear: left;
+    float: left;
+    margin-right: 1em;
+}
+
+figure.align-right,
+img.align-right,
+video.align-right,
+object.align-right {
+    clear: right;
+    float: right;
+    margin-left: 1em;
+}
+
+video {
+    border-radius: var(--small-border-radius);
+    box-shadow: var(--trbl-shadow);
+}
+
 /*
 
     Styling of index cards
@@ -1665,7 +1668,7 @@ figure video {
     max-width: 70ch;
     min-width: 20ch;
     margin: auto;
-    box-shadow: var(--trbl-shadow-dark);
+    box-shadow: var(--trbl-shadow);
     border-radius: 0.25em;
 
     > :is(p, div.line-block) {
@@ -1704,8 +1707,8 @@ figure video {
 .llm-chat-user {
     --llm-chat-actor: "User";
 
-    --current-background-color: var(--gray);
-    background-color: var(--current-background-color);
+    --current-bg-color: var(--gray);
+    background-color: var(--current-bg-color);
     color: var(--very-light-gray);
 }
 
@@ -1730,6 +1733,7 @@ figure video {
 }
 
 .screenshot {
-    box-shadow: 0.1ch 0.1ch 0.5ch 0.5ch rgb(0 0 0 / 15%);
-    margin: 1ch;
+    box-shadow: var(--trbl-shadow);
+    margin: var(--trbl-shadow-margin);
+    border-radius: var(--small-border-radius);
 }

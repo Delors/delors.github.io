@@ -1,14 +1,5 @@
 /* LAYER: theme.DHBW */
 
-a:link,
-a:visited {
-    color: var(--dhbw-dark-red);
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
 /*
  * Styling of lists where the content is shown in a table-like manner. The
  * first column is the counter, the second column is the content. The styling
@@ -70,36 +61,55 @@ ol.arabic.dhbw {
 }
 
 ul.dhbw {
-    list-style-type: none;
     display: flex;
     flex-direction: column;
-    gap: 0.25em;
+    gap: var(--default-box-margin);
     padding: 0;
     margin: 0;
 
     > li {
-        display: block;
         position: relative;
-
+        display: block;
         margin: 0;
-        padding: 0.25em;
         border-radius: var(--small-border-radius);
+        padding: calc(var(--default-container-padding) / 2)
+            var(--default-container-padding);
         overflow: hidden;
 
-        background-color: var(--dhbw-very-light-gray);
+        /*background-color: var(--dhbw-very-light-gray);*/
+        --current-rel-bg-color: color-mix(
+            in srgb,
+            var(--current-bg-color) 90%,
+            var(--current-fg-color) 10%
+        );
+        background-color: var(--current-rel-bg-color);
+        --current-rel-fg-color: color-mix(
+            in srgb,
+            var(--current-bg-color) 10%,
+            var(--current-fg-color) 90%
+        );
+        color: var(--current-rel-fg-color);
 
         > p {
             &:first-child {
                 position: relative;
-                top: -0.25em;
-                left: -0.25em;
-
+                top: calc(var(--default-container-padding) * -1 / 2);
+                left: calc(var(--default-container-padding) * -1);
+                width: calc(var(--default-container-padding) * 2 + 100%);
+                padding: inherit;
                 margin: 0;
-                padding: 0.25em;
-                width: calc(100% + 0.5em);
+                --current-bg-color: var(--dhbw-red);
+                --current-rel-bg-color: var(--current-bg-color);
+                background-color: var(--current-bg-color);
+                --current-fg-color: var(--white);
+                --current-rel-fg-color: var(--current-fg-color);
+                color: var(--current-rel-fg-color);
 
-                background-color: var(--dhbw-red);
-                color: var(--white);
+                &::before {
+                    content: "⦿\00a0";
+                    display: inline-block;
+                    /* margin-left: calc(var(--default-container-padding) * -1 / 2); */
+                }
             }
             &:not(:last-child) {
                 margin-bottom: 0.05em;
@@ -149,13 +159,14 @@ table.dhbw {
     border-spacing: 0;
 
     > thead {
-        --current-background-color: var(--dhbw-red);
-        --current-text-color: var(--white);
+        --current-bg-color: var(--dhbw-red);
+        --current-fg-color: var(--white);
+        --current-rel-bg-color: var(--current-bg-color);
+        --current-rel-fg-color: var(--current-fg-color);
 
         > tr > th,
         > tr > td {
-            background-color: var(--current-background-color);
-            color: var(--current-text-color);
+            background-color: var(--current-rel-bg-color);
 
             + td,
             + th {
@@ -184,12 +195,27 @@ table.dhbw {
         }
 
         &:nth-child(odd) {
-            --current-background-color: var(--dhbw-very-light-gray);
-            background-color: var(--current-background-color);
+            --current-rel-bg-color: color-mix(
+                in lch,
+                var(--current-bg-color) 90%,
+                var(--current-fg-color) 10%
+            );
+            background-color: var(--current-rel-bg-color);
+            --current-rel-fg-color: color-mix(
+                in srgb,
+                var(--current-bg-color) 10%,
+                var(--current-fg-color) 90%
+            );
+            color: var(--current-rel-fg-color);
+
+            /*
+            --current-bg-color: var(--dhbw-very-light-gray);
+            background-color: var(--current-bg-color);
+            */
 
             > th {
-                --current-background-color: var(--dhbw-gray);
-                background-color: var(--current-background-color);
+                --current-bg-color: var(--dhbw-gray);
+                background-color: var(--current-bg-color);
                 --current-text-color: var(--white);
                 color: var(--current-text-color);
             }

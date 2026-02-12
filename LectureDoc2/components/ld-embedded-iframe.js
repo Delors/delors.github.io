@@ -220,7 +220,12 @@ const embeddedIFrames = {};
  */
 const adaptEmbeddedIFrameHeight = (iframeId, reason) => {
     const iframe = embeddedIFrames[iframeId];
-    if (iframe && !iframe.height) {
+    if (!iframe) {
+        console.error(`iframe ${iframeId} not found`);
+        return;
+    }
+
+    if (!iframe.height) {
         const htmlElement = iframe.contentWindow.document.documentElement;
         const newHeight = htmlElement.getBoundingClientRect().height + "px";
         console.log(
@@ -228,7 +233,9 @@ const adaptEmbeddedIFrameHeight = (iframeId, reason) => {
         );
         iframe.style.height = newHeight;
     } else {
-        console.error(`iframe ${iframeId} not found`);
+        console.log(
+            `not scaling iframe ${iframeId} because it has an explicit height: ${iframe.height}`,
+        );
     }
 };
 
@@ -258,6 +265,7 @@ function configureEmbeddedIFrames() {
         .forEach((iframe, i) => {
             const iframeId = i + 1;
             embeddedIFrames[iframeId] = iframe;
+            iframe.dataset.ldIframeId = iframeId;
 
             const effectiveFontSize = getComputedStyle(iframe).getPropertyValue(
                 "--current-base-font-size",

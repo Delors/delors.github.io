@@ -92,28 +92,156 @@
 </ld-topic>
 <ld-topic id="projekt-programmieraufgabe">
 <h2>Projekt/Programmieraufgabe</h2>
-<p>Entwicklung eines Kollaborationstools als wiederverwendbare Webkomponenten. D. h. jedes Team entwickelt <em>ein</em> eigenes Tool.</p>
-<ld-story>
-<div class="incremental compound">
-<p>Beispiele:</p>
-<ul class="simple">
-<li><p>ein einfacher Chat</p></li>
-<li><p>ein einfaches interaktives Whiteboard</p></li>
-<li><p>ein Tool für ad-hoc Abstimmungen (zum Beispiel: wer hat die Hausaufgaben gemacht?)</p></li>
-<li><p>ein Tool für Umfragen</p></li>
-<li><p>ein Tool für Brainstorming/Mindmaps</p></li>
-<li><p>ein Tool für einfache Teameinteilungen</p></li>
-<li><p>ein Tool für die Erstellung von WordClouds</p></li>
+<p class="rubric">Projektübersicht</p>
+<p>Entwickeln Sie ein webbasiertes, responsives Familien-Dashboard, das als zentrale Informationsplattform für Familienmitglieder dient. Die Anwendung soll verschiedene konfigurierbare Widgets bereitstellen und durch ein Rollenkonzept unterschiedliche Zugriffsrechte ermöglichen - ggf. auf Widget-Level.</p>
+</ld-topic>
+<ld-topic id="anwendungsbeispiele">
+<h2>Anwendungsbeispiele</h2>
+<ld-deck>
+<ld-card>
+<ul class="incremental-list simple">
+<li><p>Sie möchten - z. B. in der Küche - ein Dashboard auf einem Tablet anzeigen lassen, das den Familienkalender, die Schulpläne der Kinder, den Wochenplan für das Au Pair, das Wetter und eine To-Do-Liste anzeigt.</p></li>
+<li><p>Sie möchten, dass alle Familienmitglieder gegenseitig lesenden Zugriff auf den/die Kalender der Familienmitglieder haben; die Kalender werden ggf. in externen Diensten (Google Calendar, Apple Calendar etc.) geführt.</p></li>
+<li><p>Sie möchten den Schulplan der Kinder als Widget auf dem Dashboard anzeigen lassen</p></li>
+<li><p>Ein Au-Pair soll lesenden Zugriff auf ihren/seinen Wochenplan haben, aber keine administrativen Rechte besitzen.</p></li>
+<li><p>Die To-Do-Liste kann von allen Familienmitgliedern bearbeitet werden.</p></li>
 <li><p>...</p></li>
 </ul>
+</ld-card><ld-card class="incremental">
+<style>
+    #example-dashboard {
+        overflow: hidden;
+        box-shadow: var(--trbl-shadow);
+        width: fit-content;
+        border-radius: var(--small-border-radius);
+        margin: var(--default-box-margin);
+        iframe {
+            border: none;
+
+
+        }
+    }
+</style>
+<div id="example-dashboard">
+    <iframe src="dashboard-prototype.html" width="600px" height="800px" frameborder="0"></iframe>
+</div><div class="caption docutils container">
+<p>Beispiel eines Familien-Dashboards erzeugt mit Claude Code.</p>
 </div>
-<div class="incremental compound">
-<p>Idee ist immer, dass die Tools ohne explizite Anmeldung funktionieren. Es gibt keine Benutzerverwaltung. Die Anmeldung erfolgt über einen Link, der den Teilnehmern - zum Beispiel im Rahmen einer Vorlesung - zur Verfügung gestellt wird.</p>
-</div>
-<div class="incremental compound">
-<p>Es gibt eine <em>Adminoberfläche</em>, die es Admins - für diese Nutzer gibt es eine rudimentäre Verwaltung, die aber auch aus einer einfache Konfigurationsdatei bestehen kann - ermöglicht neue Räume zu erzeugen und die Teilnehmer zu verwalten. Der Admin kann IP Adressen (temporär) sperren.</p>
-</div>
-</ld-story></ld-topic>
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="anforderungen">
+<h2>Anforderungen</h2>
+<ld-scrollable>
+<p class="rubric">Funktionale Anforderungen</p>
+<p><strong>Widget-System</strong></p>
+<ul class="simple">
+<li><p>Implementierung eines modularen Widget-Systems mit mindestens 3 der folgenden Widgets:</p>
+<ul>
+<li><p>Stundenplan (für Kinder und Au-Pairs) (MUSS)</p></li>
+<li><p>Gemeinsamer Terminkalender (ggf. als Integration externer Kalenderdienste)</p></li>
+<li><p>Wetteranzeige (mit Standortauswahl)</p></li>
+<li><p>To-Do-Liste</p></li>
+<li><p>Notizen/Pinnwand</p></li>
+</ul>
+</li>
+<li><p>Widgets sollen hinzugefügt, entfernt und auf dem Dashboard positioniert werden können</p></li>
+<li><p>Jedes Widget muss individuell konfigurierbar sein (z.B. Datenquelle, Darstellungsoptionen)</p></li>
+</ul>
+<p><strong>Rollenkonzept</strong></p>
+<dl class="field-list">
+<dt>Familien-Administrator-Rolle<span class="colon">:</span></dt>
+<dd><p>Volle Konfigurations- und Verwaltungsrechte</p>
+<ul>
+<li><p>Widgets hinzufügen/entfernen/konfigurieren</p></li>
+<li><p>Benutzer verwalten und Rollen zuweisen</p>
+<p>(D. h. Registrierung und Authentifizierung von Nutzern durchführen und Nutzer zu Familiengruppen zuweisen.)</p>
+</li>
+<li><p>Widget-Berechtigungen festlegen</p></li>
+</ul>
+</dd>
+<dt>Nutzer-Rolle<span class="colon">:</span></dt>
+<dd><p>Eingeschränkte Rechte</p>
+<ul class="simple">
+<li><p>Dashboard ansehen und sein persönliches Layout anpassen</p></li>
+<li><p>Zugriff nur auf freigegebene Widgets</p></li>
+<li><p>Interaktion mit Widget-Inhalten (z.B. Termine einsehen, nicht aber Dashboard umgestalten)</p></li>
+</ul>
+</dd>
+<dt>System-Administrator-Rolle<span class="colon">:</span></dt>
+<dd><p>Verwaltung der Anwendung als solches</p>
+<ul class="simple">
+<li><p>Benutzer- und Familiengruppenverwaltung</p></li>
+<li><p>Systemweite Einstellungen und Wartung</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Nicht-funktionale Anforderungen</p>
+<ul>
+<li><p>Responsive Design</p>
+<ul class="simple">
+<li><p>Optimierte Darstellung für Desktop, Tablet und Smartphone</p></li>
+<li><p>Touch-optimierte Bedienung für mobile Endgeräte</p></li>
+</ul>
+</li>
+<li><p>Verteilte Architektur</p>
+<ul class="simple">
+<li><p>Klare Trennung von Frontend und Backend</p></li>
+<li><p>RESTful API für die Kommunikation</p></li>
+<li><p>Zustandsverwaltung (State Management) im Frontend</p></li>
+<li><p>Datenpersistenz im Backend</p></li>
+</ul>
+</li>
+<li><p>Erweiterbarkeit</p>
+<ul class="simple">
+<li><p>Modulare Architektur ermöglicht einfaches Hinzufügen neuer Widgets</p></li>
+<li><p>Klar definierte Schnittstellen zwischen Komponenten</p></li>
+<li><p>Plugin-Architektur für Widget-Entwicklung wäre wünschenswert</p></li>
+</ul>
+</li>
+<li><p>Technische Anforderungen</p>
+<p>Entwickeln Sie eine verteilte Anwendung mit folgender Architektur:</p>
+<ul class="simple">
+<li><p>Frontend als Single Page Application (SPA) ggf. unter Einsatz von responsive UI-Frameworks (z.B. Bootstrap, Tailwind CSS)</p></li>
+<li><p>Backend mit RESTful API; der Technologiestack ist frei wählbar (z.B. Node.js/Express, Python/Flask, Java/Spring Boot)</p></li>
+<li><p>Datenbank zur Persistierung (z.B. PostgreSQL, MongoDB, MySQL)</p></li>
+</ul>
+</li>
+<li><p>Architektur-Dokumentation</p>
+<ul class="simple">
+<li><p>Erstellen Sie Architekturdiagramme (z.B. mit C4-Modell)</p></li>
+<li><p>Dokumentieren Sie Design-Entscheidungen</p></li>
+<li><p>Begründen Sie die Wahl von Technologien und Architekturmustern</p></li>
+</ul>
+</li>
+<li><p>Datenintegration</p>
+<ul class="simple">
+<li><p>Integration mindestens einer externen API (z.B. Wetter-API)</p></li>
+<li><p>Synchronisation von Kalenderdaten</p></li>
+<li><p>Optional: Import/Export von Daten</p></li>
+</ul>
+</li>
+</ul>
+<aside class="admonition remark">
+<p class="admonition-title">Bemerkung</p>
+<p class="rubric">Einsatz von KI-Tools</p>
+<p>Nutzung von KI-Assistenten (z.B. GitHub Copilot, ChatGPT, Claude Code oder OpenCode) zur Code-Generierung ist erlaubt.</p>
+<p>KI kann zur Unterstützung der folgenden Aufgaben eingesetzt werden:</p>
+<ul class="simple">
+<li><p>Boilerplate-Code generieren</p></li>
+<li><p>Code-Optimierung und Refactoring</p></li>
+<li><p>Debugging und Fehleranalyse</p></li>
+<li><p>Erstellung von Tests</p></li>
+<li><p>Dokumentation</p></li>
+</ul>
+<p><em>Pflichten bei KI-Nutzung</em></p>
+<ul class="simple">
+<li><p>Jedes Teammitglied muss jeden Teil der Anwendung erklären können</p></li>
+<li><p>Die Architektur und Design-Entscheidungen müssen vom Team begründet werden</p></li>
+<li><p>Der Technologiestack muss vom Team begründet werden</p></li>
+<li><p>Im Projektbericht: Dokumentation, wo und wie, welche KI eingesetzt wurde</p></li>
+<li><p>Reflexion über Vor- und Nachteile des KI-Einsatzes im Projekt</p></li>
+</ul>
+</aside>
+</ld-scrollable></ld-topic>
 <ld-topic id="bewertungskriterien-fur-das-projekt">
 <h2>Bewertungskriterien für das Projekt</h2>
 <table class="table-data-align-right table-header-align-left" style="width: 100%;">

@@ -7,12 +7,13 @@
 
         ld-scrollable {
             &::before {
-                display: inline-block;
+                content: "⇡\A⇣";
+
+                display: block;
                 float: right;
                 position: sticky;
                 top: 0;
                 z-index: 1;
-                content: "⇡\A⇣";
                 white-space: pre;
                 color: rgb(150 150 150 / 50%);
                 text-shadow: 1px 1px 2px var(--white);
@@ -48,10 +49,10 @@
 
             overflow-y: scroll;
 
-            --current-background-color: rgb(
-                from var(--s-background-color) r g b / 66%
+            --current-rel-bg-color: rgb(
+                from var(--current-bg-color) r g b / 66%
             );
-            background-color: var(--current-background-color);
+            background-color: var(--current-rel-bg-color);
             backdrop-filter: blur(8px);
 
             transform: translateX(calc(100% - var(--s-lr-padding) * 0.5))
@@ -67,7 +68,6 @@
                         calc(var(--ld-slide-height) * 0.5 - (100% * 0.5))
                     );
                 transition: 0.75s;
-                box-shadow: var(--trbl-shadow-dark);
             }
 
             .supplemental + .supplemental {
@@ -117,8 +117,8 @@
                 display: none;
                 padding: 0.25em 0.5em;
                 font-size: 38px;
-                --current-background-color: rgb(50 50 80 / 75%);
-                background-color: var(--current-background-color);
+                --current-bg-color: rgb(50 50 80 / 75%);
+                background-color: var(--current-bg-color);
                 color: white;
                 text-shadow: 1px 1px 2px black;
 
@@ -156,15 +156,42 @@
         }
     }
 
+    /***************************************************************************
+
+        Support for Popover Elements
+
+    ***************************************************************************/
+
     div[popover] {
         margin: revert;
-        padding: 1.5em;
-        border-radius: 1.5em;
-        box-shadow: 0.1em 0.1em 0.2em rgb(0 0 0 / 0.5);
+        padding: var(--default-container-padding);
+        border-radius: var(--medium-border-radius);
+        box-shadow: var(--trbl-shadow);
+
+        background-color: lch(from var(--current-bg-color) l c h / 80%);
 
         &::backdrop {
             backdrop-filter: blur(4px);
         }
+    }
+
+    button.popover {
+        border-radius: var(--small-border-radius);
+        padding: var(--default-container-padding);
+
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--button-hover-bg-color);
+            color: var(--button-hover-fg-color);
+            scale: 1.05;
+
+            transition: all 0.2s ease-in-out;
+        }
+
+        background-color: var(--button-bg-color);
+        color: var(--button-fg-color);
+        transition: all 0.2s ease-in-out;
     }
 }
 
@@ -439,7 +466,11 @@ ld-slide.cheat-sheet {
         right: 25px;
         font-size: 50em;
         font-weight: 900;
-        color: var(--very-light-gray);
+        color: color-mix(
+            in srgb,
+            var(--current-bg-color) 90%,
+            var(--current-fg-color) 10%
+        );
         text-shadow: 2px 2px 4px var(--light-gray);
     }
     /*
@@ -456,7 +487,9 @@ ld-slide.cheat-sheet {
     column-fill: auto;
     block-size: calc(var(--ld-slide-height) - 2 * 6px);
 
-    background-color: var(--white);
+    background-color: var(--current-rel-bg-color);
+    color: var(--current-rel-fg-color);
+
     font-size: 14px;
 
     div.cheat-sheet-block {

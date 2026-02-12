@@ -1,0 +1,200 @@
+/* LAYER: theme.ld */
+
+:root {
+    --default-box-margin: 0.5em; /* TODO consolidate with default-bottom-margin*/
+    --default-bottom-margin: 0.5em;
+
+    --small-border-radius: 0.2em;
+    --medium-border-radius: 0.4em;
+
+    --default-container-padding: 0.5em;
+
+    --font-weight: 300;
+    --line-height: 1.35;
+    --code-line-height: 1.25;
+    --default-text-shadow-dimensions: 0.5px 0.5px 0.5px;
+
+    /* Shadows (t = top; b = bottom; l = left; r = right) */
+    --trbl-shadow-blur: 0.3em;
+    --trbl-shadow: 0 0 var(--trbl-shadow-blur) 0 var(--shadow-color);
+    --trbl-shadow-margin: calc(var(--trbl-shadow-blur) / 1.125);
+
+    --field-indent: 5em;
+
+    /* 
+
+        Definition of the color scheme.
+
+        The default color scheme is the light scheme. 
+        
+    */
+    --body-bg-color: var(--black);
+
+    --bg-color: var(--white);
+    --fg-color: var(--black);
+
+    --border-color: var(--gray);
+    --link-fg-color: var(--dark-red);
+    --shadow-color: var(--gray); /* text-shadow and box-shadow */
+    --peripheral-fg-color: var(--gray); /* for less important elements */
+    --blockquote-bg-color: var(--very-light-gray);
+    --emph-color: var(--dark-red);
+
+    --button-bg-color: var(--very-light-red);
+    --button-fg-color: var(--black);
+    --button-hover-bg-color: var(--dark-gray);
+    --button-hover-fg-color: var(--white);
+
+    .admonition {
+        --container-header-bg-color: var(--light-gray);
+        --container-header-icon-bg-color: var(--dark-gray);
+        --container-header-fg-color: var(--dark-gray);
+        --container-header-icon-fg-color: var(--white);
+        --container-header-text-shadow-color: var(--white);
+    }
+    /*  Once the css color-contrast function is widely supported, we can 
+        compute the colors based on the current background color. Until then, 
+        we use fixed colors for the different admonitions. 
+    .admonition {
+        --container-header-bg-color: lch(from var(--current-bg-color) calc(l - 20) calc(c) calc(h) );
+        --container-header-icon-bg-color: oklch(from var(--current-bg-color) calc(l - 0.5) c h );
+        --container-header-fg-color: var(--dark-gray);
+        --container-header-icon-fg-color: var(--white);
+        --container-header-text-shadow-color: var(--white);
+    }
+    */
+
+    --error-bg-color: var(--very-light-red);
+    --error-fg-color: var(--dark-gray);
+    .error {
+        --current-bg-color: var(--error-bg-color);
+        --current-fg-color: var(--error-fg-color);
+    }
+    --warning-bg-color: var(--light-red);
+    --warning-fg-color: var(--white);
+    .warning {
+        --current-bg-color: var(--warning-bg-color);
+        --current-fg-color: var(--warning-fg-color);
+    }
+    .error,
+    .warning {
+        --container-header-bg-color: var(--light-red);
+        --container-header-icon-bg-color: var(--dark-red);
+        --container-header-fg-color: var(--white);
+        --container-header-text-shadow-color: var(--black);
+    }
+
+    --important-bg-color: var(--very-light-red);
+    --important-fg-color: var(--very-dark-red);
+    .important {
+        --container-header-bg-color: var(--light-red);
+        --container-header-icon-bg-color: var(--dark-red);
+        --container-header-fg-color: var(--white);
+        --container-header-text-shadow-color: var(--black);
+    }
+
+    --attention-bg-color: var(--light-orange);
+    --attention-fg-color: var(--dark-gray);
+    .attention {
+        --container-header-bg-color: var(--dark-orange);
+        --container-header-icon-bg-color: var(--orange);
+        --container-header-fg-color: var(--white);
+        --container-header-text-shadow-color: var(--black);
+    }
+
+    --tip-bg-color: var(--very-light-green);
+    --tip-fg-color: var(--dark-gray);
+    .tip {
+        --container-header-bg-color: var(--light-green);
+        --container-header-icon-bg-color: var(--dark-green);
+        --container-header-fg-color: var(--white);
+        --container-header-text-shadow-color: var(--dark-gray);
+    }
+
+    --hint-bg-color: var(--very-light-green);
+    --hint-fg-color: var(--dark-gray);
+    .hint {
+        --container-header-bg-color: var(--dark-green);
+        --container-header-icon-bg-color: var(--light-green);
+        --container-header-fg-color: var(--white);
+        --container-header-text-shadow-color: var(--dark-gray);
+    }
+
+    --example-bg-color: var(--very-light-yellow);
+    --example-fg-color: var(--dark-gray);
+    .example {
+        --container-header-bg-color: var(--light-yellow);
+        --container-header-icon-bg-color: var(--dark-yellow);
+        --container-header-fg-color: var(--dark-gray);
+        --container-header-text-shadow-color: var(--white);
+    }
+
+    --question-bg-color: var(--very-light-blue);
+    --question-fg-color: var(--very-dark-gray);
+    --answer-bg-color: var(--very-light-blue);
+    --answer-fg-color: var(--very-dark-gray);
+    .answer,
+    .question {
+        --container-header-bg-color: var(--light-blue);
+        --container-header-icon-bg-color: var(--dark-blue);
+        --container-header-fg-color: var(--white);
+        --container-header-text-shadow-color: var(--dark-gray);
+    }
+
+    --observation-bg-color: var(--very-very-light-blue);
+    --observation-fg-color: var(--very-dark-blue);
+    .observation {
+        --container-header-bg-color: var(--very-light-blue);
+        --container-header-icon-bg-color: var(--light-blue);
+        --container-header-fg-color: var(--dark-gray);
+        --container-header-text-shadow-color: var(--white);
+    }
+
+    --deprecated-bg-color: var(--very-light-gray);
+    --deprecated-fg-color: var(--very-dark-gray);
+    .deprecated {
+        --container-header-bg-color: var(--light-gray);
+        --container-header-fg-color: var(--white);
+        --container-header-text-shadow-color: var(--dark-gray);
+    }
+
+    --summary-bg-color: var(--very-very-light-gray);
+    --summary-fg-color: var(--dark-gray);
+
+    /* 
+    
+        Definition of the "current" colors for color based computations.
+
+        Whenever possible/necessary, we try to compute contrast colors based 
+        on the current background color to facilitate theming.
+
+    */
+
+    /*  This defines the current primary background and foreground color 
+        for the entire document. */
+    --current-bg-color: var(--bg-color);
+    --current-fg-color: var(--fg-color);
+
+    /*  This defines the current effective background and foreground colors 
+        for the entire document. In most cases these colors are identical to
+        --current-bg-color and --current-fg-color; however, in some cases
+        derived values are used.
+        
+        In general, only --current-rel-(bg|fg)-color should be used to style 
+        elements. */
+    --current-rel-bg-color: var(--current-bg-color);
+    --current-rel-fg-color: var(--current-fg-color);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --body-bg-color: var(--very-dark-gray);
+
+        --bg-color: var(--black);
+        --fg-color: var(--white);
+
+        --shadow-color: var(--very-very-light-gray); /* text- and box-shadow */
+        --link-fg-color: var(--light-red);
+        --blockquote-bg-color: var(--dark-gray);
+    }
+}

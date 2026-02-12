@@ -2,9 +2,10 @@
 
 #ld-document-view {
     --unitless-current-base-font-size: var(--unitless-d-font-size);
-    --current-base-font-size: var(--d-font-size);
+    --current-base-font-size: calc(
+        var(--unitless-current-base-font-size) * 1px
+    );
     font-size: var(--current-base-font-size);
-    line-height: var(--d-line-height);
 
     .s-only {
         display: none;
@@ -17,8 +18,9 @@
         padding: var(--d-padding);
         border-radius: 0.25em;
 
-        --current-background-color: var(--white);
-        background-color: var(--current-background-color);
+        --current-bg-color: var(--bg-color);
+        --current-rel-bg-color: var(--current-bg-color);
+        background-color: var(--current-rel-bg-color);
 
         &.exercises,
         &.new-section {
@@ -155,8 +157,8 @@
     counter-reset: exercise;
 
     p.ld-exercise-title {
-        --current-background-color: var(--light-gray);
-        background-color: var(--current-background-color);
+        --current-bg-color: var(--light-gray);
+        background-color: var(--current-bg-color);
         border-radius: var(--medium-border-radius);
 
         position: relative;
@@ -196,18 +198,29 @@
     ld-card:has(+ *) {
         margin-bottom: var(--default-bottom-margin);
     }
+
+    /***************************************************************************
+
+        In the document view popovers are always visible and rendered inline.
+
+    ***************************************************************************/
+
+    div[popover] {
+        display: block;
+        position: static;
+
+        background-color: var(--current-bg-color);
+    }
+
+    button.popover {
+        display: none;
+    }
 }
 
 @media print {
     #ld-document-view > ld-section {
         break-before: page;
 
-        /*  We want to have the section number found in the footer element 
-            at the bottom of the last page of the section. However, this
-            is basically not possible at the moment. Hence, we just get 
-            the feature that the footer is moved to the bottom if the 
-            section has just one page. */
-        min-height: 100vh;
         display: flex;
         flex-direction: column;
 
@@ -216,8 +229,12 @@
             CSS Nesting support in print media is not yet fully implemented
             in Chrome and Safari. */
         & > footer {
+            /* The following should push the footer to the bottom of the 
+               page, but this doesn't work in Chrome and Safari (December 2025) and the "page number" would be meaningless anyway, because the section might span multiple pages. 
+            min-height: 100vh;
             margin-top: auto;
-            break-inside: avoid;
+            break-inside: avoid;*/
+            display: none;
         }
     }
 }
