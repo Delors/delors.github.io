@@ -254,7 +254,12 @@ ul>li.attention-list {
 .list-with-explanations > li > *:not(:first-child) {
     margin-top: -0.3em;
     font-size: smaller;
-    color: var(--dark-gray);
+    --current-rel-fg-color: color-mix(
+        in lch,
+        var(--current-fg-color) 80%,
+        var(--current-bg-color) 20%
+    );
+    color: var(--current-rel-fg-color);
     mix-blend-mode: hard-light;
 }
 
@@ -504,6 +509,7 @@ p.system-message-title {
 .admonition {
     /* Need to be set by the respective admonition. */
     --admonition-icon: none;
+    --admonition-border-size: 1px;
 
     overflow: hidden;
 
@@ -511,7 +517,7 @@ p.system-message-title {
     &:has(+ *) {
         margin-bottom: var(--default-bottom-margin);
     }
-    border: 1px solid var(--border-color);
+    border: var(--admonition-border-size) solid var(--border-color);
     border-radius: var(--small-border-radius);
 
     padding: 0 var(--default-container-padding)
@@ -525,11 +531,19 @@ p.system-message-title {
     color: var(--current-rel-fg-color);
 
     > p:first-child.admonition-title {
+        display: flex;
+
         position: relative;
         left: calc(var(--default-container-padding) * -1);
-        width: calc(100% + calc(var(--default-container-padding) * 2) + 2px);
-        padding: 0 var(--default-container-padding);
+
+        width: calc(
+            100% + calc(var(--default-container-padding) * 2) +
+                calc(var(--admonition-border-size) * 2)
+        );
         margin-bottom: 0;
+        padding-left: var(--default-container-padding);
+
+        line-height: calc(var(--line-height) * 1.25);
 
         --current-rel-bg-color: var(--container-header-bg-color);
         background-color: var(--current-rel-bg-color);
@@ -543,9 +557,10 @@ p.system-message-title {
             position: relative;
             left: calc(var(--default-container-padding) * -1);
 
-            display: inline-block;
-            height: inherit;
+            display: block;
             width: 1.5em;
+            flex-shrink: 0;
+            flex-grow: 0;
 
             --current-rel-bg-color: var(--container-header-icon-bg-color);
             background-color: var(--current-rel-bg-color);
@@ -837,6 +852,13 @@ table.align-left, /* FIXME Is this still required? */
 table.align-center,
 table.align-right {
     text-align: inherit;
+}
+figure.align-center {
+    /* The child may be an object or an image! */
+    > *:first-child {
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 figcaption {
@@ -1211,7 +1233,7 @@ table {
     }
 
     &.table-data-monospaced td {
-        font-family: var(--theme-monospaced-font-family);
+        font-family: var(--monospaced-font-family);
     }
 
     /* ONLY WORKS IF THE TABLE IS IN A SCROLLABLE ELEMENT! */
@@ -1345,29 +1367,61 @@ table {
     &.highlight-cell-and-row-on-hover,
     &.highlight-identical-cells-on-hover {
         th.\:hover-related {
-            box-shadow: var(--trbl-shadow-dark);
-            --current-bg-color: var(--gray);
-            background-color: var(--current-bg-color);
-            --current-fg-color: white;
-            color: var(--current-fg-color);
+            --current-rel-bg-color: color-mix(
+                in lch,
+                var(--current-fg-color) 80%,
+                var(--current-bg-color) 20%
+            );
+            background-color: var(--current-rel-bg-color);
+            --current-rel-fg-color: color-mix(
+                in lch,
+                var(--current-fg-color) 20%,
+                var(--current-bg-color) 80%
+            );
+            color: var(--current-rel-fg-color);
         }
 
         td.\:hover-related {
-            box-shadow: var(--trbl-shadow-dark);
-            --current-bg-color: var(--very-light-gray);
-            background-color: var(--current-bg-color);
+            --current-rel-bg-color: color-mix(
+                in lch,
+                var(--current-fg-color) 80%,
+                var(--current-bg-color) 20%
+            );
+            background-color: var(--current-rel-bg-color);
+            --current-rel-fg-color: color-mix(
+                in lch,
+                var(--current-fg-color) 20%,
+                var(--current-bg-color) 80%
+            );
+            color: var(--current-rel-fg-color);
         }
 
         th.\:hover {
             box-shadow: var(--trbl-shadow);
-            --current-bg-color: var(--light-gray);
-            background-color: var(--current-bg-color);
+            --current-rel-bg-color: light-dark(
+                var(--current-fg-color),
+                var(--current-bg-color)
+            );
+            background-color: var(--current-rel-bg-color);
+            --current-rel-fg-color: light-dark(
+                var(--current-bg-color),
+                var(--current-fg-color)
+            );
+            color: var(--current-rel-fg-color);
         }
 
         td.\:hover {
             box-shadow: var(--trbl-shadow);
-            --current-bg-color: var(--light-gray);
-            background-color: var(--current-bg-color);
+            --current-rel-bg-color: light-dark(
+                var(--current-fg-color),
+                var(--current-bg-color)
+            );
+            background-color: var(--current-rel-bg-color);
+            --current-rel-fg-color: light-dark(
+                var(--current-bg-color),
+                var(--current-fg-color)
+            );
+            color: var(--current-rel-fg-color);
         }
     }
 
@@ -1529,7 +1583,7 @@ table {
     color: var(--current-fg-color);
     --current-bg-color: var(--dark-red);
     background-color: var(--current-bg-color);
-    box-shadow: var(--trbl-shadow-dark);
+    box-shadow: var(--trbl-shadow);
 }*/
 .accentuate {
     display: block;
@@ -1553,11 +1607,19 @@ table {
     border-radius: 0 var(--small-border-radius) var(--small-border-radius) 0;
     padding: 0.25em;
     font-weight: 300;
-    --current-fg-color: var(--black);
-    color: var(--current-fg-color);
+    --current-rel-fg-color: color-mix(
+            in lch,
+            var(--current-fg-color) 90%,
+            var(--current-bg-color) 10%
+        )
+        color: var(--current-rel-fg-color);
     text-shadow: 1px 1px 1px var(--white);
-    --current-bg-color: var(--very-light-gray);
-    background-color: var(--current-bg-color);
+    --current-rel-bg-color: color-mix(
+        in lch,
+        var(--current-bg-color) 90%,
+        var(--current-fg-color) 10%
+    );
+    background-color: var(--current-rel-bg-color);
 }
 
 ul.important {
@@ -1736,4 +1798,18 @@ video {
     box-shadow: var(--trbl-shadow);
     margin: var(--trbl-shadow-margin);
     border-radius: var(--small-border-radius);
+}
+
+.light-image {
+    color-scheme: only light;
+    background-color: var(--white);
+    border-radius: var(--small-border-radius);
+    padding: var(--default-container-padding);
+}
+
+.dark-image {
+    color-scheme: dark;
+    background-color: var(--black);
+    border-radius: var(--small-border-radius);
+    padding: calc(var(--default-container-padding) * 0.5);
 }

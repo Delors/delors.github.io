@@ -47,7 +47,7 @@
         1)  a method that sends a message and then performs the state change.
             For that, it calls the second method.
         2)  a method which only performs the state change, but does not emit a
-            message. These methods generally have the local moniker in their 
+            message. These methods generally have the local moniker in their
             name. E.g. localMoveToNextSlide.
 
         Now, when we react to a local event we always call the first method.
@@ -201,10 +201,10 @@ export const interWindowMessageHandlers = {
 
 /** Makes the basic datastructures and functions available.
 
-    Enables ld-components the registration for all basic events, before they 
+    Enables ld-components the registration for all basic events, before they
     actually happen.
 
-    (Primarily available for backward compatibility and debugging purposes. 
+    (Primarily available for backward compatibility and debugging purposes.
     Modern components can directly use the exported functions and methods.)
     */
 export const lectureDoc2 = {
@@ -400,7 +400,7 @@ function postMessage(msg, data) {
  * @param {string} id the id of the information item without the prefix
  *          "ld-".
  */
-function documentSpecificId(dataId) {
+export function documentSpecificId(dataId) {
     if (presentation.id) {
         return "ld-" + presentation.id + "-" + dataId;
     } else {
@@ -2151,10 +2151,18 @@ function registerKeyboardEventListener() {
     document.addEventListener("keydown", (event) => {
         // let's check if the user is using an input field to type something in
         const activeElement = document.activeElement;
-        if (activeElement.nodeName === "INPUT") {
+        if (
+            activeElement.nodeName === "INPUT" ||
+            activeElement.nodeName === "TEXTAREA" ||
+            activeElement.shadowRoot?.activeElement.nodeName === "INPUT" ||
+            activeElement.shadowRoot?.activeElement.nodeName === "TEXTAREA"
+        ) {
             return;
         }
-        if (activeElement.contentEditable === "true") {
+        if (
+            activeElement.contentEditable === "true" ||
+            activeElement.shadowRoot?.contentEditable === "true"
+        ) {
             return;
         }
 

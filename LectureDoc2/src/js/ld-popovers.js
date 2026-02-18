@@ -15,7 +15,7 @@ function afterLDListenerRegistrations() {
     const channel = lectureDoc2.getEphemeral().ldPerDocumentChannel;
 
     if (!channel) {
-        console.warn("missing channeld for relaying popover events");
+        console.warn("missing channel for relaying popover events");
         return;
     }
 
@@ -31,13 +31,14 @@ function afterLDListenerRegistrations() {
         .forEach((e) => {
             const popoverElement = e.popoverTargetElement;
             const popoverId = popoverElement.id;
-            e.addEventListener("click", (event) => {
+            e.addEventListener("click", () => {
                 try {
                     ld.postMessage(channel, "showPopover", popoverId);
                 } catch (error) {
                     console.error(
-                        "failed registering listener for popover button",
-                        e,
+                        "failed posting message to show popover with id " +
+                            popoverId,
+                        error,
                     );
                 }
             });
