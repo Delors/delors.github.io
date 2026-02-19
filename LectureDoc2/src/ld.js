@@ -128,6 +128,9 @@ async function ldCrypto() {
  * ldEvents.addEventListener(
  *      "afterDecryptExercise",
  *      <function afterDecryptExercise(<.ld-exercise-solution Element>)>);
+ * ldEvents.addEventListener(
+ *      "resetLectureDoc",
+ *      <function resetLectureDoc()>);
  */
 export const ldEvents = {
     beforeLDDOMManipulations: [],
@@ -135,6 +138,7 @@ export const ldEvents = {
     afterLDListenerRegistrations: [],
     resetSlideProgress: [],
     afterDecryptExercise: [],
+    resetLectureDoc: [],
     addEventListener: function (event, listener) {
         switch (event) {
             case "beforeLDDOMManipulations":
@@ -151,6 +155,9 @@ export const ldEvents = {
                 break;
             case "afterDecryptExercise":
                 this.afterDecryptExercise.push(listener);
+                break;
+            case "resetLectureDoc":
+                this.resetLectureDoc.push(listener);
                 break;
             default:
                 throw new Error("unknown ldEvent: " + event);
@@ -540,6 +547,8 @@ function localResetLectureDoc() {
     );
 
     deleteStoredState();
+
+    ldEvents.resetLectureDoc.forEach((listener) => listener());
 
     const url = new URL(document.location);
     url.search = "";
@@ -942,6 +951,14 @@ function setupLightTable() {
 
     topicTemplates.querySelectorAll("ld-topic").forEach((topic, i) => {
         const clonedTopic = ld.deepCloneWithOpenShadowRoots(topic);
+        clonedTopic
+            .querySelectorAll("div.module:not([data-ld-module-scope='all'])")
+            .forEach((m) => {
+                m.parentElement.replaceChild(
+                    document.createComment("filtered module: " + m.innerHTML),
+                    m,
+                );
+            });
         const slide = ld.create("ld-slide", {
             classList: clonedTopic.classList,
             children: clonedTopic.children,
@@ -1251,6 +1268,15 @@ function setupSlidePane() {
     topicTemplates.querySelectorAll("ld-topic").forEach((topic, i) => {
         // const clonedTopic = topic.cloneNode(true);
         const clonedTopic = ld.deepCloneWithOpenShadowRoots(topic);
+        clonedTopic
+            .querySelectorAll("div.module[data-ld-module-scope='document']")
+            .forEach((m) => {
+                m.parentElement.replaceChild(
+                    document.createComment("filtered module: " + m.innerHTML),
+                    m,
+                );
+            });
+
         const slide = ld.create("ld-slide", {
             id: "ld-slide-no-" + i,
             classList: clonedTopic.classList,
@@ -1410,6 +1436,14 @@ function setupDocumentView() {
         //const template = t.cloneNode(true);
         const template = ld.deepCloneWithOpenShadowRoots(t);
         template.classList.remove("ld-slide"); // not needed anymore
+        template
+            .querySelectorAll("div.module[data-ld-module-scope='slide']")
+            .forEach((m) => {
+                m.parentElement.replaceChild(
+                    document.createComment("filtered module: " + m.innerHTML),
+                    m,
+                );
+            });
 
         setupCopyToClipboard(template);
 

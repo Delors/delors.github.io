@@ -2,7 +2,7 @@
 Small wrapper that bridges LectureDoc module configuration and
 the ld-group-assignment web component.
 */
-import {lectureDoc2,documentSpecificId} from "../src/ld.js";
+import { lectureDoc2, documentSpecificId } from "../src/ld.js";
 import "./group-assignment/group-assignment.js";
 
 const convertModuleBasedSpecificationToLDGroupAssignmentElement = () => {
@@ -17,16 +17,18 @@ const convertModuleBasedSpecificationToLDGroupAssignmentElement = () => {
             const config = JSON.parse(raw);
             const defaultNumberOfStudents = config.defaultNumberOfStudents;
             const defaultGroupSize = config.defaultGroupSize;
+            const defaultPreferSmallerGroups =
+                config.defaultPreferSmallerGroups;
 
             const groupAssignmentElement = document.createElement(
                 "ld-group-assignment",
             );
-            
+
             try {
                 groupAssignmentElement.setAttribute(
                     "storage-qualifier",
-                    documentSpecificId("module-state")
-                )
+                    documentSpecificId("module-state"),
+                );
             } catch (error) {
                 console.log("Cannot compute document specific id:", error);
             }
@@ -48,6 +50,11 @@ const convertModuleBasedSpecificationToLDGroupAssignmentElement = () => {
                 );
             }
 
+            groupAssignmentElement.setAttribute(
+                "default-prefer-smaller-groups",
+                String(!!defaultPreferSmallerGroups),
+            );
+
             moduleElement.replaceChildren(groupAssignmentElement);
             console.log("Group assignment element created");
         } catch (error) {
@@ -59,6 +66,11 @@ const convertModuleBasedSpecificationToLDGroupAssignmentElement = () => {
 };
 
 // lectureDoc2 is available globally in LectureDoc runtime
+lectureDoc2.ldEvents.addEventListener("resetSlideProgress", (slide) => {
+    slide.querySelectorAll("ld-group-assignment").forEach((element) => {
+        element.resetToDefaults();
+    });
+});
 lectureDoc2.ldEvents.addEventListener(
     "beforeLDDOMManipulations",
     convertModuleBasedSpecificationToLDGroupAssignmentElement,
