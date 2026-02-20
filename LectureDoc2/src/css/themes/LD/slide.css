@@ -249,24 +249,34 @@ ld-slide {
     }
 
     li.show-list-item-content-on-hover {
-        /*
-        > *:first-child::after {
-            content: " ⇣";
-            color: var(--gray);
-        }*/
+        > *:first-child::before {
+            content: "⇢ ";
+            color: color-mix(
+                in srgb,
+                var(--current-rel-fg-color) 80%,
+                var(--current-rel-bg-color) 20%
+            );
+            font-family: var(--monospaced-font-family);
+            font-weight: 900;
+        }
+        &.\:hover > *:first-child::before {
+            content: "⇣ ";
+        }
+        /* Using a marker affects the numbering... Why?
         > *:first-child {
             display: list-item;
             list-style-position: inside;
             list-style-type: disclosure-closed;
 
             &::marker {
-                color: var(--dhbw-light-gray);
-                /* font-size: 0.75em; <= good for safari, bad for firefox  */
+                color: color-mix(in srgb, var(--current-rel-fg-color) 80%, var(--current-rel-bg-color) 20%);
+                / * font-size: 0.75em; <= good for safari, bad for firefox  * /
             }
         }
         &.\:hover > *:first-child {
             list-style-type: disclosure-open;
         }
+        */
         > *:not(:first-child) {
             max-height: 0;
             overflow: hidden;

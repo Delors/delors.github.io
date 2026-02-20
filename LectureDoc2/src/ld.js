@@ -2362,18 +2362,38 @@ function registerSlideClickedListener() {
     // - links,
     // - buttons and
     // - the "ld-copy-to-clipboard-button" icon // FIXME: make this a button
+
+    function processNode(rootNode) {
+        const processInteractiveElement = (e) => {
+            e.addEventListener(
+                "click",
+                (event) => {
+                    event["interactive_element_clicked"] = true;
+                },
+                { capture: true },
+            );
+        };
+
+        // TODO move to walker...
+        rootNode
+            .querySelectorAll(
+                "a, button, input, video, div.ld-copy-to-clipboard-button",
+            )
+            .forEach(processInteractiveElement);
+    }
+
     const sp = document.getElementById("ld-slides-pane");
-    sp.querySelectorAll(
-        ":scope :is(a,button,div.ld-copy-to-clipboard-button,video)",
-    ).forEach((e) => {
-        e.addEventListener(
-            "click",
-            (event) => {
-                event["interactive_element_clicked"] = true;
-            },
-            { capture: true },
-        );
-    });
+    processNode(sp);
+
+    const walker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_ELEMENT,
+    );
+    let node = walker.currentNode;
+    while (node) {
+        if (node.shadowRoot) processNode(node.shadowRoot);
+        node = walker.nextNode();
+    }
 
     sp.addEventListener("click", (event) => {
         if (event.interactive_element_clicked) return;
