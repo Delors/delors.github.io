@@ -25,10 +25,10 @@ let y = Infinity;
 let z = -Infinity;
 
 // Standard Operatoren: +, - , *, /, %, ++, --, **
-// Bitwise Operatoren: &, |, ^, ~, <<, >>, >>>
-//                     operieren immer auf dem Ganzzahlwert der Bits:
-//                     Beispiel: 1234.5678e4 << 1 = 24691356
-log("i =", i, "; i++  ", i++); // 1 oder 2?
+// Bitwise Operatoren:  &, |, ^, ~, <<, >>, >>>
+//                      werden immer auf dem Ganzzahlwert der Bits angewendet:
+//                      Beispiel: 1234.5678e4 << 1 = 24691356
+log("i =", i, "; i++ ", i++); // 1 oder 2?
 log("i =", i, "; ++i ", ++i); // 2 oder 3?
 log("2 ** 4 === 0 ", 2 ** 4);
 log("7 % 3 === ", 7 % 3);
@@ -66,7 +66,6 @@ log("true ?? null: ", true ?? null);
 log("null ?? false: ", null ?? false);
 log("{} ?? true: ", {} ?? true);
 
-log('undefined ?? "1": ', undefined ?? "1");
 log('undefined ?? "1": ', undefined ?? "1");
 log("undefined ?? true: ", undefined ?? true);
 log("true ?? undefined: ", true ?? undefined);

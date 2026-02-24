@@ -36,12 +36,16 @@
         }
 
         &.exercises > h2 {
-            background-color: var(--light-gray);
+            --current-bg-color: var(--light-gray);
+            --current-rel-bg-color: var(--current-bg-color);
+            background-color: var(--current-rel-bg-color);
             text-shadow: 1px 1px 1px var(--white);
         }
 
         &.new-section > h2 {
-            background-color: var(--dark-gray);
+            --current-bg-color: var(--dark-gray);
+            --current-rel-bg-color: var(--current-bg-color);
+            background-color: var(--current-rel-bg-color);
             color: var(--white);
             text-shadow: 1px 1px 1px var(--black);
         }
@@ -157,8 +161,24 @@
     counter-reset: exercise;
 
     p.ld-exercise-title {
-        --current-bg-color: var(--light-gray);
-        background-color: var(--current-bg-color);
+        /*
+        --current-rel-bg-color: color-mix(
+            in lch,
+            var(--current-bg-color) 80%,
+            var(--current-fg-color) 
+        );*/
+        --current-rel-bg-color: oklab(from var(--current-bg-color) 92% a b);
+        background-color: var(--current-rel-bg-color);
+        /*--current-rel-fg-color: color-mix(
+            in lch,
+            var(--current-fg-color) 80%,
+            var(--current-bg-color) 
+        );*/
+        --current-rel-fg-color: oklab(from var(--current-bg-color) 10% a b);
+        color: var(--current-rel-fg-color);
+        /*--current-bg-color: var(--light-gray);
+        background-color: var(--current-bg-color);*/
+
         border-radius: var(--medium-border-radius);
 
         position: relative;

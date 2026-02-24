@@ -42,6 +42,13 @@ function scaleDocumentImagesAndVideos(
     );
 
     rootElement.querySelectorAll(`:scope img`).forEach((img) => {
+        if (img.parentElement.classList.contains("scale-on-hover")) {
+            console.log(
+                "skipping scaling of image due to parent element having class 'scale-on-hover'",
+                img,
+            );
+            return;
+        }
         let done = false;
         if (img.style.width) {
             done = true;
@@ -71,6 +78,14 @@ function scaleDocumentImagesAndVideos(
     rootElement
         .querySelectorAll(`:scope object[role='img'][type='image/svg+xml']`)
         .forEach((object) => {
+            if (object.parentElement.classList.contains("scale-on-hover")) {
+                console.log(
+                    "skipping scaling of image due to parent element having class 'scale-on-hover'",
+                    object,
+                );
+                return;
+            }
+
             const loadListener = () => {
                 object.removeEventListener("load", loadListener);
 
@@ -119,10 +134,10 @@ function scaleDocumentImagesAndVideos(
                     height * slideToDocumentScalingFactor + "px";
             };
             if (object.contentDocument) {
-                console.log("svg " + object.data + " is already loaded");
+                console.log("svg is already loaded", object.data);
                 loadListener();
             } else {
-                console.info("waiting for svg " + object.data + " to load");
+                console.info("waiting for svg to load", object.data);
                 object.addEventListener("load", loadListener);
             }
         });

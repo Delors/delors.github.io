@@ -2382,6 +2382,7 @@ function registerSlideClickedListener() {
             .forEach(processInteractiveElement);
     }
 
+    // TODO make recursive!
     const sp = document.getElementById("ld-slides-pane");
     processNode(sp);
 

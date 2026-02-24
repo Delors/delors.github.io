@@ -256,11 +256,11 @@ ul>li.attention-list {
     font-size: smaller;
     --current-rel-fg-color: color-mix(
         in lch,
-        var(--current-fg-color) 80%,
-        var(--current-bg-color) 20%
+        var(--current-fg-color) 50%,
+        var(--current-bg-color)
     );
     color: var(--current-rel-fg-color);
-    mix-blend-mode: hard-light;
+    /* Does not work well any longer: mix-blend-mode: hard-light; */
 }
 
 .list-with-details > li > *:not(:first-child) {
@@ -1047,7 +1047,11 @@ pre.code {
     }
 
     .keyword {
-        color: var(--keyword-color);
+        /* this is a light-blue which adapts according to the background */
+        color: oklch(
+            from var(--current-rel-bg-color) calc((1 - l) * 0.5 + 0.73) 0.14
+                267.75
+        );
         /* For styling text in SVGs: */
         fill: var(--keyword-color);
         font-weight: 700;
@@ -1072,7 +1076,12 @@ pre.code {
     }
 
     .name {
-        color: var(--name-color);
+        /* https://oklch.com/#0.6467,0.1011,187.28,100 */
+        color: oklch(
+            from var(--current-rel-bg-color) calc((1 - l) * 0.15 + 0.54) 0.08
+                187.28
+        );
+        /*color: var(--name-color);*/
         fill: var(--name-color);
 
         &.attribute {
@@ -1802,7 +1811,13 @@ video {
 
 .light-image {
     color-scheme: only light;
-    background-color: var(--white);
+    /* If the current background color is white, we set the background color
+       to transparent. If the background color is not white, we still use white, 
+       but with some transparency, reducing the transparency the darker the 
+       background gets. Works very well, if the background is either black or 
+       white. */
+    /* Gradual transparency: background-color: oklab(from var(--current-rel-bg-color) 1 0 0 / calc(1 - l)); */
+    background-color: oklab(from var(--current-rel-bg-color) 1 0 0 / clamp(0, round((1 - l) * 1e9), 1)); /* Hack to get either no or full opacity/transparencey. Replace with "if" once Safari and Firefox support it. */
     border-radius: var(--small-border-radius);
     padding: var(--default-container-padding);
 }

@@ -66,9 +66,18 @@ ld-slide {
         border-radius: 0 calc(var(--s-border-radius) * 0.95)
             calc(var(--s-border-radius) * 0.95) 0;
 
-        --current-bg-color: var(--light-gray);
-        background-color: var(--current-bg-color);
-        color: var(--dark-gray);
+        --current-rel-bg-color: color-mix(
+            in lch,
+            var(--current-bg-color) 80%,
+            var(--current-fg-color)
+        );
+        background-color: var(--current-rel-bg-color);
+        --current-rel-fg-color: color-mix(
+            in lch,
+            var(--current-fg-color) 80%,
+            var(--current-bg-color)
+        );
+        color: var(--current-rel-fg-color);
     }
 
     &.new-subsection {
