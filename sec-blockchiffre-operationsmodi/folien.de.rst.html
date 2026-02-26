@@ -42,7 +42,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.3.2</dd>
+<dd class="version">1.3.3</dd>
 </dl>
 <dl class="sources field-list simple">
 <dt>Quelle<span class="colon">:</span></dt>
@@ -83,6 +83,192 @@
 </ul>
 </li>
 </ul>
+</ld-topic>
+<ld-topic class="new-section transition-fade" id="grundlegende-blockchiffren">
+<h2>Grundlegende Blockchiffren</h2>
+</ld-topic>
+<ld-topic id="electronic-codebook">
+<h2>Electronic Codebook<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<object class="light-image align-center" data="opensource-drawings/ecb_encryption.svg" role="img" type="image/svg+xml">
+</object><object class="light-image align-center" data="opensource-drawings/ecb_decryption.svg" role="img" type="image/svg+xml">
+</object><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Bilder von: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">White Timberwolf</a></p>
+</aside>
+</aside>
+</ld-topic>
+<ld-topic id="padding-modi-in-blockchiffren">
+<h2>Padding-Modi in Blockchiffren</h2>
+<ld-deck>
+<ld-card>
+<aside class="admonition remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Bei Blockchiffren (z. B. AES mit 128 Bit = 16 Byte Blockgröße) muss die zu verschlüsselnde Nachricht eine exakte Vielfache der Blockgröße sein. Ist das nicht der Fall, wird Padding verwendet, um die Nachricht auf ein vielfaches der Blockgröße zu bringen.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p class="rubric">PKCS#7</p>
+<p>Füllt den restlichen Block mit Bytes, deren Wert gleich der Anzahl hinzugefügter Bytes ist.</p>
+<aside class="admonition example">
+<p class="admonition-title">Beispiel</p>
+<ul class="simple">
+<li><p>Nachricht mit 13 Byte → 3 Bytes Padding → <span class="docutils literal">03 03 03</span></p></li>
+<li><p>Nachricht mit Blocklänge (z. B. 16 Byte) → ein kompletter zusätzlicher Block mit 16 × <span class="docutils literal">0x10</span></p></li>
+</ul>
+</aside>
+</ld-card><ld-card class="incremental">
+<p class="rubric">ANSI X.923</p>
+<p>Auffüllen mit <span class="docutils literal">0x00</span>, außer dem letzten Byte, das die Anzahl Padding-Bytes angibt.</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">ISO/IEC 7816-4</p>
+<p>Beginnt mit <span class="docutils literal">0x80</span>, gefolgt von Nullen.</p>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Zero Padding</p>
+<p>Füllt mit Nullen (<span class="docutils literal">0x00</span>) auf.</p>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Achtung!</p>
+<p>Funktioniert <em>nur</em>, wenn die Nachricht nie mit <span class="docutils literal">0x00</span> endet, sonst ist Entschlüsselung mehrdeutig!</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Verhalten bei voller Blockgröße - Zusammenfassung</p>
+<p>Angenommen, die Nachricht ist exakt 16 Byte lang (z. B. <cite>&quot;1234567890ABCDEF&quot;</cite>), so ergibt sich:</p>
+<table class="table-data-monospaced font-size-90">
+<thead>
+<tr><th class="head"><p><strong>Padding-Modus</strong></p></th>
+<th class="head"><p><strong>Erweiterte Nachricht (hex)</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>PKCS#7</p></td>
+<td><p>... 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10</p></td>
+</tr>
+<tr><td><p>ANSI X.923</p></td>
+<td><p>... 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 10</p></td>
+</tr>
+<tr><td><p>ISO/IEC 7816-4</p></td>
+<td><p>... 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</p></td>
+</tr>
+<tr><td><p>Zero Padding</p></td>
+<td><p>... 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</p></td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition incremental hint">
+<p class="admonition-title">Hinweis</p>
+<p>Bei allen Modi wird bei Nachrichten mit dem x-fachen der Blocklänge ein <strong>zusätzlicher</strong> Padding-Block hinzugefügt, um bei der Entschlüsselung korrekt erkennen zu können, ob Padding entfernt werden muss.</p>
+</aside>
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="probleme-bei-der-verwendung-der-verschlusselung-im-ecb-modus">
+<h2>Probleme bei der Verwendung der Verschlüsselung im ECB-Modus</h2>
+<ld-deck>
+<ld-card>
+<ld-grid class="default-layout">
+<ld-cell class="width-30" style="align-self:auto;">
+<p><em>ECB-Tux</em> - der Linux-Pinguin verschlüsselt im ECB-Modus:</p>
+<p>Quelle: <a class="reference external" href="https://github.com/robertdavidgraham/ecb-penguin">https://github.com/robertdavidgraham/ecb-penguin</a></p>
+</ld-cell><ld-cell class="width-70" style="align-self:auto;">
+<img alt="opensource-drawings/tux.ecb.from_robert_david_graham.webp" class="align-center" src="opensource-drawings/tux.ecb.from_robert_david_graham.webp" style="height: 800px;" />
+</ld-cell></ld-grid></ld-card><ld-card class="incremental">
+<p>Kriterien und Eigenschaften für die Bewertung und Konstruktion von Blockchiffre-Betriebsarten, die ECB überlegen sind.</p>
+<ul class="simple">
+<li><p>Overhead</p></li>
+<li><p>Fehlerbehebung</p></li>
+<li><p>Fehlerfortpflanzung</p></li>
+<li><p>Streuung</p></li>
+<li><p>Sicherheit</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="cipher-block-chaining">
+<h2>Cipher Block Chaining<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
+<object class="light-image align-center" data="opensource-drawings/cbc_encryption.svg" role="img" type="image/svg+xml">
+</object><object class="light-image incremental align-center" data="opensource-drawings/cbc_decryption.svg" role="img" type="image/svg+xml">
+</object><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p>Bilder von: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">White Timberwolf</a></p>
+</aside>
+</aside>
+</ld-topic>
+<ld-topic class="new-section transition-fade" id="blockchiffren-die-als-stromchiffren-verwendet-werden-konnen">
+<h2>Blockchiffren, die als Stromchiffren verwendet werden können.</h2>
+</ld-topic>
+<ld-topic id="konvertierung-von-blockchiffren-in-stromchiffre">
+<h2>Konvertierung von Blockchiffren in Stromchiffre</h2>
+<aside class="admonition float-right width-40 incremental hint">
+<p class="admonition-title">Hinweis</p>
+<p>Es gibt drei Modi, die es ermöglichen, eine Blockchiffre in eine zeichenorientierte Stromchiffre umzuwandeln:</p>
+<ul class="simple">
+<li><p>Cipher Feedback Mode (CFB)</p></li>
+<li><p>Output Feedback Mode (OFB)</p></li>
+<li><p>Counter Mode (CTR)</p></li>
+</ul>
+<p>D. h., es ist kein Auffüllen (<span class="eng">Padding</span>) erforderlich, wenn die Nachricht nicht ein Vielfaches der Blockgröße ist.</p>
+</aside>
+<p>Bei AES, DES oder jeder anderen Blockchiffre erfolgt die Verschlüsselung immer Block-für-Block mit Blockgrößen von b Bits:</p>
+<ul class="simple">
+<li><p>Im Fall von (3)DES: b = 64</p></li>
+<li><p>Im Fall von AES: b = 128</p></li>
+</ul>
+</ld-topic>
+<ld-topic id="cipher-feedback-mode">
+<h2><em>Cipher Feedback Mode</em><a class="brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></h2>
+<object class="light-image align-center" data="opensource-drawings/cfb_encryption.svg" role="img" type="image/svg+xml">
+</object><object class="light-image incremental align-center" data="opensource-drawings/cfb_decryption.svg" role="img" type="image/svg+xml">
+</object><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
+<p>Bilder von: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">White Timberwolf</a></p>
+</aside>
+</aside>
+</ld-topic>
+<ld-topic id="cipher-feedback-mode-als-stromchiffre">
+<h2><em>Cipher Feedback Mode</em> als Stromchiffre</h2>
+<object class="light-image align-center" data="drawings/operationsmodi/cfb_s_bits.svg" role="img" type="image/svg+xml">
+</object></ld-topic>
+<ld-topic id="output-feedback-mode">
+<h2><em>Output Feedback Mode</em></h2>
+<object class="light-image align-center" data="opensource-drawings/ofb_encryption.svg" role="img" type="image/svg+xml">
+</object><object class="light-image incremental align-center" data="opensource-drawings/ofb_decryption.svg" role="img" type="image/svg+xml">
+</object><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
+<p>Bilder von: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">White Timberwolf</a></p>
+</aside>
+</aside>
+</ld-topic>
+<ld-topic id="counter-mode">
+<h2><em>Counter Mode</em></h2>
+<object class="light-image align-center" data="opensource-drawings/ctr_encryption.svg" role="img" type="image/svg+xml">
+</object><object class="light-image incremental align-center" data="opensource-drawings/ctr_decryption.svg" role="img" type="image/svg+xml">
+</object><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
+<p>Bilder von: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">White Timberwolf</a></p>
+</aside>
+</aside>
+</ld-topic>
+<ld-topic id="counter-mode-vorteile">
+<h2><em>Counter Mode</em> - Vorteile</h2>
+<dl class="incremental-list field-list simple">
+<dt>Hardware-Effizienz<span class="colon">:</span></dt>
+<dd><p>kann von der Parallelisierung der Hardware profitieren</p>
+</dd>
+<dt>Software-Effizienz<span class="colon">:</span></dt>
+<dd><p>leicht parallelisierbar in Software</p>
+</dd>
+<dt>Vorverarbeitung<span class="colon">:</span></dt>
+<dd><p>die Verschlüsselung der Zähler</p>
+</dd>
+<dt>Zufälliger Zugriff<span class="colon">:</span></dt>
+<dd><p>der i-te Block des Klartextes/des Chiffretextes kann im Zufallszugriff verarbeitet werden</p>
+</dd>
+<dt>Nachweisbare Sicherheit<span class="colon">:</span></dt>
+<dd><p>genauso sicher wie die anderen Verfahren</p>
+</dd>
+<dt>Einfachheit<span class="colon">:</span></dt>
+<dd><p>es wird nur der Verschlüsselungsalgorithmus benötigt</p>
+</dd>
+</dl>
 </ld-topic>
 <ld-topic id="betriebsmodi-ubersicht">
 <h2>Betriebsmodi - Übersicht</h2>
@@ -142,199 +328,6 @@ Der vorhergehende Chiffretext wird als Eingabe für den Verschlüsselungsalgorit
 </tbody>
 </table>
 </ld-story></ld-topic>
-<ld-topic class="new-section transition-fade" id="grundlegende-blockchiffren">
-<h2>Grundlegende Blockchiffren</h2>
-</ld-topic>
-<ld-topic id="electronic-codebook">
-<h2>Electronic Codebook<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
-<object class="align-center" data="opensource-drawings/ecb_encryption.svg" role="img" type="image/svg+xml">
-</object><object class="incremental align-center" data="opensource-drawings/ecb_decryption.svg" role="img" type="image/svg+xml">
-</object><aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
-<p>Bilder von: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">White Timberwolf</a></p>
-</aside>
-</aside>
-</ld-topic>
-<ld-topic id="padding-modi-in-blockchiffren">
-<h2>Padding-Modi in Blockchiffren</h2>
-<ld-story>
-<aside class="admonition remark">
-<p class="admonition-title">Bemerkung</p>
-<p>Bei Blockchiffren (z. B. AES mit 128 Bit = 16 Byte Blockgröße) muss die zu verschlüsselnde Nachricht eine exakte Vielfache der Blockgröße sein. Ist das nicht der Fall, wird Padding verwendet, um die Nachricht auf ein vielfaches der Blockgröße zu bringen.</p>
-</aside>
-<p class="rubric">Ausgewählte Modi</p>
-<ul class="incremental-list">
-<li><p>PKCS#7</p>
-<p>Füllt den restlichen Block mit Bytes, deren Wert gleich der Anzahl hinzugefügter Bytes ist.</p>
-<aside class="admonition example">
-<p class="admonition-title">Beispiel</p>
-<ul class="simple">
-<li><p>Nachricht mit 13 Byte → 3 Bytes Padding → <span class="docutils literal">03 03 03</span></p></li>
-<li><p>Nachricht mit Blocklänge (z. B. 16 Byte) → ein kompletter zusätzlicher Block mit 16 × <span class="docutils literal">0x10</span></p></li>
-</ul>
-</aside>
-</li>
-<li><p>ANSI X.923</p>
-<p>Auffüllen mit <span class="docutils literal">0x00</span>, außer dem letzten Byte, das die Anzahl Padding-Bytes angibt.</p>
-</li>
-<li><p>ISO/IEC 7816-4</p>
-<p>Beginnt mit <span class="docutils literal">0x80</span>, gefolgt von Nullen.</p>
-</li>
-<li><p>Zero Padding</p>
-<aside class="admonition attention">
-<p class="admonition-title">Achtung!</p>
-<p>Füllt mit Nullen (<span class="docutils literal">0x00</span>). Funktioniert <strong>nur</strong>, wenn die Nachricht nie mit <cite>0x00</cite> endet, sonst ist Entschlüsselung mehrdeutig!</p>
-</aside>
-</li>
-</ul>
-<div class="incremental compound">
-<p class="rubric">Verhalten bei voller Blockgröße - Zusammenfassung</p>
-<p>Angenommen, die Nachricht ist exakt 16 Byte lang (z. B. <cite>&quot;1234567890ABCDEF&quot;</cite>), so ergibt sich:</p>
-<table>
-<tbody>
-<tr><td><p><strong>Padding-Modus</strong></p></td>
-<td><p><strong>Erweiterte Nachricht (hex)</strong></p></td>
-</tr>
-<tr><td><p>PKCS#7</p></td>
-<td><p><cite>... 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10</cite></p></td>
-</tr>
-<tr><td><p>ANSI X.923</p></td>
-<td><p><cite>... 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 10</cite></p></td>
-</tr>
-<tr><td><p>ISO/IEC 7816-4</p></td>
-<td><p><cite>... 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</cite></p></td>
-</tr>
-<tr><td><p>Zero Padding</p></td>
-<td><p><cite>... 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</cite></p></td>
-</tr>
-</tbody>
-</table>
-<p>Hinweis: Bei allen Modi wird bei Nachrichten mit dem x-fachen der Blocklänge ein <strong>zusätzlicher</strong> Padding-Block hinzugefügt, um bei der Entschlüsselung korrekt erkennen zu können, ob Padding entfernt werden muss.</p>
-</div>
-</ld-story></ld-topic>
-<ld-topic id="probleme-bei-der-verwendung-der-verschlusselung-im-ecb-modus">
-<h2>Probleme bei der Verwendung der Verschlüsselung im ECB-Modus</h2>
-<ld-deck>
-<ld-card>
-<ld-grid class="default-layout">
-<ld-cell class="width-30" style="align-self:auto;">
-<p><em>ECB-Tux</em> - der Linux-Pinguin verschlüsselt im ECB-Modus:</p>
-<p>Quelle: <a class="reference external" href="https://github.com/robertdavidgraham/ecb-penguin">https://github.com/robertdavidgraham/ecb-penguin</a></p>
-</ld-cell><ld-cell class="width-70" style="align-self:auto;">
-<img alt="opensource-drawings/tux.ecb.from_robert_david_graham.webp" class="align-center" src="opensource-drawings/tux.ecb.from_robert_david_graham.webp" style="height: 800px;" />
-</ld-cell></ld-grid></ld-card><ld-card class="incremental">
-<p>Kriterien und Eigenschaften für die Bewertung und Konstruktion von Blockchiffre-Betriebsarten, die ECB überlegen sind.</p>
-<ul class="simple">
-<li><p>Overhead</p></li>
-<li><p>Fehlerbehebung</p></li>
-<li><p>Fehlerfortpflanzung</p></li>
-<li><p>Streuung</p></li>
-<li><p>Sicherheit</p></li>
-</ul>
-</ld-card></ld-deck></ld-topic>
-<ld-topic id="cipher-block-chaining">
-<h2>Cipher Block Chaining<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
-<object class="align-center" data="opensource-drawings/cbc_encryption.svg" role="img" type="image/svg+xml">
-</object><object class="incremental align-center" data="opensource-drawings/cbc_decryption.svg" role="img" type="image/svg+xml">
-</object><aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
-<p>Bilder von: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">White Timberwolf</a></p>
-</aside>
-</aside>
-</ld-topic>
-<ld-topic class="new-section transition-fade" id="blockchiffren-die-als-stromchiffren-verwendet-werden-konnen">
-<h2>Blockchiffren, die als Stromchiffren verwendet werden können.</h2>
-</ld-topic>
-<ld-topic id="konvertierung-von-blockchiffren-in-stromchiffre">
-<h2>Konvertierung von Blockchiffren in Stromchiffre</h2>
-<aside class="admonition float-right width-40 incremental hint">
-<p class="admonition-title">Hinweis</p>
-<p>Es gibt drei Modi, die es ermöglichen, eine Blockchiffre in eine zeichenorientierte Stromchiffre umzuwandeln:</p>
-<ul class="simple">
-<li><p>Cipher Feedback Mode (CFB)</p></li>
-<li><p>Output Feedback Mode (OFB)</p></li>
-<li><p>Counter Mode (CTR)</p></li>
-</ul>
-<p>D. h., es ist kein Auffüllen (<span class="eng">Padding</span>) erforderlich, wenn die Nachricht nicht ein Vielfaches der Blockgröße ist.</p>
-</aside>
-<p>Bei AES, DES oder jeder anderen Blockchiffre erfolgt die Verschlüsselung immer Block-für-Block mit Blockgrößen von b Bits:</p>
-<ul class="simple">
-<li><p>Im Fall von (3)DES: <span class="math">\(b=64\)</span></p></li>
-<li><p>Im Fall von AES: <span class="math">\(b=128\)</span></p></li>
-</ul>
-</ld-topic>
-<ld-topic id="cipher-feedback-mode">
-<h2><em>Cipher Feedback Mode</em><a class="brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></h2>
-<object class="align-center" data="opensource-drawings/cfb_encryption.svg" role="img" type="image/svg+xml">
-</object><object class="incremental align-center" data="opensource-drawings/cfb_decryption.svg" role="img" type="image/svg+xml">
-</object><aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
-<p>Bilder von: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">White Timberwolf</a></p>
-</aside>
-</aside>
-</ld-topic>
-<ld-topic id="cipher-feedback-mode-als-stromchiffre">
-<h2><em>Cipher Feedback Mode</em> als Stromchiffre</h2>
-<object class="align-center" data="drawings/operationsmodi/cfb_s_bits.svg" role="img" type="image/svg+xml">
-</object></ld-topic>
-<ld-topic id="output-feedback-mode">
-<h2><em>Output Feedback Mode</em></h2>
-<object class="align-center" data="opensource-drawings/ofb_encryption.svg" role="img" type="image/svg+xml">
-</object><object class="incremental align-center" data="opensource-drawings/ofb_decryption.svg" role="img" type="image/svg+xml">
-</object><aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-4">4</a><span class="fn-bracket">]</span></span>
-<p>Bilder von: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">White Timberwolf</a></p>
-</aside>
-</aside>
-</ld-topic>
-<ld-topic id="counter-mode">
-<h2><em>Counter Mode</em></h2>
-<object class="align-center" data="opensource-drawings/ctr_encryption.svg" role="img" type="image/svg+xml">
-</object><object class="incremental align-center" data="opensource-drawings/ctr_decryption.svg" role="img" type="image/svg+xml">
-</object><aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-5" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
-<p>Bilder von: <a class="reference external" href="https://commons.wikimedia.org/wiki/User:WhiteTimberwolf">White Timberwolf</a></p>
-</aside>
-</aside>
-</ld-topic>
-<ld-topic id="counter-mode-vorteile">
-<h2><em>Counter Mode</em> - Vorteile</h2>
-<dl class="incremental-list field-list simple">
-<dt>Hardware-Effizienz<span class="colon">:</span></dt>
-<dd><p>kann von der Parallelisierung der Hardware profitieren</p>
-</dd>
-<dt>Software-Effizienz<span class="colon">:</span></dt>
-<dd><p>leicht parallelisierbar in Software</p>
-</dd>
-<dt>Vorverarbeitung<span class="colon">:</span></dt>
-<dd><p>die Verschlüsselung der Zähler</p>
-</dd>
-<dt>Zufälliger Zugriff<span class="colon">:</span></dt>
-<dd><p>der i-te Block des Klartextes/des Chiffretextes kann im Zufallszugriff verarbeitet werden</p>
-</dd>
-<dt>Nachweisbare Sicherheit<span class="colon">:</span></dt>
-<dd><p>genauso sicher wie die anderen Verfahren</p>
-</dd>
-<dt>Einfachheit<span class="colon">:</span></dt>
-<dd><p>es wird nur der Verschlüsselungsalgorithmus benötigt</p>
-</dd>
-</dl>
-</ld-topic>
-<ld-topic id="ruckkopplungseigenschaften-der-betriebsmodi">
-<h2>Rückkopplungseigenschaften<a class="brackets" href="#footnote-4" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>  der Betriebsmodi</h2>
-<object class="align-center" data="drawings/operationsmodi/feedback_characteristics.svg" role="img" type="image/svg+xml">
-</object><aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-6" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
-<p>(<span class="eng">Feedback Characteristics</span>)</p>
-</aside>
-</aside>
-</ld-topic>
 <ld-topic class="new-section transition-fade" id="spezielle-betriebsmodi">
 <h2>Spezielle Betriebsmodi</h2>
 </ld-topic>
@@ -370,7 +363,7 @@ Der vorhergehende Chiffretext wird als Eingabe für den Verschlüsselungsalgorit
 </ld-topic>
 <ld-topic id="tweakable-blockchiffren-grundlegende-struktur">
 <h2><em>Tweakable</em> Blockchiffren - grundlegende Struktur</h2>
-<ld-deck>
+<ld-deck class="light-image">
 <ld-card>
 <object class="align-center" data="drawings/operationsmodi/tweakable_block_cipher-encryption.svg" role="img" type="image/svg+xml">
 </object></ld-card><ld-card class="overlay incremental">
@@ -393,11 +386,11 @@ Der vorhergehende Chiffretext wird als Eingabe für den Verschlüsselungsalgorit
 </ld-story></ld-topic>
 <ld-topic id="xts-aes-operation-auf-einem-block">
 <h2>XTS-AES Operation auf einem Block</h2>
-<object class="align-center" data="drawings/operationsmodi/xts_aes.svg" role="img" type="image/svg+xml">
+<object class="light-image align-center" data="drawings/operationsmodi/xts_aes.svg" role="img" type="image/svg+xml">
 </object><div class="supplemental docutils container">
 <aside class="admonition hint">
 <p class="admonition-title">Hinweis</p>
-<p>Dargestellt ist der Fall, dass alle zu verschlüsselnden (Klartext-)Blöcke eine Größe von 128 Bit haben. Sollt der letzte Block nicht eine Größe von 128 Bit haben, dann kommt &quot;Cipher Text Stealing&quot; zum Einsatz.</p>
+<p>Dargestellt ist der Fall, dass alle zu verschlüsselnden (Klartext-)Blöcke eine Größe von 128 Bit haben. Sollt der letzte Block nicht eine Größe von 128 Bit haben, dann kommt „Cipher Text Stealing“ zum Einsatz.</p>
 </aside>
 <ul class="simple">
 <li><p>Schlüssel: es gilt: <span class="math">\(Schlüssel = Schlüssel_1\, ||\, Schlüssel_2\)</span></p></li>
@@ -466,170 +459,170 @@ MTAwMDAw:CWhorJMyYfZfCLp2vb0GodhoV4+U5bWycJ2rw/xIq+o=:rfr3vRnbmUEb10PU:+d9EWPoTO
 </ld-topic>
 <ld-topic class="exercises" id="ubung-2">
 <h2>Übung</h2>
-<ld-story>
+<ld-scrollable>
 <div class="ld-exercise" data-exercise-id="8" data-exercise-title="8 - OFB-Modus" id="ld-exercise-8">
 <p class="ld-exercise-title rubric">OFB-Modus</p>
 <p>Verwenden Sie den OFB-Modus in Kombination mit einer Caesar-Chiffre, bei der die <em>Blockgröße</em> ein Zeichen sei.</p>
-<p>Der Schlüssel ist die Anzahl der Zeichen, um die Sie ein Zeichen verschieben wollen - wie zuvor. Der IV ist ein Zeichen. Damit Sie ein XOR durchführen können, ordnen wir jedem Zeichen einen Wert zu und erweitern das Alphabet um die Ziffern 1 bis 3, &quot;!&quot;, &quot;?&quot; und das &quot;_&quot;. Auf diese Weise ist es immer möglich, ein sinnvolles Zeichen auszugeben.</p>
-<div class="incremental compound">
+<p>Der Schlüssel ist die Anzahl der Zeichen, um die Sie ein Zeichen verschieben wollen - wie zuvor. Der IV ist ein Zeichen. Damit Sie ein XOR durchführen können, ordnen wir jedem Zeichen einen Wert zu und erweitern das Alphabet um die folgenden 6 Zeichen: { 1, 2, 3, !, ?, _ }. Auf diese Weise ist es immer möglich, ein sinnvolles Zeichen auszugeben.</p>
+<div class="compound">
 <p>Daraus ergibt sich die folgende Kodierung:</p>
 <ld-grid class="default-layout">
 <ld-cell class="width-30" style="align-self:auto;">
-<table>
+<table class="table-data-monospaced">
 <thead>
-<tr><th class="head"><p>Idx.</p></th>
+<tr><th class="head stub"><p>Idx.</p></th>
 <th class="head"><p>Zeichen</p></th>
 <th class="head"><p>Binär</p></th>
 </tr>
 </thead>
 <tbody>
-<tr><td><p>0</p></td>
+<tr><th class="stub"><p>0</p></th>
 <td><p>A</p></td>
 <td><p>00000</p></td>
 </tr>
-<tr><td><p>1</p></td>
+<tr><th class="stub"><p>1</p></th>
 <td><p>B</p></td>
 <td><p>00001</p></td>
 </tr>
-<tr><td><p>2</p></td>
+<tr><th class="stub"><p>2</p></th>
 <td><p>C</p></td>
 <td><p>00010</p></td>
 </tr>
-<tr><td><p>3</p></td>
+<tr><th class="stub"><p>3</p></th>
 <td><p>D</p></td>
 <td><p>00011</p></td>
 </tr>
-<tr><td><p>4</p></td>
+<tr><th class="stub"><p>4</p></th>
 <td><p>E</p></td>
 <td><p>00100</p></td>
 </tr>
-<tr><td><p>5</p></td>
+<tr><th class="stub"><p>5</p></th>
 <td><p>F</p></td>
 <td><p>00101</p></td>
 </tr>
-<tr><td><p>6</p></td>
+<tr><th class="stub"><p>6</p></th>
 <td><p>G</p></td>
 <td><p>00110</p></td>
 </tr>
-<tr><td><p>7</p></td>
+<tr><th class="stub"><p>7</p></th>
 <td><p>H</p></td>
 <td><p>00111</p></td>
 </tr>
-<tr><td><p>8</p></td>
+<tr><th class="stub"><p>8</p></th>
 <td><p>I</p></td>
 <td><p>01000</p></td>
 </tr>
-<tr><td><p>9</p></td>
+<tr><th class="stub"><p>9</p></th>
 <td><p>J</p></td>
 <td><p>01001</p></td>
 </tr>
-<tr><td><p>10</p></td>
+<tr><th class="stub"><p>10</p></th>
 <td><p>K</p></td>
 <td><p>01010</p></td>
 </tr>
 </tbody>
 </table>
 </ld-cell><ld-cell class="width-30" style="align-self:auto;">
-<table>
+<table class="table-data-monospaced">
 <thead>
-<tr><th class="head"><p>Idx.</p></th>
+<tr><th class="head stub"><p>Idx.</p></th>
 <th class="head"><p>Zeichen</p></th>
 <th class="head"><p>Binär</p></th>
 </tr>
 </thead>
 <tbody>
-<tr><td><p>11</p></td>
+<tr><th class="stub"><p>11</p></th>
 <td><p>L</p></td>
 <td><p>01011</p></td>
 </tr>
-<tr><td><p>12</p></td>
+<tr><th class="stub"><p>12</p></th>
 <td><p>M</p></td>
 <td><p>01100</p></td>
 </tr>
-<tr><td><p>13</p></td>
+<tr><th class="stub"><p>13</p></th>
 <td><p>N</p></td>
 <td><p>01101</p></td>
 </tr>
-<tr><td><p>14</p></td>
+<tr><th class="stub"><p>14</p></th>
 <td><p>O</p></td>
 <td><p>01110</p></td>
 </tr>
-<tr><td><p>15</p></td>
+<tr><th class="stub"><p>15</p></th>
 <td><p>P</p></td>
 <td><p>01111</p></td>
 </tr>
-<tr><td><p>16</p></td>
+<tr><th class="stub"><p>16</p></th>
 <td><p>Q</p></td>
 <td><p>10000</p></td>
 </tr>
-<tr><td><p>17</p></td>
+<tr><th class="stub"><p>17</p></th>
 <td><p>R</p></td>
 <td><p>10001</p></td>
 </tr>
-<tr><td><p>18</p></td>
+<tr><th class="stub"><p>18</p></th>
 <td><p>S</p></td>
 <td><p>10010</p></td>
 </tr>
-<tr><td><p>19</p></td>
+<tr><th class="stub"><p>19</p></th>
 <td><p>T</p></td>
 <td><p>10011</p></td>
 </tr>
-<tr><td><p>20</p></td>
+<tr><th class="stub"><p>20</p></th>
 <td><p>U</p></td>
 <td><p>10100</p></td>
 </tr>
-<tr><td><p>21</p></td>
+<tr><th class="stub"><p>21</p></th>
 <td><p>V</p></td>
 <td><p>10101</p></td>
 </tr>
 </tbody>
 </table>
 </ld-cell><ld-cell class="width-30" style="align-self:auto;">
-<table>
+<table class="table-data-monospaced">
 <thead>
-<tr><th class="head"><p>Idx.</p></th>
+<tr><th class="head stub"><p>Idx.</p></th>
 <th class="head"><p>Zeichen</p></th>
 <th class="head"><p>Binär</p></th>
 </tr>
 </thead>
 <tbody>
-<tr><td><p>22</p></td>
+<tr><th class="stub"><p>22</p></th>
 <td><p>W</p></td>
 <td><p>10110</p></td>
 </tr>
-<tr><td><p>23</p></td>
+<tr><th class="stub"><p>23</p></th>
 <td><p>X</p></td>
 <td><p>10111</p></td>
 </tr>
-<tr><td><p>24</p></td>
+<tr><th class="stub"><p>24</p></th>
 <td><p>Y</p></td>
 <td><p>11000</p></td>
 </tr>
-<tr><td><p>25</p></td>
+<tr><th class="stub"><p>25</p></th>
 <td><p>Z</p></td>
 <td><p>11001</p></td>
 </tr>
-<tr><td><p>26</p></td>
+<tr><th class="stub"><p>26</p></th>
 <td><p>1</p></td>
 <td><p>11010</p></td>
 </tr>
-<tr><td><p>27</p></td>
+<tr><th class="stub"><p>27</p></th>
 <td><p>2</p></td>
 <td><p>11011</p></td>
 </tr>
-<tr><td><p>28</p></td>
+<tr><th class="stub"><p>28</p></th>
 <td><p>3</p></td>
 <td><p>11100</p></td>
 </tr>
-<tr><td><p>29</p></td>
+<tr><th class="stub"><p>29</p></th>
 <td><p>!</p></td>
 <td><p>11101</p></td>
 </tr>
-<tr><td><p>30</p></td>
+<tr><th class="stub"><p>30</p></th>
 <td><p>?</p></td>
 <td><p>11110</p></td>
 </tr>
-<tr><td><p>31</p></td>
+<tr><th class="stub"><p>31</p></th>
 <td><p>_</p></td>
 <td><p>11111</p></td>
 </tr>
@@ -638,13 +631,13 @@ MTAwMDAw:CWhorJMyYfZfCLp2vb0GodhoV4+U5bWycJ2rw/xIq+o=:rfr3vRnbmUEb10PU:+d9EWPoTO
 </ld-cell></ld-grid><ul class="simple">
 <li><p>Verschlüsseln Sie nun die Nachricht &quot;hello&quot; (k = 3 und IV = !) mit dieser Chiffre.</p></li>
 <li><p>Entschlüsseln Sie nun die Nachricht &quot;OCEBL_RLI1MELOA&quot;. Der IV ist A und der Schlüssel ist 3.</p></li>
+<li><p>Welchen Effekt hat die Anwendung des OFB-Modus auf die Nachrichten?</p></li>
 </ul>
-<p>Welchen Effekt hat die Anwendung des OFB-Modus auf die Nachrichten?</p>
 </div>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:yc5vYCJ3wStlBXoQ9onFWWZ+KsSm3Krtz/R4cIMer6g=:sA9IIw2N5Z21m7Eh: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</div>
 </div>
-</ld-story></ld-topic>
+</ld-scrollable></ld-topic>
 </template>
 </body>
 </html>

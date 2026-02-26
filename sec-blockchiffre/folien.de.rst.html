@@ -42,7 +42,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.1.5</dd>
+<dd class="version">1.1.7</dd>
 </dl>
 <dl class="sources field-list simple">
 <dt>Quelle<span class="colon">:</span></dt>
@@ -74,8 +74,11 @@
 </li>
 </ul>
 <ld-story>
-<ul class="incremental-list">
-<li><p>Im Idealfall wird (würde) ein One-Time-Pad verwendet werden. Der Schlüsselstrom wäre genauso lang wie der Bitstrom des Klartextes.</p>
+<aside class="admonition incremental">
+<p class="admonition-title">Variante: One-Time-Pad</p>
+<ul class="simple">
+<li><p>Im Idealfall würde ein One-Time-Pad verwendet werden. Der Schlüsselstrom wäre genauso lang wie der Bitstrom des Klartextes.</p></li>
+</ul>
 <div class="incremental docutils container">
 <ul class="simple">
 <li><p>Wenn der kryptografische Schlüsselstrom zufällig ist, kann diese Chiffre auf keine andere Weise als durch die Beschaffung des Schlüsselstroms geknackt werden.</p></li>
@@ -88,11 +91,20 @@
 <pre class="code python copy-to-clipboard literal-block"><code><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">vernam</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">)</span> <span class="operator">-&gt;</span> <span class="name builtin">bytes</span><span class="punctuation">:</span><span class="whitespace">
 </span>    <span class="keyword">return</span> <span class="name builtin">bytes</span><span class="punctuation">([</span><span class="name">p</span> <span class="operator">^</span> <span class="name">k</span> <span class="keyword">for</span> <span class="name">p</span><span class="punctuation">,</span> <span class="name">k</span> <span class="operator word">in</span> <span class="name builtin">zip</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">)])</span></code></pre>
 </div>
-</li>
+</aside>
+<aside class="admonition incremental">
+<p class="admonition-title">Variante: Bitstromgenerator</p>
+<ul>
 <li><p>Aus praktischen Gründen muss der Bitstromgenerator als algorithmisches Verfahren implementiert werden, damit der kryptografische Bitstrom von beiden Benutzern erzeugt werden kann.</p></li>
 <li><p>Es muss rechnerisch praktisch unmöglich sein, zukünftige Teile des Bitstroms auf der Grundlage früherer Teile des Bitstroms vorherzusagen.</p></li>
 <li><p>Die beiden Benutzer müssen nur den erzeugenden Schlüssel sicher miteinander teilen, damit jeder den Schlüsselstrom erzeugen kann.</p></li>
+<li><aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Im Folgenden meinen wir mit <em>Stromchiffre</em> immer die Variante mit einem Bitstromgenerator.</p>
+</aside>
+</li>
 </ul>
+</aside>
 </ld-story></ld-topic>
 <ld-topic id="blockchiffre">
 <h2>Blockchiffre</h2>
@@ -100,8 +112,14 @@
 <li><p>Ein Klartextblock wird als Ganzes behandelt und verwendet, um einen gleich langen Chiffretextblock zu erzeugen.</p></li>
 <li><p>In der Regel wird eine Blockgröße von 64 (8 Byte) oder 128 Bit (16 Byte) verwendet.</p></li>
 <li><p>Wie bei einer Stromchiffre <em>teilen sich die beiden Benutzer einen symmetrischen Chiffrierschlüssel</em>.</p></li>
-<li><p>Viele netzbasierte Anwendungen, die auf symmetrische Verschlüsselung setzen, verwenden Blockchiffren.</p></li>
+<li><p>Viele netzbasierte als auch klassische Anwendungen (z. B. Verschlüsselung von Dateien oder ganzen Partitionen), die auf symmetrische Verschlüsselung setzen, verwenden Blockchiffren.</p></li>
 </ul>
+<div class="supplemental docutils container">
+<aside class="admonition important">
+<p class="admonition-title">Wichtig</p>
+<p>Im Rahmen der Verschlüsselung von Daten, die über ein Netzwerk übertragen werden, kommt es häufig sowohl zum Einsatz von asymmetrischer Verschlüsselung als auch von symmetrischer Verschlüsselung, wobei die symmetrische Verschlüsselung für die eigentliche Kommunikation verwendet wird und die asymmetrische Verschlüsselung nur während des Verbindungsaufbaus – zum Aushandeln eines gemeinsamen Schlüssels für die symmetrische Verschlüsselung – zum Einsatz kommt.</p>
+</aside>
+</div>
 </ld-topic>
 <ld-topic id="stromchiffre-vs-blockchiffre">
 <h2>Stromchiffre vs. Blockchiffre</h2>
@@ -112,7 +130,7 @@
 <h2>Allgemeine n-Bit-n-Bit-Blocksubstitution (n = 4)</h2>
 <object class="light-image align-center" data="drawings/chiffren/4-bit_block_substitution.svg" role="img" type="image/svg+xml">
 </object><div class="supplemental docutils container">
-<p>Mittels 4 Bit können <span class="math">\(16\)</span> verschiedene Werte dargestellt werden (<span class="math">\([0,15]\)</span>). Je nach Wert der Eingabe wird ein anderer Wert ausgegeben. Die Zuordnung ist der Grafik zu entnehmen.</p>
+<p>Mittels 4 Bit können 16 verschiedene Werte dargestellt werden ([0,15]). Je nach Wert der Eingabe wird ein anderer Wert ausgegeben. Die Zuordnung ist der Grafik zu entnehmen.</p>
 </div>
 </ld-topic>
 <ld-topic id="verschlusselungs-und-entschlusselungstabelle-fur-eine-substitutions-chiffre">
@@ -208,9 +226,14 @@
 </aside></ld-topic>
 <ld-topic id="feistel-chiffre-hintergrund">
 <h2>Feistel-Chiffre - Hintergrund</h2>
-<ul class="simple">
+<ul>
 <li><p>Hierbei handelt es sich um eine praktische Anwendung eines Vorschlags von Claude Shannon zur Entwicklung einer Chiffre, bei der sich <em>Konfusions- und Diffusionsfunktionen</em> abwechseln.</p></li>
-<li><p>Dieser Aufbau wird von vielen bedeutenden (Twofish, Blowfish, Serpent, Mars) - im Einsatz befindlichen - symmetrischen Blockchiffren verwendet.</p></li>
+<li><p>Dieser Aufbau wird von vielen bedeutenden (Twofish, Blowfish, Mars) symmetrischen Blockchiffren – die in spezifischen Anwendungsfällen noch anzutreffen sind – verwendet.</p></li>
+<li><p>Mars und Twofish wurden Finalisten für die Auswahl des Advanced Encryption Standard (AES) ausgewählt und vom NIST als hoch-sicher eingestuft.</p>
+<div class="supplemental docutils container">
+<p>Der ausgewählte Algorithmus für AES ist jedoch Rijndael. Dieser wurde „nur“ als hinreichend sicher eingestuft.</p>
+</div>
+</li>
 </ul>
 <div class="incremental docutils container">
 <p><strong>Diffusion und Konfusion</strong></p>
@@ -614,101 +637,101 @@
 </ld-topic>
 <ld-topic class="vertical-title" id="des-beispiel">
 <h2>DES: Beispiel</h2>
-<table class="align-center compact monospaced highlight-row-on-hover highlight-identical-cells-on-hover font-size-85">
+<table class="align-center compact table-data-monospaced highlight-row-on-hover highlight-identical-cells-on-hover font-size-85">
 <thead>
-<tr><th class="head stub"><p>Round</p></th>
-<th class="head"><p><span class="math">\(Ki\)</span></p></th>
-<th class="head"><p><span class="math">\(Li\)</span></p></th>
-<th class="head"><p><span class="math">\(Ri\)</span></p></th>
+<tr><th class="head"><p>Round</p></th>
+<th class="head"><p>K<sub>i</sub></p></th>
+<th class="head"><p>L<sub>i</sub></p></th>
+<th class="head"><p>R<sub>i</sub></p></th>
 </tr>
 </thead>
 <tbody>
-<tr><th class="stub"><p>IP</p></th>
+<tr><td><p>IP</p></td>
 <td></td>
 <td><p>5a005a00</p></td>
 <td><p>3cf03c0f</p></td>
 </tr>
-<tr><th class="stub"><p>1</p></th>
+<tr><td><p>1</p></td>
 <td><p>1e030f03080d2930</p></td>
 <td><p>3cf03c0f</p></td>
 <td><p>bad22845</p></td>
 </tr>
-<tr><th class="stub"><p>2</p></th>
+<tr><td><p>2</p></td>
 <td><p>0a31293432242318</p></td>
 <td><p>bad22845</p></td>
 <td><p>99e9b723</p></td>
 </tr>
-<tr><th class="stub"><p>3</p></th>
+<tr><td><p>3</p></td>
 <td><p>23072318201d0c1d</p></td>
 <td><p>99e9b723</p></td>
 <td><p>Obae3b9e</p></td>
 </tr>
-<tr><th class="stub"><p>4</p></th>
+<tr><td><p>4</p></td>
 <td><p>05261d3824311a20</p></td>
 <td><p>Obae3b9e</p></td>
 <td><p>42415649</p></td>
 </tr>
-<tr><th class="stub"><p>5</p></th>
+<tr><td><p>5</p></td>
 <td><p>3325340136002025</p></td>
 <td><p>42415649</p></td>
 <td><p>18b3fa41</p></td>
 </tr>
-<tr><th class="stub"><p>6</p></th>
+<tr><td><p>6</p></td>
 <td><p>123a2d0d04262a1c</p></td>
 <td><p>18b3fa41</p></td>
 <td><p>9616fe23</p></td>
 </tr>
-<tr><th class="stub"><p>7</p></th>
+<tr><td><p>7</p></td>
 <td><p>021f120b1c130611</p></td>
 <td><p>9616fe23</p></td>
 <td><p>67117cf2</p></td>
 </tr>
-<tr><th class="stub"><p>8</p></th>
+<tr><td><p>8</p></td>
 <td><p>1c10372a2832002b</p></td>
 <td><p>67117cf2</p></td>
 <td><p>c11bfc09</p></td>
 </tr>
-<tr><th class="stub"><p>9</p></th>
+<tr><td><p>9</p></td>
 <td><p>04292a380c341103</p></td>
 <td><p>c11bfc09</p></td>
 <td><p>887fbc6c</p></td>
 </tr>
-<tr><th class="stub"><p>10</p></th>
+<tr><td><p>10</p></td>
 <td><p>2703212607280403</p></td>
 <td><p>887fbc6c</p></td>
 <td><p>60017e8b</p></td>
 </tr>
-<tr><th class="stub"><p>11</p></th>
+<tr><td><p>11</p></td>
 <td><p>2826390c31261504</p></td>
 <td><p>60017e8b</p></td>
 <td><p>f596506e</p></td>
 </tr>
-<tr><th class="stub"><p>12</p></th>
+<tr><td><p>12</p></td>
 <td><p>12071c241a0a0108</p></td>
 <td><p>f596506e</p></td>
 <td><p>738538b8</p></td>
 </tr>
-<tr><th class="stub"><p>13</p></th>
+<tr><td><p>13</p></td>
 <td><p>300935393c0d100b</p></td>
 <td><p>738538b8</p></td>
 <td><p>c6a62c4e</p></td>
 </tr>
-<tr><th class="stub"><p>14</p></th>
+<tr><td><p>14</p></td>
 <td><p>311e09231321182a</p></td>
 <td><p>c6a62c4e</p></td>
 <td><p>56b0bd75</p></td>
 </tr>
-<tr><th class="stub"><p>15</p></th>
+<tr><td><p>15</p></td>
 <td><p>283d3e0227072528</p></td>
 <td><p>56b0bd75</p></td>
 <td><p>75e8fd8f</p></td>
 </tr>
-<tr><th class="stub"><p>16</p></th>
+<tr><td><p>16</p></td>
 <td><p>2921080b13143025</p></td>
 <td><p>75e8fd8f</p></td>
 <td><p>25896490</p></td>
 </tr>
-<tr><th class="stub"><p>IP-1</p></th>
+<tr><td><p>IP-1</p></td>
 <td></td>
 <td><p>da02ce3a</p></td>
 <td><p>89ecac3b</p></td>
@@ -717,8 +740,8 @@
 </table>
 <div class="supplemental docutils container">
 <p>DES-Unterschlüssel werden als acht 6-Bit-Werte im Hexadezimalformat angezeigt.</p>
-<p>Der Höchstwert für einen Wert von <span class="math">\(k_i\)</span> ist somit <span class="math">\(2^6-1=63=0x3F\)</span>.</p>
-<p class="rubric">Beispiel - <span class="math">\(k_1\)</span></p>
+<p>Der Höchstwert für einen Werte eines Unterschlüssel von K<sub>i</sub> ist somit 2⁶-1=63=0x3F.</p>
+<p class="rubric">Beispiel - K<sub>1</sub></p>
 <table class="align-center monospaced highlight-cell-on-hover">
 <thead>
 <tr><th class="head"><p>Index</p></th>
@@ -749,8 +772,11 @@
 </ld-topic>
 <ld-topic id="lawineneffekt-in-des">
 <h2>Lawineneffekt in DES</h2>
-<p>Kleine Änderung im Klartext (erster Wert +1)</p>
-<table class="font-size-75 monospaced compact highlight-row-on-hover" style="width: 100%;">
+<ld-deck>
+<ld-card>
+<p class="rubric">Kleine Änderung im Klartext</p>
+<p>Beim Start ist der rechte Klartextblock, verglichen mit dem linken Klartextblock nur um ein Bit unterschiedlich. Änderung des ersten Wertes: <span class="monospaced">0</span> ➟ <span class="monospaced">1</span>.</p>
+<table class="font-size-75 table-data-monospaced compact highlight-row-on-hover" style="width: 100%;">
 <thead>
 <tr><th class="head"><p>Round</p></th>
 <th class="head"></th>
@@ -854,11 +880,10 @@ cf402c682b2cefbc</p></td>
 </tr>
 </tbody>
 </table>
-</ld-topic>
-<ld-topic id="lawineneffekt-in-des-1">
-<h2>Lawineneffekt in DES</h2>
-<p>Kleine Änderung des Schlüssels: <span class="monospaced">0f1571c947d9e859</span> ➟ <span class="monospaced">1f1571c947d9e859</span></p>
-<table class="font-size-75 monospaced compact highlight-row-on-hover" style="width: 100%;">
+</ld-card><ld-card class="incremental">
+<p class="rubric">Kleine Änderung des Schlüssels</p>
+<p>Beim Start sind beide Klartextblöcke gleich. Es wird jedoch der Schlüssel um 1 Bit geändert: <span class="monospaced">0f1571c947d9e859</span> ➟ <span class="monospaced">1f1571c947d9e859</span></p>
+<table class="font-size-75 table-data-monospaced compact highlight-row-on-hover" style="width: 100%;">
 <thead>
 <tr><th class="head"><p>Round</p></th>
 <th class="head"></th>
@@ -962,7 +987,7 @@ ee92b50606b6260b</p></td>
 </tr>
 </tbody>
 </table>
-</ld-topic>
+</ld-card></ld-deck></ld-topic>
 <ld-topic id="erschopfende-schlusselsuche">
 <h2>Erschöpfende Schlüsselsuche</h2>
 <div class="compound">
@@ -1044,14 +1069,14 @@ Schlüssel</p></th>
 </ul>
 </ld-topic>
 <ld-topic id="entwurfsprinzipien-fur-blockchiffren-funktion-f">
-<h2>Entwurfsprinzipien für Blockchiffren - Funktion <span class="docutils literal">F</span></h2>
+<h2>Entwurfsprinzipien für Blockchiffren - Funktion F</h2>
 <ul class="incremental-list simple">
-<li><p>Das Herzstück einer Feistel-Blockchiffre ist die Funktion <span class="docutils literal">F</span>.</p></li>
-<li><p>Je nichtlinearer <span class="docutils literal">F</span> ist, desto schwieriger wird jede Art von Kryptoanalyse sein.</p></li>
+<li><p>Das Herzstück einer Feistel-Blockchiffre ist die Funktion F.</p></li>
+<li><p>Je nichtlinearer F ist, desto schwieriger wird jede Art von Kryptoanalyse sein.</p></li>
 <li><p>Der Algorithmus sollte einen großen Lawineneffekt (<span class="eng">Avalanche-Property</span>) haben.</p></li>
 </ul>
-<aside class="admonition definition incremental"><p class="admonition-title"><span>Definition: Strict Avalanche Criterion (SAC)</span></p><p>Besagt, dass sich jedes Ausgangsbit <span class="docutils literal">j</span> einer S-Box mit der Wahrscheinlichkeit 1/2 ändern sollte, wenn ein einzelnes Eingangsbit <span class="docutils literal">i</span> invertiert wird und dies für alle Paare <span class="docutils literal">i</span>, <span class="docutils literal">j</span> gelten muss.</p>
-</aside><aside class="admonition definition incremental"><p class="admonition-title"><span>Definition: Bit Independence Criterion (BIC)</span></p><p>Besagt, dass sich die Ausgangsbits <span class="docutils literal">j</span> und <span class="docutils literal">k</span> unabhängig voneinander ändern sollten, wenn ein einzelnes Eingangsbit <span class="docutils literal">i</span> invertiert wird und dies für alle <span class="docutils literal">i</span>, <span class="docutils literal">j</span> und <span class="docutils literal">k</span> gelten muss.</p>
+<aside class="admonition definition incremental"><p class="admonition-title"><span>Definition: Strict Avalanche Criterion (SAC)</span></p><p>Besagt, dass sich jedes Ausgangsbit j einer S-Box mit der Wahrscheinlichkeit 1/2 ändern sollte, wenn ein einzelnes Eingangsbit i invertiert wird und dies für alle Paare i, j gelten muss.</p>
+</aside><aside class="admonition definition incremental"><p class="admonition-title"><span>Definition: Bit Independence Criterion (BIC)</span></p><p>Besagt, dass sich die Ausgangsbits j und k unabhängig voneinander ändern sollten, wenn ein einzelnes Eingangsbit i invertiert wird und dies für alle i, j und k gelten muss.</p>
 </aside><ul class="incremental simple">
 <li><p>Das Einhalten der SAC- und BIC-Kriterien scheint die Wirksamkeit der Verwirrungsfunktion zu stärken.</p></li>
 </ul>
@@ -1078,9 +1103,9 @@ Schlüssel</p></th>
 <aside class="admonition observation">
 <p class="admonition-title">Beobachtung</p>
 <p><span class="math">\(E(K_2,E(K_1,P)) = E(K_3,P)\)</span> ist nicht gültig.</p>
-<p>D. h. die zweifache Anwendung von DES führt zu einer Abbildung, die nicht äquivalent zu einer einfachen DES-Verschlüsselung ist.</p>
+<p>D. h. die zweifache Anwendung von DES führt zu einer Abbildung, die im Allgemeinen nicht äquivalent zu einer einfachen DES-Verschlüsselung ist.</p>
 <div class="supplemental docutils container">
-<p>Es gilt, dass es keinen Schlüssel <span class="math">\(DES_{K^{1-2}} = DES_{K^1} \circ DES_{K^2}\)</span> gibt. Weiterhin gilt, dass die Teilmenge der durch DES erzeugbaren Permutationen extrem klein ist und nicht abgeschlossen unter Komposition.</p>
+<p>D. h. für ein Paar <span class="math">\(K_1, K_2\)</span> existiert nicht notwendigerweise ein <span class="math">\(K\)</span>, sodass <span class="math">\(DES_{K} = DES_{K_1} \circ DES_{K_2}\)</span> gilt. Die Teilmenge der durch DES erzeugbaren Permutationen ist verschwindend klein (aufgrund der Schlüsselgröße nur <span class="math">\(2^{56}\)</span> von <span class="math">\(64!\)</span> möglichen) und nicht abgeschlossen unter Komposition.</p>
 </div>
 </aside>
 </ld-card><ld-card class="incremental">
@@ -1101,7 +1126,7 @@ Schlüssel</p></th>
 <aside class="admonition warning">
 <p class="admonition-title">Warnung</p>
 <p>Die zweifache Anwendung einer Blockchiffre ist nicht sinnvoll!</p>
-<p>Das Ergebnis ist, dass ein bekannter Klartextangriff gegen Doppel-DES mit einem Aufwand in der Größenordnung von <span class="math">\(2^{56}\)</span> <em>im Durchschnitt</em> erfolgreich ist, verglichen mit <em>durchschnittlich</em> <span class="math">\(2^{55}\)</span> für einen einfachen DES.</p>
+<p>Das Ergebnis ist, dass ein bekannter Klartextangriff gegen Doppel-DES mit einem Aufwand in der Größenordnung von 2⁵⁶ <em>im Durchschnitt</em> erfolgreich ist, verglichen mit <em>durchschnittlich</em> 2⁵⁵ für einen einfachen DES.</p>
 </aside>
 </ld-card></ld-deck></ld-topic>
 <ld-topic id="dreifache-verschlusselung">
