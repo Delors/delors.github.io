@@ -50,11 +50,6 @@ a:hover {
     text-decoration: underline;
 }
 
-blockquote {
-    --current-bg-color: var(--blockquote-bg-color);
-    --current-rel-bg-color: var(--current-bg-color);
-    background-color: var(--current-rel-bg-color);
-}
 
 table:has(+ *),
 object:has(+ *),
@@ -895,11 +890,6 @@ div.line-block div.line-block {
     margin-left: 0;
 }
 
-blockquote {
-    border: 1px solid var(--light-gray);
-    border-radius: var(--small-border-radius);
-}
-
 /*
 
     Styling Code
@@ -1457,7 +1447,7 @@ table {
             color: var(--current-rel-fg-color);
         }
 
-        tr.\:hover-related { 
+        tr.\:hover-related {
             --current-rel-bg-color: light-dark(
                 var(--current-fg-color),
                 var(--current-bg-color)
@@ -1812,7 +1802,10 @@ video {
     /* If the current background color is white, we set the background color
        to transparent. If the background color is not white, we use white. */
     /* Gradual transparency: background-color: oklab(from var(--current-rel-bg-color) 1 0 0 / calc(1 - l)); */
-    --current-bg-color: oklab(from var(--current-rel-bg-color) 1 0 0 / clamp(0, round((1 - l) * 1e9), 1)); /* Hack to get either no or full opacity/transparencey. Replace with "if" once Safari and Firefox support it. */
+    --current-bg-color: oklab(
+        from var(--current-rel-bg-color) 1 0 0 /
+            clamp(0, round((1 - l) * 1e9), 1)
+    ); /* Hack to get either no or full opacity/transparencey. Replace with "if" once Safari and Firefox support it. */
     background-color: var(--current-bg-color);
     border-radius: var(--small-border-radius);
     padding: var(--default-container-padding);

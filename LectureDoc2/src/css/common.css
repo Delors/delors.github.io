@@ -157,27 +157,65 @@ summary {
 
 /* Block Quotes and Topics */
 blockquote {
-    padding: 0.149em 0.39em;
-    line-height: 1.35em;
+    position: relative;
+    border-radius: var(--small-border-radius);
+    padding: 0.15em 0.25em;
+
+    line-height: 1.3em;
     font-variant-ligatures: common-ligatures no-discretionary-ligatures
         contextual;
-    font-weight: 300;
+    font-weight: 250;
 
-    /* TODO add this only on slides */
-    text-shadow: 1px 1px var(--very-very-light-gray);
+    background-color: color-mix(
+        in lch,
+        var(--current-fg-color) 5%,
+        transparent
+    );
+
+    &.epigraph {
+        padding: 0.25em 0.15em 0.25em var(--default-container-padding);
+
+        &::before {
+            position: absolute;
+            top: 0;
+            width: 0.25em;
+            left: 0;
+            content: " ";
+            height: 100%;
+            background-color: var(--dark-red);
+            border-radius: 0.5em 0 0 0.5em;
+        }
+        &::after {
+            display: block;
+            position: absolute;
+            top: 99%;
+            right: 0;
+            content: "”";
+            font-size: 9em;
+            font-family: "Times New Roman", Times, serif;
+            font-weight: 600;
+            height: 100%;
+            z-index: -1;
+            color: color-mix(
+                in lch,
+                var(--current-rel-fg-color) 15%,
+                transparent
+            );
+        }
+    }
 
     strong {
-        font-weight: 500;
+        font-weight: 400;
     }
-}
 
-blockquote p.attribution,
-.topic p.attribution {
-    text-align: right;
-    font-size: smaller;
-    margin-left: 15%;
-    font-weight: bolder;
-    color: var(--dark-gray);
+    p.attribution,
+    .topic p.attribution {
+        text-align: right;
+        font-size: smaller;
+        margin-left: 15%;
+        font-weight: bolder;
+        color: var(--dark-gray);
+    }
 }
 
 /* numbered tables (counter defined in div.document) */
