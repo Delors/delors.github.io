@@ -110,7 +110,7 @@ ld-slide {
                 calc(var(--s-lr-padding) * -1) var(--s-tb-padding)
                 calc(var(--s-lr-padding) * -1);
             padding: var(--s-padding);
-            background: var(--light-gray);
+            background: light-dark(var(--light-gray), var(--dark-gray));
             color: var(--dark-red);
             text-shadow: 1px 1px 2px white;
         }
@@ -307,12 +307,12 @@ ld-slide {
         }
     }
 
-    /* Scales a container on hover. 
+    /* Scales a container on hover.
 
-       The container's content is expected to be an image that is designed 
+       The container's content is expected to be an image that is designed
        w.r.t. the document view.
        This class is intended to be used with generic containers. It must not be used on images directly, as it would interfere with the scaling logic of images.
-      
+
        In this case the assumption is made that the image is designed w.r.t to the document view! I. e., contrary to the standard case, images are not scaled in the document view and only scaled in the slide view, when the user hovers over them. (Part of this logic is implemented in JavaScript!) */
     .scale-on-hover {
         position: relative;
@@ -320,14 +320,14 @@ ld-slide {
         border-radius: var(--small-border-radius);
 
         transform-origin: top right;
-        transition: all 0.5s;
+        transition: transform 0.5s ease-in-out;
         z-index: 1;
 
         &.\:hover {
             /*transform: scale(3);*/
             transform: scale(var(--slide-to-document-font-size-ratio));
             border: thin solid rgb(0 0 0 / 50%);
-            transition: all 0.5s;
+            transition: transform 0.5s ease-in-out;
         }
     }
 }

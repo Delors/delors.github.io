@@ -28,12 +28,12 @@
     <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
          <link rel="stylesheet" href="../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
  -->
-         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme)</style>
+         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
     
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-defs"><defs><marker     id="arrow"     viewBox="0 0 2 2"     refX="1.8"     refY="1"     markerUnits="strokeWidth"     markerWidth="6"     markerHeight="6"     orient="auto-start-reverse">     <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" /> </marker> <marker     id="small-arrow"     viewBox="0 0 2 2"     refX="1.5"     refY="1"     markerUnits="strokeWidth"     markerWidth="4"     markerHeight="4"     orient="auto-start-reverse">     <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" /> </marker></defs></svg>
-<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-style"><style>g.graph {     circle{         fill: black;         stroke-width: 0.2;          &.red { fill: red;}         &.green { fill: green; }         &.blue { fill: blue; }         &.start-node {             fill: none;             stroke: red;             stroke-width: 0.3;         }         &.visited-node {             fill: lightgray;             stroke: blue;             stroke-width: 0.3;         }         &.unreached-node {             fill: lightgray;             stroke: none;             stroke-width: 0.3;         }     }     path,     line {         fill: none;         stroke:darkgray;         stroke-width:0.2;          &.irrelevant-edge {  stroke: red; }     }     text {         fill: black;         font-family: var(--theme-code-font-family);         font-weight: bold;          &.edge-label {             fill: darkorange;             font-weight: normal;             font-size: 60%;         }     } } g.tree {     circle {         fill: darkgray;         filter: drop-shadow( 2 2 4 rgb(0, 0, 0));         &.visited-node {             fill: lightgray;             stroke: blue;             stroke-width: 0.3;         }     }     line {         stroke:darkgray;         stroke-width:0.2;     }     text {         fill: black;         font-family: var(--theme-code-font-family);         font-weight: bold;     }     line, path {         &.traversal-edge {             fill: none;             stroke: red;             stroke-width: 0.2;         }     } }</style></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-defs"><defs><marker     id="arrow"     viewBox="0 0 2 2"     refX="1.8"     refY="1"     markerUnits="strokeWidth"     markerWidth="6"     markerHeight="6"     orient="auto-start-reverse">     <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" fill="context-stroke" /> </marker> <marker     id="small-arrow"     viewBox="0 0 2 2"     refX="1.5"     refY="1"     markerUnits="strokeWidth"     markerWidth="4"     markerHeight="4"     orient="auto-start-reverse">     <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" fill="context-stroke"/> </marker></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-style"><style>g.graph {     circle{         fill: var(--current-fg-color);         stroke-width: 0.2;          &.red { fill: red;}         &.green { fill: green; }         &.blue { fill: blue; }         &.start-node {             fill: none;             stroke: red;             stroke-width: 0.3;         }         &.visited-node {             fill: lightgray;             stroke: blue;             stroke-width: 0.3;         }         &.unreached-node {             fill: lightgray;             stroke: none;             stroke-width: 0.3;         }     }     path,     line {         fill: none;         stroke: light-dark(darkgray, lightgray);         stroke-width:0.2;          &.irrelevant-edge {  stroke: red; }     }     text {         fill: var(--current-fg-color);         font-family: var(--code-font-family);         font-weight: bold;          &.edge-label {             fill: light-dark(darkorange,orange);             font-weight: normal;             font-size: 60%;         }     } } g.tree {     circle {         fill: light-dark(darkgray, silver);         filter: drop-shadow( 2 2 4 rgb(0, 0, 0));         &.visited-node {             fill: light-dark(lightgray,darkgray);             stroke: blue;             stroke-width: 0.3;         }     }     line {         stroke: color-mix(             in lch,             var(--current-fg-color) 80%,             var(--current-bg-color));         stroke-width:0.2;     }     text {         fill: var(--current-fg-color);         font-family: var(--code-font-family);         font-weight: bold;     }     line, path {         &.traversal-edge {             fill: none;             stroke: red;             stroke-width: 0.2;         }     } }</style></svg>
 <template>
 <ld-topic id="datenstrukturen-baume-und-graphen">
 <h1 class="title">Datenstrukturen - Bäume und Graphen</h1>
@@ -68,15 +68,13 @@
 </ld-topic>
 <ld-topic class="new-section transition-move-to-top" id="graphen">
 <h2>Graphen</h2>
-</ld-topic><ld-topic id="gerichteter-graph">
+</ld-topic>
+<ld-topic id="gerichteter-graph">
 <h2>Gerichteter Graph</h2>
-<aside class="admonition definition">
-<p class="admonition-title">Definition</p>
-<p>Ein gerichteter Graph <span class="math">\(G = (V, E)\)</span> wird durch eine Knotenmenge <span class="math">\(V\)</span> und eine Kantenmenge <span class="math">\(E\)</span> beschrieben.</p>
+<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Ein gerichteter Graph <span class="math">\(G = (V, E)\)</span> wird durch eine Knotenmenge <span class="math">\(V\)</span> und eine Kantenmenge <span class="math">\(E\)</span> beschrieben.</p>
 <p><span class="math">\(V= \{ v_1, v_2, . . . , v_n \}\)</span></p>
 <p><span class="math">\(E= \{ (v_i, v_j ) | v_i, v_j \in  V \}\)</span></p>
-</aside>
-<aside class="admonition incremental remark">
+</aside><aside class="admonition incremental remark">
 <p class="admonition-title">Bemerkung</p>
 <ul class="incremental-list simple">
 <li><p>Es ist erlaubt, dass ein Knoten (Vertex) eine Kante (Edge) zu sich selbst besitzt</p></li>
@@ -89,9 +87,10 @@
 </li>
 </ul>
 </aside>
-</ld-topic><ld-topic id="gerichteter-graph-beispiel">
+</ld-topic>
+<ld-topic id="gerichteter-graph-beispiel">
 <h2>Gerichteter Graph - Beispiel</h2>
-<div class="center-content"><div    style="width: 48ch; height: 28ch; container-type:size;">
+<div class="center-content"><div    style="width: 48ch; height: 28ch">
 <svg    viewBox="0 0 24 14"
         font-size="2"
         version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -129,15 +128,14 @@
         </g>
     </g>
 </svg>
-</div></div></ld-topic><ld-topic id="ungerichteter-graph">
+</div></div></ld-topic>
+<ld-topic id="ungerichteter-graph">
 <h2>Ungerichteter Graph</h2>
-<aside class="admonition definition">
-<p class="admonition-title">Definition</p>
-<p>Ein ungerichteter Graph <span class="math">\(G = (V, E)\)</span> ist ein gerichteter Graph, in dem die Relation <span class="math">\(E\)</span> symmetrisch ist:</p>
+<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Ein ungerichteter Graph <span class="math">\(G = (V, E)\)</span> ist ein gerichteter Graph, in dem die Relation <span class="math">\(E\)</span> symmetrisch ist:</p>
 <p><span class="math">\((v_i, v_j ) \in  E \Rightarrow  (v_j , v_i) \in  E\)</span></p>
 <p>Die Kanten <span class="math">\(\{(v_i, v_j ), (v_j, v_i)\}\)</span> werden dann als eine Kante gezählt.</p>
-</aside>
-</ld-topic><ld-topic id="ungerichteter-graph-beispiel">
+</aside></ld-topic>
+<ld-topic id="ungerichteter-graph-beispiel">
 <h2>Ungerichteter Graph - Beispiel</h2>
 <div class="center-content"><div    style="width: 48ch; height: 28ch;">
 <svg    viewBox="0 0 24 14"
@@ -177,13 +175,11 @@
         </g>
     </g>
 </svg>
-</div></div></ld-topic><ld-topic id="gewichteter-graph">
+</div></div></ld-topic>
+<ld-topic id="gewichteter-graph">
 <h2>Gewichteter Graph</h2>
-<aside class="admonition definition">
-<p class="admonition-title">Definition</p>
-<p>Bei einem gewichteten Graphen <span class="math">\(G = (V, E)\)</span> besitzt jede Kante <span class="math">\((vi, vj)\)</span> eine Attributierung <span class="math">\(w(v_i, v_j)\)</span>.</p>
-</aside>
-<aside class="admonition remark">
+<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Bei einem gewichteten Graphen <span class="math">\(G = (V, E)\)</span> besitzt jede Kante <span class="math">\((v_i, v_j)\)</span> eine Attributierung <span class="math">\(w(v_i, v_j)\)</span>.</p>
+</aside><aside class="admonition incremental remark">
 <p class="admonition-title">Bemerkung</p>
 <ul class="simple">
 <li><p>Sowohl gerichtete als auch ungerichtete Graphen können gewichtet sein</p></li>
@@ -191,9 +187,10 @@
 <li><p>Die Attributierung kann aber auch aus mehreren Attributen bestehen, z. B. aus einer Zahl und einer (Kanten-) Farbe; für dieses Beispiel sind die Ergebnisse von <span class="math">\(w\)</span> dann Zweitupel</p></li>
 </ul>
 </aside>
-</ld-topic><ld-topic id="gewichteter-graph-beispiel">
+</ld-topic>
+<ld-topic id="gewichteter-graph-beispiel">
 <h2>Gewichteter Graph - Beispiel</h2>
-<div class="center-content"><div    style="width: 48ch; height: 28ch; container-type:size;">
+<div class="center-content"><div    style="width: 48ch; height: 28ch">
 <svg    viewBox="0 0 24 14"
         font-size="2"
         version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -240,13 +237,11 @@
         </g>
     </g>
 </svg>
-</div></div></ld-topic><ld-topic id="markierte-graphen">
+</div></div></ld-topic>
+<ld-topic id="markierte-graphen">
 <h2>Markierte Graphen</h2>
-<aside class="admonition definition">
-<p class="admonition-title">Definition</p>
-<p>In einem markierter Graphen <span class="math">\(G = (V, E)\)</span> besitzt jeder Knoten <span class="math">\(v_i\)</span> eine Markierung <span class="math">\(m(v_i)\)</span>.</p>
-</aside>
-<aside class="admonition remark">
+<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>In einem markierter Graphen <span class="math">\(G = (V, E)\)</span> besitzt jeder Knoten <span class="math">\(v_i\)</span> eine Markierung <span class="math">\(m(v_i)\)</span>.</p>
+</aside><aside class="admonition remark">
 <p class="admonition-title">Bemerkung</p>
 <ul class="simple">
 <li><p>Die Markierung stellt eine Attributierung des Knotens dar</p></li>
@@ -255,9 +250,10 @@
 <li><p>Die Markierung spielt in vielen Graphenalgorithmen eine Rolle (z. B. bei der Breite-zuerst-Suche)</p></li>
 </ul>
 </aside>
-</ld-topic><ld-topic id="markierter-gewichteter-graph-beispiel">
+</ld-topic>
+<ld-topic id="markierter-gewichteter-graph-beispiel">
 <h2>Markierter (gewichteter) Graph - Beispiel</h2>
-<div class="text-align-center"><div    style="width: 48ch; height: 28ch; container-type:size;">
+<div class="center-content"><div    style="width: 48ch; height: 28ch">
 <svg    viewBox="0 0 24 14"
         font-size="2"
         version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -304,21 +300,20 @@
         </g>
     </g>
 </svg>
-</div></div></ld-topic><ld-topic id="pfad">
+</div></div></ld-topic>
+<ld-topic id="pfad">
 <h2>Pfad</h2>
-<aside class="admonition definition">
-<p class="admonition-title">Definition</p>
-<p>Ein Pfad in einem Graphen <span class="math">\(G = (V, E)\)</span> mit <span class="math">\(V= \{ v_1, . . . , v_n \}\)</span> ist eine Folge von Knoten <span class="math">\(v_{a_1}, v_{a_2}, . . . , v_{a_k}\)</span> mit folgender Eigenschaft: <span class="math">\((v_{a_i}, v_{a_{i+1}}) \in  E\)</span> für <span class="math">\(i \in  \{ 1, . . . , k- 1 \}\)</span>.</p>
+<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Ein Pfad in einem Graphen <span class="math">\(G = (V, E)\)</span> mit <span class="math">\(V= \{ v_1, . . . , v_n \}\)</span> ist eine Folge von Knoten <span class="math">\(v_{a_1}, v_{a_2}, . . . , v_{a_k}\)</span> mit folgender Eigenschaft: <span class="math">\((v_{a_i}, v_{a_{i+1}}) \in  E\)</span> für <span class="math">\(i \in  \{ 1, . . . , k- 1 \}\)</span>.</p>
 <p>Die Länge des Pfades ist die Anzahl der Kanten auf dem Pfad, d. h. <span class="math">\(k- 1\)</span>.</p>
-</aside>
-<aside class="admonition remark">
+</aside><aside class="admonition remark">
 <p class="admonition-title">Bemerkung</p>
 <ul class="simple">
 <li><p>In einem Pfad dürfen Knoten mehrfach auftreten</p></li>
 <li><p>Für Pfade wird häufig eine Listenschreibweise verwendet: <span class="math">\(&lt; v3, v1, v2, v3, v4 &gt;\)</span></p></li>
 </ul>
 </aside>
-</ld-topic><ld-topic id="fragestellungen-auf-graphen">
+</ld-topic>
+<ld-topic id="fragestellungen-auf-graphen">
 <h2>Fragestellungen auf Graphen</h2>
 <ul class="incremental-list simple">
 <li><p>Welche Knoten sind von einem (Start-) Knoten aus erreichbar? → Erreichbarkeitsbaum</p></li>
@@ -326,11 +321,12 @@
 <li><p>Wenn mehrere Pfade zwischen 2 Knoten existieren, welcher ist der kürzeste?</p></li>
 <li><p>Existieren in einem Graphen Zyklen?</p></li>
 </ul>
-</ld-topic><ld-topic id="implementierung-von-graphen">
+</ld-topic>
+<ld-topic id="implementierung-von-graphen">
 <h2>Implementierung von Graphen</h2>
 <ld-grid class="default-layout">
 <ld-cell class="width-40" style="align-self:auto;">
-<div class="text-align-center"><div    style="width: 24ch; height: 14ch; container-type:size;">
+<div class="center-content"><div    style="width: 24ch; height: 14ch">
 <svg    viewBox="0 0 24 14"
         font-size="2"
         version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -377,9 +373,9 @@
 <p>Struktur der Adjazenzlisten für einen Graphen <span class="math">\(G = (V, E)\)</span>:</p>
 <p>Es gibt eine Knotenliste <span class="math">\(L_0\)</span>, die alle Knoten aus <span class="math">\(V\)</span> enthält.</p>
 <p>Jedem Element <span class="math">\(v_i (i \in  { v_1, . . . , v_n })\)</span> der Knotenliste <span class="math">\(L_0\)</span> ist eine weitere Knotenliste <span class="math">\(L_i\)</span> zugeordnet, die die Endknoten der Kanten aus <span class="math">\(E\)</span> enthält, die von <span class="math">\(v_i\)</span> ausgehen</p>
-<blockquote>
+<div class="accentuate docutils container">
 <p>Wir speichern einen Graphen somit als Liste von Listen.</p>
-</blockquote>
+</div>
 </ld-card><ld-card class="incremental">
 <aside class="admonition example">
 <p class="admonition-title">Beispiel</p>
@@ -483,9 +479,11 @@ L0 = Map&lt;Node,List&lt;Node&gt;&gt;.of(
 <li><p>Bei wenigen Kante ist die Matrix nur dünn besetzt → Speicherplatzverschwendung</p></li>
 <li><p>Arrays als typische Implementierung für Matrizen erfordern Reorganisationsaufwand, wenn dem Graphen neue Knoten hinzugefügt werden</p></li>
 </ul>
-</ld-card></ld-deck></ld-card></ld-deck></ld-cell></ld-grid></ld-topic><ld-topic class="new-subsection" id="suchalgorithmen-auf-graphen">
+</ld-card></ld-deck></ld-card></ld-deck></ld-cell></ld-grid></ld-topic>
+<ld-topic class="new-subsection" id="suchalgorithmen-auf-graphen">
 <h2>Suchalgorithmen auf Graphen</h2>
-</ld-topic><ld-topic id="suchalgorithmen-auf-graphen-grundlegendes">
+</ld-topic>
+<ld-topic id="suchalgorithmen-auf-graphen-grundlegendes">
 <h2>Suchalgorithmen auf Graphen - Grundlegendes</h2>
 <ld-deck>
 <ld-card>
@@ -533,7 +531,8 @@ L0 = Map&lt;Node,List&lt;Node&gt;&gt;.of(
 <li><p>Weitersuche ist nur von aktiven Knoten aus sinnvoll</p></li>
 <li><p>Nur markierte Knoten können aktiv sein</p></li>
 </ul>
-</ld-card></ld-deck></ld-topic><ld-topic id="breite-zuerst-suche-breadth-first-search">
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="breite-zuerst-suche-breadth-first-search">
 <h2>Breite-zuerst-Suche (<span class="eng">Breadth-first-Search</span>)</h2>
 <ld-deck>
 <ld-card>
@@ -561,9 +560,10 @@ L0 = Map&lt;Node,List&lt;Node&gt;&gt;.of(
 </ul>
 <p>⇒ Knoten werden markiert, bevor lange Pfade entstehen können</p>
 </aside>
-</ld-card></ld-deck></ld-topic><ld-topic id="breite-zuerst-suche-beispiel">
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="breite-zuerst-suche-beispiel">
 <h2>Breite-zuerst-Suche - Beispiel</h2>
-<div class="text-align-center"><div    style="width: 48ch; height: 28ch; container-type:size;">
+<div class="center-content"><div    style="width: 48ch; height: 28ch">
 <svg    viewBox="0 0 24 14"
         font-size="2"
         version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -642,7 +642,8 @@ L0 = Map&lt;Node,List&lt;Node&gt;&gt;.of(
         </g>
     </g>
 </svg>
-</div></div></ld-topic><ld-topic id="tiefe-zuerst-suche">
+</div></div></ld-topic>
+<ld-topic id="tiefe-zuerst-suche">
 <h2>Tiefe-zuerst-Suche</h2>
 <p><strong>Im Schritt S2</strong></p>
 <ul class="incremental-list list-with-explanations">
@@ -658,7 +659,8 @@ L0 = Map&lt;Node,List&lt;Node&gt;&gt;.of(
 <p><strong>Endekriterium</strong></p>
 <p>Vom Suchknoten aus wird kein unmarkierter Nachfolgerknoten mehr gefunden und die Liste aktiver Knoten ist leer.</p>
 </div>
-</ld-topic><ld-topic id="tiefe-zuerst-suche-beispiel">
+</ld-topic>
+<ld-topic id="tiefe-zuerst-suche-beispiel">
 <h2>Tiefe-zuerst-Suche - Beispiel</h2>
 <div class="text-align-center"><div    style="width: 48ch; height: 28ch; container-type:size;">
 <svg    viewBox="0 0 24 14"
@@ -735,7 +737,8 @@ L0 = Map&lt;Node,List&lt;Node&gt;&gt;.of(
         </g>
     </g>
 </svg>
-</div></div></ld-topic><ld-topic class="exercises" id="ubung">
+</div></div></ld-topic>
+<ld-topic class="exercises" id="ubung">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Tiefe-/Breite-zuerst-Suche" id="ld-exercise-1">
 <p class="ld-exercise-title rubric">Tiefe-/Breite-zuerst-Suche</p>
@@ -786,9 +789,11 @@ L0 = Map&lt;Node,List&lt;Node&gt;&gt;.of(
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:hnTqQ2UO7qlnvZd0n6Z6NGEuzy+Rk/oI5A25Wvat01o=:UUfOTEiOrZQyTZ3s:ftBcnr707VoFB6rNdB4GHBo0aYp1ATHiq6Qrgp3ZDweMsM08RfoIkDnMEIR2cX5ylUYhCJR13k4IbpFAhG4DPFlwejv+eIJolILvkSVDB+OxCuFbiC3FQ9emM/p5O0VTZ+Uze8l/p0lYG8TNZx2x4yvSCiQhuz4s+ZrFVqsxgCef1Jrehtw81xP7hbfujjBy9dSFsRccJ1P/8QPugHMGkb9HgtbbNBVNVoqCe1D5HjmnPik/aGV5BtzzuM+EZblXBS3uPfyXnOTohUs9ORtsIH1AcFDrcA5ZiAY6E3I/sPYHd2fNzTTwtdhsq3AQR6eBBreRmPzToWGGJ8OxPrtQwLZ7taPTvff5QYV7J1dupi4d3hPDHbEGm0tGBvv0wX5GmJRCqHOz4IZaPXyorKm3RIr8ePDBJhPBvbovNLI08oJJcJ0EdkrsWMar8KopK6wk2Q/DSIzStDP0Dd5EPAbehbCALXqsPJ8/6agQB116b//MhtNsaqnOo3FLI08sIfDhJWJ3dzyb+VUGmDeVfmHveHaWsuq/0EpQO6pwW1ZAB8qxH+PzMjwR3e3cpXAqpOlVSsLilHbsOtWxAjYtougf0ZvQH6bYMlAqMlh0bERD1qTuSR71It3xYA7o2mqfwLlxFCzteP9VNEB+hKv3wIiXOxHCERideF+Nz/E2zKw59qOAFgUCOBgrpMkq+gvT7wacGVAU4tOg88XEsAkWQB/lzD65kqUFMvy1E0/FA9cIylRdnRDb3IVrnzreq20LlT1apoBtZ29LqUCcHtgxx36S4UJvDMyW+0WKLHYBw7Xq+M74RTD5wppIThRSxQ1XDEidN+MSPxQNAAvrXZcPIS7zH6G2pv8Qdays8mUVkLOK+TlH/UWB+Z7ZEX8=</div>
 </div>
-</ld-topic><ld-topic class="new-section transition-move-to-top" id="baume">
+</ld-topic>
+<ld-topic class="new-section transition-move-to-top" id="baume">
 <h2>Bäume</h2>
-</ld-topic><ld-topic id="baume-einfuhrung">
+</ld-topic>
+<ld-topic id="baume-einfuhrung">
 <h2>Bäume - Einführung</h2>
 <ul>
 <li><p>Bäume sind eine Datenstruktur für hierarchische Daten</p>
@@ -808,13 +813,14 @@ MTAwMDAw:hnTqQ2UO7qlnvZd0n6Z6NGEuzy+Rk/oI5A25Wvat01o=:UUfOTEiOrZQyTZ3s:ftBcnr707
 </ul>
 </li>
 </ul>
-</ld-topic><ld-topic id="baume-schlusselbegriffe">
+</ld-topic>
+<ld-topic id="baume-schlusselbegriffe">
 <h2>Bäume - Schlüsselbegriffe</h2>
 <ld-grid class="default-layout">
 <ld-cell class="width-30" style="align-self:auto;">
 <p class="rubric">Beispielbaum</p>
 <div class="text-align-center docutils container">
-<div    style="width: 21ch; height: 22ch; container-type:size;">
+<div    style="width: 21ch; height: 22ch">
 <svg    viewBox="0 0 21 22"
         version="1.1" xmlns="http://www.w3.org/2000/svg"
         font-size="2">
@@ -912,17 +918,11 @@ MTAwMDAw:hnTqQ2UO7qlnvZd0n6Z6NGEuzy+Rk/oI5A25Wvat01o=:UUfOTEiOrZQyTZ3s:ftBcnr707
 <p>Die Tiefe eines Knotens <span class="math">\(p\)</span> ist die Länge des Pfades vom Wurzelknoten zu <span class="math">\(p\)</span>.</p>
 </ld-card><ld-card class="incremental">
 <p>Binärbaum</p>
-<aside class="admonition definition">
-<p class="admonition-title">Definition</p>
-<p>Ein Binärbaum ist ein Baum, bei dem jeder Knoten höchstens zwei Kinder hat.</p>
-</aside>
-</ld-card><ld-card class="incremental">
+<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Ein Binärbaum ist ein Baum, bei dem jeder Knoten höchstens zwei Kinder hat.</p>
+</aside></ld-card><ld-card class="incremental">
 <p>Binärer Suchbaum</p>
-<aside class="admonition definition">
-<p class="admonition-title">Definition</p>
-<p>Ein binärer Suchbaum ist ein Binärbaum, bei dem für jeden Knoten alle Schlüssel in den linken Unterbäumen kleiner sind und alle Schlüssel in den rechten Unterbäumen größer sind.</p>
-</aside>
-<aside class="admonition example">
+<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Ein binärer Suchbaum ist ein Binärbaum, bei dem für jeden Knoten alle Schlüssel in den linken Unterbäumen kleiner sind und alle Schlüssel in den rechten Unterbäumen größer sind.</p>
+</aside><aside class="admonition example">
 <p class="admonition-title">Beispiel</p>
 <p>(siehe Darstellung)</p>
 </aside>
@@ -931,7 +931,8 @@ MTAwMDAw:hnTqQ2UO7qlnvZd0n6Z6NGEuzy+Rk/oI5A25Wvat01o=:UUfOTEiOrZQyTZ3s:ftBcnr707
 <p class="admonition-title">Achtung!</p>
 <p>Da die Kanten in einem Baum grundsätzlich von einem Eltern- zu einem Kindknoten gehen (d. h. es sind gerichtete Kanten), wird die Kantenrichtung typischerweise nicht angegeben (d. h. es wird keine Pfeilspitze gezeichnet).</p>
 </aside>
-</ld-card></ld-deck></ld-cell></ld-grid></ld-topic><ld-topic id="traversierung-von-baumen">
+</ld-card></ld-deck></ld-cell></ld-grid></ld-topic>
+<ld-topic id="traversierung-von-baumen">
 <h2>Traversierung von Bäumen</h2>
 <ld-deck>
 <ld-card>
@@ -949,7 +950,7 @@ MTAwMDAw:hnTqQ2UO7qlnvZd0n6Z6NGEuzy+Rk/oI5A25Wvat01o=:UUfOTEiOrZQyTZ3s:ftBcnr707
 <ld-cell class="width-70" style="align-self:auto;">
 <aside class="admonition example">
 <p class="admonition-title">Beispiel</p>
-<div    style="width: 48ch; height: 22ch; container-type:size;">
+<div    style="width: 48ch; height: 22ch">
 <svg    font-size="2"
         viewBox="0 0 48 22" version="1.1" xmlns="http://www.w3.org/2000/svg">
 
@@ -1047,17 +1048,14 @@ MTAwMDAw:hnTqQ2UO7qlnvZd0n6Z6NGEuzy+Rk/oI5A25Wvat01o=:UUfOTEiOrZQyTZ3s:ftBcnr707
 </svg>
 </div></aside>
 </ld-cell><ld-cell class="width-30" style="align-self:auto;">
-<aside class="admonition definition">
-<p class="admonition-title">Definition</p>
-<p>Eine Präorder Traversierung eines (Teil-)Baumes beginnt mit der Verarbeitung des aktuellen (Wurzel-)Knotens, danach besuchen wir rekursiv den linken Unterbaum, bevor der rechte Unterbaum besucht wird.</p>
-</aside>
-</ld-cell></ld-grid></ld-card><ld-card class="incremental">
+<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Eine Präorder Traversierung eines (Teil-)Baumes beginnt mit der Verarbeitung des aktuellen (Wurzel-)Knotens, danach besuchen wir rekursiv den linken Unterbaum, bevor der rechte Unterbaum besucht wird.</p>
+</aside></ld-cell></ld-grid></ld-card><ld-card class="incremental">
 <p class="rubric">Inorder Traversierung (<span class="eng">Inorder Traversal</span>)</p>
 <ld-grid class="default-layout">
 <ld-cell class="width-70" style="align-self:auto;">
 <aside class="admonition example">
 <p class="admonition-title">Beispiel</p>
-<div    style="width: 48ch; height: 22ch; container-type:size;">
+<div    style="width: 48ch; height: 22ch;">
 <svg    font-size="2" viewBox="0 0 48 22"
         version="1.1" xmlns="http://www.w3.org/2000/svg">
     <g class="tree">
@@ -1154,25 +1152,22 @@ MTAwMDAw:hnTqQ2UO7qlnvZd0n6Z6NGEuzy+Rk/oI5A25Wvat01o=:UUfOTEiOrZQyTZ3s:ftBcnr707
 </svg>
 </div></aside>
 </ld-cell><ld-cell class="width-30" style="align-self:auto;">
-<aside class="admonition definition">
-<p class="admonition-title">Definition</p>
-<p>Eine Inorder-Traversierung eines Baumes beginnt mit den linken Unterbaum, besucht dann den (Wurzel-)knoten, bevor der rechte Unterbaum besucht wird.</p>
-</aside>
-</ld-cell></ld-grid><aside class="admonition incremental remark">
+<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Eine Inorder-Traversierung eines Baumes beginnt mit den linken Unterbaum, besucht dann den (Wurzel-)knoten, bevor der rechte Unterbaum besucht wird.</p>
+</aside></ld-cell></ld-grid><aside class="admonition incremental remark">
 <p class="admonition-title">Bemerkung</p>
 <p>Eine Inorder-Traversierung eines (binären) Suchbaums führt zu einer sortierten Liste der Knotenwerte. Es handelt sich somit um ein weiteres Beispiel für ein Sortierverfahren.</p>
 </aside>
 </ld-card><ld-card class="incremental">
-<p class="rubric">Postorder Traversierung (<span class="eng">Postorder Traversal</span>)</p>
+<p class="rubric">Postorder-Traversierung (<span class="eng">Postorder Traversal</span>)</p>
 <ld-grid class="default-layout">
 <ld-cell class="width-70" style="align-self:auto;">
 <aside class="admonition example">
 <p class="admonition-title">Beispiel</p>
-<div    style="width: 48ch; height: 22ch; container-type:size;">
-<svg    font-size="2"
+<div    style="width: 48ch; height: 22ch;">
+<svg    id="svg-postorder-traversierung"
+        font-size="2"
         viewBox="0 0 48 22" version="1.1" xmlns="http://www.w3.org/2000/svg">
-
-    <g class="tree">
+    <g class="tree"  style="color: black">
         <g>
         <circle cx="8" cy="1" r="0.5" />
         <text x="8.75" y="1.55">2</text>
@@ -1322,11 +1317,9 @@ MTAwMDAw:hnTqQ2UO7qlnvZd0n6Z6NGEuzy+Rk/oI5A25Wvat01o=:UUfOTEiOrZQyTZ3s:ftBcnr707
 </svg>
 </div></aside>
 </ld-cell><ld-cell class="width-30" style="align-self:auto;">
-<aside class="admonition definition">
-<p class="admonition-title">Definition</p>
-<p>Eine Postorder-Traversierung eines Baumes beginnt mit den linken Unterbaum und besucht dann den rechten Unterbaum, bevor der (Wurzel-)knoten besucht wird.</p>
-</aside>
-</ld-cell></ld-grid></ld-card></ld-deck></ld-topic><ld-topic id="implementierung-eines-binaren-suchbaums-bst">
+<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Eine Postorder-Traversierung eines Baumes beginnt mit den linken Unterbaum und besucht dann den rechten Unterbaum, bevor der (Wurzel-)knoten besucht wird.</p>
+</aside></ld-cell></ld-grid></ld-card></ld-deck></ld-topic>
+<ld-topic id="implementierung-eines-binaren-suchbaums-bst">
 <h2>Implementierung eines binären Suchbaums (BST)</h2>
 <ld-scrollable>
 <pre class="code java copy-to-clipboard literal-block"><small class="ln">  1 </small><code data-lineno="  1 "><span class="comment single">// BST.java</span><span class="whitespace">
@@ -1435,7 +1428,8 @@ MTAwMDAw:hnTqQ2UO7qlnvZd0n6Z6NGEuzy+Rk/oI5A25Wvat01o=:UUfOTEiOrZQyTZ3s:ftBcnr707
 </span></code><small class="ln">104 </small><code data-lineno="104 "><span class="whitespace">        </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">;</span><span class="whitespace">
 </span></code><small class="ln">105 </small><code data-lineno="105 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
 </span></code><small class="ln">106 </small><code data-lineno="106 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
-</ld-scrollable></ld-topic><ld-topic class="exercises" id="ubung-1">
+</ld-scrollable></ld-topic>
+<ld-topic class="exercises" id="ubung-1">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Optimale Einfügereihenfolge" id="ld-exercise-2">
 <p class="ld-exercise-title rubric">Optimale Einfügereihenfolge</p>

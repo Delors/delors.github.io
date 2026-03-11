@@ -215,8 +215,8 @@
     The following style can generally be composed with the previous styles which
     affect the layout of the slide.
 
-    Recall that LectureDoc's mechanism to switch slides is to scale a slide
-    to 0 and to scale the next slide to 1 (normally both happens instanteously).
+    Recall that LectureDoc's primary mechanism to switch slides is to scale a
+    slide to 0 and to scale the next slide to 1 (normally both happens instanteously).
     Hence, it is often necessary to "reset" the scale level to make animations
     work.
 
@@ -240,7 +240,7 @@
 }
 
 #ld-slides-pane
-    .ld-previous-slide:has(+ ld-slide.transition-move-left.ld-current-slide) {
+    .ld-previous-slide:has(+ .ld-current-slide.transition-move-left) {
     animation:
         3s slide-move-left-out,
         0s 3s scale-to-zero;
@@ -264,8 +264,9 @@
 
 @keyframes slide-move-left-out {
     0% {
+        /*  Reset the scale level for the "old" slide to make the slide visible
+            (again): */
         scale: 1;
-        /* reset the scale level to make the slide visible (again) */
         translate: 0%;
     }
 
@@ -284,8 +285,7 @@
     animation: 3s slide-scale-in;
 }
 
-#ld-slides-pane
-    .ld-previous-slide:has(+ ld-slide.transition-scale.ld-current-slide) {
+#ld-slides-pane .ld-previous-slide:has(+ .ld-current-slide.transition-scale) {
     animation: 3s slide-scale-out;
 }
 
@@ -303,8 +303,8 @@
 
 @keyframes slide-scale-out {
     0% {
+        /* Reset the scale level of the "old slide" to ensure visibility. */
         scale: 1;
-        /* reset the scale level to make the slide visible (again) */
         opacity: 1;
     }
 
@@ -323,7 +323,7 @@
         animation: 3s flip-in;
     }
 
-    .ld-previous-slide:has(+ ld-slide.ld-current-slide.transition-flip) {
+    .ld-previous-slide:has(+ .ld-current-slide.transition-flip) {
         perspective: 3000px;
         transform-style: preserve-3d;
         backface-visibility: hidden;
@@ -368,8 +368,7 @@
     animation: 2s slide-fade-in;
 }
 
-#ld-slides-pane
-    .ld-previous-slide:has(+ ld-slide.transition-fade.ld-current-slide) {
+#ld-slides-pane .ld-previous-slide:has(+ .ld-current-slide.transition-fade) {
     animation:
         2s slide-fade-out,
         0s 2s scale-to-zero;
@@ -387,14 +386,14 @@
 
 @keyframes slide-fade-out {
     0% {
-        opacity: 1;
+        /* Reset the scale level to make a fading effect possible: */
         scale: 1;
-        /* reset the scale level to make a fading effect possible */
+        opacity: 1;
     }
 
     100% {
-        opacity: 0;
         scale: 1;
+        opacity: 0;
     }
 }
 
@@ -403,7 +402,7 @@
 }
 
 #ld-slides-pane
-    .ld-previous-slide:has(+ ld-slide.transition-move-to-top.ld-current-slide) {
+    .ld-previous-slide:has(+ .ld-current-slide.transition-move-to-top) {
     animation:
         3s slide-move-bottom-to-center,
         0s 3s scale-to-zero;
@@ -448,100 +447,101 @@
     Styling of Cheat Sheets
 
 */
+#ld-slides-pane {
+    .cheat-sheet {
+        border-radius: 0;
 
-ld-slide.cheat-sheet {
-    border-radius: 0;
+        &#ld-slide-no-0::before {
+            /* to clear the default logo */
+            display: none;
+        }
 
-    &#ld-slide-no-0::before {
-        /* to clear the default logo */
-        display: none;
-    }
-
-    &::after {
-        /* to clear the default slide number */
-        content: "LD2";
-        position: absolute;
-        z-index: -1;
-        bottom: -200px;
-        right: 25px;
-        font-size: 50em;
-        font-weight: 900;
-        color: color-mix(
-            in srgb,
-            var(--current-bg-color) 90%,
-            var(--current-fg-color) 10%
-        );
-        text-shadow: 2px 2px 4px var(--light-gray);
-    }
-    /*
+        &::after {
+            /* to clear the default slide number */
+            content: "LD2";
+            position: absolute;
+            z-index: -1;
+            bottom: -200px;
+            right: 25px;
+            font-size: 50em;
+            font-weight: 900;
+            color: color-mix(
+                in srgb,
+                var(--current-bg-color) 90%,
+                var(--current-fg-color) 10%
+            );
+            text-shadow: 2px 2px 4px var(--light-gray);
+        }
+        /*
     padding: 6px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     gap: 6px;
     */
-    padding: 6px;
-    display: block;
-    column-count: 8;
-    column-gap: 6px;
-    column-fill: auto;
-    block-size: calc(var(--ld-slide-height) - 2 * 6px);
-
-    background-color: var(--current-rel-bg-color);
-    color: var(--current-rel-fg-color);
-
-    font-size: 14px;
-
-    div.cheat-sheet-block {
-        break-inside: auto;
-        box-shadow: 1px 1px 4px var(--dark-gray);
-    }
-
-    div.cheat-sheet-block,
-    h1 {
-        /* width: calc((var(--ld-slide-width) - 2 * 6px - 7 * 6px) / 8); 
-        flex-grow: 1;*/
-        width: 100%;
-
-        left: 0;
         padding: 6px;
-        border-radius: 6px 6px 0 0;
+        display: block;
+        column-count: 8;
+        column-gap: 6px;
+        column-fill: auto;
+        block-size: calc(var(--ld-slide-height) - 2 * 6px);
 
-        &.title {
-            margin: 0;
-            padding: 4px;
-            color: var(--red);
-            background-color: var(--white);
-            font-size: 2em;
-            text-shadow: -1px -1px 1px var(--dark-gray);
+        background-color: var(--current-rel-bg-color);
+        color: var(--current-rel-fg-color);
+
+        font-size: 14px;
+
+        div.cheat-sheet-block {
+            break-inside: auto;
+            box-shadow: 1px 1px 4px var(--dark-gray);
         }
-    }
 
-    div.cheat-sheet-block > .rubric:first-child {
-        width: calc(100% + 12px);
-        margin-bottom: 0;
-        position: relative;
-        top: -6px;
-        left: -6px;
-        color: whitesmoke;
-        border-radius: 6px 6px 0 0;
-        font-size: larger;
-        padding: 0.3em 0 0.3em 0.25em;
-        background-color: var(--red);
-    }
+        div.cheat-sheet-block,
+        h1 {
+            /* width: calc((var(--ld-slide-width) - 2 * 6px - 7 * 6px) / 8);
+        flex-grow: 1;*/
+            width: 100%;
 
-    div.cheat-sheet-block > .rubric:not(:first-child) {
-        background-color: var(--gray);
-        position: relative;
-        top: -5px;
-        left: -5px;
-        color: whitesmoke;
-        width: calc(100% + 10px);
-        padding: 0.15em 0 0.15em 0.25em;
-        margin-bottom: 0;
-    }
+            left: 0;
+            padding: 6px;
+            border-radius: 6px 6px 0 0;
 
-    p.rubric + p {
-        margin-top: 0;
+            &.title {
+                margin: 0;
+                padding: 4px;
+                color: var(--red);
+                background-color: var(--white);
+                font-size: 2em;
+                text-shadow: -1px -1px 1px var(--dark-gray);
+            }
+        }
+
+        div.cheat-sheet-block > .rubric:first-child {
+            width: calc(100% + 12px);
+            margin-bottom: 0;
+            position: relative;
+            top: -6px;
+            left: -6px;
+            color: whitesmoke;
+            border-radius: 6px 6px 0 0;
+            font-size: larger;
+            padding: 0.3em 0 0.3em 0.25em;
+            background-color: var(--red);
+        }
+
+        div.cheat-sheet-block > .rubric:not(:first-child) {
+            background-color: var(--gray);
+            position: relative;
+            top: -5px;
+            left: -5px;
+            color: whitesmoke;
+            width: calc(100% + 10px);
+            padding: 0.15em 0 0.15em 0.25em;
+            margin-bottom: 0;
+        }
+
+        p.rubric + p {
+            margin-top: 0;
+        }
     }
 }

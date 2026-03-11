@@ -2,9 +2,9 @@
 
 /* This style sheet is partially based on:
 
-   Minimal style sheet for the HTML output of Docutils 
-   created by Günter Milde (2022-06-19) 
-   which in turn is based on html4css1.css 
+   Minimal style sheet for the HTML output of Docutils
+   created by Günter Milde (2022-06-19)
+   which in turn is based on html4css1.css
    created by David Goodger (2015, 2021).
 */
 
@@ -49,7 +49,6 @@ a:visited {
 a:hover {
     text-decoration: underline;
 }
-
 
 table:has(+ *),
 object:has(+ *),
@@ -735,6 +734,7 @@ p.system-message-title {
 
         border: none;
 
+        color-scheme: light only;
         --current-bg-color: var(--example-bg-color);
         --current-fg-color: var(--example-fg-color);
     }
@@ -1041,6 +1041,7 @@ pre.code {
     }
 
     .keyword {
+        color: var(--keyword-color);
         /* this is a light-blue which adapts according to the background */
         color: oklch(
             from var(--current-rel-bg-color) calc((1 - l) * 0.5 + 0.73) 0.14
@@ -1052,6 +1053,10 @@ pre.code {
 
         &.type {
             color: var(--keyword-type-color);
+            color: oklch(
+                from var(--current-rel-bg-color) calc((1 - l) * 0.5 + 0.5765)
+                    0.1727 258.35
+            );
             /* For text in SVGs: */
             fill: var(--keyword-type-color);
         }
@@ -1064,22 +1069,30 @@ pre.code {
 
         &.constant {
             color: var(--keyword-constant-color);
+            color: oklch(
+                from var(--current-rel-bg-color) calc((1 - l) * 0.15 + 0.53)
+                    0.2097 270
+            );
             /* For text in SVGs: */
             fill: var(--keyword-constant-color);
         }
     }
 
     .name {
-        /* https://oklch.com/#0.6467,0.1011,187.28,100 */
+        color: var(--name-color);
+        /* https://oklch.com */
         color: oklch(
             from var(--current-rel-bg-color) calc((1 - l) * 0.15 + 0.54) 0.08
                 187.28
         );
-        /*color: var(--name-color);*/
         fill: var(--name-color);
 
         &.attribute {
             color: var(--attribute-color);
+            color: oklch(
+                from var(--current-rel-bg-color) calc((1 - l) * 0.15 + 0.45)
+                    0.1751 20.12
+            );
             font-style: italic;
         }
 
@@ -1135,6 +1148,11 @@ pre.code {
             font-weight: 200;
 
             color: var(--literal-color);
+            color: oklch(
+                from var(--current-rel-bg-color) calc((1 - l) * 0.15 + 0.53)
+                    0.2319 326.12
+            );
+
             /* For text in SVGs: */
             fill: var(--literal-color);
 
@@ -1405,30 +1423,25 @@ table {
 
         th.\:hover {
             box-shadow: var(--trbl-shadow);
-            --current-rel-bg-color: light-dark(
-                var(--current-fg-color),
-                var(--current-bg-color)
-            );
-            background-color: var(--current-rel-bg-color);
-            --current-rel-fg-color: light-dark(
-                var(--current-bg-color),
-                var(--current-fg-color)
-            );
-            color: var(--current-rel-fg-color);
         }
 
         td.\:hover {
-            box-shadow: var(--trbl-shadow);
-            --current-rel-bg-color: light-dark(
-                var(--current-fg-color),
-                var(--current-bg-color)
+            box-shadow: 0 0 var(--trbl-shadow-blur) 0
+                rgb(from var(--current-fg-color) r g b / 0.8);
+            /* The following does not work, because the current-rel... colors
+               may already be computed using relative colors. Computing
+               relative colors on top of relative colors is not yet supported
+               (March 2026):
+            --current-rel-bg-color: color-mix(
+                in oklch,
+                var(--current-bg-color) 20% var(--current-fg-color) 80%
             );
             background-color: var(--current-rel-bg-color);
-            --current-rel-fg-color: light-dark(
-                var(--current-bg-color),
-                var(--current-fg-color)
+            --current-rel-fg-color: oklch(
+                from var(--current-rel-bg-color) l calc(c + 180) h
             );
             color: var(--current-rel-fg-color);
+            */
         }
     }
 
@@ -1539,7 +1552,12 @@ table {
     padding: calc(0.5 * var(--current-base-font-size));
     padding-left: calc(3 * var(--current-base-font-size));
 
-    background-color: var(--light-gray);
+    --current-rel-bg-color: color-mix(
+        in lch,
+        var(--current-bg-color) 85%,
+        var(--current-fg-color)
+    );
+    background-color: var(--current-rel-bg-color);
 
     border-radius: var(--small-border-radius);
 
@@ -1673,7 +1691,7 @@ iframe {
     /*  Necessary to get rid of some extra-whitespace below the iframe */
     display: block;
 
-    /*  Since we don't know anything/want to make any assumptions about the 
+    /*  Since we don't know anything/want to make any assumptions about the
         iframe content, we set the background color to white to have a fixed
         reference frame. */
     background-color: white;
@@ -1809,6 +1827,7 @@ video {
     background-color: var(--current-bg-color);
     border-radius: var(--small-border-radius);
     padding: var(--default-container-padding);
+    backdrop-filter: blur(3px);
 }
 
 .dark-image {
