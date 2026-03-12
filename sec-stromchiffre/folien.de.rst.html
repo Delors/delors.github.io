@@ -42,7 +42,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2.4.3</dd>
+<dd class="version">2.4.3.1</dd>
 </dl>
 <dl class="sources field-list simple">
 <dt>Quellen<span class="colon">:</span></dt>
@@ -66,8 +66,8 @@
 <ld-topic class="new-section" id="erzeugung-und-zufalligkeit-von-zufallszahlen">
 <h2>Erzeugung und Zufälligkeit von Zufallszahlen</h2>
 </ld-topic>
-<ld-topic id="zufallszahlen">
-<h2>Zufallszahlen</h2>
+<ld-topic id="zufallszahlen-verwendung-und-anforderungen">
+<h2>Zufallszahlen - Verwendung und Anforderungen</h2>
 <ul class="simple">
 <li><p>Eine Reihe von Sicherheitsalgorithmen und -protokollen, die auf Kryptographie basieren, verwenden binäre Zufallszahlen:</p>
 <ul>
@@ -115,10 +115,10 @@
 <ld-grid class="default-layout">
 <ld-cell class="width-50" style="align-self:auto;">
 <p>Erwartete Verteilung von Zufallswerten im 3D-Raum.</p>
-<object aria-label="Erwartete Verteilung der Werte im 3D-Raum" class="align-center" data="drawings/stream_ciphers/distribution_3d_expected.svg" role="img" type="image/svg+xml">
+<object aria-label="Erwartete Verteilung der Werte im 3D-Raum" class="light-image align-center" data="drawings/stream_ciphers/distribution_3d_expected.svg" role="img" type="image/svg+xml">
 </object></ld-cell><ld-cell class="width-50 incremental" style="align-self:auto;">
 <p>Verteilung von „zufälligen“ Werten eines schlechten RNGs im 3D-Raum.</p>
-<object aria-label="Schlechte Verteilung der Werte im 3D-Raum" class="align-center" data="drawings/stream_ciphers/distribution_3d_bad_lcg.svg" role="img" type="image/svg+xml">
+<object aria-label="Schlechte Verteilung der Werte im 3D-Raum" class="light-image align-center" data="drawings/stream_ciphers/distribution_3d_bad_lcg.svg" role="img" type="image/svg+xml">
 </object></ld-cell></ld-grid><div class="supplemental docutils container">
 <p>Bei diesem Experiment werden immer drei nacheinander auftretende Werte als Koordinate im 3D-Raum interpretiert. Die erwartete Verteilung ist eine gleichmäßige Verteilung im Raum. Die Verteilung der Werte eines schlechten RNGs ist nicht gleichmäßig und zeigt eine klare Struktur.</p>
 </div>
@@ -131,11 +131,14 @@
 <ul class="incremental simple">
 <li><p>Bei <em>echten</em> Zufallsfolgen ist jede Zahl statistisch unabhängig von den anderen Zahlen in der Folge und daher unvorhersehbar.</p>
 <ul>
-<li><p>Echte Zufallszahlen(-generatoren) haben Grenzen; insbesondere die Ineffizienz selbiger ist eine Herausforderung, so dass es häufiger vorkommt, dass Algorithmen implementiert werden, die scheinbar zufällige Zahlenfolgen erzeugen.</p></li>
+<li><p>Echte Zufallszahlen(-generatoren) haben Grenzen; insbesondere die Ineffizienz selbiger ist eine Herausforderung, so dass oft Algorithmen implementiert werden, die scheinbar zufällige Zahlenfolgen erzeugen.</p></li>
 <li><p>Es muss darauf geachtet werden, dass ein Gegner nicht in der Lage ist, zukünftige Elemente der Folge auf der Grundlage früherer Elemente vorherzusagen.</p></li>
 </ul>
 </li>
 </ul>
+<div class="supplemental docutils container">
+<p>Einfache Zufallszahlengeneratoren erfüllen die Eigenschaft der Unvorhersehbarkeit oft nicht.</p>
+</div>
 </ld-topic>
 <ld-topic id="pseudozufallszahlen">
 <h2>Pseudozufallszahlen</h2>
@@ -147,7 +150,7 @@
 </ld-topic>
 <ld-topic id="zufalls-und-pseudozufallszahlengeneratoren">
 <h2>Zufalls- und Pseudozufallszahlengeneratoren</h2>
-<object aria-label="RNGs" class="align-center" data="drawings/stream_ciphers/rng_and_prng.svg" role="img" type="image/svg+xml">
+<object aria-label="RNGs" class="light-image align-center" data="drawings/stream_ciphers/rng_and_prng.svg" role="img" type="image/svg+xml">
 </object><dl class="field-list simple">
 <dt>TRNG<span class="colon">:</span></dt>
 <dd><p>Echter Zufallszahlengenerator (<span class="eng">True Random Number Generator</span>)</p>
@@ -221,7 +224,7 @@
 <ul>
 <li><p>Der erzeugte Bitstrom muss zufällig erscheinen, obwohl er deterministisch ist:</p>
 <ul class="incremental-list">
-<li><p>Es gibt keinen einzigen Test, mit dem festgestellt werden kann, ob ein PRNG Zahlen erzeugt, die die Eigenschaft der Zufälligkeit aufweisen</p></li>
+<li><p>Es gibt keinen einzigen Test, mit dem festgestellt werden kann, ob ein PRNG Zahlen erzeugt, die die Eigenschaft der Zufälligkeit aufweisen.</p></li>
 <li><p>Wenn der PRNG auf der Grundlage mehrerer Tests Zufälligkeit aufweist, kann davon ausgegangen werden, dass er die Anforderung der Zufälligkeit erfüllt.</p>
 <div class="accentuate docutils container">
 <p>NIST SP 800-22 legt fest, dass die Tests auf drei Merkmale ausgerichtet sein sollten:</p>
@@ -291,7 +294,7 @@
 <li><p>Der Seed selbst muss eine Zufalls- oder Pseudozufallszahl sein.</p></li>
 <li><p>Normalerweise wird der Seed von einem TRNG erzeugt.</p></li>
 </ul>
-<object aria-label="Generierung von Seeds" class="align-center" data="drawings/stream_ciphers/generation_of_seed_input.svg" role="img" type="image/svg+xml">
+<object aria-label="Generierung von Seeds" class="light-image align-center" data="drawings/stream_ciphers/generation_of_seed_input.svg" role="img" type="image/svg+xml">
 </object></ld-topic>
 <ld-topic id="algorithmus-entwurf">
 <h2>Algorithmus-Entwurf</h2>
@@ -361,7 +364,7 @@
 </ld-topic>
 <ld-topic id="blum-blum-shub-block-diagram">
 <h2>Blum Blum Shub Block Diagram</h2>
-<object aria-label="Blum Blum Shub Block Diagram" class="align-center" data="drawings/stream_ciphers/blum_blum_shub.svg" role="img" type="image/svg+xml">
+<object aria-label="Blum Blum Shub Block Diagram" class="light-image align-center" data="drawings/stream_ciphers/blum_blum_shub.svg" role="img" type="image/svg+xml">
 </object><p><span class="math-i">n</span> ist das Produkt von zwei (sehr großen) Primzahlen <span class="math-i">p</span> und <span class="math-i">q</span>: <span class="math">\(n = p \times q\)</span>.</p>
 <p>Weiterhin muss gelten: <span class="math">\(p \equiv q \equiv 3 \; (mod \; 4)\)</span>.</p>
 <p>Der Seed <span class="math-i">s</span> sollte eine ganze Zahl sein, die zu <span class="math-i">n</span> <em>coprime</em> ist (d. h. <span class="math-i">p</span> und <span class="math-i">q</span> sind keine Faktoren von <span class="math-i">s</span>) und nicht <span class="math-r">1</span> oder <span class="math-r">0</span>.</p>
@@ -428,15 +431,11 @@
 <li><p>OFB Modus: Empfohlen in X9.82 und RFC 4086</p></li>
 </ul>
 <ld-grid class="default-layout">
-<ld-cell class="width-50" style="align-self:auto;">
-<div class="incremental-1 docutils container">
-<object aria-label="PRNG CTR Mode" class="incremental-1 align-center" data="drawings/stream_ciphers/prng-ctr-mode.svg" role="img" type="image/svg+xml">
-</object></div>
-</ld-cell><ld-cell class="width-50" style="align-self:auto;">
-<div class="incremental-2 docutils container">
-<object aria-label="PRNG OFB Mode" class="align-center" data="drawings/stream_ciphers/prng-ofb-mode.svg" role="img" type="image/svg+xml">
-</object></div>
-</ld-cell></ld-grid><div class="supplemental docutils container">
+<ld-cell class="width-50 incremental" style="align-self:auto;">
+<object aria-label="PRNG CTR Mode" class="light-image align-center" data="drawings/stream_ciphers/prng-ctr-mode.svg" role="img" type="image/svg+xml">
+</object></ld-cell><ld-cell class="width-50 incremental" style="align-self:auto;">
+<object aria-label="PRNG OFB Mode" class="light-image align-center" data="drawings/stream_ciphers/prng-ofb-mode.svg" role="img" type="image/svg+xml">
+</object></ld-cell></ld-grid><div class="supplemental docutils container">
 <p>Die initialen Werte für V und K basieren auf dem Seed, der von einem TRNG erzeugt wird/erzeugt werden sollte. Zum Beispiel kann von einem 256-Bit-Zufallswert die ersten 128 Bit für V und die nächsten 128 Bit für K verwendet werden.</p>
 <p>Die Blockchiffre wird verwendet, um den Seed zu verschlüsseln und den Schlüsselstrom zu erzeugen. Im CTR Mode wird der initiale Wert für V inkrementiert.</p>
 <p>Gründe für die Verwendung von Blockchiffren ist die Einfachheit der Implementierung und die Tatsache, dass Blockchiffren bereits in vielen Anwendungen vorhanden sind und die kryptografischen Eigenschaften von Blockchiffren gut verstanden sind.</p>
@@ -620,7 +619,7 @@ MTAwMDAw:Igzq7Soi5JG78hRZ2vOOZ+MW3U1652wStWuWeKYtbyE=:/xDlB6P6WCh5sk9U:hrlJo7inI
 </ld-topic>
 <ld-topic id="allgemeine-struktur-einer-typischen-stromchiffre">
 <h2>Allgemeine Struktur einer typischen Stromchiffre</h2>
-<object aria-label="Typical Stream Cipher" class="align-center" data="drawings/stream_ciphers/typical_stream_cipher.svg" role="img" type="image/svg+xml">
+<object aria-label="Typical Stream Cipher" class="light-image align-center" data="drawings/stream_ciphers/typical_stream_cipher.svg" role="img" type="image/svg+xml">
 </object><ld-grid class="default-layout">
 <ld-cell class="width-20" style="align-self:auto;">
 <p>Klartext: p<sub>i</sub></p>
@@ -939,7 +938,7 @@ MTAwMDAw:Igzq7Soi5JG78hRZ2vOOZ+MW3U1652wStWuWeKYtbyE=:/xDlB6P6WCh5sk9U:hrlJo7inI
 <ld-cell class="width-30" style="align-self:auto;">
 <p>Ablauf für die Verschlüsselung <em>eines</em> Blocks:</p>
 </ld-cell><ld-cell class="width-70" style="align-self:auto;">
-<div class="center-content"><div style="width: 42ch; height: 40ch"; container-type:size;">
+<div class="light-image center-content"><div style="width: 42ch; height: 40ch">
 <svg viewBox="190 50 420 400" xmlns="http://www.w3.org/2000/svg" font-size="16">
 <!-- Eingabeblock -->
 <rect x="200" y="60" width="400" height="80" fill="#f0f8ff" stroke="#000" />
