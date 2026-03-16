@@ -10,7 +10,7 @@
 <meta content="lecture-ds-concurrency-in-java" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <meta name="version" content="LD2 RENAISSANCE" />
-<meta name="exercises-passwords" content="MTAwMDAw:hIucWxeapJ+2h1YXpnypKXstlCOUA6iIZdCnhClfHDE=:W8ll54ASZETovPmu:IesutQzVGslYMMAJCTlBu4C6zfX1jCxxxmu8PjGwQ7LQBaKcfE0kLL7rsxqk1Uv1wsUnBzW8xKw3J0fyn9lhnvvW4WBo1Cgp7xHO3/F/hZIzTSYjbY7IL5kUtKCskWbLew3nfQkOHOdlFrE4k0FZKNUZ735fv/Btqgzv3P1lVZ0bQ1CL95GaLiYO0/Qrx5l0SzxKj3uR5EVQ4rZ4rXWxaeX9k6bACd/1TJbc3tnXBF6J4c9WDnZbBhbaYcdr9ysVMZnb2iI1Ro6/Qyx0KQmDs6VDQWjFD+zlf42cNHqd5IOUBZ+91WwljlvpiEyf/vRWqyfVwq9ogBLlHnTbG6G27/YfLJ/vNkyB+J/ZIf1qraK6q2FVzKo=" />
+<meta name="exercises-passwords" content="MTAwMDAw:S9WzBMwKDZACRVWM8SnJ2GcDRqyTog2x3oFG5zHJxu0=:fUdG0BWLmN5R9IrP:RPnOY0xArArgdse1Hh/IHOb9cn/qyJo6PFP5r8Dh/4Ce3dJxftlKB6aQFKAqdakdFDQ3+HH0tLiqPfTCWBBohzvCm6UDbmKh6Du5lDfDFNNe7OmtcRArBQQp1lzzjnZtSLuTa1jvDHfOOBMWmPzsdvqapEM1/GhTnn0D3nk7s6j/55nhouE5P4WzgOHuutjbNiEir37Vis4t0W9Uqvdu/PLYj7Kt1eg2gKnzVoejCaZvS+b1tT2fdoU6WEnowYpPRxOxxyw5cS+J6WZSwxpN5G/S+8ORY+aWkTfjEiIbwN46UwDVNFUmJKh+QbjDjDsK1Jy/K794YGDULI8MAe9gslvZ3+vmgEFmZynTGa51eQ59AfDXDwZGSyo4KWhogjeG4rxDwPU/HephaCTkB89xQ1A9VsDDeiZo9nD6qztG6ERRIEbhOAZ86zfzIri6bjgB+oAHlqXNIiERHkTOrgBWEhWEWz4NgastrrK9ibu04yf4ZR9cXdOjFic73jwFDqCk+WIee8xH7bR9ejxU77nXcXg0MQkU+6unzLmp0w0U+iW2byh3E9lF+p1c2JxryxmoSa++fxMwG6GmQTlPvkHivBx5QJA/6RTQLvfpcOilWag6ckwapoi+kgccHKd/8T9PObHc2eoyiXZWxJj3ZG52WYw86XMXe/8D9hEP12mHmuVoAiZBEbS5cR9mbq907QkODsUNTBE=" />
 <title>Concurrency in Java</title>
 
     <script src="../LectureDoc2/src/ld.js" type="module"></script>
@@ -36,7 +36,7 @@
 <dd class="kontakt"><p><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></p>
 </dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.0.1.1</dd>
+<dd class="version">1.0.2 [Themed]</dd>
 </dl>
 <div class="supplemental docutils container">
 <dl class="field-list">
@@ -74,9 +74,91 @@
 </ul>
 </div>
 </ld-topic>
+<ld-topic id="uncontrolled-parallelization">
+<h2>Uncontrolled Parallelization</h2>
+<pre class="code java incremental-code copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">counter</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="comment single">// or long, or float, or ...</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">InterruptedException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="name">Runnable</span><span class="whitespace"> </span><span class="name">increment</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">        </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">100_000</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="operator">++</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">           </span><span class="name">counter</span><span class="operator">++</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="punctuation">};</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">t1</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(</span><span class="name">increment</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">t2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(</span><span class="name">increment</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="name">t1</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace">     </span><span class="name">t2</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="name">t1</span><span class="punctuation">.</span><span class="name attribute">join</span><span class="punctuation">();</span><span class="whitespace">      </span><span class="name">t2</span><span class="punctuation">.</span><span class="name attribute">join</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="name">IO</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Counter: &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">counter</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<aside class="admonition incremental question">
+<p class="admonition-title">Question</p>
+<p>What value will the <code class="java"><span class="name">counter</span></code> have when both threads have ended?</p>
+<ld-presenter-note data-encrypted="true">
+MTAwMDAw:gO6bzdft9gkwwmCi4vqdVpG7b3ANJdke22zhXDz3WMQ=:696E2TenaL4mFMWX:Tu9ETZv6o+qGkKUa6IGucmcB5clBxEvCRGHPc9qRjpmzd4kq4o3ft9BxMTkfAGr9FNDR9WzHAEeOoOv4tdX/h6dOheCikA4nKWe6IvQzmurYqTTUI6NSgyhNVdAkAtA6bhLaWy0cRreOUKF0tI5H0xtfPd1cZmcq2CY88ed86BgJWZAlOWpRpFB6eAs/1fionmcu4jlQYZtc+FuMBJqKGL4dJRPaH4eK5ZADsQQ1X/wOtqIKDT+TZpY0e3jNOFk7x0takumxkh1VDgdE91O1ZxnGJ5vQmr7dcL/S3A0NQMmADAAQj8d4T4QKNU3381pSMg3pEb77H9ThujJWiSQkN2nTgHC29hOf4RoEq+e2hJVHJUUcdSCb5KAmK73N+kT5s8OzxIZLb+XLC4/6SBYJCrNmn3O+l5SrGP7ffTAtvGRzyYfUY7oi1nIa5NwqsCzPh3vNYnBg4DJ4ldRbszKnwHzhLtcFpnNkwSAWqxJWUQVozIt+7ix9mwoRxhjBPNqMTw==</ld-presenter-note>
+</aside>
+</ld-topic>
+<ld-topic class="repetition" id="fundamental-problems-in-concurrent-programming">
+<h2>Fundamental Problems in Concurrent Programming</h2>
+<p>Concurrent access to shared mutable state introduces three classes of problems:</p>
+<dl class="incremental-list field-list simple">
+<dt>Race Condition<span class="colon">:</span></dt>
+<dd><p><em>Read / modify / write</em> of a variable is non-atomic.</p>
+</dd>
+<dt>Visibility<span class="colon">:</span></dt>
+<dd><p>Reading of <em>stale values across threads</em>.</p>
+</dd>
+<dt>Ordering<span class="colon">:</span></dt>
+<dd><p><em>Instructions do not execute in source order</em>.</p>
+</dd>
+</dl>
+<aside class="admonition incremental summary">
+<p class="admonition-title">Summary</p>
+<p>All three problems share the same root cause:</p>
+<p><strong>Unsynchronised access to shared mutable state</strong>.</p>
+</aside>
+<div class="supplemental docutils container">
+<p>A <strong>Race Condition</strong> can happen, because a compound operation such as <code class="java"><span class="name">counter</span><span class="operator">++</span></code> consists of three separate steps (read, increment, write). When the scheduler preempts a thread between any two of these steps, another thread can operate on a stale value — an increment is silently lost.</p>
+<p>Reading of <em>stale values across threads</em> is likely because modern CPUs (since the 1990s) cache values in registers or L1/L2 caches. A write by thread A may never reach main memory before thread B reads the same variable — thread B therefore operates on an arbitrarily old value.</p>
+<p>Both the compiler (in case of Java the Just-In-Time Compiler not the frontend compiler) and the CPU may reorder instructions for optimisation. What <em>looks sequential in source code may execute in a completely different order at runtime</em>. This can make partially constructed objects visible to other threads.</p>
+<aside class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>A <strong>monitor</strong> eliminates all three — mutual exclusion prevents races, and the <em>happens-before</em> guarantee provided by Java's memory model ensures both visibility and ordering, as we will discuss next.</p>
+<aside class="admonition remark">
+<p class="admonition-title">Remark</p>
+<p>In Java &quot;happens-before&quot; does not mean &quot;immediately visible across all cores at the instant of the write&quot;. It means: <strong>if you observe the write, you observe everything that preceded it.</strong></p>
+</aside>
+</aside>
+</div>
+</ld-topic>
+<ld-topic class="exercises" id="review-question">
+<h2>Review Question</h2>
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1" id="ld-exercise-1">
+<p>Would it make a difference if we only loop at most 60 times and the type of the variable is the primitive type <code class="java"><span class="keyword type">byte</span></code>?</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword type">byte</span><span class="whitespace"> </span><span class="name">counter</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">InterruptedException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="name">Runnable</span><span class="whitespace"> </span><span class="name">increment</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">()</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">        </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="literal number integer">60</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="name">i</span><span class="operator">++</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">            </span><span class="name">counter</span><span class="operator">++</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="punctuation">};</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name">runs</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="keyword">do</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">    </span><span class="name">runs</span><span class="operator">++</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">            </span><span class="name">counter</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">            </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">t1</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(</span><span class="name">increment</span><span class="punctuation">);</span><span class="whitespace">     </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">t2</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(</span><span class="name">increment</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">            </span><span class="name">t1</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace">                         </span><span class="name">t2</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">            </span><span class="name">t1</span><span class="punctuation">.</span><span class="name attribute">join</span><span class="punctuation">();</span><span class="whitespace">                          </span><span class="name">t2</span><span class="punctuation">.</span><span class="name attribute">join</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace"> </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">counter</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">120</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">    </span><span class="name">IO</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Needed runs: &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">runs</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<ld-presenter-note data-encrypted="true">
+MTAwMDAw:P623VgQjMm56OJ+UpO3yJQZarrtfb5UyfhZINnffyZw=:VLhIdyFkoIs2X/nV:jZIqCr3llRrflADFxwfJM5fB40H1su3lxlSbjbYmMqWQLx0xWfvMOo1hZG/P7yg2tRxN4qh8tJ1jB2SGIB6qq1Y2AuDLhlN6kgx+TyVnnoTxJ+OoEMkCpnTe4A/NoayacniRpMiDyQYSwtLGaDet9yOGLtezh34aZO7vhMgSTGCqGN1QOTopDjtESsipBL8iivlBqS44EZIKd/eC8ivZaeA4o0YBKR/iAXaY7aWRLDyLoovnHTuJfRJhxaIHoEaQR66SsJYwfWdRwetd/y9ht+hw88AmE8W9V8xyadxk9pwYgUKO7C1sbxehV/eL1VjLL5uKgGZ5O7tOveL1GKcHQKkj24nRgNxsEf2EcnLLvnhRmIZaFY/yPDS1Y4q85quWg9a26P3XqX629ejEx6ma4E9/WWrpU6K2b+atSxfIXmkcaZC7vatufq+QL1JaFrUbgVNIcgBZy47UeGdErUYu0msXqdbW7JMcDiqdBzGdfDdzNRPGPbrxqWLL4Oes7xCpkXlICGYNFLBI/V98R9ALb9A4tg==</ld-presenter-note>
+</div>
+</ld-topic>
 <ld-topic id="communication-and-synchronization-with-the-help-of-monitors">
 <h2>Communication and synchronization with the help of <em>monitors</em></h2>
-<p>A <em>monitor</em> is an object in which the methods are executed in mutual exclusion (<em>mutual exclusion</em>).</p>
+<p>A <em>monitor</em> is an object in which the methods are executed in <em>mutual exclusion</em>.</p>
 <object aria-label="Monitor" class="light-image align-right" data="images/threads/monitor.svg" role="img" type="image/svg+xml">
 </object><p class="rubric">Condition synchronization</p>
 <ul class="simple">
@@ -166,24 +248,25 @@
 </span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace">
 </span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
 </ld-card><ld-card class="incremental">
-<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">SharedLong</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">SharedLong</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
 </span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
-</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name">theData</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="comment single">// reading and writing longs is not atomic</span><span class="whitespace">
-</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
-</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">SharedLong</span><span class="punctuation">(</span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name">initialValue</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
-</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">      </span><span class="name">theData</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">initialValue</span><span class="punctuation">;</span><span class="whitespace">
-</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
-</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
-</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">synchronized</span><span class="whitespace"> </span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name function">read</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">theData</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
-</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">
-</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">synchronized</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">write</span><span class="punctuation">(</span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name">newValue</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">theData</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">newValue</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
-</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">
-</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">synchronized</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">incrementBy</span><span class="punctuation">(</span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name">by</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
-</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">      </span><span class="name">theData</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">theData</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">by</span><span class="punctuation">;</span><span class="whitespace">
-</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">  </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name">theData</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="comment single">// reading (or writing) a single</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">                        </span><span class="comment single">// non-volatile long is not atomic</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">SharedLong</span><span class="punctuation">(</span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name">initialValue</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="name">theData</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">initialValue</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">synchronized</span><span class="whitespace"> </span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name function">read</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="keyword">return</span><span class="whitespace"> </span><span class="name">theData</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">synchronized</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">write</span><span class="punctuation">(</span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name">newValue</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace"> </span><span class="name">theData</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">newValue</span><span class="punctuation">;</span><span class="whitespace"> </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">  </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">synchronized</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">incrementBy</span><span class="punctuation">(</span><span class="keyword type">long</span><span class="whitespace"> </span><span class="name">by</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">    </span><span class="name">theData</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">theData</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">by</span><span class="punctuation">;</span><span class="whitespace">
 </span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace">
-</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">
-</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace">  </span><span class="name">SharedLong</span><span class="whitespace"> </span><span class="name">myData</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">SharedLong</span><span class="punctuation">(</span><span class="literal number integer">42</span><span class="punctuation">);</span></code></pre>
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace"></span><span class="name">SharedLong</span><span class="whitespace"> </span><span class="name">myData</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">SharedLong</span><span class="punctuation">(</span><span class="literal number integer">42</span><span class="punctuation">);</span></code></pre>
 </ld-card><ld-card class="incremental">
 <pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="keyword declaration">class</span> <span class="name class">SynchronizedCounter</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
 </span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
@@ -379,7 +462,78 @@ g2:bb.get(), p1:bb.put(), p2:bb.put()</p></td>
 <p>In step 5, the VM woke up the <code class="java"><span class="name">g2</span></code> thread - instead of the <code class="java"><span class="name">p2</span></code> thread - due to the call of <code class="java"><span class="name">notify</span></code> by <code class="java"><span class="name">g1</span></code>. The awakened thread <code class="java"><span class="name">g2</span></code> checks the condition (step 6) and realises that the buffer is empty. It goes back to the wait state. Now both a thread that wants to write a value and a thread that wants to read a value are waiting.</p>
 </div>
 </ld-topic>
-<ld-topic class="new-section" id="advanced-synchronisation-mechanisms-primitives-and-concepts">
+<ld-topic id="java-s-volatile-keyword-lightweight-visibility-guarantee">
+<h2>Java's <code class="java"><span class="keyword declaration">volatile</span></code> Keyword — Lightweight Visibility Guarantee</h2>
+<ld-deck>
+<ld-card>
+<ul class="incremental-list simple">
+<li><p>Declaring a field <code class="java"><span class="keyword declaration">volatile</span></code> guarantees <em>visibility</em>: every write is immediately flushed to main memory; every read fetches the current value from main memory.</p></li>
+<li><p>It also guarantees <em>ordering</em>: a write <em>happens-before</em> every subsequent read of the same variable.</p></li>
+</ul>
+<aside class="admonition incremental attention">
+<p class="admonition-title">Attention!</p>
+<p>Usage of <code class="java"><span class="keyword declaration">volatile</span></code> does <strong>not</strong> guarantee <strong>atomicity</strong>: compound operations such as <code class="java"><span class="name">counter</span><span class="operator">++</span></code> (read / modify / write) are still unsafe.</p>
+</aside>
+<div class="supplemental docutils container">
+<p>Behind the scenes, <code class="java"><span class="keyword declaration">volatile</span></code> inserts <em>memory barriers</em> that prevent both the Just-In-Time-Compiler (JIT Compiler) and the CPU from reordering instructions across the barrier.</p>
+<p>Hence, <code class="java"><span class="keyword declaration">volatile</span></code> eliminates only two of the three fundamental problems: visibility and ordering. To eliminate all three a <em>monitor</em> (<code class="java"><span class="keyword declaration">synchronized</span></code>) or an atomic type (e.g. <code class="java"><span class="name">AtomicInteger</span></code>) is required.</p>
+</div>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Rule of thumb</p>
+<div class="accentuate docutils container">
+<p><code class="java"><span class="keyword declaration">volatile</span></code> is sufficient when <em>exactly one thread writes</em> and one or more threads only read — with no read/modify/write involved.</p>
+</div>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Using <code class="java"><span class="keyword declaration">volatile</span></code> — the Stop-Flag Pattern</p>
+<ld-deck>
+<ld-card>
+<p class="rubric"><em>Insufficiently</em> Synchronized Example</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">running</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword constant">true</span><span class="punctuation">;</span><span class="whitespace">             </span><span class="comment single">// shared variable</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">InterruptedException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">worker</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(()</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">        </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">running</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">           </span><span class="comment single">// read</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="punctuation">});</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="name">worker</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="name">Thread</span><span class="punctuation">.</span><span class="name attribute">sleep</span><span class="punctuation">(</span><span class="literal number integer">1000</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="name">running</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword constant">false</span><span class="punctuation">;</span><span class="whitespace">                 </span><span class="comment single">// write</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Correctly Synchronized Example</p>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword declaration">volatile</span><span class="whitespace"> </span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">running</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword constant">true</span><span class="punctuation">;</span><span class="whitespace">    </span><span class="comment single">// evey read/write hits main memory</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace"></span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="keyword declaration">throws</span><span class="whitespace"> </span><span class="name">InterruptedException</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">    </span><span class="keyword declaration">var</span><span class="whitespace"> </span><span class="name">worker</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Thread</span><span class="punctuation">(()</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">        </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">running</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">           </span><span class="comment single">// read from main memory</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="punctuation">});</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="name">worker</span><span class="punctuation">.</span><span class="name attribute">start</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="name">Thread</span><span class="punctuation">.</span><span class="name attribute">sleep</span><span class="punctuation">(</span><span class="literal number integer">1000</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="name">running</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword constant">false</span><span class="punctuation">;</span><span class="whitespace">                </span><span class="comment single">// write to main memory</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<aside class="admonition incremental summary">
+<p class="admonition-title">Summary</p>
+<p><code class="java"><span class="keyword declaration">volatile</span></code> is correct here because only the <em>main thread writes</em> and only the <em>worker thread reads</em> — no compound operation is involved.</p>
+</aside>
+<div class="supplemental docutils container">
+<p>Without <code class="java"><span class="keyword declaration">volatile</span></code>, the JIT compiler is free to hoist the <code class="java"><span class="name">running</span></code>
+read out of the loop — it has no evidence that another thread will ever
+change it.  The worker may therefore spin forever even after the flag is set
+to <code class="java"><span class="keyword constant">false</span></code>.</p>
+<p>Note that <span class="docutils literal">volatile</span> does <em>not</em> guarantee <em>when</em> the worker reacts to the flag change — it only guarantees
+that the write will eventually (and typically immediately) be seen.</p>
+</div>
+</ld-card></ld-deck></ld-card></ld-deck></ld-topic>
+<ld-topic class="exercises" id="review-question-1">
+<h2>Review Question</h2>
+<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - volatile int counter?" id="ld-exercise-2">
+<p class="ld-exercise-title rubric">Why is <code class="java"><span class="keyword declaration">volatile</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">counter</span></code> still broken for the counting example, even though <code class="java"><span class="keyword declaration">volatile</span><span class="whitespace"> </span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">running</span></code> is correct for the stop-flag?</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:axWj6k+T9JQXzJgPR5Pjjk1iaXSMw3W1Z/wACn4u4Cw=:GFG9zVaKn19a+mwI:nXMcuGiYME/DjTkEynymgHQgcM92xGl5w3Wx1opxKyZbfxbBS7M7lqCmNxB89cR5raL23MPTPW59CKldL8JaVQR5c5GlSwG1R+fZisUlbzen1aFIIgg0pWSSYXUtKmf+vRNNfW2InEpEKq3aaK5m4DsCq9pggkqSpDYk5leTd7DYRC5dyqRyOHaS4o6MELP6gGAxSpKq9x0YnM2oes6Ri8z3rLPYP3nqn0tEkd/BVkx6OusrPygoqqhpc+qHYPSu7rnlmaY8+CEvFYCONJBLkXfFrCZDDVwc7Rvw24VgcolRioVfJx+jU+u/tby1Y7JaZijvukfZzQAFls/YIuarDzgtVCiV0S2YzMX+TCPgOZ0ZcyvIJyi59Ktl+3H9T10nPBHPS9KK3mpZhQqw2tuDWfP/pzig1j5svgEktUToRb3wrVAGxo0vcHS9ZeoSjByt1+HGqsnp51+GBrXHw0fEe2XjaTN+r+1u0N2ercFDTLIkCh6H7FNHR+tss9001wo4bEQzB1Xdc0oA9sIvaiJZghyADGJzNQQ=</div>
+</div>
+</ld-topic>
+<ld-topic class="new-section transition-scale" id="advanced-synchronisation-mechanisms-primitives-and-concepts">
 <h2>Advanced synchronisation mechanisms, primitives and concepts.</h2>
 </ld-topic>
 <ld-topic id="java-api-for-concurrent-programming">
@@ -452,6 +606,14 @@ g2:bb.get(), p1:bb.put(), p2:bb.put()</p></td>
 </span></code><small class="ln">46 </small><code data-lineno="46 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace">
 </span></code><small class="ln">47 </small><code data-lineno="47 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
 </ld-card></ld-deck></ld-topic>
+<ld-topic class="exercises" id="review-question-2">
+<h2>Review Question</h2>
+<div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Replacing *volatile boolean running* with *AtomicBoolean running*" id="ld-exercise-3">
+<p class="ld-exercise-title rubric">Would replacing <code class="java"><span class="keyword declaration">volatile</span><span class="whitespace"> </span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">running</span></code> with <code class="java"><span class="name">AtomicBoolean</span><span class="whitespace"> </span><span class="name">running</span></code> in the initial counter example be correct? Would it be necessary?</p>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:yai6UtZnsTBKTiy6ja3O9Kyv3qk5L6E8PvKFFaIg158=:kN0tIZ1O/G7/K0ja:cN24g+qpS7of2EGHBWeBzNFfmGkklz6C5QunvcIe/8RZpTvJEdx8XeuY5VonjXLjAqNPN4yybx00o2qgysEZ+dAf2M7/UXgIJSWi9nrghwuCVumePzEQFlhK930ToHRUISgSu7aYzRmbZzF9OzQwKhgH/tJq78b/UnoE3f3Wros9Kjb8LRtfPiF6DGNl5vbDp2Ie9SLRLDCRGmbwFh5Y916uRHPnTFE3nDq7U+tX7uxxbVqI8Oid+qSIo5e7niu8qbHH01s2rxOHvxMH7lNMTIA5+u2XU9k2BerxkXGQDwNoXM4KZ7As0b0knBQZpqDDKQ51BJ0z48OXYHU75FSMQzpDzprV7PPYWbLL0jhDlsUlJMzwmG9aHtOWjEeRwAtJL7o2DvWAYUTsK1PgJaunNVodzH887OF05SQ/0B7spvbnN/g9yZxA6i4rlOtdzeNXhJTvGNmOV0ZAY3GB29OWf8wElDh6bYSPIx0Oty7M/1heRhprmnTrvbgmaNB77dkG10D33C5a+1x4b+NcQjm/yzftQZjLp7rpXrwKzoRir+U1Qf0aVz+oO61cC9TnNt5MClSbBKBmtUjr8WpvIHtn0IkrXtgQvEZdGravBj0GYt/wq/p6xMtq+wDht+GXhzMzhfoy6Iw3FlWeZJnvxWX8SzpDTfNZ8F6OriOnW+uQ30uuW7MBX5v9OCPocH1pdm1v2XmWF9fIxqD8G05fhA07XZa/a1sWTgGbm6z7U4LA1943qbLBZ0jPcvzq5SsHGa2Xps5stQ==</div>
+</div>
+</ld-topic>
 <ld-topic id="thread-priorities">
 <h2>Thread Priorities</h2>
 <ul class="incremental-list simple">
@@ -535,7 +697,7 @@ g2:bb.get(), p1:bb.put(), p2:bb.put()</p></td>
 </ld-topic>
 <ld-topic class="exercises" id="exercise">
 <h2>Exercise</h2>
-<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Delayed Execution" id="ld-exercise-1">
+<div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Delayed Execution" id="ld-exercise-4">
 <p class="ld-exercise-title rubric">Delayed Execution</p>
 <p>Implement a class (<code class="java"><span class="name">DelayingExecutor</span></code>) that accepts tasks (instances of <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">Runable</span></code>) and executes them after a certain time. The class must not block or be locked during this time.</p>
 <p>Consider using virtual threads. A virtual thread can be created using the method: <code class="java"><span class="name">Thread</span><span class="punctuation">.</span><span class="name attribute">ofVirtual</span><span class="punctuation">()</span></code>. A <code class="java"><span class="name">Runnable</span></code> object can then be passed to the <code class="java"><span class="name">start</span></code> method.</p>
@@ -584,7 +746,7 @@ MTAwMDAw:Os/E6mRMlM3jIP3xjBz5LtD0IOTi+WLUTGGggxmy2xs=:aQXcKv6sHjzyN16C:rJFAvhjQD
 <ld-topic class="exercises" id="exercise-1">
 <h2>Exercise</h2>
 <ld-scrollable>
-<div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Thread-safe programming" id="ld-exercise-2">
+<div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - Thread-safe programming" id="ld-exercise-5">
 <p class="ld-exercise-title rubric">Thread-safe programming</p>
 <p>Implement a class <code class="java"><span class="name">ThreadsafeArray</span></code> to store non-<code class="java"><span class="keyword constant">null</span></code> objects (<code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">Object</span></code>) at selected indices - comparable to a normal array. Compared to a normal array, however, a thread which wants to read a value should be blocked if the cell is occupied. The class should provide the following methods:</p>
 <dl class="field-list simple">
