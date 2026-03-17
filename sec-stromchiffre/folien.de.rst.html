@@ -44,7 +44,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2.5</dd>
+<dd class="version">2.5.1</dd>
 </dl>
 <dl class="sources field-list simple">
 <dt>Quellen<span class="colon">:</span></dt>
@@ -203,7 +203,7 @@
 \{F_k:\{0,1\}^n\rightarrow \{0,1\}^m\}_{k\in \{0,1\}^\lambda }
 \end{equation*}
 </div>
-<p>Der Schlüssel <span class="math-i">k</span> wählt eine konkrete Funktion aus dieser Familie aus. <span class="math">\(\lambda\)</span> bestimmt das Sicherheitsniveau; insbesondere die Länge des Schlüssels. In der Praxis häufig 128 oder größer.</p>
+<p>Der Schlüssel <span class="math-i">k</span> wählt eine konkrete Funktion aus dieser Familie aus. <span class="math">\(\lambda\)</span> bestimmt das Sicherheitsniveau; insbesondere die Länge des Schlüssels. In der Praxis häufig 128 Bit oder größer.</p>
 </li>
 <li><p>Wird verwendet, um eine pseudozufällige Bitfolge <em>mit einer bestimmten Länge</em> zu erzeugen.</p></li>
 <li><p>PRFs dienen z. B. der Ableitung von symmetrischen Schlüsseln und Nonces.</p></li>
@@ -236,7 +236,6 @@
 <ld-topic id="zufalligkeit-1">
 <h2>Zufälligkeit</h2>
 <p>Der erzeugte Bitstrom muss zufällig erscheinen, obwohl er deterministisch ist:</p>
-<blockquote>
 <aside class="admonition incremental attention">
 <p class="admonition-title">Achtung!</p>
 <p>Es gibt keinen einzigen Test, mit dem „abschließend“ festgestellt werden kann, ob eine PRF/ein PRNG Zahlen erzeugt, die die Eigenschaft der Zufälligkeit aufweisen.</p>
@@ -255,7 +254,6 @@
 </div>
 </div>
 </div>
-</blockquote>
 </ld-topic>
 <ld-topic id="tests-auf-zufalligkeit">
 <h2>Tests auf Zufälligkeit</h2>
@@ -363,9 +361,16 @@
 <p>Die Auswahl der Werte für <span class="math">\(a\)</span> , <span class="math">\(c\)</span> und <span class="math">\(m\)</span> ist entscheidend für die Entwicklung eines brauchbaren Zufallszahlengenerators.</p>
 </div>
 <div class="supplemental docutils container">
+<p>Durch die richtige Wahl von m, a und c kann ggf. garantiert werden, dass die länge der Periode tatsächlich m ist; bei unvorsichtiger Wahl ist dies im Allgemeinen nicht der Fall.</p>
+<p>Das Hull-Dobell-Theorem ist die Grundlage für die Wahl der richtigen Parameter. Es müssen alle folgenden Bedingungen gelten:</p>
+<ol class="arabic simple">
+<li><p><span class="math">\(gcd(c,m)=1\)</span>; d. h. <span class="math">\(c\)</span> und <span class="math">\(m\)</span> sind teilerfremd</p></li>
+<li><p>Für jeden Primteiler <span class="math">\(p\)</span> von <span class="math">\(m\)</span> gilt: <span class="math">\(p\mid (a-1)\)</span></p></li>
+<li><p>Falls <span class="math">\(4\mid m\)</span>, dann auch <span class="math">\(4\mid (a-1)\)</span>.</p></li>
+</ol>
 <aside class="admonition warning">
 <p class="admonition-title">Warnung</p>
-<p>Lineare Kongruenzgeneratoren sind nicht für kryptografische Anwendungen geeignet, da sie leicht vorhersagbar sind: Aus wenigen Ausgabewerten lassen sich die Parameter vollständig rekonstruieren.&quot;</p>
+<p>Lineare Kongruenzgeneratoren sind nicht für kryptografische Anwendungen geeignet, da sie leicht vorhersagbar sind: Aus wenigen Ausgabewerten lassen sich die Parameter vollständig rekonstruieren.</p>
 </aside>
 <p>Im Bereich der Simulation können sie jedoch nützlich sein.</p>
 </div>
@@ -772,9 +777,9 @@ MTAwMDAw:Igzq7Soi5JG78hRZ2vOOZ+MW3U1652wStWuWeKYtbyE=:/xDlB6P6WCh5sk9U:hrlJo7inI
             </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number hex">0xcc5fed3c</span></code></pre>
 </ld-cell></ld-grid><div class="supplemental docutils container">
 <p>Linksverschiebung um 7 Stellen:</p>
-<pre class="code python literal-block"><code><span class="literal number hex">0x7998bfda</span> <span class="operator">=</span> <span class="literal number bin">0b01111001100110001011111111011010</span><span class="whitespace">
-</span><span class="literal number bin">0b0111100_1100110001011111111011010</span> <span class="operator">&lt;&lt;&lt;</span> <span class="literal number integer">7</span> <span class="operator">=</span>  <span class="literal number bin">0b1100110001011111111011010_0111100</span><span class="whitespace">
-</span><span class="literal number bin">0b1100110001011111111011010_0111100</span> <span class="operator">=</span> <span class="literal number hex">0xcc5fed3c</span></code></pre>
+<pre class="code python literal-block"><code><span class="literal number hex">0x7998bfda</span> <span class="operator">=</span> <span class="literal number bin">0b0111</span> <span class="literal number integer">1001</span> <span class="literal number integer">1001</span> <span class="literal number integer">1000</span> <span class="literal number integer">1011</span> <span class="literal number integer">1111</span> <span class="literal number integer">1101</span> <span class="literal number integer">1010</span><span class="whitespace">
+</span>             <span class="literal number bin">0b0111</span> <span class="literal number integer">1001</span> <span class="literal number integer">1001</span> <span class="literal number integer">1000</span> <span class="literal number integer">1011</span> <span class="literal number integer">1111</span> <span class="literal number integer">1101</span> <span class="literal number integer">1010</span> <span class="operator">&lt;&lt;&lt;</span> <span class="literal number integer">7</span> <span class="operator">=</span><span class="whitespace">
+</span>             <span class="literal number bin">0b1100</span> <span class="literal number integer">1100</span> <span class="literal number integer">0101</span> <span class="literal number integer">1111</span> <span class="literal number integer">1110</span> <span class="literal number integer">1101</span> <span class="literal number integer">0011</span> <span class="literal number integer">1100</span>       <span class="operator">=</span> <span class="literal number hex">0xcc5fed3c</span></code></pre>
 <p>ChaCha20-Poly1305 - d. h. ChaCha20 mit zusätzlicher Authentifizierung (Poly 1305) - wird unter anderem von IPsec, SSH, TLS 1.2, DTLS 1.2, TLS 1.3, WireGuard, S/MIME 4.0, und OTRv4[22].</p>
 </div>
 </ld-topic>
@@ -1031,7 +1036,7 @@ MTAwMDAw:Igzq7Soi5JG78hRZ2vOOZ+MW3U1652wStWuWeKYtbyE=:/xDlB6P6WCh5sk9U:hrlJo7inI
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - CHA CHA verstehen" id="ld-exercise-5">
 <p class="ld-exercise-title rubric">CHA CHA verstehen</p>
-<ul>
+<ol class="arabic">
 <li><p>Welchem Zweck dient die Nonce? Bzw. warum reicht ein Schlüssel alleine nicht?</p></li>
 <li><p>Muss die Nonce geheim gehalten werden?</p></li>
 <li><p>Wenn die Nonce wiederverwendet wird, welche Information kann der Angreifer in welchen Situationen ableiten?</p></li>
@@ -1064,9 +1069,9 @@ MTAwMDAw:Igzq7Soi5JG78hRZ2vOOZ+MW3U1652wStWuWeKYtbyE=:/xDlB6P6WCh5sk9U:hrlJo7inI
 </div>
 </li>
 <li><p>Kann CHACHA20 parallelisiert werden?</p></li>
-</ul>
+</ol>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:iZ2f9hMNy3yRnwR2c4Ygo1zCoN4zatXiyijTJkX2WAU=:VK4rbv5ebUmMXkSw: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</div>
+MTAwMDAw:R6qocy36BLhp7fci5ByWYt3nVXOu98WgS6BF1jVPa/c=:lyDbYjJEk+h8/XZv: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</div>
 </div>
 </ld-topic>
 </template>
