@@ -10,8 +10,8 @@
 <meta content="lecture-theo-ds-baeume-und-graphen" name="id" />
 <meta content="last-viewed" name="first-slide" />
 <meta name="version" content="LD2 RENAISSANCE" />
-<meta name="exercises-passwords" content="MTAwMDAw:FrJq8UyNwv26DvqsFbtK0jMRhWqAsFC3vGVyVrvSG4I=:b27nT7IrOCD71fDd:/+E6H/M5wd23VeibLN0mFA+v9lKkFzVBXfZEPJSYifpJCoBp0wNYOmvgylkgaAzsL8GVnBOjieIjV9j00fN9sHflS4fIb4O3VZMvOioit5hOC9+nPXtHKO0iNUoPQ8JLR5fLe2spF5q6X4k2A6oa8KCKtQi39qEV+3JDUNG5xOjbHynhAQJ5rq1nYmkV8i9f6yIQv7ba6HLFiZuw5+8yNSs3jBUfYvbiUG/chfyYYHHheY76KwNxi1MYKKuMeLjBybkwVxXjD4cA8a3UBsHufrGDhjDSxXW6Vj0AbfQ6KrCOk5YIbsoB5nQYIPlEY66ZXfhiL5XHqOTK69O/d5QEtlyKv99x/5FXzgTtp7ghmuOuAGJD/7d+e3805EMY6zW7+/IYPl9kzTGhdoDmlujDxXN4dOIpEOxL1h3GMOBw4p3RPDU4f6XIS8B8W5a1P4GVJdIQp8yedHfAUcyuP11CMCY6+URENEy7SST61jmH2+tConkven7N8pXS4wm8+a2XwfgXyJ/fmuJZ756MsRxaaYeJEySBPks5Dajy93B1XuJPUKwxyAGKhoVILMiIx5RiWJ8dBgv3Kt2Cp/52Z8JUdAi4r5SMt5HgtAb15fdoplOIag/aamPZsgRAqdzGQ1n5o7GlYNOIh8M8BP7WUbERqp5kpmflc/o=" />
-<title>Datenstrukturen - Bäume und Graphen</title>
+<meta name="exercises-passwords" content="MTAwMDAw:nRk835vj1rPU50phBw3WhZ4KCAuqYKBFUnv9YesWhc4=:/0fg99GGJUD56u+s:oNBX5Ls3MvBycmgl9GUNXU1V64fjPkI8CcCCYTat+cxXu6oV4QHeLpu7QUWSvJMix6sXn7f/6KFplFIfbi58o4PJu5h8snhW7C3g98cBCM5ZNeKuTgiY4oP3FOy3lHgrr7E85GURLOTIPwZhOi5vgc4xr9EHJQWQZx9vudi8Dt08e46BpB4J3HB2I7WyqboNqeDTz1EgTdn5Q4G9JnLCwmTVOuHpiEXDUzKnpzNa4dhW6qTAlOOI1cX4+SFUtD5sbJT75lOBCVgisPZT+8QGI5XHFVEdl0sggFBJVVrU0ocXb49cDAf6csgkVqO/zwTDAVPC/uD1WX8AaSdjEmjeNn2DMB9zCZhoneSzgncpgBnm8oZi53+LCxMHqx9Qir2ifAGUh67NVSUTOjdiI7hvWsMztol9mnUg5UY8TRSxmf/dIUgMJi8oqPjreDz22YSJF/2N6gv4Mk/kkQcrJu0tanc0lIS2jOR4KA6m1gqa6u9CNar1rsTMlmJCdnAFMN4YT33jh8RC/IJz6XECSKckumZ5TCrxVUM4O/nZENadIe0p78kOjR7choCVPu8vXYK5QdipIgg8wVcbVeKa/HHvG+RsjlmwQ/FYYDYL6fKxIfru6zpu6/AlTLKQASLw8cybDTOTRRwYqUg2TTUvGyhe7vkaYMsD554V4WhskUFLvmtWqa7Ea8GgycYYiZS26bFv32QHHzmNf1UPggC5kyyjcVYqpQ1a1b6zDVbSYSn3ScMAeirYmvBo0rAZ20I2TNl7mhadj9PMlbOw3ZKDDsg6cOhA9JBeINVH6sbzCIgyu+tNvjdpCw==" />
+<title>Datenstrukturen: Bäume, Graphen und Heaps</title>
 <script>
     window.MathJax = {
         tex: { tags: 'ams' },
@@ -32,11 +32,11 @@
     
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-defs"><defs><marker     id="arrow"     viewBox="0 0 2 2"     refX="1.8"     refY="1"     markerUnits="strokeWidth"     markerWidth="6"     markerHeight="6"     orient="auto-start-reverse">     <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" fill="context-stroke" /> </marker> <marker     id="small-arrow"     viewBox="0 0 2 2"     refX="1.5"     refY="1"     markerUnits="strokeWidth"     markerWidth="4"     markerHeight="4"     orient="auto-start-reverse">     <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" fill="context-stroke"/> </marker></defs></svg>
-<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-style"><style>g.graph {     circle{         fill: var(--current-fg-color);         stroke-width: 0.2;          &.red { fill: red;}         &.green { fill: green; }         &.blue { fill: blue; }         &.start-node {             fill: none;             stroke: red;             stroke-width: 0.3;         }         &.visited-node {             fill: lightgray;             stroke: blue;             stroke-width: 0.3;         }         &.unreached-node {             fill: lightgray;             stroke: none;             stroke-width: 0.3;         }     }     path,     line {         fill: none;         stroke: light-dark(darkgray, lightgray);         stroke-width:0.2;          &.irrelevant-edge {  stroke: red; }     }     text {         fill: var(--current-fg-color);         font-family: var(--code-font-family);         font-weight: bold;          &.edge-label {             fill: light-dark(darkorange,orange);             font-weight: normal;             font-size: 60%;         }     } } g.tree {     circle {         fill: light-dark(darkgray, silver);         filter: drop-shadow( 2 2 4 rgb(0, 0, 0));         &.visited-node {             fill: light-dark(lightgray,darkgray);             stroke: blue;             stroke-width: 0.3;         }     }     line {         stroke: color-mix(             in lch,             var(--current-fg-color) 80%,             var(--current-bg-color));         stroke-width:0.2;     }     text {         fill: var(--current-fg-color);         font-family: var(--code-font-family);         font-weight: bold;     }     line, path {         &.traversal-edge {             fill: none;             stroke: red;             stroke-width: 0.2;         }     } }</style></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-defs"><defs><marker     id="arrow"     viewBox="0 0 2 2"     refX="1.8"     refY="1"     markerUnits="strokeWidth"     markerWidth="6"     markerHeight="6"     orient="auto-start-reverse">     <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" fill="context-stroke" /> </marker> <marker     id="small-arrow"     viewBox="0 0 2 2"     refX="1.5"     refY="1"     markerUnits="strokeWidth"     markerWidth="4"     markerHeight="4"     orient="auto-start-reverse">     <path class="arrow-head" d="M 0 0 L 2 1 L 0 2 z" fill="context-stroke"/> </marker> <marker id="dotted-arrow" viewBox="0 0 6 6" refX="5" refY="3"         markerWidth="4" markerHeight="4" orient="auto">     <path d="M0,0.5 L5,3 L0,5.5" fill="none"         stroke="#b8860b" stroke-width="1.2"/> </marker></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-style"><style>g.graph {     circle{         fill: var(--current-fg-color);         stroke-width: 0.2;          &.red { fill: red;}         &.green { fill: green; }         &.blue { fill: blue; }         &.start-node {             fill: none;             stroke: red;             stroke-width: 0.3;         }         &.visited-node {             fill: lightgray;             stroke: blue;             stroke-width: 0.3;         }         &.unreached-node {             fill: lightgray;             stroke: none;             stroke-width: 0.3;         }     }     path,     line {         fill: none;         stroke: light-dark(darkgray, lightgray);         stroke-width:0.2;          &.irrelevant-edge {  stroke: red; }     }     text {         fill: var(--current-fg-color);         font-family: var(--code-font-family);         font-weight: bold;          &.edge-label {             fill: light-dark(darkorange,orange);             font-weight: normal;             font-size: 60%;         }     } } g.tree {     circle {         fill: light-dark(darkgray, silver);         filter: drop-shadow( 2 2 4 rgb(0, 0, 0));         &.visited-node {             fill: light-dark(lightgray,darkgray);             stroke: blue;             stroke-width: 0.3;         }     }     line {         stroke: color-mix(             in lch,             var(--current-fg-color) 80%,             var(--current-bg-color));         stroke-width:0.2;     }     text {         fill: var(--current-fg-color);         font-family: var(--code-font-family);         font-weight: bold;     }     line, path {         &.traversal-edge {             fill: none;             stroke: red;             stroke-width: 0.2;         }     } } g.heap{     .lvl0-cell { fill: #fdb99a; stroke: #c05a30; stroke-width: 0.15; }     .lvl1-cell { fill: #a9c8f5; stroke: #1e67b0; stroke-width: 0.15; }     .lvl2-cell { fill: #98dab4; stroke: #1a7a4a; stroke-width: 0.15; }     .lvl0-brk  { stroke: #c05a30; fill: none; stroke-width: 0.25; stroke-linecap: round; }     .lvl1-brk  { stroke: #1e67b0; fill: none; stroke-width: 0.25; stroke-linecap: round; }     .lvl2-brk  { stroke: #1a7a4a; fill: none; stroke-width: 0.25; stroke-linecap: round; } }</style></svg>
 <template>
-<ld-topic id="datenstrukturen-baume-und-graphen">
-<h1 class="title">Datenstrukturen - Bäume und Graphen</h1>
+<ld-topic id="datenstrukturen-baume-graphen-und-heaps">
+<h1 class="title">Datenstrukturen: Bäume, Graphen und Heaps</h1>
 <dl class="docinfo">
 <dt class="dozent">Dozent<span class="colon">:</span></dt>
 <dd class="dozent"><p><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></p>
@@ -44,7 +44,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.1</dd>
+<dd class="version">2.0</dd>
 </dl>
 <div class="peripheral footer-left docutils container">
 <dl class="field-list">
@@ -1469,6 +1469,888 @@ MTAwMDAw:cD5cntg6BC/XQcZPrDNoJUMTkrMgJALVfbIjiiW/2no=:/V8xUSVN5AEz8UN+:KDdyR9Czt
 MTAwMDAw:4UT72ysODjBSDW6pj8+NvHUJi2qNGRSIOdF+g3p7HoM=:YsVNtq2sMRuPhOUS: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</div>
 </div>
 </ld-topic>
+<ld-topic class="new-section transition-move-left" id="prioritatswarteschlangen">
+<h2>Prioritätswarteschlangen</h2>
+<p class="section-subtitle"><span class="ger">Vorrangwarteschlange</span> / <span class="eng">Priority Queue</span></p>
+</ld-topic>
+<ld-topic id="prioritatswarteschlangen-uberblick">
+<h2>Prioritätswarteschlangen - Überblick</h2>
+<ul class="incremental-list simple">
+<li><p>Eine häufige Anforderung ist, dass wir Datensätze mit Schlüsseln der Reihe nach verarbeiten möchten. <span class="incremental">Wobei der Schlüssel den Prioritätswert für die Reihenfolge der Verarbeitung repräsentiert.</span> <span class="incremental">Die Verarbeitungsreihenfolge erfolgt dann von der größten zu der kleinsten Priorität oder umgekehrt.</span></p></li>
+<li><p>Anwendungsbeispiele:</p>
+<ul>
+<li><p>Job-Scheduling (Schlüssel repräsentieren die Priorität)</p></li>
+<li><p>Heapsort</p></li>
+<li><p>Huffman-Codierung</p></li>
+</ul>
+</li>
+</ul>
+</ld-topic>
+<ld-topic id="prioritatswarteschlangen-abstrakte-definition">
+<h2>Prioritätswarteschlangen - Abstrakte Definition</h2>
+<p>Standardoperationen:</p>
+<ul class="incremental-list">
+<li><p>erzeugen (einer leeren Prioritätswarteschlange)</p></li>
+<li><p>einfügen eines neuen Elements mit einer bestimmten Priorität</p></li>
+<li><p>abfragen des Elements mit der höchsten Priorität</p>
+<p>(oder ggf. der niedrigsten Priorität je nach Typ der Warteschlange)</p>
+</li>
+<li><p>entfernen des Elements mit der höchsten Priorität</p>
+<p>(oder ggf. der niedrigsten Priorität je nach Typ der Warteschlange)</p>
+</li>
+</ul>
+<aside class="admonition incremental remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Eine <em>Prioritätswarteschlange</em> (<em>Priority Queue</em>) ist somit eine Verallgemeinerung von Stacks und Queues. Beides lässt sich mit Hilfe von Prioritätswarteschlangen implementieren, wenn man als Schlüssel den Einfügezeitpunkt verwendet.</p>
+</aside>
+</ld-topic>
+<ld-topic id="prioritatswarteschlangen-implementierung">
+<h2>Prioritätswarteschlangen - Implementierung</h2>
+<p>Verschiedene Implementierungen sind denkbar:</p>
+<ul class="simple">
+<li><p>basierend auf einer (unsortierten) Liste</p></li>
+<li><p>basierend auf einem sortierten Array</p></li>
+<li><p>basierend auf einem Heap (als nächstes)</p></li>
+</ul>
+<aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Jede Implementierung hat andere Abwägungen und Einsatzszenarien.</p>
+<p>Die Verwendung eines Heaps ist jedoch effizient für viele Anwendungen, da das Einfügen und das Entfernen des höchsten Elements in <span class="math-i">O(log n)</span> Zeit erfolgen.</p>
+</aside>
+</ld-topic>
+<ld-topic id="heap">
+<h2>Heap</h2>
+<ul class="incremental-list">
+<li><p>Binärbaum, bei dem das Elternelement immer größer oder gleich seinen Kindern ist (Max-Heap).</p>
+<p>(Bei Min-Heaps ist das Elternelement immer kleiner oder gleich seinen Kindern.)</p>
+</li>
+<li><p>basierend auf einem fast <em>vollständigen</em> Binärbaum (alle Ebenen bis auf die letzte sind vollständig besetzt)</p></li>
+<li><p>aus effizienzgründen in einem Array gespeichert</p>
+<p>(Von einem Element <code>i</code> aus kann auf das Elternelement bzw. die Kinder über die Index-Formel: <code>parent = (i-1)/2</code> und <code>children = 2i+1, 2i+2</code> zugegriffen werden.)</p>
+</li>
+</ul>
+</ld-topic>
+<ld-topic id="heap-visualisierung-min-heap">
+<h2>Heap - Visualisierung (Min-Heap)</h2>
+<div style="width: 48ch; height: 18ch;">
+<svg    font-size="2" viewBox="0 0 48 18"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g class="tree heap">
+        <g>
+            <circle cx="12" cy="2" r="0.5" style="fill: #fdb99a;"/>
+            <text x="12.75" y="2.75">1</text>
+        </g>
+
+        <g>
+            <circle cx="6" cy="9" r="0.5" style="fill: #a9c8f5;"/>
+            <line x1="6" y1="9" x2="12" y2="2" />
+            <text x="4.25" y="9.5">3</text>
+        </g>
+
+        <g>
+            <circle cx="18" cy="9" r="0.5" style="fill: #a9c8f5;"/>
+            <line x1="18" y1="9" x2="12" y2="2" />
+            <text x="18.75" y="9.5">2</text>
+        </g>
+
+        <g>
+            <circle cx="3" cy="16" r="0.5" style="fill: #98dab4;"/>
+            <line x1="3" y1="16" x2="6" y2="9" />
+            <text x="1.25" y="16.5">5</text>
+        </g>
+
+        <g>
+            <circle cx="9" cy="16" r="0.5" style="fill: #98dab4;"/>
+            <line x1="9" y1="16" x2="6" y2="9" />
+            <text x="9.75" y="16.5">4</text>
+        </g>
+
+        <g>
+            <circle cx="15" cy="16" r="0.5" style="fill: #98dab4;"/>
+            <line x1="15" y1="16" x2="18" y2="9" />
+            <text x="13.25" y="16.5">8</text>
+        </g>
+
+        <g>
+            <circle cx="21" cy="16" r="0.5" style="fill: #98dab4;"/>
+            <line x1="21" y1="16" x2="18" y2="9" />
+            <text x="21.75" y="16.5">6</text>
+        </g>
+
+        <g class="incremental">
+            <text x="23" y="2.75">Array = [</text>
+            <circle class="visited-node" cx="12" cy="2" r="0.5" style="fill: #fdb99a;"/>
+            <text x="33" y="2.75">1,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="6" cy="9" r="0.5" style="fill: #a9c8f5;"/>
+            <text x="35" y="2.75">3,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="18" cy="9" r="0.5" style="fill: #a9c8f5;"/>
+            <text x="37" y="2.75">2,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="3" cy="16" r="0.5" style="fill: #98dab4;"/>
+            <text x="39" y="2.75">5,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="9" cy="16" r="0.5" style="fill: #98dab4;"/>
+            <text x="41" y="2.75">4,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="15" cy="16" r="0.5" style="fill: #98dab4;"/>
+            <text x="43" y="2.75">8,</text>
+        </g>
+
+        <g class="incremental">
+            <circle class="visited-node" cx="21" cy="16" r="0.5" style="fill: #98dab4;"/>
+            <text x="45" y="2.75">6]</text>
+        </g>
+
+
+        <g class="incremental" transform="translate(23.5 -18)">
+        <!-- Index-Labels -->
+        <g font-size="1.5" text-anchor="middle" fill="currentColor">
+            <text x="4.25"  y="23.4">0</text>
+            <text x="7.25"  y="23.4">1</text>
+            <text x="10.25" y="23.4">2</text>
+            <text x="13.25" y="23.4">3</text>
+            <text x="16.25" y="23.4">4</text>
+            <text x="19.25" y="23.4">5</text>
+            <text x="22.25" y="23.4">6</text>
+        </g>
+
+        <!-- Array-Zellen -->
+        <g font-size="1.8" text-anchor="middle" fill="currentColor">
+            <rect class="lvl0-cell" x="3"  y="24" width="2.5" height="2" />
+            <text x="4.25"  y="25.6">1</text>
+
+            <rect class="lvl1-cell" x="6"  y="24" width="2.5" height="2" />
+            <text x="7.25"  y="25.6">3</text>
+            <rect class="lvl1-cell" x="9"  y="24" width="2.5" height="2" />
+            <text x="10.25" y="25.6">2</text>
+
+            <rect class="lvl2-cell" x="12" y="24" width="2.5" height="2" />
+            <text x="13.25" y="25.6">5</text>
+            <rect class="lvl2-cell" x="15" y="24" width="2.5" height="2" />
+            <text x="16.25" y="25.6">4</text>
+            <rect class="lvl2-cell" x="18" y="24" width="2.5" height="2" />
+            <text x="19.25" y="25.6">8</text>
+            <rect class="lvl2-cell" x="21" y="24" width="2.5" height="2" />
+            <text x="22.25" y="25.6">6</text>
+        </g>
+
+        <!-- Ebenen-Klammern -->
+        <g font-size="1.5" >
+            <text x="0.25" y="28.2" text-anchor="middle">Ebene:</text>
+            <polyline class="lvl0-brk" points="5.5,26.3 5.5,26.8 3,26.8 3,26.3"/>
+            <text x="4.25" y="28.2" text-anchor="middle">0</text>
+
+            <polyline class="lvl1-brk" points="11.5,26.3 11.5,26.8 6,26.8 6,26.3"/>
+            <text x="8.75" y="28.2" text-anchor="middle">1</text>
+
+            <polyline class="lvl2-brk" points="23.5,26.3 23.5,26.8 12,26.8 12,26.3"/>
+            <text x="17.75" y="28.2" text-anchor="middle">2</text>
+        </g>
+        </g>
+    </g>
+</svg>
+</div><aside class="admonition remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Die Standardoperationen für Prioritätswarteschlangen sind auf Heaps in <span class="math-i">O(log n)</span> Zeit möglich - mit Ausnahme der Abfrage des höchsten Elements, die in <span class="math-i">O(1)</span> Zeit möglich ist.</p>
+</aside>
+</ld-topic>
+<ld-topic id="einfugen-eines-neuen-elements">
+<h2>Einfügen eines neuen Elements</h2>
+<p class="rubric">Psudocode Implementierung</p>
+<pre class="code pascal line-numbers-padded no-margin copy-to-clipboard literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="comment single">// heap - Array, dass die Heap-Eigenschaft erfüllt/den Heap repräsentiert</span><span class="whitespace">
+</span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="comment single">// n - Anzahl der Elemente im Heap</span><span class="whitespace">
+</span></code><small class="ln">3 </small><code data-lineno="3 "><span class="whitespace"></span><span class="comment single">// key - der neue Schlüssel</span><span class="whitespace">
+</span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="keyword">procedure</span><span class="whitespace"> </span><span class="name function">insert</span><span class="punctuation">(</span><span class="operator">&lt;</span><span class="keyword">in</span><span class="operator">/</span><span class="name">out</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">heap</span><span class="operator">,</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="keyword">in</span><span class="operator">/</span><span class="name">out</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">n</span><span class="operator">,</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="keyword">in</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">key</span><span class="punctuation">)</span><span class="operator">:</span></code></pre>
+<pre class="code pascal copy-to-clipboard incremental-code literal-block"><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="name">heap</span><span class="punctuation">[</span><span class="name">n</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="error">←</span><span class="whitespace"> </span><span class="name">key</span><span class="whitespace">   </span><span class="comment single">// Element ans Ende anhängen</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="name">i</span><span class="whitespace"> </span><span class="error">←</span><span class="whitespace"> </span><span class="name">n</span><span class="whitespace">           </span><span class="comment single">// Index des aktuell betrachteten Elements</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="name">n</span><span class="whitespace"> </span><span class="error">←</span><span class="whitespace"> </span><span class="name">n</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="whitespace">       </span><span class="comment single">// Aktualisierung der Anzahl der Elemente</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="comment single">// up-heap: solange Elternelement kleiner als eingefügtes Element</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="keyword">while</span><span class="whitespace"> </span><span class="name">i</span><span class="whitespace"> </span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="whitespace"> </span><span class="keyword">and</span><span class="whitespace"> </span><span class="name">heap</span><span class="punctuation">[(</span><span class="name">i</span><span class="operator">-</span><span class="literal number integer">1</span><span class="punctuation">)</span><span class="operator">/</span><span class="literal number integer">2</span><span class="punctuation">]</span><span class="whitespace"> </span><span class="operator">&lt;</span><span class="whitespace"> </span><span class="name">heap</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">]</span><span class="operator">:</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">        </span><span class="name builtin">swap</span><span class="punctuation">(</span><span class="name">heap</span><span class="punctuation">[(</span><span class="name">i</span><span class="operator">-</span><span class="literal number integer">1</span><span class="punctuation">)</span><span class="operator">/</span><span class="literal number integer">2</span><span class="punctuation">]</span><span class="operator">,</span><span class="whitespace"> </span><span class="name">heap</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">])</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">        </span><span class="name">i</span><span class="whitespace"> </span><span class="error">←</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">i</span><span class="operator">-</span><span class="literal number integer">1</span><span class="punctuation">)</span><span class="operator">/</span><span class="literal number integer">2</span></code></pre>
+</ld-topic>
+<ld-topic id="heap-entfernen-des-hochsten-elements-wert-1">
+<h2>Heap - Entfernen des höchsten Elements (Wert: 1)</h2>
+<ld-deck>
+<ld-card>
+<div style="width: 48ch; height: 18ch;">
+<svg    font-size="2" viewBox="0 0 48 18"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .lvl0-cell{fill:#fdb99a;stroke:#c05a30;stroke-width:0.15}
+        .lvl1-cell{fill:#a9c8f5;stroke:#1e67b0;stroke-width:0.15}
+        .lvl2-cell{fill:#98dab4;stroke:#1a7a4a;stroke-width:0.15}
+        .lvl0-brk{stroke:#c05a30;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl1-brk{stroke:#1e67b0;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl2-brk{stroke:#1a7a4a;fill:none;stroke-width:0.25;stroke-linecap:round}
+    </style>
+    <g class="tree heap">
+        <g>
+            <circle cx="12" cy="2" r="0.6"
+                    style="fill:#ff7070;stroke:#cc0000;stroke-width:0.2"/>
+            <text x="12.75" y="2.75">1</text>
+        </g>
+        <g>
+            <circle cx="6" cy="9" r="0.5" style="fill:#a9c8f5"/>
+            <line x1="6" y1="9" x2="12" y2="2"/>
+            <text x="4.25" y="9.5">3</text>
+        </g>
+        <g>
+            <circle cx="18" cy="9" r="0.5" style="fill:#a9c8f5"/>
+            <line x1="18" y1="9" x2="12" y2="2"/>
+            <text x="18.75" y="9.5">2</text>
+        </g>
+        <g>
+            <circle cx="3" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="3" y1="16" x2="6" y2="9"/>
+            <text x="1.25" y="16.5">5</text>
+        </g>
+        <g>
+            <circle cx="9" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="9" y1="16" x2="6" y2="9"/>
+            <text x="9.75" y="16.5">4</text>
+        </g>
+        <g>
+            <circle cx="15" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="15" y1="16" x2="18" y2="9"/>
+            <text x="13.25" y="16.5">8</text>
+        </g>
+        <g>
+            <circle cx="21" cy="16" r="0.6"
+                    style="fill:#ffe066;stroke:#b8860b;stroke-width:0.2"/>
+            <line x1="21" y1="16" x2="18" y2="9"/>
+            <text x="21.75" y="16.5">6</text>
+        </g>
+        <!-- Pfeil: letztes Element → Wurzel -->
+        <path d="M20.7,15.4 C16,9.5 14,5.5 12.4,2.9"
+            fill="none" stroke="#b8860b" stroke-width="0.22"
+            stroke-dasharray="0.6,0.35" marker-end="url(#dotted-arrow)"/>
+        <!-- Array -->
+        <g transform="translate(23.5,-18)">
+            <g font-size="1.5" text-anchor="middle" fill="currentColor">
+                <text x="4.25"  y="23.4">0</text>
+                <text x="7.25"  y="23.4">1</text>
+                <text x="10.25" y="23.4">2</text>
+                <text x="13.25" y="23.4">3</text>
+                <text x="16.25" y="23.4">4</text>
+                <text x="19.25" y="23.4">5</text>
+                <text x="22.25" y="23.4">6</text>
+            </g>
+            <g font-size="1.8" text-anchor="middle" fill="currentColor">
+                <rect x="3" y="24" width="2.5" height="2"
+                    style="fill:#ff7070;stroke:#cc0000;stroke-width:0.15"/>
+                <text x="4.25"  y="25.6">1</text>
+                <rect class="lvl1-cell" x="6"  y="24" width="2.5" height="2"/>
+                <text x="7.25"  y="25.6">3</text>
+                <rect class="lvl1-cell" x="9"  y="24" width="2.5" height="2"/>
+                <text x="10.25" y="25.6">2</text>
+                <rect class="lvl2-cell" x="12" y="24" width="2.5" height="2"/>
+                <text x="13.25" y="25.6">5</text>
+                <rect class="lvl2-cell" x="15" y="24" width="2.5" height="2"/>
+                <text x="16.25" y="25.6">4</text>
+                <rect class="lvl2-cell" x="18" y="24" width="2.5" height="2"/>
+                <text x="19.25" y="25.6">8</text>
+                <rect x="21" y="24" width="2.5" height="2"
+                    style="fill:#ffe066;stroke:#b8860b;stroke-width:0.15"/>
+                <text x="22.25" y="25.6">6</text>
+            </g>
+            <g font-size="1.5">
+                <text x="0.25" y="28.2" text-anchor="middle">Ebene:</text>
+                <polyline class="lvl0-brk" points="5.5,26.3 5.5,26.8 3,26.8 3,26.3"/>
+                <text x="4.25"  y="28.2" text-anchor="middle">0</text>
+                <polyline class="lvl1-brk" points="11.5,26.3 11.5,26.8 6,26.8 6,26.3"/>
+                <text x="8.75"  y="28.2" text-anchor="middle">1</text>
+                <polyline class="lvl2-brk" points="23.5,26.3 23.5,26.8 12,26.8 12,26.3"/>
+                <text x="17.75" y="28.2" text-anchor="middle">2</text>
+            </g>
+        </g>
+    </g>
+</svg>
+</div><p>Schritt 1:</p>
+<ul class="simple">
+<li><p>Minimum entfernen.</p></li>
+<li><p>Letztes Element (6) wird zur neuen Wurzel.</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<div style="width: 48ch; height: 18ch;">
+<svg    font-size="2" viewBox="0 0 48 18"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .lvl0-cell{fill:#fdb99a;stroke:#c05a30;stroke-width:0.15}
+        .lvl1-cell{fill:#a9c8f5;stroke:#1e67b0;stroke-width:0.15}
+        .lvl2-cell{fill:#98dab4;stroke:#1a7a4a;stroke-width:0.15}
+        .lvl0-brk{stroke:#c05a30;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl1-brk{stroke:#1e67b0;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl2-brk{stroke:#1a7a4a;fill:none;stroke-width:0.25;stroke-linecap:round}
+    </style>
+    <g class="tree heap">
+        <!-- Wurzel = 6 (verletzt Heap-Eigenschaft) -->
+        <g>
+            <circle cx="12" cy="2" r="0.6"
+                    style="fill:#ffa040;stroke:#cc6600;stroke-width:0.2"/>
+            <text x="12.75" y="2.75">6</text>
+        </g>
+        <g>
+            <circle cx="6" cy="9" r="0.5" style="fill:#a9c8f5"/>
+            <line x1="6" y1="9" x2="12" y2="2"/>
+            <text x="4.25" y="9.5">3</text>
+        </g>
+        <g>
+            <circle cx="18" cy="9" r="0.5" style="fill:#a9c8f5"/>
+            <line x1="18" y1="9" x2="12" y2="2"/>
+            <text x="18.75" y="9.5">2</text>
+        </g>
+        <g>
+            <circle cx="3" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="3" y1="16" x2="6" y2="9"/>
+            <text x="1.25" y="16.5">5</text>
+        </g>
+        <g>
+            <circle cx="9" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="9" y1="16" x2="6" y2="9"/>
+            <text x="9.75" y="16.5">4</text>
+        </g>
+        <g>
+            <circle cx="15" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="15" y1="16" x2="18" y2="9"/>
+            <text x="13.25" y="16.5">8</text>
+        </g>
+        <!-- Array -->
+        <g transform="translate(23.5,-18)">
+            <g font-size="1.5" text-anchor="middle" fill="currentColor">
+                <text x="4.25"  y="23.4">0</text>
+                <text x="7.25"  y="23.4">1</text>
+                <text x="10.25" y="23.4">2</text>
+                <text x="13.25" y="23.4">3</text>
+                <text x="16.25" y="23.4">4</text>
+                <text x="19.25" y="23.4">5</text>
+                <text x="22.25" y="23.4">6</text>
+            </g>
+            <g font-size="1.8" text-anchor="middle" fill="currentColor">
+                <rect x="3" y="24" width="2.5" height="2"
+                    style="fill:#ffa040;stroke:#cc6600;stroke-width:0.15"/>
+                <text x="4.25"  y="25.6">6</text>
+                <rect class="lvl1-cell" x="6"  y="24" width="2.5" height="2"/>
+                <text x="7.25"  y="25.6">3</text>
+                <rect class="lvl1-cell" x="9"  y="24" width="2.5" height="2"/>
+                <text x="10.25" y="25.6">2</text>
+                <rect class="lvl2-cell" x="12" y="24" width="2.5" height="2"/>
+                <text x="13.25" y="25.6">5</text>
+                <rect class="lvl2-cell" x="15" y="24" width="2.5" height="2"/>
+                <text x="16.25" y="25.6">4</text>
+                <rect class="lvl2-cell" x="18" y="24" width="2.5" height="2"/>
+                <text x="19.25" y="25.6">8</text>
+                <!-- Leerer Slot -->
+                <rect x="21" y="24" width="2.5" height="2"
+                    style="fill:#d8d8d8;stroke:#a0a0a0;stroke-width:0.15"/>
+                <text x="22.25" y="25.6" style="fill:#a0a0a0">×</text>
+            </g>
+            <g font-size="1.5">
+                <text x="0.25" y="28.2" text-anchor="middle">Ebene:</text>
+                <polyline class="lvl0-brk" points="5.5,26.3 5.5,26.8 3,26.8 3,26.3"/>
+                <text x="4.25"  y="28.2" text-anchor="middle">0</text>
+                <polyline class="lvl1-brk" points="11.5,26.3 11.5,26.8 6,26.8 6,26.3"/>
+                <text x="8.75"  y="28.2" text-anchor="middle">1</text>
+                <polyline class="lvl2-brk" points="20.5,26.3 20.5,26.8 12,26.8 12,26.3"/>
+                <text x="16.25" y="28.2" text-anchor="middle">2</text>
+            </g>
+        </g>
+    </g>
+</svg>
+</div><p>Schritt 2:</p>
+<ul class="simple">
+<li><p>n = 6 (letzter Slot frei).</p></li>
+<li><p>Heap-Eigenschaft verletzt (6 &gt; 3 und 6 &gt; 2).</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<div style="width: 48ch; height: 18ch;">
+<svg    font-size="2" viewBox="0 0 48 18"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .lvl0-cell{fill:#fdb99a;stroke:#c05a30;stroke-width:0.15}
+        .lvl1-cell{fill:#a9c8f5;stroke:#1e67b0;stroke-width:0.15}
+        .lvl2-cell{fill:#98dab4;stroke:#1a7a4a;stroke-width:0.15}
+        .lvl0-brk{stroke:#c05a30;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl1-brk{stroke:#1e67b0;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl2-brk{stroke:#1a7a4a;fill:none;stroke-width:0.25;stroke-linecap:round}
+    </style>
+    <g class="tree heap">
+        <!-- Neue Wurzel = 2 (grün = Heap-Eigenschaft erfüllt) -->
+        <g>
+            <circle cx="12" cy="2" r="0.6"
+                    style="fill:#90dd90;stroke:#2a8a2a;stroke-width:0.2"/>
+            <text x="12.75" y="2.75">2</text>
+        </g>
+        <g>
+            <circle cx="6" cy="9" r="0.5" style="fill:#a9c8f5"/>
+            <line x1="6" y1="9" x2="12" y2="2"/>
+            <text x="4.25" y="9.5">3</text>
+        </g>
+        <!-- 6 nach down-heap hierher verschoben (orange) -->
+        <g>
+            <circle cx="18" cy="9" r="0.6"
+                    style="fill:#ffd090;stroke:#c07020;stroke-width:0.2"/>
+            <line x1="18" y1="9" x2="12" y2="2"/>
+            <text x="18.75" y="9.5">6</text>
+        </g>
+        <g>
+            <circle cx="3" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="3" y1="16" x2="6" y2="9"/>
+            <text x="1.25" y="16.5">5</text>
+        </g>
+        <g>
+            <circle cx="9" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="9" y1="16" x2="6" y2="9"/>
+            <text x="9.75" y="16.5">4</text>
+        </g>
+        <g>
+            <circle cx="15" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="15" y1="16" x2="18" y2="9"/>
+            <text x="13.25" y="16.5">8</text>
+        </g>
+        <!-- Array -->
+        <g transform="translate(23.5,-18)">
+            <g font-size="1.5" text-anchor="middle" fill="currentColor">
+                <text x="4.25"  y="23.4">0</text>
+                <text x="7.25"  y="23.4">1</text>
+                <text x="10.25" y="23.4">2</text>
+                <text x="13.25" y="23.4">3</text>
+                <text x="16.25" y="23.4">4</text>
+                <text x="19.25" y="23.4">5</text>
+            </g>
+            <g font-size="1.8" text-anchor="middle" fill="currentColor">
+                <rect x="3" y="24" width="2.5" height="2"
+                    style="fill:#90dd90;stroke:#2a8a2a;stroke-width:0.15"/>
+                <text x="4.25"  y="25.6">2</text>
+                <rect class="lvl1-cell" x="6"  y="24" width="2.5" height="2"/>
+                <text x="7.25"  y="25.6">3</text>
+                <rect x="9" y="24" width="2.5" height="2"
+                    style="fill:#ffd090;stroke:#c07020;stroke-width:0.15"/>
+                <text x="10.25" y="25.6">6</text>
+                <rect class="lvl2-cell" x="12" y="24" width="2.5" height="2"/>
+                <text x="13.25" y="25.6">5</text>
+                <rect class="lvl2-cell" x="15" y="24" width="2.5" height="2"/>
+                <text x="16.25" y="25.6">4</text>
+                <rect class="lvl2-cell" x="18" y="24" width="2.5" height="2"/>
+                <text x="19.25" y="25.6">8</text>
+            </g>
+            <g font-size="1.5">
+                <text x="0.25" y="28.2" text-anchor="middle">Ebene:</text>
+                <polyline class="lvl0-brk" points="5.5,26.3 5.5,26.8 3,26.8 3,26.3"/>
+                <text x="4.25"  y="28.2" text-anchor="middle">0</text>
+                <polyline class="lvl1-brk" points="11.5,26.3 11.5,26.8 6,26.8 6,26.3"/>
+                <text x="8.75"  y="28.2" text-anchor="middle">1</text>
+                <polyline class="lvl2-brk" points="20.5,26.3 20.5,26.8 12,26.8 12,26.3"/>
+                <text x="16.25" y="28.2" text-anchor="middle">2</text>
+            </g>
+        </g>
+    </g>
+</svg>
+</div><p>Schritt 3: Down-heap.</p>
+<ul class="simple">
+<li><p>Tausch 6 ↔ 2 (Index 0↔2).</p></li>
+<li><p>6 ≤ 8: kein weiterer Tausch.</p></li>
+<li><p>Heap wiederhergestellt.</p></li>
+</ul>
+</ld-card><ld-presenter-note data-encrypted="true">
+MTAwMDAw:9U7b/kFvOaYe1sNnTSvKVcsdx6T3O02HBK33lBXWkrM=:V2azTdrtfexNhOtQ:FmJrq4RygGAKeUVC++BsMxrLpDX42i+KuOPbkqMK3dF7zPlOVdtxqFc21u2kGEQhISl4uQtuPKVEiy8QXauhvNIUsQYI8HDh3T1kt7XP2kNc0jbeuo56n7/8GDSACkkhOQ==</ld-presenter-note>
+</ld-deck></ld-topic>
+<ld-topic class="transition-fade" id="heap-entfernen-des-hochsten-elements-wert-2">
+<h2>Heap - Entfernen des höchsten Elements (Wert: 2)</h2>
+<ld-deck>
+<ld-card>
+<div style="width: 48ch; height: 18ch;">
+<svg    font-size="2" viewBox="0 0 48 18"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .lvl0-cell{fill:#fdb99a;stroke:#c05a30;stroke-width:0.15}
+        .lvl1-cell{fill:#a9c8f5;stroke:#1e67b0;stroke-width:0.15}
+        .lvl2-cell{fill:#98dab4;stroke:#1a7a4a;stroke-width:0.15}
+        .lvl0-brk{stroke:#c05a30;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl1-brk{stroke:#1e67b0;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl2-brk{stroke:#1a7a4a;fill:none;stroke-width:0.25;stroke-linecap:round}
+    </style>
+    <g class="tree heap">
+        <g>
+            <circle cx="12" cy="2" r="0.6"
+                    style="fill:#ff7070;stroke:#cc0000;stroke-width:0.2"/>
+            <text x="12.75" y="2.75">2</text>
+        </g>
+        <g>
+            <circle cx="6" cy="9" r="0.5" style="fill:#a9c8f5"/>
+            <line x1="6" y1="9" x2="12" y2="2"/>
+            <text x="4.25" y="9.5">3</text>
+        </g>
+        <g>
+            <circle cx="18" cy="9" r="0.5" style="fill:#a9c8f5"/>
+            <line x1="18" y1="9" x2="12" y2="2"/>
+            <text x="18.75" y="9.5">6</text>
+        </g>
+        <g>
+            <circle cx="3" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="3" y1="16" x2="6" y2="9"/>
+            <text x="1.25" y="16.5">5</text>
+        </g>
+        <g>
+            <circle cx="9" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="9" y1="16" x2="6" y2="9"/>
+            <text x="9.75" y="16.5">4</text>
+        </g>
+        <g>
+            <circle cx="15" cy="16" r="0.6"
+                    style="fill:#ffe066;stroke:#b8860b;stroke-width:0.2"/>
+            <line x1="15" y1="16" x2="18" y2="9"/>
+            <text x="15.75" y="16.5">8</text>
+        </g>
+        <path d="M14.7,15.4 C14,10 13.5,6 12.4,2.9"
+            fill="none" stroke="#b8860b" stroke-width="0.22"
+            stroke-dasharray="0.6,0.35" marker-end="url(#dotted-arrow)"/>
+
+        <g transform="translate(23.5,-18)">
+            <g font-size="1.5" text-anchor="middle" fill="currentColor">
+                <text x="4.25"  y="23.4">0</text>
+                <text x="7.25"  y="23.4">1</text>
+                <text x="10.25" y="23.4">2</text>
+                <text x="13.25" y="23.4">3</text>
+                <text x="16.25" y="23.4">4</text>
+                <text x="19.25" y="23.4">5</text>
+            </g>
+            <g font-size="1.8" text-anchor="middle" fill="currentColor">
+                <rect x="3" y="24" width="2.5" height="2"
+                    style="fill:#ff7070;stroke:#cc0000;stroke-width:0.15"/>
+                <text x="4.25"  y="25.6">2</text>
+                <rect class="lvl1-cell" x="6"  y="24" width="2.5" height="2"/>
+                <text x="7.25"  y="25.6">3</text>
+                <rect class="lvl1-cell" x="9"  y="24" width="2.5" height="2"/>
+                <text x="10.25" y="25.6">6</text>
+                <rect class="lvl2-cell" x="12" y="24" width="2.5" height="2"/>
+                <text x="13.25" y="25.6">5</text>
+                <rect class="lvl2-cell" x="15" y="24" width="2.5" height="2"/>
+                <text x="16.25" y="25.6">4</text>
+                <rect x="18" y="24" width="2.5" height="2"
+                    style="fill:#ffe066;stroke:#b8860b;stroke-width:0.15"/>
+                <text x="19.25" y="25.6">8</text>
+            </g>
+            <g font-size="1.5">
+                <text x="0.25" y="28.2" text-anchor="middle">Ebene:</text>
+                <polyline class="lvl0-brk" points="5.5,26.3 5.5,26.8 3,26.8 3,26.3"/>
+                <text x="4.25"  y="28.2" text-anchor="middle">0</text>
+                <polyline class="lvl1-brk" points="11.5,26.3 11.5,26.8 6,26.8 6,26.3"/>
+                <text x="8.75"  y="28.2" text-anchor="middle">1</text>
+                <polyline class="lvl2-brk" points="20.5,26.3 20.5,26.8 12,26.8 12,26.3"/>
+                <text x="16.25" y="28.2" text-anchor="middle">2</text>
+            </g>
+        </g>
+    </g>
+</svg>
+</div><p>Schritt 1:</p>
+<ul class="simple">
+<li><p>Minimum (2) entfernen.</p></li>
+<li><p>Letztes Element (8) wird neue Wurzel.</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<div style="width: 48ch; height: 18ch;">
+<svg    font-size="2" viewBox="0 0 48 18"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .lvl0-cell{fill:#fdb99a;stroke:#c05a30;stroke-width:0.15}
+        .lvl1-cell{fill:#a9c8f5;stroke:#1e67b0;stroke-width:0.15}
+        .lvl2-cell{fill:#98dab4;stroke:#1a7a4a;stroke-width:0.15}
+        .lvl0-brk{stroke:#c05a30;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl1-brk{stroke:#1e67b0;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl2-brk{stroke:#1a7a4a;fill:none;stroke-width:0.25;stroke-linecap:round}
+    </style>
+    <g class="tree heap">
+        <g>
+            <circle cx="12" cy="2" r="0.6"
+                    style="fill:#ffa040;stroke:#cc6600;stroke-width:0.2"/>
+            <text x="12.75" y="2.75">8</text>
+        </g>
+        <g>
+            <circle cx="6" cy="9" r="0.5" style="fill:#a9c8f5"/>
+            <line x1="6" y1="9" x2="12" y2="2"/>
+            <text x="4.25" y="9.5">3</text>
+        </g>
+        <g>
+            <circle cx="18" cy="9" r="0.5" style="fill:#a9c8f5"/>
+            <line x1="18" y1="9" x2="12" y2="2"/>
+            <text x="18.75" y="9.5">6</text>
+        </g>
+        <g>
+            <circle cx="3" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="3" y1="16" x2="6" y2="9"/>
+            <text x="1.25" y="16.5">5</text>
+        </g>
+        <g>
+            <circle cx="9" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="9" y1="16" x2="6" y2="9"/>
+            <text x="9.75" y="16.5">4</text>
+        </g>
+        <g transform="translate(23.5,-18)">
+            <g font-size="1.5" text-anchor="middle" fill="currentColor">
+                <text x="4.25"  y="23.4">0</text>
+                <text x="7.25"  y="23.4">1</text>
+                <text x="10.25" y="23.4">2</text>
+                <text x="13.25" y="23.4">3</text>
+                <text x="16.25" y="23.4">4</text>
+            </g>
+            <g font-size="1.8" text-anchor="middle" fill="currentColor">
+                <rect x="3" y="24" width="2.5" height="2"
+                    style="fill:#ffa040;stroke:#cc6600;stroke-width:0.15"/>
+                <text x="4.25"  y="25.6">8</text>
+                <rect class="lvl1-cell" x="6"  y="24" width="2.5" height="2"/>
+                <text x="7.25"  y="25.6">3</text>
+                <rect class="lvl1-cell" x="9"  y="24" width="2.5" height="2"/>
+                <text x="10.25" y="25.6">6</text>
+                <rect class="lvl2-cell" x="12" y="24" width="2.5" height="2"/>
+                <text x="13.25" y="25.6">5</text>
+                <rect class="lvl2-cell" x="15" y="24" width="2.5" height="2"/>
+                <text x="16.25" y="25.6">4</text>
+            </g>
+            <g font-size="1.5">
+                <text x="0.25" y="28.2" text-anchor="middle">Ebene:</text>
+                <polyline class="lvl0-brk" points="5.5,26.3 5.5,26.8 3,26.8 3,26.3"/>
+                <text x="4.25"  y="28.2" text-anchor="middle">0</text>
+                <polyline class="lvl1-brk" points="11.5,26.3 11.5,26.8 6,26.8 6,26.3"/>
+                <text x="8.75"  y="28.2" text-anchor="middle">1</text>
+                <polyline class="lvl2-brk" points="17.5,26.3 17.5,26.8 12,26.8 12,26.3"/>
+                <text x="14.75" y="28.2" text-anchor="middle">2</text>
+            </g>
+        </g>
+    </g>
+</svg>
+</div><p>Schritt 2:</p>
+<ul class="simple">
+<li><p>n = 5. Wurzel = 8.</p></li>
+<li><p>Verletzt: 8 &gt; 3 und 8 &gt; 6.</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<div style="width: 48ch; height: 18ch;">
+<svg    font-size="2" viewBox="0 0 48 18"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .lvl0-cell{fill:#fdb99a;stroke:#c05a30;stroke-width:0.15}
+        .lvl1-cell{fill:#a9c8f5;stroke:#1e67b0;stroke-width:0.15}
+        .lvl2-cell{fill:#98dab4;stroke:#1a7a4a;stroke-width:0.15}
+        .lvl0-brk{stroke:#c05a30;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl1-brk{stroke:#1e67b0;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl2-brk{stroke:#1a7a4a;fill:none;stroke-width:0.25;stroke-linecap:round}
+    </style>
+    <g class="tree heap">
+        <g>
+            <circle cx="12" cy="2" r="0.5" style="fill:#fdb99a"/>
+            <text x="12.75" y="2.75">3</text>
+        </g>
+        <g>
+            <circle cx="6" cy="9" r="0.6"
+                    style="fill:#ffa040;stroke:#cc6600;stroke-width:0.2"/>
+            <line x1="6" y1="9" x2="12" y2="2"/>
+            <text x="4.25" y="9.5">8</text>
+        </g>
+        <g>
+            <circle cx="18" cy="9" r="0.5" style="fill:#a9c8f5"/>
+            <line x1="18" y1="9" x2="12" y2="2"/>
+            <text x="18.75" y="9.5">6</text>
+        </g>
+        <g>
+            <circle cx="3" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="3" y1="16" x2="6" y2="9"/>
+            <text x="1.25" y="16.5">5</text>
+        </g>
+        <g>
+            <circle cx="9" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="9" y1="16" x2="6" y2="9"/>
+            <text x="9.75" y="16.5">4</text>
+        </g>
+        <g transform="translate(23.5,-18)">
+            <g font-size="1.5" text-anchor="middle" fill="currentColor">
+                <text x="4.25"  y="23.4">0</text>
+                <text x="7.25"  y="23.4">1</text>
+                <text x="10.25" y="23.4">2</text>
+                <text x="13.25" y="23.4">3</text>
+                <text x="16.25" y="23.4">4</text>
+            </g>
+            <g font-size="1.8" text-anchor="middle" fill="currentColor">
+                <rect class="lvl0-cell" x="3" y="24" width="2.5" height="2"/>
+                <text x="4.25"  y="25.6">3</text>
+                <rect x="6" y="24" width="2.5" height="2"
+                    style="fill:#ffa040;stroke:#cc6600;stroke-width:0.15"/>
+                <text x="7.25"  y="25.6">8</text>
+                <rect class="lvl1-cell" x="9"  y="24" width="2.5" height="2"/>
+                <text x="10.25" y="25.6">6</text>
+                <rect class="lvl2-cell" x="12" y="24" width="2.5" height="2"/>
+                <text x="13.25" y="25.6">5</text>
+                <rect class="lvl2-cell" x="15" y="24" width="2.5" height="2"/>
+                <text x="16.25" y="25.6">4</text>
+            </g>
+            <g font-size="1.5">
+                <text x="0.25" y="28.2" text-anchor="middle">Ebene:</text>
+                <polyline class="lvl0-brk" points="5.5,26.3 5.5,26.8 3,26.8 3,26.3"/>
+                <text x="4.25"  y="28.2" text-anchor="middle">0</text>
+                <polyline class="lvl1-brk" points="11.5,26.3 11.5,26.8 6,26.8 6,26.3"/>
+                <text x="8.75"  y="28.2" text-anchor="middle">1</text>
+                <polyline class="lvl2-brk" points="17.5,26.3 17.5,26.8 12,26.8 12,26.3"/>
+                <text x="14.75" y="28.2" text-anchor="middle">2</text>
+            </g>
+        </g>
+    </g>
+</svg>
+</div><p>Schritt 3: Down-heap.</p>
+<ul class="simple">
+<li><p>Tausche 8↔3 (Index 0↔1).</p></li>
+<li><p>8 bei Index 1, Kinder: 5 (Index 3), 4 (Index 4).</p></li>
+<li><p>8 &gt; 4 → weiterer Tausch.</p></li>
+</ul>
+<aside class="admonition incremental hint">
+<p class="admonition-title">Hinweis</p>
+<p>Ein Tausch von 8 mit 5 hätte die Heapeigenschaft verletzt, da 5 &gt; 4. Es muss immer das Minimum (bei Max-Heaps das Maximum) der Kinder mit dem Elternknoten getauscht werden.</p>
+</aside>
+</ld-card><ld-card class="incremental">
+<div style="width: 48ch; height: 18ch;">
+<svg    font-size="2" viewBox="0 0 48 18"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .lvl0-cell{fill:#fdb99a;stroke:#c05a30;stroke-width:0.15}
+        .lvl1-cell{fill:#a9c8f5;stroke:#1e67b0;stroke-width:0.15}
+        .lvl2-cell{fill:#98dab4;stroke:#1a7a4a;stroke-width:0.15}
+        .lvl0-brk{stroke:#c05a30;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl1-brk{stroke:#1e67b0;fill:none;stroke-width:0.25;stroke-linecap:round}
+        .lvl2-brk{stroke:#1a7a4a;fill:none;stroke-width:0.25;stroke-linecap:round}
+    </style>
+    <g class="tree heap">
+        <g>
+            <circle cx="12" cy="2" r="0.5" style="fill:#fdb99a"/>
+            <text x="12.75" y="2.75">3</text>
+        </g>
+        <g>
+            <circle cx="6" cy="9" r="0.6"
+                    style="fill:#90dd90;stroke:#2a8a2a;stroke-width:0.2"/>
+            <line x1="6" y1="9" x2="12" y2="2"/>
+            <text x="4.25" y="9.5">4</text>
+        </g>
+        <g>
+            <circle cx="18" cy="9" r="0.5" style="fill:#a9c8f5"/>
+            <line x1="18" y1="9" x2="12" y2="2"/>
+            <text x="18.75" y="9.5">6</text>
+        </g>
+        <g>
+            <circle cx="3" cy="16" r="0.5" style="fill:#98dab4"/>
+            <line x1="3" y1="16" x2="6" y2="9"/>
+            <text x="1.25" y="16.5">5</text>
+        </g>
+        <g>
+            <circle cx="9" cy="16" r="0.6"
+                    style="fill:#ffd090;stroke:#c07020;stroke-width:0.2"/>
+            <line x1="9" y1="16" x2="6" y2="9"/>
+            <text x="9.75" y="16.5">8</text>
+        </g>
+
+        <g transform="translate(23.5,-18)">
+            <g font-size="1.5" text-anchor="middle" fill="currentColor">
+                <text x="4.25"  y="23.4">0</text>
+                <text x="7.25"  y="23.4">1</text>
+                <text x="10.25" y="23.4">2</text>
+                <text x="13.25" y="23.4">3</text>
+                <text x="16.25" y="23.4">4</text>
+            </g>
+            <g font-size="1.8" text-anchor="middle" fill="currentColor">
+                <rect class="lvl0-cell" x="3" y="24" width="2.5" height="2"/>
+                <text x="4.25"  y="25.6">3</text>
+                <rect x="6" y="24" width="2.5" height="2"
+                    style="fill:#90dd90;stroke:#2a8a2a;stroke-width:0.15"/>
+                <text x="7.25"  y="25.6">4</text>
+                <rect class="lvl1-cell" x="9"  y="24" width="2.5" height="2"/>
+                <text x="10.25" y="25.6">6</text>
+                <rect class="lvl2-cell" x="12" y="24" width="2.5" height="2"/>
+                <text x="13.25" y="25.6">5</text>
+                <rect x="15" y="24" width="2.5" height="2"
+                    style="fill:#ffd090;stroke:#c07020;stroke-width:0.15"/>
+                <text x="16.25" y="25.6">8</text>
+            </g>
+            <g font-size="1.5">
+                <text x="0.25" y="28.2" text-anchor="middle">Ebene:</text>
+                <polyline class="lvl0-brk" points="5.5,26.3 5.5,26.8 3,26.8 3,26.3"/>
+                <text x="4.25"  y="28.2" text-anchor="middle">0</text>
+                <polyline class="lvl1-brk" points="11.5,26.3 11.5,26.8 6,26.8 6,26.3"/>
+                <text x="8.75"  y="28.2" text-anchor="middle">1</text>
+                <polyline class="lvl2-brk" points="17.5,26.3 17.5,26.8 12,26.8 12,26.3"/>
+                <text x="14.75" y="28.2" text-anchor="middle">2</text>
+            </g>
+        </g>
+    </g>
+</svg>
+</div><p>Schritt 4: Down-heap.</p>
+<ul class="simple">
+<li><p>Tausche 8↔4 (Index 1↔4).</p></li>
+<li><p>8 ist Blatt (Index 4).</p></li>
+<li><p>Der Heap ist wiederhergestellt.</p></li>
+</ul>
+</ld-card></ld-deck></ld-topic>
+<ld-topic class="exercises" id="ubung-heap">
+<h2>Übung - Heap</h2>
+<ld-scrollable>
+<div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - Basismethoden von Heaps" id="ld-exercise-5">
+<p class="ld-exercise-title rubric">Basismethoden von Heaps</p>
+<p>Implementieren Sie einen Heap. Nehmen Sie das folgende Template als Ausgangsbasis:</p>
+<ol class="arabic simple">
+<li><p>Implementieren Sie zuerst die Methoden <span class="docutils literal">insert</span> und <span class="docutils literal">isEmpty/nonEmpty</span>. Fügen Sie Ihrer Implementierung eine Möglichkeit hinzu den internen Zustand für Debugzwecke auszugeben.</p></li>
+<li><p>Überlegen Sie sich noch einmal genau welche Schritte Sie in Ihrer Implementierung durchführen müssen, um ein Element zu entfernen (⇒ <span class="docutils literal">remove</span>). Danch implementieren Sie die Methode <span class="docutils literal">remove</span>.</p></li>
+<li><p>Testen Sie Ihre Implementierung.</p></li>
+</ol>
+<pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword declaration">class</span> <span class="name class">Heap</span><span class="operator">&lt;</span><span class="name">T</span><span class="whitespace"> </span><span class="keyword declaration">extends</span><span class="whitespace"> </span><span class="name">Comparable</span><span class="operator">&lt;</span><span class="name">T</span><span class="operator">&gt;&gt;</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">    </span><span class="comment single">// Min-heap!</span><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="name">T</span><span class="operator">[]</span><span class="whitespace"> </span><span class="name">heap</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">    </span><span class="keyword declaration">private</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">size</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="name decorator">&#64;SuppressWarnings</span><span class="punctuation">(</span><span class="literal string">&quot;unchecked&quot;</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name function">Heap</span><span class="punctuation">(</span><span class="name">Class</span><span class="whitespace"> </span><span class="name">componentType</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">capacity</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">        </span><span class="name">heap</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">T</span><span class="operator">[]</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="name">Array</span><span class="punctuation">.</span><span class="name attribute">newInstance</span><span class="punctuation">(</span><span class="name">componentType</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="name">capacity</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace">        </span><span class="name">size</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">;</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="comment single">// TODO nonEmpty</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">    </span><span class="comment single">// TODO insert</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace">    </span><span class="keyword declaration">public</span><span class="whitespace"> </span><span class="name">T</span><span class="whitespace"> </span><span class="name function">remove</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace">        </span><span class="keyword">throw</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">UnsupportedOperationException</span><span class="punctuation">(</span><span class="literal string">&quot;remove is not implemented yet&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">21 </small><code data-lineno="21 "><span class="whitespace">
+</span></code><small class="ln">22 </small><code data-lineno="22 "><span class="whitespace">    </span><span class="name decorator">&#64;SafeVarargs</span><span class="whitespace">
+</span></code><small class="ln">23 </small><code data-lineno="23 "><span class="whitespace">    </span><span class="keyword declaration">final</span><span class="whitespace"> </span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">insertAll</span><span class="punctuation">(</span><span class="name">T</span><span class="punctuation">...</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">24 </small><code data-lineno="24 "><span class="whitespace">        </span><span class="keyword">for</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">T</span><span class="whitespace"> </span><span class="name">arg</span><span class="whitespace"> </span><span class="punctuation">:</span><span class="whitespace"> </span><span class="name">args</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">25 </small><code data-lineno="25 "><span class="whitespace">            </span><span class="name">insert</span><span class="punctuation">(</span><span class="name">arg</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">26 </small><code data-lineno="26 "><span class="whitespace">        </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">27 </small><code data-lineno="27 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">28 </small><code data-lineno="28 "><span class="whitespace"></span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">29 </small><code data-lineno="29 "><span class="whitespace">
+</span></code><small class="ln">30 </small><code data-lineno="30 "><span class="whitespace"></span><span class="keyword type">void</span><span class="whitespace"> </span><span class="name function">main</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">31 </small><code data-lineno="31 "><span class="whitespace">    </span><span class="name">Heap</span><span class="operator">&lt;</span><span class="name">String</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">heap</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword">new</span><span class="whitespace"> </span><span class="name">Heap</span><span class="operator">&lt;&gt;</span><span class="punctuation">(</span><span class="name">String</span><span class="punctuation">.</span><span class="name attribute">class</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">5</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">32 </small><code data-lineno="32 "><span class="whitespace">    </span><span class="name">heap</span><span class="punctuation">.</span><span class="name attribute">insertAll</span><span class="punctuation">(</span><span class="literal string">&quot;Dies&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;ist&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;ein&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;Test&quot;</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal string">&quot;.&quot;</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">33 </small><code data-lineno="33 "><span class="whitespace">    </span><span class="keyword">while</span><span class="whitespace"> </span><span class="punctuation">(</span><span class="name">heap</span><span class="punctuation">.</span><span class="name attribute">nonEmpty</span><span class="punctuation">())</span><span class="whitespace"> </span><span class="punctuation">{</span><span class="whitespace">
+</span></code><small class="ln">34 </small><code data-lineno="34 "><span class="whitespace">        </span><span class="name">String</span><span class="whitespace"> </span><span class="name">s</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">heap</span><span class="punctuation">.</span><span class="name attribute">remove</span><span class="punctuation">();</span><span class="whitespace">
+</span></code><small class="ln">35 </small><code data-lineno="35 "><span class="whitespace">        </span><span class="name">IO</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">s</span><span class="punctuation">);</span><span class="whitespace">
+</span></code><small class="ln">36 </small><code data-lineno="36 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
+</span></code><small class="ln">37 </small><code data-lineno="37 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
+<div class="ld-exercise-solution" data-encrypted="true">
+MTAwMDAw:/M8WFsegFux2/QO+VsNU5qgxJ7S2g6b2Ql81vxEWZ7o=:VU6ZvVvVP7vE4HB/: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</div>
+</div>
+</ld-scrollable></ld-topic>
 </template>
 </body>
 </html>
