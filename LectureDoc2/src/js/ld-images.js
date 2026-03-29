@@ -53,7 +53,7 @@ function scaleDocumentImagesAndVideos(
         if (img.style.width) {
             done = true;
             const unit = getUnit.exec(img.style.width)[1];
-            if (unit !== "%") {
+            if (unit !== "%" && unit !== "ch" && unit !== "em") {
                 img.style.width =
                     parseFloat(img.style.width) * slideToDocumentScalingFactor +
                     unit;
@@ -62,7 +62,7 @@ function scaleDocumentImagesAndVideos(
         if (img.style.height) {
             done = true;
             const unit = getUnit.exec(img.style.height)[1];
-            if (unit !== "%") {
+            if (unit !== "%" && unit !== "ch" && unit !== "em") {
                 img.style.height =
                     parseFloat(img.style.height) *
                         slideToDocumentScalingFactor +
@@ -173,8 +173,8 @@ function scaleDocumentImagesAndVideos(
 }
 
 function scaleSlideImages() {
-    /*  We have the general policy that we do nothing with images on slides. I.e., 
-        we assume that all images are created by a user w.r.t. putting it on a  
+    /*  We have the general policy that we do nothing with images on slides. I.e.,
+        we assume that all images are created by a user w.r.t. putting it on a
         slide. */
 }
 
