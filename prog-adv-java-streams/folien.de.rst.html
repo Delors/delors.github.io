@@ -38,7 +38,7 @@
 <dt class="version">Version<span class="colon">:</span></dt>
 <dd class="version">2.0 [Themed]</dd>
 </dl>
-<p class="block-footer">Teile der Folien basieren auf: <a class="reference external" href="https://homepages.thm.de/~hg51/Veranstaltungen/A_D/Folien/java-8-kurzeinfuehrung.pdf">Th. Letschert - Funktionale Programmierung in Java.</a></p>
+<p class="block-footer">Teile der Folien sind inspiriert von: <a class="reference external" href="https://homepages.thm.de/~hg51/Veranstaltungen/A_D/Folien/java-8-kurzeinfuehrung.pdf">Th. Letschert - Funktionale Programmierung in Java.</a></p>
 <div class="supplemental docutils container">
 <dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
@@ -54,7 +54,7 @@
 </div>
 </ld-topic>
 <ld-topic id="aktuelle-herausforderungen">
-<h2>Aktuelle Herausforderungen</h2>
+<h2>(Aktuelle) Herausforderungen</h2>
 <ld-deck>
 <ld-card>
 <p><strong>Verarbeitung von</strong>:</p>
@@ -70,6 +70,7 @@
 </ld-card><ld-card class="incremental">
 <aside class="admonition incremental example">
 <p class="admonition-title">Beispiel</p>
+<p class="rubric">Konkrete Szenarien</p>
 <ul class="simple">
 <li><p>HTTP Request/Response Handling (Audio/Video Streaming)</p></li>
 <li><p>Verarbeitung von AI Streaming Responses</p></li>
@@ -89,10 +90,75 @@
 <p>Insbesondere die korrekte Nutzung ist häufig schwierig und hier ist die Verwendung von transparent parallelisierten Streams sehr hilfreich.
 (Z. B. mit Java Parallel Streams oder <code class="scala"><span class="punctuation">.</span><span class="name">par</span></code> in Scala ist eine transparente Parallelisierung möglich.)</p>
 </div>
+</ld-card><ld-card class="incremental">
+<ul class="simple">
+<li><p>Entwicklung von Software nahe am Domänenmodell, um die korrekte Implementierung zu unterstützen. Das Ziel sollte eine möglichst geringe Repräsentationslücke (<span class="eng">Low representational gap</span>) zwischen Code und Domänenmodell sein.</p></li>
+</ul>
 </ld-card></ld-deck></ld-topic>
+<ld-topic class="no-title center-content" id="java-i-o-streams-vs-java-stream-api">
+<h2>Java I/O Streams vs. Java Stream API</h2>
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Im Folgenden betrachten wir die Java Stream API und nicht Java I/O Streams.</p>
+<table class="incremental" style="width: 100%;">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr><th class="head stub"></th>
+<th class="head"><p>Java I/O Streams</p></th>
+<th class="head"><p>Java Stream API</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><th class="stub"><p>Package</p></th>
+<td><p><code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">io</span><span class="punctuation">.</span><span class="operator">*</span></code> / <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">nio</span><span class="punctuation">.</span><span class="operator">*</span></code></p></td>
+<td><p><code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">util</span><span class="punctuation">.</span><span class="name attribute">stream</span><span class="punctuation">.</span><span class="operator">*</span></code></p></td>
+</tr>
+<tr><th class="stub"><p>Fokus</p></th>
+<td><p>Byte-/Zeichentransport</p></td>
+<td><p>Datenverarbeitung</p></td>
+</tr>
+<tr><th class="stub"><p>Paradigma</p></th>
+<td><p>Imperativ</p></td>
+<td><p>Funktional/Deklarativ</p></td>
+</tr>
+</tbody>
+</table>
+</aside>
+<div class="supplemental docutils container">
+<dl class="field-list">
+<dt>Imperativ Programmierung<span class="colon">:</span></dt>
+<dd><p>Das Vorgehen wird detailliert durch konkrete Anweisungen beschrieben, die genau vorgeben welche einzelnen Schritte von dem Computer ausgeführt werden sollen, um das Ziel zu erreichen.</p>
+<p>Viele gängige <em>general-purpose</em> Programmiersprachen (C, C++, Rust, Java, Go, JavaScript, Python) sind im Kern imperative Programmiersprachen.</p>
+</dd>
+<dt>Deklarative Programmierung<span class="colon">:</span></dt>
+<dd><p>Das Ziel ist es auszudrücken <em>was</em> erreicht werden soll, ohne das <em>wie</em> genau anzugeben.</p>
+<p>(Prominentes Beispiel für eine deklarative Programmiersprache: SQL als Datenbankabfragesprache.)</p>
+</dd>
+</dl>
+<aside class="admonition remark">
+<p class="admonition-title">Bemerkung</p>
+<ul class="simple">
+<li><p>Auch für gängige Programmiersprachen, die im Kern imperativ sind, ist zu beobachten, dass mehr und mehr Ideen und Konzepte aus der deklarativen Programmierung Einzug in diese Sprachen - insbesondere auch über APIs - finden.</p></li>
+<li><p>Es ist in der Zwischenzeit so, dass die Grenzen zwischen (klassischen) prozeduralen (d. h. primär imperativen) Programmiersprachen und funktionalen sowie deklarativen Programmiersprachen verschwimmen.</p></li>
+<li><p>Scala - als ein Beispiel für eine moderne Programmiersprache - ist von Grund auf als objektorientiert-funktionale Sprache entworfen wurde.</p></li>
+</ul>
+</aside>
+</div>
+</ld-topic>
 <ld-topic id="streams-einfuhrung">
 <h2>Streams - Einführung</h2>
-<p>Streams sind <span class="incremental">umgeformte Sammlungen</span><span class="incremental">, die durch die Umformung für funktional-orientiere Massen-Operationen geeignet sind.</span></p>
+<dl class="incremental-list field-list simple">
+<dt>Pragmatische Sicht<span class="colon">:</span></dt>
+<dd><p>Streams<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> sind umgeformte Sammlungen<span class="incremental">, die durch die Umformung für funktional-orientiere Massen-Operationen geeignet sind.</span></p>
+</dd>
+<dt>Konzeptionelle Sicht<span class="colon">:</span></dt>
+<dd><p>Streams erlauben die „korrekte, lesbare (domänennahe)“ Verarbeitung von Daten mit Hilfe von Konzepten und Ideen aus der funktionalen und deklarativen Programmierung.</p>
+</dd>
+</dl>
 <aside class="admonition incremental example">
 <p class="admonition-title">Beispiel</p>
 <pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">java.util.Arrays</span><span class="punctuation">;</span><span class="whitespace">
@@ -101,16 +167,98 @@
 </span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace">
 </span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span><span class="name">List</span><span class="operator">&lt;</span><span class="name">Integer</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">l</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">Arrays</span><span class="punctuation">.</span><span class="name attribute">asList</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">3</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">4</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">5</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">6</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">7</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">8</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number integer">9</span><span class="punctuation">);</span><span class="whitespace">
 </span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace"></span><span class="name">List</span><span class="operator">&lt;</span><span class="name">Integer</span><span class="operator">&gt;</span><span class="whitespace"> </span><span class="name">ll</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="name">l</span><span class="whitespace">
-</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="punctuation">.</span><span class="name attribute">stream</span><span class="punctuation">()</span><span class="whitespace"> </span><span class="comment single">// list -&gt; stream</span><span class="whitespace">
-</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="punctuation">.</span><span class="name attribute">filter</span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">%</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="comment single">// filter list with predicate</span><span class="whitespace">
-</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="punctuation">.</span><span class="name attribute">map</span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="literal number integer">10</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">)</span><span class="whitespace"> </span><span class="comment single">// map each element to a new one</span><span class="whitespace">
-</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="punctuation">.</span><span class="name attribute">collect</span><span class="punctuation">(</span><span class="name">Collectors</span><span class="punctuation">.</span><span class="name attribute">toList</span><span class="punctuation">());</span><span class="whitespace"> </span><span class="comment single">// back to a list</span><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="punctuation">.</span><span class="name attribute">stream</span><span class="punctuation">()</span><span class="whitespace">                       </span><span class="comment single">// list → stream</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="punctuation">.</span><span class="name attribute">filter</span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">x</span><span class="whitespace"> </span><span class="operator">%</span><span class="whitespace"> </span><span class="literal number integer">2</span><span class="whitespace"> </span><span class="operator">==</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">        </span><span class="comment single">// filter list with predicate</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="punctuation">.</span><span class="name attribute">map</span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="literal number integer">10</span><span class="whitespace"> </span><span class="operator">*</span><span class="whitespace"> </span><span class="name">x</span><span class="punctuation">)</span><span class="whitespace">               </span><span class="comment single">// map each element to a new one</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="punctuation">.</span><span class="name attribute">collect</span><span class="punctuation">(</span><span class="name">Collectors</span><span class="punctuation">.</span><span class="name attribute">toList</span><span class="punctuation">());</span><span class="whitespace">  </span><span class="comment single">// back to a list</span><span class="whitespace">
 </span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="name">ll</span><span class="punctuation">.</span><span class="name attribute">forEach</span><span class="punctuation">(</span><span class="name">x</span><span class="whitespace"> </span><span class="operator">-&gt;</span><span class="whitespace"> </span><span class="name">System</span><span class="punctuation">.</span><span class="name attribute">out</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">));</span></code></pre>
 <div class="incremental docutils container">
 <p><em>Ausgabe:</em> <code class="console"><span class="generic output">20 40 60 80</span></code></p>
 </div>
 </aside>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://homepages.thm.de/~hg51/Veranstaltungen/A_D/Folien/java-8-kurzeinfuehrung.pdf">Th. Letschert</a></p>
+</aside>
+</aside>
 </ld-topic>
+<ld-topic id="streams-api-kurze-historie">
+<h2>Streams API - kurze Historie</h2>
+<ul class="simple">
+<li><p>die Streams API wurde mit Java 1.8 eingeführt und wird seit dem ständig <a class="reference external" href="https://javapro.io/2025/11/13/java-streams-evolution-from-java-8-to-today/">weiterentwickelt</a>.</p></li>
+</ul>
+<ld-story>
+<div class="center-content"><div    style="width: 48ch; height: 128ch;">
+<svg    viewBox="0 0 24 128"
+        font-size="2"
+        version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <!-- the previous style is reused!-->
+    <g class="graph">
+        <g>
+        <circle cx="8" cy="1" r="0.5" />
+        <text x="7.5" y="3.25">A</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="1" cy="6" r="0.5" />
+        <line x1="1.35" y1="5.65" x2="7.65" y2="1.35" />
+        <text x="0.5" y="8.25">B</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="15" cy="6" r="0.5" />
+        <line x1="14.65" y1="5.65" x2="8.35" y2="1.35"/>
+        <text x="15.75" y="6.75">C</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="8" cy="11" r="0.5" />
+        <line x1="8.35" y1="10.65" x2="14.5" y2="6" />
+        <path d="M 8 10.5 C 5 6.5, 2.5 12, 7.5 11" />
+        <text x="7.5" y="13.25">D</text>
+        </g>
+
+        <g class="incremental">
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11" />
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+
+        <g class="incremental" transform="translate(0,20)">
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11" />
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+        <g class="incremental" transform="translate(0,40)">
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11" />
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+        <g class="incremental" transform="translate(0,60)">
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11" />
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+        <g class="incremental" transform="translate(0,80)">
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11" />
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+        <g class="incremental" transform="translate(0,100)">
+        <circle cx="22" cy="11" r="0.5" />
+        <line x1="21.5" y1="11" x2="8.5" y2="11" />
+        <path d="M 22 10.5 C 22 5.5, 16 1, 8.5 1" />
+        <text x="21.5" y="13.25">E</text>
+        </g>
+    </g>
+</svg>
+</div></div></ld-story></ld-topic>
 <ld-topic id="streams-mit-primitiven-daten-und-objekten">
 <h2>Streams mit primitiven Daten und Objekten</h2>
 <ul>
@@ -607,6 +755,15 @@ auch nicht</strong>.</p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:T4Uv+CW6OpBCasK6myePldC+DPqxogMZ7wgrLUardrU=:WlbKAtiMiBrMSATt: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</div>
 </div>
+</ld-topic>
+<ld-topic id="herausforderungen-gelost">
+<h2>Herausforderungen gelöst?</h2>
+<ul class="simple">
+<li><p>Streams unterstützen die korrekte Verarbeitung von (Massen-)Daten durch die Anwendung von funktionalen und deklarativen Konzepten mit dem Ziel einer möglichst geringe Repräsentationslücke (<span class="eng">Low representational gap</span>).</p></li>
+</ul>
+</ld-topic>
+<ld-topic id="vergleich-von-java-s-stream-api-mit-scala-s-stream-api">
+<h2>Vergleich von Java's Stream-API mit Scala's Stream-API</h2>
 </ld-topic>
 </template>
 </body>
