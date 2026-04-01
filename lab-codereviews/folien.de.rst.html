@@ -34,7 +34,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">0.3</dd>
+<dd class="version">0.4</dd>
 </dl>
 <div class="supplemental docutils container">
 <dl class="field-list">
@@ -48,97 +48,288 @@
 </dl>
 </div>
 </ld-topic>
-<ld-topic class="new-section" id="einfuhrung">
-<h2>Einführung</h2>
-</ld-topic>
-<ld-topic id="was-sind-code-reviews">
-<h2>Was sind Code Reviews</h2>
-<ld-deck>
+<ld-topic id="code-reviews-und-software-qualitat">
+<h2>Code Reviews und Software Qualität</h2>
+<ld-deck class="height-100">
 <ld-card>
-<aside class="admonition definition">
-<p class="admonition-title">Definition</p>
-<p>Bei einem Code Review geben Entwickler Feedback zu (fremdem) Code; typischerweise vor einem Merge.</p>
-<p>Code Reviews helfen dabei, Fehler frühzeitig zu finden, die Qualität des Codes zu verbessern und sicherzustellen, dass alle Teammitglieder mit dem Code vertraut sind und verstehen, wie der Code funktioniert.</p>
+<aside class="admonition question">
+<p class="admonition-title">Frage</p>
+<p>Sie bekommen morgen ein Projekt mit 15.000 Zeilen Code übergeben, das Sie weiterentwickeln sollen. Es ist keine Dokumentation vorhanden oder hoffnungslos veraltet und die Originalautoren sind nicht mehr erreichbar.</p>
+<p>Wie fangen Sie an?</p>
+<p>Wovon hängt Ihr Aufwand ab?</p>
+<p>Was hätte geholfen?</p>
 </aside>
 </ld-card><ld-card class="incremental">
-<p class="rubric">Zweck von Code Reviews</p>
-<ul class="simple">
-<li><p>Qualitätssicherung</p></li>
-<li><p>Frühzeitige Fehlererkennung</p></li>
-<li><p>Wissensverbreitung (im Team)</p></li>
-</ul>
+<blockquote class="epigraph">
+<p>[...] Through a case study of [...], we find that <strong>code review coverage, participation, and expertise share a significant link with software quality.</strong><a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> Hence, our results empirically confirm the intuition that poorly-reviewed code has a negative impact on software quality in large systems [...].</p>
+<p class="attribution">—<a class="reference external" href="https://doi.org/10.1007/s10664-015-9381-9">McIntosh, S., Kamei, Y., Adams, B. et al. An empirical study of the impact of modern code review practices on software quality. Empirical Software Engineering 21, 2146–2189 (2016).</a></p>
+</blockquote>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Markup nachträglich hinzugefügt.</p>
+</aside>
+</aside>
 </ld-card></ld-deck></ld-topic>
-<ld-topic id="best-practices">
-<h2>Best Practices</h2>
-<div class="compound">
-<p class="rubric">für Reviewer</p>
-<ul class="simple">
-<li><p>konstruktiv und respektvoll bleiben</p></li>
-<li><p>(kleine) fokussierte Reviews bevorzugen</p></li>
-<li><p>Review mit Kontext (Anforderungen, Ziel) durchführen</p></li>
-<li><p>eigene Annahmen hinterfragen</p></li>
-<li><p>auf Verständlichkeit und Stil achten (Semantik von Bezeichnern etc.)</p></li>
-</ul>
+<ld-topic id="einfuhrung-was-sind-code-reviews">
+<h2>Einführung - Was sind Code Reviews?</h2>
+<ld-deck>
+<ld-card>
+<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Ein Code Review ist die systematische Untersuchung von Quellcode durch Dritte <span class="incremental">— Menschen, KI-Tools oder beide in Kombination —</span> <span class="incremental">mit dem primären Ziel, Probleme zu identifizieren, die der Autor - Mensch oder KI - übersehen hat.</span></p>
+</aside></ld-card><ld-card class="incremental">
+<p class="rubric">Typischer Ablauf</p>
+<ol class="arabic incremental-list">
+<li><p><em>Bereitstellung des Codes</em> - dies umfasst eine Beschreibung des Kontexts und ggf. des konkreten Ziels des Reviews.</p>
+<div class="supplemental docutils container">
+<p>In professionellen Projekten erfolgen Code Reviews für gewöhnlich im Kontext so genannter Git(Hub) Pull Requests. Dies ist unabhängig davon, ob es sich um Open-Source oder kommerzielle/closed-source Software handelt. Sie können diese gerne im Rahmen des durchzuführenden Code Reviews nutzen. Die Dokumentation ist dann „einfach“ die Zusammenstellung der Pull Requests.</p>
 </div>
+</li>
+<li><p><em>Analyse des Codes</em> - dies erfolgt entweder manuell, werkzeuggestützt (dann insbesondere KI-gestützt) oder durch eine Kombination von beidem.</p></li>
+<li><p><em>Dokumentation relevanter Probleme/Aspekte</em> - fragwürdige oder problematische Codestellen werden mit Hilfe von einzelnen, nachvollziehbaren Anmerkungen dokumentiert.</p></li>
+</ol>
 <div class="incremental compound">
-<p class="rubric">für die Autoren des Codes</p>
-<ul class="simple">
-<li><p>Reviews nicht persönlich nehmen</p></li>
-<li><p>Nachfragen ggf. als Hinweis verstehen für Dokumentationsmängel</p></li>
+<p>Im Nachgang an das eigentliche Code Review erfolgt die <em>Umsetzung der Änderungen</em> durch die Originalautoren, wobei es ggf. zu Nachfragen/Diskussionen kommen kann.</p>
+</div>
+</ld-card><ld-card class="incremental">
+<dl class="incremental-list field-list simple">
+<dt>Primäre Ziele<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>Fehler finden, die dem Autor/den Autoren nicht auffallen</p></li>
+<li><p>Verständlichkeit und Wartbarkeit des Codes sicherstellen</p></li>
 </ul>
+</dd>
+<dt>Sekundäre Ziele<span class="colon">:</span></dt>
+<dd><ul class="simple">
+<li><p>Wissen über die Codebasis im Team verteilen</p></li>
+<li><p>Gemeinsames Verständnis über Qualitätsstandards und Konventionen entwickeln</p></li>
+<li><p>Fähigkeiten weiterentwickeln durch das bewusste Lesen von fremdem Code</p></li>
+</ul>
+</dd>
+</dl>
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="menschliches-review-vs-tool-ki-gestutztes-review">
+<h2>Menschliches Review vs. Tool/KI-gestütztes Review</h2>
+<ul class="column-list dhbw incremental-list">
+<li><p>Ziele werkzeuggestützter Reviews</p>
+<ul>
+<li><p><em>Klassische Tools (Linter, Formatter, Analyzer):</em></p>
+<ul class="incremental simple">
+<li><p>Syntaxfehler erkennen</p></li>
+<li><p>Konsistente Formatierung erzwingen</p></li>
+<li><p>Einhaltung konfigurierbarer Regeln (z. B. max. Verschachtelungstiefe)</p></li>
+<li><p>Leichtgewichtige statische Analysen</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>Die Art der benötigten klassischen Tools ist immer stark von der/den verwendeten Programmiersprachen abhängig. Zum Beispiel ist bei Java-Projekten eine explizite Syntaxprüfung nicht notwendig, da eine Standardvoraussetzung eines Code Reviews ist, dass der Code zumindest kompiliert. Bei Skriptsprachen wie Python oder JavaScript ist dies jedoch ggf. sinnvoll.</p>
+</div>
+</li>
+<li><p><em>KI-gestützte Tools:</em></p>
+<ul class="incremental simple">
+<li><p>Fehlendes Error-Handling aufdecken</p></li>
+<li><p>Erkennung komplexerer Bugs, Anti-Patterns sowie Sicherheitslücken</p></li>
+<li><p>Vereinfachungen und Refactorings</p></li>
+</ul>
+<div class="supplemental docutils container">
+<p>KI-gestützte Tools können weiterhin bei Zusammenfassungen und Erklärungen von Code helfen, um den weiteren Code-Review-Prozess durch Menschen zu unterstützen.</p>
+</div>
+</li>
+</ul>
+</li>
+<li><p>Ziele menschlicher Reviews</p>
+<ul class="incremental simple">
+<li><p><em>Korrektheit:</em></p>
+<ul class="incremental">
+<li><p>Passt die Logik zur fachlichen Anforderung?</p></li>
+<li><p>Werden Sonderfälle und Randbedingungen korrekt behandelt?</p></li>
+</ul>
+</li>
+<li><p><em>Verständlichkeit und Wartbarkeit:</em></p>
+<ul class="incremental">
+<li><p>Sind Bezeichner treffend?</p></li>
+<li><p>Ist der Datenfluss (über Modulgrenzen hinweg) nachvollziehbar?</p></li>
+<li><p>Sind Abstraktionen angemessen?</p></li>
+<li><p>Ist der Code konform mit der bestehenden Architektur?</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="supplemental docutils container">
+<p>KI-Tools wie GitHub Copilot Code Review ergänzen menschliche Reviews, haben jedoch keinen oder nur begrenzten Zugang zum fachlichen Kontext, zu den Architekturentscheidungen des Teams oder zum impliziten Wissen über die Anwendungsdomäne. Gerade bei (größeren) Web-Anwendungen, bei denen Logik über Client, Server und Stylesheets verteilt ist, fehlt KI-Tools häufig das Verständnis für das Zusammenspiel der Schichten.</p>
 </div>
 </ld-topic>
 <ld-topic id="voraussetzung-fur-code-reviews">
 <h2>Voraussetzung für Code Reviews</h2>
-<ul class="incremental-list simple">
-<li><p>der Code ist konsistent formatiert (Code Prettifier)</p></li>
-<li><p>triviale Fehler wurden bereits behoben (Linting)</p></li>
-<li><p>der Code kompiliert</p></li>
-<li><p>(Unit-/Integrations-) Tests laufen durch</p></li>
-<li><p>Architektur und zentrale Designentscheidungen sind dokumentiert</p></li>
+<ld-deck>
+<ld-card>
+<p class="rubric">Checkliste</p>
+<ul class="check-list list-with-explanations incremental-list">
+<li><p>der Code ist konsistent formatiert</p>
+<p>(<em>Code Prettifier</em> wurden ausgeführt)</p>
+</li>
+<li><p>triviale Fehler wurden bereits behoben</p>
+<p>(<em>Linting</em> wurde durchgeführt)</p>
+</li>
+<li><p>der Code kompiliert bzw. ist frei von Syntaxfehlern</p></li>
+<li><p>der Code wurde getestet</p>
+<p>(Wenn vorhanden, dann wurden Unit-/Integrations-Tests erfolgreich ausgeführt; falls nicht, dann wurde durch die Autoren zumindest ein manueller Test durchgeführt.)</p>
+</li>
+<li><p>Architektur und zentrale Designentscheidungen sind dem Reviewer bekannt</p>
+<p>(Im Idealfall sind zentrale Aspekte zum Beispiel durch C4-Diagramme oder UML-Sequenzdiagramme bereits dokumentiert.)</p>
+</li>
 </ul>
-<aside class="admonition attention">
-<p class="admonition-title">Achtung!</p>
-<blockquote>
-<dl class="field-list simple">
-<dt>class<span class="colon">:</span></dt>
-<dd><p>incremental</p>
-</dd>
-</dl>
-</blockquote>
+</ld-card><ld-card class="overlay incremental">
+<div class="width-100 height-100 backdrop-blur center-content s-only docutils container">
+<aside class="admonition important">
+<p class="admonition-title">Wichtig</p>
 <p>Es ergibt nur Sinn, Code Reviews für Code durchzuführen, der grundlegenden Qualitätsstandards genügt.</p>
 </aside>
+</div>
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="gutes-feedback-formulieren">
+<h2>Gutes Feedback formulieren</h2>
+<ld-deck>
+<ld-card class="fade-out">
+<p class="rubric">Schwaches, nicht-konstruktives, herabwertendes Feedback</p>
+<ul class="negative-list list-with-explanations">
+<li><p>„Das muss anders.&quot;</p></li>
+<li><p>„Falsch.&quot;</p></li>
+<li><p>„Das sollte man besser mit einer Map lösen.&quot;</p>
+<p>(Es muss immer das Warum erkenntlich werden und auch der Codeabschnitt.)</p>
+</li>
+<li><p>„Warum hast du das so gemacht?&quot;</p>
+<p>(Falls eine negative Konnotation mitschwingt; es kann auch eine ehrliche Frage sein.)</p>
+</li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Starkes Feedback</p>
+<ul class="positive-list simple">
+<li><p>„Der Funktionsname <code>process()</code> sagt nicht, <em>was</em> verarbeitet wird — wäre z. B. <code>validateFormInput()</code> treffender?&quot;</p></li>
+<li><p>„Hier wird <code>catch(e) {}</code> verwendet, aber der Fehler wird nicht geloggt. Falls die Validierung fehlschlägt, wäre es schwer, den Grund zu finden.&quot;</p></li>
+<li><p>„Die Berechnung in Zeile 42–58 könnte in eine eigene Funktion extrahiert werden, um die <code>handleSubmit()</code>-Methode kürzer und lesbarer zu machen.&quot;</p></li>
+<li><p>„Mir ist aufgefallen, dass <code>rem</code> und <code>px</code> gemischt werden — gibt es dafür einen Grund, oder sollten wir uns auf <code>rem</code> einigen?&quot;</p></li>
+<li><p>„Die Validierungslogik liegt sowohl in <span class="docutils literal">form.js</span> als auch <span class="docutils literal">api.js</span> — wäre es sinnvoll, sie an einer Stelle zu bündeln, um Inkonsistenzen zu vermeiden?&quot;</p></li>
+</ul>
+</ld-card><ld-card class="s-overlay backdrop-blur center-content incremental">
+<aside class="admonition incremental attention">
+<p class="admonition-title">Achtung!</p>
+<p>Ein Issue sollte:</p>
+<ol class="loweralpha simple">
+<li><p><em>eine konkrete Stelle</em> im Code benennen,</p></li>
+<li><p>das <em>Problem</em> beschreiben und</p></li>
+<li><p>idealerweise einen <em>Verbesserungsvorschlag</em> machen.</p></li>
+</ol>
+</aside>
+</ld-card></ld-deck></ld-topic>
+<ld-topic id="vorgehen-beim-review">
+<h2>Vorgehen beim Review</h2>
+<ld-deck>
+<ld-card>
+<p class="rubric">Für Reviewer</p>
+<ul class="incremental-list list-with-explanations">
+<li><p>Das Projekt/Produkt kurz vorführen lassen.</p></li>
+<li><p>Zuerst die Gesamtstruktur verstehen, bevor man in Details einsteigt.</p>
+<p>(Zum Beispiel im C4-Modell sich von oben nach unten durcharbeiten.)</p>
+</li>
+<li><p>Immer die Frage stellen: „Würde ich diesen Code in drei Monaten noch verstehen?&quot;</p></li>
+<li><p>Auch positives Feedback geben, wenn etwas gut gelöst ist.</p>
+<p>(Es kann für einen Einstieg ggf. hilfreich sein mit positivem Feedback zu starten.)</p>
+</li>
+<li><p>Keine Annahmen treffen! Nachfragen.</p></li>
+<li><p>Notieren, was man an der eigenen Codebasis verbessern/überprüfen könnte.</p></li>
+</ul>
+</ld-card><ld-card class="incremental">
+<p class="rubric">Für Autoren</p>
+<ul class="incremental-list list-with-explanations simple">
+<li><p>Sollte Architekturdokumentation verfügbar sein, diese vor dem Review zur Verfügung stellen.</p></li>
+<li><p>Vor dem Review den Reviewern eine Einführung in Struktur und zentrale Entscheidungen geben.</p></li>
+<li><p>Nachfragen als Signal verstehen: Wenn der Reviewer etwas nicht versteht, werden es andere auch nicht.</p></li>
+<li><p>Nicht jedes Issue erfordert eine Codeänderung — manchmal reicht ein erklärender Kommentar im Code oder eine Ergänzung in der Architekturdokumentation.</p></li>
+</ul>
+</ld-card><ld-card class="s-overlay backdrop-blur center-content incremental">
+<aside class="admonition remark">
+<p class="admonition-title">Bemerkung</p>
+<p>Sie können als gesamtes Team alle Teile gemeinsam begutachten oder sich ggf. in themenspezifische (Frontend-CSS/HTML, Frontend JavaScript, Backend, ...) Subteams aufteilen — je nach Teamaufteilung und Fertigkeiten der Teammitglieder.</p>
+</aside>
+</ld-card></ld-deck><div class="supplemental docutils container">
+<p>Sollten Sie im Nachgang Code Reviews als Praxis innerhalb Ihres Teams etablieren, dann sollten Sie darauf achten, dass Sie (kleine) fokussierte Reviews durchführen und ggf. auch das Ziel klar ist: Zum Beispiel allgemeine Code-Qualität, Sicherheitsprobleme, Architekturkonformität. Es kann ggf. helfen, auf Checklisten zurückzugreifen, um sicherzustellen, dass die Qualität der Code Reviews über alle Teammitglieder hinweg ein  konsistentes Niveau erreicht.</p>
+<p>Im Idealfall etablieren Sie die Praxis für jedes einzelne Feature einen Pull-Request zu stellen.</p>
+</div>
 </ld-topic>
+<ld-topic class="new-section transition-move-to-top" id="technologiespezifische-reviews">
+<h2>Technologiespezifische Reviews</h2>
+</ld-topic>
+<ld-topic id="code-review-des-build-prozesses-und-der-projektstruktur">
+<h2>Code Review des Build-Prozesses und der Projektstruktur</h2>
+<p class="rubric">Exemplarische Kriterien</p>
+<ld-story>
+<ul class="incremental-list list-with-sublists">
+<li><p><em>Einstieg und Reproduzierbarkeit</em></p>
+<ul>
+<li><p>Gibt es eine README.md mit klaren Anweisungen zum Bauen und Starten des Projekts?</p></li>
+<li><p>Lässt sich das Projekt mit wenigen Schritten lokal aufsetzen und starten?</p></li>
+<li><p>Sind alle Abhängigkeiten fixiert?</p>
+<p>(Im Falle von Node-/JavaScript-basierten Projekte zum Beispiel über <span class="docutils literal"><span class="pre">package-lock.json</span></span>.)</p>
+</li>
+</ul>
+</li>
+<li><p><em>Konfiguration und Tooling</em></p>
+<ul>
+<li><p>Sind Linter und Formatter konfiguriert und über ein Skript aufrufbar?</p>
+<p>(Z. B. <code>npm run lint</code>.)</p>
+</li>
+<li><p>Gibt es eine klare Trennung von Entwicklungs- und Produktionsabhängigkeiten?</p></li>
+<li><p>Werden Umgebungsvariablen sauber verwaltet (z. B. über <code>.env</code>-Dateien mit zugehörigem <code>.env.example</code>)?</p></li>
+</ul>
+</li>
+<li><p><em>Projektstruktur</em></p>
+<ul>
+<li><p>Ist die Verzeichnisstruktur nachvollziehbar und konsistent?</p></li>
+<li><p>Spiegelt die Ordnerstruktur die Architektur wider?</p></li>
+<li><p>Sind keine generierten Dateien oder Abhängigkeiten im Repository?</p>
+<p>(Zum Beispiel: <code>node_modules</code> oder <code>dist</code>.)</p>
+</li>
+</ul>
+</li>
+</ul>
+</ld-story></ld-topic>
 <ld-topic id="code-review-von-css">
 <h2>Code Review von CSS</h2>
 <p class="rubric">Exemplarische Kriterien</p>
 <ld-story>
-<ul class="incremental-list list-with-explanations">
-<li><p>keine Redundanzen, keine unnötigen Style-Definitionen.</p></li>
-<li><p>Konsistente Schreibweise von:</p>
-<ul class="incremental-list simple">
-<li><p>CSS-Variablen</p></li>
-<li><p>Klassennamen</p></li>
-<li><p>IDs</p></li>
-</ul>
-</li>
-<li><p>Sind die Namen (CSS-Variablen, Klassennamen und IDs) verständlich und sprechend?</p>
+<ul class="incremental-list list-with-sublists">
+<li><p><em>Namensgebung und Konsistenz</em></p>
+<ul>
+<li><p>Konsistente Schreibweise von CSS-Custom-Properties, Klassennamen und IDs</p></li>
+<li><p>Sind die Namen verständlich und sprechend?</p>
 <p><span class="red">(Korrektes Deutsch oder Englisch!)</span></p>
 </li>
-<li><p>Werden CSS-Variablen sinnvoll verwendet? (Z. B. um ein leicht anpassbares Design zu ermöglichen?)</p></li>
-<li><p>Werden CSS-Layer verwendet, um die Styles zu organisieren und die Wartbarkeit zu erhöhen (Stichwort: Modularisierung)?</p></li>
-<li><p>Wird CSS-Nesting verwendet, um die Struktur der Styles zu verdeutlichen?</p></li>
-<li><p><em>Einfachheit und Korrektheit von</em> Selektoren</p>
-<p>(Z. B. keine Verwendung von <code class="css"><span class="operator">!</span><span class="name tag">important</span></code>.)</p>
+<li><p>Keine Redundanzen, keine unnötigen Style-Definitionen</p></li>
+</ul>
 </li>
-<li><p>Sind die Selektoren effizient?</p></li>
-<li><p>Sind komplizierte Selektoren - falls notwendig - dokumentiert/begründet/nachvollziehbar?</p></li>
-<li><p>Konsistente Vorgehensweise in Hinblick auf (z. B.) Responsiveness (z. B. konsistente Verwendung von Größen (em, rem, ...) oder das Farbschema).</p></li>
-<li><p>Einfachheit des Layouts?</p></li>
+<li><p><em>Selektoren und Struktur</em></p>
+<ul class="simple">
+<li><p>Einfachheit und Korrektheit von Selektoren (z. B. keine Verwendung von <code class="css"><span class="operator">!</span><span class="name tag">important</span></code>)</p></li>
+<li><p>Sind komplizierte Selektoren — falls notwendig — dokumentiert und nachvollziehbar?</p></li>
+<li><p>Wird CSS-Nesting verwendet, um die Struktur der Styles zu verdeutlichen?</p></li>
+<li><p>Werden CSS-Layer (<code class="css"><span class="punctuation">&#64;</span><span class="keyword">layer</span></code>) verwendet, um die Styles zu organisieren, die Wartbarkeit zu erhöhen und Spezifizitätsprobleme zu vermeiden?</p></li>
+</ul>
+</li>
+<li><p><em>Layout und Responsiveness</em></p>
+<ul class="simple">
+<li><p>Einfachheit des Layouts (dies muss ggf. im Zusammenspiel mit dem HTML-Code geprüft werden)</p></li>
 <li><p>Gibt es ein klares Vorgehen (Mobile-first oder Desktop-first)?</p></li>
-<li><p>Werden Tools eingesetzt, um bei der Formatierung bzw. dem Linting zu helfen.</p></li>
-<li><p>Wird modernes CSS verwendet?</p>
-<p>(Dies gilt immer in Hinblick auf die Zielplattformen/Browserversionen.)</p>
+<li><p>Konsistente Verwendung von Größeneinheiten (em, rem, …) und Farbwerten</p></li>
+</ul>
+</li>
+<li><p><em>Modernes CSS</em></p>
+<ul class="simple">
+<li><p>Werden CSS-Custom-Properties sinnvoll verwendet, um ein leicht anpassbares Design zu ermöglichen?</p></li>
+<li><p><em>Container Queries</em> statt reiner Viewport-basierter Media Queries, wenn Komponenten in unterschiedlichen Kontexten wiederverwendet werden</p></li>
+<li><p><code class="css"><span class="punctuation">:</span><span class="name decorator">has</span><span class="operator">()</span></code> als Eltern-Selektor anstelle von JavaScript-basierten Workarounds oder zusätzlichen Klassen</p></li>
+<li><p><em>Logical Properties</em> (<code class="css"><span class="name tag">margin-inline</span></code>, <code class="css"><span class="name tag">padding-block</span></code> etc.) für bessere Internationalisierbarkeit</p></li>
+<li><p><code class="css"><span class="name tag">color-mix</span><span class="operator">()</span></code> und <code class="css"><span class="name tag">oklch</span><span class="operator">()</span></code> für konsistente Farbschemata</p></li>
+</ul>
 </li>
 </ul>
 </ld-story></ld-topic>
@@ -146,82 +337,147 @@
 <h2>Code Reviews von HTML</h2>
 <p class="rubric">Exemplarische Kriterien</p>
 <ld-story>
-<ul class="incremental-list">
-<li><p>Ist der HTML-Code korrekt?</p>
-<aside class="admonition attention">
-<p class="admonition-title">Achtung!</p>
-<p>Folgende Aspekte (Auszug) sollten automatisiert geprüft werden:</p>
-<p>Sind IDs einmalig, sind alle Elemente korrekt geschlossen, ist die Baumstruktur korrekt.</p>
-</aside>
-</li>
-<li><p>Benennung von Klassen und IDs:</p>
-<p>Sind die Namen konsistent vergeben und verständlich und korrekt geschrieben.</p>
-</li>
-<li><p>Ist die Struktur einfach nachvollziehbar oder übermäßig komplex?</p>
-<p>(Z. B. gibt es eine hohe Anzahl an verschachtelten DIVs oder gibt es eine sinnvolle Strukturierung der Überschriften?).</p>
-</li>
-<li><p>Accessibility?</p>
-<p>Wird primär semantisches HTML genutzt? (D. h. beschränkt sich die Nutzung von <code class="html"><span class="punctuation">&lt;</span><span class="name tag">span</span><span class="punctuation">&gt;</span></code> und <code class="html"><span class="punctuation">&lt;</span><span class="name tag">div</span><span class="punctuation">&gt;</span></code> auf die optische Gestaltung?)</p>
-<p>Werden ARIA-Tags sinnvoll verwendet?</p>
-<p>Haben Bilder ein <code class="html">alt</code>-Attribut?</p>
-</li>
-<li><p>Keine Verwendung von Inline-Styles?</p></li>
-<li><p>Keine Verwendung von inline JavaScript?</p></li>
-<li><p>Keine Verwendung von <code class="html"><span class="punctuation">&lt;</span><span class="name tag">br</span><span class="punctuation">&gt;</span></code> für Formatierungszwecke.</p></li>
-<li><p>Konsistente Verwendung von Tags?</p>
-<p>(Z. B. ist Code immer in <code class="html"><span class="punctuation">&lt;</span><span class="name tag">pre</span><span class="punctuation">&gt;&lt;</span><span class="name tag">code</span><span class="punctuation">&gt;</span>...<span class="punctuation">&lt;/</span><span class="name tag">code</span><span class="punctuation">&gt;&lt;/</span><span class="name tag">pre</span><span class="punctuation">&gt;</span></code>?)</p>
-</li>
-<li><p>Werden Eingaben in Eingabefeldern geprüft?</p></li>
+<ul class="incremental-list list-with-sublists simple">
+<li><p><em>Struktur und Semantik</em></p>
+<ul>
+<li><p>Ist die Struktur einfach nachvollziehbar oder übermäßig komplex (z. B. tief verschachtelte DIVs)?</p></li>
+<li><p>Wird primär semantisches HTML genutzt (d. h. beschränkt sich die Nutzung von <code class="html"><span class="punctuation">&lt;</span><span class="name tag">span</span><span class="punctuation">&gt;</span></code> und <code class="html"><span class="punctuation">&lt;</span><span class="name tag">div</span><span class="punctuation">&gt;</span></code> auf die optische Gestaltung)?</p></li>
+<li><p>Sinnvolle Strukturierung der Überschriftenhierarchie (<code class="html"><span class="punctuation">&lt;</span><span class="name tag">h1</span><span class="punctuation">&gt;</span></code> bis <code class="html"><span class="punctuation">&lt;</span><span class="name tag">h6</span><span class="punctuation">&gt;</span></code>)</p></li>
 <li><p>Werden <code class="html">meta</code>-Tags für die Spezifikation des Viewports sowie weiterer Metainformationen verwendet?</p></li>
-<li><p>Werden übermäßig große Bilder/Icons vermieden?</p></li>
-<li><p>Sind Links inhaltlich nachvollziehbar?</p></li>
+</ul>
+</li>
+<li><p><em>Trennung von Inhalt, Darstellung und Verhalten</em></p>
+<ul>
+<li><p>Keine Inline-Styles</p></li>
+<li><p>Kein Inline-JavaScript</p></li>
+<li><p>Keine Verwendung von <code class="html"><span class="punctuation">&lt;</span><span class="name tag">br</span><span class="punctuation">&gt;</span></code> für Layoutzwecke</p></li>
+</ul>
+</li>
+<li><p><em>Accessibility</em></p>
+<ul>
+<li><p>Haben Bilder ein <code class="html">alt</code>-Attribut?</p></li>
+<li><p>Sind Formularfelder mit <code class="html"><span class="punctuation">&lt;</span><span class="name tag">label</span><span class="punctuation">&gt;</span></code> verknüpft?</p></li>
+<li><p>Ist die Seite vollständig per Tastatur bedienbar?</p></li>
+<li><p>Sind Farbkontraste ausreichend (WCAG AA)?</p></li>
+<li><p>Werden ARIA-Attribute sinnvoll verwendet — und nur dort, wo semantisches HTML nicht ausreicht?</p></li>
+<li><p>Sind Links inhaltlich nachvollziehbar (kein „hier klicken&quot;)?</p></li>
+</ul>
+</li>
+<li><p><em>IDs und Eingabevalidierung</em></p>
+<ul>
+<li><p>Sind HTML-only IDs (d. h. solche, die nicht für CSS-Styling verwendet werden) verständlich und konsistent vergeben?</p></li>
+<li><p>Werden Eingaben clientseitig geprüft — über HTML-Validierungsattribute (<code class="html">required</code>, <code class="html">pattern</code>, <code class="html">type</code>) oder, wenn nötig, per JavaScript?</p></li>
+</ul>
+</li>
 </ul>
 </ld-story></ld-topic>
 <ld-topic id="code-reviews-von-javascript">
 <h2>Code Reviews von JavaScript</h2>
 <p class="rubric">Exemplarische Kriterien</p>
 <ld-story>
-<ul class="incremental-list">
-<li><p>Macht der Code, was er vorgibt zu tun?</p>
-<p>(D. h. sind Variablen, Klassen, Methoden, ...-Namen korrekt und sinnvoll?)</p>
+<ul class="incremental-list list-with-sublists">
+<li><p><em>Korrektheit und Fehlerbehandlung</em></p>
+<ul class="simple">
+<li><p>Macht der Code, was er vorgibt zu tun (d. h. sind Bezeichner korrekt und sinnvoll)?</p></li>
+<li><p>Werden Sonderfälle, Fehlerzustände und <code class="javascript"><span class="keyword constant">null</span></code>/<code class="javascript"><span class="keyword constant">undefined</span></code> korrekt behandelt?</p></li>
+<li><p>Ist die Fehlerbehandlung konsistent — werden keine Fehler verschluckt und ist das Error-Logging aussagekräftig?</p></li>
+<li><p>Werden Promises korrekt behandelt (keine fehlenden <code class="javascript"><span class="punctuation">.</span><span class="keyword">catch</span><span class="punctuation">()</span></code> oder <code class="javascript"><span class="keyword">try</span><span class="error">/catch</span></code> bei <code class="javascript"><span class="keyword">async</span><span class="error">/await</span></code>)?</p></li>
+<li><p>Werden Eingaben serverseitig validiert (zusätzlich zur clientseitigen Validierung)?</p></li>
+</ul>
 </li>
-<li><p>Werden Sonderfälle und Fehlerzustände behandelt?</p></li>
-<li><p>Ist die Fehlerbehandlung konsistent und für den Endnutzer nachvollziehbar?</p></li>
-<li><p>Werden keine Fehler „verschluckt“?</p></li>
-<li><p>Wird null/undefined korrekt behandelt?</p></li>
-<li><p>Wird modernes JavaScript verwendet (z. B. Klassen, <code class="javascript"><span class="keyword declaration">const</span></code> und <code class="javascript"><span class="keyword declaration">let</span></code> anstatt von <cite>var</cite>, Destrukturierung, Spread und Rest-Operator etc.)?</p></li>
-<li><p>Wird <code class="javascript"><span class="name builtin">eval</span><span class="punctuation">()</span></code> nicht verwendet?</p></li>
-<li><p>Werden asynchrone Funktionen richtig verwendet?</p></li>
-<li><p>Werden Promises korrekt behandelt (keine fehlenden .catch() oder try/catch bei async/await)?</p></li>
-<li><p>Gibt es potenzielle Nebenläufigkeitsprobleme bei asynchronen Operationen?</p></li>
-<li><p>Werden Event-Listener korrekt registriert und wieder entfernt (Memory Leaks)?</p></li>
-<li><p>Ist der Kontrollfluss verständlich?</p>
-<p>(Nachfragen deuten auf Probleme bzgl. der Verständlichkeit hin.)</p>
-</li>
-<li><p>Ist der Datenfluss nachvollziehbar?</p>
-<p>(Insbesondere bei der Verwendung von globalem Zustand oder über Modulgrenzen hinweg.)</p>
-</li>
+<li><p><em>Struktur und Wartbarkeit</em></p>
+<ul class="simple">
+<li><p>Ist der Kontrollfluss verständlich? (Nachfragen deuten auf Probleme hin.)</p></li>
+<li><p>Ist der Datenfluss nachvollziehbar — insbesondere bei globalem Zustand oder über Modulgrenzen hinweg?</p></li>
 <li><p>Wird die Architektur eingehalten?</p></li>
-<li><p>Ist der Code modularisiert?</p></li>
+<li><p>Ist der Code modularisiert und werden Funktionen klein und fokussiert gehalten (<em>Single Responsibility</em>)?</p></li>
 <li><p>Wird auf tief verschachtelte Logik verzichtet?</p></li>
-<li><p>Werden Funktionen und Methoden klein und fokussiert gehalten (Single Responsibility)?</p></li>
-<li><p>Werden teure Manipulationen (des DOMs) auf das notwendige Minimum beschränkt?</p></li>
-<li><p>Werden Eingaben validiert (auf Client- und <strong>Server</strong>-Seite, falls es sich um serverseitigen JavaScript-Code handelt)?</p></li>
-<li><p>Werden sensible Daten (Passwörter, API-Keys) nicht im Client-Code hartcodiert?</p></li>
-<li><p>Werden keine sensiblen Daten geloggt?</p></li>
-<li><p>Ist das Logging von Fehlern (Error) sinnvoll und enthält genug Kontextinformationen?</p></li>
-<li><p>Gibt es Testfälle? Falls ja, sind diese ausreichend?</p>
-<p>(Codeabdeckung ist hier <em>nur</em> ein erster Indikator.)</p>
+<li><p>Werden teure DOM-Manipulationen auf das notwendige Minimum beschränkt?</p></li>
+<li><p>Werden Event-Listener korrekt registriert und wieder entfernt (Memory Leaks)?</p></li>
+</ul>
 </li>
-<li><p>Wird nur minimaler globaler Zustand verwendet?</p></li>
-<li><p>Ist die Verwendung von Bibliotheken/Dependencies gerechtfertigt und aktuell?</p></li>
-<li><p>Gibt es überflüssige oder ungenutzte Abhängigkeiten?</p></li>
-<li><p>Ist die (Inline-)Dokumentation ausreichend und korrekt?</p></li>
-<li><p>Sind die TODOs und FIXMEs verständlich und umsetzbar?</p></li>
+<li><p><em>Modernes JavaScript</em></p>
+<ul class="simple">
+<li><p><code class="javascript"><span class="keyword declaration">const</span></code> und <code class="javascript"><span class="keyword declaration">let</span></code> statt <code class="javascript"><span class="keyword declaration">var</span></code></p></li>
+<li><p>Destrukturierung, Spread- und Rest-Operator wo sinnvoll</p></li>
+<li><p>Klassen und ECMAScript Module statt globaler Funktionen und Skripte</p></li>
+<li><p>Asynchrone Funktionen (<code class="javascript"><span class="keyword">async</span><span class="error">/await</span></code>) statt verschachtelter Callbacks</p></li>
 <li><p>Werden Browser-Kompatibilitätsanforderungen erfüllt?</p></li>
-<li><p>Bei verteilten Anwendungen: ist die Aufteilung der Logik nachvollziehbar und sinnvoll (zum Beispiel auch aus Sicht von Cheating-Möglichkeiten)</p></li>
+</ul>
+</li>
+<li><p><em>Abhängigkeiten, Tests und Dokumentation</em></p>
+<ul class="list-with-explanations">
+<li><p>Ist die Verwendung von Bibliotheken/Dependencies gerechtfertigt und aktuell?</p></li>
+<li><p>Gibt es Testfälle und sind diese ausreichend?</p>
+<p>(Codeabdeckung ist <em>nur</em> ein erster Indikator.)</p>
+</li>
+<li><p>Ist die Inline-Dokumentation ausreichend, sinnvoll und korrekt?</p></li>
+<li><p>Sind TODOs und FIXMEs verständlich und umsetzbar?</p></li>
+<li><p>Bei verteilten Anwendungen: ist die Aufteilung der Logik nachvollziehbar und sinnvoll (zum Beispiel auch aus Sicht von Cheating-Möglichkeiten)?</p></li>
+</ul>
+</li>
 </ul>
 </ld-story></ld-topic>
+<ld-topic id="code-reviews-von-java-backend">
+<h2>Code Reviews von Java (Backend)</h2>
+<p class="rubric">Exemplarische Kriterien</p>
+<ld-story>
+<ul class="incremental-list list-with-sublists">
+<li><p><em>Korrektheit und Fehlerbehandlung</em></p>
+<ul class="list-with-explanations">
+<li><p><span class="red">Werden Eingaben serverseitig validiert (zusätzlich zur clientseitigen Validierung)?</span></p></li>
+<li><p>Sind Bezeichner korrekt und sinnvoll gewählt?</p></li>
+<li><p>Werden Sonderfälle und Fehlerzustände behandelt?</p></li>
+<li><p>Ist die Fehlerbehandlung konsistent — werden Exceptions nicht verschluckt und ist das Logging aussagekräftig?</p>
+<p>(Werden checked und unchecked Exceptions bewusst und nachvollziehbar eingesetzt?)</p>
+</li>
+</ul>
+</li>
+<li><p><em>Struktur und Wartbarkeit</em></p>
+<ul class="simple">
+<li><p>Ist der Code modularisiert und werden Klassen und Methoden klein und fokussiert gehalten (Single Responsibility)?</p></li>
+<li><p>Wird die Architektur eingehalten?</p></li>
+<li><p>Ist der Datenfluss nachvollziehbar — insbesondere über Schichtgrenzen hinweg?</p></li>
+<li><p>Wird auf tief verschachtelte Logik verzichtet?</p></li>
+<li><p>Werden Ressourcen korrekt geschlossen (try-with-resources)?</p></li>
+</ul>
+</li>
+<li><p><em>Modernes Java</em></p>
+<ul class="simple">
+<li><p>Werden aktuelle Sprachfeatures genutzt (<em>Records</em>, <em>Sealed Classes</em>, <em>Pattern Matching</em>, <em>Switch Expressions</em>)?</p></li>
+<li><p>Werden Streams und Optionals sinnvoll eingesetzt?</p></li>
+<li><p>Werden <code class="java"><span class="keyword declaration">var</span></code>-Deklarationen dort verwendet, wo sie die Lesbarkeit verbessern?</p></li>
+</ul>
+</li>
+<li><p><em>Abhängigkeiten, Tests und Dokumentation</em></p>
+<ul class="list-with-explanations">
+<li><p>Ist die Verwendung der eingesetzten Bibliotheken gerechtfertigt?</p></li>
+<li><p>Sind alle Abhängigkeiten aktuell?</p></li>
+<li><p>Gibt es Testfälle und sind diese ausreichend?</p>
+<p>(Codeabdeckung ist <em>nur</em> ein erster Indikator.)</p>
+</li>
+<li><p>Ist die Javadoc-Dokumentation an öffentlichen Schnittstellen ausreichend?</p></li>
+<li><p>Sind TODOs und FIXMEs verständlich und umsetzbar?</p></li>
+</ul>
+</li>
+</ul>
+</ld-story></ld-topic>
+<ld-topic class="summary" id="empfohlenes-vorgehen">
+<h2>Empfohlenes Vorgehen</h2>
+<ol class="arabic simple incremental-list list-with-explanations">
+<li><p>Einführung durch die Autoren erhalten
+(Projekt vorführen lassen, Architektur und zentrale Entscheidungen verstehen.)</p></li>
+<li><p>Build-Prozess und Projektstruktur prüfen
+(Lässt sich das Projekt bauen und starten? Ist die Struktur nachvollziehbar?)</p></li>
+<li><p>Gesamtstruktur des Codes überblicken
+(Datenfluss, Modulgrenzen, Architekturkonformität.)</p></li>
+<li><p>Technologiespezifisch in die Tiefe gehen
+(HTML ➝ CSS ➝ JavaScript — oder aufgeteilt in Subteams.)</p></li>
+<li><p>Issues dokumentieren
+(Stelle ➝ Problem ➝ Verbesserungsvorschlag.)</p></li>
+<li><p>Notizen für das eigene Projekt machen.</p></li>
+</ol>
+</ld-topic>
 </template>
 </body>
 </html>

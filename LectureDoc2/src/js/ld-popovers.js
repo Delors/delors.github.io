@@ -50,8 +50,30 @@ function afterLDListenerRegistrations() {
         });
 }
 
+function afterLDDOMManipulations() {
+    document
+        .querySelectorAll("#ld-document-view ld-section button[popovertarget]")
+        .forEach((e) => {
+            const header = document.createElement("p");
+            header.className = "rubric details";
+            header.append(...e.childNodes);
+            e.parentElement.replaceChild(header, e);
+        });
+
+    document
+        .querySelectorAll("#ld-document-view ld-section dialog[popover]")
+        .forEach((e) => {
+            const header = document.createElement("div");
+            header.className = "details";
+            header.append(...e.childNodes);
+            e.parentElement.replaceChild(header, e);
+        });
+}
+
 const ldEvents = lectureDoc2.ldEvents;
 ldEvents.addEventListener(
     "afterLDListenerRegistrations",
     afterLDListenerRegistrations,
 );
+
+ldEvents.addEventListener("afterLDDOMManipulations", afterLDDOMManipulations);

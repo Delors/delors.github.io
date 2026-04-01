@@ -225,22 +225,35 @@ ul.columns {
     }
 }
 
-ul.negative-list>li,
-/* TODO rename: attention-list (see below)*/
-ul>li.negative-list {
+ul.attention-list > li,
+ul > li.attention-list {
     list-style-type: "❗️";
 }
 
-ul.positive-list>li,
-/* TODO rename: check-list*/
-ul>li.positive-list {
-    list-style-type: "✓";
+ul.negative-list > li,
+ul > li.negative-list {
+    list-style-type: "✗"; /* Alternative: ✘*/
+
+    &::marker {
+        font-size: 0.75em;
+    }
+}
+
+ul.positive-list > li,
+ul > li.positive-list {
+    list-style-type: "✓"; /* TODO change symbol and validate existing slide! */
 }
 
 ul.question-list>li,
 /* TODO rename: */
 ul>li.question-list {
     list-style-type: " ? ";
+}
+
+ul.check-list>li,
+/* TODO rename: */
+ul>li.check-list {
+    list-style-type: "✓";
 }
 
 ul.attention-list>li,
@@ -979,7 +992,7 @@ pre.code {
     }
 
     /*  styling line numbers */
-    .ln {
+    > .ln {
         color: var(--dark-gray);
         font-size: inherit;
         margin-right: 0.25em;
@@ -1001,6 +1014,18 @@ pre.code {
             border-radius: var(--small-border-radius) 0 0
                 var(--small-border-radius);
         }
+    }
+
+    &.tail > .ln:first-of-type {
+        border-radius: 0;
+    }
+
+    &.head > .ln:last-of-type {
+        border-radius: 0;
+    }
+
+    &.snippet > .ln {
+        border-radius: 0;
     }
 
     /*  styling the code (sorted alphabetically) */
