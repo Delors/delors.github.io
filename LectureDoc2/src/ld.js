@@ -1288,7 +1288,9 @@ function setupSlidePane() {
         setupCopyToClipboard(slide);
 
         // Move supplemental infos at the end.
-        const allSupplementals = slide.querySelectorAll(":scope .supplemental");
+        const allSupplementals = slide.querySelectorAll(
+            ":scope ld-supplemental",
+        );
         if (allSupplementals.length > 0) {
             const ldSupplementals = ld.create("ld-supplementals", {});
             for (const supplemental of allSupplementals) {
@@ -1599,7 +1601,10 @@ function setSlidesPaneScale() {
     const w_scale = window.innerWidth / presentation.slide.width;
     const h_scale = window.innerHeight / presentation.slide.height;
     const newSlidePaneScale = Math.min(w_scale, h_scale);
-    document.getElementById("ld-slides-pane").style.scale = newSlidePaneScale;
+    const slidesPane = document.getElementById("ld-slides-pane");
+    slidesPane.style.scale = newSlidePaneScale;
+    slidesPane.style.setProperty("--ld-slide-scale", newSlidePaneScale);
+
     ephemeral.currentSlidePaneScale = newSlidePaneScale;
 }
 
@@ -2532,7 +2537,33 @@ function registerSlideInternalLinkClickedListener() {
 }
 
 function registerHoverSupplementalListener() {
-    // TODO move to module
+    /*   TODO move to module and make it a custom HTML element!
+        class LDSupplemental extends HTMLElement {
+        static observedAttributes = ['supplemental-id'];
+
+        // Property getter/setter that reflects to the attribute
+        get supplementalId() {
+            return this.getAttribute('supplemental-id');
+        }
+
+        set supplementalId(value) {
+            if (value == null) {
+            this.removeAttribute('supplemental-id');
+            } else {
+            this.setAttribute('supplemental-id', value);
+            }
+        }
+
+        // Called when the attribute changes (including from HTML)
+        attributeChangedCallback(name, oldValue, newValue) {
+            if (name === 'supplemental-id' && oldValue !== newValue) {
+            // React to the change here, e.g. update rendering
+            }
+        }
+        }
+
+        customElements.define('ld-supplemental', LDSupplemental);
+        */
     let supplementalsId = 1;
     document
         .querySelectorAll("#ld-slides-pane ld-supplementals")
@@ -2759,6 +2790,7 @@ const onDOMContentLoaded = async () => {
     await import("./js/ld-images.js");
 
     try {
+        await import("./js/ld-global-information.js");
         await import("./js/ld-tables.js");
         await import("./js/ld-decks.js");
         await import("./js/ld-scrollables.js");

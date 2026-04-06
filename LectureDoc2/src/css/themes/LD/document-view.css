@@ -92,16 +92,20 @@
     /*  In the document view supplemental information is shown where it was
         defined, but we add a little separator to make it more clear that this
         is supplemental information. */
-    .supplemental {
+    ld-supplemental {
+        display: block;
         clear: both;
-        margin-top: 1em;
-        border-top: 1px dashed var(--dark-gray);
         padding: calc(var(--current-base-font-size) * 0.5) 0;
         --current-base-font-size: var(--d-supplemental-font-size);
         font-size: var(--current-base-font-size);
         line-height: var(--d-supplemental-line-height);
 
-        & + .supplemental {
+        &:not([embed-in-document-flow]) {
+            margin-top: 1em;
+            border-top: 1px dashed var(--dark-gray);
+        }
+
+        & + ld-supplemental {
             margin-top: 0;
         }
     }

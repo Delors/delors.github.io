@@ -1,0 +1,71 @@
+body[data-ld-mode="slide-view"] {
+    button#ld-global-elements-menu-button {
+        display: block;
+        position: fixed;
+        z-index: 998;
+        left: 4px;
+        bottom: 4px;
+        font-size: 24px;
+
+        color: rgb(25 25 25 / 0.25);
+        text-shadow: 1px 1px 1px rgb(255 255 255 / 0.25);
+        background-color: transparent;
+        transform-origin: bottom left;
+
+        &:hover {
+            color: rgb(25 25 25);
+            text-shadow: 1px 1px 1px rgb(255 255 255);
+            transform: scale(1.35);
+            transition: all 0.5s ease-in-out;
+        }
+    }
+
+    nav#ld-global-elements-menu {
+        display: flex;
+        position: fixed;
+
+        margin: 0;
+        inset: auto auto 10px 14px;
+        padding: 0.5em;
+        background-color: rgb(255 255 255 0.66);
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgb(0 0 0 / 0.3);
+        backdrop-filter: blur(3px);
+
+        flex-direction: column;
+        gap: 8px;
+
+        &:not(:popover-open) {
+            display: none;
+        }
+
+        > button {
+            padding: 0.3em;
+            background-color: rgb(66 66 66 / 0.5);
+            color: rgb(255 255 255 / 0.75);
+            border-radius: var(--small-border-radius);
+
+            &:hover {
+                color: black;
+                background-color: white;
+                transition: all 0.5s ease-in-out;
+                box-shadow: 0 0 2px rgb(200 200 200);
+            }
+        }
+    }
+}
+
+body[data-ld-mode="document-view"] {
+    button#ld-global-elements-menu-button,
+    nav#ld-global-elements-menu {
+        display: none;
+    }
+}
+
+/* We never show the menu and buttons - independent of the mode! */
+@media print {
+    button#ld-global-elements-menu-button,
+    nav#ld-global-elements-menu {
+        display: none;
+    }
+}
