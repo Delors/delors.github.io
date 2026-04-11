@@ -1287,16 +1287,22 @@ function setupSlidePane() {
 
         setupCopyToClipboard(slide);
 
-        // Move supplemental infos at the end.
+        // Move all relevant supplemental infos at the end or delete them if they are d-only
         const allSupplementals = slide.querySelectorAll(
             ":scope ld-supplemental",
         );
         if (allSupplementals.length > 0) {
             const ldSupplementals = ld.create("ld-supplementals", {});
             for (const supplemental of allSupplementals) {
-                ldSupplementals.appendChild(supplemental);
+                if (!supplemental.classList.contains("d-only"))
+                    ldSupplementals.appendChild(supplemental);
+                else {
+                    // we simply remove d-only supplementals in slide view
+                    supplemental.remove();
+                }
             }
-            slide.appendChild(ldSupplementals);
+            if (ldSupplementals.children.length > 0)
+                slide.appendChild(ldSupplementals);
         }
 
         // Collect and move presenter notes as a whole at the end.
