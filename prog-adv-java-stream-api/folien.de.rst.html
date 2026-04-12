@@ -60,7 +60,7 @@
 </ol>
 </dd>
 <dt>KI Verwendung<span class="colon">:</span></dt>
-<dd><p>Bei der Erstellung der Folien wurden KI Assistenten unterstützend eingesetzt. Dies erfolgte insbesondere, um effizient die Grafiken (d. h. die SVG Dateien)  zu generieren, oder um sich Übersichtstabellen generieren zu lassen. Weiterhin wurde KI zur allgemeinen Qualitätssicherung eingesetzt. Alle Inhalte, die ggf. auf KI Vorschläge zurückzuführen sind, wurden explizit validiert.</p>
+<dd><p>Bei der Erstellung der Folien wurden KI Assistenten (insbesondere Claude Opus 4.6) unterstützend eingesetzt. Dies erfolgte insbesondere, um effizient die Grafiken (d. h. die SVG Dateien)  zu generieren, oder um sich Übersichtstabellen generieren zu lassen. Weiterhin wurde KI zur allgemeinen Qualitätssicherung eingesetzt. Inhalte, die ggf. von der KI vorgeschlagen wurden, wurden im Falle der Übernahme explizit validiert.</p>
 <p><em>KI wurde nicht verwendet</em> für den Aufbau, die Struktur und die Auswahl der grundlegenden Inhalte.</p>
 </dd>
 </dl>
@@ -2303,7 +2303,27 @@ MTAwMDAw:SGKVW1ib7khkIMcq8UDAgOgsF+nOawrLpHJsaPblOr8=:eqGkGjmW0cpP9C/g:GIG6xFMgZ
 </span></code><small class="ln">11</small><code data-lineno="11"><span class="whitespace">    </span><span class="name">a</span><span class="punctuation">.</span><span class="name">schnitt</span><span class="punctuation">.</span><span class="name">total_cmp</span><span class="punctuation">(</span><span class="operator">&amp;</span><span class="name">b</span><span class="punctuation">.</span><span class="name">schnitt</span><span class="punctuation">))</span><span class="whitespace">
 </span></code><small class="ln">12</small><code data-lineno="12"><span class="whitespace">  </span><span class="punctuation">.</span><span class="name">collect</span><span class="punctuation">::</span><span class="operator">&lt;</span><span class="name builtin">Vec</span><span class="operator">&lt;</span><span class="name">_</span><span class="operator">&gt;&gt;</span><span class="punctuation">();</span></code></pre>
 <ld-supplemental><p>In Rust ist <code class="rust"><span class="operator">&amp;</span></code> der Referenzoperator. D. h. in Zeile 2 wird eine Referenz auf den String für den Studiengang übergeben. Die Zielmethode kann diese Referenz lesen, aber nicht verändern.</p>
-<p class="rubric">Vollständiges Beispiel in Rust</p>
+</ld-supplemental></ld-cell></ld-grid><ld-supplemental embed-in-document-flow><aside class="admonition dd-margin-left-3em assessment">
+<p class="admonition-title">Bewertung</p>
+<dl class="field-list simple">
+<dt>Zero-Costs<span class="colon">:</span></dt>
+<dd><p>Rusts Pipeline kompiliert zu praktisch dem selben Maschinencode wie eine handgeschriebene <code class="rust"><span class="keyword">for</span></code>-Schleife — keine Heap-Allokationen, keine virtuellen Dispatches. Javas Pipeline erzeugt Overhead, der vom JIT-Compiler erst zur Laufzeit <em>teilweise</em> optimiert wird.</p>
+</dd>
+<dt>Expliziter Float-Vergleich<span class="colon">:</span></dt>
+<dd><p>Rust erzwingt <code class="rust"><span class="name">total_cmp</span></code> statt eines einfachen <code class="rust"><span class="operator">&lt;</span></code>-Vergleichs, weil Gleitkommazahlen <code class="rust"><span class="name">NaN</span></code> enthalten können. Java's <code class="java"><span class="name">comparingDouble</span><span class="punctuation">(...)</span></code> behandelt <code class="java"><span class="name">NaN</span></code> stillschweigend; ein potenziell versteckter Bug.</p>
+</dd>
+<dt>Ownership vs. Runtime-Schutz<span class="colon">:</span></dt>
+<dd><p><code class="rust"><span class="name">into_iter</span><span class="punctuation">()</span></code> in Rust <em>konsumiert</em> die Gruppe — ein erneuter Zugriff ist ein Compile-Fehler. Javas Stream wirft erst zur Laufzeit eine <code class="java"><span class="name">IllegalStateException</span></code> bei Mehrfachnutzung.</p>
+</dd>
+<dt>Erweiterbarkeit<span class="colon">:</span></dt>
+<dd><p>Rust benötigt kein Gatherer-Konzept. Einen neuen Iterator zu bauen erfordert nur die Implementierung von <code class="rust"><span class="name">next</span><span class="punctuation">()</span></code> — alle ~75 Adapter-Methoden (<code class="rust"><span class="name">filter</span></code>, <code class="rust"><span class="name">map</span></code>, <code class="rust"><span class="name">take_while</span></code>, ...) stehen dann automatisch zur Verfügung. Das <span class="docutils literal">itertools</span>-Crate erweitert dies nahtlos über Rusts Trait-System.</p>
+</dd>
+<dt>Parallelisierung<span class="colon">:</span></dt>
+<dd><p>In Java genügt <code class="java"><span class="punctuation">.</span><span class="name attribute">parallelStream</span><span class="punctuation">()</span></code>; in Rust ersetzt man <code class="rust"><span class="name">iter</span><span class="punctuation">()</span></code> durch <code class="rust"><span class="name">par_iter</span><span class="punctuation">()</span></code> (via <span class="docutils literal">rayon</span>-Crate). Der entscheidende Unterschied: Rusts Ownership-System garantiert <em>zur Compile-Zeit</em>, dass keine Data Races entstehen. Javas Fork/Join-Pool kann das nicht. Aber der beobachtete Fehler im Java Beispiel - wenn eine Operation den Kontrakt nicht einhält - könnte so auch in Rust auftreten, da dies auf einen logischen Fehler zurückzuführen war und nicht auf eine Race Condition.</p>
+</dd>
+</dl>
+</aside>
+</ld-supplemental><ld-supplemental><p class="rubric">Vollständiges Beispiel in Rust</p>
 <pre class="code rust copy-to-clipboard literal-block"><code><span class="keyword">use</span><span class="whitespace"> </span><span class="name">itertools</span><span class="punctuation">::</span><span class="name">Itertools</span><span class="punctuation">;</span><span class="whitespace">
 
 </span><span class="comment preproc">#[derive(Debug)]</span><span class="whitespace">
@@ -2377,26 +2397,6 @@ MTAwMDAw:SGKVW1ib7khkIMcq8UDAgOgsF+nOawrLpHJsaPblOr8=:eqGkGjmW0cpP9C/g:GIG6xFMgZ
     </span><span class="punctuation">}</span><span class="whitespace">
 </span><span class="punctuation">}</span></code></pre>
 <p>Zum Ausführen des Codes kann <a class="reference external" href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2024&amp;gist=9c8cc9e32e4c4473dd84728ee3e86ff3">Play Rust-Lang.org</a> verwendet werden.</p>
-</ld-supplemental></ld-cell></ld-grid><ld-supplemental embed-in-document-flow><aside class="admonition dd-margin-left-3em assessment">
-<p class="admonition-title">Bewertung</p>
-<dl class="field-list simple">
-<dt>Zero-Costs<span class="colon">:</span></dt>
-<dd><p>Rusts Pipeline kompiliert zu praktisch dem selben Maschinencode wie eine handgeschriebene <code class="rust"><span class="keyword">for</span></code>-Schleife — keine Heap-Allokationen, keine virtuellen Dispatches. Javas Pipeline erzeugt Overhead, der vom JIT-Compiler erst zur Laufzeit <em>teilweise</em> optimiert wird.</p>
-</dd>
-<dt>Expliziter Float-Vergleich<span class="colon">:</span></dt>
-<dd><p>Rust erzwingt <code class="rust"><span class="name">total_cmp</span></code> statt eines einfachen <code class="rust"><span class="operator">&lt;</span></code>-Vergleichs, weil Gleitkommazahlen <code class="rust"><span class="name">NaN</span></code> enthalten können. Java's <code class="java"><span class="name">comparingDouble</span><span class="punctuation">(...)</span></code> behandelt <code class="java"><span class="name">NaN</span></code> stillschweigend; ein potenziell versteckter Bug.</p>
-</dd>
-<dt>Ownership vs. Runtime-Schutz<span class="colon">:</span></dt>
-<dd><p><code class="rust"><span class="name">into_iter</span><span class="punctuation">()</span></code> in Rust <em>konsumiert</em> die Gruppe — ein erneuter Zugriff ist ein Compile-Fehler. Javas Stream wirft erst zur Laufzeit eine <code class="java"><span class="name">IllegalStateException</span></code> bei Mehrfachnutzung.</p>
-</dd>
-<dt>Erweiterbarkeit<span class="colon">:</span></dt>
-<dd><p>Rust benötigt kein Gatherer-Konzept. Einen neuen Iterator zu bauen erfordert nur die Implementierung von <code class="rust"><span class="name">next</span><span class="punctuation">()</span></code> — alle ~75 Adapter-Methoden (<code class="rust"><span class="name">filter</span></code>, <code class="rust"><span class="name">map</span></code>, <code class="rust"><span class="name">take_while</span></code>, ...) stehen dann automatisch zur Verfügung. Das <span class="docutils literal">itertools</span>-Crate erweitert dies nahtlos über Rusts Trait-System.</p>
-</dd>
-<dt>Parallelisierung<span class="colon">:</span></dt>
-<dd><p>In Java genügt <code class="java"><span class="punctuation">.</span><span class="name attribute">parallelStream</span><span class="punctuation">()</span></code>; in Rust ersetzt man <code class="rust"><span class="name">iter</span><span class="punctuation">()</span></code> durch <code class="rust"><span class="name">par_iter</span><span class="punctuation">()</span></code> (via <span class="docutils literal">rayon</span>-Crate). Der entscheidende Unterschied: Rusts Ownership-System garantiert <em>zur Compile-Zeit</em>, dass keine Data Races entstehen. Javas Fork/Join-Pool kann das nicht. Aber der beobachtete Fehler im Java Beispiel - wenn eine Operation den Kontrakt nicht einhält - könnte so auch in Rust auftreten, da dies auf einen logischen Fehler zurückzuführen war und nicht auf eine Race Condition.</p>
-</dd>
-</dl>
-</aside>
 </ld-supplemental></ld-topic>
 <ld-topic id="java-streams-vs-rust-iteratoren-konzeptioneller-vergleich">
 <h2>Java Streams vs. Rust Iteratoren — Konzeptioneller Vergleich</h2>
