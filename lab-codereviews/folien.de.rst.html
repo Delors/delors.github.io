@@ -34,7 +34,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">0.4</dd>
+<dd class="version">0.4.1</dd>
 </dl>
 <ld-supplemental><dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
@@ -48,18 +48,20 @@
 </ld-supplemental></ld-topic>
 <ld-topic id="code-reviews-und-software-qualitat">
 <h2>Code Reviews und Software Qualität</h2>
-<ld-deck class="height-100">
+<ld-deck>
 <ld-card>
 <aside class="admonition question">
 <p class="admonition-title">Frage</p>
-<p>Sie bekommen morgen ein Projekt mit 15.000 Zeilen Code übergeben, das Sie weiterentwickeln sollen. Es ist keine Dokumentation vorhanden oder hoffnungslos veraltet und die Originalautoren sind nicht mehr erreichbar.</p>
-<p>Wie fangen Sie an?</p>
-<p>Wovon hängt Ihr Aufwand ab?</p>
-<p>Was hätte geholfen?</p>
+<p>Sie bekommen morgen ein Projekt mit 15.000 Zeilen Code übergeben, das Sie weiterentwickeln sollen. Es ist keine Dokumentation vorhanden oder die Dokumentation ist veraltet oder die Dokumentation wurde KI generiert und die Originalautoren sind nicht mehr erreichbar.</p>
+<ul class="simple">
+<li><p>Wie fangen Sie an?</p></li>
+<li><p>Wovon hängt Ihr Aufwand ab?</p></li>
+<li><p>Was hätte geholfen?</p></li>
+</ul>
 </aside>
 </ld-card><ld-card class="incremental">
 <blockquote class="epigraph">
-<p>[...] Through a case study of [...], we find that <strong>code review coverage, participation, and expertise share a significant link with software quality.</strong><a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> Hence, our results empirically confirm the intuition that poorly-reviewed code has a negative impact on software quality in large systems [...].</p>
+<p>[...] Through a case study [...], we find that <strong>code review coverage, participation, and expertise share a significant link with software quality.</strong><a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> Hence, our results empirically confirm the intuition that poorly-reviewed code has a negative impact on software quality in large systems [...].</p>
 <p class="attribution">—<a class="reference external" href="https://doi.org/10.1007/s10664-015-9381-9">McIntosh, S., Kamei, Y., Adams, B. et al. An empirical study of the impact of modern code review practices on software quality. Empirical Software Engineering 21, 2146–2189 (2016).</a></p>
 </blockquote>
 <aside class="footnote-list brackets">
@@ -73,7 +75,7 @@
 <h2>Einführung - Was sind Code Reviews?</h2>
 <ld-deck>
 <ld-card>
-<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Ein Code Review ist die systematische Untersuchung von Quellcode durch Dritte <span class="incremental">— Menschen, KI-Tools oder beide in Kombination —</span> <span class="incremental">mit dem primären Ziel, Probleme zu identifizieren, die der Autor - Mensch oder KI - übersehen hat.</span></p>
+<aside class="admonition definition"><p class="admonition-title"><span>Definition: Code Review</span></p><p>Die <span class="emph">systematische Untersuchung</span> von Quellcode durch Dritte <span class="incremental">— Menschen, KI-Tools oder beide in Kombination —</span> <span class="incremental">mit dem primären Ziel, Probleme zu identifizieren, die der Autor - Mensch oder KI - übersehen hat.</span></p>
 </aside></ld-card><ld-card class="incremental">
 <p class="rubric">Typischer Ablauf</p>
 <ol class="arabic incremental-list">
@@ -81,7 +83,7 @@
 <ld-supplemental><p>In professionellen Projekten erfolgen Code Reviews für gewöhnlich im Kontext so genannter Git(Hub) Pull Requests. Dies ist unabhängig davon, ob es sich um Open-Source oder kommerzielle/closed-source Software handelt. Sie können diese gerne im Rahmen des durchzuführenden Code Reviews nutzen. Die Dokumentation ist dann „einfach“ die Zusammenstellung der Pull Requests.</p>
 </ld-supplemental></li>
 <li><p><em>Analyse des Codes</em> - dies erfolgt entweder manuell, werkzeuggestützt (dann insbesondere KI-gestützt) oder durch eine Kombination von beidem.</p></li>
-<li><p><em>Dokumentation relevanter Probleme/Aspekte</em> - fragwürdige oder problematische Codestellen werden mit Hilfe von einzelnen, nachvollziehbaren Anmerkungen dokumentiert.</p></li>
+<li><p><em>Dokumentation relevanter Probleme/Aspekte</em> - fragwürdige oder problematische Codestellen werden mit Hilfe von <span class="emph">einzelnen, nachvollziehbaren Anmerkungen</span> dokumentiert.</p></li>
 </ol>
 <div class="incremental compound">
 <p>Im Nachgang an das eigentliche Code Review erfolgt die <em>Umsetzung der Änderungen</em> durch die Originalautoren, wobei es ggf. zu Nachfragen/Diskussionen kommen kann.</p>
@@ -90,7 +92,7 @@
 <dl class="incremental-list field-list simple">
 <dt>Primäre Ziele<span class="colon">:</span></dt>
 <dd><ul class="simple">
-<li><p>Fehler finden, die dem Autor/den Autoren nicht auffallen</p></li>
+<li><p>(insbesondere fachliche) Fehler finden, die dem Autor/den Autoren nicht aufgefallen sind</p></li>
 <li><p>Verständlichkeit und Wartbarkeit des Codes sicherstellen</p></li>
 </ul>
 </dd>
@@ -162,7 +164,7 @@
 </li>
 <li><p>der Code kompiliert bzw. ist frei von Syntaxfehlern</p></li>
 <li><p>der Code wurde getestet</p>
-<p>(Wenn vorhanden, dann wurden Unit-/Integrations-Tests erfolgreich ausgeführt; falls nicht, dann wurde durch die Autoren zumindest ein manueller Test durchgeführt.)</p>
+<p>(Wenn vorhanden, dann wurden Unit-/Integrations-Tests erfolgreich ausgeführt; falls nicht, dann wurde durch die Autoren zumindest ein manueller Test durchgeführt. In professionellen Projekten sind Tests unverzichtbar.)</p>
 </li>
 <li><p>Architektur und zentrale Designentscheidungen sind dem Reviewer bekannt</p>
 <p>(Im Idealfall sind zentrale Aspekte zum Beispiel durch C4-Diagramme oder UML-Sequenzdiagramme bereits dokumentiert.)</p>
@@ -179,7 +181,26 @@
 <ld-topic id="gutes-feedback-formulieren">
 <h2>Gutes Feedback formulieren</h2>
 <ld-deck>
-<ld-card class="fade-out">
+<ld-card>
+<p class="rubric">Starkes Feedback</p>
+<ul class="positive-list simple">
+<li><p>„Der Funktionsname <code>process()</code> sagt nicht, <em>was</em> verarbeitet wird — wäre z. B. <code>validateFormInput()</code> treffender?&quot;</p></li>
+<li><p>„Hier wird <code>catch(e) {}</code> verwendet, aber der Fehler wird nicht geloggt. Falls die Validierung fehlschlägt, wäre es schwer, den Grund zu finden.&quot;</p></li>
+<li><p>„Die Berechnung in Zeile 42–58 könnte in eine eigene Funktion extrahiert werden, um die <code>handleSubmit()</code>-Methode kürzer und lesbarer zu machen.&quot;</p></li>
+<li><p>„Mir ist aufgefallen, dass <code>rem</code> und <code>px</code> gemischt werden — gibt es dafür einen Grund, oder sollten wir uns auf <code>rem</code> einigen?&quot;</p></li>
+<li><p>„Die Validierungslogik liegt sowohl in <span class="docutils literal">form.js</span> als auch <span class="docutils literal">api.js</span> — wäre es sinnvoll, sie an einer Stelle zu bündeln, um Inkonsistenzen zu vermeiden?&quot;</p></li>
+</ul>
+</ld-card><ld-card class="s-overlay backdrop-blur center-content incremental">
+<aside class="admonition attention">
+<p class="admonition-title">Achtung!</p>
+<p>Ein Issue sollte:</p>
+<ol class="loweralpha simple">
+<li><p><em>eine konkrete Stelle</em> im Code benennen,</p></li>
+<li><p>das <em>Problem</em> beschreiben und</p></li>
+<li><p>idealerweise einen <em>Verbesserungsvorschlag</em> machen.</p></li>
+</ol>
+</aside>
+</ld-card><ld-card class="fade-out incremental">
 <p class="rubric">Schwaches, nicht-konstruktives, herabwertendes Feedback</p>
 <ul class="negative-list list-with-explanations">
 <li><p>„Das muss anders.&quot;</p></li>
@@ -191,25 +212,6 @@
 <p>(Falls eine negative Konnotation mitschwingt; es kann auch eine ehrliche Frage sein.)</p>
 </li>
 </ul>
-</ld-card><ld-card class="incremental">
-<p class="rubric">Starkes Feedback</p>
-<ul class="positive-list simple">
-<li><p>„Der Funktionsname <code>process()</code> sagt nicht, <em>was</em> verarbeitet wird — wäre z. B. <code>validateFormInput()</code> treffender?&quot;</p></li>
-<li><p>„Hier wird <code>catch(e) {}</code> verwendet, aber der Fehler wird nicht geloggt. Falls die Validierung fehlschlägt, wäre es schwer, den Grund zu finden.&quot;</p></li>
-<li><p>„Die Berechnung in Zeile 42–58 könnte in eine eigene Funktion extrahiert werden, um die <code>handleSubmit()</code>-Methode kürzer und lesbarer zu machen.&quot;</p></li>
-<li><p>„Mir ist aufgefallen, dass <code>rem</code> und <code>px</code> gemischt werden — gibt es dafür einen Grund, oder sollten wir uns auf <code>rem</code> einigen?&quot;</p></li>
-<li><p>„Die Validierungslogik liegt sowohl in <span class="docutils literal">form.js</span> als auch <span class="docutils literal">api.js</span> — wäre es sinnvoll, sie an einer Stelle zu bündeln, um Inkonsistenzen zu vermeiden?&quot;</p></li>
-</ul>
-</ld-card><ld-card class="s-overlay backdrop-blur center-content incremental">
-<aside class="admonition incremental attention">
-<p class="admonition-title">Achtung!</p>
-<p>Ein Issue sollte:</p>
-<ol class="loweralpha simple">
-<li><p><em>eine konkrete Stelle</em> im Code benennen,</p></li>
-<li><p>das <em>Problem</em> beschreiben und</p></li>
-<li><p>idealerweise einen <em>Verbesserungsvorschlag</em> machen.</p></li>
-</ol>
-</aside>
 </ld-card></ld-deck></ld-topic>
 <ld-topic id="vorgehen-beim-review">
 <h2>Vorgehen beim Review</h2>
@@ -253,11 +255,11 @@
 <ld-story>
 <ul class="incremental-list list-with-sublists">
 <li><p><em>Einstieg und Reproduzierbarkeit</em></p>
-<ul>
+<ul class="list-with-explanations">
 <li><p>Gibt es eine README.md mit klaren Anweisungen zum Bauen und Starten des Projekts?</p></li>
 <li><p>Lässt sich das Projekt mit wenigen Schritten lokal aufsetzen und starten?</p></li>
 <li><p>Sind alle Abhängigkeiten fixiert?</p>
-<p>(Im Falle von Node-/JavaScript-basierten Projekte zum Beispiel über <span class="docutils literal"><span class="pre">package-lock.json</span></span>.)</p>
+<p>(Im Falle von Node-/JavaScript-basierten Projekten zum Beispiel über <span class="docutils literal"><span class="pre">package-lock.json</span></span>.)</p>
 </li>
 </ul>
 </li>
@@ -271,11 +273,11 @@
 </ul>
 </li>
 <li><p><em>Projektstruktur</em></p>
-<ul>
+<ul class="list-with-explanations">
 <li><p>Ist die Verzeichnisstruktur nachvollziehbar und konsistent?</p></li>
 <li><p>Spiegelt die Ordnerstruktur die Architektur wider?</p></li>
 <li><p>Sind keine generierten Dateien oder Abhängigkeiten im Repository?</p>
-<p>(Zum Beispiel: <code>node_modules</code> oder <code>dist</code>.)</p>
+<p>(Zum Beispiel: <code>node_modules</code>, <code>dist</code>, <code>target</code>.)</p>
 </li>
 </ul>
 </li>
@@ -290,7 +292,7 @@
 <ul>
 <li><p>Konsistente Schreibweise von CSS-Custom-Properties, Klassennamen und IDs</p></li>
 <li><p>Sind die Namen verständlich und sprechend?</p>
-<p><span class="red">(Korrektes Deutsch oder Englisch!)</span></p>
+<p><span class="emph">(Korrektes Deutsch oder Englisch; konsistente Sprachnutzung.)</span></p>
 </li>
 <li><p>Keine Redundanzen, keine unnötigen Style-Definitionen</p></li>
 </ul>
@@ -307,7 +309,7 @@
 <ul class="simple">
 <li><p>Einfachheit des Layouts (dies muss ggf. im Zusammenspiel mit dem HTML-Code geprüft werden)</p></li>
 <li><p>Gibt es ein klares Vorgehen (Mobile-first oder Desktop-first)?</p></li>
-<li><p>Konsistente Verwendung von Größeneinheiten (em, rem, …) und Farbwerten</p></li>
+<li><p>Konsistente Verwendung von Größeneinheiten (<code class="js javascript"><span class="name other">em</span></code>, <code class="js javascript"><span class="name other">rem</span></code>, …) und Farbwerten</p></li>
 </ul>
 </li>
 <li><p><em>Modernes CSS</em></p>
@@ -325,9 +327,9 @@
 <h2>Code Reviews von HTML</h2>
 <p class="rubric">Exemplarische Kriterien</p>
 <ld-story>
-<ul class="incremental-list list-with-sublists simple">
+<ul class="incremental-list list-with-sublists">
 <li><p><em>Struktur und Semantik</em></p>
-<ul>
+<ul class="simple">
 <li><p>Ist die Struktur einfach nachvollziehbar oder übermäßig komplex (z. B. tief verschachtelte DIVs)?</p></li>
 <li><p>Wird primär semantisches HTML genutzt (d. h. beschränkt sich die Nutzung von <code class="html"><span class="punctuation">&lt;</span><span class="name tag">span</span><span class="punctuation">&gt;</span></code> und <code class="html"><span class="punctuation">&lt;</span><span class="name tag">div</span><span class="punctuation">&gt;</span></code> auf die optische Gestaltung)?</p></li>
 <li><p>Sinnvolle Strukturierung der Überschriftenhierarchie (<code class="html"><span class="punctuation">&lt;</span><span class="name tag">h1</span><span class="punctuation">&gt;</span></code> bis <code class="html"><span class="punctuation">&lt;</span><span class="name tag">h6</span><span class="punctuation">&gt;</span></code>)</p></li>
@@ -335,14 +337,15 @@
 </ul>
 </li>
 <li><p><em>Trennung von Inhalt, Darstellung und Verhalten</em></p>
-<ul>
+<ul class="simple">
 <li><p>Keine Inline-Styles</p></li>
 <li><p>Kein Inline-JavaScript</p></li>
 <li><p>Keine Verwendung von <code class="html"><span class="punctuation">&lt;</span><span class="name tag">br</span><span class="punctuation">&gt;</span></code> für Layoutzwecke</p></li>
 </ul>
 </li>
 <li><p><em>Accessibility</em></p>
-<ul>
+<ld-supplemental embed-in-document-flow><p>Führen Sie eine Bewertung der Barrierefreiheit nur durch, wenn es im Kontext des Projekts gelehrt wurde bzw. relevant/gefordert ist.</p>
+</ld-supplemental><ul class="simple">
 <li><p>Haben Bilder ein <code class="html">alt</code>-Attribut?</p></li>
 <li><p>Sind Formularfelder mit <code class="html"><span class="punctuation">&lt;</span><span class="name tag">label</span><span class="punctuation">&gt;</span></code> verknüpft?</p></li>
 <li><p>Ist die Seite vollständig per Tastatur bedienbar?</p></li>
@@ -352,7 +355,7 @@
 </ul>
 </li>
 <li><p><em>IDs und Eingabevalidierung</em></p>
-<ul>
+<ul class="simple">
 <li><p>Sind HTML-only IDs (d. h. solche, die nicht für CSS-Styling verwendet werden) verständlich und konsistent vergeben?</p></li>
 <li><p>Werden Eingaben clientseitig geprüft — über HTML-Validierungsattribute (<code class="html">required</code>, <code class="html">pattern</code>, <code class="html">type</code>) oder, wenn nötig, per JavaScript?</p></li>
 </ul>
