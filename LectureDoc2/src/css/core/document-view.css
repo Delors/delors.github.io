@@ -1,24 +1,23 @@
 /* LAYER: behavior */
 
 @media print {
-    /* !ATTENTION! Using CSS nesting doesn't work with Safari (June 2025). */
     #ld-document-view {
         margin: 0;
-    }
 
-    #ld-document-view input[type="password"] {
-        display: none;
+        input[type="password"] {
+            display: none;
+        }
     }
 }
 
 #ld-document-view {
     --ld-rendering-mode: document-view;
 
-    /* The value is controlled by JavaScript! */
+    /* The display property is controlled by JavaScript! */
     display: none;
 
     min-width: calc(var(--ld-slide-width) / 3);
-    margin: 0 calc(var(--d-font-size) * 0.5);
+    margin: 0 calc(var(--d-font-size) / 2);
 
     overflow: hidden;
 
@@ -26,12 +25,13 @@
         --ld-rendering-mode: section;
 
         contain: layout paint;
+
         /*
-        We (currently?) can't use content-visibility here to improve rendering 
-        performance, because we use the current scroll position when we reopen 
-        the document view and this would no longer work, because we don't know 
+        We (currently?) can't use content-visibility here to improve rendering
+        performance, because we use the current scroll position when we reopen
+        the document view and this would no longer work, because we don't know
         the intrinsic size (height) of the sections.
-        
+
         content-visibility: auto;
         contain-intrinsic-size: auto 50vh;
 
@@ -47,7 +47,7 @@
 
         > ld-card-group {
             /*  We simulate a stack by creating a CSS Grid with a single cell
-                and assigning all cards which overlay a specific card the same
+                and assigning all cards that overlay a specific card the same
                 cell.
                 To ensure that the cards are shown in the correct order, we also
                 associate each card with its corresponding z-index.
@@ -71,79 +71,60 @@
                 &:nth-child(1) {
                     --ld-card-index: 1;
                 }
-
                 &:nth-child(2) {
                     --ld-card-index: 2;
                 }
-
                 &:nth-child(3) {
                     --ld-card-index: 3;
                 }
-
                 &:nth-child(4) {
                     --ld-card-index: 4;
                 }
-
                 &:nth-child(5) {
                     --ld-card-index: 5;
                 }
-
                 &:nth-child(6) {
                     --ld-card-index: 6;
                 }
-
                 &:nth-child(7) {
                     --ld-card-index: 7;
                 }
-
                 &:nth-child(8) {
                     --ld-card-index: 8;
                 }
-
                 &:nth-child(9) {
                     --ld-card-index: 9;
                 }
-
                 &:nth-child(10) {
                     --ld-card-index: 10;
                 }
-
                 &:nth-child(11) {
                     --ld-card-index: 11;
                 }
-
                 &:nth-child(12) {
                     --ld-card-index: 12;
                 }
-
                 &:nth-child(13) {
                     --ld-card-index: 13;
                 }
-
                 &:nth-child(14) {
                     --ld-card-index: 14;
                 }
-
                 &:nth-child(15) {
                     --ld-card-index: 115;
                 }
-
                 &:nth-child(16) {
                     --ld-card-index: 16;
                 }
-
                 &:nth-child(17) {
                     --ld-card-index: 17;
                 }
-
                 &:nth-child(18) {
                     --ld-card-index: 18;
                 }
-
                 &:nth-child(19) {
                     --ld-card-index: 19;
                 }
-
                 &:nth-child(20) {
                     --ld-card-index: 20;
                 }
@@ -189,12 +170,12 @@
                 }
             }
         }
-    }
-    ld-card {
-        display: block;
-        /* width and height must not be set! */
-        &:not(.d-no-clear) {
-            clear: both;
+        ld-card {
+            display: block;
+            /* width and height must not be set! */
+            &:not(.d-no-clear) {
+                clear: both;
+            }
         }
     }
 

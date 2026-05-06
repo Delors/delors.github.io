@@ -1,40 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="en">
+    <head>
+        <style>
+            @layer fine, components; /* This defines the order of the cascade; later have higher priority. */
 
-<head>
-    <style>
-        @layer fine, components; /* This defines the order of the cascade. */
-
-        @layer components {
-            p {
-                color: red;
-            }
-        }
-
-        @layer fine {
-            p {
-                color: blue;
-            }
-
-            @layer finer-first {
+            @layer components {
                 p {
-                    color: green;
+                    color: red; /* the highest-priority layer */
                 }
             }
 
-            @layer finer-second {
+            @layer fine {
                 p {
-                    color: yellow;
+                    color: blue; /* Higher priority than the sublayer. */
+                }
+
+                @layer finer-first {
+                    p {
+                        color: green; /* the lowest/least important layer */
+                    }
+                }
+
+                @layer finer-second {
+                    p {
+                        color: yellow; /* overwrites finer-first */
+                    }
                 }
             }
-        }
-    </style>
+        </style>
+    </head>
 
-</head>
-
-<body>
-    <p> This is a paragraph </p>
-</body>
-
+    <body>
+        <p>This is a paragraph</p>
+    </body>
 </html>

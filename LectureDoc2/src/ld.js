@@ -81,6 +81,8 @@ async function ldCrypto() {
     return ldCryptoModule;
 }
 
+let ldCopyToClipboardModule = undefined;
+
 /**
  * Central registry for all events emitted by LectureDoc.
  * Use ldEvents.addEventListener(<event>,<listener>) to register a listener
@@ -259,7 +261,7 @@ function typesetMath(element) {
  * This information will not be mutated after initialization.
  */
 const presentation = {
-    // TODO rename to something like document
+    // TODO rename to something like document (need doc update in behavior.css)
     /**
      * The unique id of this document; required to store state information
      * in local storage across multiple visits to the same document. Also
@@ -699,33 +701,6 @@ function getEncryptedExercisesPasswords() {
         console.info("no exercises specified or no master password set");
         return undefined;
     }
-}
-
-/**
- * Adds a div (button) to the DOM to allow the user to copy the content of
- * code blocks.
- *
- * To make "copy-to-clipboard" functionality work in all views, this
- * function needs to be called before the slides are cloned per the
- * respective view.
- */
-function setupCopyToClipboard(rootNode) {
-    rootNode.querySelectorAll(".code.copy-to-clipboard").forEach((code) => {
-        const copyToClipboardButton = ld.div({
-            classes: ["ld-copy-to-clipboard-button"],
-        });
-        code.insertBefore(copyToClipboardButton, code.firstChild);
-        copyToClipboardButton.addEventListener("click", (event) => {
-            event.stopPropagation();
-            const c = code.cloneNode(true); // we won't have open shadow roots here
-            const lns = c.querySelectorAll(":scope > small.ln");
-            lns.forEach((ln) => c.removeChild(ln));
-            const textToCopy = c.innerText;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                showMessage("Copied to clipboard.", 1000);
-            });
-        });
-    });
 }
 
 /* IDEA W.r.t. advanced animations_:
@@ -1285,8 +1260,6 @@ function setupSlidePane() {
         slide.dataset.ldSlideNo = i;
         slide.dataset.id = clonedTopic.id; /* The original ID! */
 
-        setupCopyToClipboard(slide);
-
         // Move all relevant supplemental infos at the end or delete them if they are d-only
         const allSupplementals = slide.querySelectorAll(
             ":scope ld-supplemental",
@@ -1417,7 +1390,7 @@ async function tryDecryptExercise(password, solutionWrapper, solution) {
         delete solution.dataset.encrypted;
 
         solution.innerHTML = decrypted;
-        setupCopyToClipboard(solution);
+        ldCopyToClipboardModule?.setupCopyToClipboard(solution);
         typesetMath(solution);
         ldEvents.afterDecryptExercise.forEach((f) => f(solution));
     } catch (error) {
@@ -1452,8 +1425,6 @@ function setupDocumentView() {
                     m,
                 );
             });
-
-        setupCopyToClipboard(template);
 
         const section = ld.create("ld-section", {
             id: "ld-section-no-" + i,
@@ -1576,7 +1547,7 @@ function setupMessageBox() {
     document.body.prepend(message);
 }
 
-function showMessage(htmlMessage, ms = 3000) {
+export function showMessage(htmlMessage, ms = 3000) {
     const messageBox = document.getElementById("ld-message-box");
     messageBox.innerHTML = htmlMessage;
     messageBox.show();
@@ -2387,9 +2358,7 @@ function registerSlideClickedListener() {
 
         // TODO move to walker...
         rootNode
-            .querySelectorAll(
-                "a, button, input, video, div.ld-copy-to-clipboard-button",
-            )
+            .querySelectorAll("a, button, input, video")
             .forEach(processInteractiveElement);
     }
 
@@ -2795,18 +2764,22 @@ const onDOMContentLoaded = async () => {
 
     await import("./js/ld-images.js");
 
-    try {
-        await import("./js/ld-global-information.js");
-        await import("./js/ld-tables.js");
-        await import("./js/ld-decks.js");
-        await import("./js/ld-scrollables.js");
-        await import("./js/ld-stories.js");
-        await import("./js/ld-hoverables.js");
-        await import("./js/ld-popovers.js");
-        await import("./js/ld-pointer-events.js");
-    } catch (e) {
-        console.error("failed to load LectureDoc component:", e);
+    async function loadModule(moduleName) {
+        try {
+            return await import(`./js/${moduleName}.js`);
+        } catch (e) {
+            console.warn("failed to load module", moduleName, e);
+        }
     }
+    await loadModule("ld-global-information");
+    await loadModule("ld-tables");
+    await loadModule("ld-decks");
+    await loadModule("ld-scrollables");
+    await loadModule("ld-stories");
+    await loadModule("ld-hoverables");
+    await loadModule("ld-popovers");
+    await loadModule("ld-pointer-events");
+    ldCopyToClipboardModule = await loadModule("ld-copy-to-clipboard");
 
     ldEvents.beforeLDDOMManipulations.forEach((f) => f());
 

@@ -55,6 +55,7 @@ export function button({
     innerHTML = undefined,
     popovertarget = undefined,
     popovertargetaction = undefined,
+    type = "button",
 }) {
     const button = document.createElement("button");
     if (id) button.id = id;
@@ -65,6 +66,7 @@ export function button({
     if (popovertarget) button.setAttribute("popovertarget", popovertarget);
     if (popovertargetaction)
         button.setAttribute("popovertargetaction", popovertargetaction);
+    if (type) button.type = type;
     return button;
 }
 

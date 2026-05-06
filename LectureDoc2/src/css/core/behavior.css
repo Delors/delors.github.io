@@ -23,30 +23,30 @@
 
 :root {
     /*  Specifies the width and height of slides in pixels. This has proven
-    to be very helpful when adding pictures and drawings as it enables a
-    common reference frame. Besides that, only the ratio is relevant.
+        to be very helpful when adding pictures and drawings as it enables a
+        common reference frame. Besides that, only the ratio is relevant.
 
-    These value are always set by JavaScript when the document is
-    loaded; either to the default values defined in JavaScript (as shown
-    next) or to the values specified in the document.
-    */
+        These value are always set by JavaScript when the document is
+        loaded; either to the default values defined in JavaScript (as shown
+        next) or to the values specified in the document. */
     --ld-slide-width: 1920px; /* cf. lectureDoc2.presentation.slide.width */
     --ld-slide-height: 1200px; /* cf. lectureDoc2.presentation.slide.height */
 }
 
-/**
- * Multiple SVG elements may reference common definitions (e.g., markers). In this case,
- * the definitions must be defined only once in the document; otherwise, the SVGs will not
- * render correctly, because of potentially duplicate IDs.
- * However, these definitions must not be visible and must not affect the layout of the page.
- */
+/*  Multiple SVG elements may reference common definitions (e.g., markers).
+    In this case, the definitions must be defined only once in the document;
+    otherwise, the SVGs will not render correctly, because of potentially
+    duplicate IDs. However, these definitions must not be visible and must not
+    affect the layout of the page. */
 .svg-global-defs,
 .svg-global-style {
-    /*  display: none;
-        This property MUST NOT BE USED. If used, defs (e.g. markers) that are
-        defined "here" and referenced by other elements by means of URLs will
-        not be rendered. */
-    /*  Though the SVG is effectively empty, we still have to make sure that it
+    /*  The display property MUST NOT BE USED.
+
+        DON'T SET: "display: none;"
+
+        If used, defs (e.g. markers) that are defined "here" and referenced by
+        other elements by means of URLs will not be rendered.
+        Though the SVG is effectively empty, we still have to make sure that it
         does not effect the layout of the page. */
     width: 0;
     height: 0;
@@ -57,9 +57,10 @@
 @media print {
     /* At least Safari seems to honor this setting... */
     :root {
-        --body-bg-color: white;
-    }
-    body {
         color-scheme: only light;
+
+        /* FIXME: make sure that the html/root element supports theming!*/
+        --body-bg-color: white;
+        background-color: var(--body-bg-color);
     }
 }

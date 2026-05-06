@@ -1,7 +1,7 @@
 /**
  * Implements support for touch events in the slide view and the document view.
  */
-import lectureDoc2, {
+import {
     ldEvents,
     ensureLectureDocIsVisible,
     retrogressPresentation,
@@ -176,7 +176,7 @@ function handleSwipeAndScrubInSlideView() {
     const Gestures = Object.freeze({
         NONE: Symbol("none"),
         SCROLLABLE:
-            /*  Indicates that the touch is done on a scrollable element; 
+            /*  Indicates that the touch is done on a scrollable element;
                 therefore, we don't want to interfere with it to get the
                 the browser's default scrolling behavior. */
             Symbol("scrollable"),
@@ -264,9 +264,9 @@ function handleSwipeAndScrubInSlideView() {
                 }
             }
             /*console.log(
-                `touchmove (deferred handler): 
-                    ${originalLocations.size} fingers; 
-                    gestureInProgress: ${gestureInProgress.toString()}; 
+                `touchmove (deferred handler):
+                    ${originalLocations.size} fingers;
+                    gestureInProgress: ${gestureInProgress.toString()};
                     deltaX: ${deltaX}; deltaY: ${deltaY}`,
             );
             */

