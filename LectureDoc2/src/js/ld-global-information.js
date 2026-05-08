@@ -179,7 +179,7 @@ function updateLightTableViewAfterLDDOMManipulations() {
     );
 
     document
-        .querySelectorAll("#ld-light-table-slides ld-global-information")
+        .querySelectorAll("ld-light-table ld-global-information")
         .forEach((element) => {
             if (element.hasAttribute("embed")) {
                 const type = element.getAttribute("type") || "cheat-sheet";

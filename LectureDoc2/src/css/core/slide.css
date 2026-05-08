@@ -4,9 +4,6 @@
 ld-slide {
     --ld-rendering-mode: slide;
 
-    contain: layout paint size;
-    contain-intrinsic-size: var(--ld-slide-width) var(--ld-slide-height);
-
     /*  We need a fixed size for slides to make the content as a whole
         scalable using the scale property. The scale property is set/updated
         using Javascript.
@@ -22,35 +19,37 @@ ld-slide {
         LectureDoc's point-of-view, because the content is scaled anyway.
         Nevertheless, when external content is embedded (in
         particular images) it makes sense to have a size that resembles a
-        "natural" screen resolution to make it meaningful to embed images.
-    */
+        "natural" screen resolution to make it meaningful to embed images. */
     width: var(--ld-slide-width);
     height: var(--ld-slide-height);
 
+    contain: layout paint size;
+    contain-intrinsic-size: var(--ld-slide-width) var(--ld-slide-height);
+
     overflow: hidden;
 
-    /* We simulate a deck by creating a CSS Grid with a single cell and 
-    assigning all cards to the same cell. To ensure that the cards are shown in 
-    the correct order, we also associate each card with its corresponding z-index.
-    */
+    /*  We simulate a deck by creating a CSS Grid with a single cell and
+        assigning all cards to the same cell. To ensure that the cards are shown
+        in the correct order, we also associate each card with its
+        corresponding z-index. */
     ld-deck {
-        /*  Every deck creates a unique stacking context. This enables us 
+        /*  Every deck creates a unique stacking context. This enables us
             to put the "cards" of a deck on top of each other. To enable a
-            perfect overlay, all "cards" are given the same size as the deck. 
-            
+            perfect overlay, all "cards" are given the same size as the deck.
+
             Because every direct child element is treated as a card and
-            will get the size of the deck, elements which need an explicit size 
-            of their own (e.g., images) need to be put into a generic container.
-            */
+            will get the size of the deck, elements which need an explicit size
+            of their own (e.g., images) need to be put into a generic
+            container. */
         position: relative;
         z-index: 0;
+
+        width: 100%;
 
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: auto;
         grid-template-areas: "stack";
-
-        width: 100%;
 
         /*  Let's count the number of child elements.
 
@@ -147,19 +146,17 @@ ld-slide {
             --ld-deck-child-count: 30;
         }
 
-        /*
-        First, we associate the nth-child layer with a custom data attribute 
-        index that we then use in the css calculations!
+        /*  First, we associate the nth-child layer with a custom data attribute
+            index that we then use in the css calculations!
 
-        See https://crinkles.dev/writing/a-nth-child-css-trick/
-        See https://crinkles.dev/writing/use-the-child-element-count-in-css/ 
-        */
-        > * {
-            /* We set  the card's index using CSS nth-child queries. 
-            Currently we support up to 15 "cards" per deck. The index directly
-            determines the card's z-index. 
-            --ld-deck-child-index: 0;
+            See https://crinkles.dev/writing/a-nth-child-css-trick/
+            See https://crinkles.dev/writing/use-the-child-element-count-in-css/
             */
+        > * {
+            /* We set  the card's index using CSS nth-child queries.
+            Currently we support up to 30 "cards" per deck. The index directly
+            determines the card's z-index.
+            --ld-deck-child-index: 0; */
 
             &:nth-child(1) {
                 --ld-deck-child-index: 1;
@@ -256,9 +253,9 @@ ld-slide {
             width: 100%;
             height: 100%;
             z-index: var(--ld-deck-child-index);
+            overflow: hidden;
 
             clear: both;
-            overflow: hidden;
 
             &:not(.overlay, .s-overlay) {
                 background-color: var(--current-bg-color);

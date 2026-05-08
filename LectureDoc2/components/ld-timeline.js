@@ -7,7 +7,7 @@ import "./timeline/timeline.js"; // this makes the timeline web component availa
 const convertModuleBasedSpecificationToLDTimelineElement = () => {
     const timelines = document
         .querySelector("body > template")
-        .content.querySelectorAll(".module.timeline");
+        .content.querySelectorAll("ld-module[name='timeline']");
 
     timelines.forEach((timeline) => {
         try {

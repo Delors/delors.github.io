@@ -1,4 +1,14 @@
-/*
+/**
+   The main module of LectureDoc2.
+
+   LectureDoc2 defines the {@link lectureDoc2} object which enables access to
+   meta-information (e.g., about the presentation) and several functions
+   to query and manipulate the current state.
+
+   Furthermore, a function to facilitate printing the document is provided.
+   The function changes the view to the document view and to ensure that all
+   dialogs are turned off.
+
    Core Principles of LectureDoc2:
 
     -   LectureDoc documents are always served by a server and only target
@@ -42,7 +52,7 @@
     -   We use the following pattern to synchronize the state between two
         windows:
 
-        For every method that manipulates that current state, we have two methods.
+        For every method that manipulates the current state, we have two methods.
 
         1)  a method that sends a message and then performs the state change.
             For that, it calls the second method.
@@ -54,29 +64,71 @@
         When we handle the received message, we call the second method to avoid
         unlimited bouncing of messages.
 
+  @author Michael Eichberg
+  @license BSD-3-Clause
 */
 import * as ld from "./js/ld-lib.js";
 
-/**
- * The main module of LectureDoc2.
- *
- * LectureDoc2 defines the {@link lectureDoc2} object which enables access to
- * meta-information (e.g., about the presentation) and several functions
- * to query and manipulate the current state.
- *
- * Furthermore, a function to facilitate printing the document is provided.
- * The function changes the view to the document view and to ensure that all
- * dialogs are turned off.
- *
- * @author Michael Eichberg
- * @license BSD-3-Clause
- */
+class LDSlide extends HTMLElement {
+    /**
+     * The number of the slide: "0-based" index.
+     */
+    #no; // int
+    /**
+     * The original ID of the topic from which this slide was derived.
+     */
+    #topicId; // string
+
+    static get observedAttributes() {
+        return ["no", "topic-id"];
+    }
+
+    static create({ no, topicId }) {
+        const slide = document.createElement("ld-slide");
+        if (no !== undefined) slide.setAttribute("no", String(no));
+        if (topicId !== undefined) slide.setAttribute("topic-id", topicId);
+        return slide;
+    }
+
+    // TODO add method to directly derive an LDSlide from an LDTopic element
+
+    attributeChangedCallback(name, _oldValue, newValue) {
+        switch (name) {
+            case "no":
+                this.#no = Number(newValue);
+                break;
+            case "topic-id":
+                this.#topicId = newValue;
+                break;
+            default:
+                console.warn("unknown attribute", name);
+        }
+    }
+
+    get no() {
+        return this.#no;
+    }
+    get topicId() {
+        return this.#topicId;
+    }
+}
+
+customElements.define("ld-slide", LDSlide);
+
+async function loadModule(moduleName) {
+    try {
+        return await import(`./js/${moduleName}.js`);
+    } catch (e) {
+        console.warn("failed to load module", moduleName, e);
+    }
+}
 
 /* We load the crypto module on demand. */
 let ldCryptoModule = undefined;
 async function ldCrypto() {
     if (!ldCryptoModule) {
-        ldCryptoModule = await import("./js/ld-crypto.js");
+        let ldCryptoModulePromise = loadModule("ld-crypto");
+        ldCryptoModule = ldCryptoModulePromise.then();
     }
     return ldCryptoModule;
 }
@@ -162,7 +214,7 @@ export const ldEvents = {
                 this.resetLectureDoc.push(listener);
                 break;
             default:
-                throw new Error("unknown ldEvent: " + event);
+                throw new Error("unknown event type", event);
         }
     },
 };
@@ -908,9 +960,8 @@ function setupLightTable() {
         `,
     });
 
-    const lightTableSlides = ld.create("section", {
+    const lightTableSlides = ld.create("ld-light-table", {
         parent: lightTableDialog,
-        id: "ld-light-table-slides",
     });
 
     ld.div({
@@ -927,18 +978,16 @@ function setupLightTable() {
     topicTemplates.querySelectorAll("ld-topic").forEach((topic, i) => {
         const clonedTopic = ld.deepCloneWithOpenShadowRoots(topic);
         clonedTopic
-            .querySelectorAll("div.module:not([data-ld-module-scope='all'])")
+            .querySelectorAll("ld-module:not([scope=all])")
             .forEach((m) => {
                 m.parentElement.replaceChild(
-                    document.createComment("filtered module: " + m.innerHTML),
+                    document.createComment("Filtered module: " + m.innerHTML),
                     m,
                 );
             });
-        const slide = ld.create("ld-slide", {
-            classList: clonedTopic.classList,
-            children: clonedTopic.children,
-        });
-        slide.removeAttribute("id"); // not needed anymore (in case it was set)
+        const slide = LDSlide.create({});
+        slide.classList.add(...clonedTopic.classList);
+        slide.append(...clonedTopic.children);
 
         const slideScaler = ld.div({
             classes: ["ld-light-table-slide-scaler"],
@@ -1236,29 +1285,24 @@ function setupSlidePane() {
 
     /*  Creates slides (by means of ld-slide elements) from the defined topics.
         Associates every slide with a unique id based on the number of the
-        slide (data-ld-slide-no-*). Internally, the numbering of slides starts
-        with 0. However, user-facing functions assume that the first slide has
-        the id 1.
+        slide (ld-slide-no-*). Internally, the numbering of slides starts
+        with 0. However, user-facing functions correct the id to start with 1.
     */
     topicTemplates.querySelectorAll("ld-topic").forEach((topic, i) => {
-        // const clonedTopic = topic.cloneNode(true);
+        // Insufficient: const clonedTopic = topic.cloneNode(true);
         const clonedTopic = ld.deepCloneWithOpenShadowRoots(topic);
         clonedTopic
-            .querySelectorAll("div.module[data-ld-module-scope='document']")
+            .querySelectorAll("ld-module[scope=document]")
             .forEach((m) => {
                 m.parentElement.replaceChild(
-                    document.createComment("filtered module: " + m.innerHTML),
+                    document.createComment("Filtered module: " + m.innerHTML),
                     m,
                 );
             });
-
-        const slide = ld.create("ld-slide", {
-            id: "ld-slide-no-" + i,
-            classList: clonedTopic.classList,
-            children: clonedTopic.children,
-        });
-        slide.dataset.ldSlideNo = i;
-        slide.dataset.id = clonedTopic.id; /* The original ID! */
+        const slide = LDSlide.create({ no: i, topicId: clonedTopic.id });
+        slide.id = "ld-slide-no-" + i;
+        slide.classList.add(...clonedTopic.classList);
+        slide.append(...clonedTopic.children);
 
         // Move all relevant supplemental infos at the end or delete them if they are d-only
         const allSupplementals = slide.querySelectorAll(
@@ -1298,7 +1342,7 @@ function setupSlidePane() {
                     "ld-presenter-note-marker",
                     {},
                 );
-                presenterNoteMarker.dataset.encrypted = true;
+                presenterNoteMarker.setAttribute("encrypted", "");
                 presenterNoteMarker.dataset.presenterNoteId = presenterNoteId;
                 presenterNoteMarker.innerHTML = `<div>${presenterNoteId}</div>`;
                 presenterNote.parentElement.replaceChild(
@@ -1331,13 +1375,13 @@ async function decryptExercise(title, password) {
 
 function localDecryptPresenterNotes(password) {
     document
-        .querySelectorAll(":scope ld-presenter-note-marker")
+        .querySelectorAll("ld-presenter-note-marker")
         .forEach((presenterNoteMarker) => {
-            delete presenterNoteMarker.dataset.encrypted;
+            presenterNoteMarker.removeAttribute("encrypted");
         });
 
     document
-        .querySelectorAll(":scope ld-presenter-note[data-encrypted='true']")
+        .querySelectorAll("ld-presenter-note[encrypted]")
         .forEach(async (presenterNote) => {
             const crypto = await ldCrypto();
             const decryptedNote = await crypto.decryptAESGCMPBKDF(
@@ -1345,7 +1389,7 @@ function localDecryptPresenterNotes(password) {
                 password,
             );
             presenterNote.innerHTML = decryptedNote;
-            delete presenterNote.dataset.encrypted;
+            presenterNote.removeAttribute("encrypted"); // TODO Improve by creating HTML class with corresponding property
             typesetMath(presenterNote);
         });
 }
@@ -1414,17 +1458,14 @@ function setupDocumentView() {
     const documentView = ld.div({ id: "ld-document-view" });
 
     topicTemplates.querySelectorAll("ld-topic").forEach((t, i) => {
-        //const template = t.cloneNode(true);
+        // Insufficient: const template = t.cloneNode(true);
         const template = ld.deepCloneWithOpenShadowRoots(t);
-        template.classList.remove("ld-slide"); // not needed anymore
-        template
-            .querySelectorAll("div.module[data-ld-module-scope='slide']")
-            .forEach((m) => {
-                m.parentElement.replaceChild(
-                    document.createComment("filtered module: " + m.innerHTML),
-                    m,
-                );
-            });
+        template.querySelectorAll("ld-module[scope=slide]").forEach((m) => {
+            m.parentElement.replaceChild(
+                document.createComment("Filtered module: " + m.innerHTML),
+                m,
+            );
+        });
 
         const section = ld.create("ld-section", {
             id: "ld-section-no-" + i,
@@ -1619,7 +1660,7 @@ function showSlide(
     ldSlide.style.removeProperty("display");
     ldSlide.style.scale = 1;
     if (setNewMarker) ldSlide.classList.add("ld-current-slide");
-    const slideNo = Number(ldSlide.dataset.ldSlideNo);
+    const slideNo = ldSlide.no;
     state.currentSlideNo = slideNo;
     document.querySelector("ld-slide-number").innerText = slideNo + 1;
 
@@ -1650,7 +1691,7 @@ function hideSlideWithNo(slideNo, setOldMarker = false) {
     const ldSlide = document.getElementById("ld-slide-no-" + slideNo);
     if (ldSlide) {
         ephemeral.previousSlide = ldSlide;
-        ldSlide.style.scale = 0;
+        ldSlide.style.removeProperty("scale"); // let the CSS handle it
         ldSlide.classList.remove("ld-current-slide");
         if (setOldMarker) ldSlide.classList.add("ld-previous-slide");
 
@@ -1943,7 +1984,7 @@ function updateLightTableZoomLevel(value) {
 
 function updateLightTableViewScrollY(y) {
     if (y) {
-        document.getElementById("ld-light-table-slides").scrollTo(0, y);
+        document.querySelector("ld-light-table").scrollTo(0, y);
     }
 }
 
@@ -2637,7 +2678,7 @@ function registerLightTableSlideSelectionListener() {
 }
 
 function registerLightTableSlideSearchListener() {
-    const lightTableSlides = document.getElementById("ld-light-table-slides");
+    const lightTableSlides = document.querySelector("ld-light-table");
     const searchInput = document.getElementById("ld-light-table-search-input");
     searchInput.addEventListener("input", () => {
         const searchValue = searchInput.value;
@@ -2664,7 +2705,7 @@ function registerLightTableSlideSearchListener() {
 }
 
 function registerLightTableViewScrollYListener() {
-    const lightTableView = document.getElementById("ld-light-table-slides");
+    const lightTableView = document.querySelector("ld-light-table");
     lightTableView.addEventListener("scroll", () => {
         if (state.showLightTable) {
             state.lightTableViewScrollY = lightTableView.scrollTop;
@@ -2764,13 +2805,6 @@ const onDOMContentLoaded = async () => {
 
     await import("./js/ld-images.js");
 
-    async function loadModule(moduleName) {
-        try {
-            return await import(`./js/${moduleName}.js`);
-        } catch (e) {
-            console.warn("failed to load module", moduleName, e);
-        }
-    }
     await loadModule("ld-global-information");
     await loadModule("ld-tables");
     await loadModule("ld-decks");

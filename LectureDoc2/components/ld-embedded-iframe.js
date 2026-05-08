@@ -182,7 +182,7 @@ const EDITABLE_STYLE_ELEMENTS = `
 const embeddIntoHTML = () => {
     const embeddedIFrames = document
         .querySelector("body > template")
-        .content.querySelectorAll(".module.embedded-iframe");
+        .content.querySelectorAll("ld-module[name='embedded-iframe']");
 
     embeddedIFrames.forEach((eif) => {
         let iframe = eif.textContent;
@@ -244,23 +244,23 @@ const adaptEmbeddedIFrameHeight = (iframeId, reason) => {
  * accordingly.
  */
 window.addEventListener("message", (event) => {
+    // Note, that some browsers (e.g., Safari) may produce "other" messages
     const iframeId = event.data["ld-iframe-applied-font-size"];
     if (iframeId) {
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             adaptEmbeddedIFrameHeight(
                 iframeId,
                 "iframe changed base font size",
             );
-        }, 0);
-    } else {
-        console.error(`iframe ${iframeId} not found`);
+        });
     }
 });
 
 function configureEmbeddedIFrames() {
     document
         .querySelectorAll(
-            "iframe.embedded-iframe, div.embedded-iframe > iframe",
+            "iframe.embedded-iframe, " + // <= supports users embedding iframes
+                "ld-module[name='embedded-iframe'] > iframe",
         )
         .forEach((iframe, i) => {
             const iframeId = i + 1;

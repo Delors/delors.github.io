@@ -87,7 +87,7 @@ const configureLightweightCSSEditors = () => {
 const instantiateLightweightCSSEditors = () => {
     const cssEditorContainers = document
         .querySelector("body > template")
-        .content.querySelectorAll(".module.lightweight-css-editor");
+        .content.querySelectorAll("ld-module[name='lightweight-css-editor']");
 
     cssEditorContainers.forEach((cssEditorContainer) => {
         try {

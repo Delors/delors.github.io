@@ -197,7 +197,7 @@ class LDTimeline extends HTMLElement {
         shadow.appendChild(css);
 
         const renderTimeline = () => {
-            const dataset = this.dataset;
+            const dataset = this.dataset; // TODO Use local field instead of dataset
             let spread = 1.0;
             if (dataset.spread) {
                 spread = parseFloat(dataset.spread);
@@ -218,12 +218,12 @@ class LDTimeline extends HTMLElement {
             //this.style.height = height + "px";
         };
 
-        // We can only render the timeline if it is actually visible
+        // We can only render the timeline if it is actually visible,
+        // otherwise we are lacking crucial size information.
         const observer = new IntersectionObserver((events) => {
             events.forEach((event) => {
                 console.log("timeline is intersecting:" + event);
                 if (event.isIntersecting) {
-                    //setTimeout(() => renderTimeline());
                     renderTimeline();
                     observer.disconnect();
                 }

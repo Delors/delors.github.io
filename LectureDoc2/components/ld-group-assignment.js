@@ -9,7 +9,7 @@ const convertModuleBasedSpecificationToLDGroupAssignmentElement = () => {
     // TODO Add ID
     const modules = document
         .querySelector("body > template")
-        .content.querySelectorAll(".module.group-assignment");
+        .content.querySelectorAll("ld-module[name='group-assignment']");
 
     modules.forEach((moduleElement) => {
         try {
@@ -65,13 +65,12 @@ const convertModuleBasedSpecificationToLDGroupAssignmentElement = () => {
     });
 };
 
-// lectureDoc2 is available globally in LectureDoc runtime
 lectureDoc2.ldEvents.addEventListener("resetSlideProgress", (slide) => {
     slide.querySelectorAll("ld-group-assignment").forEach((element) => {
         element.resetToDefaults();
     });
 });
 lectureDoc2.ldEvents.addEventListener(
-    "beforeLDDOMManipulations",
+    "beforeLDDOMManipulations", // TODO consider using afterLDDOMManipulations...
     convertModuleBasedSpecificationToLDGroupAssignmentElement,
 );

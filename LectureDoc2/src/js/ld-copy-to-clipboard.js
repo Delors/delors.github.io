@@ -4,7 +4,7 @@ import { button } from "./ld-lib.js";
 console.log("loading ld-copy-to-clipboard.js");
 
 /**
- * Adds a div (button) to the DOM to allow the user to copy the content of
+ * Adds a button to the DOM to allow the user to copy the content of
  * code blocks.
  */
 export function setupCopyToClipboard(rootNode) {
