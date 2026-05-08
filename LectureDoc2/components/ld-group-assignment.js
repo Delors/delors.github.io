@@ -2,7 +2,7 @@
 Small wrapper that bridges LectureDoc module configuration and
 the ld-group-assignment web component.
 */
-import { lectureDoc2, documentSpecificId } from "../src/ld.js";
+import { ldEvents, documentSpecificId } from "../src/ld.js";
 import "./group-assignment/group-assignment.js";
 
 const convertModuleBasedSpecificationToLDGroupAssignmentElement = () => {
@@ -65,12 +65,12 @@ const convertModuleBasedSpecificationToLDGroupAssignmentElement = () => {
     });
 };
 
-lectureDoc2.ldEvents.addEventListener("resetSlideProgress", (slide) => {
+ldEvents.addEventListener("resetSlideProgress", (slide) => {
     slide.querySelectorAll("ld-group-assignment").forEach((element) => {
         element.resetToDefaults();
     });
 });
-lectureDoc2.ldEvents.addEventListener(
+ldEvents.addEventListener(
     "beforeLDDOMManipulations", // TODO consider using afterLDDOMManipulations...
     convertModuleBasedSpecificationToLDGroupAssignmentElement,
 );

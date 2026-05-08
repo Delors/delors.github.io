@@ -2,6 +2,7 @@
 Small wrapper that is responsible for bridging the gap between LectureDoc and
 the timeline.js web component, which is independent of LectureDoc.
 */
+import { ldEvents } from "../src/ld.js";
 import "./timeline/timeline.js"; // this makes the timeline web component available
 
 const convertModuleBasedSpecificationToLDTimelineElement = () => {
@@ -40,7 +41,7 @@ const convertModuleBasedSpecificationToLDTimelineElement = () => {
 
 // the lectureDoc2 object is available in the global scope;
 // we don't need to import it
-lectureDoc2.ldEvents.addEventListener(
+ldEvents.addEventListener(
     "beforeLDDOMManipulations",
     convertModuleBasedSpecificationToLDTimelineElement,
 );

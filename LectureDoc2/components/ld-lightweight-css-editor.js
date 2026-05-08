@@ -1,3 +1,5 @@
+import { ldEvents } from "../src/ld.js";
+
 class LDLightweightCSSEditor extends HTMLElement {
     #id;
 
@@ -122,12 +124,12 @@ const instantiateLightweightCSSEditors = () => {
 };
 
 // Recall that lectureDoc2 is readily available in the global scope.
-lectureDoc2.ldEvents.addEventListener(
+ldEvents.addEventListener(
     "beforeLDDOMManipulations",
     instantiateLightweightCSSEditors,
 );
 
-lectureDoc2.ldEvents.addEventListener(
+ldEvents.addEventListener(
     "afterLDDOMManipulations",
     configureLightweightCSSEditors,
 );

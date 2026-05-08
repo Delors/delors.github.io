@@ -7,6 +7,7 @@
  * @author Michael Eichberg
  * @version 2025-02-20
  */
+import { ldEvents } from "../../../ld.js";
 
 const logoTemplate = `
     <style>
@@ -118,7 +119,4 @@ function afterLDDOMManipulations() {
 /*
  * Register with LectureDoc's basic events.
  */
-lectureDoc2.ldEvents.addEventListener(
-    "afterLDDOMManipulations",
-    afterLDDOMManipulations,
-);
+ldEvents.addEventListener("afterLDDOMManipulations", afterLDDOMManipulations);

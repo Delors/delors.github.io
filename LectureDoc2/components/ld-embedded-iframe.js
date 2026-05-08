@@ -31,6 +31,7 @@ Requirements:
 - the document has to have a head element and in that head element the template string {{ld-embedded-iframe.head.frag.html}} has to be included.
 
 */
+import { ldEvents } from "../src//ld.js";
 
 const MIN_BASE_FONT_SIZE = 14;
 const MAX_BASE_FONT_SIZE = 36;
@@ -200,10 +201,7 @@ const embeddIntoHTML = () => {
     });
 };
 
-lectureDoc2.ldEvents.addEventListener(
-    "beforeLDDOMManipulations",
-    embeddIntoHTML,
-);
+ldEvents.addEventListener("beforeLDDOMManipulations", embeddIntoHTML);
 
 /**
  * Associates each embedded iframe with its (unique) ID which is later used in
@@ -312,7 +310,4 @@ function configureEmbeddedIFrames() {
         });
 }
 
-lectureDoc2.ldEvents.addEventListener(
-    "afterLDDOMManipulations",
-    configureEmbeddedIFrames,
-);
+ldEvents.addEventListener("afterLDDOMManipulations", configureEmbeddedIFrames);
