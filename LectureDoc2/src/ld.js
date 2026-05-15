@@ -907,11 +907,21 @@ function setupIncrementalElements(slide) {
     slide
         .querySelectorAll(":scope .incremental-table-rows")
         .forEach((incrementalTableRows) => {
-            const items = incrementalTableRows.querySelectorAll(
+            const rows = incrementalTableRows.querySelectorAll(
                 ":scope > tbody > tr",
             );
-            items.forEach((item) => {
-                item.classList.add("incremental");
+            rows.forEach((row) => {
+                row.classList.add("incremental");
+            });
+        });
+    slide
+        .querySelectorAll(":scope .incremental-table-cells")
+        .forEach((incrementalTableCells) => {
+            const cells = incrementalTableCells.querySelectorAll(
+                ":scope > tbody > tr > td",
+            );
+            cells.forEach((cell) => {
+                cell.classList.add("incremental");
             });
         });
 
