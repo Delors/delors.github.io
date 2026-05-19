@@ -42,7 +42,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.1.7</dd>
+<dd class="version">1.2.0</dd>
 </dl>
 <dl class="sources field-list simple">
 <dt>Quelle<span class="colon">:</span></dt>
@@ -64,46 +64,13 @@
 </dd>
 </dl>
 </ld-supplemental></ld-topic>
-<ld-topic class="repetition" id="stromchiffre">
-<h2>Stromchiffre</h2>
-<ul>
-<li><p>Verschlüsselt einen digitalen Datenstrom ein Bit oder ein Byte nach dem anderen.</p>
-<p>Beispiele: Autokeyed Vigenère-Chiffre und Vernam-Chiffre.</p>
-</li>
-</ul>
-<ld-story>
-<aside class="admonition incremental">
-<p class="admonition-title">Variante: One-Time-Pad</p>
-<ul class="simple">
-<li><p>Im Idealfall würde ein One-Time-Pad verwendet werden. Der Schlüsselstrom wäre genauso lang wie der Bitstrom des Klartextes.</p></li>
-</ul>
-<div class="incremental docutils container">
-<ul class="simple">
-<li><p>Wenn der kryptografische Schlüsselstrom zufällig ist, kann diese Chiffre auf keine andere Weise als durch die Beschaffung des Schlüsselstroms geknackt werden.</p></li>
-<li><p>Der Schlüsselstrom muss beiden Nutzern im Voraus über einen unabhängigen und sicheren Kanal zur Verfügung gestellt werden.</p></li>
-<li><p>Dies führt zu unüberwindbaren logistischen Problemen, wenn der vorgesehene Datenverkehr sehr groß ist.</p></li>
-</ul>
-</div>
-<div class="incremental docutils container">
-<p class="rubric">Beispielimplementierung in Python</p>
-<pre class="code python copy-to-clipboard literal-block"><code><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">vernam</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">)</span> <span class="operator">-&gt;</span> <span class="name builtin">bytes</span><span class="punctuation">:</span><span class="whitespace">
-</span>    <span class="keyword">return</span> <span class="name builtin">bytes</span><span class="punctuation">([</span><span class="name">p</span> <span class="operator">^</span> <span class="name">k</span> <span class="keyword">for</span> <span class="name">p</span><span class="punctuation">,</span> <span class="name">k</span> <span class="operator word">in</span> <span class="name builtin">zip</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">)])</span></code></pre>
-</div>
-</aside>
-<aside class="admonition incremental">
-<p class="admonition-title">Variante: Bitstromgenerator</p>
-<ul>
-<li><p>Aus praktischen Gründen muss der Bitstromgenerator als algorithmisches Verfahren implementiert werden, damit der kryptografische Bitstrom von beiden Benutzern erzeugt werden kann.</p></li>
-<li><p>Es muss rechnerisch praktisch unmöglich sein, zukünftige Teile des Bitstroms auf der Grundlage früherer Teile des Bitstroms vorherzusagen.</p></li>
-<li><p>Die beiden Benutzer müssen nur den erzeugenden Schlüssel sicher miteinander teilen, damit jeder den Schlüsselstrom erzeugen kann.</p></li>
-<li><aside class="admonition hint">
-<p class="admonition-title">Hinweis</p>
-<p>Im Folgenden meinen wir mit <em>Stromchiffre</em> immer die Variante mit einem Bitstromgenerator.</p>
-</aside>
-</li>
-</ul>
-</aside>
-</ld-story></ld-topic>
+<ld-topic id="stromchiffre-vs-blockchiffre">
+<h2>Stromchiffre vs. Blockchiffre</h2>
+<object class="light-image align-left" data="drawings/chiffren/stromchiffre.svg" role="img" type="image/svg+xml">
+</object><object class="light-image incremental align-right" data="drawings/chiffren/blockchiffre.svg" role="img" type="image/svg+xml">
+</object><ld-presenter-note encrypted="">
+MTAwMDAw:s6oDTKUw270qodfywZq0MEfky94tbVn2MVuHLdS3fCk=:O0OZpAnmsHrV10cS:xYiISeCPwCvEZpJ2WYVUDjZflMX/yZMp7bP6n9tk9VpQs4BQSSXye4FcQOSrFi5DUTKg3r6MjOPJpGIf4Sx66P0/BJPqQU6pf/CuUyPZ14hkKewnWAPUFYOoRCW2dr5dW/B2rMegl/vsouAI9lA7VlURg7ZBuJ4rjUrcfoRaDeEUWuV2Tg==</ld-presenter-note>
+</ld-topic>
 <ld-topic id="blockchiffre">
 <h2>Blockchiffre</h2>
 <ul class="incremental-list simple">
@@ -117,11 +84,6 @@
 <p>Im Rahmen der Verschlüsselung von Daten, die über ein Netzwerk übertragen werden, kommt es häufig sowohl zum Einsatz von asymmetrischer Verschlüsselung als auch von symmetrischer Verschlüsselung, wobei die symmetrische Verschlüsselung für die eigentliche Kommunikation verwendet wird und die asymmetrische Verschlüsselung nur während des Verbindungsaufbaus – zum Aushandeln eines gemeinsamen Schlüssels für die symmetrische Verschlüsselung – zum Einsatz kommt.</p>
 </aside>
 </ld-supplemental></ld-topic>
-<ld-topic id="stromchiffre-vs-blockchiffre">
-<h2>Stromchiffre vs. Blockchiffre</h2>
-<object class="light-image align-left" data="drawings/chiffren/stromchiffre.svg" role="img" type="image/svg+xml">
-</object><object class="light-image incremental align-right" data="drawings/chiffren/blockchiffre.svg" role="img" type="image/svg+xml">
-</object></ld-topic>
 <ld-topic id="allgemeine-n-bit-n-bit-blocksubstitution-n-4">
 <h2>Allgemeine n-Bit-n-Bit-Blocksubstitution (n = 4)</h2>
 <object class="light-image align-center" data="drawings/chiffren/4-bit_block_substitution.svg" role="img" type="image/svg+xml">
@@ -972,7 +934,7 @@ ee92b50606b6260b</p></td>
 <h2>Erschöpfende Schlüsselsuche</h2>
 <div class="compound">
 <p><strong>Durchschnittliche Zeiten</strong></p>
-<ld-presenter-note data-encrypted="true">
+<ld-presenter-note encrypted="">
 MTAwMDAw:PkqyflhmPPEjFXlJI8jcRj8ji10AArAEbY5bc4peyZM=:XUZxgMDUgYxfiWZ4:FNJFieLcjBgdsT3Tvl9BESJyJz5jn4WOAK/+XNmP1e0y/3FNjxBOwpEdKfVSSoUiYcrQa+CTwkpcj7BoSb8ZlgnJ6turcREh0yKdfGQDKn1M704ltuxdE/ZcFYKh</ld-presenter-note>
 </div>
 <table class="align-center highlight-row-on-hover font-size-80 incremental-table-rows dhbw" style="width: 100%;">
