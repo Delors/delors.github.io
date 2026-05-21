@@ -43,7 +43,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2.1.0</dd>
+<dd class="version">2.2.0</dd>
 </dl>
 <div class="peripheral docutils container">
 <dl class="field-list simple">
@@ -61,6 +61,8 @@
 <dd><p><a class="reference external" href="https://delors.github.io/theo-algo-hashing/folien.de.rst.html">https://delors.github.io/theo-algo-hashing/folien.de.rst.html</a></p>
 <p><a class="reference external" href="https://delors.github.io/theo-algo-hashing/folien.de.rst.html.pdf">https://delors.github.io/theo-algo-hashing/folien.de.rst.html.pdf</a></p>
 </dd>
+<dt>Kontrollfragen<span class="colon">:</span></dt>
+<dd><a class="reference external" href="https://delors.github.io/theo-algo-hashing/kontrollfragen.de.rst.html">https://delors.github.io/theo-algo-hashing/kontrollfragen.de.rst.html</a></dd>
 <dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
 </dd>
@@ -69,10 +71,9 @@
 <ld-topic class="new-section transition-move-to-top" id="einfuhrung">
 <h2>Einführung</h2>
 </ld-topic>
-<ld-topic id="komplexitat-der-suche-in-einer-liste-mit-n-elementen">
-<h2>Komplexität der Suche in einer Liste mit N Elementen</h2>
-<div class="s-font-size-80 docutils container">
-<table class="incremental-table-cells highlight-cell-on-hover">
+<ld-topic id="komplexitat-der-suche-in-einer-duplikatfreien-symboltabelle-mit-n-elementen">
+<h2>Komplexität der Suche in einer (<em>duplikatfreien</em>) Symboltabelle mit n Elementen</h2>
+<table class="s-font-size-80 incremental-table-cells highlight-cell-on-hover">
 <thead>
 <tr><th class="head" rowspan="2"><p>Implementation</p></th>
 <th class="head" colspan="3"><p>Garantie</p></th>
@@ -83,46 +84,55 @@
 <th class="head"><p>Einfügen</p></th>
 <th class="head"><p>Löschen</p></th>
 <th class="head"><p>Suchen</p></th>
-<th class="head"><p>Einfügen</p></th>
+<th class="head"><p>Einfügen<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></th>
 <th class="head"><p>Löschen</p></th>
 </tr>
 </thead>
 <tbody>
-<tr><td><p><strong>sequentielle Suche</strong>
-(unsortierte Liste)</p></td>
-<td><p>N</p></td>
-<td><p>N</p></td>
-<td><p>N</p></td>
-<td><p>½ N</p></td>
-<td><p>N</p></td>
-<td><p>½ N</p></td>
+<tr><td><p><strong>sequentielle Suche</strong></p>
+<p>einfach verkettete,
+unsortierte Liste</p>
+</td>
+<td><p>n</p></td>
+<td><p>n</p></td>
+<td><p>n</p></td>
+<td><p>½ n</p></td>
+<td><p>n</p></td>
+<td><p>½ n</p></td>
 <td><p>equals()</p></td>
 </tr>
-<tr><td><p><strong>binäre Suche</strong>
-(geordnetes Array)</p></td>
-<td><p>lg N</p></td>
-<td><p>N</p></td>
-<td><p>N</p></td>
-<td><p>lg N</p></td>
-<td><p>½ N</p></td>
-<td><p>½ N</p></td>
+<tr><td><p><strong>binäre Suche</strong></p>
+<p>geordnetes,
+dynamisches Array</p>
+</td>
+<td><p>lg n</p></td>
+<td><p>n</p></td>
+<td><p>n</p></td>
+<td><p>lg n</p></td>
+<td><p>½ n</p></td>
+<td><p>½ n</p></td>
 <td><p>compareTo()</p></td>
 </tr>
 <tr><td><p><strong>binärer Suchbaum</strong></p></td>
-<td><p>N</p></td>
-<td><p>N</p></td>
-<td><p>N</p></td>
-<td><p>1.39 lg N</p></td>
-<td><p>1.39 lg N</p></td>
-<td><p>√ N</p></td>
+<td><p>n</p></td>
+<td><p>n</p></td>
+<td><p>n</p></td>
+<td><p>1,39 lg n</p></td>
+<td><p>1,39 lg n</p></td>
+<td><p>√ n</p></td>
 <td><p>compareTo()</p></td>
 </tr>
 </tbody>
 </table>
-</div>
 <aside class="admonition incremental question">
 <p class="admonition-title">Frage</p>
 <p>Können wir effizienter suchen?</p>
+</aside>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Eingefügt wird nur, wenn das Element noch nicht enthalten ist!</p>
+</aside>
 </aside>
 </ld-topic>
 <ld-topic id="hashing-grundidee">
@@ -179,7 +189,7 @@
 <p>Der Index ist eine Funktion des Schlüssels.</p>
 <ld-supplemental embed-in-document-flow><p>In dem Beispiel sind die Schlüssel die Worte: <span class="docutils literal">it</span> und <span class="docutils literal">times</span>.</p>
 </ld-supplemental></li>
-<li><p>Hash-Funktion<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:  Methode zur Berechnung des Array-Index aus dem Schlüssel.</p></li>
+<li><p>Hash-Funktion<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>:  Methode zur Berechnung des Array-Index aus dem Schlüssel.</p></li>
 </ul>
 </ld-card><ld-card class="incremental">
 <p class="rubric">Herausforderungen</p>
@@ -205,8 +215,8 @@
 </dl>
 </aside>
 </ld-card></ld-deck><aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
 <p>Nur im Zusammenhang mit Datenstrukturen! Kryptographische Hash-Funktionen haben bzw. erfüllen diesen Zweck nicht.</p>
 </aside>
 </aside>
