@@ -615,6 +615,46 @@ MTAwMDAw:Igzq7Soi5JG78hRZ2vOOZ+MW3U1652wStWuWeKYtbyE=:/xDlB6P6WCh5sk9U:hrlJo7inI
 <ld-topic class="new-section transition-fade" id="stromchiffren">
 <h2>Stromchiffren</h2>
 </ld-topic>
+<ld-topic class="repetition" id="klassische-stromchiffre">
+<h2>(klassische) Stromchiffre</h2>
+<ul>
+<li><p>Verschlüsselt einen digitalen Datenstrom ein Bit oder ein Byte nach dem anderen.</p>
+<p>Beispiele: Autokeyed Vigenère-Chiffre und Vernam-Chiffre.</p>
+</li>
+</ul>
+<ld-story>
+<aside class="admonition incremental">
+<p class="admonition-title">Variante: One-Time-Pad</p>
+<ul class="simple">
+<li><p>Im Idealfall würde ein One-Time-Pad verwendet werden. Der Schlüsselstrom wäre genauso lang wie der Bitstrom des Klartextes.</p></li>
+</ul>
+<div class="incremental docutils container">
+<ul class="simple">
+<li><p>Wenn der kryptografische Schlüsselstrom zufällig ist, kann diese Chiffre auf keine andere Weise als durch die Beschaffung des Schlüsselstroms geknackt werden.</p></li>
+<li><p>Der Schlüsselstrom muss beiden Nutzern im Voraus über einen unabhängigen und sicheren Kanal zur Verfügung gestellt werden.</p></li>
+<li><p>Dies führt zu unüberwindbaren logistischen Problemen, wenn der vorgesehene Datenverkehr sehr groß ist.</p></li>
+</ul>
+</div>
+<div class="incremental docutils container">
+<p class="rubric">Beispielimplementierung in Python</p>
+<pre class="code python copy-to-clipboard literal-block"><code><span class="keyword">def</span><span class="whitespace"> </span><span class="name function">vernam</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">:</span> <span class="name builtin">bytes</span><span class="punctuation">)</span> <span class="operator">-&gt;</span> <span class="name builtin">bytes</span><span class="punctuation">:</span><span class="whitespace">
+</span>    <span class="keyword">return</span> <span class="name builtin">bytes</span><span class="punctuation">([</span><span class="name">p</span> <span class="operator">^</span> <span class="name">k</span> <span class="keyword">for</span> <span class="name">p</span><span class="punctuation">,</span> <span class="name">k</span> <span class="operator word">in</span> <span class="name builtin">zip</span><span class="punctuation">(</span><span class="name">plaintext</span><span class="punctuation">,</span> <span class="name">key</span><span class="punctuation">)])</span></code></pre>
+</div>
+</aside>
+<aside class="admonition incremental">
+<p class="admonition-title">Variante: Bitstromgenerator</p>
+<ul>
+<li><p>Aus praktischen Gründen muss der Bitstromgenerator als algorithmisches Verfahren implementiert werden, damit der kryptografische Bitstrom von beiden Benutzern erzeugt werden kann.</p></li>
+<li><p>Es muss rechnerisch praktisch unmöglich sein, zukünftige Teile des Bitstroms auf der Grundlage früherer Teile des Bitstroms vorherzusagen.</p></li>
+<li><p>Die beiden Benutzer müssen nur den erzeugenden Schlüssel sicher miteinander teilen, damit jeder den Schlüsselstrom erzeugen kann.</p></li>
+<li><aside class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Im Folgenden meinen wir mit <em>Stromchiffre</em> immer die Variante mit einem Bitstromgenerator.</p>
+</aside>
+</li>
+</ul>
+</aside>
+</ld-story></ld-topic>
 <ld-topic id="allgemeine-struktur-einer-typischen-stromchiffre">
 <h2>Allgemeine Struktur einer typischen Stromchiffre</h2>
 <object aria-label="Typical Stream Cipher" class="light-image align-center" data="drawings/stream_ciphers/typical_stream_cipher.svg" role="img" type="image/svg+xml">
