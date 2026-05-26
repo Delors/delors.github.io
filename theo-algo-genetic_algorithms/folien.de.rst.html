@@ -30,8 +30,6 @@
  -->
          <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
     
-    <!-- Modules added for specific classes used in the document: -->
-    <script src="../LectureDoc2/src/css/themes/DHBW/animated-logo.js" type="module"></script>
 </head>
 <body>
 <template>
@@ -44,7 +42,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.0</dd>
+<dd class="version">1.0.1</dd>
 <dt class="quelle">Quelle<span class="colon">:</span></dt>
 <dd class="quelle"><p>Davic Kopec, Algorithmen in Python, Rheinwerk Computing, 2023 (korrigierte Auflage)</p>
 </dd>
@@ -197,7 +195,7 @@
 <p class="rubric">Bestimmung der Chromosomen, die überleben und sich ggf. fortpflanzen.</p>
 <ld-story>
 <p class="rubric">Auswahlstrategien</p>
-<dl class="incremental-list field-list">
+<dl class="incremental-list dd-margin-left-4em field-list">
 <dt><em>Tournament Selection</em><span class="colon">:</span></dt>
 <dd><p>Wähle zufällig einige Chromosomen aus und wähle das beste(/die besten) Chromosom(en) aus dieser Gruppe:</p>
 <pre class="code python literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 ">    <span class="keyword">def</span><span class="whitespace"> </span><span class="name function">_pick_tournament</span><span class="punctuation">(</span><span class="whitespace">
@@ -227,7 +225,14 @@
 <li><p>Wiederhole die Selektion und ggf. Rekombination, bis die gewünschte Anzahl von Chromosomen ausgewählt wurde.</p></li>
 </ol>
 </div>
-</ld-story></ld-topic>
+</ld-story><ld-supplemental><div class="eng docutils container">
+<p class="rubric"><code class="python"><span class="name">random</span><span class="operator">.</span><span class="name">choices</span><span class="punctuation">(</span><span class="name">population</span><span class="punctuation">,</span> <span class="name">weights</span><span class="operator">=</span><span class="keyword constant">None</span><span class="punctuation">,</span> <span class="name">k</span><span class="operator">=</span><span class="literal number integer">1</span><span class="punctuation">)</span></code></p>
+<p>Return a k sized list of elements chosen from the population with replacement.</p>
+<p>If a weights sequence is specified, selections are made according to the relative weights.</p>
+<p class="rubric"><code class="python"><span class="name">nlargest</span><span class="punctuation">(</span><span class="name">n</span><span class="punctuation">,</span> <span class="name">iterable</span><span class="punctuation">,</span> <span class="name">key</span><span class="operator">=</span><span class="keyword constant">None</span><span class="punctuation">)</span></code></p>
+<p>Return a list with the n largest elements from the dataset defined by iterable. <span class="docutils literal">key</span>, if provided, specifies a function of one argument that is used to extract a comparison key from each element in iterable (for example, <code class="python"><span class="name">key</span><span class="operator">=</span><span class="name builtin">str</span><span class="operator">.</span><span class="name">lower</span></code>). Equivalent to: <code class="python"><span class="name builtin">sorted</span><span class="punctuation">(</span><span class="name">iterable</span><span class="punctuation">,</span> <span class="name">key</span><span class="operator">=</span><span class="name">key</span><span class="punctuation">,</span> <span class="name">reverse</span><span class="operator">=</span><span class="keyword constant">True</span><span class="punctuation">)[:</span><span class="name">n</span><span class="punctuation">]</span></code>.</p>
+</div>
+</ld-supplemental></ld-topic>
 <ld-topic id="basisklasse-des-genetischen-algorithmus">
 <h2>Basisklasse des genetischen Algorithmus</h2>
 <pre class="code python literal-block"><small class="ln"> 1 </small><code data-lineno=" 1 "><span class="name">C</span> <span class="operator">=</span> <span class="name">TypeVar</span><span class="punctuation">(</span><span class="literal string double">&quot;C&quot;</span><span class="punctuation">,</span> <span class="name">bound</span><span class="operator">=</span><span class="name">Chromosome</span><span class="punctuation">)</span>  <span class="comment single"># type of the chromosomes</span><span class="whitespace">
@@ -342,23 +347,22 @@ M O N E Y</pre>
 <p class="rubric">Chromosomen ermöglichen Zuordnung von Buchstaben zu Ziffern</p>
 <p><strong>Idee</strong>: Verwendung von Listenindizes zur Repräsentation der Ziffern: [0,...,9]. Die Werte in der Liste entsprechen den Buchstaben; Beispiel:</p>
 <p><em>Zuordnung von Ziffern zu Buchstaben:</em></p>
-<table class="align-center" style="width: 100%;">
+<table class="align-center monospaced" style="width: 100%;">
 <colgroup>
-<col style="width: 18.5%" />
-<col style="width: 7.4%" />
-<col style="width: 7.4%" />
-<col style="width: 7.4%" />
-<col style="width: 7.4%" />
-<col style="width: 7.4%" />
-<col style="width: 7.4%" />
-<col style="width: 7.4%" />
-<col style="width: 7.4%" />
-<col style="width: 7.4%" />
-<col style="width: 7.4%" />
-<col style="width: 7.4%" />
+<col style="width: 20.0%" />
+<col style="width: 8.0%" />
+<col style="width: 8.0%" />
+<col style="width: 8.0%" />
+<col style="width: 8.0%" />
+<col style="width: 8.0%" />
+<col style="width: 8.0%" />
+<col style="width: 8.0%" />
+<col style="width: 8.0%" />
+<col style="width: 8.0%" />
+<col style="width: 8.0%" />
 </colgroup>
 <thead>
-<tr><th class="head"><p>Index:</p></th>
+<tr><th class="head stub"><p>Index:</p></th>
 <th class="head"><p>0</p></th>
 <th class="head"><p>1</p></th>
 <th class="head"><p>2</p></th>
@@ -369,11 +373,10 @@ M O N E Y</pre>
 <th class="head"><p>7</p></th>
 <th class="head"><p>8</p></th>
 <th class="head"><p>9</p></th>
-<th class="head"><p></p></th>
 </tr>
 </thead>
 <tbody>
-<tr><td><p>letters = [</p></td>
+<tr><th class="stub"><p>letters</p></th>
 <td><p>O</p></td>
 <td><p>M</p></td>
 <td><p>Y</p></td>
@@ -384,7 +387,6 @@ M O N E Y</pre>
 <td><p>D</p></td>
 <td><p>R</p></td>
 <td><p>S</p></td>
-<td><p>]</p></td>
 </tr>
 </tbody>
 </table>
@@ -465,11 +467,11 @@ Elternteil 2 = [c,a,b,e,d]  # d.h. ein Chromosom</pre>
 <p>gewählte Indizes seien: 0 und 2</p>
 <div class="docutils container">
 <pre class="literal-block">Nachkomme 1 = [a,c,b,d,e]  # im Wesentlichen Elternteil 1,
-                            aber Position von &quot;b&quot; vom 2ten übernommen
-                            (dadurch Anpassung der Pos. von &quot;c&quot; notw.)
+                             aber Position von &quot;b&quot; vom 2ten übernommen
+                             (dadurch Anpassung der Pos. von &quot;c&quot; notw.)
 Nachkomme 2 = [a,c,b,e,d]  # im Wesentlichen Elternteil 2,
-                            aber Position von &quot;a&quot; vom 1ten übernommen
-                            (dadurch Anpassung der Pos. von &quot;c&quot; notw.)</pre>
+                             aber Position von &quot;a&quot; vom 1ten übernommen
+                             (dadurch Anpassung der Pos. von &quot;c&quot; notw.)</pre>
 </div>
 </div>
 </ld-card><ld-card class="incremental">
