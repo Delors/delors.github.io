@@ -19,7 +19,7 @@ console.log("loading ld-hoverable.js");
 const listClassesToPropagateToItems = [
     "pop-out-list-item-on-hover",
     "show-list-item-content-on-hover",
-    "highlight-list-item-on-hover", // added automatically for ol arabic lists
+    "highlight-list-item-on-hover",
 ];
 
 const classes = ["scale-on-hover", ...listClassesToPropagateToItems];

@@ -18,20 +18,9 @@ ol.arabic.dhbw {
     > li {
         position: relative;
         padding: 0.2em 0.4em;
-        /* margin: 0.2em; removed to get a good left-alignment with the text, but didn't check if there is another requirement   */
 
         border-radius: 0 var(--small-border-radius) var(--small-border-radius) 0;
-        --current-rel-bg-color: color-mix(
-            in oklab,
-            var(--current-bg-color) 90%,
-            var(--current-fg-color) 10%
-        );
-        background-color: var(--current-rel-bg-color);
-        --current-rel-fg-color: color-mix(
-            in oklab,
-            var(--current-bg-color) 10%,
-            var(--current-fg-color) 90%
-        );
+        background-color: var(--low-contrast-transparent-color);
 
         > p:last-child {
             /* TODO there are some conflicts in the CSS rules, which require this rule... drop after consolidation*/
@@ -50,21 +39,32 @@ ol.arabic.dhbw {
             width: var(--item-counter-width);
             height: 100%;
 
+            border-radius: var(--small-border-radius) 0 0
+                var(--small-border-radius);
             padding: 0.2em;
 
             text-align: center;
             font-weight: 500;
-            background-color: var(--dhbw-red);
-            border-radius: var(--small-border-radius) 0 0
-                var(--small-border-radius);
-            color: white;
+
+            /*
+            color: var(--symbol-color);
+            background-color: var(--symbol-background-color);
+            */
+            color: var(--primary-color);
+            background-color: var(--low-contrast-accent-color);
+
+            transition:
+                background-color 0.5s ease-in-out,
+                scale 0.5s ease-in-out,
+                border-radius 0.6s ease;
         }
 
         &.\:hover {
-            box-shadow: 6px 0px 3px -3px rgb(0 0 0 / 50%);
-
             &::before {
-                background-color: var(--dhbw-dark-red);
+                background-color: var(--accent-color);
+                color: var(--background-color);
+                scale: 1.02;
+                border-radius: var(--small-border-radius);
             }
         }
     }
@@ -73,7 +73,7 @@ ol.arabic.dhbw {
 ul.dhbw {
     display: flex;
     flex-direction: column;
-    gap: var(--default-box-margin);
+    gap: var(--default-margin);
     padding: 0;
     margin: 0;
 
@@ -86,7 +86,6 @@ ul.dhbw {
             var(--default-container-padding);
         overflow: hidden;
 
-        /*background-color: var(--dhbw-very-light-gray);*/
         --current-rel-bg-color: color-mix(
             in srgb,
             var(--current-bg-color) 90%,
@@ -139,16 +138,18 @@ ul.column-list.dhbw {
 
         > p {
             margin: 0;
-            background-color: var(--dhbw-very-light-gray);
-            color: black;
+            background-color: var(--very-low-contrast-color);
+            color: var(--primary-color);
         }
         > p:not(:first-child) + p {
             margin-top: 0.25em;
         }
         > p:first-child {
+            --theme: accent;
             /* the "Header" */
             background-color: var(--dhbw-red);
             color: var(--white);
+
             font-weight: 500;
             border-radius: var(--small-border-radius) var(--small-border-radius)
                 0 0;
@@ -161,143 +162,5 @@ ul.column-list.dhbw {
                 var(--small-border-radius);
             flex-grow: 1;
         }
-    }
-}
-
-table.dhbw {
-    border-collapse: separate;
-    border-spacing: 0;
-
-    > thead {
-        --current-bg-color: var(--dhbw-red);
-        --current-fg-color: var(--white);
-        --current-rel-bg-color: var(--current-bg-color);
-        --current-rel-fg-color: var(--current-fg-color);
-
-        > tr > th,
-        > tr > td {
-            background-color: var(--current-rel-bg-color);
-
-            + td,
-            + th {
-                border-left: thin solid var(--white);
-            }
-        }
-
-        /* Ensure the header background is clipped to the rounded corners. */
-        > tr:first-child > :first-child {
-            border-top-left-radius: var(--small-border-radius);
-        }
-        > tr:first-child > :last-child {
-            border-top-right-radius: var(--small-border-radius);
-        }
-    }
-
-    /* Zebra striping: apply to body rows (and to direct tr as fallback). */
-    > tbody > tr,
-    > tr {
-        > td {
-            border: thin solid var(--dhbw-very-light-gray);
-
-            + td {
-                border-left: thin solid var(--dhbw-light-gray);
-            }
-        }
-
-        &:nth-child(even) {
-            --current-rel-bg-color: color-mix(
-                in lch,
-                var(--current-bg-color) 90%,
-                var(--current-fg-color) 10%
-            );
-            background-color: var(--current-rel-bg-color);
-            --current-rel-fg-color: color-mix(
-                in srgb,
-                var(--current-bg-color) 10%,
-                var(--current-fg-color) 90%
-            );
-            color: var(--current-rel-fg-color);
-
-            /*
-            --current-bg-color: var(--dhbw-very-light-gray);
-            background-color: var(--current-bg-color);
-            */
-
-            > th {
-                --current-bg-color: var(--dhbw-gray);
-                --current-rel-bg-color: var(--current-bg-color);
-                background-color: var(--current-rel-bg-color);
-                --current-fg-color: var(--white);
-                --current-rel-fg-color: var(--current-fg-color);
-                color: var(--current-rel-fg-color);
-            }
-
-            > td {
-                border: thin solid var(--white);
-
-                + td {
-                    border-left: thin solid var(--white);
-                }
-            }
-
-            &.\:hover-related {
-                --current-bg-color: var(--dhbw-dark-gray);
-                --current-rel-bg-color: var(--current-bg-color);
-                background-color: var(--current-bg-color);
-                --current-fg-color: var(--dhbw-light-gray);
-                --current-rel-fg-color: var(--current-fg-color);
-                color: var(--current-fg-color);
-
-                > th {
-                    --current-bg-color: var(--dhbw-light-gray);
-                    --current-rel-bg-color: var(--current-bg-color);
-                    background-color: var(--current-rel-bg-color);
-                    --current-fg-color: var(--dhbw-dark-gray);
-                    --current-rel-fg-color: var(--current-fg-color);
-                    color: var(--current-rel-fg-color);
-                }
-            }
-        }
-
-        &:last-child {
-            > :first-child {
-                border-bottom-left-radius: var(--small-border-radius);
-            }
-            > :last-child {
-                border-bottom-right-radius: var(--small-border-radius);
-            }
-        }
-    }
-}
-
-/*************************** LEGACY ***************************/
-/*************************** LEGACY ***************************/
-/*************************** LEGACY ***************************/
-/*************************** LEGACY ***************************/
-/*************************** LEGACY ***************************/
-
-/*
-
-Styling of impressive lists (whatever "impressive" means in this case).
-
-*/
-ol.impressive {
-    list-style-position: outside;
-    margin-left: 1em;
-    padding-left: 0;
-
-    > li {
-        &::marker {
-            color: black;
-        }
-
-        color: black;
-        background-color: white;
-        margin-top: 1em;
-        box-shadow: 4px 4px 8px black;
-        border-radius: 0.33em;
-        align-items: center;
-        min-height: 4em;
-        padding: 0.75em;
     }
 }

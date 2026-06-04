@@ -31,7 +31,7 @@
          <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
     
 </head>
-<body>
+<body data-theme="<light-dark>">
 <template>
 <ld-topic id="textsuche">
 <h1 class="title">Textsuche</h1>
@@ -42,7 +42,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a>, Raum 149B</dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.1.5</dd>
+<dd class="version">1.1.6</dd>
 </dl>
 <div class="peripheral docutils container">
 <dl class="field-list simple">
@@ -65,7 +65,7 @@
 <h2>Arrays und Textsuche</h2>
 <p>Texte können als unsortierte Arrays von Zeichen verstanden werden. Eine typische
 Frage ist hier das Finden von Textsequenzen im Text.</p>
-<aside class="admonition example incremental"><p class="admonition-title"><span>Beispiel: Gesucht ist &quot;labore&quot;</span></p><blockquote class="epigraph">
+<aside class="admonition incremental" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel: Gesucht ist &quot;labore&quot;</span></p><blockquote class="epigraph">
 <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
 <p class="attribution">—<a class="reference external" href="https://www.loremipsum.de">loremipsum.de</a></p>
 </blockquote>
@@ -74,8 +74,7 @@ Frage ist hier das Finden von Textsequenzen im Text.</p>
 <h2>Einfache Textsuche</h2>
 <ld-deck>
 <ld-card>
-<aside class="admonition width-40 incremental note">
-<p class="admonition-title">Bemerkung</p>
+<aside class="admonition width-40 incremental" data-theme="note"><p class="admonition-title" data-theme="note-header">Bemerkung</p>
 <p>Die Laufzeit der einfachen Textsuche kann asymptotisch durch O(n·m) abgeschätzt werden.</p>
 </aside>
 <pre class="code pascal copy-to-clipboard incremental-code literal-block"><small class="ln"> 1</small><code data-lineno=" 1"><span class="keyword">function</span><span class="whitespace"> </span><span class="name function">NaiveTextSearch</span><span class="punctuation">(</span><span class="name">text</span><span class="operator">,</span><span class="name">needle</span><span class="punctuation">)</span><span class="whitespace">
@@ -112,7 +111,7 @@ a a a b̶
 <ld-deck>
 <ld-card>
 <p>Das Verfahren von Knuth-Morris-Pratt vermeidet unnötige Vergleiche, da es zunächst die Suchwortteile auf den größten Rand, also das größte Präfix, das auch Postfix ist, untersucht.</p>
-<aside class="admonition definition incremental"><p class="admonition-title"><span>Definition: Präfix, Postfix und Rand</span></p><p>Für ein Wort <span class="math">\(w = (w_1,...,w_n)\)</span> mit <span class="math">\(0 \leq  k \leq  n\)</span>. sind:</p>
+<aside class="admonition incremental" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition: Präfix, Postfix und Rand</span></p><p>Für ein Wort <span class="math">\(w = (w_1,...,w_n)\)</span> mit <span class="math">\(0 \leq  k \leq  n\)</span>. sind:</p>
 <ul class="simple">
 <li><p>die Präfixe <span class="math">\(p^{(k)} = (w_1,...,w_k )\)</span> und</p></li>
 <li><p>die Postfixe <span class="math">\(q^{(k)} = (w_{n-k+1},...,w_{n})\)</span></p></li>
@@ -128,10 +127,9 @@ Gesucht/Muster    010101
 <p><strong>Beobachtungen:</strong></p>
 <ol class="arabic simple">
 <li><p>Wir haben an Stelle 5 ein Mismatch.</p></li>
-<li><p>Wenn wir im Text das Muster um eine Stelle nach rechts verschoben suchen, so haben wir garantiert wieder ein Mismatch.</p></li>
+<li><p>Wenn wir im Text das Muster um eine Stelle nach rechts verschoben suchen, so haben wir wieder ein Mismatch.</p></li>
 </ol>
-<aside class="admonition question far-smaller incremental">
-<p class="admonition-title">Frage</p>
+<aside class="admonition question far-smaller incremental"><p class="admonition-title">Frage</p>
 <p>Wie weit kann man also das Muster im Allgemeinen verschoben werden ohne ein Vorkommen zu übersehen?</p>
 </aside>
 </div>
@@ -141,15 +139,18 @@ Gesucht/Muster    010101
 Text                01101100              0102111
 Gesucht/Muster      01100                 010201
 Übereinstimmungen   ✓✓✓✓✗                 ✓✓✓✓✗</pre>
-<div class="incremental margin-top-1em docutils container">
+<div class="incremental docutils container">
 <p><strong>Beobachtungen bzgl.:</strong></p>
-<ol class="arabic simple">
-<li><p>Beim Mismatch an Stelle 5 kann das Muster „nur“ um 3 Stellen nach rechts verschoben werden.</p></li>
+<ol class="arabic incremental-list list-with-explanations">
+<li><p>Beim Mismatch an Stelle 5 kann das Muster „nur“ um 3 Stellen nach rechts verschoben werden.</p>
+<p><span class="incremental">(Wir haben 4 Übereinstimmungen und einen Rand von 1 für den Teil mit den Übereinstimmungen. Daraus ergibt sich eine Verschiebung von 4 - 1 = 3!)</span></p>
+</li>
 <li><p>Beim Mismatch an Stelle 5 kann das Muster um 4 Stellen nach rechts verschoben werden.</p></li>
 </ol>
-<div class="docutils container">
+<div class="incremental docutils container">
 <p>Wie weit wir das Muster verschieben können, hängt also vom Rand des Teils des Musters ab, der bereits übereinstimmt.</p>
-</div>
+<ld-supplemental embed-in-document-flow><p>Bei einem Mismatch betrachtet man die Anzahl j der bereits übereinstimmenden Zeichen (das gematchte Präfix des Musters) und bestimmt dessen längsten echten Rand der Länge b. Das Muster wird dann um j − b Stellen nach rechts verschoben; der Textzeiger bleibt auf dem Mismatch-Zeichen, und der Vergleich wird ab Position b im Muster fortgesetzt, da die b Randzeichen bereits übereinstimmen. Gibt es keinen Rand (b = 0), verschiebt man entsprechend um j Stellen und vergleicht das Mismatch-Zeichen erneut mit dem Musteranfang.</p>
+</ld-supplemental></div>
 </div>
 </ld-card><ld-card class="incremental">
 <p class="rubric">Beispiel</p>
@@ -248,7 +249,7 @@ Teil einen Rand hat, beim Abgleich des Musters an einer späteren Stelle - basie
 <ld-topic class="exercises transition-fade" id="ubung">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Ränder und Randlängen bestimmen" id="ld-exercise-1">
-<p class="ld-exercise-title rubric">Ränder und Randlängen bestimmen</p>
+<p class="ld-exercise-title rubric"><span>Ränder und Randlängen bestimmen</span></p>
 <p>Bestimmen Sie die Ränder und die Längen der <span class="math">\(Präfixe - \varepsilon \)</span> für die Worte:</p>
 <ol class="arabic simple">
 <li><p><span class="math">\(tultatul\)</span></p></li>
@@ -263,7 +264,7 @@ MTAwMDAw:CMtCFAJgPsYcvK6n4MyTSLjL0eHQxGOzoNvR2/f6JdA=:mO8ta+gT/4lYLUsf:HHieeqLJF
 <ld-topic id="beispiel-fur-eine-kmp-textsuche">
 <h2>Beispiel für eine KMP-Textsuche</h2>
 <p>Gesucht wird <span class="docutils literal">ananas</span> in <span class="docutils literal">saansanananas</span></p>
-<div class="far-smaller docutils container">
+<div class="far-smaller monospaced docutils container">
 <pre class="literal-block">   s a a n s a n a n a n a s
 i  ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 1  a̶
@@ -276,11 +277,8 @@ i  ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 ...                          q=5 und wird auf p[5]=3 (Zeile 8) gesetzt
 13               a n a n a s</pre>
 </div>
-<aside class="admonition remark">
-<p class="admonition-title">Bemerkung</p>
-<p>Dargestellt sind die Fälle, in denen ein Mismatch auftritt. <span class="docutils literal">i</span> ist der Index des aktuellen Zeichen im Text, das mit dem Muster verglichen wird.</p>
-</aside>
-</ld-topic>
+<aside class="admonition" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung</span></p><p>Dargestellt sind die Fälle, in denen ein Mismatch auftritt. <span class="docutils literal">i</span> ist der Index des aktuellen Zeichen im Text, das mit dem Muster verglichen wird.</p>
+</aside></ld-topic>
 <ld-topic id="algorithmus">
 <h2>Algorithmus</h2>
 <ld-deck>
@@ -343,7 +341,7 @@ Das Array <span class="math">\(B\)</span> enthält somit die größten Ränder d
 <ld-topic class="exercises transition-fade" id="ubung-1">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - KMP-Algorithmus" id="ld-exercise-2">
-<p class="ld-exercise-title rubric">KMP-Algorithmus</p>
+<p class="ld-exercise-title rubric"><span>KMP-Algorithmus</span></p>
 <p>Bestimmen Sie die Randlängen der Muster und stellen Sie die Teilschritte bei der Durchführung des KMP-Algorithmus zur Suche des Wortes/Muster im Text  dar.</p>
 <p>Stellen Sie insbesondere die Fälle dar in denen ein Mismatch auftritt.</p>
 <table class="align-left">
@@ -372,18 +370,12 @@ MTAwMDAw:TTwcugSnP54ee2I+hPZ7nI7tishnxQE+HbsWCuxVM9A=:V12hHUjDmAsHRNDc:SoeoakJxI
 <h2>Grundlagen</h2>
 <ld-deck>
 <ld-card>
-<aside class="admonition observation">
-<p class="admonition-title">Beobachtung</p>
-<p>Häufig ist das Alphabet des Textes größer als das des Musters.</p>
-</aside>
-<div class="incremental-list list-with-explanations docutils container">
+<aside class="admonition" data-theme="observation"><p class="admonition-title" data-theme="observation-header"><span>Beobachtung</span></p><p>Häufig ist das Alphabet des Textes größer als das des Musters.</p>
+</aside><div class="incremental-list list-with-explanations docutils container">
 <ul>
 <li><p>Der Algorithmus vergleicht das Muster (Pattern) von rechts nach links mit dem Text.</p>
-<aside class="admonition remark">
-<p class="admonition-title">Bemerkung</p>
-<p>Viele andere Algorithmen führen die Vergleiche von links nach rechts durch.</p>
-</aside>
-</li>
+<aside class="admonition" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung</span></p><p>Viele andere Algorithmen führen die Vergleiche von links nach rechts durch.</p>
+</aside></li>
 <li><p>Der Boyer-Moore-Algorithmus nutzt dies aus, indem er die Verschiebung des Musters anhand des letzten Zeichens des Musters und des Textes vornimmt.</p></li>
 </ul>
 </div>
@@ -438,11 +430,8 @@ B a n a n̶̲ e̶̲
                                     B a n a n e̶̲
                                         B̲ a̲ n̲ a̲ n̲ e̲
                                           B a n a n e̶̲</pre>
-<aside class="admonition remark">
-<p class="admonition-title">Bemerkung</p>
-<p>Unterschrichen sind die durchgeführten Vergleiche. Die Verschiebung des Musters erfolgt anhand des letzten Zeichens des Musters und des Textes, dass nicht übereinstimmt. Dabei ist die Verschiebung durch das Zeichen des Textes gegeben, das nicht mit dem Muster übereinstimmt.</p>
-</aside>
-</ld-card><ld-card class="incremental">
+<aside class="admonition" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung</span></p><p>Unterschrichen sind die durchgeführten Vergleiche. Die Verschiebung des Musters erfolgt anhand des letzten Zeichens des Musters und des Textes, dass nicht übereinstimmt. Dabei ist die Verschiebung durch das Zeichen des Textes gegeben, das nicht mit dem Muster übereinstimmt.</p>
+</aside></ld-card><ld-card class="incremental">
 <p class="rubric">Komplexität</p>
 <p>Im guten und häufigen Fall erreicht das Verfahren <span class="math">\(O(\frac{n}{m})\)</span>, aber in speziellen Fällen ist auch <span class="math">\(O(n·m)\)</span> möglich.</p>
 </ld-card></ld-deck><ld-supplemental><p>Bei der Sprungtabelle handelt es sich um eine Tabelle, die <em>für jedes Zeichen des Alphabets des Textes</em> die Verschiebung des Musters angibt, wenn das Zeichen im Text mit dem Muster nicht übereinstimmt. Die Zeichen <code class="java"><span class="name">A</span></code>, <code class="java"><span class="name">O</span></code>, <code class="java"><span class="name">d</span></code>, <code class="java"><span class="name">g</span></code>, <code class="java"><span class="name">r</span></code>, <code class="java"><span class="name">s</span></code>, <code class="java"><span class="name">u</span></code>, <code class="java"><span class="punctuation">,</span></code> und das Leerzeichen haben die größte Verschiebung, da sie nicht im Muster vorkommen. Das Zeichen <code class="java"><span class="name">e</span></code> hat die kleinste Verschiebung, da es das letzte Zeichen des Musters ist. Das Zeichen <code class="java"><span class="name">n</span></code> hat eine Verschiebung von 1, da es im Muster  als vorletztes Zeichen vorkommt, das Zeichen <code class="java"><span class="name">a</span></code> hat eine Verschiebung von 2, da das späteste Vorkommen an drittletzer Stelle ist, und das Zeichen <code class="java"><span class="name">B</span></code> hat eine Verschiebung von 5, da es nur einmal vorkommt und das erste Zeichen des Musters ist.</p>
@@ -450,7 +439,7 @@ B a n a n̶̲ e̶̲
 <ld-topic class="exercises transition-fade" id="ubung-boyer-moore-algorithmus">
 <h2>Übung - Boyer-Moore-Algorithmus</h2>
 <div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - „belli“" id="ld-exercise-3">
-<p class="ld-exercise-title rubric">„belli“</p>
+<p class="ld-exercise-title rubric"><span>„belli“</span></p>
 <p>Suchen Sie das Wort <span class="docutils literal">belli</span> im Text <span class="docutils literal">It is a dark time for the Rebellion.</span></p>
 <p>Bauen Sie erst die Sprungtabelle auf:</p>
 <table class="monospaced font-size-80">
@@ -505,7 +494,7 @@ B a n a n̶̲ e̶̲
 MTAwMDAw:b/adlnhjHfuRMIvyR/sEgDpd0VVOILXj/Ac66UJTrs8=:Ft+gIUPFA5/bm4LV:AKq1cDw7zovap0nH/04DOw5q14fOypaQp4n9i1wTjpAfEHaleGm47tn4DDEb3+XcjjmkZyYjePPDvyB2A6GNlfcxlZ1ZPsyx1vZVSjLqONTLRFgZtO2k7a1Wi/kYg/d+sY/cLFpQA6nk2rXo0bYoD+JqHDBCZxx8F2aSIJirdPBpU19D5XCkQRSF9bnKSwWubspt7S9SdmVj4F8x429zrHLZ7Y68bzA/n/0+t6oftCqatWsDjRMky1ngBHibry/wzOufGDiANLYKktXDCWFxoYzMSRrIlfWoynVUkNcIJfdF7hVAanLgmo7Epaw4EpZEldyayqYyTHaJeyMzs2Xum4uZDkcvoZieVTEos4dxop/PFDutMI1JCqsLhNjnwGIVovZHxOfDK5nqZSL9CNlyCvwN0nk7TDe0Hu9uP1nPGuBhyFNzp2khpmoQVHAMC6kMhCkOE02aqsePKrHL3jMiIWlonaiW9mRf0+7aEt6sxWmtr4zoQwg9FJ4cN6sERCi7fEwLulIBU77OeTtP7r1jbPP38WaMx0R/50rW/CuAhPFTkzCcpwzW5iI6K012PLIC52nlfBoe23m4v08ODGm+Lie0BCOsOCLlxf1X73y7YSEv7DPr5fxsW4jr63V5K22KwQfcLeXQM5FWOw1t0ghsrzW4hQgZW3DJuyiEw9yNrbBI/mkJVBkzWLDjILSg+WtF0T5FBv94b8RQMqj51WTk/W1uV7llK0Tt+79JxPUsMm0zREHbHJZtQ3wXRw55YbxYmJaLcSjwIibklcLspZSEqDd8C7KbYe1kWpOvoj0+kTStqcaFXv7DSYESqh2QAjx3a6ApVr0TAg0iolOvAuBwCApayp/kywRT/YRaIuxW3EaGS6dvPvkUvpvqg+XrhoqwFtGt3pmRe9AbLSDNnD9ShmxMAEv/XJchBsgn8n+0HdKvPio5icpxfkmgD5/BEHFkdp5UAuovGgMiOsu6teadIqKm9te4uMthEoDaEAf1ShzplIAqN336TE/PeNJRwRettRal9eKCzV/d2rZH3OH0Fd51Eu0tsk/K1KCyBO78OfA0JUX5LeFCDihNgjZwo5aSTaf6Ehy8wktVtsCZytaWygGL0ceIHKF7k8WSBDimGb9qEr8t1KJzuHVI/9jMp/JSauZMAgeoN6JmK1BZvDA4sYH6aWupQZYLA7ClL0PdrdDgf9LUlNSiA/hULm1iqtPKPpQio2dBZ+RXsXMaxBpwrh6c2u6qMgtXQN75F5Ohbon6DjWtRl4GKE0gsiU9Vk6SJ51MfbGvW+K0IUZ+JYcYfKoWTqDtVEngs9VDwtbLEoqzq45V47ep1Q8K1ECf5EVQqTAIYeYuVHwFy1HI35Vg3ky4+T9gebmtgwgS9+ZSOy4KpSyzeZO5EECwezSWN/RS49e6KNWrFmmxguO/Sh9+O+kq3O60e9/wGOp0OwkmMJXl/Y1/D4wUBVUVbZ+Hm0Zaewmxikt//VIiTX5NOKykStFgYsfuOcAR1OC9EARmQ3WKdQPkrJSf8PlRX79I+bhS4BHRYmWHrhLh9HLEkDGxD807t7K9AZJA4H721CDHbhuA/sjSceK+JuLBlg2u/L/pne50vgabQWfuRz3kfJ2I7WUFMIBkeUrDcrqXwj6Gbf2Cm3nkwPTBWjo0ZBJ5fd5q+5L5Fttp/g+OoRuuENgZD0yNPVIyMKL5diki//xi/horljTsxpdLRCigw86Cq2iUN5ykWhQLdlIqwj37S8NTvbXezYUZolU0/J8F2IxMcGPAUw3JMzCIQw0NhLlRF7FrvjbH6P4FvH+23KCeOZNtLLd15iNCCu6ggMOZfLh0OEE=</div>
 </div>
 <div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - &quot;barbara&quot;" id="ld-exercise-4">
-<p class="ld-exercise-title rubric">&quot;barbara&quot;</p>
+<p class="ld-exercise-title rubric"><span>&quot;barbara&quot;</span></p>
 <p>Suchen Sie das Wort <span class="docutils literal">barbara</span> im Text <span class="docutils literal">abbabarabarbarbara</span></p>
 <p>Bauen Sie zuerst die Sprungtabelle auf.</p>
 <div class="ld-exercise-solution" data-encrypted="true">

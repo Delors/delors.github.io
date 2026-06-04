@@ -2,9 +2,7 @@
 
 #ld-document-view {
     --unitless-current-base-font-size: var(--unitless-d-font-size);
-    --current-base-font-size: calc(
-        var(--unitless-current-base-font-size) * 1px
-    );
+    --current-base-font-size: var(--d-font-size);
     font-size: var(--current-base-font-size);
 
     .s-only {
@@ -18,11 +16,8 @@
         padding: var(--d-padding);
         border-radius: 0.25em;
 
-        --current-bg-color: var(--bg-color);
-        --current-rel-bg-color: var(--current-bg-color);
-        background-color: var(--current-rel-bg-color);
+        background-color: var(--background-color);
 
-        &.exercises,
         &.new-section {
             > h2 {
                 border-radius: 0.25em;
@@ -36,18 +31,21 @@
         }
 
         &.exercises > h2 {
-            --current-bg-color: var(--light-gray);
-            --current-rel-bg-color: var(--current-bg-color);
-            background-color: var(--current-rel-bg-color);
-            text-shadow: 1px 1px 1px var(--white);
-        }
+            font-weight: 400;
 
-        &.new-section > h2 {
-            --current-bg-color: var(--dark-gray);
-            --current-rel-bg-color: var(--current-bg-color);
-            background-color: var(--current-rel-bg-color);
-            color: var(--white);
-            text-shadow: 1px 1px 1px var(--black);
+            &::before {
+                content: "✎";
+
+                display: inline-block;
+
+                margin-right: 0.25em;
+                width: 1.5em;
+                border-radius: var(--small-border-radius);
+
+                text-align: center;
+                color: var(--symbol-color);
+                background-color: var(--symbol-background-color);
+            }
         }
 
         > footer {
@@ -65,10 +63,10 @@
         &.obsolete::before,
         &.outdated::before {
             display: block;
-            text-align: center;
-            padding: 0.25em 2.5em;
-            color: var(--dark-red);
             border-bottom: 1px solid var(--dark-red);
+            padding: 0.25em 2.5em;
+            text-align: center;
+            color: var(--dark-red);
         }
         &.repetition::before {
             content: var(--repetition);
@@ -165,44 +163,23 @@
     counter-reset: exercise;
 
     p.ld-exercise-title {
-        /*
-        --current-rel-bg-color: color-mix(
-            in lch,
-            var(--current-bg-color) 80%,
-            var(--current-fg-color)
-        );*/
-        --current-rel-bg-color: oklab(from var(--current-bg-color) 92% a b);
-        background-color: var(--current-rel-bg-color);
-        /*--current-rel-fg-color: color-mix(
-            in lch,
-            var(--current-fg-color) 80%,
-            var(--current-bg-color)
-        );*/
-        --current-rel-fg-color: oklab(from var(--current-bg-color) 10% a b);
-        color: var(--current-rel-fg-color);
-        /*--current-bg-color: var(--light-gray);
-        background-color: var(--current-bg-color);*/
-
-        border-radius: var(--medium-border-radius);
-
-        position: relative;
-        padding-left: 3em;
+        display: flex;
+        align-items: center; /* vertically center number + text */
+        overflow: hidden;
+        border-radius: var(--small-border-radius);
+        padding-right: 0.25em; /* trailing space for the text */
 
         &::before {
-            display: block;
-            position: absolute;
-            left: 0em;
-            width: 2.25em;
-            height: 100%;
             counter-increment: exercise;
             content: counter(section) "." counter(exercise) ".";
+            align-self: stretch; /* badge fills full height (was height: 100%) */
 
-            padding: 0 0.25em;
-            border-radius: var(--medium-border-radius) 0 0
-                var(--medium-border-radius);
-
-            background-color: var(--gray);
-            color: var(--white);
+            border-radius: var(--small-border-radius) 0 0
+                var(--small-border-radius);
+            padding: 0.25em;
+            margin-right: 0.5em; /* the "appropriate distance" to the text */
+            color: var(--symbol-color);
+            background-color: var(--symbol-background-color);
         }
     }
 
@@ -219,8 +196,8 @@
 
         (In the presentation view they are rendered on top of each other.)
      */
-    ld-card:has(+ *) {
-        margin-bottom: var(--default-bottom-margin);
+    ld-card:not(:last-child) {
+        margin-bottom: var(--default-margin);
     }
 
     /***************************************************************************

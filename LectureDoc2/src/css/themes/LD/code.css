@@ -1,0 +1,259 @@
+/* LAYER: theme.ld */
+
+/*
+
+    Styling Code
+
+    See also:
+    https://pygments.org/docs/tokens/#module-pygments.token
+
+    For the possible tokens.
+
+*/
+code,
+svg text.code,
+pre.code {
+    --code-attribute-color: var(--hint-color);
+    --code-builtin-color: var(--accent-color);
+    --code-class-color: var(--danger-color);
+    --code-comment-color: var(--muted-color);
+    --code-comment-preprocfile-color: var(--meta-color);
+    --code-comment-preproc-color: var(--meta-color);
+    --code-comment-shadow-color: var(--shadow-color);
+    --code-function-color: var(--warning-color);
+    --code-keyword-color: var(--success-color);
+    --code-keyword-constant-color: var(--info-color);
+    --code-keyword-namespace-color: var(--text-1-color);
+    --code-keyword-type-color: var(--text-2-color);
+    --code-literal-color: var(--link-color);
+    --code-name-color: var(--text-10-color);
+    --code-namespace-color: var(--text-9-color);
+    --code-number-color: var(--text-5-color);
+    --code-operator-color: var(--text-7-color);
+    --code-variable-color: var(--text-4-color);
+    --code-punctuation-color: var(--symbol-color);
+    --code-tag-color: var(--text-3-color);
+    --code-deleted-color: var(--text-6-color);
+    --code-inserted-color: var(--text-8-color);
+    --code-shadow-color: var(--shadow-color);
+
+    line-height: var(--code-line-height);
+
+    /* The fill property is set for use in SVGs; the color is already set! */
+    fill: var(--primary-color);
+
+    /* ------------------------ Styling line numbers ------------------------ */
+    > .ln {
+        display: inline-block;
+
+        margin-right: 0.25em;
+        border-right: thin solid var(--symbol-color);
+        padding-left: 0.25em;
+        padding-right: 0.25em;
+
+        font-size: inherit;
+
+        color: var(--symbol-color);
+        background-color: var(--symbol-background-color);
+
+        text-shadow: 1px 1px 1px var(--code-shadow-color);
+
+        &:first-of-type {
+            border-radius: var(--small-border-radius) 0 0 0;
+        }
+
+        &:last-of-type {
+            border-radius: 0 0 0 var(--small-border-radius);
+        }
+
+        &:only-of-type {
+            border-radius: var(--small-border-radius) 0 0
+                var(--small-border-radius);
+        }
+    }
+
+    &.tail > .ln:first-of-type {
+        border-top-left-radius: 0;
+    }
+
+    &.head > .ln:last-of-type {
+        border-bottom-left-radius: 0;
+    }
+
+    &.snippet > .ln {
+        border-radius: 0;
+    }
+
+    /* ------------- Styling the code (sorted alphabetically) --------------- */
+
+    .comment {
+        font-weight: 100;
+
+        color: var(--code-comment-color);
+        fill: var(--code-comment-color);
+
+        text-shadow: 2px 2px 3px var(--code-comment-shadow-color);
+
+        &.preproc {
+            color: var(--code-comment-preproc-color);
+        }
+
+        &.preprocfile {
+            font-weight: 600;
+            font-style: italic;
+
+            color: var(--code-comment-preprocfile-color);
+            text-decoration: dashed underline;
+        }
+    }
+
+    .heading {
+        font-weight: bold;
+    }
+
+    .deleted {
+        color: var(--code-deleted-color);
+    }
+
+    .inserted {
+        color: var(--code-inserted-color);
+    }
+
+    .keyword {
+        font-weight: 700;
+
+        color: var(--code-keyword-color);
+        fill: var(--code-keyword-color);
+
+        &.type {
+            color: var(--code-keyword-type-color);
+            fill: var(--code-keyword-type-color);
+        }
+
+        &.namespace {
+            color: var(--code-keyword-namespace-color);
+            fill: var(--code-keyword-namespace-color);
+        }
+
+        &.constant {
+            color: var(--code-keyword-constant-color);
+            fill: var(--code-keyword-constant-color);
+        }
+    }
+
+    .name {
+        color: var(--code-name-color);
+        fill: var(--code-name-color);
+
+        &.attribute {
+            font-style: italic;
+
+            color: var(--code-attribute-color);
+        }
+
+        &.builtin {
+            font-weight: 900;
+
+            color: var(--code-builtin-color);
+            text-shadow: 2px 2px 2px var(--code-shadow-color);
+
+            &.pseudo {
+                text-decoration-style: wavy;
+                text-decoration-line: underline;
+                text-decoration-thickness: 1px;
+
+                text-decoration-color: var(--code-builtin-color);
+            }
+        }
+
+        &.class {
+            color: var(--code-class-color);
+        }
+
+        &.function {
+            color: var(--code-function-color);
+            font-style: italic;
+        }
+
+        &.namespace {
+            font-weight: 700;
+            font-style: italic;
+
+            color: var(--code-namespace-color);
+        }
+
+        &.tag {
+            color: var(--code-tag-color);
+            text-shadow: 1px 1px 1px var(--code-shadow-color);
+        }
+
+        &.variable {
+            font-weight: 500;
+
+            color: var(--code-variable-color);
+            fill: var(--code-variable-color);
+
+            text-shadow: 1px 1px 1px var(--code-shadow-color);
+            text-decoration-line: underline;
+        }
+    }
+
+    .literal {
+        &.string {
+            font-weight: 200;
+
+            color: var(--code-literal-color);
+            fill: var(--code-literal-color);
+
+            &.affix {
+                font-style: italic;
+
+                color: var(--code-literal-color);
+                fill: var(--code-literal-color);
+
+                text-decoration: dotted underline;
+            }
+        }
+
+        &.number {
+            color: var(--code-number-color);
+            fill: var(--code-number-color);
+        }
+    }
+
+    .operator {
+        font-weight: 900;
+
+        color: var(--code-operator-color);
+        fill: var(--code-operator-color);
+        text-shadow: 2px 2px 2px var(--code-shadow-color);
+
+        &.word {
+            font-style: italic;
+        }
+    }
+
+    .punctuation {
+        color: var(--code-punctuation-color);
+        fill: var(--code-punctuation-color);
+    }
+
+    /*  Issues related to Pygments (i.e., when using rst2LectureDoc):
+
+        Whitespace is identified differently in different languages.
+        Hence, decent support requires language dependent styling.
+    .whitespace {
+        text-decoration-style: dashed;
+        text-decoration-line: underline;
+        text-decoration-color: var(--code-builtin-color);
+        text-decoration-thickness: 1px;
+
+        / *
+        &:not(:empty):not(:last-child)::before {
+            display: inline;
+            content: "␣";
+        }
+        * /
+    }
+    */
+}

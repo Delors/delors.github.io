@@ -1,0 +1,195 @@
+/* LAYER: theme.ld */
+
+table {
+    border-collapse: collapse;
+
+    th {
+        font-weight: 500;
+    }
+
+    td,
+    th {
+        border: thin solid var(--meta-color);
+        padding: 0 1ex;
+    }
+
+    > caption {
+        text-align: left;
+        font-size: 0.9em;
+        margin-bottom: 0.2em;
+    }
+
+    &.captionbelow {
+        caption-side: bottom;
+    }
+
+    &.table-data-align-top td {
+        vertical-align: top;
+    }
+
+    &.table-header-align-right th,
+    &.table-data-align-right td {
+        text-align: right;
+    }
+
+    &.table-header-align-left th,
+    &.table-data-align-left td {
+        text-align: left;
+    }
+
+    &.table-header-align-center th,
+    &.table-data-align-center td {
+        text-align: center;
+    }
+
+    &.table-body-header-align-left > tbody > tr > th {
+        text-align: left;
+    }
+
+    &.table-data-monospaced td {
+        font-family: var(--monospaced-font-family);
+    }
+
+    /* ONLY WORKS IF THE TABLE IS IN A SCROLLABLE ELEMENT! */
+    &.sticky-header thead th {
+        position: sticky;
+        top: 0;
+        background-color: rgb(from var(--background-color) r g b / 75%);
+        border-bottom: 1px solid var(--primary-color);
+        backdrop-filter: blur(2px);
+    }
+
+    &.compact {
+        line-height: 1.15em;
+
+        td,
+        th {
+            padding: 0.1em;
+        }
+    }
+
+    &.ultra-compact {
+        line-height: 1em;
+
+        td,
+        th {
+            padding: 0.05em;
+        }
+    }
+
+    &.borderless td,
+    &.borderless th {
+        border: 0;
+    }
+
+    &.separated-cells {
+        border-collapse: separate;
+        border-spacing: 0.1em;
+    }
+
+    /* "booktabs" style (no vertical lines) */
+    &.booktabs {
+        border: 0;
+        border-top: 2px solid var(--primary-color);
+        border-bottom: 2px solid var(--primary-color);
+
+        td,
+        th {
+            border: 0;
+            border-bottom: thin solid var(--meta-color);
+        }
+
+        th {
+            border-bottom: thin solid var(--muted-color);
+        }
+    }
+
+    &.zebra,
+    &.zebra-columns {
+        /* see theme for coloring! */
+        td,
+        th {
+            padding: 0.5em 0.25em;
+        }
+    }
+
+    &.accentuated-header {
+        > thead {
+            > tr:first-child th {
+                box-shadow: var(--t-shadow);
+            }
+
+            /* Ensure the header background is clipped to the rounded corners. */
+            > tr:first-child > :first-child {
+                border-top-left-radius: var(--small-border-radius);
+            }
+            > tr:first-child > :last-child {
+                border-top-right-radius: var(--small-border-radius);
+            }
+        }
+
+        > tbody > tr {
+            &:last-child {
+                > :first-child {
+                    border-bottom-left-radius: var(--small-border-radius);
+                }
+                > :last-child {
+                    border-bottom-right-radius: var(--small-border-radius);
+                }
+            }
+        }
+    }
+
+    /*  The class "annotated-text" can be used in combination with tables to make
+        them look like as if we have a text document with some paragraphs with some
+        comments to the side. */
+    &.annotated-text {
+        border: none;
+        box-shadow: none;
+        border-collapse: separate;
+        border-spacing: 0 0.5em;
+
+        td,
+        th {
+            border: 0;
+            padding-bottom: 0;
+            text-align: justify;
+            hyphens: auto;
+
+            /* styling of the "comment" column */
+            &:first-of-type:not(:empty) {
+                max-width: 25%;
+
+                box-shadow: var(--full-r-shadow);
+                border-radius: var(--medium-border-radius) 0 0
+                    var(--medium-border-radius);
+
+                padding-top: 0.15em;
+                padding-bottom: 0;
+
+                vertical-align: text-top;
+                text-align: right;
+                font-size: 0.6em;
+                font-weight: 300;
+
+                background-color: var(--low-contrast-color);
+            }
+        }
+
+        td {
+            /* The intermediate columns: */
+            &:not(:first-of-type, :empty) {
+                font-family: var(--text-font-family);
+            }
+        }
+    }
+
+    /* ------------ Animation (see also the theme definition) -------------- */
+
+    td.\:hover,
+    th.\:hover {
+        outline: medium solid var(--accent-border-color);
+
+        transition: all 0.5s ease-in-out;
+    }
+}

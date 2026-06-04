@@ -31,7 +31,7 @@
          <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
     
 </head>
-<body>
+<body data-theme="<light-dark>">
 <template>
 <ld-topic id="advanced-encryption-standard-aes">
 <h1 class="title">Advanced Encryption Standard (AES)</h1>
@@ -73,14 +73,71 @@
 </ld-supplemental></ld-topic>
 <ld-topic class="new-section" id="aes-uberblick">
 <h2>AES - Überblick</h2>
-</ld-topic>
+<ld-global-information type="cheat-sheet" title="Hex ↔︎ Binär"><table class="monospaced">
+<thead>
+<tr><th class="head"><p>Hex</p></th>
+<th class="head"><p>Binär</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>00</p></td>
+<td><p>0000</p></td>
+</tr>
+<tr><td><p>01</p></td>
+<td><p>0001</p></td>
+</tr>
+<tr><td><p>02</p></td>
+<td><p>0010</p></td>
+</tr>
+<tr><td><p>03</p></td>
+<td><p>0011</p></td>
+</tr>
+<tr><td><p>04</p></td>
+<td><p>0100</p></td>
+</tr>
+<tr><td><p>05</p></td>
+<td><p>0101</p></td>
+</tr>
+<tr><td><p>06</p></td>
+<td><p>0110</p></td>
+</tr>
+<tr><td><p>07</p></td>
+<td><p>0111</p></td>
+</tr>
+<tr><td><p>08</p></td>
+<td><p>1000</p></td>
+</tr>
+<tr><td><p>09</p></td>
+<td><p>1001</p></td>
+</tr>
+<tr><td><p>0A</p></td>
+<td><p>1010</p></td>
+</tr>
+<tr><td><p>0B</p></td>
+<td><p>1011</p></td>
+</tr>
+<tr><td><p>0C</p></td>
+<td><p>1100</p></td>
+</tr>
+<tr><td><p>0D</p></td>
+<td><p>1101</p></td>
+</tr>
+<tr><td><p>0E</p></td>
+<td><p>1110</p></td>
+</tr>
+<tr><td><p>0F</p></td>
+<td><p>1111</p></td>
+</tr>
+</tbody>
+</table>
+</ld-global-information></ld-topic>
 <ld-topic class="repetition" id="arithmetik-endlicher-korper">
 <h2>Arithmetik endlicher Körper</h2>
 <ul class="incremental-list simple">
 <li><p>Ein Körper ist eine Menge, in der wir Addition, Subtraktion, Multiplikation und Division durchführen können, ohne die Menge zu verlassen.</p></li>
 <li><p>Die Division ist mit der folgenden Regel definiert: <span class="math">\(a/b = a(b^{-1})\)</span>.</p></li>
 </ul>
-<aside class="admonition example incremental"><p class="admonition-title"><span>Beispiel</span></p><p>Ein endlicher Körper (mit einer endlichen Anzahl von Elementen) ist die Menge <span class="math">\(Z_p\)</span>, die aus allen ganzen Zahlen <span class="math">\(\lbrace 0,1,....,p-1 \rbrace\)</span> besteht, wobei <span class="math">\(p\)</span> eine Primzahl ist und in dem modulo <span class="math">\(p\)</span> gerechnet wird.</p>
+<aside class="admonition incremental" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel</span></p><p>Ein endlicher Körper (mit einer endlichen Anzahl von Elementen) ist die Menge <span class="math">\(Z_p\)</span>, die aus allen ganzen Zahlen <span class="math">\(\lbrace 0,1,....,p-1 \rbrace\)</span> besteht, wobei <span class="math">\(p\)</span> eine Primzahl ist und in dem modulo <span class="math">\(p\)</span> gerechnet wird.</p>
 </aside></ld-topic>
 <ld-topic class="repetition" id="arithmetik-endlicher-korper-1">
 <h2>Arithmetik endlicher Körper</h2>
@@ -91,14 +148,13 @@
 <li><p>Wenn eine Operation des verwendeten Algorithmus die Division ist, dann müssen wir Arithmetik anwenden, die über einem (ggf. endlichen) Körper definiert ist.</p>
 <p>Division erfordert, dass jedes nicht-null-Element ein multiplikatives Inverses hat.</p>
 </li>
-<li><p>Wenn wir modulare Arithmetik auf die Menge der ganzen Zahlen Z<sub>2ⁿ</sub> (mit n &gt; 1) anwenden, dann erhalten wir <span class="red">keinen</span> Körper!</p>
+<li><p>Wenn wir modulare Arithmetik auf die Menge der ganzen Zahlen Z<sub>2ⁿ</sub> (mit n &gt; 1) anwenden, dann erhalten wir <span class="warning">keinen</span> Körper!</p>
 <p>Zum Beispiel hat die ganze Zahl 2 keine multiplikative Inverse in Z<sub>2ⁿ</sub> (mit n &gt; 1), d. h. es gibt keine ganze Zahl b, so dass 2b mod 2ⁿ = 1.</p>
 </li>
 </ul>
 <ul class="incremental">
 <li><p>Ein endlicher Körper der 2ⁿ Elemente enthält, wird als GF(2ⁿ) bezeichnet.</p>
-<aside class="admonition hint">
-<p class="admonition-title">Hinweis</p>
+<aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p>
 <p>Jedes Polynom in GF(2ⁿ) kann durch eine n-Bit-Zahl dargestellt werden.</p>
 </aside>
 </li>
@@ -110,7 +166,7 @@
 <li><p>Beim <em>Advanced Encryption Standard</em> (AES) werden alle Operationen mit 8-Bit-Bytes durchgeführt</p></li>
 <li><p>Die arithmetischen Operationen: Addition, Multiplikation und Division werden über den endlichen Körper <span class="math">\(GF(2^8)\)</span> durchgeführt.</p></li>
 </ul>
-<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>AES verwendet das irreduzible Polynom:</p>
+<aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><p>AES verwendet das irreduzible Polynom:</p>
 <div class="math">
 \begin{equation*}
 m(x) = x^8 + x^4 + x^3 +x +1
@@ -875,7 +931,7 @@ m(x) = x^8 + x^4 + x^3 +x +1
 </ld-topic>
 <ld-topic id="mixcolumn-transformation">
 <h2><em>MixColumn</em> Transformation</h2>
-<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Die <em>MixColumn</em> Transformation ist eine Matrixmultiplikation der <em>MixColumn</em>-Matrix mit der <em>State</em>-Matrix.</p>
+<aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><p>Die <em>MixColumn</em> Transformation ist eine Matrixmultiplikation der <em>MixColumn</em>-Matrix mit der <em>State</em>-Matrix.</p>
 </aside><div class="center-content"><div style="width: 70ch">
 <svg viewBox="0 0 55 25"
     font-size="1"
@@ -1027,7 +1083,7 @@ m(x) = x^8 + x^4 + x^3 +x +1
 </ld-supplemental></ld-topic>
 <ld-topic id="inverse-mixcolumn-transformation">
 <h2>Inverse <em>MixColumn</em> Transformation</h2>
-<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Die <em>InvMixColumn</em>-Transformation ist eine Matrixmultiplikation der <em>InvMixColumn</em>-Matrix mit der <em>State</em>-Matrix.</p>
+<aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><p>Die <em>InvMixColumn</em>-Transformation ist eine Matrixmultiplikation der <em>InvMixColumn</em>-Matrix mit der <em>State</em>-Matrix.</p>
 </aside><div class="center-content"><div style="width: 70ch">
 <svg viewBox="0 0 55 25"
     font-size="1"
@@ -1182,7 +1238,10 @@ m(x) = x^8 + x^4 + x^3 +x +1
 <p>Ergebnis</p>
 <table class="align-center compact table-data-monospaced">
 <tbody>
-<tr><td><p>47</p></td>
+<tr><td><div class="compound" data-theme="accent">
+<p>47</p>
+</div>
+</td>
 <td><p>40</p></td>
 <td><p>A3</p></td>
 <td><p>4C</p></td>
@@ -1215,8 +1274,7 @@ S'_{0,0} = &amp; 02 \times S_{0,0} &amp; \oplus &amp; 03 \times S_{1,0} &amp; \o
 \end{equation*}
 </div>
 </div>
-<aside class="admonition incremental">
-<p class="admonition-title">Hilfsrechnungen</p>
+<aside class="admonition incremental"><p class="admonition-title">Hilfsrechnungen</p>
 <div class="math">
 \begin{equation*}
 \begin{array}{lcl}
@@ -1230,8 +1288,7 @@ A6 &amp; = &amp; &amp; (1010\,0110) \\
 \end{equation*}
 </div>
 </aside>
-</ld-story><ld-supplemental><aside class="admonition attention">
-<p class="admonition-title">Achtung!</p>
+</ld-story><ld-supplemental><aside class="admonition" data-theme="attention"><p class="admonition-title" data-theme="attention-header">Achtung!</p>
 <p><span class="math">\((03 \times 6E) = 6E \oplus (02 \times 6E)\)</span> und <strong>ist nicht</strong> <span class="math">\(6E \oplus 6E \oplus 6E\)</span>, da wir hier Polynomarithmetik in <span class="math">\(GF(2^8)\)</span> nutzen und <span class="math">\(03\)</span> dem Polynom: <span class="math">\(x+1\)</span> entspricht.</p>
 </aside>
 </ld-supplemental></ld-topic>
@@ -1251,8 +1308,7 @@ A6 &amp; = &amp; &amp; (1010\,0110) \\
 <li><p>Die Operation wird als spaltenweise Operation zwischen den 4 Bytes einer Spalte des Zustands (<em>State</em>) und einem Wort des runden Schlüssels betrachtet.</p></li>
 <li><p><em>Kann auch als eine Operation auf Byte-Ebene betrachtet werden</em>.</p></li>
 </ul>
-<aside class="admonition incremental">
-<p class="admonition-title">Designbegründung</p>
+<aside class="admonition incremental"><p class="admonition-title">Designbegründung</p>
 <ul class="simple">
 <li><p>Die <em>AddRoundKey</em> Transformation ist so einfach wie möglich und betrifft jedes Bit des Zustands.</p></li>
 <li><p>Die Komplexität der runden Schlüsselexpansion plus die Komplexität der anderen Stufen von AES sorgen für Sicherheit!</p></li>
@@ -1290,8 +1346,7 @@ A6 &amp; = &amp; &amp; (1010\,0110) \\
 \end{matrix}
 \end{equation*}
 </div>
-<aside class="admonition incremental">
-<p class="admonition-title"><span class="math">\(xtime\)</span> Funktion</p>
+<aside class="admonition incremental"><p class="admonition-title"><span class="math">\(xtime\)</span> Funktion</p>
 <div class="math">
 \begin{equation*}
 y_7y_6y_5y_5y_4y_3y_2y_1y_0 = xtime(x_7x_6x_5x_5x_4x_3x_2x_1x_0) \qquad (x_i,y_i \in \lbrace 0,1 \rbrace)
@@ -1307,8 +1362,7 @@ x_6x_5x_5x_4x_3x_2x_1x_00 \oplus 0001 1011,&amp; if\; x_7 = 1\\
 \end{equation*}
 </div>
 </aside>
-<aside class="admonition incremental">
-<p class="admonition-title">Die <em>Round Constant</em> Werte</p>
+<aside class="admonition incremental"><p class="admonition-title">Die <em>Round Constant</em> Werte</p>
 <p><span class="math">\(r_{c_{1}}=01, r_{c_{2}}=02,r_{c_{3}}=04,r_{c_{4}}=08,r_{c_{5}}=10\)</span></p>
 <p><span class="math">\(r_{c_{6}}=20,r_{c_{7}}=40,r_{c_{8}}=80,r_{c_{9}}=1B = 0001 1011, r_{c_{10}}=36\)</span></p>
 </aside>
@@ -1342,8 +1396,7 @@ x_6x_5x_5x_4x_3x_2x_1x_00 \oplus 0001 1011,&amp; if\; x_7 = 1\\
 </ld-story></ld-topic>
 <ld-topic id="aes-schlusselexpansion-begrundung">
 <h2>AES Schlüsselexpansion - Begründung</h2>
-<aside class="admonition width-50 float-right incremental font-size-85">
-<p class="admonition-title">Designziele</p>
+<aside class="admonition width-50 float-right incremental font-size-85"><p class="admonition-title">Designziele</p>
 <ul class="simple">
 <li><p>Kenntnis eines Teils des Chiffrierschlüssels oder des Rundenschlüssels ermöglicht nicht die Berechnung vieler anderer Bits des Rundenschlüssels</p></li>
 <li><p>Eine invertierbare Transformation</p></li>
@@ -1362,7 +1415,7 @@ x_6x_5x_5x_4x_3x_2x_1x_00 \oplus 0001 1011,&amp; if\; x_7 = 1\\
 <ld-topic id="lawineneffekt-in-aes-anderung-im-klartext">
 <h2>Lawineneffekt in AES: Änderung im Klartext</h2>
 <ld-scrollable>
-<table class="align-center compact table-data-monospaced highlight-row-on-hover table-data-align-right sticky-header">
+<table class="align-center compact table-data-monospaced table-data-align-right highlight-row-on-hover sticky-header">
 <colgroup>
 <col style="width: 11.0%" />
 <col style="width: 49.1%" />
@@ -1441,7 +1494,7 @@ b56a0341b2290ba7dfdfbddcd8578205</p></td>
 <ld-topic class="vertical-title smaller smaller-slide-title" id="lawineneffekt-in-aes-anderung-im-schlussel">
 <h2>Lawineneffekt in AES: Änderung im Schlüssel</h2>
 <ld-scrollable>
-<table class="align-center compact table-data-monospaced highlight-row-on-hover table-data-align-right sticky-header">
+<table class="align-center compact table-data-monospaced table-data-align-right highlight-row-on-hover sticky-header">
 <colgroup>
 <col style="width: 11.0%" />
 <col style="width: 49.1%" />
@@ -1519,15 +1572,12 @@ fc8923ee501a7d207ab670686839996b</p></td>
 </ld-scrollable></ld-topic>
 <ld-topic id="aquivalente-inverse-chiffre">
 <h2>Äquivalente inverse Chiffre</h2>
-<aside class="admonition observation">
-<p class="admonition-title">Beobachtung</p>
-<p>AES-Entschlüsselung ist nicht identisch mit der Verschlüsselung.</p>
+<aside class="admonition" data-theme="observation"><p class="admonition-title" data-theme="observation-header"><span>Beobachtung</span></p><p>AES-Entschlüsselung ist nicht identisch mit der Verschlüsselung.</p>
 <ul class="simple">
 <li><p>Die Abfolge der Umwandlungen ist unterschiedlich, obwohl die Schlüsselableitung die gleiche ist.</p></li>
 <li><p>Dies hat den Nachteil, dass für Anwendungen, die sowohl Verschlüsselung als auch Entschlüsselung erfordern, zwei separate Software- oder Firmware-Module benötigt werden.</p></li>
 </ul>
-</aside>
-<p class="incremental">Zwei unabhängige, separate Änderungen sind erforderlich, um die Entschlüsselungsstruktur mit der Verschlüsselungsstruktur in Einklang zu bringen:</p>
+</aside><p class="incremental">Zwei unabhängige, separate Änderungen sind erforderlich, um die Entschlüsselungsstruktur mit der Verschlüsselungsstruktur in Einklang zu bringen:</p>
 <ol class="arabic simple incremental">
 <li><p>Die ersten beiden Stufen der Entschlüsselungsrunde müssen vertauscht werden.</p></li>
 <li><p>Die zweiten beiden Stufen der Entschlüsselungsrunde müssen vertauscht werden.</p></li>
@@ -1537,17 +1587,14 @@ fc8923ee501a7d207ab670686839996b</p></td>
 <h2>Vertausch von <cite>InvShiftRows</cite> und <cite>InvSubBytes</cite></h2>
 <dl class="field-list simple">
 <dt><em>InvShiftRows</em><span class="colon">:</span></dt>
-<dd><p><span class="red">beeinflusst die Reihenfolge</span> der Bytes im Zustand (<em>State</em>), ändert aber nicht den Inhalt der Bytes und ist nicht vom Inhalt der Bytes abhängig, um seine Transformation durchzuführen.</p>
+<dd><p><span class="info">beeinflusst die Reihenfolge</span> der Bytes im Zustand (<em>State</em>), ändert aber nicht den Inhalt der Bytes und ist nicht vom Inhalt der Bytes abhängig, um seine Transformation durchzuführen.</p>
 </dd>
 <dt><em>InvSubBytes</em><span class="colon">:</span></dt>
-<dd><p><span class="blue">beeinflusst den Inhalt</span> von Bytes im Zustand (<em>State</em>), ändert aber nicht die Byte-Reihenfolge und hängt nicht von der Byte-Reihenfolge ab, um seine Transformation durchzuführen.</p>
+<dd><p><span class="info">beeinflusst den Inhalt</span> von Bytes im Zustand (<em>State</em>), ändert aber nicht die Byte-Reihenfolge und hängt nicht von der Byte-Reihenfolge ab, um seine Transformation durchzuführen.</p>
 </dd>
 </dl>
-<aside class="admonition observation">
-<p class="admonition-title">Beobachtung</p>
-<p>Diese beiden Operationen sind kommutativ und somit vertauschbar.</p>
-</aside>
-</ld-topic>
+<aside class="admonition" data-theme="observation"><p class="admonition-title" data-theme="observation-header"><span>Beobachtung</span></p><p>Diese beiden Operationen sind kommutativ und somit vertauschbar.</p>
+</aside></ld-topic>
 <ld-topic id="vertausch-von-addroundkey-und-invmixcolumns">
 <h2>Vertausch von <em>AddRoundKey</em> und <em>InvMixColumns</em></h2>
 <ul>
@@ -1569,20 +1616,19 @@ InvMixColumns(S_i \oplus w_j) = InvMixColumns(S_i) \oplus InvMixColumns(w_j)
 </object></ld-topic>
 <ld-topic class="exercises" id="ubung-aes-128">
 <h2>Übung (AES-128)</h2>
-<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Formeln für die Berechnung des RoundKey aufstellen" id="ld-exercise-1">
-<p class="ld-exercise-title rubric">Formeln für die Berechnung des <em>RoundKey</em> aufstellen</p>
 <p>Sei der folgende <em>RoundKey</em> gegeben:</p>
 <p><span class="math">\(rk_1=w[4]\,||\,w[5]\,||\,w[6]\,||\,w[7]\)</span> <span class="math">\(=\)</span></p>
 <p><span class="docutils literal"><span class="pre">-w[4]------</span>   <span class="pre">-w[5]------</span>   <span class="pre">-w[6]------</span>   <span class="pre">-w[7]------</span></span></p>
 <p><span class="docutils literal">E2 32 FC F1   91 12 91 88   B1 59 E4 E6   D6 79 A2 93</span></p>
-<p>In Hinblick auf die Berechnung von <span class="math">\(rk_2\)</span>; d. h. den Rundschlüssel (<em>Roundkey</em>) für die zweite Runde, führe folgende Schritte durch.</p>
-<p>Bevor Sie die konkrete Berechnung durchführen, schreiben Sie zunächst die Formeln für:
+<div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Formeln für die Berechnung des RoundKey aufstellen" id="ld-exercise-1">
+<p class="ld-exercise-title rubric"><span>Formeln für die Berechnung des <em>RoundKey</em> <span class="math">\(rk_2\)</span> aufstellen</span></p>
+<p>In Hinblick auf die Berechnung von <span class="math">\(rk_2\)</span>; d. h. den Rundschlüssel (<em>Roundkey</em>) für die zweite Runde, schreiben Sie zunächst die Formeln für:
 <span class="math">\(w[8] = \ldots \oplus \ldots \quad w[9]= \ldots \oplus \ldots  \quad w[10]= \ldots \oplus \ldots \quad w[11]= \ldots \oplus \ldots\)</span> auf.</p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:iQLEPG6DyjkcS1q4Tf3zPiVdYLL+sVc8SPiNcPfQsnk=:EXgAbgEq4pJGAeyu:OdpmCmiDPbCYcoXa5GT14m8rBnusHQMchedGWuMTSxIMJeVjF4yXddBMadcmvBNn0YF91VpFGFozL9VqlMvm0zuMozVklZ6d769nxXUawu6eRr+QJXSBQoYB+rT1QKgdmyAEv7/h3fu1jePyJ17JtnbngT9UxfXQXNGULewa/ffcYK2sSx20N4cEpzb51muIkz7weOW5oCw/x16BdjQGJKr57G2hoTmLE40VXVmrXMkXpCHWFDiPLVPxIboLntW5uQcrn5KZDt6Hu/LwyacOqB2tTMbs3ekui4WyS9RyaOpKzeu4sf3cdSUt3kYprfokW2FplvnEIh30gZJvOVTgzYHIEo0iO6oit61f3JGOEhpbUR4gaJCXhrXmEwWffEXBI4gvH2H4A0aV8NChI85wOrTT74NjXgXw1JeKC6B3fJnrSi6QOMMuJdofTatYSnEOUDrCOl3bzta3sb219jocxUem+yjHhfcKHtTSxwt+2kdebHDjQnIPwGUrWZuTojL2U1KWEIbnqhJeCtkQDW4InlcjCbClJzh8SgvLx4VHnQ==</div>
 </div>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Berechne w[8] und w[9]" id="ld-exercise-2">
-<p class="ld-exercise-title rubric">Berechne <span class="math">\(w[8]\)</span> und <span class="math">\(w[9]\)</span></p>
+<p class="ld-exercise-title rubric"><span>Berechne <span class="math">\(w[8]\)</span> und <span class="math">\(w[9]\)</span></span></p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:14MoenEK9IInGBxRbhnObxxR72GN/uXiIeeWJM20o20=:f9f42U9v0jHfsFph:vijEr82Ki0Tn6oy9GsQ+gKb4oqcw7NDOsbBiQxvIg6KoSupQCOapUDEhxa27pIzkRnetyImNqcW7T738O2MXVLP32C73oQ/BhEEl2mSr+mpVUaYgKJxcl3yUATQZzCofsaCyt661hxNUFN2HbyN9Z4PmiV0TY3Y7l6F/tHwA7WmQTrqhbG4UncZAr1FRL/pJI9cjo9DfOwYw/9wbfCdRJkFGK068q2Ykvf/uEQ1EEKG4MsrDLB4ftzvagNxGtkvDw5tThxRnINBxQiIPPA0K6Qg23eLfPHHehO4aifmbiZkhKWN1qMr6gAMxLKjrKa5yqCNFm7KYmfwlWXS7GouHkzRnDmppU0NShGtdXFHebjXxj5+6qL7ufD64q/81Zmix7k/mLkLh7ai1Y5Le0SgyKZxGtNUjdXz7ys4onEpoTQNekprIBL+YF7D9lRKbpRftP5rSag6QaKWxhfGkRC5MKgtLC5USxFh+dMlrphdju1zT5IHfnpJeDpZhpW7Bv7EzqIPeeQTUnaqTP7ozfH7G6yYNksXYE/mpXwnHQteq1pwIx5Pfdily55r+HA==</div>
 </div>
@@ -1590,35 +1636,41 @@ MTAwMDAw:14MoenEK9IInGBxRbhnObxxR72GN/uXiIeeWJM20o20=:f9f42U9v0jHfsFph:vijEr82Ki
 <ld-topic class="exercises" id="ubung-aes-128-1">
 <h2>Übung (AES-128)</h2>
 <p>Nehmen wir an, dass der Zustand (<em>State</em>) folgendermaßen sei:</p>
-<pre class="literal-block">00 3C 6E 47
-1F 4E 22 74
-0E 08 1B 31
-54 59 0B 1A</pre>
+<div class="monospaced line-block">
+<div class="line">00 3C 6E 47</div>
+<div class="line">1F 4E 22 74</div>
+<div class="line">0E 08 1B 31</div>
+<div class="line">54 59 0B 1A</div>
+</div>
 <div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Durchführung der Substitute Bytes Transformation" id="ld-exercise-3">
-<p class="ld-exercise-title rubric">Führen Sie den <em>Substitute Bytes</em> Schritt durch (Anwendung der S-box Transformation)</p>
+<p class="ld-exercise-title rubric"><span>Führen Sie den <em>Substitute Bytes</em> Schritt durch (Anwendung der S-box Transformation)</span></p>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:hxitZu4bT8alxTlU79xhEpcAoImpjejPRVAkgRXvhtg=:Q27Fl26d6fNbCnG5:tusFXcpXrKYwqK4VmKggGypR97uE5qrO169k9rvUFnKnmzM/MMK4KQxDvoWGdNwxo3MJpmTDnGv2hP60WP3Iy9SjeVOcgQ31FPPwT7NH3SFuigCpc3B4CjEYySkijc+FelVZkEOjjkYi4hCd8RKPm4T+oQsHXsEQ+g==</div>
+MTAwMDAw:BfRRsW6XXYwa2l10Su+N+fAb5fJYsafyb9xJ1/4yni0=:ZfYpPZExF8P8NT9c:JCCU97K3Wlf8Ryyh7wpHvBfYjx7RxQvA/TGBPMjUMKDU5aGXoeIPgB05mpjR0p+r2169bLucmh/giy9ns3EBWrN1AP8/6W//nP44akd1o2Mx56vzNxpV9yd2DjQ0baUdOfu2VMyhalwc2VCPvgRfRgGrG1b5k8NUE1v6IZ0/MjP3lVITjesl8WaoIKxmZkuKnmI+XaKk90o+OPfdW3m/JDW7xnBzPDSIXgtdibZLMK2JxtGqtf5bpll154GFBvR12mZvpdcVmhMp2uAREny5IauD/qYJo2czUCWkpjjqK8hgyMM=</div>
 </div>
 <div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Durchführung der Shift Rows Transformation" id="ld-exercise-4">
-<p class="ld-exercise-title rubric">Führen Sie die <em>Shift Rows Transformation</em> auf dem Ergebnis des vorherigen Schrittes durch.</p>
+<p class="ld-exercise-title rubric"><span>Führen Sie die <em>Shift Rows Transformation</em> auf dem Ergebnis des vorherigen Schrittes durch.</span></p>
 <div class="ld-exercise-solution" data-encrypted="true">
-MTAwMDAw:MF3qffk8jMJdHGnclLmrOItF7HX4L0tQP871BU81J0A=:s2TUVeZWdD72U25B:5XyqzAdYbDlXgMHbKTxszPL30+o4sHYLyuqaMzOmfNMfAtqf07JuLFVndKsMKXHtrkcIs0wvv0QLqcPIiiHZQEdEMRZzjYU8anlrdTIYx3dw8yaYkO3aYwXo7YrxQuvr3w==</div>
+MTAwMDAw:ueTnAzHeq3JeDfO0Tht0ieM+I+Xr2BkujXjrkYl/qxg=:8A+ubZRTOBH1QsEh:5kNx3hX/toLURiXleg4PTzlTQLk0HziQ0jpJQX5sZAetFmEeVKDF16UiXgN0Z69qANftF0gNLXYrZJlaL+IHK+vr4szqAkIvnqUok//fKaLyVutrjS/0GEn8kyGl+EiCkcMPWADwkL1eSNiYiWkx1r3tEINUj2PqMkqO0dP+9DhMAbJiBspGYnuctPAZ/bqJUM13DFJC2h+Z7cmraT/Sa1dIA6ON8MyR1MB/EKuij4BCxtvlK80/BzhPzf/sjr377gFQis1lVo8NWXU=</div>
 </div>
 </ld-topic>
 <ld-topic class="exercises" id="ubung-aes-128-2">
 <h2>Übung (AES-128)</h2>
-<div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - MixColumns Transformation" id="ld-exercise-5">
-<p class="ld-exercise-title rubric">MixColumns Transformation</p>
 <p>Nehmen wir an, dass der Zustand (<em>State</em>) folgendermaßen sei:</p>
-<pre class="literal-block">6A 59 CB BD
-4E 48 12 A0
-98 9E 30 9B
-8B 3D F4 9B</pre>
-<p>Führen Sie die <em>MixColumns Transformation</em> durch für das fehlende Feld (<span class="math">\(S'_{0,0}\)</span>):</p>
-<pre class="literal-block">?? C9 7F 9A
-CE 4D 4B CB
-89 71 BE 86
-65 47 97 CA</pre>
+<div class="monospaced line-block">
+<div class="line">6A 59 CB BD</div>
+<div class="line">4E 48 12 A0</div>
+<div class="line">98 9E 30 9B</div>
+<div class="line">8B 3D F4 9B</div>
+</div>
+<div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - MixColumns Transformation" id="ld-exercise-5">
+<p class="ld-exercise-title rubric"><span>MixColumns Transformation</span></p>
+<p>Führen Sie die <em>MixColumns Transformation</em> durch für das fehlende Feld (S<sub>0,0</sub>):</p>
+<div class="monospaced line-block">
+<div class="line"><strong>??</strong> C9 7F 9A</div>
+<div class="line">CE 4D 4B CB</div>
+<div class="line">89 71 BE 86</div>
+<div class="line">65 47 97 CA</div>
+</div>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:qAR3+ZOwRocJrg/Y2Bq2H9GfgAUe/OPZsHhect3HFlg=:rZO4lfbINv08WgF3:OlTJrMPzDqHpXDJJ8EXRxFoCw6LpMYVfZWkn/r7mn7WUHN8KHQYvN76ej7+3Uu2YRhm7fADFVaDs4nM6C17VmXLrDFOdpe3rUHIs1cUq97U1DkBfliClU6KBdA/j4IOEX5S80Y08a7g2rl+KCTCeML7bxb2wy5Ox3LMEmklJOKyFjh2vDIG2wlDavEWs/hYgatHd0D+DiNY8htq5DiLILSeWiUAHglnGG9d/MAoxdiKSBsfTvRVDCZ9enwpTjzXI7kfyXFpYq9jK3Nv2bNHGnUiPrbQVh1y9hXtcs/RgIM0kFwxniVVAQGZ7JljA8Tn0Yyh4ABQoiTiKKXMmkqJt/jDhitOSZXJ2kNi9Gb1HA/SadPG4HbkKo03nlPQ66l3YWqMimuzaOManBkMs6mXEcajl90XrV2Sh3psva4fUQVnwDMwcgvGg1g8vIiH+IK71/OO1lIBnb9Kj5HUIxevmRqD8NBLoTFsDbG/2NVazJQD0XvSYnSpbup9ur2Au1XCC+EhRM3ZLwh+Oa0LMramEDSMFb0C4mtMl707C+2vAe8n3U6QmuglR24sBlxt7o7iQUS/VGhFYc3jvgA==</div>
 </div>
@@ -1626,15 +1678,17 @@ MTAwMDAw:qAR3+ZOwRocJrg/Y2Bq2H9GfgAUe/OPZsHhect3HFlg=:rZO4lfbINv08WgF3:OlTJrMPzD
 <ld-topic class="exercises" id="ubung-aes-128-3">
 <h2>Übung (AES-128)</h2>
 <div class="ld-exercise" data-exercise-id="6" data-exercise-title="6 - RoundKey Anwendung" id="ld-exercise-6">
-<p class="ld-exercise-title rubric">RoundKey Anwendung</p>
+<p class="ld-exercise-title rubric"><span>RoundKey Anwendung</span></p>
 <p>Wenden Sie den folgenden <em>RoundKey</em>:</p>
 <p><span class="docutils literal"><span class="pre">-w[x]------</span>   <span class="pre">-w[x+1]----</span>   <span class="pre">-w[x+2]----</span>   <span class="pre">-w[x+3]----</span></span></p>
 <p><span class="docutils literal">D2 60 0D E7   15 7A BC 68   63 39 E9 01   C3 03 1E FB</span></p>
 <p>auf die folgende Zustandsmatrix (<em>State</em>):</p>
-<pre class="literal-block">AA 65 FA 88
-16 0C 05 3A
-3D C1 DE 2A
-B3 4B 5A 0A</pre>
+<div class="monospaced line-block">
+<div class="line">AA 65 FA 88</div>
+<div class="line">16 0C 05 3A</div>
+<div class="line">3D C1 DE 2A</div>
+<div class="line">B3 4B 5A 0A</div>
+</div>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:1A3WaG3ecwjxyC8sSv0JvB+mUeoWHajntOcYL5AZdXE=:MqPHY8xvWQCaKQTV:v60B7UlgNIQxHk/uwwRwmdmNNNUBp7AYeKuKggcrxSjAW3OJvjJD3icmBeg+cYBLKuXBo46NK3jyFd0csOlhOXCFH9KB6ftabi6mqZrMoHc2vmsPr6p1pdnHw+T5hs7ZDA6pcamMasW6sWYAJXsduCIiRdwlhtIhwkNfaPkYGBAS/qAaairg4wnVHDOr2HCGiKr3AKocqvwdiCzAOCo/Oncq0VlT/h2oEfa0viiT0XZHCRJlWZpMN+ZT81PjP+m1FBpXWImUEeS0MTAx8sWL</div>
 </div>
@@ -1642,7 +1696,7 @@ MTAwMDAw:1A3WaG3ecwjxyC8sSv0JvB+mUeoWHajntOcYL5AZdXE=:MqPHY8xvWQCaKQTV:v60B7UlgN
 <ld-topic class="exercises" id="ubung-aes-128-4">
 <h2>Übung (AES-128)</h2>
 <div class="ld-exercise" data-exercise-id="7" data-exercise-title="7 - Nachgehakt" id="ld-exercise-7">
-<p class="ld-exercise-title rubric">Nachgehakt</p>
+<p class="ld-exercise-title rubric"><span>Nachgehakt</span></p>
 <p>Fragen Sie sich, was passiert, wenn Sie einen Block, der nur aus <span class="docutils literal">0x00</span> Werten besteht, mit einem Schlüssel verschlüsseln, der ebenfalls nur aus <span class="docutils literal">0x00</span> Werten besteht?</p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:yxJH7ONC7c4H64lTzTfXqix55KASO4tkziWIHQrRELA=:M5gu+zI2FTljFycA:ofepBNtV+fee2XQHncSZKjHlDBOlNvi1QPe6dKDQeR+Tsq0tpDHGsG0WFJt9wFeMIqR7QrlhC1nq+K04GIxBG6t/ny2CAOjIhRQYlW2LLYc4T4VBU06n2k6ZVw8+1N+48BZUOmYY3nG4G0D6rqMZc+ShubcdnSW3xstHHvP3/qal6zt+A+q+zoCV0OY7h/HMIq59ixMT/arKax8SbCnXkUOix7+K5InPrrdMOOgjvfXrlV7OcLc8ju/+GVvb3tniKnWhJMjYTfik457GkgJgwYOfBsZj7QGvz/ZPQya2FZIhgrbpss9kOBtVnlNOSEx41cD5fT9TYyggX4xOFe28On6qKmo7bm1QAKB9Ihit8rJWrsEMo/LjV3mwqGbfwdIMjL7qXV3RLfXPXtG+Jq/RJocHbjcOBmKUdvXzwAhDz9OVAiq7VgrigyBKNMVi3G1DcQFPIW4l0+TLKhEHBBmTQIAyCy6FTSQUqfiIiMtD/kiQQ5uUJZO803VrCDbIHk1NVcnYCaKyWK/IoaGl0AcBnM+BMPsoYyPE49puWhy5+T3wAeIHd1YCEzwWEMVuYbv1DkN4tjo0maxjEbA3GlWj30wnHzCGdCQluAjUuhiDtClNbBN0nyvPRTMT937tGa5Y2p2QFCakl2e7Gfli1RVjVaMOACpr2PoROqYkIlF0ZWZYWbek3ou64j45KZmNloTjnmhmC8//718ZvJ9+Xro8PBEqaGEAJjhLkKgc1aK+3fgOGGMlbEXSq94H3DLbLOw01r2XR3NkKLe1/0dTB0aIO6IjGF5mKnCBCjL5+ZQH6fRB3lXY2dYqyiMJcsp2rag2pTPBUu3PaJYL/8ADwCHmSCP5+EkpNGoQEwC90zeHmMS6sx9fZVgBtK5Pi1/dB1P+JAzyHrviYnrMaQpLQQ==</div>

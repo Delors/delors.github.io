@@ -24,7 +24,7 @@
          <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
     
 </head>
-<body>
+<body data-theme="<light-dark>">
 <template>
 <ld-topic id="concurrency-in-java">
 <h1 class="title">Concurrency in Java</h1>
@@ -87,13 +87,10 @@
 </span></code><small class="ln">13 </small><code data-lineno="13 "><span class="whitespace">
 </span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="name">IO</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Counter: &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">counter</span><span class="punctuation">);</span><span class="whitespace">
 </span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
-<aside class="admonition incremental question">
-<p class="admonition-title">Question</p>
-<p>What value will the <code class="java"><span class="name">counter</span></code> have when both threads have ended?</p>
+<aside class="admonition incremental" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Question</span></p><p>What value will the <code class="java"><span class="name">counter</span></code> have when both threads have ended?</p>
 <ld-presenter-note encrypted="">
-MTAwMDAw:5H5HQVXVqs/Ye33WaT5WF3s82/e1uSn0IercrCyvjQY=:8MDK/Z0J+usGXf0a:xSy8RW4X8boETzxXcdb8+aIlDGn+TLMqj4WUOvQfNyd2LamxjS1ziChbmm4Q0zSbxDvLQ+h+4/Kqpw0ZJ+Bw0aLl62NDXflZyc8KLnaZV/3YxRHu0H3WpCDMXwFm1LXcGBm2nFeHG+Sr6S+jY8IgS4Lt/TQlq4O+2TlcdDWLkCKRUOnE0QYt0jXc1ho6YqWEHC9oolrKq20M5Uz7g3ntD5zlIw0hH18TJ2BAVjAkdPwFrep+/1BEUghLbaNllOEjWwAQ8O4oJWNg2ABDejUJn7JRBiVdYrgr5/+VNFXcxm9dm2wWT+uG6YWCOTzSBBBc8VG43bNn4gUjiGXh7my08TWQHOPIn0APiLerm2X6GgdbM1R3cFKj+KBXi5XClWX9qz+xcvcOcM8Lf5y7/VFm4edua7AivNWL5a9t0xsi4ia2r8FCeA7o9pezIdKZ6UQMDzaxXK3jqLRzqjpjKQUoqfPU/+IljqrwA9Xny20zx3UCmCvlTQ==</ld-presenter-note>
-</aside>
-</ld-topic>
+MTAwMDAw:wJWSFiI+1gucYln+KF7MsvODZKJ1HCLjn1VHuy6Q/zY=:pFNqM8+8EhU/5j9D:KuzhGMI2b7NV62U2HSl/eh6C4GHAM8092tmfj0UFAtveLQ87+tfZg0hKXA+LNeeDltP6Ty5t0niYkfCwYcy1HGWMja5uRv3oXoRSB9ONbIvvIiITanxPn0QHvCiDUqyAnc5Xv7XiR1HX9hO/jKKzlOOKaHVWFkgIg8KZvklVffYy1cj9QHtKupVLGhLuxiPddrbeznpIRk0sdAXgrb/Z5s42AlgCLSUfNGjJ5DrNfR7uwoc/i2qw7JPOuvtQxkp9sBC2kT6iu/q8eGP6umNpQn/L3QUZYmQy4m9OK4tsWIqfFr1TDAsFQxVtzx0d8fWeQ1v9+ia1fPzQ8xkk5Iq60Jdj9VzWExDNZjaiFg7Y5LhhAttV2YELK//xuXpEUUslCJPXkuOfMxmymw3oXoFwJJPgw6lVILP+gYJcqDnzG953jZtDFc7+0T4jgWj4SeX0Vwl9kMGo0KAva3tYXk0X/nLz0JoErKOUVcGQOne4yyV6GsT5rFvAEgsdv4PYZCoXdlAKZ7MvrTRfK3yg4C1Akw7xONkgQxmi0F/xt3ErtsWyZMk6wVei</ld-presenter-note>
+</aside></ld-topic>
 <ld-topic class="repetition" id="fundamental-problems-in-concurrent-programming">
 <h2>Fundamental Problems in Concurrent Programming</h2>
 <p>Concurrent access to shared mutable state introduces three classes of problems:</p>
@@ -108,22 +105,15 @@ MTAwMDAw:5H5HQVXVqs/Ye33WaT5WF3s82/e1uSn0IercrCyvjQY=:8MDK/Z0J+usGXf0a:xSy8RW4X8
 <dd><p><em>Instructions do not execute in source order</em>.</p>
 </dd>
 </dl>
-<aside class="admonition incremental summary">
-<p class="admonition-title">Summary</p>
-<p>All three problems share the same root cause:</p>
+<aside class="admonition incremental" data-theme="summary"><p class="admonition-title" data-theme="summary-header"><span>Summary</span></p><p>All three problems share the same root cause:</p>
 <p><strong>Unsynchronised access to shared mutable state</strong>.</p>
-</aside>
-<ld-supplemental><p>A <strong>Race Condition</strong> can happen, because a compound operation such as <code class="java"><span class="name">counter</span><span class="operator">++</span></code> consists of three separate steps (read, increment, write). When the scheduler preempts a thread between any two of these steps, another thread can operate on a stale value — an increment is silently lost.</p>
+</aside><ld-supplemental><p>A <strong>Race Condition</strong> can happen, because a compound operation such as <code class="java"><span class="name">counter</span><span class="operator">++</span></code> consists of three separate steps (read, increment, write). When the scheduler preempts a thread between any two of these steps, another thread can operate on a stale value — an increment is silently lost.</p>
 <p>Reading of <em>stale values across threads</em> is likely because modern CPUs (since the 1990s) cache values in registers or L1/L2 caches. A write by thread A may never reach main memory before thread B reads the same variable — thread B therefore operates on an arbitrarily old value.</p>
 <p>Both the compiler (in case of Java the Just-In-Time Compiler not the frontend compiler) and the CPU may reorder instructions for optimisation. What <em>looks sequential in source code may execute in a completely different order at runtime</em>. This can make partially constructed objects visible to other threads.</p>
-<aside class="admonition hint">
-<p class="admonition-title">Hint</p>
+<aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hint</p>
 <p>A <strong>monitor</strong> eliminates all three — mutual exclusion prevents races, and the <em>happens-before</em> guarantee provided by Java's memory model ensures both visibility and ordering, as we will discuss next.</p>
-<aside class="admonition remark">
-<p class="admonition-title">Remark</p>
-<p>In Java &quot;happens-before&quot; does not mean &quot;immediately visible across all cores at the instant of the write&quot;. It means: <strong>if you observe the write, you observe everything that preceded it.</strong></p>
-</aside>
-</aside>
+<aside class="admonition" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Remark</span></p><p>In Java &quot;happens-before&quot; does not mean &quot;immediately visible across all cores at the instant of the write&quot;. It means: <strong>if you observe the write, you observe everything that preceded it.</strong></p>
+</aside></aside>
 </ld-supplemental></ld-topic>
 <ld-topic class="exercises" id="review-question">
 <h2>Review Question</h2>
@@ -147,7 +137,7 @@ MTAwMDAw:5H5HQVXVqs/Ye33WaT5WF3s82/e1uSn0IercrCyvjQY=:8MDK/Z0J+usGXf0a:xSy8RW4X8
 </span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace">    </span><span class="name">IO</span><span class="punctuation">.</span><span class="name attribute">println</span><span class="punctuation">(</span><span class="literal string">&quot;Needed runs: &quot;</span><span class="whitespace"> </span><span class="operator">+</span><span class="whitespace"> </span><span class="name">runs</span><span class="punctuation">);</span><span class="whitespace">
 </span></code><small class="ln">17 </small><code data-lineno="17 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
 <ld-presenter-note encrypted="">
-MTAwMDAw:P623VgQjMm56OJ+UpO3yJQZarrtfb5UyfhZINnffyZw=:VLhIdyFkoIs2X/nV:Yrj0rtoEfqE0Y5+5yo9iofKEHOEV91YCD2Tz8hf8W/jw6GkK6lTneipSIm4lUlvJHlfXFeucoPS35aST6VewjfkVFGErSh1QtlmJ/y1M6xe98VZxpywKme8Fxoii/AFRRUFaX0qvxF9lgrzmQ7KPrPsv+MTKGRbUOFt/opJl7V7WDk8Mcrzs5CFHeTt3YwxLx69GbHnoaL+n4nNVjgKinp0uKjGWNGuNW4WNysLHGJfb2LfZj3i6BdKqnCqL3t6kKsAqkowPYQG/LLPI6c3fK5acou6dKuJn2vkeJz+49eU6pIJNd7YEAz0yYlJGv0o9Dyn8YfeTDy+g1vU1VRy1GQA+F+t6F5F1bJI3h2Z0nEiOPsjxW8Re7mCllYeITzAGyFATRCw2A0+hGbWC25FzqAka79sQkernO6F6GhXiwFc8TY88xCMoLTMeA/qqSpxEAzQ0ss6S9cTym/cUyZBmw33Yjf+BPA45OAs0C8IsgRQKmg3GnXaiULGwLb2QmiAlFsGOwFO9afxT+aCXMSdAk5SEOg==</ld-presenter-note>
+MTAwMDAw:jDS5nT4cx+XiKNVDgUIUW0K8UQgh2IFDslpB3v1DHcM=:52l3aFrzS7TqIMtj:G8yr4FxQqKpMq1YX9xLm5+Nkv2Wu3+Zs4zjKaOvwnrP2NUF/d1wwAtQ9L63Ui1KXKp9gv/J14PJWukgW7P+/zew4jFQcUOV2VJOdMxBgJEs9HQaTKwucCFmsral4oaeOM8G9zgn9pRopn7V3AR+j8NrvXkAc/SlhpOMiPOTr08l2ro7maiMQlaiqU/gkAsEjWry4S7VEYdjtlAGa6kDK5+Ukwkom7PO+hm8PibxMJ8KNHt5/gDp9DTkL1AqiWbyGiK456zHhmsvesoNkz3tKoKVxKaH8B+wMHoc34hGG5fCAqeKrUPKlkthSX/PJwgDPSRKlKMltauhPbg9lfGzFq00hjEcUBidk+5f4agQEuXK2zOBUGAXJdA0EueXIvAGFmC0Q926nRDS93jouOsB+VlSu3koj7fjgqLpBCFzpMwT23xlwg9mcG5Lk1mug1R8AuL2t9sXlypPDIEHP7jbXcqFg+wSqWoAyY7Oxc8MsCUoW89zzD1EHV4X9XmLbKFDjZvLDSOeZotWP2tI/pQevYxxsqVDhVthSwYPPx8/F6manV/OOAoVFNeRGmcy7i2KF1AgLo9bRaLFU0hllZvIlO4K1p/vq</ld-presenter-note>
 </div>
 </ld-topic>
 <ld-topic id="communication-and-synchronization-with-the-help-of-monitors">
@@ -160,8 +150,7 @@ MTAwMDAw:P623VgQjMm56OJ+UpO3yJQZarrtfb5UyfhZINnffyZw=:VLhIdyFkoIs2X/nV:Yrj0rtoEf
 <li><p>For example, data can only be removed from a buffer once data has been entered into the buffer.</p></li>
 <li><p>Java only supports one (anonymous) condition variable per monitor, with the classic methods <code class="java"><span class="name">wait</span></code> and <code class="java"><span class="name">notify</span></code> or <code class="java"><span class="name">notifyAll</span></code>.</p></li>
 </ul>
-<ld-supplemental><aside class="admonition warning">
-<p class="admonition-title">Warning</p>
+<ld-supplemental><aside class="admonition" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warning</p>
 <p>In Java, mutual exclusion only takes place between methods that have been explicitly declared as <code class="java"><span class="keyword declaration">synchronized</span></code>.</p>
 </aside>
 <p><em>Monitors</em> are just one model (alternatives: <em>Semaphores</em>, <em>Message Passing</em>) that enables the communication and synchronization of threads. It is the standard model in Java and is directly supported by the Java Virtual Machine (JVM).</p>
@@ -217,7 +206,7 @@ MTAwMDAw:P623VgQjMm56OJ+UpO3yJQZarrtfb5UyfhZINnffyZw=:VLhIdyFkoIs2X/nV:Yrj0rtoEf
 </ul>
 </li>
 <li><p>If a method is marked as <code class="java"><span class="keyword declaration">synchronized</span></code>, the method can only be accessed if the system has received the lock.</p></li>
-<li><p>Therefore, <code class="java"><span class="keyword declaration">synchronized</span></code> methods have mutually exclusive access to the data encapsulated by the object, <span class="red">if this data is only accessed in other synchronized contexts</span>.</p></li>
+<li><p>Therefore, <code class="java"><span class="keyword declaration">synchronized</span></code> methods have mutually exclusive access to the data encapsulated by the object, <span class="danger">if this data is only accessed in other synchronized contexts</span>.</p></li>
 <li><p>Non-<code class="java"><span class="keyword declaration">synchronized</span></code> methods do not require a lock and can therefore be called <em>at any time</em>.</p></li>
 </ul>
 </ld-topic>
@@ -274,8 +263,7 @@ MTAwMDAw:P623VgQjMm56OJ+UpO3yJQZarrtfb5UyfhZINnffyZw=:VLhIdyFkoIs2X/nV:Yrj0rtoEf
 </span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
 </span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace">
 </span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
-</ld-card></ld-deck><ld-supplemental><aside class="admonition warning">
-<p class="admonition-title">Warning</p>
+</ld-card></ld-deck><ld-supplemental><aside class="admonition" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warning</p>
 <p>When <code class="java"><span class="keyword declaration">synchronized</span></code> is used in all its generality, it can undermine one of the advantages of classic monitors: The encapsulation of synchronization constraints associated with an object in a single place in the program!</p>
 <div class="peripheral docutils container">
 <p>This is because it is not possible to understand the synchronization associated with a particular object just by looking at the object itself. Other objects can use a <code class="java"><span class="keyword declaration">synchronized</span></code> block in relation to the object.</p>
@@ -336,8 +324,7 @@ MTAwMDAw:P623VgQjMm56OJ+UpO3yJQZarrtfb5UyfhZINnffyZw=:VLhIdyFkoIs2X/nV:Yrj0rtoEf
 <li><p>If no thread is waiting, then <code class="java"><span class="name">notify</span></code> and <code class="java"><span class="name">notifyAll</span></code> have no effect.</p></li>
 </ul>
 </ld-card><ld-card class="incremental">
-<aside class="admonition important">
-<p class="admonition-title">Important</p>
+<aside class="admonition" data-theme="important"><p class="admonition-title" data-theme="important-header">Important</p>
 <p>When a thread is woken up, it cannot assume that its condition has been fulfilled!</p>
 <p>The condition must always be checked in a loop and the thread may have to be put back into the wait state.</p>
 </aside>
@@ -454,8 +441,7 @@ g2:bb.get(), p1:bb.put(), p2:bb.put()</p></td>
 <li><p>Declaring a field <code class="java"><span class="keyword declaration">volatile</span></code> guarantees <em>visibility</em>: every write is immediately flushed to main memory; every read fetches the current value from main memory.</p></li>
 <li><p>It also guarantees <em>ordering</em>: a write <em>happens-before</em> every subsequent read of the same variable.</p></li>
 </ul>
-<aside class="admonition incremental attention">
-<p class="admonition-title">Attention!</p>
+<aside class="admonition incremental" data-theme="attention"><p class="admonition-title" data-theme="attention-header">Attention!</p>
 <p>Usage of <code class="java"><span class="keyword declaration">volatile</span></code> does <strong>not</strong> guarantee <strong>atomicity</strong>: compound operations such as <code class="java"><span class="name">counter</span><span class="operator">++</span></code> (read / modify / write) are still unsafe.</p>
 </aside>
 <ld-supplemental><p>Behind the scenes, <code class="java"><span class="keyword declaration">volatile</span></code> inserts <em>memory barriers</em> that prevent both the Just-In-Time-Compiler (JIT Compiler) and the CPU from reordering instructions across the barrier.</p>
@@ -494,11 +480,8 @@ g2:bb.get(), p1:bb.put(), p2:bb.put()</p></td>
 </span></code><small class="ln"> 9 </small><code data-lineno=" 9 "><span class="whitespace">    </span><span class="name">Thread</span><span class="punctuation">.</span><span class="name attribute">sleep</span><span class="punctuation">(</span><span class="literal number integer">1000</span><span class="punctuation">);</span><span class="whitespace">
 </span></code><small class="ln">10 </small><code data-lineno="10 "><span class="whitespace">    </span><span class="name">running</span><span class="whitespace"> </span><span class="operator">=</span><span class="whitespace"> </span><span class="keyword constant">false</span><span class="punctuation">;</span><span class="whitespace">                </span><span class="comment single">// write to main memory</span><span class="whitespace">
 </span></code><small class="ln">11 </small><code data-lineno="11 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
-<aside class="admonition incremental summary">
-<p class="admonition-title">Summary</p>
-<p><code class="java"><span class="keyword declaration">volatile</span></code> is correct here because only the <em>main thread writes</em> and only the <em>worker thread reads</em> — no compound operation is involved.</p>
-</aside>
-<ld-supplemental><p>Without <code class="java"><span class="keyword declaration">volatile</span></code>, the JIT compiler is free to hoist the <code class="java"><span class="name">running</span></code>
+<aside class="admonition incremental" data-theme="summary"><p class="admonition-title" data-theme="summary-header"><span>Summary</span></p><p><code class="java"><span class="keyword declaration">volatile</span></code> is correct here because only the <em>main thread writes</em> and only the <em>worker thread reads</em> — no compound operation is involved.</p>
+</aside><ld-supplemental><p>Without <code class="java"><span class="keyword declaration">volatile</span></code>, the JIT compiler is free to hoist the <code class="java"><span class="name">running</span></code>
 read out of the loop — it has no evidence that another thread will ever
 change it.  The worker may therefore spin forever even after the flag is set
 to <code class="java"><span class="keyword constant">false</span></code>.</p>
@@ -508,7 +491,7 @@ that the write will eventually (and typically immediately) be seen.</p>
 <ld-topic class="exercises" id="review-question-1">
 <h2>Review Question</h2>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - volatile int counter?" id="ld-exercise-2">
-<p class="ld-exercise-title rubric">Why is <code class="java"><span class="keyword declaration">volatile</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">counter</span></code> still broken for the counting example, even though <code class="java"><span class="keyword declaration">volatile</span><span class="whitespace"> </span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">running</span></code> is correct for the stop-flag?</p>
+<p class="ld-exercise-title rubric"><span>Why is <code class="java"><span class="keyword declaration">volatile</span><span class="whitespace"> </span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">counter</span></code> still broken for the counting example, even though <code class="java"><span class="keyword declaration">volatile</span><span class="whitespace"> </span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">running</span></code> is correct for the stop-flag?</span></p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:axWj6k+T9JQXzJgPR5Pjjk1iaXSMw3W1Z/wACn4u4Cw=:GFG9zVaKn19a+mwI:nXMcuGiYME/DjTkEynymgHQgcM92xGl5w3Wx1opxKyZbfxbBS7M7lqCmNxB89cR5raL23MPTPW59CKldL8JaVQR5c5GlSwG1R+fZisUlbzen1aFIIgg0pWSSYXUtKmf+vRNNfW2InEpEKq3aaK5m4DsCq9pggkqSpDYk5leTd7DYRC5dyqRyOHaS4o6MELP6gGAxSpKq9x0YnM2oes6Ri8z3rLPYP3nqn0tEkd/BVkx6OusrPygoqqhpc+qHYPSu7rnlmaY8+CEvFYCONJBLkXfFrCZDDVwc7Rvw24VgcolRioVfJx+jU+u/tby1Y7JaZijvukfZzQAFls/YIuarDzgtVCiV0S2YzMX+TCPgOZ0ZcyvIJyi59Ktl+3H9T10nPBHPS9KK3mpZhQqw2tuDWfP/pzig1j5svgEktUToRb3wrVAGxo0vcHS9ZeoSjByt1+HGqsnp51+GBrXHw0fEe2XjaTN+r+1u0N2ercFDTLIkCh6H7FNHR+tss9001wo4bEQzB1Xdc0oA9sIvaiJZghyADGJzNQQ=</div>
 </div>
@@ -589,7 +572,7 @@ MTAwMDAw:axWj6k+T9JQXzJgPR5Pjjk1iaXSMw3W1Z/wACn4u4Cw=:GFG9zVaKn19a+mwI:nXMcuGiYM
 <ld-topic class="exercises" id="review-question-2">
 <h2>Review Question</h2>
 <div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Replacing *volatile boolean running* with *AtomicBoolean running*" id="ld-exercise-3">
-<p class="ld-exercise-title rubric">Would replacing <code class="java"><span class="keyword declaration">volatile</span><span class="whitespace"> </span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">running</span></code> with <code class="java"><span class="name">AtomicBoolean</span><span class="whitespace"> </span><span class="name">running</span></code> in the Stop-Flag Pattern example be correct? Would it be necessary?</p>
+<p class="ld-exercise-title rubric"><span>Would replacing <code class="java"><span class="keyword declaration">volatile</span><span class="whitespace"> </span><span class="keyword type">boolean</span><span class="whitespace"> </span><span class="name">running</span></code> with <code class="java"><span class="name">AtomicBoolean</span><span class="whitespace"> </span><span class="name">running</span></code> in the Stop-Flag Pattern example be correct? Would it be necessary?</span></p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:yai6UtZnsTBKTiy6ja3O9Kyv3qk5L6E8PvKFFaIg158=:kN0tIZ1O/G7/K0ja:cN24g+qpS7of2EGHBWeBzNFfmGkklz6C5QunvcIe/8RZpTvJEdx8XeuY5VonjXLjAqNPN4yybx00o2qgysEZ+dAf2M7/UXgIJSWi9nrghwuCVumePzEQFlhK930ToHRUISgSu7aYzRmbZzF9OzQwKhgH/tJq78b/UnoE3f3Wros9Kjb8LRtfPiF6DGNl5vbDp2Ie9SLRLDCRGmbwFh5Y916uRHPnTFE3nDq7U+tX7uxxbVqI8Oid+qSIo5e7niu8qbHH01s2rxOHvxMH7lNMTIA5+u2XU9k2BerxkXGQDwNoXM4KZ7As0b0knBQZpqDDKQ51BJ0z48OXYHU75FSMQzpDzprV7PPYWbLL0jhDlsUlJMzwmG9aHtOWjEeRwAtJL7o2DvWAYUTsK1PgJaunNVodzH887OF05SQ/0B7spvbnN/g9yZxA6i4rlOtdzeNXhJTvGNmOV0ZAY3GB29OWf8wElDh6bYSPIx0Oty7M/1heRhprmnTrvbgmaNB77dkG10D33C5a+1x4b+NcQjm/yzftQZjLp7rpXrwKzoRir+U1Qf0aVz+oO61cC9TnNt5MClSbBKBmtUjr8WpvIHtn0IkrXtgQvEZdGravBj0GYt/wq/p6xMtq+wDht+GXhzMzhfoy6Iw3FlWeZJnvxWX8SzpDTfNZ8F6OriOnW+uQ30uuW7MBX5v9OCPocH1pdm1v2XmWF9fIxqD8G05fhA07XZa/a1sWTgGbm6z7U4LA1943qbLBZ0jPcvzq5SsHGa2Xps5stQ==</div>
 </div>
@@ -611,8 +594,7 @@ MTAwMDAw:yai6UtZnsTBKTiy6ja3O9Kyv3qk5L6E8PvKFFaIg158=:kN0tIZ1O/G7/K0ja:cN24g+qpS
 </ld-topic>
 <ld-topic id="best-practices">
 <h2>Best Practices</h2>
-<aside class="admonition important">
-<p class="admonition-title">Important</p>
+<aside class="admonition" data-theme="important"><p class="admonition-title" data-theme="important-header">Important</p>
 <ul class="incremental-list simple">
 <li><p><code class="java"><span class="keyword declaration">synchronized</span></code> code should be kept as short as possible.</p></li>
 <li><p>Nested monitor calls should be avoided as the outer lock is not released when the inner monitor is waiting. This can easily lead to a deadlock occurring.</p></li>
@@ -621,12 +603,10 @@ MTAwMDAw:yai6UtZnsTBKTiy6ja3O9Kyv3qk5L6E8PvKFFaIg158=:kN0tIZ1O/G7/K0ja:cN24g+qpS
 </ld-topic>
 <ld-topic class="no-title center-content" id="always-lock-resources-in-the-same-order">
 <h2>Always lock resources in the same order</h2>
-<aside class="admonition warning">
-<p class="admonition-title">Warning</p>
+<aside class="admonition" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warning</p>
 <p>If two (or more) threads access the same resources in a different order, a deadlock can occur.</p>
 </aside>
-<aside class="admonition incremental width-100 important">
-<p class="admonition-title">Important</p>
+<aside class="admonition incremental width-100" data-theme="important"><p class="admonition-title" data-theme="important-header">Important</p>
 <p><strong>Resources must always be locked in the same order</strong> to avoid deadlocks.</p>
 </aside>
 </ld-topic>
@@ -650,11 +630,8 @@ MTAwMDAw:yai6UtZnsTBKTiy6ja3O9Kyv3qk5L6E8PvKFFaIg158=:kN0tIZ1O/G7/K0ja:cN24g+qpS
 <li><p>Independent of <em>scheduling</em> or the interleaving of the execution of these threads by the runtime environment,</p></li>
 <li><p>Without additional synchronisation on the part of the calling code.</p></li>
 </ul>
-<aside class="admonition incremental assessment">
-<p class="admonition-title">Assessment</p>
-<p>As a result, operations on a thread-safe object appear to all threads as if the operations were performed in a fixed, globally consistent order.</p>
-</aside>
-</ld-card></ld-deck></ld-topic>
+<aside class="admonition incremental" data-theme="assessment"><p class="admonition-title" data-theme="assessment-header"><span>Assessment</span></p><p>As a result, operations on a thread-safe object appear to all threads as if the operations were performed in a fixed, globally consistent order.</p>
+</aside></ld-card></ld-deck></ld-topic>
 <ld-topic id="thread-safety-level">
 <h2>Thread Safety Level</h2>
 <dl class="incremental-list field-list simple">
@@ -678,7 +655,7 @@ MTAwMDAw:yai6UtZnsTBKTiy6ja3O9Kyv3qk5L6E8PvKFFaIg158=:kN0tIZ1O/G7/K0ja:cN24g+qpS
 <ld-topic class="exercises" id="exercise">
 <h2>Exercise</h2>
 <div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Delayed Execution" id="ld-exercise-4">
-<p class="ld-exercise-title rubric">Delayed Execution</p>
+<p class="ld-exercise-title rubric"><span>Delayed Execution</span></p>
 <p>Implement a class (<code class="java"><span class="name">DelayingExecutor</span></code>) that accepts tasks (instances of <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">Runable</span></code>) and executes them after a certain time. The class must not block or be locked during this time.</p>
 <p>Consider using virtual threads. A virtual thread can be created using the method: <code class="java"><span class="name">Thread</span><span class="punctuation">.</span><span class="name attribute">ofVirtual</span><span class="punctuation">()</span></code>. A <code class="java"><span class="name">Runnable</span></code> object can then be passed to the <code class="java"><span class="name">start</span></code> method.</p>
 <p>Delay the execution (<code class="java"><span class="name">Thread</span><span class="punctuation">.</span><span class="name attribute">sleep</span><span class="punctuation">()</span></code>) by an average of 100ms with a standard deviation of 20ms. (Use <code class="java"><span class="name">Random</span><span class="punctuation">.</span><span class="name attribute">nextGaussian</span><span class="punctuation">(</span><span class="name">mean</span><span class="punctuation">,</span><span class="name">stddev</span><span class="punctuation">)</span></code>)</p>
@@ -725,7 +702,7 @@ MTAwMDAw:Os/E6mRMlM3jIP3xjBz5LtD0IOTi+WLUTGGggxmy2xs=:aQXcKv6sHjzyN16C:rJFAvhjQD
 <h2>Exercise</h2>
 <ld-scrollable>
 <div class="ld-exercise" data-exercise-id="5" data-exercise-title="5 - Thread-safe programming" id="ld-exercise-5">
-<p class="ld-exercise-title rubric">Thread-safe programming</p>
+<p class="ld-exercise-title rubric"><span>Thread-safe programming</span></p>
 <p>Implement a class <code class="java"><span class="name">ThreadsafeArray</span></code> to store non-<code class="java"><span class="keyword constant">null</span></code> objects (<code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">Object</span></code>) at selected indices - comparable to a normal array. Compared to a normal array, however, a thread which wants to read a value should be blocked if the cell is occupied. The class should provide the following methods:</p>
 <dl class="field-list simple">
 <dt><code class="java"><span class="name">get</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">index</span><span class="punctuation">)</span></code><span class="colon">:</span></dt>

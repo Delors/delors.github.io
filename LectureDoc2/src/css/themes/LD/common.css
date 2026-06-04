@@ -7,23 +7,19 @@
    which in turn is based on html4css1.css
    created by David Goodger (2015, 2021).
 */
-
-:root {
-    color-scheme: light dark;
-}
-
-html {
-    background-color: white;
-}
-
 body {
-    background-color: var(--body-bg-color);
-
     font-family: var(--default-font-family);
-
     font-size: var(--current-base-font-size);
     font-weight: var(--font-weight);
     line-height: var(--line-height);
+
+    background-color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #212121;
+    }
 }
 
 code {
@@ -44,29 +40,30 @@ p {
 
 a:link,
 a:visited {
-    color: var(--link-fg-color);
+    color: var(--link-color);
 }
 a:hover {
     text-decoration: underline;
 }
 
-ld-module:has(+ *),
-table:has(+ *),
-object:has(+ *),
-ld-grid:has(+ *),
-div.compound:has(+ *),
-div.container:has(+ *),
-p:has(+ *),
-blockquote:has(+ *) {
-    margin-bottom: var(--default-bottom-margin);
+/* Control spacing around block elements */
+:is(
+    .admonition,
+    ld-module,
+    table,
+    object,
+    ld-grid,
+    div.compound,
+    div.container,
+    p,
+    blockquote,
+    pre.code
+):not(:last-child) {
+    margin-bottom: var(--default-margin);
 }
 
 object[role="img"] {
     display: block;
-
-    &.opaque {
-        background-color: var(--current-rel-bg-color);
-    }
 }
 
 mjx-container[display="true"] {
@@ -79,7 +76,7 @@ ld-module {
 
 ld-deck {
     &:has(+ *) {
-        margin-bottom: var(--default-bottom-margin);
+        margin-bottom: var(--default-margin);
     }
 
     &.numbered {
@@ -136,7 +133,7 @@ ld-grid {
 /*  ----------------------------------------------------------------------------
     Adds the styling for the functionality to copy code to the clipboard.
 
-    The base functionality is implemented in LectureDoc.
+    The base functionality is implemented in the respective LectureDoc module.
 */
 .code.copy-to-clipboard {
     position: relative;
@@ -144,21 +141,22 @@ ld-grid {
     /*  The button with the class ".ld-copy-to-clipboard-button" is added
         programmatically by LectureDoc. */
     .ld-copy-to-clipboard-button {
-        width: 27px;
-        height: 27px;
-
         position: absolute;
-        right: 18px;
-        top: 18px;
+        right: 0;
 
-        background-color: transparent;
+        width: 2.25ch;
+        height: 2.25ch;
+
+        background-color: oklch(from var(--background-color) l c h / 0.85);
         background-image: url("copy_to_clipboard.svg");
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
 
+        outline: none;
+
         opacity: 0;
-        transition: opacity 500ms ease;
+        transition: opacity 750ms ease;
     }
 
     &:hover .ld-copy-to-clipboard-button {
@@ -171,7 +169,7 @@ ul {
     list-style-type: "◼︎";
 
     > li::marker {
-        color: var(--dhbw-gray);
+        color: var(--meta-color);
     }
 }
 
@@ -237,53 +235,32 @@ ul.columns {
     }
 }
 
-ul.attention-list > li,
-ul > li.attention-list {
-    list-style-type: "❗️";
-}
-
 ul.negative-list > li,
 ul > li.negative-list {
-    list-style-type: "✗"; /* Alternative: ✘*/
-
+    list-style-type: "✗ ";
     &::marker {
-        font-size: 0.75em;
+        color: var(--warning-color);
     }
 }
-
 ul.positive-list > li,
 ul > li.positive-list {
-    list-style-type: "✓"; /* TODO change symbol and validate existing slide! */
+    list-style-type: "⭑";
+    &::marker {
+        color: var(--success-color);
+    }
 }
-
-ul.question-list>li,
-/* TODO rename: */
-ul>li.question-list {
-    list-style-type: " ? ";
-}
-
-ul.check-list>li,
-/* TODO rename: */
-ul>li.check-list {
+ul.check-list > li,
+ul > li.check-list {
     list-style-type: "✓";
-}
-
-ul.attention-list>li,
-/* TODO rename: */
-ul>li.attention-list {
-    list-style-type: "⚡️";
+    &::marker {
+        color: var(--success-color);
+    }
 }
 
 .list-with-explanations > li > *:not(:first-child) {
     margin-top: -0.3em;
     font-size: smaller;
-    --current-rel-fg-color: color-mix(
-        in lch,
-        var(--current-fg-color) 50%,
-        var(--current-bg-color)
-    );
-    color: var(--current-rel-fg-color);
-    /* Does not work well any longer: mix-blend-mode: hard-light; */
+    color: var(--muted-color);
 }
 
 .list-with-details > li > *:not(:first-child) {
@@ -326,11 +303,10 @@ ol.arabic {
     list-style: decimal;
     list-style-position: outside;
     padding-left: 1.5em;
-}
 
-ol.arabic.long-list {
-    list-style-position: outside;
-    padding-left: 2.25em;
+    &.long-list {
+        padding-left: 2.25em;
+    }
 }
 
 li {
@@ -424,7 +400,7 @@ dl.option-list > dt {
 
 .emph {
     font-weight: bolder;
-    color: var(--emph-color);
+    color: var(--accent-color);
 }
 
 .footnote,
@@ -525,257 +501,6 @@ p.system-message-title {
     font-weight: bold;
 }
 
-* {
-    color: var(--current-rel-fg-color);
-}
-
-.admonition {
-    /* Need to be set by the respective admonition. */
-    --admonition-icon: none;
-    --admonition-border-size: 1px;
-
-    overflow: hidden;
-
-    /* Control spacing around an admonition */
-    &:has(+ *) {
-        margin-bottom: var(--default-bottom-margin);
-    }
-    border: var(--admonition-border-size) solid var(--border-color);
-    border-radius: var(--small-border-radius);
-
-    padding: 0 var(--default-container-padding)
-        calc(var(--default-container-padding) / 2)
-        var(--default-container-padding);
-
-    /* Reset our relative colors to "the" new background color. */
-    --current-rel-bg-color: var(--current-bg-color);
-    background-color: var(--current-rel-bg-color);
-    --current-rel-fg-color: var(--current-fg-color);
-    color: var(--current-rel-fg-color);
-
-    > p:first-child.admonition-title {
-        display: flex;
-
-        position: relative;
-        left: calc(var(--default-container-padding) * -1);
-
-        width: calc(
-            100% + calc(var(--default-container-padding) * 2) +
-                calc(var(--admonition-border-size) * 2)
-        );
-        margin-bottom: 0;
-        padding-left: var(--default-container-padding);
-
-        line-height: calc(var(--line-height) * 1.25);
-
-        --current-rel-bg-color: var(--container-header-bg-color);
-        background-color: var(--current-rel-bg-color);
-        --current-rel-fg-color: var(--container-header-fg-color);
-        text-shadow: var(--default-text-shadow-dimensions)
-            var(--container-header-text-shadow-color);
-
-        &::before {
-            content: var(--admonition-icon);
-
-            position: relative;
-            left: calc(var(--default-container-padding) * -1);
-
-            display: block;
-            width: 1.5em;
-            flex-shrink: 0;
-            flex-grow: 0;
-
-            --current-rel-bg-color: var(--container-header-icon-bg-color);
-            background-color: var(--current-rel-bg-color);
-            --current-rel-fg-color: var(--container-header-icon-fg-color);
-            color: var(--current-rel-fg-color);
-
-            text-align: center;
-        }
-
-        & + * {
-            margin-top: 0.15em; /* there is an implicit +0.1em due to the line height */
-        }
-    }
-
-    > *:last-child {
-        margin-bottom: 0;
-    }
-
-    /*
-
-        Admonition specific configuration.
-
-    */
-
-    &.danger {
-        --admonition-icon: "⊘";
-    }
-
-    &.legend {
-        --admonition-icon: "Ⓛ";
-    }
-    &.background {
-        --admonition-icon: "▧";
-    }
-
-    &.conclusion {
-        --admonition-icon: "∴";
-    }
-
-    &.definition {
-        --admonition-icon: "≝";
-    }
-
-    &.theorem {
-        --admonition-icon: "⊞";
-    }
-
-    &.remark {
-        --admonition-icon: "⬩";
-    }
-
-    &.remember {
-        --admonition-icon: "✪";
-    }
-
-    &.repetition {
-        --admonition-icon: "↻";
-    }
-
-    &.warning {
-        --admonition-icon: "◬";
-
-        border: 0;
-    }
-
-    &.summary {
-        --admonition-icon: "▤";
-
-        --current-bg-color: var(--summary-bg-color);
-        --current-fg-color: var(--summary-fg-color);
-    }
-
-    &.question {
-        --admonition-icon: "?";
-
-        border: none;
-
-        --current-bg-color: var(--question-bg-color);
-        --current-fg-color: var(--question-fg-color);
-    }
-
-    &.answer {
-        --admonition-icon: "✓";
-
-        border: none;
-
-        --current-bg-color: var(--answer-bg-color);
-        --current-fg-color: var(--answer-fg-color);
-    }
-
-    &.attention {
-        --admonition-icon: "▲";
-
-        border: none;
-
-        --current-bg-color: var(--attention-bg-color);
-        --current-fg-color: var(--attention-fg-color);
-    }
-
-    &.important {
-        --admonition-icon: "!!";
-
-        border: none;
-
-        --current-bg-color: var(--important-bg-color);
-        --current-fg-color: var(--important-fg-color);
-    }
-
-    &.observation {
-        --admonition-icon: "⦿";
-
-        border: none;
-
-        --current-bg-color: var(--observation-bg-color);
-        --current-fg-color: var(--observation-fg-color);
-    }
-
-    &.proof {
-        --admonition-icon: "■";
-
-        position: relative;
-
-        &::after {
-            position: absolute;
-            bottom: 0.35em;
-            right: 0.3em;
-
-            /* Add an end of proof marker at the end. */
-            content: "∎";
-        }
-    }
-
-    &.deprecated {
-        border: none;
-
-        --current-bg-color: var(--deprecated-bg-color);
-        --current-fg-color: var(--deprecated-fg-color);
-    }
-
-    &.assessment {
-        --admonition-icon: "⚑";
-    }
-
-    &.note {
-        --admonition-icon: "◎";
-
-        float: right;
-
-        margin-left: var(--default-box-margin);
-
-        background-color: inherit;
-    }
-
-    &.tip {
-        --admonition-icon: "💡";
-
-        border: none;
-        --current-bg-color: var(--tip-bg-color);
-        --current-fg-color: var(--tip-fg-color);
-    }
-
-    &.hint {
-        --admonition-icon: "※";
-
-        border: none;
-
-        --current-bg-color: var(--hint-bg-color);
-        --current-fg-color: var(--hint-fg-color);
-    }
-
-    &.example {
-        --admonition-icon: "⧉";
-
-        border: none;
-
-        color-scheme: light only;
-        --current-bg-color: var(--example-bg-color);
-        --current-fg-color: var(--example-fg-color);
-    }
-
-    &.error {
-        border: none;
-
-        --current-bg-color: var(--error-bg-color);
-        --current-fg-color: var(--error-fg-color);
-
-        > p:first-child.admonition-title {
-            text-align: center;
-        }
-    }
-}
-
 p.sidebar-title,
 p.rubric {
     font-weight: normal;
@@ -820,7 +545,7 @@ a.toc-backref {
 .system-messages h2,
 .system-message-title,
 span.problematic {
-    color: red;
+    color: var(--danger-color);
 }
 
 /* Inline Literals */
@@ -850,18 +575,6 @@ span.problematic {
 .align-right {
     text-align: right;
     margin-left: auto;
-}
-
-.align-top {
-    vertical-align: top;
-}
-
-.align-middle {
-    vertical-align: middle;
-}
-
-.align-bottom {
-    vertical-align: bottom;
 }
 
 /* Text Blocks */
@@ -902,9 +615,9 @@ figcaption {
 .sidebar,
 .system-message {
     margin-bottom: 0.5em;
-    padding: 0.35em 0.6em;
     border: thin solid;
     border-radius: 0.2em;
+    padding: 0.35em 0.6em;
 }
 
 div.line-block {
@@ -915,653 +628,6 @@ div.line-block div.line-block {
     margin-left: 0;
 }
 
-/*
-
-    Styling Code
-
-    See also:
-    https://pygments.org/docs/tokens/#module-pygments.token
-
-    For the possible tokens.
-
-*/
-pre.code {
-    padding: 0;
-
-    margin: 0 0 0.75em 0;
-
-    &:last-child {
-        margin-bottom: 0;
-    }
-}
-
-svg text.code,
-code,
-pre.code {
-    --attribute-color: #800000;
-
-    --builtin-color: #6383f8;
-
-    --class-color: #9a6324;
-
-    --comment-color: #696969;
-    /* Bright Yellow */
-    --comment-preprocfile-color: #ffe119;
-
-    /* Lime Green */
-    --comment-preproc-color: #bcf60c;
-
-    /* Pale Yellow */
-    --comment-shadow-color: #fffac8;
-
-    /* Dark Gray */
-    --function-color: #494949;
-
-    /* Strong Blue */
-    --keyword-color: #4363d8;
-
-    --keyword-constant-color: #3232fc;
-    --keyword-namespace-color: #31bcc9;
-    --keyword-type-color: blue;
-
-    /* Purple */
-    --literal-color: #911eb4;
-
-    /* Teal */
-    --name-color: #008080;
-
-    /* Strong Green */
-    --namespace-color: #3cb44b;
-
-    /* Magenta */
-    --number-color: #f032e6;
-
-    /* Orange */
-    --operator-color: #f58231;
-
-    /* Strong Green */
-    --variable-color: #3cb44b;
-
-    /* Strong Red */
-    --punctuation-color: #e6194b;
-
-    --tag-color: #fda8a8;
-
-    /* RESERVED */
-    --color-yyy: #46f0f0;
-    --color-zzz: #e6beff;
-
-    /* The default color: */
-    --code-color: var(--current-rel-fg-color);
-
-    line-height: var(--code-line-height);
-    color: var(--code-color);
-    /* For SVGs: */
-    fill: var(--code-color);
-
-    &.html {
-        color: var(--gray);
-    }
-
-    /*  styling line numbers */
-    > .ln {
-        color: var(--dark-gray);
-        font-size: inherit;
-        margin-right: 0.25em;
-        background-color: lavender;
-        padding-left: 0.25em;
-        padding-right: 0.25em;
-        display: inline-block;
-        /*border-right: thin solid var(--dark-gray);*/
-        border-right: thin solid oklch(from lavender 0.7 c h);
-        text-shadow: 1px 1px 1px var(--white);
-
-        &:first-of-type {
-            border-radius: var(--small-border-radius) 0 0 0;
-        }
-
-        &:last-of-type {
-            border-radius: 0 0 0 var(--small-border-radius);
-        }
-
-        &:only-of-type {
-            border-radius: var(--small-border-radius) 0 0
-                var(--small-border-radius);
-        }
-    }
-
-    &.tail > .ln:first-of-type {
-        border-top-left-radius: 0;
-    }
-
-    &.head > .ln:last-of-type {
-        border-bottom-left-radius: 0;
-    }
-
-    &.snippet > .ln {
-        border-radius: 0;
-    }
-
-    /*  styling the code (sorted alphabetically) */
-
-    .comment {
-        font-weight: 100;
-        color: var(--comment-color);
-        /* For styling SVGs: */
-        fill: var(--comment-color);
-
-        text-shadow:
-            2px 2px 3px var(--comment-shadow-color),
-            -1px -1px 4px var(--gray);
-
-        &.preproc {
-            color: var(--comment-preproc-color);
-        }
-
-        &.preprocfile {
-            font-weight: 600;
-            font-style: italic;
-            color: var(--comment-preprocfile-color);
-            text-decoration: dashed underline;
-        }
-    }
-
-    .deleted {
-        background-color: #deb0a1;
-    }
-
-    .heading {
-        font-weight: bold;
-        text-shadow: 2px 2px 4px white;
-    }
-
-    .inserted {
-        background-color: #a3d289;
-    }
-
-    .keyword {
-        color: var(--keyword-color);
-        /* this is a light-blue which adapts according to the background */
-        color: oklch(
-            from var(--current-rel-bg-color) calc((1 - l) * 0.5 + 0.73) 0.14
-                267.75
-        );
-        /* For styling text in SVGs: */
-        fill: var(--keyword-color);
-        font-weight: 700;
-
-        &.type {
-            color: var(--keyword-type-color);
-            color: oklch(
-                from var(--current-rel-bg-color) calc((1 - l) * 0.5 + 0.5765)
-                    0.1727 258.35
-            );
-            /* For text in SVGs: */
-            fill: var(--keyword-type-color);
-        }
-
-        &.namespace {
-            color: var(--keyword-namespace-color);
-            /* For text in SVGs: */
-            fill: var(--keyword-namespace-color);
-        }
-
-        &.constant {
-            color: var(--keyword-constant-color);
-            color: oklch(
-                from var(--current-rel-bg-color) calc((1 - l) * 0.15 + 0.53)
-                    0.2097 270
-            );
-            /* For text in SVGs: */
-            fill: var(--keyword-constant-color);
-        }
-    }
-
-    .name {
-        color: var(--name-color);
-        /* https://oklch.com */
-        color: oklch(
-            from var(--current-rel-bg-color) calc((1 - l) * 0.15 + 0.54) 0.08
-                187.28
-        );
-        fill: var(--name-color);
-
-        &.attribute {
-            color: var(--attribute-color);
-            color: oklch(
-                from var(--current-rel-bg-color) calc((1 - l) * 0.15 + 0.45)
-                    0.1751 20.12
-            );
-            font-style: italic;
-        }
-
-        &.builtin {
-            color: var(--builtin-color);
-            font-weight: 900;
-            text-shadow: 2px 2px 2px var(--dark-gray);
-
-            &.pseudo {
-                text-decoration-style: wavy;
-                text-decoration-line: underline;
-                text-decoration-color: var(--builtin-color);
-                text-decoration-thickness: 1px;
-            }
-        }
-
-        &.class {
-            color: var(--class-color);
-        }
-
-        &.function {
-            color: color-mix(
-                in lch,
-                var(--current-rel-bg-color) 15%,
-                var(--current-rel-fg-color)
-            );
-            font-style: italic;
-        }
-
-        &.namespace {
-            color: var(--namespace-color);
-            font-weight: 700;
-            font-style: italic;
-        }
-
-        &.tag {
-            color: var(--tag-color);
-            text-shadow: 1px 1px 1px var(--dark-gray);
-        }
-
-        &.variable {
-            color: var(--variable-color);
-            /* For text in SVGs: */
-            fill: var(--variable-color);
-            font-weight: 500;
-            text-shadow: 1px 1px 1px var(--dark-gray);
-            text-decoration-line: underline;
-        }
-    }
-
-    .literal {
-        &.string {
-            font-weight: 200;
-
-            color: var(--literal-color);
-            color: oklch(
-                from var(--current-rel-bg-color) calc((1 - l) * 0.15 + 0.53)
-                    0.2319 326.12
-            );
-
-            /* For text in SVGs: */
-            fill: var(--literal-color);
-
-            &.affix {
-                color: var(--literal-color);
-                /* For text in SVGs: */
-                fill: var(--literal-color);
-                font-style: italic;
-                text-decoration: dotted underline;
-            }
-        }
-
-        &.number {
-            color: var(--number-color);
-            /* For text in SVGs: */
-            fill: var(--number-color);
-        }
-    }
-
-    .operator {
-        color: var(--operator-color);
-        /* For text in SVGs: */
-        fill: var(--operator-color);
-        font-weight: 900;
-        text-shadow: 2px 2px 2px var(--dark-gray);
-
-        &.word {
-            font-style: italic;
-        }
-    }
-
-    .punctuation {
-        color: var(--punctuation-color);
-        /* For text in SVGs: */
-        fill: var(--punctuation-color);
-    }
-
-    /*  Issues related to Pygments (i.e., when using rst2LectureDoc):
-
-        Whitespace is identified differently in different languages.
-        Hence, decent support requires language dependent styling.
-    .whitespace {
-        text-decoration-style: dashed;
-        text-decoration-line: underline;
-        text-decoration-color: var(--builtin-color);
-        text-decoration-thickness: 1px;
-
-        / *
-        &:not(:empty):not(:last-child)::before {
-            display: inline;
-            content: "␣";
-        }
-        * /
-    }
-    */
-}
-
-/* Tables */
-table {
-    border-collapse: collapse;
-
-    th {
-        font-weight: 500;
-    }
-
-    td,
-    th {
-        border: thin solid silver;
-        padding: 0 1ex;
-    }
-
-    > caption {
-        text-align: left;
-        font-size: 0.9em;
-        margin-bottom: 0.2em;
-    }
-
-    &.captionbelow {
-        caption-side: bottom;
-    }
-
-    &.table-data-align-top td {
-        vertical-align: top;
-    }
-
-    &.table-header-align-right th,
-    &.table-data-align-right td {
-        text-align: right;
-    }
-
-    &.table-header-align-left th,
-    &.table-data-align-left td {
-        text-align: left;
-    }
-
-    &.table-header-align-center th,
-    &.table-data-align-center td {
-        text-align: center;
-    }
-
-    &.table-body-header-align-left > tbody > tr > th {
-        text-align: left;
-    }
-
-    &.table-data-monospaced td {
-        font-family: var(--monospaced-font-family);
-    }
-
-    /* ONLY WORKS IF THE TABLE IS IN A SCROLLABLE ELEMENT! */
-    &.sticky-header thead th {
-        position: sticky;
-        top: 0;
-        background-color: rgb(from var(--current-bg-color) r g b / 75%);
-        border-bottom: 1px solid var(--current-fg-color);
-        backdrop-filter: blur(2px);
-    }
-
-    &.compact {
-        line-height: 1.15em;
-
-        td,
-        th {
-            padding: 0.1em;
-        }
-    }
-
-    &.ultra-compact {
-        line-height: 1em;
-
-        td,
-        th {
-            padding: 0.05em;
-        }
-    }
-
-    &.borderless td,
-    &.borderless th {
-        border: 0;
-        padding: 0;
-        padding-right: 0.5em;
-        /* separate table cells */
-    }
-
-    /* "booktabs" style (no vertical lines) */
-    &.booktabs {
-        border: 0;
-        border-top: 2px solid black;
-        border-bottom: 2px solid black;
-
-        td,
-        th {
-            border: 0;
-            border-bottom: thin solid silver;
-        }
-
-        th {
-            border-bottom: thin solid darkgray;
-        }
-    }
-
-    &.zebra-columns {
-        border: 0;
-
-        td,
-        th {
-            border: 0;
-            padding: 0.5em 0.25em;
-        }
-
-        tr > *:nth-child(odd) {
-            --current-bg-color: var(--very-light-gray);
-            background-color: var(--current-bg-color);
-        }
-
-        tr > *:nth-child(even) {
-            --current-bg-color: var(--white);
-            background-color: var(--current-bg-color);
-        }
-    }
-
-    /*
-    &.zebra {
-        border: 0;
-        td,th {
-            border: 0;
-            padding: 0.5em 0.25em;
-        }
-        tr:nth-child(odd) {
-            --current-bg-color: var(--very-light-gray);
-            background-color: var(--current-bg-color);
-        }
-
-        tr:nth-child(even) {
-            --current-bg-color: var(--white);
-            background-color: var(--current-bg-color);
-        }
-    }
-
-    &.matrix {
-        border: 0;
-        td,th {
-            border: 0;
-            padding: 0.5em 0.25em;
-        }
-
-        tr:nth-child(odd) {
-            th:nth-child(odd),
-            td:nth-child(odd) {
-            --current-bg-color: var(--very-light-gray);
-            background-color: var(--current-bg-color);
-            }
-            th:nth-child(even),
-            td:nth-child(even) {
-            --current-bg-color: var(--white);
-            background-color: var(--current-bg-color);
-        }
-        }
-
-        tr:nth-child(even) {
-            th:nth-child(odd),
-            td:nth-child(odd) {
-            --current-bg-color: var(--white);
-            background-color: var(--current-bg-color);
-        }
-
-            th:nth-child(even),
-            td:nth-child(even)     {
-            --current-bg-color: var(--very-light-gray);
-            background-color: var(--current-bg-color);
-            }
-    }
-    }
-    */
-
-    &.highlight-on-hover,
-    &.highlight-cell-on-hover,
-    &.highlight-cell-and-row-on-hover,
-    &.highlight-identical-cells-on-hover {
-        th.\:hover-related {
-            --current-rel-bg-color: color-mix(
-                in lch,
-                var(--current-fg-color) 80%,
-                var(--current-bg-color) 20%
-            );
-            background-color: var(--current-rel-bg-color);
-            --current-rel-fg-color: color-mix(
-                in lch,
-                var(--current-fg-color) 20%,
-                var(--current-bg-color) 80%
-            );
-            color: var(--current-rel-fg-color);
-        }
-
-        td.\:hover-related {
-            --current-rel-bg-color: color-mix(
-                in lch,
-                var(--current-fg-color) 80%,
-                var(--current-bg-color) 20%
-            );
-            background-color: var(--current-rel-bg-color);
-            --current-rel-fg-color: color-mix(
-                in lch,
-                var(--current-fg-color) 20%,
-                var(--current-bg-color) 80%
-            );
-            color: var(--current-rel-fg-color);
-        }
-
-        th.\:hover {
-            box-shadow: var(--trbl-shadow);
-        }
-
-        td.\:hover {
-            box-shadow: 0 0 var(--trbl-shadow-blur) 0
-                rgb(from var(--current-fg-color) r g b / 0.8);
-            /* The following does not work, because the current-rel... colors
-               may already be computed using relative colors. Computing
-               relative colors on top of relative colors is not yet supported
-               (March 2026):
-            --current-rel-bg-color: color-mix(
-                in oklch,
-                var(--current-bg-color) 20% var(--current-fg-color) 80%
-            );
-            background-color: var(--current-rel-bg-color);
-            --current-rel-fg-color: oklch(
-                from var(--current-rel-bg-color) l calc(c + 180) h
-            );
-            color: var(--current-rel-fg-color);
-            */
-        }
-    }
-
-    &.highlight-row-on-hover {
-        /* TODO Document why both are required... */
-        tr.\:hover {
-            --current-rel-bg-color: light-dark(
-                var(--current-fg-color),
-                var(--current-bg-color)
-            );
-            background-color: var(--current-rel-bg-color);
-            --current-rel-fg-color: light-dark(
-                var(--current-bg-color),
-                var(--current-fg-color)
-            );
-            color: var(--current-rel-fg-color);
-        }
-
-        tr.\:hover-related {
-            --current-rel-bg-color: light-dark(
-                var(--current-fg-color),
-                var(--current-bg-color)
-            );
-            background-color: var(--current-rel-bg-color);
-            --current-rel-fg-color: light-dark(
-                var(--current-bg-color),
-                var(--current-fg-color)
-            );
-            color: var(--current-rel-fg-color);
-        }
-    }
-
-    /*
-
-        The class "annotated-text" can be used in combination with tables to make
-        them look like as if we have a text document with some paragraphs with some
-        comments to the side.
-
-    */
-
-    &.annotated-text {
-        border: none;
-        box-shadow: none;
-        border-collapse: separate;
-        border-spacing: 0 0.5em;
-
-        td,
-        th {
-            border: 0;
-            padding-bottom: 0;
-            text-align: justify;
-            hyphens: auto;
-
-            /* styling of the "comment" column */
-            &:first-of-type:not(:empty) {
-                max-width: 25%;
-                padding-top: 0.15em;
-                padding-bottom: 0;
-
-                --current-bg-color: var(--gray);
-                background-color: var(--current-bg-color);
-                --current-fg-color: var(--white);
-                color: var(--current-fg-color);
-                vertical-align: text-top;
-                text-align: right;
-                border-radius: var(--medium-border-radius) 0 0
-                    var(--medium-border-radius);
-                font-size: smaller;
-                font-weight: 300;
-            }
-        }
-
-        td {
-            /* The intermediate columns: */
-            &:not(:first-of-type, :empty) {
-                font-family: var(--text-font-family);
-            }
-        }
-    }
-}
-
 /* Intended to be used with a container or container-like structure (e.g. a slide) */
 .center-content {
     display: flex;
@@ -1570,15 +636,8 @@ table {
     align-items: center;
 }
 
-/** Intended to be used at the section/slide level. */
+/* Intended to be used at the section/slide level. */
 .summary > h2:first-child {
-    position: relative;
-    --current-bg-color: light-dark(var(--dark-red), var(--light-red));
-    background-color: var(--current-bg-color);
-    --current-fg-color: light-dark(var(--light-gray), var(--dark-gray));
-    color: var(--current-fg-color);
-    text-shadow: -1px -1px 2px light-dark(var(--black), var(--white));
-
     &::before {
         content: "▤ ";
     }
@@ -1592,32 +651,33 @@ table {
     position: relative;
     min-height: 2.75lh;
 
+    border-radius: var(--small-border-radius);
+
     padding: calc(0.5 * var(--current-base-font-size));
     padding-left: calc(3 * var(--current-base-font-size));
 
-    --current-rel-bg-color: color-mix(
-        in lch,
-        var(--current-bg-color) 85%,
-        var(--current-fg-color)
-    );
-    background-color: var(--current-rel-bg-color);
-
-    border-radius: var(--small-border-radius);
+    background-color: var(--low-contrast-transparent-color);
 
     &::before {
+        content: "!";
+
         position: absolute;
         left: 0;
         top: 0;
-        background-color: var(--red);
+
         height: 100%;
         width: calc(2.5 * var(--current-base-font-size));
+
         border-top-left-radius: inherit;
         border-bottom-left-radius: inherit;
-        text-align: center;
-        content: "!";
-        color: var(--white);
+
         font-size: 2lh;
         font-weight: bold;
+
+        text-align: center;
+
+        color: var(--background-color);
+        background-color: var(--danger-color);
     }
 }
 
@@ -1638,7 +698,7 @@ table {
         width: 100%;
         height: 100%;
 
-        background-color: var(--current-bg-color);
+        background-color: var(--background-color);
         opacity: 0.4;
     }
 }
@@ -1648,69 +708,18 @@ table {
     }
 }
 
-.framed {
-    border: thin solid var(--light-gray);
-    --current-bg-color: var(--very-very-light-gray);
-    background-color: var(--current-bg-color);
-    padding: 0.5em;
-    border-radius: var(--small-border-radius);
-
-    &:has(+ *) {
-        margin-bottom: 0.5em;
-    }
-}
-
 /*
     Intended to be used with a container (e.g., a div) to visually accentuate it.
 */
-/*.accentuate {
-    border: thin solid var(--light-gray);
-    padding: 0.25em;
-    border-radius: var(--small-border-radius);
-
-    font-weight: 400;
-
-    --current-fg-color: var(--white);
-    color: var(--current-fg-color);
-    --current-bg-color: var(--dark-red);
-    background-color: var(--current-bg-color);
-    box-shadow: var(--trbl-shadow);
-}*/
 .accentuate {
     display: block;
-    position: relative;
 
-    &::before {
-        display: block;
-        content: " ";
-        position: absolute;
-        top: 0;
-        left: -1em;
-        height: 100%;
-        width: 1em;
+    margin-top: var(--shadow-extent);
+    box-shadow: var(--t-shadow);
 
-        border-radius: var(--small-border-radius) 0 0 var(--small-border-radius);
-        --current-bg-color: var(--red);
-        background-color: var(--current-bg-color);
-    }
+    border-radius: var(--small-border-radius);
 
-    margin-left: 1em;
-    border-radius: 0 var(--small-border-radius) var(--small-border-radius) 0;
-    padding: 0.25em;
-    font-weight: 300;
-    --current-rel-fg-color: color-mix(
-            in lch,
-            var(--current-fg-color) 90%,
-            var(--current-bg-color) 10%
-        )
-        color: var(--current-rel-fg-color);
-    text-shadow: 1px 1px 1px var(--white);
-    --current-rel-bg-color: color-mix(
-        in lch,
-        var(--current-bg-color) 90%,
-        var(--current-fg-color) 10%
-    );
-    background-color: var(--current-rel-bg-color);
+    padding: var(--default-container-padding);
 }
 
 /* Images are block-level by default in Docutils */
@@ -1749,7 +758,7 @@ iframe {
 .embedded-iframe {
     overflow: hidden;
 
-    /*margin: var(--trbl-shadow-margin);
+    /*margin: var(--shadow-margin);
     box-shadow: var(--trbl-shadow);*/
     border: 1px solid var(--border-color);
     border-radius: var(--small-border-radius);
@@ -1787,8 +796,7 @@ video {
 .index-card {
     display: inline-block;
     font-family: "Bradley Hand", cursive;
-    background-color: var(--very-light-yellow);
-    color: var(--blue);
+    color: var(--accent-color);
     padding-top: 0.25em;
     padding-bottom: 0.25em;
     max-width: 70ch;
@@ -1822,7 +830,7 @@ video {
         font-size: 80%;
         padding: 0.25em;
         border-radius: 0.25em;
-        border: thin solid var(--gray);
+        border: thin solid var(--muted-color);
     }
 }
 
@@ -1833,55 +841,53 @@ video {
 .llm-chat-user {
     --llm-chat-actor: "User";
 
-    --current-bg-color: var(--gray);
-    background-color: var(--current-bg-color);
-    color: var(--very-light-gray);
+    background-color: var(--meta-color);
+    color: oklch(from var(--meta-color) round(1 - (l - 0.2)) c h);
 }
 
 .llm-chat-user,
 .llm-chat-agent {
     position: relative;
+
     border-radius: var(--small-border-radius);
-    border: thin solid var(--gray);
+    border: thin solid var(--muted-color);
     padding: var(--s-padding);
     overflow-x: clip;
 
     &::before {
-        position: absolute;
-        top: -0.25ch;
-        right: 0.25em;
         content: var(--llm-chat-actor);
-        color: var(--very-light-gray);
-        font-size: 60%;
-        text-shadow: 0.1em 0.1em 0.1em var(--black);
+
+        position: absolute;
+        top: 0.25ch;
+        right: 1ch;
+
         display: block;
+
+        font-size: 70%;
+        color: var(--background-color);
+        text-shadow: 0.1em 0.1em 0.1em var(--primary-color);
     }
 }
 
+.picture,
 .screenshot {
     box-shadow: var(--trbl-shadow);
-    margin: var(--trbl-shadow-margin);
+    margin: var(--shadow-margin);
     border-radius: var(--small-border-radius);
 }
 
 .light-image {
     color-scheme: only light;
-    /* If the current background color is white, we set the background color
-       to transparent. If the background color is not white, we use white. */
-    /* Gradual transparency: background-color: oklab(from var(--current-rel-bg-color) 1 0 0 / calc(1 - l)); */
-    --current-bg-color: oklab(
-        from var(--current-rel-bg-color) 1 0 0 /
-            clamp(0, round((1 - l) * 1e9), 1)
-    ); /* Hack to get either no or full opacity/transparencey. Replace with "if" once Safari and Firefox support it. */
-    background-color: var(--current-bg-color);
+
     border-radius: var(--small-border-radius);
     padding: var(--default-container-padding);
-    backdrop-filter: blur(3px);
-}
 
-.dark-image {
-    color-scheme: dark;
-    background-color: var(--black);
-    border-radius: var(--small-border-radius);
-    padding: calc(var(--default-container-padding) * 0.5);
+    /* If the current background color is white, we set the background color
+       to transparent. If the background color is not white, we use white. */
+
+    background-color: oklab(
+        from var(--background-color) 1 0 0 / clamp(0, round((1 - l) * 1e9), 1)
+    ); /* Hack to get either no or full opacity/transparencey. Replace with "if" once Safari and Firefox support it. */
+
+    backdrop-filter: blur(3px);
 }

@@ -31,7 +31,7 @@
          <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
     
 </head>
-<body>
+<body data-theme="<light-dark>">
 <template>
 <ld-topic id="public-key-kryptographie-und-rsa">
 <h1 class="title">Public-Key-Kryptographie und RSA</h1>
@@ -89,12 +89,10 @@
 <h2>Prinzipien von Public-Key-Kryptosystemen</h2>
 <ul>
 <li><p>Das Konzept der <em>Public-Key-Kryptographie</em> (d. h. der Kryptografie mit öffentlichen Schlüsseln) entstand aus dem Versuch, zwei der schwierigsten Probleme im Zusammenhang mit der symmetrischen Verschlüsselung zu lösen:</p>
-<aside class="admonition admonition-schlusselverteilung">
-<p class="admonition-title">Schlüsselverteilung</p>
+<aside class="admonition admonition-schlusselverteilung"><p class="admonition-title">Schlüsselverteilung</p>
 <p>Wie kann man generell sicher kommunizieren, ohne einem &quot;Key Distribution Center&quot; (KDC) seinen Schlüssel anvertrauen zu müssen?</p>
 </aside>
-<aside class="admonition admonition-digitale-signaturen">
-<p class="admonition-title">Digitale Signaturen</p>
+<aside class="admonition admonition-digitale-signaturen"><p class="admonition-title">Digitale Signaturen</p>
 <p>Wie kann man überprüfen, ob eine Nachricht unversehrt vom angegebenen Absender stammt?</p>
 </aside>
 </li>
@@ -213,24 +211,24 @@
 </thead>
 <tbody>
 <tr><td><p>RSA</p></td>
-<td><p><span class="shiny-green">✓</span></p></td>
-<td><p><span class="shiny-green">✓</span></p></td>
-<td><p><span class="shiny-green">✓</span></p></td>
+<td><p><span class="success">✓</span></p></td>
+<td><p><span class="success">✓</span></p></td>
+<td><p><span class="success">✓</span></p></td>
 </tr>
 <tr><td><p>Elliptic Curve</p></td>
-<td><p><span class="shiny-green">✓</span></p></td>
-<td><p><span class="shiny-green">✓</span></p></td>
-<td><p><span class="shiny-green">✓</span></p></td>
+<td><p><span class="success">✓</span></p></td>
+<td><p><span class="success">✓</span></p></td>
+<td><p><span class="success">✓</span></p></td>
 </tr>
 <tr><td><p>Diffie-Hellman</p></td>
-<td><p><span class="shiny-red">✗</span></p></td>
-<td><p><span class="shiny-red">✗</span></p></td>
-<td><p><span class="shiny-green">✓</span></p></td>
+<td><p><span class="fail">✗</span></p></td>
+<td><p><span class="fail">✗</span></p></td>
+<td><p><span class="success">✓</span></p></td>
 </tr>
 <tr><td><p>DSS<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
-<td><p><span class="shiny-red">✗</span></p></td>
-<td><p><span class="shiny-green">✓</span></p></td>
-<td><p><span class="shiny-red">✗</span></p></td>
+<td><p><span class="fail">✗</span></p></td>
+<td><p><span class="success">✓</span></p></td>
+<td><p><span class="fail">✗</span></p></td>
 </tr>
 </tbody>
 </table>
@@ -249,22 +247,19 @@
 <li><p>Für den Empfänger <span class="math">\(B\)</span> ist es <em>rechnerisch einfach</em>, den resultierenden Chiffretext mit Hilfe des privaten Schlüssels zu entschlüsseln, um die ursprüngliche Nachricht wiederherzustellen.</p></li>
 <li><p>Die beiden Schlüssel können in beliebiger Reihenfolge verwendet werden.</p></li>
 </ul>
-<ul class="incremental-list negative-list simple">
+<ul class="negative-list incremental-list simple">
 <li><p>Für einen Angreifer, der den öffentlichen Schlüssel kennt, ist es <em>rechnerisch unmöglich</em>, den privaten Schlüssel zu ermitteln.</p></li>
 <li><p>Für einen Angreifer, der den öffentlichen Schlüssel und einen Chiffretext kennt, ist es <em>rechnerisch unmöglich</em>, die ursprüngliche Nachricht wiederherzustellen.</p></li>
 </ul>
 </ld-topic>
 <ld-topic id="anforderungen-an-public-key-algorithmen-1">
 <h2>Anforderungen an Public-Key-Algorithmen</h2>
-<aside class="admonition repetition">
-<p class="admonition-title">Wiederholung</p>
-<p>Eine Einwegfunktion ist im Allgemeinen eine Funktion, bei der jeder Funktionswert <span class="math-i">Y</span> eine eindeutige Umkehrung hat, wobei die <em>Berechnung der Funktion einfach</em> ist, während die <em>Bestimmung der Umkehrfunktion praktisch undurchführbar ist</em>.</p>
+<aside class="admonition" data-theme="repetition"><p class="admonition-title" data-theme="repetition-header"><span>Wiederholung</span></p><p>Eine Einwegfunktion ist im Allgemeinen eine Funktion, bei der jeder Funktionswert <span class="math-i">Y</span> eine eindeutige Umkehrung hat, wobei die <em>Berechnung der Funktion einfach</em> ist, während die <em>Bestimmung der Umkehrfunktion praktisch undurchführbar ist</em>.</p>
 <ul class="simple">
 <li><p><span class="math">\(Y = f(X)\)</span> einfach</p></li>
 <li><p><span class="math">\(X = f^{–1}(Y)\)</span> „unmöglich“</p></li>
 </ul>
-</aside>
-<ld-story>
+</aside><ld-story>
 <ul class="incremental-list">
 <li><p>Benötigt wird jedoch eine Falltürfunktion (<span class="eng">Trapdoor one-way function</span>); d. h. eine Einwegfunktion die effizient umkehrbar ist, <strong>wenn ein Geheimnis bekannt ist</strong>.</p></li>
 <li><p>Eine Einwegfunktion mit Falltür ist eine Familie invertierbarer Funktionen <span class="math">\(f_k\)</span>, für die gilt:</p>
@@ -324,12 +319,12 @@
 <p>B berechnet <span class="math">\(K = F(b, F(a,s))\)</span></p>
 </li>
 </ul>
-<ul class="incremental-list negative-list">
+<ul class="negative-list incremental-list">
 <li><p>Angreifer M kennt <span class="math-i">F</span> und <span class="math-i">s</span>.</p>
 <p>Der Angreifer kann/könnte ggf. berechnen <span class="math">\(K = F(F(a,s),F^{-1}(F(b,s),s))\)</span></p>
 </li>
 <li><p>Die Sicherheit beruht auf der Annahme, dass die Umkehrung der Funktion <span class="math-i">F(x, s)</span> nach <span class="math-i">x</span> nicht effizient möglich ist – selbst wenn <span class="math-i">s</span> bekannt ist.</p>
-<ld-supplemental><aside class="admonition example"><p class="admonition-title"><span>Beispiel</span></p><p class="rubric">Falls <span class="math">\(F\)</span> invertierbar ist</p>
+<ld-supplemental><aside class="admonition" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel</span></p><p class="rubric">Falls <span class="math">\(F\)</span> invertierbar ist</p>
 <p>Sei <span class="math">\(a = 3\)</span>, <span class="math">\(b = 5\)</span> und <span class="math">\(s = 4\)</span>.</p>
 <p>Sei unsere Funktion <span class="math">\(F\)</span>: <span class="math">\(F(x,y) = x + y\)</span></p>
 <p>Dann ist <span class="math">\(F(a, F(b,s)) = F(a, b + s) = a + b + s = 3 + 5 + 4 = 12\)</span> und <span class="math">\(F(b, F(a,s)) = F(b, a + s) = b + a + s = 5 + 3 + 4 = 12\)</span>.</p>
@@ -359,8 +354,7 @@
 </li>
 <li><p>Die Sicherheit des Diffie-Hellman-Protokolls beruht auf der Schwierigkeit des diskreten Logarithmusproblems. Das Problem aus <span class="math">\(g^x \equiv y \mod p\)</span> den Exponenten <span class="math-i">x</span> zu finden, ist in großen Gruppen praktisch schwer lösbar.</p></li>
 </ul>
-<aside class="admonition incremental warning">
-<p class="admonition-title">Warnung</p>
+<aside class="admonition incremental" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warnung</p>
 <p>Klassisches Diffie-Hellmann kann von zukünftigen leistungsstarken Quantenrechnern unter Einsatz des Shor Algorithmus potentiell gebrochen werden.</p>
 <p>„Nachfolger“ ist zum Beispiel CRYSTALS-Kyber.</p>
 </aside>
@@ -533,7 +527,7 @@ ex\; mod\; \phi(n) &amp; = &amp; 1
 <ul class="incremental">
 <li><p>Eine Eigenschaft der modularen Arithmetik kann genutzt werden:</p>
 <p><span class="math">\([(a\; mod\; n) \times (b\; mod\; n)]\; mod\; n =(a \times b)\; mod\; n\)</span></p>
-<aside class="admonition example"><p class="admonition-title"><span>Beispiel</span></p><p><span class="math">\([11 = 1011_b]\qquad 2^{11} = 2^1 \times 2^2 \times 2^8 = 2 \times 4 \times  256\)</span></p>
+<aside class="admonition" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel</span></p><p><span class="math">\([11 = 1011_b]\qquad 2^{11} = 2^1 \times 2^2 \times 2^8 = 2 \times 4 \times  256\)</span></p>
 <p><span class="math">\([09 = 1001_b] \qquad 2^9\; mod\; 13 = [(2^1\; mod\; 13) \times (2^8 \; mod\; 13)]\; mod\; 13\)</span></p>
 </aside></li>
 </ul>
@@ -550,8 +544,7 @@ ex\; mod\; \phi(n) &amp; = &amp; 1
 <h2>Algorithmus zur Berechnung von <span class="math">\(a^b\; mod\; n\)</span></h2>
 <p class="rubric">Quadrieren und Multiplizieren (<span class="eng">Square and Multiply</span>)</p>
 <p>Die Ganzzahl <span class="math">\(b\)</span> wird als Binärzahl <span class="docutils literal"><span class="pre">b[k]b[k-1]...b[0]</span></span> ausgedrückt:</p>
-<aside class="admonition width-40 float-right hint">
-<p class="admonition-title">Hinweis</p>
+<aside class="admonition width-40 float-right" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p>
 <p><span class="docutils literal">c</span> stellt lediglich die Komponente dar.</p>
 </aside>
 <pre class="code pascal literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">c</span><span class="whitespace"> </span><span class="operator">:=</span><span class="whitespace"> </span><span class="literal number integer">0</span><span class="operator">;</span><span class="whitespace"> </span><span class="name">f</span><span class="whitespace"> </span><span class="operator">:=</span><span class="whitespace"> </span><span class="literal number integer">1</span><span class="whitespace">
@@ -776,7 +769,7 @@ ex\; mod\; \phi(n) &amp; = &amp; 1
 <ld-topic class="exercises transition-fade" id="ubung">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Diffie-Hellmann(-Merkle)" id="ld-exercise-1">
-<p class="ld-exercise-title rubric">Diffie-Hellmann(-Merkle)</p>
+<p class="ld-exercise-title rubric"><span>Diffie-Hellmann(-Merkle)</span></p>
 <p>Führen Sie das DH-Verfahren von Hand durch. Die gemeinsame Primzahl <span class="math">\(p\)</span> sei <span class="math">\(17\)</span>, <span class="math">\(s\)</span> sei <span class="math">\(7\)</span>. Alice wählt <span class="math">\(a = 5\)</span>, Bob wählt <span class="math">\(b = 6\)</span>.</p>
 <p>Welche Werte werden ausgetauscht, wie lautet der Schlüssel?</p>
 <div class="ld-exercise-solution" data-encrypted="true">
@@ -786,13 +779,13 @@ MTAwMDAw:YFH/MpjdhEDIOta+Ep9sWq2DE+MmdEyGo/9McRH7SAY=:H+1ElxHLF/jf4OqH:euCJBMJ1w
 <ld-topic class="exercises transition-fade" id="ubung-1">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Square-and-Multiply" id="ld-exercise-2">
-<p class="ld-exercise-title rubric">Square-and-Multiply</p>
+<p class="ld-exercise-title rubric"><span>Square-and-Multiply</span></p>
 <p>Führen Sie den Square-and-Multiply Algorithmus Schritt-für-Schritt für <span class="math">\(3^{17}\, mod\, 23\)</span> aus.</p>
 <div class="ld-exercise-solution" data-encrypted="true">
 MTAwMDAw:+JlRaoxGKnYqAD6hA3tWdwr2izuFRwZh8lgO6lFeB44=:ZE2971IeoEYGeCbR:QhJ9hNMYim02KBfFgP8kwRKxJFmhpwkQooFCtW0VNbblK9Fv/emt12KVIT6+lR95CQgql8MNTd1b5vEJPGOe4OPn+wcn/rG47204SOte1d669/ENQMHZMdc4EWW9/oLTc2A6KZT9hcGeRdeAcGXm0NAKyjWY3jt5ZMbc/EMUKAxNFNtvckP7PoRpYE5W8vnSST+z0doaRmdPV5DNLkA2C2F7RcYhl0w3LMIdX1pCTD5YRJ+/bhiswpLesFPElATwhnHjNkRFB385csVZxLMv8gZpeHjA6Ntn8Mo=</div>
 </div>
 <div class="ld-exercise" data-exercise-id="3" data-exercise-title="3 - Nachrichtenentschlüsselung" id="ld-exercise-3">
-<p class="ld-exercise-title rubric">Nachrichtenentschlüsselung</p>
+<p class="ld-exercise-title rubric"><span>Nachrichtenentschlüsselung</span></p>
 <p>Entschlüsseln sie die folgende mit RSA verschlüsselte Nachricht</p>
 <div class="math">
 \begin{equation*}
@@ -821,7 +814,7 @@ MTAwMDAw:14BfYI0P1bBkOoO4XEpmlIaVjskgWcJJY/fjxMaiswQ=:OrSrZ/QbqHFLO3C8:k75ns50en
 <ld-topic class="exercises transition-fade" id="ubung-2">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="4" data-exercise-title="4 - Verschlüsselung mit RSA" id="ld-exercise-4">
-<p class="ld-exercise-title rubric">Verschlüsselung mit RSA</p>
+<p class="ld-exercise-title rubric"><span>Verschlüsselung mit RSA</span></p>
 <p>Verschlüsseln Sie eine Nachricht mit RSA mit selber gewählten Parametern.</p>
 <p>D. h., wählen Sie 2 kleine Primzahlen, berechnen Sie dann <span class="math">\(e\)</span>, <span class="math">\(d\)</span>, <span class="math">\(n\)</span>. Verschlüsseln Sie dann die Nachricht (d. h. einen (eher) kleinen Wert) mit dem öffentlichen Schlüssel einer anderen Person und senden Sie der Person die verschlüsselte Nachricht. Die Zielperson soll Ihre Nachricht entschlüsseln.</p>
 <div class="ld-exercise-solution" data-encrypted="true">

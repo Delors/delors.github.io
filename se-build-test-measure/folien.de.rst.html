@@ -30,7 +30,7 @@
          <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
     
 </head>
-<body>
+<body data-theme="<light-dark>">
 <svg xmlns="http://www.w3.org/2000/svg" class="svg-global-defs"><defs><marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">     <path class="arrow-head" d="M 0 0 L 10 5 L 0 10 z" /> </marker></defs></svg>
 <svg xmlns="http://www.w3.org/2000/svg" class="svg-global-style"><style>rect {     fill: white;     stroke: blue;     stroke-width: 0.2; } text {     fill: black;     font-family: var(--code-font-family); }</style></svg>
 <template>
@@ -96,7 +96,7 @@
 <dd><p><strong>Make</strong>, <strong>CMake</strong></p>
 </dd>
 <dt>Java<span class="colon">:</span></dt>
-<dd><p><strong>Maven</strong>, Gradle, <span class="obsolete">Ant</span>, sbt</p>
+<dd><p><strong>Maven</strong>, Gradle, <s>Ant</s>, sbt</p>
 </dd>
 <dt>Scala<span class="colon">:</span></dt>
 <dd><p><strong>sbt</strong></p>
@@ -112,15 +112,15 @@
 <ld-topic id="minimale-anforderungen-an-ein-buildskript-fur-softwareprojekte">
 <h2>Minimale Anforderungen an ein Buildskript für Softwareprojekte</h2>
 <ol class="arabic simple incremental-list">
-<li><p><strong>Kompilieren</strong> des Codes nach einem frischen Update (<span class="red">bei Fehler Abbruch</span>)</p></li>
+<li><p><strong>Kompilieren</strong> des Codes nach einem frischen Update (<span class="fail">bei Fehler Abbruch</span>)</p></li>
 <li><p><strong>Testen</strong> des Codes:</p>
 <ol class="arabic simple incremental-list">
-<li><p><strong>Unit-Tests</strong> (<span class="red">bei Fehler Abbruch</span>)</p></li>
-<li><p><strong>Integrationstests</strong> (<span class="red">bei Fehler Abbruch</span>)</p></li>
-<li><p>Systemtests/Abnahmetests (<span class="red">bei Fehler Abbruch</span>)</p></li>
+<li><p><strong>Unit-Tests</strong> (<span class="fail">bei Fehler Abbruch</span>)</p></li>
+<li><p><strong>Integrationstests</strong> (<span class="fail">bei Fehler Abbruch</span>)</p></li>
+<li><p>Systemtests/Abnahmetests (<span class="fail">bei Fehler Abbruch</span>)</p></li>
 </ol>
 </li>
-<li><p><strong>Packaging</strong> des Projekts (<span class="red">bei Fehler Abbruch</span>)</p></li>
+<li><p><strong>Packaging</strong> des Projekts (<span class="fail">bei Fehler Abbruch</span>)</p></li>
 <li><p><strong>Deployment</strong> (typischerweise in einer Testumgebung)</p></li>
 </ol>
 </ld-topic>
@@ -139,7 +139,7 @@
 </ld-topic>
 <ld-topic id="validierung-vs-verifikation-v-v">
 <h2>Validierung vs. Verifikation (V&amp;V)</h2>
-<ld-deck>
+<ld-deck class="height-100">
 <ld-card>
 <dl class="field-list simple">
 <dt>Validierung<span class="colon">:</span></dt>
@@ -150,8 +150,10 @@
 </dd>
 </dl>
 </ld-card><ld-card class="incremental">
+<div class="scale-on-hover backdrop-blur docutils container">
 <object class="align-right" data="images/software_inspektionen.svg" role="img" type="image/svg+xml">
-</object><p class="rubric">Zwei komplementäre Ansätze die (V&amp;V) unterscheiden:</p>
+</object></div>
+<p class="rubric">Zwei komplementäre Ansätze die (V&amp;V) unterscheiden:</p>
 <ol class="arabic list-with-explanations">
 <li><p>Software-Inspektionen oder Peer-Reviews (statische Technik)</p>
 <p>Software-Inspektionen können in allen Phasen des Prozesses durchgeführt werden.</p>
@@ -177,11 +179,8 @@
 <p class="rubric">Formale Verifikation</p>
 <p>Die formale Verifizierung kann das Nichtvorhandensein bestimmter Fehler garantieren. So kann z. B. garantiert werden, dass ein Programm keine Deadlocks, Race Conditions oder Pufferüberläufe enthält.</p>
 </div>
-<aside class="admonition incremental summary">
-<p class="admonition-title">Zusammenfassung</p>
-<p>Software-Inspektionen zeigen nicht, dass die Software nützlich ist.</p>
-</aside>
-</ld-story></ld-topic>
+<aside class="admonition incremental" data-theme="summary"><p class="admonition-title" data-theme="summary-header"><span>Zusammenfassung</span></p><p>Software-Inspektionen zeigen nicht, dass die Software nützlich ist.</p>
+</aside></ld-story></ld-topic>
 <ld-topic id="ausgewahlte-testziele">
 <h2>ausgewählte Testziele</h2>
 <ul class="simple">
@@ -195,16 +194,20 @@
 <ld-topic class="no-title" id="testarten">
 <h2>Testarten</h2>
 <ld-grid class="height-100 default-layout">
-<ld-cell class="width-50 height-100 black-background white padding-1em" style="align-self:auto;">
+<ld-cell class="width-50 height-100" style="align-self:auto;">
+<div class="padding-1em compound" data-theme="dark">
 <p><strong>Black Box Testen</strong></p>
 <p>Wir wollen die Korrektheit zeigen.</p>
 <p>Testdaten werden durch die Untersuchung der Domäne gewonnen. Was sind gültige und was sind ungültige Eingabewerte in der Domäne?</p>
 <p>Der Test kann (und sollte!) ohne Betrachtung der konkreten Implementierung entwickelt werden.</p>
-</ld-cell><ld-cell class="width-50 height-100 white-background black padding-1em" style="align-self:auto;">
+</div>
+</ld-cell><ld-cell class="width-50 height-100" style="align-self:auto;">
+<div class="padding-1em compound" data-theme="light">
 <p><strong>White Box Testen</strong></p>
 <p>Wie auch beim Black-Box Test wollen wir die Korrektheit zeigen.</p>
 <p>Testdaten werden durch die Inspektion des Programms gewonnen.</p>
 <p>Das heißt im Umkehrschluss, dass wir den Quellcode des Programms benötigen.</p>
+</div>
 </ld-cell></ld-grid></ld-topic>
 <ld-topic id="der-umfang-eines-tests-ist-die-sammlung-der-zu-prufenden-softwarekomponenten">
 <h2>Der Umfang eines Tests ist die Sammlung der zu prüfenden Softwarekomponenten.</h2>
@@ -226,11 +229,8 @@
 <ld-topic id="testplane">
 <h2>Testpläne</h2>
 <p>Testpläne beschreiben, wie die Software getestet wird.</p>
-<aside class="admonition incremental observation">
-<p class="admonition-title">Beobachtung</p>
-<p>Da die Anzahl der Tests praktisch unendlich ist, müssen wir (für praktische Zwecke) eine Annahme darüber treffen, wo Fehler wahrscheinlich zu finden sind; d. h. die Tests müssen auf einem Fehlermodell beruhen.</p>
-</aside>
-<div class="incremental docutils container">
+<aside class="admonition incremental" data-theme="observation"><p class="admonition-title" data-theme="observation-header"><span>Beobachtung</span></p><p>Da die Anzahl der Tests praktisch unendlich ist, müssen wir (für praktische Zwecke) eine Annahme darüber treffen, wo Fehler wahrscheinlich zu finden sind; d. h. die Tests müssen auf einem Fehlermodell beruhen.</p>
+</aside><div class="incremental docutils container">
 <p>Es gibt zwei allgemeine Fehlermodelle und entsprechende Prüfstrategien:</p>
 <ol class="arabic simple">
 <li><p>konformitätsorientiertes Testen</p></li>
@@ -254,8 +254,7 @@
 </ul>
 </li>
 </ol>
-<aside class="admonition incremental hint">
-<p class="admonition-title">Hinweis</p>
+<aside class="admonition incremental" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p>
 <p>Ein gültiges Dreieck muss zwei Bedingungen erfüllen:</p>
 <ul class="simple">
 <li><p>Keine Seite darf eine Länge von Null haben</p></li>
@@ -364,11 +363,8 @@
 </ld-supplemental></ld-card></ld-deck></ld-topic>
 <ld-topic id="test-uberdeckung-eng-test-coverage">
 <h2>(Test-)Überdeckung (eng.  (Test-)Coverage)</h2>
-<aside class="admonition question">
-<p class="admonition-title">Frage</p>
-<p>Wie wissen wir aber wie “gut” unsere Tests sind?</p>
-</aside>
-<aside class="admonition definition incremental"><p class="admonition-title"><span>Definition</span></p><p>Testüberdeckung beschreibt, wie viel des Programms durch die Tests geprüft wird.</p>
+<aside class="admonition" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Wie wissen wir aber wie “gut” unsere Tests sind?</p>
+</aside><aside class="admonition incremental" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><p>Testüberdeckung beschreibt, wie viel des Programms durch die Tests geprüft wird.</p>
 </aside><div class="incremental docutils container">
 <p>Hierbei gibt es verschiedene Überdeckungskriterien, die verschiedene Metriken für die Beschreibung der Testgüte nutzen.</p>
 </div>
@@ -390,13 +386,10 @@
 <p>Testfälle:</p>
 <pre class="code java literal-block"><small class="ln">1 </small><code data-lineno="1 "><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">false</span><span class="punctuation">);</span><span class="whitespace">
 </span></code><small class="ln">2 </small><code data-lineno="2 "><span class="whitespace"></span><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">);</span></code></pre>
-<aside class="admonition incremental question">
-<p class="admonition-title">Frage</p>
-<p>Wie hoch ist die Anweisungsüberdeckung? Sind beide Testfälle notwendig?</p>
+<aside class="admonition incremental" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Wie hoch ist die Anweisungsüberdeckung? Sind beide Testfälle notwendig?</p>
 <ld-presenter-note encrypted="">
 MTAwMDAw:GFvjVeugs4u1Qj5tz6vkVS1TPrBkg05Rp2OMdKiKLZc=:xe6c0RURNqKync5m:I8aYCpidfwJJPKfjnaSSRwaiXHKJXwreNK0PSvJBDG+pM/jDQNazB44TDhDaDAZccSivzFx4mcd5ZTOIuhDYkPvFLEiUzmG7nI8OnkE0bDgrv7SNl2Q+BMjtnM+I/+Jg9GWprWRoR5kd</ld-presenter-note>
-</aside>
-</ld-cell></ld-grid><aside class="admonition definition margin-top-1em incremental"><p class="admonition-title"><span>Definition</span></p><div class="math">
+</aside></ld-cell></ld-grid><aside class="admonition margin-top-1em incremental" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><div class="math">
 \begin{equation*}
 \text{Anweisungsüberdeckung} = \frac{\text{\# ausgeführte Anweisungen}}{\text{\# aller Anweisungen}} \cdot 100\%
 \end{equation*}
@@ -460,14 +453,11 @@ MTAwMDAw:GFvjVeugs4u1Qj5tz6vkVS1TPrBkg05Rp2OMdKiKLZc=:xe6c0RURNqKync5m:I8aYCpidf
 </svg>
 </div></ld-cell></ld-grid><ld-deck class="incremental">
 <ld-card>
-<aside class="admonition question">
-<p class="admonition-title">Frage</p>
-<p>Wie hoch ist die Anweisungsüberdeckung? Sind beide Testfälle notwendig?</p>
+<aside class="admonition" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Wie hoch ist die Anweisungsüberdeckung? Sind beide Testfälle notwendig?</p>
 <ld-presenter-note encrypted="">
 MTAwMDAw:GFvjVeugs4u1Qj5tz6vkVS1TPrBkg05Rp2OMdKiKLZc=:xe6c0RURNqKync5m:I8aYCpidfwJJPKfjnaSSRwaiXHKJXwreNK0PSvJBDG+pM/jDQNazB44TDhDaDAZccSivzFx4mcd5ZTOIuhDYkPvFLEiUzmG7nI8OnkE0bDgrv7SNl2Q+BMjtnM+I/+Jg9GWprWRoR5kd</ld-presenter-note>
-</aside>
-</ld-card><ld-card class="incremental">
-<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><div class="math">
+</aside></ld-card><ld-card class="incremental">
+<aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><div class="math">
 \begin{equation*}
 \text{Zweigüberdeckung} = \frac{\text{\# ausgeführte Zweige}}{\text{\# aller Zweige}} \cdot 100\%
 \end{equation*}
@@ -477,7 +467,7 @@ MTAwMDAw:GFvjVeugs4u1Qj5tz6vkVS1TPrBkg05Rp2OMdKiKLZc=:xe6c0RURNqKync5m:I8aYCpidf
 <h2>Pfadüberdeckung (<span class="eng">Path Coverage</span>)</h2>
 <ld-deck>
 <ld-card>
-<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><div class="math">
+<aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><div class="math">
 \begin{equation*}
 \text{Pfadüberdeckung} = \frac{\text{\# ausgeführten Pfade}}{\text{\# aller (möglichen) Pfade}} \cdot 100\%
 \end{equation*}
@@ -509,15 +499,11 @@ MTAwMDAw:GFvjVeugs4u1Qj5tz6vkVS1TPrBkg05Rp2OMdKiKLZc=:xe6c0RURNqKync5m:I8aYCpidf
 </span></code><small class="ln">4 </small><code data-lineno="4 "><span class="whitespace"></span><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">false</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword constant">false</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">0.1</span><span class="punctuation">);</span><span class="whitespace">
 </span></code><small class="ln">5 </small><code data-lineno="5 "><span class="whitespace"></span><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword constant">false</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">0.1</span><span class="punctuation">);</span><span class="whitespace">
 </span></code><small class="ln">6 </small><code data-lineno="6 "><span class="whitespace"></span><span class="name">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="keyword constant">true</span><span class="punctuation">,</span><span class="whitespace"> </span><span class="literal number float">0.1</span><span class="punctuation">);</span></code></pre>
-<aside class="admonition incremental question">
-<p class="admonition-title">Frage</p>
-<p>Wie hoch ist die Pfadüberdeckung?</p>
+<aside class="admonition incremental" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Wie hoch ist die Pfadüberdeckung?</p>
 <ld-presenter-note encrypted="">
 MTAwMDAw:TTCd8pW9+QKctUJnF4L8EELmQ74FHvj9I4S5cYKUswU=:9+X1tPCwMHsJ+ArQ:QMZHNOHHjgf85UKP6N5PEdX1gIk2t2ndIoajiMjUBrTlEcD85LqvJmS6SBrnDpxdNBJlYFSYTQ==</ld-presenter-note>
-</aside>
-</ld-cell></ld-grid></ld-card><ld-card class="center-content incremental">
-<aside class="admonition attention">
-<p class="admonition-title">Achtung!</p>
+</aside></ld-cell></ld-grid></ld-card><ld-card class="center-content incremental">
+<aside class="admonition" data-theme="attention"><p class="admonition-title" data-theme="attention-header">Achtung!</p>
 <p>Die Pfadüberdeckung ist in der Praxis oft nicht realisierbar, da die Anzahl der möglichen Pfade exponentiell mit der Anzahl der Verzweigungen wächst.</p>
 <p>In der Praxis wird daher oft die Zweigüberdeckung als Kompromiss genutzt.</p>
 </aside>
@@ -555,12 +541,9 @@ Beispiel: 100% Anweisungsabdeckung bei Verletzungsgefahr von Passagieren.</p>
 </dd>
 </dl>
 </ld-card><ld-card class="s-overlay center-content height-100 incremental">
-<aside class="admonition backdrop-blur summary">
-<p class="admonition-title">Zusammenfassung</p>
-<p>Das Erreichen eines Überdeckungsziels erfordert Aufwand, der durch die Kritikalität möglicher Fehler motiviert sein muss.</p>
+<aside class="admonition backdrop-blur" data-theme="summary"><p class="admonition-title" data-theme="summary-header"><span>Zusammenfassung</span></p><p>Das Erreichen eines Überdeckungsziels erfordert Aufwand, der durch die Kritikalität möglicher Fehler motiviert sein muss.</p>
 <p>In vielen Anwendersystemen ist eine hundertprozentige Testabdeckung nicht notwendig. Testabdeckung ist dennoch zu messen.</p>
-</aside>
-</ld-card></ld-deck></ld-topic>
+</aside></ld-card></ld-deck></ld-topic>
 <ld-topic class="transition-flip no-title center-content" id="grenzen-des-testens">
 <h2>Grenzen des Testens</h2>
 <blockquote class="epigraph">
@@ -766,8 +749,7 @@ MTAwMDAw:1Bq7S0q5JJb2tQ/kLfOyLDDfbNcw/ag7oOIYGtL+Nkg=:1yvrokRkoi9iw7nz:0+Goqx3xN
 </ld-card></ld-deck></ld-topic>
 <ld-topic class="no-title center-content" id="es-gibt-keine-fixen-werten">
 <h2>Es gibt keine fixen Werten</h2>
-<aside class="admonition warning">
-<p class="admonition-title">Warnung</p>
+<aside class="admonition" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warnung</p>
 <p>Umfangreiche Forschung hat gezeigt, dass es keine fixen Werte gibt, die für alle Projekte gelten. Es hat sich weiterhin gezeigt, dass es keine einzige Metrik gibt, die alleine zur Bewertung der Qualität eines Systems ausreicht. Welche Metriken die Qualität des Systems am besten beschreiben, lässt sich immer nur posthum beantworten.</p>
 <p>Metriken sind immer kontextabhängig zu bewerten.</p>
 <p>Metriken eignen sich insbesondere, um Veränderungen zu bewerten und um die Entwicklung von Software zu überwachen.</p>
@@ -815,7 +797,7 @@ barkeit</p></th>
 <tr><td><p>formale Methoden</p></td>
 <td></td>
 <td></td>
-<td><p><span class="green">✓</span></p></td>
+<td><p><span class="success">✓</span></p></td>
 <td><p>↑</p></td>
 </tr>
 <tr><td><p>Strukturanalysen</p></td>
@@ -828,7 +810,7 @@ barkeit</p></th>
 <p>(<span class="eng">Linting</span>)</p>
 </td>
 <td></td>
-<td><p><span class="green">✓</span></p></td>
+<td><p><span class="success">✓</span></p></td>
 <td></td>
 <td><p>↓</p></td>
 </tr>
@@ -839,20 +821,15 @@ barkeit</p></th>
 <ld-topic class="exercises" id="ubung-1">
 <h2>Übung</h2>
 <ld-story>
-<aside class="admonition incremental attention">
-<p class="admonition-title">Achtung!</p>
+<aside class="admonition incremental" data-theme="attention"><p class="admonition-title" data-theme="attention-header">Achtung!</p>
 <p>Um einen Lernerfolg zu erhalten, sollten Sie die Schritte unten selber durchführen und nicht die Aufgabenstellung als solches direkt an den KI Assistenten Ihrer Wahl übergeben!</p>
 </aside>
-<aside class="admonition incremental remark">
-<p class="admonition-title">Bemerkung</p>
-<p>Für die folgenden Aufgabe sind keine Kenntnisse von HTML, JavaScript oder CSS notwendig. Wenn es Probleme gibt, dann beschreiben Sie das Problem der KI und lassen sich helfen!</p>
-</aside>
-<aside class="admonition incremental hint">
-<p class="admonition-title">Hinweis</p>
+<aside class="admonition incremental" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung</span></p><p>Für die folgenden Aufgabe sind keine Kenntnisse von HTML, JavaScript oder CSS notwendig. Wenn es Probleme gibt, dann beschreiben Sie das Problem der KI und lassen sich helfen!</p>
+</aside><aside class="admonition incremental" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p>
 <p>Es kann sehr hilfreich sein, den Code häufig in ein Repository einzuchecken, da sie bei Problemen somit immer auf einen vorherigen Stand zurückkehren können.</p>
 </aside>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Eine eigene Webanwendung bauen mittels Vibe-Coding" id="ld-exercise-2">
-<p class="ld-exercise-title rubric">Eine eigene Webanwendung bauen mittels Vibe-Coding</p>
+<p class="ld-exercise-title rubric"><span>Eine eigene Webanwendung bauen mittels Vibe-Coding</span></p>
 <div class="incremental docutils container">
 <p>Entwickeln Sie mittels Vibe-Coding eine einfache, aber vollständige Webanwendung, die nur Standard JavaScript, CSS und HTML verwendet. Es sollen keine Frameworks oder externe Bibliotheken für die Ausführung der Anwendung notwendig sein.</p>
 </div>
@@ -866,8 +843,7 @@ barkeit</p></th>
 </ol>
 <p>Validieren Sie, dass Ihr Build-Skript auch die neuesten Versionen der eingebundenen Tools verwendet. <em>Dies erfordert in der Regel eine Google-Suche nach den aktuellen Versionen.</em></p>
 <ld-supplemental><p>Wenn Sie NodeJs installieren, dann steht Ihnen auch NPM zur Verfügung.</p>
-<aside class="admonition hint">
-<p class="admonition-title">Hinweis</p>
+<aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p>
 <p>KI Codegeneratoren referenzieren üblicherweise veraltete Tools und Bibliotheken. Ggf. müssen Sie danach auch die Konfigurationsskripte anpassen lassen.</p>
 </aside>
 </ld-supplemental></li>

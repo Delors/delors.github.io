@@ -1,0 +1,206 @@
+/* LAYER: theme.ld */
+
+.admonition {
+    /*  The following two settings are optionally set by the respective
+        admonition. Set the border-size to "0px" (not "0"), when you
+        set an explicit background. */
+    --admonition-icon: none;
+    --admonition-border-size: 1px; /* <- need to be in pixel! */
+
+    overflow: hidden; /* Required to make our rounded border radiuses work. */
+
+    border: var(--admonition-border-size) solid var(--border-color);
+    border-radius: var(--small-border-radius);
+
+    padding: 0 var(--default-container-padding)
+        calc(var(--default-container-padding) / 2)
+        var(--default-container-padding);
+
+    > p:first-child.admonition-title {
+        position: relative;
+        top: cal(var(--admonition-border-size) * -1);
+        left: calc(
+            (var(--default-container-padding) + var(--admonition-border-size)) *
+                -1
+        );
+
+        display: flex;
+        /* This is necessary to enable centered text if there is not icon: */
+        @container style(--admonition-icon: none) {
+            display: block;
+        }
+
+        width: calc(
+            100% + calc(var(--default-container-padding) * 2) +
+                calc(var(--admonition-border-size) * 2)
+        );
+        line-height: calc(var(--line-height) * 1.25);
+
+        margin-bottom: 0;
+        padding-left: inherit;
+
+        &::before {
+            position: relative;
+            left: calc(var(--default-container-padding) * -1);
+
+            content: var(--admonition-icon);
+
+            display: block;
+
+            width: 1.5em;
+            flex-shrink: 0;
+
+            text-align: center;
+
+            color: var(--symbol-color);
+            background-color: var(--symbol-background-color);
+        }
+
+        & + * {
+            margin-top: 0.15em; /* there is an implicit +0.1em due to the line height */
+        }
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+
+    /*
+
+        Admonition specific configuration.
+
+    */
+
+    /* ------------------- GENERIC ADMONITION ----------------------- */
+
+    &:not([data-theme]) {
+        margin-top: var(--shadow-margin);
+        box-shadow: var(--t-shadow);
+
+        > p.admonition-title {
+            font-weight: bolder;
+        }
+    }
+
+    /* ------------------- SEVERITY RELATED ----------------------- */
+
+    &[data-theme="danger"] {
+        --admonition-icon: "⊘";
+        --border-color: var(--symbol-background-color);
+    }
+    &[data-theme="warning"] {
+        --admonition-icon: "◬";
+        --border-color: var(--symbol-background-color);
+    }
+    &[data-theme="caution"] {
+        --admonition-icon: "☡";
+        --border-color: var(--symbol-background-color);
+    }
+    &[data-theme="important"] {
+        --admonition-icon: "!!";
+        --border-color: var(--symbol-background-color);
+    }
+    &[data-theme="attention"] {
+        --admonition-icon: "▲";
+        --border-color: var(--symbol-background-color);
+    }
+
+    /* ------------------- MATH RELATED ----------------------- */
+
+    &[data-theme="definition"] {
+        --admonition-icon: "≝";
+    }
+    &[data-theme="theorem"] {
+        --admonition-icon: "⊞";
+    }
+    &[data-theme="lemma"] {
+        --admonition-icon: "▸";
+    }
+    &[data-theme="proof"] {
+        --admonition-icon: "■";
+    }
+    &[data-theme="conclusion"] {
+        --admonition-icon: "∴";
+    }
+
+    /* ------------------- ADDITIONAL INFORMATION ------------------- */
+
+    &[data-theme="note"] {
+        --admonition-icon: "◎";
+
+        float: right;
+
+        margin-left: var(--default-margin);
+    }
+    &[data-theme="background"] {
+        --admonition-icon: "▧";
+    }
+    &[data-theme="remark"] {
+        --admonition-icon: "⬩";
+    }
+    &[data-theme="remember"] {
+        --admonition-icon: "✪";
+    }
+    &[data-theme="repetition"] {
+        --admonition-icon: "↻";
+    }
+
+    /* ------------------- SPECIAL CONTENT MARKUP ------------------- */
+
+    &[data-theme="legend"] {
+        --admonition-icon: "Ⓛ";
+    }
+
+    &[data-theme="example"] {
+        --admonition-icon: "⧉";
+        --admonition-border-size: 0px;
+    }
+
+    &[data-theme="summary"] {
+        --admonition-icon: "▤";
+    }
+
+    &[data-theme="question"] {
+        --admonition-icon: "?";
+        --admonition-border-size: 0px;
+    }
+
+    &[data-theme="answer"] {
+        --admonition-icon: "✓";
+        --admonition-border-size: 0px;
+    }
+
+    &[data-theme="observation"] {
+        --admonition-icon: "⦿";
+        --admonition-border-size: 0px;
+    }
+
+    &[data-theme="assessment"] {
+        --admonition-icon: "⚑";
+    }
+
+    &[data-theme="tip"] {
+        --admonition-icon: "★";
+        --admonition-border-size: 0px;
+    }
+
+    &[data-theme="hint"] {
+        --admonition-icon: "※";
+        --admonition-border-size: 0px;
+    }
+
+    &[data-theme="error"] {
+        --border-color: var(--danger-color);
+
+        > p:first-child.admonition-title {
+            text-align: center;
+            font-weight: bolder;
+
+            color: var(--danger-color);
+        }
+    }
+
+    &[data-theme="deprecated"] {
+        --admonition-border-size: 0px;
+    }
+}

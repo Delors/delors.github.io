@@ -6,8 +6,8 @@
    LectureDoc2 to achieve a consistent look and feel and/or to facilitate
    debugging.
 
-   In this file only html elements are styled that are also used by 
-   LectureDoc2's UI. 
+   In this file only html elements are styled that are also used by
+   LectureDoc2's UI.
 
    Michael Eichberg (LectureDoc2) (c) 2026 - www.michael-eichberg.de
 */
@@ -15,7 +15,7 @@
 html,
 body {
     /* The following color definitions primarily serve debugging
-       purposes! Slides and LectureDoc2's UI are expected/required to set 
+       purposes! Slides and LectureDoc2's UI are expected/required to set
        a (background-)color. */
     color: darkred;
     background-color: darkcyan;
@@ -51,9 +51,11 @@ h6 {
     margin-bottom: 0.25em;
 }
 
+/* "pretty" is not supported by firefox and the other look quite strange..
 p {
-    text-wrap: pretty;
+    text-wrap: balance;
 }
+*/
 
 p,
 ol,
@@ -158,6 +160,9 @@ summary {
 /* Block Quotes and Topics */
 blockquote {
     position: relative;
+
+    margin-top: var(--shadow-margin);
+    box-shadow: var(--t-shadow);
     border-radius: var(--small-border-radius);
     padding: 0.15em 0.25em;
 
@@ -166,41 +171,30 @@ blockquote {
         contextual;
     font-weight: 250;
 
-    background-color: color-mix(
-        in lch,
-        var(--current-fg-color) 5%,
-        transparent
-    );
+    background-color: var(--low-contrast-transparent-color);
 
     &.epigraph {
-        padding: 0.25em 0.15em 0.25em var(--default-container-padding);
+        padding: var(--default-container-padding);
 
-        &::before {
-            position: absolute;
-            top: 0;
-            width: 0.25em;
-            left: 0;
-            content: " ";
-            height: 100%;
-            background-color: var(--dark-red);
-            border-radius: 0.5em 0 0 0.5em;
-        }
+        overflow: visible;
+
         &::after {
-            display: block;
+            content: "”";
+
             position: absolute;
             top: 99%;
             right: 0;
-            content: "”";
+            z-index: -1;
+
+            display: block;
+
+            height: 100%;
+
             font-size: 9em;
             font-family: "Times New Roman", Times, serif;
             font-weight: 600;
-            height: 100%;
-            z-index: -1;
-            color: color-mix(
-                in lch,
-                var(--current-rel-fg-color) 15%,
-                transparent
-            );
+
+            color: var(--low-contrast-color);
         }
     }
 

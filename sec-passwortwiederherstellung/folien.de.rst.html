@@ -23,7 +23,7 @@
          <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
     
 </head>
-<body>
+<body data-theme="<light-dark>">
 <template>
 <ld-topic id="passwortwiederherstellung">
 <h1 class="title">Passwortwiederherstellung</h1>
@@ -48,7 +48,7 @@
 </ld-supplemental></ld-topic>
 <ld-topic id="was-ist-passwortwiederherstellung">
 <h2>Was ist Passwortwiederherstellung?</h2>
-<aside class="admonition definition"><p class="admonition-title"><span>Definition</span></p><p>Passwortwiederherstellung ist der Prozess, der dazu dient, ein nicht (mehr) vorhandenes Passwort wiederzuerlangen.</p>
+<aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><p>Passwortwiederherstellung ist der Prozess, der dazu dient, ein nicht (mehr) vorhandenes Passwort wiederzuerlangen.</p>
 </aside><ld-supplemental><ul class="simple">
 <li><p>Wer hat schon einmal Passworte wiederhergestellt?</p></li>
 <li><p>Wer hat Erfahrung mit Linux?</p></li>
@@ -86,8 +86,7 @@
 <li><p>Emily18</p></li>
 <li><p>MuenchenHamburg2023!!!!</p></li>
 </ol>
-<aside class="admonition important">
-<p class="admonition-title">Wichtig</p>
+<aside class="admonition" data-theme="important"><p class="admonition-title" data-theme="important-header">Wichtig</p>
 <p>Es gibt „einfach sichere Passworte“, die in vernünftiger Zeit mit angemessenen Ressourcen nicht wiederhergestellt werden können.</p>
 </aside>
 </ld-topic>
@@ -205,50 +204,37 @@
 <li><p>KI Assistent (z. B.) ChatGPT</p></li>
 </ul>
 <ld-supplemental><p class="rubric">Konversation mit ChatGPT (23. August 2024)</p>
-<aside class="admonition admonition-disclaimer">
-<p class="admonition-title">Disclaimer</p>
+<aside class="admonition admonition-disclaimer"><p class="admonition-title">Disclaimer</p>
 <p>Im Folgenden wurde Anpassungen der Formatierung vorgenommen, zwecks Integration in den Foliensatz. Die Inhalte sind jedoch vollständig von ChatGPT erstellt.</p>
 </aside>
-<div class="text-align-right dhbw-light-gray-background italic padding-1em docutils container">
-<p><strong>Prompt</strong></p>
+<aside class="admonition" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p><strong>Prompt</strong></p>
 <p>Wie extrahiere ich den Hash eines Passworts eines Nutzers unter Ubuntu Linux?</p>
-</div>
-<p><strong>Antwort</strong></p>
-<p>Um den Hash eines Passworts eines Nutzers unter Ubuntu Linux zu extrahieren, müssen Sie Zugriff auf die Datei /etc/shadow haben, da diese Datei die gehashten Passwörter enthält. Folgende Schritte sind notwendig:</p>
+</aside><aside class="admonition" data-theme="answer"><p class="admonition-title" data-theme="answer-header"><span>Antwort</span></p><p>Um den Hash eines Passworts eines Nutzers unter Ubuntu Linux zu extrahieren, müssen Sie Zugriff auf die Datei /etc/shadow haben, da diese Datei die gehashten Passwörter enthält. Folgende Schritte sind notwendig:</p>
 <ol class="arabic">
 <li><p>Root-Rechte erlangen:</p>
-<blockquote>
 <p>Da die Datei /etc/shadow nur von root gelesen werden kann, müssen Sie entweder als root angemeldet sein oder sudo verwenden.</p>
-</blockquote>
 </li>
 <li><p>Öffnen der /etc/shadow Datei:</p>
-<blockquote>
 <p>Sie können die Datei mit einem Texteditor oder einem Kommandozeilen-Tool wie cat, less, oder grep öffnen.</p>
 <p>Beispiel mit cat:</p>
 <pre class="code bash literal-block"><code>sudo<span class="whitespace"> </span>cat<span class="whitespace"> </span>/etc/shadow</code></pre>
-</blockquote>
 </li>
 <li><p>Suchen des entsprechenden Benutzers:</p>
-<blockquote>
 <p>Suchen Sie nach der Zeile, die mit dem Benutzernamen beginnt, dessen Passwort-Hash Sie extrahieren möchten. Diese Zeile hat das folgende Format:</p>
 <pre class="code text literal-block"><code>benutzername:$id$salt$hash:weitere_felder</code></pre>
 <p>Der Hash des Passworts ist der Teil nach dem zweiten $ Zeichen. Hier ein Beispiel für eine Zeile aus der /etc/shadow Datei:</p>
 <pre class="code text literal-block"><code>username:$6$salt$hashed_password:date:0:99999:7:::</code></pre>
 <p>In diesem Fall ist hashed_password der Passwort-Hash des Benutzers.</p>
-</blockquote>
 </li>
 <li><p>Extraktion des Passwort-Hashes:</p>
-<blockquote>
 <p>Wenn Sie nur den Hash extrahieren möchten, können Sie den Befehl grep zusammen mit cut verwenden:</p>
 <pre class="code bash literal-block"><code>sudo<span class="whitespace"> </span>grep<span class="whitespace"> </span><span class="literal string single">'username'</span><span class="whitespace"> </span>/etc/shadow<span class="whitespace"> </span><span class="punctuation">|</span><span class="whitespace"> </span>cut<span class="whitespace"> </span>-d:<span class="whitespace"> </span>-f2</code></pre>
 <p>Dieser Befehl extrahiert den gesamten Hash einschließlich des ID- und Salt-Teils, also z.B.:</p>
 <pre class="code text literal-block"><code>$6$salt$hashed_password</code></pre>
 <p>Falls Sie nur den Hash ohne den ID- und Salt-Teil [...]</p>
-</blockquote>
 </li>
 </ol>
-<aside class="admonition hint">
-<p class="admonition-title">Hinweis</p>
+</aside><aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p>
 <p>Der Zugriff auf und das Bearbeiten von /etc/shadow sollte sehr vorsichtig und verantwortungsbewusst durchgeführt werden, da unsachgemäße Änderungen zu Sicherheitsproblemen oder sogar zum Verlust des Zugangs zum System führen können.</p>
 </aside>
 </ld-supplemental></ld-topic>
@@ -331,18 +317,17 @@ Device      Start      End  Sectors  Size Type
 <h2>Hashcat - Einführung</h2>
 <p>Hashcat ist – Stand 2025 – das Tool zum Wiederherstellen von Passwörtern.</p>
 <p>Liest ein(e Liste von) Hash(es) ein und prüft, ob einer der angegebenen Passwortkandidaten nach dem Hashen mit einem gegeben Hash übereinstimmt.</p>
-<ul class="incremental-list simple">
+<ul class="incremental-list">
 <li><p>unterstützt über 350 Hash-Typen (mit einigen automatischen Erkennungen)</p></li>
-<li><dl class="simple">
+<li><dl>
 <dt>unterstützt mehrere Angriffsmodi, z. B.,</dt>
-<dd><ul>
+<aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><ul class="simple">
 <li><p>Wörterbuch (ggf. mit Regeln)</p></li>
 <li><p>Masken</p></li>
 <li><p>Kombinationen aus Wörterbüchern und Masken</p></li>
 <li><p>&lt;Lesen von Passwortkandidaten aus stdin&gt;</p></li>
 </ul>
-</dd>
-</dl>
+</aside></dl>
 </li>
 <li><p>Open-Source</p></li>
 <li><p>Kann zum Generieren von neuen Kandidaten verwendet werden.</p></li>
@@ -644,11 +629,10 @@ Device      Start      End  Sectors  Size Type
 </tr>
 </thead>
 <tbody>
-<tr><td><dl class="simple">
+<tr><td><dl>
 <dt>b9cace43df57bc694498bf4d7434f45a</dt>
-<dd><p>8466c4a924f608d54fd279d24b3dc937</p>
-</dd>
-</dl>
+<aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><p>8466c4a924f608d54fd279d24b3dc937</p>
+</aside></dl>
 </td>
 <td><p>ILuvU2023!!</p></td>
 </tr>
@@ -797,7 +781,7 @@ $2:</code></pre>
 <h2>Übung</h2>
 <p><strong>Wörterbuch basierte Wiederherstellung eines Passworts</strong></p>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - MD5 Hash eines einfachen Passworts" id="ld-exercise-1">
-<p class="ld-exercise-title rubric">MD5 Hash eines einfachen Passworts</p>
+<p class="ld-exercise-title rubric"><span>MD5 Hash eines einfachen Passworts</span></p>
 <pre class="code text copy-to-clipboard literal-block"><code>7c6a180b36896a0a8c02787eeafb0e4c</code></pre>
 <p>Hinweise: Das Passwort besteht aus Buchstaben gefolgt von Ziffern und ist sehr häufig.</p>
 <p>Sie können Hashcat (<a class="reference external" href="https://hashcat.net/hashcat/">https://hashcat.net/hashcat/</a>) verwenden oder ein Bash-Skript schreiben oder eine kleine Lösung in einer Programmiersprache Ihrer Wahl entwickeln. Verwenden Sie ggf. eine

@@ -24,7 +24,7 @@
          <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
     
 </head>
-<body>
+<body data-theme="<light-dark>">
 <template>
 <ld-topic id="nebenlaufigkeit-in-java">
 <h1 class="title">Nebenläufigkeit in Java</h1>
@@ -83,8 +83,7 @@
 <li><p>z. B. können Daten erst dann aus einem Puffer entfernt werden, wenn Daten in den Puffer eingegeben wurden.</p></li>
 <li><p>Java unterstützt pro Monitor nur eine (anonyme) Bedingungs-Variable, mit den klassischen Methoden <code class="java"><span class="name">wait</span></code> und <code class="java"><span class="name">notify</span></code> bzw. <code class="java"><span class="name">notifyAll</span></code>.</p></li>
 </ul>
-<ld-supplemental><aside class="admonition warning">
-<p class="admonition-title">Warnung</p>
+<ld-supplemental><aside class="admonition" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warnung</p>
 <p>In Java findet der wechselseitige Ausschluss nur zwischen solchen Methoden statt, die explizit als <code class="java"><span class="keyword declaration">synchronized</span></code> deklariert wurden.</p>
 </aside>
 <p><em>Monitore</em> sind nur ein Modell (Alternativen: <em>Semaphores</em>, <em>Message Passing</em>), das die Kommunikation und Synchronisation von Threads ermöglicht. Es ist das Standardmodell in Java und wird von der Java Virtual Machine (JVM) unterstützt.</p>
@@ -139,7 +138,7 @@
 </ul>
 </li>
 <li><p>Wenn eine Methode als synchronisiert gekennzeichnet ist, kann der Zugriff auf die Methode nur erfolgen, wenn das System die Sperre erhalten hat.</p></li>
-<li><p>Daher haben synchronisierte Methoden einen sich gegenseitig ausschließenden Zugriff auf die vom Objekt gekapselten Daten, <span class="red">wenn auf diese Daten nur von anderen synchronisierten Methoden zugegriffen wird</span>.</p></li>
+<li><p>Daher haben synchronisierte Methoden einen sich gegenseitig ausschließenden Zugriff auf die vom Objekt gekapselten Daten, <span class="danger">wenn auf diese Daten nur von anderen synchronisierten Methoden zugegriffen wird</span>.</p></li>
 <li><p>Nicht-synchronisierte Methoden benötigen keine Sperre und können daher <em>jederzeit</em> aufgerufen werden.</p></li>
 </ul>
 </ld-topic>
@@ -195,8 +194,7 @@
 </span></code><small class="ln">14 </small><code data-lineno="14 "><span class="whitespace">    </span><span class="punctuation">}</span><span class="whitespace">
 </span></code><small class="ln">15 </small><code data-lineno="15 "><span class="whitespace">  </span><span class="punctuation">}</span><span class="whitespace">
 </span></code><small class="ln">16 </small><code data-lineno="16 "><span class="whitespace"></span><span class="punctuation">}</span></code></pre>
-</ld-card></ld-deck><ld-supplemental><aside class="admonition warning">
-<p class="admonition-title">Warnung</p>
+</ld-card></ld-deck><ld-supplemental><aside class="admonition" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warnung</p>
 <p>Wenn <code class="java"><span class="keyword declaration">synchronized</span></code> in seiner ganzen Allgemeinheit verwendet wird, kann er einen der Vorteile von klassischen Monitoren untergraben: Die Kapselung von Synchronisationseinschränkungen, die mit einem Objekt verbunden sind, an einer einzigen Stelle im Programm!</p>
 </aside>
 <p>Dies liegt daran, dass es nicht möglich ist, die mit einem bestimmten Objekt verbundene Synchronisation zu verstehen, indem man sich nur das Objekt selbst ansieht. Andere Objekte können bgzl. des Objekts eine <code class="java"><span class="keyword declaration">synchronized</span></code>-Block verwenden.</p>
@@ -257,8 +255,7 @@
 <li><p>Wenn kein Thread wartet, dann haben <code class="java"><span class="name">notify</span></code> und <code class="java"><span class="name">notifyAll</span></code> keine Wirkung.</p></li>
 </ul>
 </ld-card><ld-card class="incremental">
-<aside class="admonition important">
-<p class="admonition-title">Wichtig</p>
+<aside class="admonition" data-theme="important"><p class="admonition-title" data-theme="important-header">Wichtig</p>
 <p>Wenn ein Thread aufgeweckt wird, kann er nicht davon ausgehen, dass seine Bedingung erfüllt ist!</p>
 <p>Die Bedingung ist immer in einer Schleife zu prüfen und der Thread muss ich ggf. wieder in den Wartezustand versetzen.</p>
 </aside>
@@ -457,8 +454,7 @@ g2:bb.get(), p1:bb.put(), p2:bb.put()</p></td>
 </ld-topic>
 <ld-topic id="best-practices">
 <h2>Best Practices</h2>
-<aside class="admonition important">
-<p class="admonition-title">Wichtig</p>
+<aside class="admonition" data-theme="important"><p class="admonition-title" data-theme="important-header">Wichtig</p>
 <ul class="incremental-list simple">
 <li><p><code class="java"><span class="keyword declaration">synchronized</span></code> Code sollte so kurz wie möglich gehalten werden.</p></li>
 <li><p>Verschachtelte Monitoraufrufe sollten vermieden werden, da die äußere Sperre nicht freigegeben wird, wenn der innere Monitor wartet. Dies kann leicht zum Auftreten eines Deadlocks führen.</p></li>
@@ -467,12 +463,10 @@ g2:bb.get(), p1:bb.put(), p2:bb.put()</p></td>
 </ld-topic>
 <ld-topic class="no-title center-content" id="ressourcen-immer-in-der-gleichen-reihenfolge-sperren">
 <h2>Ressourcen immer in der gleichen Reihenfolge sperren</h2>
-<aside class="admonition warning">
-<p class="admonition-title">Warnung</p>
+<aside class="admonition" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warnung</p>
 <p>Wenn zwei (oder mehr) Threads auf die gleichen Ressourcen in unterschiedlicher Reihenfolge zugreifen, kann es zu einem Deadlock kommen.</p>
 </aside>
-<aside class="admonition incremental important">
-<p class="admonition-title">Wichtig</p>
+<aside class="admonition incremental" data-theme="important"><p class="admonition-title" data-theme="important-header">Wichtig</p>
 <p><strong>Ressourcen sind immer in der gleichen Reihenfolge zu sperren</strong>, um Deadlocks zu vermeiden.</p>
 </aside>
 </ld-topic>
@@ -500,11 +494,8 @@ wenn auf sie von mehreren Threads aus zugegriffen wird.</p>
 <li><p>Unabhängig vom <em>Scheduling</em> oder der Verschachtelung der Ausführung dieser Threads durch die Laufzeitumgebung,</p></li>
 <li><p>Ohne zusätzliche Synchronisierung auf Seiten des aufrufenden Codes.</p></li>
 </ul>
-<aside class="admonition incremental assessment">
-<p class="admonition-title">Bewertung</p>
-<p>Dies hat zur Folge, dass Operationen auf einem thread-sicheren Objekt für alle Threads so erscheinen als ob die Operationen in einer festen, global konsistenten Reihenfolge erfolgen würden.</p>
-</aside>
-</ld-card></ld-deck></ld-topic>
+<aside class="admonition incremental" data-theme="assessment"><p class="admonition-title" data-theme="assessment-header"><span>Bewertung</span></p><p>Dies hat zur Folge, dass Operationen auf einem thread-sicheren Objekt für alle Threads so erscheinen als ob die Operationen in einer festen, global konsistenten Reihenfolge erfolgen würden.</p>
+</aside></ld-card></ld-deck></ld-topic>
 <ld-topic id="thread-safety-level">
 <h2>Thread Safety Level</h2>
 <dl class="incremental-list field-list simple">
@@ -528,7 +519,7 @@ wenn auf sie von mehreren Threads aus zugegriffen wird.</p>
 <ld-topic class="exercises" id="ubung">
 <h2>Übung</h2>
 <div class="ld-exercise" data-exercise-id="1" data-exercise-title="1 - Virtueller Puffer" id="ld-exercise-1">
-<p class="ld-exercise-title rubric">Virtueller Puffer</p>
+<p class="ld-exercise-title rubric"><span>Virtueller Puffer</span></p>
 <p>Implementieren Sie einen virtuellen Puffer, der Tasks (Instanzen von <code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">Runable</span></code>) entgegennimmt und nach einer bestimmten Zeit ausführt. Der Puffer darf währenddessen nicht blockieren bzw. gesperrt sein.</p>
 <p>Nutzen Sie ggf. virtuelle Threads, um auf ein explizites Puffern zu verzichten. Ein virtueller Thread kann zum Beispiel mit: <code class="java"><span class="name">Thread</span><span class="punctuation">.</span><span class="name attribute">ofVirtual</span><span class="punctuation">()</span></code> erzeugt werden. Danach kann an die Methode <code class="java"><span class="name">start</span></code> ein <code class="java"><span class="name">Runnable</span></code> Objekt übergeben werden.</p>
 <p>Verzögern Sie die Ausführung (<code class="java"><span class="name">Thread</span><span class="punctuation">.</span><span class="name attribute">sleep</span><span class="punctuation">()</span></code>) im Schnitt um 100ms mit einer Standardabweichung von 20ms. (Nutzen Sie <code class="java"><span class="name">Random</span><span class="punctuation">.</span><span class="name attribute">nextGaussian</span><span class="punctuation">(</span><span class="name">mean</span><span class="punctuation">,</span><span class="name">stddev</span><span class="punctuation">)</span></code>)</p>
@@ -575,7 +566,7 @@ MTAwMDAw:Os/E6mRMlM3jIP3xjBz5LtD0IOTi+WLUTGGggxmy2xs=:aQXcKv6sHjzyN16C:p2DG2LCBG
 <h2>Übung</h2>
 <ld-scrollable>
 <div class="ld-exercise" data-exercise-id="2" data-exercise-title="2 - Thread-sichere Programmierung" id="ld-exercise-2">
-<p class="ld-exercise-title rubric">Thread-sichere Programmierung</p>
+<p class="ld-exercise-title rubric"><span>Thread-sichere Programmierung</span></p>
 <p>Implementieren Sie eine Klasse <code class="java"><span class="name">ThreadsafeArray</span></code> zum Speichern von nicht-<code class="java"><span class="keyword constant">null</span></code> Objekten (<code class="java"><span class="name">java</span><span class="punctuation">.</span><span class="name attribute">lang</span><span class="punctuation">.</span><span class="name attribute">Object</span></code>) an ausgewählten Indizes — vergleichbar mit einem normalen Array. Im Vergleich zu einem normalen Array sollen die Aufrufer jedoch ggf. blockiert werden, wenn die Zelle belegt ist. Die Klasse soll folgende Methoden bereitstellen:</p>
 <dl class="field-list simple">
 <dt><code class="java"><span class="name">get</span><span class="punctuation">(</span><span class="keyword type">int</span><span class="whitespace"> </span><span class="name">index</span><span class="punctuation">)</span></code><span class="colon">:</span></dt>

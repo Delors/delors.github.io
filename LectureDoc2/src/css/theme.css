@@ -1,0 +1,427 @@
+/* LAYER: common */
+
+/*
+    We will first define the framework for coloring slides, by means of CSS
+    variables. These CSS vars should then be used in all other elements.
+
+    The core idea is to define three colors (foreground color, background color
+    and an accent color) that define the core of a color theme. From these three
+    colors all other colors are derived using color computations.
+    This greatly facilitates the definition of new color themes.
+
+    When setting a color theme, it is necessary to update all related CSS
+    variables. Only then changes to --color, --background-color and
+    --accent-color become effective. The simplest way to do this is to use a
+    "*, ::before, ::after" selector. However, this is inefficient, as it applies
+    to all elements. Hence, we simply list every element that is subject to a
+    specific theme!
+*/
+
+p.ld-exercise-title.rubric,
+.new-section > h2:first-of-type,
+.new-subsection > h2:first-of-type,
+.accentuate,
+.summary h2:first-child,
+th.\:hover-related,
+td.\:hover-related,
+tr.\:hover-related,
+th.\:hover,
+td.\:hover,
+tr.\:hover,
+table.zebra > tbody > tr:nth-child(odd) > :is(td, th),
+table.zebra-columns tr > *:nth-child(odd),
+table.accentuated-header > thead > tr > :is(td, th),
+ld-presenter-note,
+ld-slide.exercises > h2,
+ld-slide h1:first-of-type,
+:root,
+[data-theme] {
+    color: var(--color);
+    background-color: var(--background-color);
+
+    /*  The shadow-color is intended to be used by child elements!
+
+        A visual effect w.r.t. the background color of the parent element cannot
+        be guaranteed. Unfortunately, using CSS only, this is not possible to
+        achieve when we want to support arbitrary deep nesting. We can't capture
+        the parent's shadow color and - at the same time - set shadow color to
+        a new value.*/
+    --shadow-color: oklch(from currentColor l c h / 0.5);
+    --border-color: oklch(from currentColor l c h / 0.75);
+    --accent-border-color: oklch(from var(--accent-color) l c h / 0.5);
+    --low-contrast-color: oklch(
+        from color-mix(in oklch, var(--color) 15%, var(--background-color))
+            clamp(0.3, l, 0.95) 0 h
+    );
+    --low-contrast-transparent-color: oklch(
+        from var(--primary-color) l c h / 7.5%
+    );
+    --very-low-contrast-color: oklch(
+        from color-mix(in oklch, var(--color) 10%, var(--background-color))
+            clamp(0.3, l, 0.975) 0 h
+    );
+    --low-contrast-accent-color: oklch(
+        from
+            color-mix(
+                in oklch,
+                var(--accent-color) 35%,
+                var(--background-color)
+            )
+            clamp(0.3, l, 0.95) c h
+    );
+
+    --button-background-color: var(--low-contrast-color);
+    --button-color: var(--accemt-color);
+    --button-hover-background-color: var(--smallprint-color);
+    --button-hover-color: var(--primary-color);
+
+    --primary-color: var(--color);
+    --muted-color: oklch(
+        from color-mix(in oklch, var(--color) 60%, var(--background-color))
+            clamp(0.32, l, 0.78) 0 h
+    );
+    --meta-color: oklch(
+        from color-mix(in oklch, var(--color) 45%, var(--background-color))
+            clamp(0.32, l, 0.78) 0 h
+    );
+    --smallprint-color: oklch(
+        from color-mix(in oklch, var(--color) 30%, var(--background-color))
+            clamp(0.32, l, 0.78) 0 h
+    );
+
+    --info-color: oklch(from var(--accent-color) l c calc(h - 30));
+    --warning-color: oklch(from var(--accent-color) l c calc(h + 180));
+    --danger-color: oklch(from var(--accent-color) l c calc(h + 120));
+    --success-color: oklch(from var(--accent-color) l c calc(h + 240));
+
+    --hint-color: oklch(from var(--accent-color) l c calc(h + 60));
+    --tip-color: oklch(
+        from
+            color-mix(
+                in oklch,
+                var(--color) 30%,
+                oklch(from var(--accent-color) 0.82 0.2 calc(h + 163))
+            )
+            clamp(0.6, l, 0.88) c h
+    );
+
+    --link-color: oklch(
+        from var(--accent-color) 0.52 clamp(0.4, calc(0.1 - (c - 0.52)), 0.6) h
+    );
+
+    --secondary-color: var(--accent-color);
+
+    --text-1-color: oklch(from var(--accent-color) 0.78 c h);
+    --text-2-color: oklch(from var(--accent-color) l calc(c * 0.4) h);
+    --text-3-color: color-mix(
+        in oklch,
+        var(--background-color) 20%,
+        var(--accent-color)
+    );
+    --text-4-color: oklch(from var(--accent-color) l c calc(h + 30));
+    --text-5-color: oklch(
+        from
+            color-mix(
+                in oklch,
+                var(--color) 30%,
+                oklch(from var(--accent-color) 0.62 0.32 calc(h + 145))
+            )
+            clamp(0.42, l, 0.76) c h
+    );
+    --text-6-color: oklch(
+        from
+            color-mix(
+                in oklch,
+                var(--color) 30%,
+                oklch(from var(--accent-color) 0.6 0.34 calc(h + 78))
+            )
+            clamp(0.42, l, 0.76) c h
+    );
+    --text-7-color: oklch(
+        from
+            color-mix(
+                in oklch,
+                var(--color) 30%,
+                oklch(from var(--accent-color) 0.58 0.18 calc(h + 138))
+            )
+            clamp(0.42, l, 0.72) c h
+    );
+    --text-8-color: oklch(
+        from
+            color-mix(
+                in oklch,
+                var(--color) 30%,
+                oklch(from var(--accent-color) 0.58 0.32 calc(h + 108))
+            )
+            clamp(0.42, l, 0.74) c h
+    );
+    --text-9-color: oklch(
+        from
+            color-mix(
+                in oklch,
+                var(--color) 30%,
+                oklch(from var(--accent-color) 0.64 0.28 calc(h + 92))
+            )
+            clamp(0.44, l, 0.76) c h
+    );
+    --text-10-color: oklch(
+        from
+            color-mix(
+                in oklch,
+                var(--color) 30%,
+                oklch(from var(--accent-color) 0.8 0.22 calc(h + 176))
+            )
+            clamp(0.58, l, 0.88) c h
+    );
+    --text-11-color: oklch(
+        from
+            color-mix(
+                in oklch,
+                var(--color) 30%,
+                oklch(from var(--accent-color) 0.62 0.28 calc(h + 212))
+            )
+            clamp(0.42, l, 0.76) c h
+    );
+    --text-12-color: oklch(
+        from color-mix(in oklch, var(--color) 75%, var(--background-color))
+            clamp(0.32, l, 0.78) 0 h
+    );
+
+    --symbol-color: oklch(from var(--color) clamp(0, calc(l + 0.1), 1) c h);
+    --symbol-background-color: oklch(
+        from var(--background-color) clamp(0, calc(l - 0.1), 1) c h
+    );
+}
+
+[data-theme]::before,
+[data-theme]::after {
+    /*  In the before element, we only need the two colors for the symbol;
+        the content is usually some text, number or a symbol and therefore
+        we don't need a complex color scheme. If the complete scheme is needed
+        add the selectors also to the previous rule!                          */
+    color: var(--symbol-color);
+    background-color: var(--symbol-background-color);
+}
+
+/* ------------------- Standard/Default Themes ------------------- */
+
+:root {
+    color-scheme: light dark;
+
+    /* The default theme is the light-theme. */
+    --color: var(--textblack);
+    --background-color: var(--white);
+    --accent-color: var(--electricindigo);
+}
+
+/* Default: @media (prefers-color-scheme: light) */
+[data-theme="<light-dark>"] {
+    --color: var(--textblack);
+    --background-color: var(--white);
+    --accent-color: var(--electricindigo);
+}
+
+[data-theme="light"] {
+    --background-color: var(--white);
+    --color: var(--textblack);
+    --accent-color: var(--electricindigo);
+}
+[data-theme="dark"] {
+    --background-color: var(--trueblack);
+    --color: var(--brightgray);
+    --accent-color: var(--luminousindigo);
+}
+
+/* ------------------- Severity Related Themes ------------------- */
+
+[data-theme="danger-header"],
+[data-theme="warning-header"] {
+    --background-color: var(--darkred);
+    --color: var(--white);
+    --accent-color: var(--vividblueindigo);
+}
+
+ld-presenter-note,
+p.ld-exercise-title.rubric,
+[data-theme="tip-light"],
+[data-theme="danger"] {
+    --background-color: var(--mistyrose);
+    --color: var(--deepred);
+    --accent-color: var(--deepelectricblue);
+}
+
+[data-theme="warning"],
+[data-theme="caution-header"],
+[data-theme="important-header"] {
+    --background-color: var(--vividlime);
+    --color: var(--textblack);
+    --accent-color: var(--pureelectricindigo);
+}
+[data-theme="warning"] {
+    --background-color: var(--mistyrose);
+    --color: var(--textblack);
+    --accent-color: var(--deepceruleanindigo);
+}
+
+[data-theme="caution"] {
+    --background-color: var(--softvanilla);
+    --color: var(--textblack);
+    --accent-color: var(--deepelectricindigo);
+}
+
+[data-theme="attention-header"] {
+    --background-color: var(--minttint);
+    --color: var(--textblack);
+    --accent-color: var(--deepelectricindigo);
+}
+
+/* ------------------- Special Information ------------------- */
+
+[data-theme="example"] {
+    --background-color: var(--floralwhite);
+    --color: var(--textblack);
+    --accent-color: var(--electricindigo);
+}
+
+th.\:hover,
+td.\:hover,
+tr.\:hover,
+[data-theme="example-header"],
+[data-theme="example-dark"] {
+    --background-color: var(--orange);
+    --color: var(--white);
+    --accent-color: var(--electricindigo);
+}
+
+table.zebra > tbody > tr:nth-child(odd) > :is(td,th)  ,
+table.zebra-columns > tobdy > tr > *:nth-child(odd),
+.new-subsection > h2:first-of-type,
+/* Math related: */
+[data-theme="definition-header"],
+[data-theme="proof-header"],
+[data-theme="theorem-header"],
+[data-theme="lemma-header"],
+[data-theme="conclusion-header"],
+[data-theme="background-header"],
+[data-theme="note-header"],
+[data-theme="muted"] {
+    --background-color: var(--whitesmoke);
+    --color: var(--trueblack);
+    --accent-color: var(--deepelectricindigo);
+}
+
+th.\:hover-related,
+td.\:hover-related,
+tr.\:hover-related,
+[data-theme="deprecated"],
+[data-theme="muted-dark"] {
+    --background-color: var(--lightgray);
+    --color: var(--trueblack);
+    --accent-color: var(--pureelectricindigo);
+}
+
+[data-theme="tip"] {
+    --background-color: var(--peachpuff);
+    --color: var(--trueblack);
+    --accent-color: var(--deepelectricblue);
+}
+[data-theme="tip-medium"] {
+    --background-color: var(--honeygold);
+    --color: var(--trueblack);
+    --accent-color: var(--electricindigo);
+}
+[data-theme="tip-header"],
+[data-theme="tip-dark"] {
+    --background-color: var(--darkorange);
+    --color: var(--white);
+    --accent-color: var(--darkblue);
+}
+[data-theme="repetition-header"],
+[data-theme="hint"] {
+    --background-color: var(--lightcyan);
+    --color: var(--trueblack);
+    --accent-color: var(--darkvioletblue);
+}
+[data-theme="hint-header"] {
+    --background-color: var(--luminousindigo);
+    --color: var(--lightcyan);
+    --accent-color: var(--darkvioletblue);
+}
+
+[data-theme="question"],
+[data-theme="light-yellow"] {
+    --background-color: var(--softvanilla);
+    --color: var(--textblack);
+    --accent-color: var(--deepelectricindigo);
+}
+
+[data-theme="answer"],
+[data-theme="success"],
+[data-theme="light-green"] {
+    --background-color: var(--minttint);
+    --color: var(--textblack);
+    --accent-color: var(--deepelectricindigo);
+}
+[data-theme="question-header"],
+[data-theme="answer-header"],
+[data-theme="success-dark"] {
+    --background-color: var(--darkgreen);
+    --color: var(--white);
+    --accent-color: var(--vividblueindigo);
+}
+
+.accentuate,
+table.accentuated-header > thead > tr > :is(td, th),
+[data-theme="observation"],
+[data-theme="info"] {
+    --background-color: var(--aliceblue);
+    --color: var(--trueblack);
+    --accent-color: var(--deepvioletblue);
+}
+
+.summary h2:first-child,
+.new-section > h2:first-of-type,
+ld-slide.exercises > h2,
+ld-slide h1:first-of-type,
+[data-theme="summary-header"],
+[data-theme="assessment-header"],
+[data-theme="legend-header"],
+[data-theme="remark-header"],
+[data-theme="remember-header"],
+[data-theme="emphasized"] {
+    --background-color: var(--charcoal);
+    --color: var(--white);
+    --accent-color: var(--luminousindigo);
+}
+[data-theme="observation-header"],
+[data-theme="accent"] {
+    --background-color: var(--darkblue);
+    --color: var(--white);
+    --accent-color: var(--clearskyblue);
+}
+
+@media (prefers-color-scheme: dark) {
+    [data-theme="<light-dark>"] {
+        --background-color: var(--trueblack);
+        --color: var(--white);
+        --accent-color: var(--luminousindigo);
+    }
+
+    [data-theme="attention"] {
+        --symbol-background-color: var(--minttint);
+        --symbol-color: var(--textblack);
+    }
+
+    [data-theme="important"] {
+        --symbol-background-color: var(--softvanilla);
+        --symbol-color: var(--textblack);
+    }
+
+    ld-slide h1:first-of-type,
+    .new-section > h2:first-of-type {
+        /* This is the muted theme from above!*/
+        --background-color: var(--whitesmoke);
+        --color: var(--trueblack);
+        --accent-color: var(--deepelectricindigo);
+    }
+}

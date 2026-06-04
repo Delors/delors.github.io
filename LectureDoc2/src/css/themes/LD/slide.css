@@ -7,31 +7,16 @@ ld-slide {
     border-radius: var(--s-border-radius);
     padding: var(--s-padding);
 
-    --current-fg-color: var(--fg-color);
-    --current-rel-fg-color: var(--current-fg-color);
-    color: var(--current-rel-fg-color);
-    --current-bg-color: var(--bg-color);
-    --current-rel-bg-color: var(--current-bg-color);
-    background-color: var(--current-rel-bg-color);
-
     --unitless-current-base-font-size: var(--unitless-s-font-size);
     --current-base-font-size: calc(
         var(--unitless-current-base-font-size) * 1px
     );
     font-size: var(--current-base-font-size);
 
+    color: var(--primary-color);
+    background-color: var(--background-color);
+
     &:first-of-type {
-        /* Special styling for the title slide! */
-        dl {
-            dd {
-                margin-left: 6em;
-            }
-
-            &.sources {
-                color: var(--peripheral-fg-color);
-            }
-        }
-
         h1 {
             position: relative;
             left: calc(var(--s-lr-padding) * -1);
@@ -40,17 +25,21 @@ ld-slide {
 
             margin-top: var(--s-lr-padding);
             border-radius: 0 var(--s-border-radius) var(--s-border-radius) 0;
-            padding: calc(var(--s-tb-padding) * 2.5) var(--s-lr-padding);
+            padding: var(--s-lr-padding);
 
             font-size: calc(var(--s-font-size) * 2.5);
             font-weight: var(--s-title-font-weight);
+        }
 
-            --current-bg-color: var(--dark-gray);
-            --current-rel-bg-color: var(--current-bg-color);
-            background-color: var(--current-rel-bg-color);
-            --current-fg-color: var(--white);
-            --current-rel-fg-color: var(--current-fg-color);
-            color: var(--current-rel-fg-color);
+        /* Special styling for the title slide! */
+        dl {
+            dd {
+                margin-left: 4.5em;
+            }
+
+            &.sources {
+                color: var(--smallprint-color);
+            }
         }
     }
 
@@ -74,8 +63,10 @@ ld-slide {
         font-size: calc(var(--s-font-size) / 3);
         text-align: center;
         letter-spacing: 125%;
-        background-color: var(--semi-light-gray);
+
         color: var(--white);
+        background-color: var(--semi-light-gray);
+
         backdrop-filter: blur(2px);
     }
 
@@ -110,8 +101,6 @@ ld-slide {
                 calc(var(--s-lr-padding) * -1) var(--s-tb-padding)
                 calc(var(--s-lr-padding) * -1);
             padding: var(--s-padding);
-            background: light-dark(var(--light-gray), var(--dark-gray));
-            color: var(--dark-red);
             text-shadow: 1px 1px 2px white;
         }
     }
@@ -126,17 +115,12 @@ ld-slide {
             margin-top: 0.5em;
         }
 
-        & > p.ld-exercise-title.rubric {
+        & > p.ld-exercise-title {
             font-size: var(--s-font-size);
 
-            padding-left: calc(2.5 * var(--s-lr-padding));
+            padding-left: 1.75em;
+            padding-right: 0.25em;
             border-radius: var(--small-border-radius);
-
-            --current-bg-color: var(--very-very-light-red);
-            background-color: var(--current-bg-color);
-            --current-fg-color: var(--very-dark-red);
-            --current-rel-fg-color: var(--current-fg-color);
-            color: var(--current-rel-fg-color);
 
             &::before {
                 content: "✎";
@@ -146,9 +130,9 @@ ld-slide {
                 width: 1.5em;
                 height: 100%;
                 text-align: center;
-                background-color: var(--light-gray);
-                color: var(--white);
-                text-shadow: 1px 1px 1px var(--dark-gray);
+                color: var(--symbol-color);
+                background-color: var(--symbol-background-color);
+                text-shadow: 1px 1px 1px var(--background-color);
             }
         }
     }
@@ -161,9 +145,6 @@ ld-slide {
             margin-left: calc(-1 * var(--s-lr-padding));
             padding: calc(var(--s-tb-padding) * 1.75) var(--s-lr-padding);
             border-radius: 0 var(--s-border-radius) var(--s-border-radius) 0;
-
-            color: var(--dark-gray);
-            background-color: var(--semi-light-gray);
 
             font-size: 1.5em;
             text-align: center;
@@ -259,32 +240,13 @@ ld-slide {
     li.show-list-item-content-on-hover {
         > *:first-child::before {
             content: "⇢ ";
-            color: color-mix(
-                in srgb,
-                var(--current-rel-fg-color) 80%,
-                var(--current-rel-bg-color) 20%
-            );
+            color: var(--muted-color);
             font-family: var(--monospaced-font-family);
             font-weight: 900;
         }
         &.\:hover > *:first-child::before {
             content: "⇣ ";
         }
-        /* Using a marker affects the numbering... Why?
-        > *:first-child {
-            display: list-item;
-            list-style-position: inside;
-            list-style-type: disclosure-closed;
-
-            &::marker {
-                color: color-mix(in srgb, var(--current-rel-fg-color) 80%, var(--current-rel-bg-color) 20%);
-                / * font-size: 0.75em; <= good for safari, bad for firefox  * /
-            }
-        }
-        &.\:hover > *:first-child {
-            list-style-type: disclosure-open;
-        }
-        */
         > *:not(:first-child) {
             max-height: 0;
             overflow: hidden;

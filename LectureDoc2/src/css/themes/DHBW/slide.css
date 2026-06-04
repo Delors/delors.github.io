@@ -1,44 +1,42 @@
 ld-slide {
     &.exercises::before {
-        content: var(--dhbw-logo);
-        display: block;
+        content: var(--dhbw-symbol-sharp);
+
         position: absolute;
-        top: 28px;
+        top: var(--s-tb-padding);
         right: var(--s-lr-padding);
 
-        /* makes it easier to use it on various backgrounds */
-        transform: translateX(30%) translateY(-38%) scale(0.4);
+        display: block;
 
-        /*mix-blend-mode: multiply;*/
+        transform-origin: top right;
+        transform: scale(0.45);
     }
 
     &.new-section {
         align-content: center;
 
-        &::after {
-            content: var(--author);
-            position: absolute;
-            top: var(--s-tb-padding);
-            --current-rel-fg-color: color-mix(
-                in lch,
-                var(--current-fg-color) 80%,
-                var(--current-bg-color) 20%
-            );
-            color: var(--current-rel-fg-color);
-            mix-blend-mode: hard-light;
-
-            font-size: 24px;
-            font-variant: normal;
-            font-weight: 200;
-        }
-
         &::before {
             content: var(--dhbw-logo);
+
             position: absolute;
             top: var(--s-tb-padding);
             right: var(--s-lr-padding);
+
             transform-origin: top right;
             scale: 0.5;
+        }
+
+        &::after {
+            position: absolute;
+            top: var(--s-tb-padding);
+
+            content: var(--author);
+
+            font-size: calc(var(--current-base-font-size) / 2);
+            font-variant: normal;
+            font-weight: 200;
+
+            color: var(--meta-color);
         }
 
         > h2 {
@@ -48,46 +46,33 @@ ld-slide {
                 calc(var(--s-border-radius) * 0.95) 0;
             padding: calc(var(--s-tb-padding) * 2.5) var(--s-lr-padding);
 
-            --current-bg-color: var(--dhbw-gray);
-            background-color: var(--current-bg-color);
-            color: var(--white);
-
             font-size: 2.25em;
             text-align: center;
         }
     }
 
-    .section-subtitle {
-        font-weight: 300;
-        text-align: center;
-        width: calc(100% + var(--s-lr-padding));
-        margin-left: calc(-1 * var(--s-lr-padding));
-        padding: 0.5em 0.8em 0.5em 1.6em;
-        border-radius: 0 calc(var(--s-border-radius) * 0.95)
-            calc(var(--s-border-radius) * 0.95) 0;
+    &.new-subsection::after {
+        content: var(--dhbw-logo);
 
-        --current-rel-bg-color: color-mix(
-            in lch,
-            var(--current-bg-color) 80%,
-            var(--current-fg-color)
-        );
-        background-color: var(--current-rel-bg-color);
-        --current-rel-fg-color: color-mix(
-            in lch,
-            var(--current-fg-color) 80%,
-            var(--current-bg-color)
-        );
-        color: var(--current-rel-fg-color);
+        position: absolute;
+        top: var(--s-tb-padding);
+        right: var(--s-lr-padding);
+
+        transform-origin: top right;
+        scale: 0.7;
     }
 
-    &.new-subsection {
-        &::after {
-            content: var(--dhbw-logo);
-            position: absolute;
-            top: var(--s-tb-padding);
-            right: var(--s-lr-padding);
-            transform-origin: top right;
-            scale: 0.7;
-        }
+    .section-subtitle {
+        width: calc(100% + var(--s-lr-padding));
+
+        margin-left: calc(-1 * var(--s-lr-padding));
+        border-radius: 0 calc(var(--s-border-radius) * 0.95)
+            calc(var(--s-border-radius) * 0.95) 0;
+        padding: calc(var(--s-tb-padding) * 1.5) var(--s-lr-padding);
+
+        font-weight: 300;
+        text-align: center;
+
+        background-color: var(--low-contrast-accent-color);
     }
 }
