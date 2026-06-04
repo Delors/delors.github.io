@@ -2467,11 +2467,11 @@ function localJumpToSlideWithElementWithId(id) {
 }
 
 /**
- * @param str id The original id saved in the data-id attribute of the slide!
+ * @param str id The original id saved in the topic-id attribute of the slide!
  */
 function localJumpToSlideWithId(id) {
     const slide = document.querySelector(
-        `#ld-slides-pane ld-slide[data-id="${id}"]`,
+        `#ld-slides-pane ld-slide[topic-id="${id}"]`,
     );
     if (!slide) {
         return undefined;
@@ -2794,12 +2794,13 @@ function registerMenuClickListener() {
 
 function registerHistoryChangeListener() {
     window.addEventListener("popstate", (event) => {
-        const slideNo = event.state.slideNo;
+        const slideNo = event.state?.slideNo;
         if (slideNo !== undefined) {
             goToSlideWithNo(slideNo, false);
         } else {
             console.warn(
                 "ignoring history pop state event due to missing slide number",
+                event,
             );
         }
     });
