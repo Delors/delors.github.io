@@ -19,9 +19,9 @@ export function create(
     if (elementName === undefined) throw new Error("element must be defined");
     const element = document.createElement(elementName);
     if (id) element.id = id;
-    if (classList) element.classList.add(...classList);
+    if (classList && classList.length > 0) element.classList.add(...classList);
     if (innerHTML) element.innerHTML = innerHTML;
-    if (children) element.append(...children);
+    if (children && children.length > 0) element.append(...children);
     if (parent) parent.appendChild(element);
     return element;
 }

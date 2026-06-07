@@ -300,63 +300,43 @@
 </ld-topic>
 <ld-topic id="sicherheit-verschlusselung-und-signaturen">
 <h2>Sicherheit - Verschlüsselung und Signaturen</h2>
-<p>Es geht im Wesentlichen um das Ver- und Entschlüsseln von Daten (<span class="math">\(X\)</span>) mit Hilfe von Schlüsseln.</p>
+<p>Es geht im Wesentlichen um das Ver- und Entschlüsseln von Daten (X) mit Hilfe von Schlüsseln.</p>
 <ld-deck>
-<ld-card class="padding-1em">
-<p><span class="math">\(E(K,X)\)</span> bedeutet, dass wir die Nachricht X mit dem Schlüssel <span class="math">\(K\)</span>  verschlüsseln (<span class="eng">encryption</span>).</p>
-<p><span class="math">\(D(K,X)\)</span> bezeichnet die Umkehrfunktion, die die Daten wieder entschlüsselt (<span class="eng">decryption</span>).</p>
-</ld-card><ld-card class="trbl-shadow padding-1em incremental">
+<ld-card>
+<p>E(K,X) bedeutet, dass wir die Nachricht X mit dem Schlüssel K  verschlüsseln (<span class="eng">encryption</span>).</p>
+<p>D(K,X) bezeichnet die Umkehrfunktion, die die Daten wieder entschlüsselt (<span class="eng">decryption</span>).</p>
+</ld-card><ld-card class="incremental">
 <p class="rubric">Symmetrische Verschlüsselung</p>
-<p>Der Schlüssel zur Verschlüsselung ist identisch mit dem Schlüssel zur Entschlüsselung (<span class="eng">decryption</span> (<span class="math">\(D\)</span>)).</p>
-<div class="math">
-\begin{equation*}
-X = D(K,E(K,X))
-\end{equation*}
-</div>
-</ld-card><ld-card class="trbl-shadow padding-1em incremental">
+<p>Der Schlüssel zur Verschlüsselung ist identisch mit dem Schlüssel zur Entschlüsselung (<span class="eng">decryption</span> (D)).</p>
+<p>X = D(K,E(K,X))</p>
+</ld-card><ld-card class="incremental">
 <p class="rubric">Asymmetrische Verschlüsselung</p>
-<p>Wir unterscheiden zwischen privaten (<span class="math">\(PR\)</span>) und öffentlichen Schlüsseln (<span class="math">\(PU\)</span>) (<span class="math">\(PU\)</span> <span class="math">\(\neq\)</span> <span class="math">\(PR\)</span>). Ein privater und ein öffentlicher Schlüssel bilden immer ein Paar. Der private Schlüssel ist immer geheim zu halten.</p>
+<p>Wir unterscheiden zwischen privaten (PR) und öffentlichen Schlüsseln (PU) (PU ≠ PR). Ein privater und ein öffentlicher Schlüssel bilden immer ein Paar. Der private Schlüssel ist immer geheim zu halten.</p>
 <ld-deck class="incremental">
 <ld-card>
 <p><strong>Verschlüsselung von Nachrichten</strong></p>
 <p>Alice sendet eine Nachricht an Bob mit Hilfe des öffentlichen Schlüssels von Bob.</p>
-<div class="math">
-\begin{align*}
-Y = E(PU_{Bob},X) \\
-X = D(PR_{Bob},Y)
-\end{align*}
-</div>
+<p>Y = E(PU<sub>Bob</sub>,X)</p>
+<p>X = D(PR<sub>Bob</sub>,Y)</p>
 </ld-card><ld-card class="incremental">
 <p><strong>Signierung von Nachrichten</strong></p>
-<p>Alice „signiert“ (<span class="math">\(S\)</span>) eine Nachricht mit ihrem privaten Schlüssel.</p>
-<div class="math">
-\begin{align*}
-Y = E(PR_{Alice},X) \\
-X = D(PU_{Alice},Y)
-\end{align*}
-</div>
+<p>Alice „signiert“ (S`) eine Nachricht mit ihrem privaten Schlüssel.</p>
+<p>Y = E(PR<sub>Alice</sub>,X)</p>
+<p>X = D(PU<sub>Alice</sub>,Y)</p>
 </ld-card></ld-deck></ld-card></ld-deck></ld-topic>
 <ld-topic id="sicherheit-sicheres-hashing">
 <h2>Sicherheit - Sicheres Hashing</h2>
-<p>Eine sichere Hash-Funktion <span class="math">\(Digest(X)\)</span> gibt eine Zeichenkette fester Länge (<span class="math">\(H\)</span>) zurück.</p>
+<p>Eine sichere Hash-Funktion Digest(X) gibt eine Zeichenkette fester Länge (H) zurück.</p>
 <ul class="simple">
 <li><p>Jede Änderung - noch so klein - der Eingabedaten führt zu einer völlig anderen Zeichenkette.</p></li>
-<li><p>Bei einem Hash-Wert ist es rechnerisch unmöglich die ursprüngliche Nachricht X basierend auf <span class="math">\(Digest(X)\)</span> zu finden.</p></li>
+<li><p>Bei einem Hash-Wert ist es rechnerisch unmöglich die ursprüngliche Nachricht X basierend auf Digest(X) zu finden.</p></li>
 </ul>
 <div class="incremental docutils container">
 <p class="rubric">Signieren von Nachrichten</p>
-<p>Alice signiert eine Nachricht <span class="math">\(X\)</span> mit ihrem privaten Schlüssel.</p>
-<div class="math">
-\begin{align*}
-Alice: [E(PR_{Alice},H=Digest(X)),X] \\
-\end{align*}
-</div>
-<p>Bob prüft die Nachricht <span class="math">\(X\)</span> auf Authentizität:</p>
-<div class="math">
-\begin{equation*}
-Bob: D(PU_{Alice},H) \stackrel{?}{=} Digest(X)
-\end{equation*}
-</div>
+<p>Alice signiert eine Nachricht X mit ihrem privaten Schlüssel.</p>
+<p>Alice: [E(PR<sub>Alice</sub>,H=Digest(X)),X]</p>
+<p>Bob prüft die Nachricht X auf Authentizität:</p>
+<p>Bob: D(PU<sub>Alice</sub>,H) ≟ Digest(X)</p>
 </div>
 <ld-supplemental><p><span class="ger">Sicheres Hashing</span> ≘ <span class="eng">Secure Hashing</span></p>
 </ld-supplemental></ld-topic>

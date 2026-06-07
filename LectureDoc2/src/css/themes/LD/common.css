@@ -235,6 +235,60 @@ ul.columns {
     }
 }
 
+ul.column-list.markup-list-item-headers {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 1em;
+
+    list-style-type: none;
+    padding: 0;
+
+    > li {
+        flex: 1;
+        margin: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        > p {
+            margin: 0;
+            background-color: var(--very-low-contrast-color);
+            color: var(--primary-color);
+            padding: var(--default-container-padding);
+        }
+
+        > p:first-child {
+            --theme: accent; /* TODO */
+
+            flex: 0;
+
+            /* the "Header" */
+            background-color: var(--accent-color);
+            color: var(--background-color);
+
+            font-weight: 500;
+            border-radius: var(--small-border-radius) var(--small-border-radius)
+                0 0;
+            line-height: calc(
+                var(--s-line-height) - 0.1 * var(--s-line-height)
+            );
+        }
+        > p:not(:first-child) + p {
+            margin-top: 0.25em;
+            flex: 1;
+        }
+        > p:last-child {
+            border-radius: 0 0 var(--small-border-radius)
+                var(--small-border-radius);
+            flex-grow: 1;
+        }
+    }
+}
+
 ul.negative-list > li,
 ul > li.negative-list {
     list-style-type: "✗ ";
@@ -626,6 +680,10 @@ div.line-block {
 
 div.line-block div.line-block {
     margin-left: 0;
+}
+
+div.line-block.monospaced div.line-block {
+    margin-left: 4ch;
 }
 
 /* Intended to be used with a container or container-like structure (e.g. a slide) */

@@ -25,6 +25,7 @@
     
 </head>
 <body data-theme="<light-dark>">
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-global-style"><style>/* bars take the slide accent; fallback reads on light or dark */ .letterfreq .bar {     fill: var(--accent-color, #4b6bdc); }  /* stroke "drawing": hidden = fully dashed, revealed = closed up */ .letterfreq .draw {     stroke-dasharray: 1;     stroke-dashoffset: 1;     transition: stroke-dashoffset 0.8s ease; } .letterfreq .ld-revealed .draw {     stroke-dashoffset: 0; }  /* gridlines + labels fade in */ .letterfreq .fade {     opacity: 0;     transition: opacity 0.5s ease 0.15s; } .letterfreq .ld-revealed .fade {     opacity: 1; }  /* bars grow from the baseline, staggered left-to-right via --i */ .letterfreq .bar {     transform: scaleY(0);     transform-box: fill-box;     transform-origin: bottom;     transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);     transition-delay: calc(var(--i) * 0.03s); } .letterfreq .ld-revealed .bar {     transform: scaleY(1); }  @media (prefers-reduced-motion: reduce) {     .letterfreq .draw,     .letterfreq .fade,     .letterfreq .bar {         transition: none;     } }</style></svg>
 <template>
 <ld-topic id="klassische-verschlusselungsmethoden">
 <h1 class="title">Klassische Verschlüsselungsmethoden</h1>
@@ -122,23 +123,6 @@
 </li>
 </ol>
 </ld-topic>
-<ld-topic id="kryptoanalyse-und-brute-force-angriff">
-<h2>Kryptoanalyse und Brute-Force-Angriff</h2>
-<div class="docutils container">
-<p><strong>Kryptoanalyse</strong></p>
-<ul class="simple">
-<li><p>Der Angriff beruht auf der Art des Algorithmus und einer gewissen Kenntnis der allgemeinen Merkmale des Klartextes.</p></li>
-<li><p>Der Angriff nutzt die Eigenschaften des Algorithmus aus, um zu versuchen, einen bestimmten Klartext zu entschlüsseln oder den verwendeten Schlüssel zu ermitteln.</p></li>
-</ul>
-</div>
-<div class="incremental docutils container">
-<p><strong>Brute-force Angriff</strong> (<span class="ger">brachiale Gewalt</span>)</p>
-<ul class="simple">
-<li><p>Der Angreifer probiert jeden möglichen Schlüssel an einem Stück Chiffretext aus, bis er eine verständliche Übersetzung in Klartext erhält.</p></li>
-<li><p>Im Durchschnitt muss die Hälfte aller möglichen Schlüssel ausprobiert werden, um Erfolg zu haben.</p></li>
-</ul>
-</div>
-</ld-topic>
 <ld-topic id="klassifizierung-von-angriffen">
 <h2>Klassifizierung von Angriffen</h2>
 <ld-story>
@@ -209,6 +193,16 @@
 </div>
 <aside class="admonition incremental" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Wie lange könnte der Nutzen einer bestimmten Information andauern?</p>
 </aside></ld-topic>
+<ld-topic id="kryptoanalyse">
+<h2>Kryptoanalyse</h2>
+<div class="docutils container">
+<p><strong>Kryptoanalyse</strong></p>
+<ul class="simple">
+<li><p>Der Angriff beruht auf der Art des Algorithmus und einer gewissen Kenntnis der allgemeinen Merkmale des Klartextes.</p></li>
+<li><p>Der Angriff nutzt die Eigenschaften des Algorithmus aus, um zu versuchen, einen bestimmten Klartext zu entschlüsseln oder den verwendeten Schlüssel zu ermitteln.</p></li>
+</ul>
+</div>
+</ld-topic>
 <ld-topic id="brute-force-angriff">
 <h2>Brute-Force Angriff</h2>
 <ul class="incremental-list">
@@ -737,8 +731,105 @@
 </aside></ld-card></ld-deck></ld-topic>
 <ld-topic id="monoalphabetische-chiffren">
 <h2>Monoalphabetische Chiffren</h2>
-<ul class="simple">
-<li><p>Eine Permutation einer endlichen Menge von Elementen S ist eine geordnete Folge aller Elemente von S, wobei jedes Element genau einmal vorkommt.</p></li>
+<ul>
+<li><p>Eine Permutation einer endlichen Menge von Elementen S ist eine geordnete Folge aller Elemente von S, wobei jedes Element genau einmal vorkommt.</p>
+<aside class="admonition incremental" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel</span></p><table class="table-data-monospaced table-header-align-center table-data-align-center s-font-size-90 ultra-compact borderless" style="width: 100%;">
+<colgroup>
+<col style="width: 18.8%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+<col style="width: 3.1%" />
+</colgroup>
+<thead>
+<tr><th class="head stub"><p>Zeichen</p></th>
+<th class="head"><p>a</p></th>
+<th class="head"><p>b</p></th>
+<th class="head"><p>c</p></th>
+<th class="head"><p>d</p></th>
+<th class="head"><p>e</p></th>
+<th class="head"><p>f</p></th>
+<th class="head"><p>g</p></th>
+<th class="head"><p>h</p></th>
+<th class="head"><p>i</p></th>
+<th class="head"><p>j</p></th>
+<th class="head"><p>k</p></th>
+<th class="head"><p>l</p></th>
+<th class="head"><p>m</p></th>
+<th class="head"><p>n</p></th>
+<th class="head"><p>o</p></th>
+<th class="head"><p>p</p></th>
+<th class="head"><p>q</p></th>
+<th class="head"><p>r</p></th>
+<th class="head"><p>s</p></th>
+<th class="head"><p>t</p></th>
+<th class="head"><p>u</p></th>
+<th class="head"><p>v</p></th>
+<th class="head"><p>w</p></th>
+<th class="head"><p>x</p></th>
+<th class="head"><p>y</p></th>
+<th class="head"><p>z</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><th class="stub"><p>Ersetzung</p></th>
+<td><p>d</p></td>
+<td><p>f</p></td>
+<td><p>v</p></td>
+<td><p>e</p></td>
+<td><p>n</p></td>
+<td><p>k</p></td>
+<td><p>i</p></td>
+<td><p>b</p></td>
+<td><p>s</p></td>
+<td><p>p</p></td>
+<td><p>t</p></td>
+<td><p>q</p></td>
+<td><p>l</p></td>
+<td><p>w</p></td>
+<td><p>u</p></td>
+<td><p>c</p></td>
+<td><p>x</p></td>
+<td><p>r</p></td>
+<td><p>j</p></td>
+<td><p>g</p></td>
+<td><p>z</p></td>
+<td><p>m</p></td>
+<td><p>a</p></td>
+<td><p>h</p></td>
+<td><p>y</p></td>
+<td><p>o</p></td>
+</tr>
+</tbody>
+</table>
+</aside><ld-supplemental><p class="rubric">Erzeugung einer beliebigen Permutation der 26 Buchstaben mit Python</p>
+<pre class="code python copy-to-clipboard literal-block"><code><span class="keyword namespace">from</span><span class="whitespace"> </span><span class="name namespace">random</span><span class="whitespace"> </span><span class="keyword namespace">import</span> <span class="name">shuffle</span><span class="whitespace">
+</span><span class="name">alphabet</span><span class="operator">=</span><span class="punctuation">[</span><span class="literal string double">&quot;a&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;b&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;c&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;d&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;e&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;f&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;g&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;h&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;i&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;j&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;k&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;l&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;m&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;n&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;o&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;p&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;q&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;r&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;s&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;t&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;u&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;v&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;w&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;x&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;y&quot;</span><span class="punctuation">,</span><span class="literal string double">&quot;z&quot;</span><span class="punctuation">]</span><span class="whitespace">
+</span><span class="name">shuffle</span><span class="punctuation">(</span><span class="name">alphabet</span><span class="punctuation">)</span><span class="whitespace">
+</span><span class="name builtin">print</span><span class="punctuation">(</span><span class="name">alphabet</span><span class="punctuation">)</span></code></pre>
+</ld-supplemental></li>
 </ul>
 <ul class="incremental simple">
 <li><p>Wenn die „Chiffre“-Zeile (siehe Cäsar-Chiffre) eine beliebige Permutation der 26 alphabetischen Zeichen sein kann, dann gibt es 26! (<em>26 Fakultät</em>) oder mehr als 4 · 10²⁶ mögliche Schlüssel.</p>
@@ -749,14 +840,429 @@
 </li>
 </ul>
 </ld-topic>
-<ld-topic id="haufigkeit-der-englischen-buchstaben">
-<h2>Häufigkeit der englischen Buchstaben</h2>
-<figure class="align-center">
-<object aria-label="Häufigkeit der englischen Buchstaben (alphabetisch)" class="light-image" data="drawings/english_letter_frequency.svg" role="img" type="image/svg+xml">
-</object><figcaption>
-<p>Analyse des Concise Oxford Dictionary (9th edition, 1995) ⸺ <a class="reference external" href="https://www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html">https://www.nd.edu</a></p>
-</figcaption>
-</figure>
+<ld-topic id="angriffsvektor-haufigkeit-der-hier-englischen-buchstaben">
+<h2>Angriffsvektor: Häufigkeit der (hier: englischen) Buchstaben<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2>
+<div class="align-center"><div style="width: 74ch; height: 34.45ch">
+<svg
+        class="letterfreq"
+        viewBox="4 1 116 54"
+        font-size="1"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+    >
+<title>Relative frequency of letters in English text</title>
+<desc
+        >Bar chart of the 26 letters a–z and their relative frequency in typical English text.</desc>
+
+<!-- Step 1: axis frame, gridlines, labels -->
+<g class="incremental">
+    <path
+                class="axis draw"
+                d="M12.0,6.0 L12.0,50.0 L116.0,50.0"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="0.3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                pathLength="1"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="43.71"
+                x2="116.0"
+                y2="43.71"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="37.43"
+                x2="116.0"
+                y2="37.43"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="31.14"
+                x2="116.0"
+                y2="31.14"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="24.86"
+                x2="116.0"
+                y2="24.86"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="18.57"
+                x2="116.0"
+                y2="18.57"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="12.29"
+                x2="116.0"
+                y2="12.29"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="6.0"
+                x2="116.0"
+                y2="6.0"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <text
+                class="tick fade"
+                x="10.8"
+                y="50.7"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >0</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="44.41"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >2</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="38.13"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >4</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="31.84"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >6</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="25.56"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >8</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="19.27"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >10</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="12.99"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >12</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="6.7"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >14</text>
+    <text
+                class="ytitle fade"
+                x="6"
+                y="28"
+                transform="rotate(-90 6 28)"
+                fill="currentColor"
+                fill-opacity="0.75"
+                font-size="2.2"
+                text-anchor="middle"
+            >Relative Häufigkeit (%)</text>
+    <text
+                class="xlabel fade"
+                x="14.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >a</text>
+    <text
+                class="xlabel fade"
+                x="18.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >b</text>
+    <text
+                class="xlabel fade"
+                x="22.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >c</text>
+    <text
+                class="xlabel fade"
+                x="26.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >d</text>
+    <text
+                class="xlabel fade"
+                x="30.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >e</text>
+    <text
+                class="xlabel fade"
+                x="34.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >f</text>
+    <text
+                class="xlabel fade"
+                x="38.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >g</text>
+    <text
+                class="xlabel fade"
+                x="42.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >h</text>
+    <text
+                class="xlabel fade"
+                x="46.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >i</text>
+    <text
+                class="xlabel fade"
+                x="50.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >j</text>
+    <text
+                class="xlabel fade"
+                x="54.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >k</text>
+    <text
+                class="xlabel fade"
+                x="58.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >l</text>
+    <text
+                class="xlabel fade"
+                x="62.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >m</text>
+    <text
+                class="xlabel fade"
+                x="66.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >n</text>
+    <text
+                class="xlabel fade"
+                x="70.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >o</text>
+    <text
+                class="xlabel fade"
+                x="74.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >p</text>
+    <text
+                class="xlabel fade"
+                x="78.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >q</text>
+    <text
+                class="xlabel fade"
+                x="82.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >r</text>
+    <text
+                class="xlabel fade"
+                x="86.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >s</text>
+    <text
+                class="xlabel fade"
+                x="90.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >t</text>
+    <text
+                class="xlabel fade"
+                x="94.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >u</text>
+    <text
+                class="xlabel fade"
+                x="98.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >v</text>
+    <text
+                class="xlabel fade"
+                x="102.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >w</text>
+    <text
+                class="xlabel fade"
+                x="106.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >x</text>
+    <text
+                class="xlabel fade"
+                x="110.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >y</text>
+    <text
+                class="xlabel fade"
+                x="114.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >z</text>
+</g>
+
+<!-- Step 2: bars grow from the baseline -->
+<g class="incremental">
+    <rect class="bar" style="--i:0" x="12.6" y="24.32" width="2.8" height="25.68" />
+    <rect class="bar" style="--i:1" x="16.6" y="45.3" width="2.8" height="4.7" />
+    <rect class="bar" style="--i:2" x="20.6" y="41.25" width="2.8" height="8.75" />
+    <rect class="bar" style="--i:3" x="24.6" y="36.62" width="2.8" height="13.38" />
+    <rect class="bar" style="--i:4" x="28.6" y="10.07" width="2.8" height="39.93" />
+    <rect class="bar" style="--i:5" x="32.6" y="42.99" width="2.8" height="7.01" />
+    <rect class="bar" style="--i:6" x="36.6" y="43.66" width="2.8" height="6.34" />
+    <rect class="bar" style="--i:7" x="40.6" y="30.84" width="2.8" height="19.16" />
+    <rect class="bar" style="--i:8" x="44.6" y="28.09" width="2.8" height="21.91" />
+    <rect class="bar" style="--i:9" x="48.6" y="49.51" width="2.8" height="0.49" />
+    <rect class="bar" style="--i:10" x="52.6" y="47.56" width="2.8" height="2.44" />
+    <rect class="bar" style="--i:11" x="56.6" y="37.34" width="2.8" height="12.66" />
+    <rect class="bar" style="--i:12" x="60.6" y="42.43" width="2.8" height="7.57" />
+    <rect class="bar" style="--i:13" x="64.6" y="28.78" width="2.8" height="21.22" />
+    <rect class="bar" style="--i:14" x="68.6" y="26.39" width="2.8" height="23.61" />
+    <rect class="bar" style="--i:15" x="72.6" y="43.93" width="2.8" height="6.07" />
+    <rect class="bar" style="--i:16" x="76.6" y="49.7" width="2.8" height="0.3" />
+    <rect class="bar" style="--i:17" x="80.6" y="31.18" width="2.8" height="18.82" />
+    <rect class="bar" style="--i:18" x="84.6" y="30.1" width="2.8" height="19.9" />
+    <rect class="bar" style="--i:19" x="88.6" y="21.53" width="2.8" height="28.47" />
+    <rect class="bar" style="--i:20" x="92.6" y="41.32" width="2.8" height="8.68" />
+    <rect class="bar" style="--i:21" x="96.6" y="46.92" width="2.8" height="3.08" />
+    <rect class="bar" style="--i:22" x="100.6" y="42.58" width="2.8" height="7.42" />
+    <rect class="bar" style="--i:23" x="104.6" y="49.52" width="2.8" height="0.48" />
+    <rect class="bar" style="--i:24" x="108.6" y="43.78" width="2.8" height="6.22" />
+    <rect class="bar" style="--i:25" x="112.6" y="49.76" width="2.8" height="0.24" />
+</g>
+</svg>
+</div></div><aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Analyse des Concise Oxford Dictionary (9th edition, 1995) – <a class="reference external" href="https://www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html">https://www.nd.edu</a></p>
+</aside>
+</aside>
 </ld-topic>
 <ld-topic id="angriffe-auf-monoalphabetische-chiffren">
 <h2>Angriffe auf Monoalphabetische Chiffren</h2>

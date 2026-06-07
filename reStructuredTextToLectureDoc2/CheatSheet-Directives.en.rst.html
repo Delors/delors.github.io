@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="Michael Eichberg" name="author" />
+<meta content="LectureDoc2, &quot;Cheat Sheet&quot;, Directives" name="keywords" />
+<meta content="Cheat Sheet for LectureDoc2/rst2ld Custom Directives." lang="de" name="description" xml:lang="de" />
+<meta content="ld2-directives-cheat-sheet" name="id" />
+<meta content="2560x1440" name="slide-dimensions" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>LectureDoc2 Custom Directives Cheat Sheet</title>
+
+    <script src="../LectureDoc2/src/ld.js" type="module"></script>
+
+    <link rel="stylesheet" href="../LectureDoc2/src/ld.css" />
+
+    
+    <!-- As of 2024 it is not yet possible to use "layer" with linked stylesheets
+         <link rel="stylesheet" href="../LectureDoc2/src/css/themes/dhbw.css" layer="theme" />
+ -->
+         <style>@import url("../LectureDoc2/src/css/themes/dhbw.css") layer(theme);</style>
+    
+</head>
+<body data-theme="<light-dark>">
+<template>
+<ld-topic class="cheat-sheet" id="lecturedoc2-custom-directives-cheat-sheet">
+<h1 class="title">LectureDoc2 Custom Directives Cheat Sheet</h1>
+
+<div class="cheat-sheet-block docutils container">
+<p class="rubric">Layout Directives</p>
+<p class="rubric">Grid &amp; Cell</p>
+<p><span class="docutils literal">.. grid:: &lt;classes&gt;</span></p>
+<p><span class="docutils literal">.. cell:: &lt;classes&gt;</span></p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:align:</span></p></td>
+<td><p><span class="docutils literal">auto</span> (default), <span class="docutils literal">center</span>, <span class="docutils literal">start</span>, <span class="docutils literal">end</span></p></td>
+</tr>
+<tr><td><p><span class="info">:theme:</span></p></td>
+<td><p>Any theme name (emitted as <span class="docutils literal"><span class="pre">data-theme</span></span>)</p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">grid</span><span class="punctuation">::</span><span class="whitespace">
+
+</span><span class="punctuation">    ..</span> <span class="operator word">cell</span><span class="punctuation">::</span> width-50<span class="whitespace">
+</span>        <span class="name class">:align:</span> center<span class="whitespace">
+</span>        <span class="name class">:theme:</span> muted<span class="whitespace">
+
+</span>        Cell content.<span class="whitespace">
+
+</span><span class="punctuation">    ..</span> <span class="operator word">cell</span><span class="punctuation">::</span> width-50<span class="whitespace">
+
+</span>        Another cell.</code></pre>
+<p class="rubric">Deck &amp; Card</p>
+<p><span class="docutils literal">.. deck:: &lt;classes&gt;</span></p>
+<p><span class="docutils literal">.. card:: &lt;classes&gt;</span></p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:theme:</span> <em>(deck)</em></p></td>
+<td><p>Any theme name (emitted as <span class="docutils literal"><span class="pre">data-theme</span></span> on <span class="docutils literal"><span class="pre">&lt;ld-deck&gt;</span></span>)</p></td>
+</tr>
+<tr><td><p><span class="info">:theme:</span> <em>(card)</em></p></td>
+<td><p>Any theme name (emitted as <span class="docutils literal"><span class="pre">data-theme</span></span> on <span class="docutils literal"><span class="pre">&lt;ld-card&gt;</span></span>)</p></td>
+</tr>
+<tr><td><p><span class="info">:not-incremental:</span> <em>(card)</em></p></td>
+<td><p>Flag; prevents the card from being shown incrementally</p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">deck</span><span class="punctuation">::</span><span class="whitespace">
+</span>    <span class="name class">:theme:</span> dark<span class="whitespace">
+
+</span><span class="punctuation">    ..</span> <span class="operator word">card</span><span class="punctuation">::</span><span class="whitespace">
+</span>        <span class="name class">:theme:</span> light<span class="whitespace">
+
+</span>        First card content.<span class="whitespace">
+
+</span><span class="punctuation">    ..</span> <span class="operator word">card</span><span class="punctuation">::</span><span class="whitespace">
+</span>        <span class="name class">:not-incremental:</span><span class="whitespace">
+
+</span>        This card is not incremental.</code></pre>
+<p class="rubric">Compound</p>
+<p><span class="docutils literal">.. compound::</span> — Standard docutils directive, extended with:</p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:theme:</span></p></td>
+<td><p>Any theme name (emitted as <span class="docutils literal"><span class="pre">data-theme</span></span>)</p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">compound</span><span class="punctuation">::</span><span class="whitespace">
+</span>    <span class="name class">:theme:</span> muted<span class="whitespace">
+
+</span>    Content inside a compound container.</code></pre>
+</div>
+<div class="cheat-sheet-block docutils container">
+<p class="rubric">Information Directives</p>
+<p class="rubric">Global Information</p>
+<p><span class="docutils literal">.. <span class="pre">global-information::</span> &lt;title&gt;</span></p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:formatted-title:</span></p></td>
+<td><p>Inline markup supported (e.g. <span class="docutils literal">**bold**</span>)</p></td>
+</tr>
+<tr><td><p><span class="info">:symbol:</span></p></td>
+<td><p>Single character symbol (e.g. <span class="docutils literal">λ</span>)</p></td>
+</tr>
+<tr><td><p><span class="info">:type:</span></p></td>
+<td><p><span class="docutils literal"><span class="pre">cheat-sheet</span></span> (default) or <span class="docutils literal">slide</span></p></td>
+</tr>
+<tr><td><p><span class="info">:embed:</span></p></td>
+<td><p>Flag; embed in document flow</p></td>
+</tr>
+<tr><td><p><span class="info">:class:</span></p></td>
+<td><p>CSS class(es)</p></td>
+</tr>
+<tr><td><p><span class="info">:name:</span></p></td>
+<td><p>Reference name</p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">global-information</span><span class="punctuation">::</span> Functional Programming<span class="whitespace">
+</span>    <span class="name class">:symbol:</span> λ<span class="whitespace">
+</span>    <span class="name class">:type:</span> cheat-sheet<span class="whitespace">
+</span>    <span class="name class">:embed:</span><span class="whitespace">
+
+</span>    Background information.</code></pre>
+<p class="rubric">Supplemental</p>
+<p><span class="docutils literal">.. supplemental:: &lt;classes&gt;</span></p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:embed-in-document-flow:</span></p></td>
+<td><p>Flag; makes content indistinguishable from main content in document view</p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">supplemental</span><span class="punctuation">::</span><span class="whitespace">
+</span>    <span class="name class">:embed-in-document-flow:</span><span class="whitespace">
+
+</span>    This appears inline in the document.</code></pre>
+<p class="rubric">Presenter Note</p>
+<p><span class="docutils literal">.. <span class="pre">presenter-note::</span> &lt;classes&gt;</span></p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:name:</span></p></td>
+<td><p>Reference name</p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">presenter-note</span><span class="punctuation">::</span><span class="whitespace">
+
+</span>    Notes for the presenter.</code></pre>
+<p class="rubric">Module</p>
+<p><span class="docutils literal">.. module:: &lt;name&gt;</span></p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:class:</span></p></td>
+<td><p>CSS class(es)</p></td>
+</tr>
+<tr><td><p><span class="info">:scope:</span></p></td>
+<td><p><span class="docutils literal">slide</span>, <span class="docutils literal">document</span>, or <span class="docutils literal">all</span> (default)</p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">module</span><span class="punctuation">::</span> My Module<span class="whitespace">
+</span>    <span class="name class">:scope:</span> slide<span class="whitespace">
+
+</span>    Module content.</code></pre>
+<p class="rubric">Source</p>
+<p><span class="docutils literal">.. source:: &lt;filename&gt;</span></p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:prefix:</span></p></td>
+<td><p>Text to prepend to the resolved path</p></td>
+</tr>
+<tr><td><p><span class="info">:suffix:</span></p></td>
+<td><p>Text to append to the resolved path</p></td>
+</tr>
+<tr><td><p><span class="info">:path:</span></p></td>
+<td><p><span class="docutils literal">relative</span> (default) or <span class="docutils literal">absolute</span></p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">source</span><span class="punctuation">::</span> my_file.rst<span class="whitespace">
+</span>    <span class="name class">:prefix:</span> https://example.com/<span class="whitespace">
+</span>    <span class="name class">:path:</span> absolute</code></pre>
+</div>
+<div class="cheat-sheet-block docutils container">
+<p class="rubric">Exercise Directives</p>
+<p class="rubric">Exercise</p>
+<p><span class="docutils literal">.. exercise:: &lt;title&gt;</span></p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:formatted-title:</span></p></td>
+<td><p>Inline markup supported</p></td>
+</tr>
+<tr><td><p><span class="info">:name:</span></p></td>
+<td><p>Reference name</p></td>
+</tr>
+<tr><td><p><span class="info">:class:</span></p></td>
+<td><p>CSS class(es)</p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">exercise</span><span class="punctuation">::</span> My Exercise<span class="whitespace">
+
+</span>    Exercise description.</code></pre>
+<p class="rubric">Solution</p>
+<p><span class="docutils literal">.. solution:: &lt;title&gt;</span> <em>(must be nested inside exercise)</em></p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:pwd:</span></p></td>
+<td><p>Password (min. 3 chars); auto-generated if omitted</p></td>
+</tr>
+<tr><td><p><span class="info">:class:</span></p></td>
+<td><p>CSS class(es)</p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">exercise</span><span class="punctuation">::</span> My Exercise<span class="whitespace">
+
+</span><span class="punctuation">    ..</span> <span class="operator word">solution</span><span class="punctuation">::</span><span class="whitespace">
+</span>        <span class="name class">:pwd:</span> 1234<span class="whitespace">
+
+</span>        Solution content.</code></pre>
+</div>
+<div class="cheat-sheet-block docutils container">
+<p class="rubric">Admonition Directives</p>
+<p>All custom admonitions support an optional title argument and the standard options:</p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:class:</span></p></td>
+<td><p>CSS class(es)</p></td>
+</tr>
+<tr><td><p><span class="info">:name:</span></p></td>
+<td><p>Reference name</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Custom Admonitions</p>
+<p><span class="docutils literal">.. background::</span>, <span class="docutils literal">.. definition::</span>, <span class="docutils literal">.. proof::</span>, <span class="docutils literal">.. theorem::</span>, <span class="docutils literal">.. lemma::</span>, <span class="docutils literal">.. conclusion::</span>, <span class="docutils literal">.. observation::</span>, <span class="docutils literal">.. remark::</span>, <span class="docutils literal">.. summary::</span>, <span class="docutils literal">.. legend::</span>, <span class="docutils literal">.. repetition::</span>, <span class="docutils literal">.. question::</span>, <span class="docutils literal">.. answer::</span>, <span class="docutils literal">.. remember::</span>, <span class="docutils literal">.. deprecated::</span>, <span class="docutils literal">.. assessment::</span>, <span class="docutils literal">.. example::</span>, <span class="docutils literal">.. discussion::</span></p>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">theorem</span><span class="punctuation">::</span> The Theorem Title<span class="whitespace">
+</span>    <span class="name class">:class:</span> important<span class="whitespace">
+
+</span>    The theorem statement.</code></pre>
+</div>
+<div class="cheat-sheet-block docutils container">
+<p class="rubric">Content Directives</p>
+<p class="rubric">Story</p>
+<p><span class="docutils literal">.. story:: &lt;classes&gt;</span></p>
+<p>No custom options.</p>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">story</span><span class="punctuation">::</span><span class="whitespace">
+
+</span>    A story block.</code></pre>
+<p class="rubric">Scrollable</p>
+<p><span class="docutils literal">.. scrollable:: &lt;classes&gt;</span></p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:height:</span></p></td>
+<td><p>CSS height value (e.g. <span class="docutils literal">300px</span>, <span class="docutils literal">10em</span>)</p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">scrollable</span><span class="punctuation">::</span><span class="whitespace">
+</span>    <span class="name class">:height:</span> 300px<span class="whitespace">
+
+</span>    Long content that scrolls.</code></pre>
+<p class="rubric">Popover</p>
+<p><span class="docutils literal">.. popover:: &lt;title&gt;</span></p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:class:</span></p></td>
+<td><p>CSS class(es) for the trigger button</p></td>
+</tr>
+</tbody>
+</table>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">popover</span><span class="punctuation">::</span> Click me<span class="whitespace">
+</span>    <span class="name class">:class:</span> my-button<span class="whitespace">
+
+</span>    Hidden popover content.</code></pre>
+</div>
+<div class="cheat-sheet-block docutils container">
+<p class="rubric">Code Directive Extension</p>
+<p><span class="docutils literal">.. code:: &lt;language&gt;</span> — Standard docutils directive, extended with:</p>
+<table class="compact">
+<tbody>
+<tr><td><p><span class="info">:line-number-digits:</span></p></td>
+<td><p>Integer 1–4; minimum padding width for line numbers</p></td>
+</tr>
+</tbody>
+</table>
+<p>Implicitly enables <span class="docutils literal"><span class="pre">:number-lines:</span></span> when set.</p>
+<pre class="code rst copy-to-clipboard literal-block"><code><span class="punctuation">..</span> <span class="operator word">code</span><span class="punctuation">::</span> java<span class="whitespace">
+</span>    <span class="name class">:line-number-digits:</span> 2<span class="whitespace">
+
+</span>    public static void main(...) { }</code></pre>
+</div>
+</ld-topic>
+</template>
+</body>
+</html>

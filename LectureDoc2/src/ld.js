@@ -85,12 +85,12 @@ class LDSlide extends HTMLElement {
 
     static create({ no, topicId }) {
         const slide = document.createElement("ld-slide");
-        if (no !== undefined) slide.setAttribute("no", String(no));
-        if (topicId !== undefined) slide.setAttribute("topic-id", topicId);
+        if (no != null) slide.setAttribute("no", no);
+        if (topicId != null) slide.setAttribute("topic-id", topicId);
         return slide;
     }
 
-    // TODO add method to directly derive an LDSlide from an LDTopic element
+    // TODO move code to derive an LDSlide from an LDTopic element overhere!
 
     attributeChangedCallback(name, _oldValue, newValue) {
         switch (name) {
@@ -115,11 +115,12 @@ class LDSlide extends HTMLElement {
 
 customElements.define("ld-slide", LDSlide);
 
-async function loadModule(moduleName) {
+async function tryLoadModule(moduleName) {
     try {
         return await import(`./js/${moduleName}.js`);
     } catch (e) {
         console.warn("failed to load module", moduleName, e);
+        return null;
     }
 }
 
@@ -127,8 +128,8 @@ async function loadModule(moduleName) {
 let ldCryptoModule = undefined;
 async function ldCrypto() {
     if (!ldCryptoModule) {
-        let ldCryptoModulePromise = loadModule("ld-crypto");
-        ldCryptoModule = ldCryptoModulePromise.then();
+        let ldCryptoModulePromise = tryLoadModule("ld-crypto");
+        ldCryptoModule = ldCryptoModulePromise?.then();
     }
     return ldCryptoModule;
 }
@@ -995,10 +996,19 @@ function setupLightTable() {
                     m,
                 );
             });
+        // Let's remove id attributes - slides in the light table are never
+        // the source or the target of inter-document navigation.
+        clonedTopic
+            .querySelectorAll("[id]")
+            .forEach((e) => e.removeAttribute("id"));
+        // "reveal" all elements - in some cases the element may be hidden if
+        // is not explicitly revealed
+        clonedTopic
+            .querySelectorAll(".incremental")
+            .forEach((e) => e.classList.add("ld-revealed"));
         const slide = LDSlide.create({});
         slide.classList.add(...clonedTopic.classList);
         slide.append(...clonedTopic.children);
-
         const slideScaler = ld.div({
             classes: ["ld-light-table-slide-scaler"],
         });
@@ -1458,7 +1468,11 @@ async function tryDecryptExercise(password, solutionWrapper, solution) {
 
 function setupDocumentView() {
     /* Topic templates will be rearranged in the document view as follows:
-     * <ld-section>
+     * <ld-section id="">
+     *      <!--    In the the light-table view, id attributes are removed and
+     *              in the slide view ID attributes are transformed into
+     *              topic-IDs. Here, we need them to enable intra-document
+     *              navigation. -->
      *   Content
      *   <footer>
      *    <div class="ld-dv-section-number">...</div>
@@ -1476,13 +1490,30 @@ function setupDocumentView() {
                 m,
             );
         });
-
         const section = ld.create("ld-section", {
-            id: "ld-section-no-" + i,
             classList: template.classList,
             children: template.children,
         });
+        const topicId = t.getAttribute("id");
+        if (topicId) section.setAttribute("id", topicId + "-ld-document-view");
         section.dataset.no = i;
+
+        // We now have to rewrite all links to make them document-view specific.
+        // Otherwise, pressing a link would go to a document in the slide view,
+        // which doesn't make sense.
+        section.querySelectorAll(':scope a[href^="#"]').forEach((e) => {
+            e.setAttribute(
+                "href",
+                e.getAttribute("href") + "-ld-document-view",
+            );
+        });
+        section.querySelectorAll(":scope [id]").forEach((e) => {
+            e.setAttribute("id", e.getAttribute("id") + "-ld-document-view");
+        });
+        // reveal all Elements - we don't have animation in the document view
+        section.querySelectorAll(":scope .incremental").forEach((e) => {
+            e.classList.add("ld-revealed");
+        });
 
         // Process Embedded Exercises
         // ------------------------------------------
@@ -1828,7 +1859,10 @@ function localAdvancePresentation() {
         // When we reach this point all elements are (already) visible.
         localMoveToNextSlide(getCurrentSlideNo());
     } else {
-        elements[i].forEach((e) => (e.style.visibility = "visible"));
+        elements[i].forEach((e) => {
+            e.style.visibility = "visible";
+            e.classList.add("ld-revealed");
+        });
         setSlideProgress(slide, i + 1);
     }
 }
@@ -1854,7 +1888,10 @@ function localRetrogressPresentation() {
         localMoveToPreviousSlide(getCurrentSlideNo());
     } else {
         i--;
-        elements[i].forEach((e) => (e.style.visibility = "hidden"));
+        elements[i].forEach((e) => {
+            e.style.visibility = "hidden";
+            e.classList.remove("ld-revealed");
+        });
         setSlideProgress(slide, i);
     }
 }
@@ -1862,7 +1899,12 @@ function hideAllAnimatedElements(slide) {
     getElementsToAnimate(slide).forEach((g) =>
         // We want to hide the elements in reverse order to ensure that
         // functions that rely on the order work smoothly.
-        setTimeout(() => g.forEach((e) => (e.style.visibility = "hidden"))),
+        setTimeout(() =>
+            g.forEach((e) => {
+                e.style.visibility = "hidden";
+                e.classList.remove("ld-revealed");
+            }),
+        ),
     );
 }
 
@@ -1894,8 +1936,17 @@ function reapplySlideProgress() {
             const elements = getElementsToAnimate(slide);
             const elementsCount = elements.length;
             for (let i = 0; i < elementsCount; i++) {
-                const visibility = i < visibleElements ? "visible" : "hidden";
-                elements[i].forEach((e) => (e.style.visibility = visibility));
+                if (i < visibleElements) {
+                    elements[i].forEach((e) => {
+                        e.style.visibility = "visible";
+                        e.classList.add("ld-revealed");
+                    });
+                } else {
+                    elements[i].forEach((e) => {
+                        e.style.visibility = "hidden";
+                        e.classList.remove("ld-revealed");
+                    });
+                }
             }
         }
     });
@@ -1941,7 +1992,7 @@ function updateJumpTarget(number) {
 export function showSectionWithNo(sectionNo) {
     window.scrollTo(
         0,
-        document.getElementById("ld-section-no-" + sectionNo).offsetTop,
+        document.querySelector(`ld-section[data-no="${sectionNo}"]`).offsetTop,
     );
 }
 
@@ -2393,8 +2444,9 @@ function registerViewportResizeListener() {
 function registerSlideClickedListener() {
     // we still want to be able to click:
     // - links,
-    // - buttons and
-    // - the "ld-copy-to-clipboard-button" icon // FIXME: make this a button
+    // - buttons
+    // - input elements
+    // - video (controls)
 
     function processNode(rootNode) {
         const processInteractiveElement = (e) => {
@@ -2515,10 +2567,21 @@ function localScrollSupplemental(supplementalId, scrollTop) {
 
 function registerInternalLinkClickListener(a, f) {
     a.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const target = a.getAttribute("href").substring(1);
-        jumpToId(target);
-        if (f) f();
+        if (state.showDocumentView) {
+            const targetId =
+                a.getAttribute("href").substring(1) + "-ld-document-view";
+            event.stopPropagation();
+            event.preventDefault();
+            document
+                .getElementById(targetId)
+                ?.scrollIntoView({ behavior: "smooth" });
+            if (f) f();
+        } else {
+            event.stopPropagation();
+            const target = a.getAttribute("href").substring(1);
+            jumpToId(target);
+            if (f) f();
+        }
     });
 }
 
@@ -2529,37 +2592,6 @@ function registerSlideInternalLinkClickedListener() {
             '#ld-slides-pane a:where(.reference.internal, .citation-reference, [role="doc-backlink"])',
         )
         .forEach((e) => registerInternalLinkClickListener(e));
-
-    // // Handle links to other slides in the document.
-    // document.
-    //     querySelectorAll("#ld-slides-pane a.reference.internal").
-    //     forEach((a) => {
-    //         a.addEventListener("click", (event) => {
-    //             event.stopPropagation();
-    //             const target = a.getAttribute("href");
-    //             jumpToElementWithId(target.substring(1));
-    //         })
-    //     });
-
-    // // Handle links related to the bibliography.
-    // document.
-    //     querySelectorAll("#ld-slides-pane a.citation-reference").
-    //     forEach((a) => {
-    //         a.addEventListener("click", (event) => {
-    //             event.stopPropagation();
-    //             const target = a.getAttribute("href");
-    //             jumpToSlideWithElementWithId(target);
-    //         })
-    //     });
-    // document.
-    //     querySelectorAll('#ld-slides-pane a[role="doc-backlink"]').
-    //     forEach((a) => {
-    //         a.addEventListener("click", (event) => {
-    //             event.stopPropagation();
-    //             const target = a.getAttribute("href");
-    //             jumpToSlideWithElementWithId(target);
-    //         })
-    //     });
 }
 
 function registerHoverSupplementalListener() {
@@ -2816,15 +2848,15 @@ const onDOMContentLoaded = async () => {
 
     await import("./js/ld-images.js");
 
-    await loadModule("ld-global-information");
-    await loadModule("ld-tables");
-    await loadModule("ld-decks");
-    await loadModule("ld-scrollables");
-    await loadModule("ld-stories");
-    await loadModule("ld-hoverables");
-    await loadModule("ld-popovers");
-    await loadModule("ld-pointer-events");
-    ldCopyToClipboardModule = await loadModule("ld-copy-to-clipboard");
+    await tryLoadModule("ld-global-information");
+    await tryLoadModule("ld-tables");
+    await tryLoadModule("ld-decks");
+    await tryLoadModule("ld-scrollables");
+    await tryLoadModule("ld-stories");
+    await tryLoadModule("ld-hoverables");
+    await tryLoadModule("ld-popovers");
+    await tryLoadModule("ld-pointer-events");
+    ldCopyToClipboardModule = await tryLoadModule("ld-copy-to-clipboard");
 
     ldEvents.beforeLDDOMManipulations.forEach((f) => f());
 
