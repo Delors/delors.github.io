@@ -197,6 +197,61 @@
             color 0.5s ease-in-out,
             background-color 0.75s ease-in-out;
     }
+
+    .incremental.fade-in {
+        transition: opacity 0.75s ease-in;
+        opacity: 0;
+
+        &.ld-revealed {
+            opacity: 1;
+        }
+    }
+
+    .incremental.scale-in {
+        transition: scale 0.5s ease-in;
+        scale: 0;
+
+        &.ld-revealed {
+            scale: 1;
+        }
+    }
+
+    /*  Works only when the table is not "incremental" and when the slide is shown
+        for the first time: */
+    table.build-up-from-left tr {
+        opacity: 1;
+        transform: translate(0);
+        transition:
+            transform 0.75s ease,
+            opacity 0.6s ease;
+        transition-delay: calc((sibling-index() - 1) * 0.15s);
+
+        @starting-style {
+            opacity: 0;
+            transform: translateX(
+                calc((sibling-index() * 100px + var(--ld-slide-width)) * -1)
+            );
+        }
+    }
+
+    table.fade-in-rows tr {
+        opacity: 1;
+        transform: translate(0);
+        transition: opacity 0.6s ease;
+        transition-delay: calc((sibling-index() - 1) * 0.15s);
+
+        @starting-style {
+            opacity: 0;
+        }
+    }
+
+    :is(
+            table.incremental:not(.ld-revealed).fade-in-rows,
+            .incremental:not(.ld-revealed) table.fade-in-rows
+        )
+        tr {
+        opacity: 0;
+    }
 }
 
 @keyframes dark-red-to-light-red-and-back {
