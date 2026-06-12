@@ -226,10 +226,11 @@ ld-slide {
     }
 
     &.s-vertical-title {
-        display: flex;
-        flex-direction: row;
-
         > h2:first-child {
+            float: left;
+
+            margin-right: var(--default-container-padding);
+
             writing-mode: vertical-rl;
             transform: rotate(180deg);
             font-size: calc(var(--s-font-size) * 1.25);
@@ -258,39 +259,103 @@ ld-slide {
         }
     }
 
-    /*
-        We add a pop-out effect on a list item on hover.
-    */
-    li.pop-out-list-item-on-hover {
-        transition: 0.5s;
+    /* Styling of Cheat Sheets. */
+    &.cheat-sheet {
+        display: block;
 
-        &.\:hover {
-            transform-origin: left center;
-            transform: scale(1.14);
+        column-count: 8;
+        column-gap: 6px;
+        column-fill: auto;
+
+        border-radius: 0;
+        padding: 6px;
+        block-size: calc(var(--ld-slide-height) - 2 * 6px);
+
+        font-size: 14px;
+
+        &#ld-slide-no-0::before {
+            /* to clear the default logo */
+            display: none;
         }
-    }
 
-    /* Scales a container on hover.
+        &::after {
+            content: "LD2";
 
-       The container's content is expected to be an image that is designed
-       w.r.t. the document view.
-       This class is intended to be used with generic containers. It must not be used on images directly, as it would interfere with the scaling logic of images.
+            position: absolute;
+            z-index: -1;
+            bottom: -195px;
+            right: -20px;
 
-       In this case the assumption is made that the image is designed w.r.t to the document view! I. e., contrary to the standard case, images are not scaled in the document view and only scaled in the slide view, when the user hovers over them. (Part of this logic is implemented in JavaScript!) */
-    .scale-on-hover {
-        position: relative;
-        float: right;
-        border-radius: var(--small-border-radius);
+            font-size: 50em;
+            font-weight: 900;
+            color: var(--very-low-contrast-color);
+            text-shadow: 2px 2px 4px var(--smallprint-color);
+        }
 
-        transform-origin: top right;
-        transition: transform 0.5s ease-in-out;
-        z-index: 1;
+        .cheat-sheet-block {
+            break-inside: auto;
+            box-shadow: 1px 1px 4px var(--shadow-color);
 
-        &.\:hover {
-            /*transform: scale(3);*/
-            transform: scale(var(--slide-to-document-font-size-ratio));
-            border: thin solid rgb(0 0 0 / 50%);
-            transition: transform 0.5s ease-in-out;
+            > button[popovertarget] {
+                margin: var(--small-border-radius) 0;
+                width: 100%;
+            }
+        }
+
+        .cheat-sheet-block,
+        h1 {
+            width: 100%;
+
+            left: 0;
+
+            border-radius: 6px 6px 0 0;
+            padding: 6px;
+
+            &.title {
+                margin: 0;
+                padding: 4px;
+                font-size: 2.5em;
+
+                /* We need to override the default h1 styling: */
+                background-color: var(--primary-color);
+                color: var(--background-color);
+                text-shadow: -1px -1px 1px var(--shadow-color);
+            }
+        }
+
+        .cheat-sheet-block {
+            > .rubric:first-child {
+                position: relative;
+                top: -6px;
+                left: -6px;
+
+                width: calc(100% + 12px);
+                margin-bottom: 0;
+                border-radius: 6px 6px 0 0;
+                padding: 0.3em 0 0.3em 0.25em;
+
+                font-size: larger;
+
+                color: var(--background-color);
+                background-color: var(--accent-color);
+            }
+
+            > .rubric:not(:first-child) {
+                position: relative;
+                top: -5px;
+                left: -5px;
+
+                width: calc(100% + 10px);
+                margin-bottom: 0;
+                padding: 0.15em 0 0.15em 0.25em;
+
+                background-color: var(--low-contrast-color);
+                text-shadow: -1px -1px 1px var(--background-color);
+            }
+        }
+
+        p.rubric + p {
+            margin-top: 0;
         }
     }
 }

@@ -17,7 +17,7 @@ console.log("loading ld-hoverable.js");
  * See {@link afterLDDOMManipulations} for the implementation.
  */
 const listClassesToPropagateToItems = [
-    "pop-out-list-item-on-hover",
+    "scale-up-on-hover",
     "show-list-item-content-on-hover",
     "highlight-list-item-on-hover",
 ];

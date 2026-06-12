@@ -1376,7 +1376,6 @@ function setupSlidePane() {
         // Let's hide all elements that should be shown incrementally;
         // this is done to get all (new) slides to a well-defined state.
         setupIncrementalElements(slide);
-        slide.style.display = "none";
         slidesPane.appendChild(slide);
     });
 
@@ -1698,8 +1697,7 @@ function showSlide(
     } = {},
 ) {
     /* We now want to use the style based display property again: */
-    ldSlide.style.removeProperty("display");
-    ldSlide.style.scale = 1;
+    ldSlide.classList.add("ld-revealed");
     if (setNewMarker) ldSlide.classList.add("ld-current-slide");
     const slideNo = ldSlide.no;
     state.currentSlideNo = slideNo;
@@ -1723,16 +1721,11 @@ function showSlide(
 function hideSlideWithNo(slideNo, setOldMarker = false) {
     if (ephemeral.previousSlide) {
         ephemeral.previousSlide.classList.remove("ld-previous-slide");
-        /* When we simply "keep" all slides in the DOM, we have a significant
-            memory issue in Safari. A small set with ~40 slide can
-            suddenly require 1.5 to 2GB of memory!
-            */
-        ephemeral.previousSlide.style.display = "none";
     }
     const ldSlide = document.getElementById("ld-slide-no-" + slideNo);
     if (ldSlide) {
         ephemeral.previousSlide = ldSlide;
-        ldSlide.style.removeProperty("scale"); // let the CSS handle it
+        ldSlide.classList.remove("ld-revealed");
         ldSlide.classList.remove("ld-current-slide");
         if (setOldMarker) ldSlide.classList.add("ld-previous-slide");
 

@@ -1,0 +1,297 @@
+/* LAYER: theme.ld.slide-view */
+
+/*
+    "Styling" of Animations
+
+    The following style can generally be composed with the previous styles which
+    affect the layout of the slide.
+
+    Recall that LectureDoc's primary mechanism to switch slides is to scale a
+    slide to 0 and to scale the next slide to 1 (normally both happens instanteously).
+    Hence, it is often necessary to "reset" the scale level to make animations
+    work.
+
+    Currently, we support these animations:
+    transition-*
+    - fade
+    - scale
+    - move-left
+    - move-to-top
+    - flip
+*/
+
+/*
+    In the following, we define the CSS that is solely related to animations and
+    transitions.
+*/
+
+#ld-slides-pane {
+    /* Continuously running anmiations. */
+
+    .admonition[data-theme="danger"] > p:first-child.admonition-title {
+        animation: background-color-to-symbol-background-color-and-back 8s
+            infinite;
+    }
+
+    /* Animations that happen, when an incremental element is revealed.  */
+    .incremental {
+        &.fade-in {
+            transition: opacity 0.75s ease-in;
+            opacity: 0;
+
+            &.ld-revealed {
+                opacity: 1;
+            }
+        }
+
+        &.scale-in {
+            transition:
+                scale 0.5s ease-in,
+                opacity 0.75s ease;
+
+            scale: 0;
+            opacity: 0;
+
+            &.ld-revealed {
+                scale: 1;
+                opacity: 1;
+            }
+        }
+    }
+
+    /* Adds a scale-up effect on an element on hover. */
+    .scale-on-hover {
+        /* TODO consolidate.. with the one below - just the factor is different! */
+        transform-origin: left center;
+        transition: 0.5s;
+        --on-hover-scale-factor: 1.14;
+
+        &.\:hover {
+            transform: scale(var(--on-hover-scale-factor));
+        }
+    }
+
+    .scale-factor-2x {
+        --on-hover-scale-factor: 2;
+    }
+
+    /* Scales a container/compound on hover.
+
+       This class is intended to be used with generic containers.
+       It must not be used on images directly, as it would interfere with the
+       scaling logic of images.
+
+       In this case the assumption is made that the image is designed w.r.t.
+       the document view!
+       I. e., contrary to the standard case, images are not scaled in the
+       document view and only scaled in the slide view, when the user hovers
+       over them.
+
+       (Part of the logic is implemented in JavaScript.) */
+    .scale-up-on-hover {
+        position: relative;
+        border-radius: var(--small-border-radius);
+
+        transform-origin: top right;
+        transition: transform 0.5s ease-in-out;
+        z-index: 1;
+
+        &.\:hover {
+            transform: scale(var(--slide-to-document-font-size-ratio));
+        }
+    }
+    .transform-origin-top-right {
+        transform-origin: top right;
+    }
+    .transform-origin-top-left {
+        transform-origin: top left;
+    }
+    .transform-origin-left-center {
+        transform-origin: left center;
+    }
+    .transform-origin-right-center {
+        transform-origin: right center;
+    }
+    .transform-origin-top-center {
+        transform-origin: top center;
+    }
+
+    /*  Works only when the table is not "incremental" and when the slide is shown
+        for the first time: */
+    table {
+        &.incremental-table-rows.fade-in > tbody > tr {
+            transition: opacity 0.75s ease-in;
+            opacity: 0;
+
+            &.ld-revealed {
+                opacity: 1;
+            }
+        }
+
+        &.build-up-from-left tr {
+            opacity: 1;
+            transform: translate(0);
+            transition:
+                transform 0.75s ease,
+                opacity 0.6s ease;
+            transition-delay: calc((sibling-index() - 1) * 0.15s);
+
+            @starting-style {
+                opacity: 0;
+                transform: translateX(
+                    calc((sibling-index() * 100px + var(--ld-slide-width)) * -1)
+                );
+            }
+        }
+
+        &.fade-in-rows tr {
+            opacity: 1;
+            transform: translate(0);
+            transition: opacity 0.6s ease;
+            transition-delay: calc((sibling-index() - 1) * 0.15s);
+
+            @starting-style {
+                opacity: 0;
+            }
+        }
+    }
+
+    :is(
+            table.incremental:not(.ld-revealed).fade-in-rows,
+            .incremental:not(.ld-revealed) table.fade-in-rows
+        )
+        tr {
+        opacity: 0;
+    }
+
+    /* ----------------------- S L I D E TRANSITIONS ------------------------ */
+
+    .ld-current-slide.transition-move-left {
+        @starting-style {
+            translate: 100%;
+            opacity: 0;
+        }
+        transition-property: translate, opacity;
+        transition-duration: 3s;
+    }
+    .ld-previous-slide:has(+ .ld-current-slide.transition-move-left) {
+        translate: -100%;
+        opacity: 0;
+
+        transition:
+            translate 3s,
+            opacity 3s,
+            display 3s allow-discrete;
+    }
+
+    .ld-current-slide.transition-move-to-top {
+        @starting-style {
+            translate: 0 100%;
+            opacity: 0;
+        }
+        transition-property: translate, opacity;
+        transition-duration: 3s;
+    }
+    .ld-previous-slide:has(+ .ld-current-slide.transition-move-to-top) {
+        translate: 0 -100%;
+        opacity: 0;
+
+        transition:
+            translate 3s,
+            opacity 3s,
+            display 3s allow-discrete;
+    }
+
+    .ld-current-slide.transition-scale {
+        @starting-style {
+            opacity: 0;
+            scale: 1.5;
+        }
+
+        transition:
+            scale 3s,
+            opacity 3s;
+    }
+    .ld-previous-slide:has(+ .ld-current-slide.transition-scale) {
+        opacity: 50%;
+
+        transition:
+            opacity 3s,
+            display 3s allow-discrete;
+    }
+
+    .ld-current-slide.transition-zoom {
+        @starting-style {
+            opacity: 0;
+            scale: 1.5;
+        }
+
+        transition:
+            scale 3s,
+            opacity 3s;
+    }
+    .ld-previous-slide:has(+ .ld-current-slide.transition-zoom) {
+        scale: 0;
+        opacity: 75%;
+
+        transition:
+            scale 3s,
+            opacity 3s,
+            display 3s allow-discrete;
+    }
+
+    .ld-current-slide.transition-fade {
+        @starting-style {
+            opacity: 0;
+        }
+        transition: opacity 2s;
+    }
+    .ld-previous-slide:has(+ .ld-current-slide.transition-fade) {
+        opacity: 0;
+
+        transition:
+            opacity 2s,
+            display 2s allow-discrete;
+    }
+
+    .ld-current-slide.transition-flip {
+        perspective: 3000px;
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+
+        animation: 2s flip-in;
+    }
+    .ld-previous-slide:has(+ .ld-current-slide.transition-flip) {
+        perspective: 3000px;
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+        transform: rotateY(-180deg);
+        opacity: 0;
+        transition:
+            transform 2.5s,
+            opacity 2.5s,
+            display 2.5s allow-discrete;
+    }
+
+    &:has(.ld-current-slide.transition-dice-left) {
+        perspective: 3000px;
+    }
+    .ld-current-slide.transition-dice-left,
+    .ld-previous-slide:has(+ .ld-current-slide.transition-dice-left) {
+        /* the rotation axis sits this far BEHIND the slide.
+       It must equal HALF the slide width for the faces to meet at a true 90° corner. */
+        --ld-dice-depth: calc(var(--ld-slide-width) * 0.5);
+        transform-origin: 50% 50% calc(-1 * var(--ld-dice-depth));
+        backface-visibility: hidden;
+    }
+
+    .ld-current-slide.transition-dice-left {
+        animation: 3s rotate-left; /* incoming is rendered → animation */
+    }
+    .ld-previous-slide:has(+ .ld-current-slide.transition-dice-left) {
+        transform: rotateY(-90deg);
+        transition:
+            transform 3s,
+            display 3s allow-discrete;
+    }
+}

@@ -12,13 +12,6 @@
 <meta name="version" content="LD2 RENAISSANCE" />
 <meta name="exercises-passwords" content="MTAwMDAw:2Zawzyu3P6Ft2CCwuweaKJ3cyo05J16ej3ZZjaSo298=:OjrjqycIyTFJzskE:lnvduiCb/c9ZWBtZuCeuqmckZItY+eIa8HeIqHyvVyjFiK+guUisrdrtVvM9ItJC/Sf+365ZU+dZ+SWMwj095k2Z5yUc91ETudUK4+yOaA/avb0HSmJ/vFA5eaixfRQtDmS4yO22G5naIEVYdTQbDsiGp8ymmu71D37K9pFERvcyEFmVHQaonNUZCELDLHlxaAiN5QrQ1DXUmdNkHonDlS6/kg==" />
 <title>Authentifizierte Verschlüsselung</title>
-<script>
-    window.MathJax = {
-        tex: { tags: 'ams' },
-        chtml: { displayAlign: 'center' /*left or center*/ }
-    };
-</script>
-<script type="text/javascript" src="../LectureDoc2/ext/mathjax/es5/tex-chtml-full.js?config=TeX-AMS_CHTML"></script>
 
     <script src="../LectureDoc2/src/ld.js" type="module"></script>
 
@@ -42,7 +35,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">0.1.5</dd>
+<dd class="version">0.1.5.1</dd>
 </dl>
 <dl class="sources field-list simple">
 <dt>Quelle<span class="colon">:</span></dt>
@@ -67,7 +60,7 @@
 </ld-supplemental></ld-topic>
 <ld-topic class="s-vertical-title" id="drei-ansatze-in-hinblick-auf-authenticated-encryption">
 <h2>Drei Ansätze in Hinblick auf <em>Authenticated Encryption</em></h2>
-<ld-grid class="width-100 default-layout">
+<ld-grid class="default-layout">
 <ld-cell class="width-50" style="align-self:auto;">
 <div class="compound">
 <p><strong>Encrypt-then-MAC</strong></p>
@@ -81,12 +74,18 @@
 <p><s>MAC-then-Encrypt</s></p>
 <object class="light-image" data="drawings/authentifizierte-verschluesselung/mac_then_encrypt.svg" role="img" type="image/svg+xml">
 </object></ld-cell></ld-grid><ld-supplemental><p class="rubric">Modi</p>
-<ul class="simple">
-<li><p><strong>Encrypt-then-MAC</strong>: Der Klartext wird verschlüsselt und dann wird ein MAC über den Chiffretext berechnet. Dieser Ansatz wird von IPSec und TLS 1.3 verwendet.</p></li>
-<li><p><strong>Encrypt-and-MAC</strong>: Der Klartext wird verschlüsselt und ein MAC über den Klartext berechnet. Beides wird versendet. Dieser Ansatz wird von SSH verwendet. Es wurde gezeigt, dass kleinere Änderungen die Sicherheit weiter verbessern können.</p></li>
-<li><p><strong>MAC-then-Encrypt</strong>: Ein MAC wird über den Klartext berechnet und dann wird der Klartext und der MAC verschlüsselt. Dies war bis TLS 1.2 der Standard. Aufgrund von erfolgreichen Angriffen - insbesondere gegen das Padding bei Verwendung des CBC Modus (siehe <a class="reference external" href="https://en.wikipedia.org/wiki/Padding_oracle_attack">Padding-Oracle Attacks</a>) - wird dieser Ansatz nicht mehr verwendet.</p></li>
-</ul>
+<dl class="dd-margin-left-2em field-list">
+<dt><strong>Encrypt-then-MAC</strong><span class="colon">:</span></dt>
+<dd><p>Der Klartext wird verschlüsselt und dann wird ein MAC über den Chiffretext berechnet. Dieser Ansatz wird von IPSec und TLS 1.3 verwendet.</p>
+</dd>
+<dt><strong>Encrypt-and-MAC</strong><span class="colon">:</span></dt>
+<dd><p>Der Klartext wird verschlüsselt und ein MAC über den Klartext berechnet. Beides wird versendet. Dieser Ansatz wird von SSH verwendet. Es wurde gezeigt, dass kleinere Änderungen die Sicherheit weiter verbessern können.</p>
+</dd>
+<dt><strong>MAC-then-Encrypt</strong><span class="colon">:</span></dt>
+<dd><p>Ein MAC wird über den Klartext berechnet und dann wird der Klartext und der MAC verschlüsselt. Dies war bis TLS 1.2 der Standard. Aufgrund von erfolgreichen Angriffen - insbesondere gegen das Padding bei Verwendung des CBC Modus (siehe <a class="reference external" href="https://en.wikipedia.org/wiki/Padding_oracle_attack">Padding-Oracle Attacks</a>) - wird dieser Ansatz nicht mehr verwendet.</p>
 <p>Das grundlegende Problem entsteht dann, wenn der Angreifer bei einer Manipulation der Nachricht (am Ende) nicht nur eine generische Fehlermeldung erhält (Decryption failed) sondern ggf. die Information, dass ein Padding-Fehler vorliegt. Er kann diese Information nutzen, um  schrittweise eine Entschlüsselung vorzunehmen. Alternativ können ggf. Timing-Unterschiede im Verhalten verwendet werden.</p>
+</dd>
+</dl>
 <p class="rubric">Integrität und Authentizität</p>
 <p>Es ist möglich Integrität ohne Authentizität zu gewährleisten. Durch einen einfachen Hash kann gewährleistet werden, dass die Daten während der Übertragung nicht verändert wurden (insbesondere durch einen Fehler). Wenn ich jedoch Authentizität gewährleisten möchte, dann muss ich einen MAC verwenden, der auf einem Schlüssel basiert, der nur dem Sender und dem Empfänger bekannt ist. Dies verhindert, dass ein Angreifer einfach die Daten verändert und den MAC neu berechnet.</p>
 <p>Authentizität ohne Integrität ist nicht sinnvoll. Der Nutzen zu wissen, dass eine Nachricht von einer bestimmten Person kam, aber nicht zu wissen, ob die Nachricht verändert wurde, ist sehr gering.</p>
@@ -104,10 +103,10 @@
 <li><p>Es handelt sich um eine Verknüpfung des CTR-Modus und des Galois-Modus. Ziel ist eine hohe Parallelisierung und Effizienz.</p></li>
 <li><p>Der Algorithmus ist in der Lage, Authentizität (+ Integrität) und Vertraulichkeit zu gewährleisten.</p></li>
 <li><p>Die Eingabe in den Algorithmus ist der Klartext (<span class="eng">Plaintext</span>), der Schlüssel, ein Initialisierungsvektor (IV) und zusätzliche (optionale) authentifizierte Daten A.</p></li>
-<li><p>Das Authentication Tag wird mittels Arithmetik über dem Körper <span class="math">\(GF(2^{128})\)</span> berechnet und wird am Ende des Chiffretextes angehängt. Es wird das bekannte Polynom: <span class="math">\(x^{128} + x^7 + x^2 + x + 1\)</span> verwendet.</p></li>
+<li><p>Das Authentication Tag wird mittels Arithmetik über dem Körper GF(2¹²⁸) berechnet und wird am Ende des Chiffretextes angehängt. Es wird das  Polynom: x¹²⁸ + x⁷ + x² + x + 1 verwendet.</p></li>
 <li><p>Die Blockgröße ist 128Bit (d. h. die AES-Blockgröße).</p></li>
-<li><p><span class="math-i">H</span> ist der Hash Key:  <span class="math">\(H = E(K,0^{128})\)</span> (wobei <span class="math-i">E</span> die AES-Verschlüsselung ist).</p></li>
-<li><p><span class="math-i">mult</span> ist Multiplikation im Körper <span class="math">\(GF(2^{128})\)</span>.</p></li>
+<li><p>H ist der Hash Key:  H = E(K,0¹²⁸) (wobei E die AES-Verschlüsselung ist).</p></li>
+<li><p>mult ist Multiplikation im Körper GF(2¹²⁸).</p></li>
 <li><p>Die optionalen authentifizierten Daten A werden zum Beispiel benötigt, um den Kontext einer Nachricht zu erfassen (und zum Beispiel Replay-Attacken vorzubeugen). Ein konkretes Beispiel könnte die Ziel-IP-Adresse sein, wenn die Nachricht über das Internet übertragen wird.</p></li>
 </ul>
 <aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p>

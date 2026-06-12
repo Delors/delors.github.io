@@ -2,7 +2,7 @@
  * This JavaScript module implements advanced functionality related to tables.
  *
  * In particular, selective highlighting of...
- * - cells (highlight-cell-on-hover)
+ * - cells (highlight-cell-on-hover, highlight-non-empty-cell-on-hover)
  * - rows (highlight-row-on-hover)
  * - a cell in a row (highlight-cell-and-row-on-hover)
  * - identical cells (highlight-identical-cells-on-hover)
@@ -202,15 +202,23 @@ function afterLDListenerRegistrations() {
     tables.forEach((table) => {
         const tbody = table.querySelector(":scope tbody");
 
+        function handleHoverState(tableCell) {
+            tableCell.addEventListener("mouseenter", () =>
+                addHoverState(table, tableCell),
+            );
+            tableCell.addEventListener("mouseleave", () =>
+                removeHoverState(table, tableCell),
+            );
+        }
+
         if (table.classList.contains("highlight-cell-on-hover")) {
-            tbody.querySelectorAll(":scope td").forEach((td) => {
-                td.addEventListener("mouseenter", () =>
-                    addHoverState(table, td),
-                );
-                td.addEventListener("mouseleave", () =>
-                    removeHoverState(table, td),
-                );
-            });
+            tbody.querySelectorAll(":scope td").forEach(handleHoverState);
+        }
+
+        if (table.classList.contains("highlight-non-empty-cell-on-hover")) {
+            tbody
+                .querySelectorAll(":scope td:not(:empty)")
+                .forEach(handleHoverState);
         }
 
         if (table.classList.contains("highlight-row-on-hover")) {
@@ -253,7 +261,7 @@ function afterLDListenerRegistrations() {
             });
         }
 
-        if (table.classList.contains("tablehighlight-cell-and-row-on-hover")) {
+        if (table.classList.contains("highlight-cell-and-row-on-hover")) {
             function highlight(cell, isHovered) {
                 let relatedCells = new Set(cell.parentElement.cells);
                 relatedCells.delete(cell);
