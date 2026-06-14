@@ -194,7 +194,7 @@ Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Info
 <li><p>schnelle Auswertung ermöglicht hohen Durchsatz</p></li>
 <li><p>Realisierung eines Packet Filters</p></li>
 </ul>
-<aside class="admonition incremental" data-theme="assessment"><p class="admonition-title" data-theme="assessment-header"><span>Bewertung</span></p><ul class="columns simple">
+<aside class="admonition incremental-10 fade-in" data-theme="assessment"><p class="admonition-title" data-theme="assessment-header"><span>Bewertung</span></p><ul class="columns simple">
 <li><ul class="positive-list incremental">
 <li><p>einfach und billig</p></li>
 <li><p>flexibel</p></li>
@@ -208,9 +208,235 @@ Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Info
 </ul>
 </li>
 </ul>
-</aside></ld-cell><ld-cell class="width-40" style="align-self:auto;">
-<object aria-label="Screening Router" class="light-image align-center" data="images/firewalls/screening-router.svg" role="img" type="image/svg+xml">
-</object></ld-cell></ld-grid></ld-topic>
+</aside></ld-cell><ld-cell class="width-40 incremental-1 fade-in" style="align-self:auto;">
+<div aria-label="Screening Router" style="width: 30ch; height: 32.25ch;">
+<svg viewBox="0 0 40 43"
+     font-size="1"
+     version="1.1"
+     xmlns="http://www.w3.org/2000/svg">
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 0: Internal network (LAN) — visible immediately
+         ═══════════════════════════════════════════════════ -->
+    <g>
+        <!-- Trusted-zone backdrop -->
+        <rect x="5" y="1" width="30" height="13.4" rx="1"
+              fill="none"
+              stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.12"
+              stroke-dasharray="0.6,0.4" opacity="0.6"/>
+        <text x="20" y="2.6" font-size="0.9" text-anchor="middle"
+              fill="light-dark(#16a34a, #4ade80)">LAN</text>
+
+        <!-- Server -->
+        <rect x="8" y="2.6" width="6" height="6.8" rx="0.6"
+              fill="light-dark(#dcfce7, #14532d)"
+              stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.18"/>
+        <g fill="light-dark(#bbf7d0, #166534)"
+           stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.08">
+            <rect x="8.7" y="3.3" width="4.6" height="1.5" rx="0.25"/>
+            <rect x="8.7" y="5.1" width="4.6" height="1.5" rx="0.25"/>
+            <rect x="8.7" y="6.9" width="4.6" height="1.5" rx="0.25"/>
+        </g>
+        <g fill="light-dark(#16a34a, #86efac)" stroke="none">
+            <circle cx="9.4" cy="4.05" r="0.22"/>
+            <circle cx="9.4" cy="5.85" r="0.22"/>
+            <circle cx="9.4" cy="7.65" r="0.22"/>
+        </g>
+        <text x="13" y="10.5" text-anchor="middle" font-size="1.2"
+              fill="currentColor">Server</text>
+
+        <!-- Laptop (browser client) -->
+        <g transform="translate(-1.5,0)">
+            <rect x="25.5" y="2.2" width="7" height="4.8" rx="0.4"
+                fill="light-dark(#dcfce7, #14532d)"
+                stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.18"/>
+            <!-- browser -->
+            <rect x="26" y="2.7" width="6" height="1" rx="0.2"
+                fill="light-dark(#ffffff, #052e16)"
+                stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.08"/>
+            <g fill="light-dark(#16a34a, #86efac)">
+                <circle cx="26.4" cy="3.2" r="0.13"/>
+                <circle cx="26.85" cy="3.2" r="0.13"/>
+                <circle cx="27.3" cy="3.2" r="0.13"/>
+            </g>
+            <rect x="28" y="2.95" width="3.6" height="0.5" rx="0.25"
+                fill="light-dark(#bbf7d0, #166534)"/>
+            <!-- page content lines -->
+            <g fill="light-dark(#86efac, #15803d)">
+                <rect x="26.1" y="4.2" width="4.6" height="0.45" rx="0.2"/>
+                <rect x="26.1" y="5.1" width="5.6" height="0.45" rx="0.2"/>
+                <rect x="26.1" y="6.0" width="3.4" height="0.45" rx="0.2"/>
+            </g>
+        </g>
+        <!-- base -->
+        <path d="M24.6 7 L30.4 7 L31.2 8 L23.8 8 Z"
+              fill="light-dark(#bbf7d0, #166534)"
+              stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.18"
+              stroke-linejoin="round"/>
+        <text x="29" y="9.25" text-anchor="middle" font-size="1.2"
+              fill="currentColor">Client</text>
+
+        <!-- LAN bus + drops -->
+        <line x1="11" y1="13" x2="27" y2="13"
+              stroke="currentColor" stroke-width="0.2"/>
+        <line x1="11" y1="9.5" x2="11" y2="13"
+              stroke="currentColor" stroke-width="0.2"/>
+        <line x1="27" y1="8" x2="27" y2="13"
+              stroke="currentColor" stroke-width="0.2"/>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 1: The (untrusted) Internet
+         ═══════════════════════════════════════════════════ -->
+    <g class="incremental fade-in">
+        <path d="M 14.96 41.18
+                 C 12.94 41.18, 11.50 39.60, 11.79 37.72
+                 C 10.78 37.15, 11.07 35.13, 12.73 34.84
+                 C 12.80 32.97, 14.89 31.89, 16.62 32.97
+                 C 17.70 31.39, 21.37 31.32, 22.59 33.19
+                 C 25.11 32.40, 27.42 33.98, 26.70 36.14
+                 C 29.00 36.57, 29.07 39.74, 26.91 40.60
+                 C 26.34 41.61, 23.60 41.90, 22.30 41.04
+                 L 14.96 41.18 Z"
+              fill="none"
+              stroke="currentColor" stroke-width="0.22"/>
+        <text x="20" y="37.6" text-anchor="middle"
+              font-size="2.0" font-weight="bold"
+              fill="currentColor">Internet</text>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 2: Router / Firewall — plugs into LAN and Internet
+         ═══════════════════════════════════════════════════ -->
+    <g class="incremental fade-in">
+        <!-- spines connecting LAN (top) and Internet (bottom) -->
+        <line x1="20" y1="13" x2="20" y2="18"
+              stroke="currentColor" stroke-width="0.2"/>
+        <line x1="20" y1="23" x2="20" y2="31.8"
+              stroke="currentColor" stroke-width="0.2"/>
+
+        <!-- device body -->
+        <rect x="5" y="18" width="30" height="5" rx="1.2"
+              fill="light-dark(#e5e7eb, #1f2937)"
+              stroke="light-dark(#9ca3af, #6b7280)" stroke-width="0.22"/>
+
+        <!-- vents -->
+        <g fill="light-dark(#9ca3af, #6b7280)">
+            <circle cx="6.5" cy="19.1" r="0.16"/>
+            <circle cx="7.3" cy="19.1" r="0.16"/>
+            <circle cx="8.1" cy="19.1" r="0.16"/>
+            <circle cx="6.5" cy="21.9" r="0.16"/>
+            <circle cx="7.3" cy="21.9" r="0.16"/>
+            <circle cx="8.1" cy="21.9" r="0.16"/>
+            <circle cx="31.9" cy="19.1" r="0.16"/>
+            <circle cx="32.7" cy="19.1" r="0.16"/>
+            <circle cx="33.5" cy="19.1" r="0.16"/>
+            <circle cx="31.9" cy="21.9" r="0.16"/>
+            <circle cx="32.7" cy="21.9" r="0.16"/>
+            <circle cx="33.5" cy="21.9" r="0.16"/>
+        </g>
+
+        <!-- firewall flame -->
+        <path d="M 11 19.2
+                 C 10.2 20.0, 9.9 20.6, 9.9 21.2
+                 C 9.9 22.2, 10.6 22.8, 11 22.8
+                 C 11.4 22.8, 12.1 22.2, 12.1 21.2
+                 C 12.1 20.7, 11.8 20.3, 11.5 19.9
+                 C 11.6 20.5, 11.3 20.9, 11 20.9
+                 C 10.8 20.9, 10.7 20.7, 10.8 20.4
+                 C 10.9 20.0, 11 19.6, 11 19.2 Z"
+              fill="#f97316"/>
+        <path d="M 11 21.0
+                 C 10.7 21.3, 10.6 21.6, 10.6 21.9
+                 C 10.6 22.3, 10.8 22.5, 11 22.5
+                 C 11.2 22.5, 11.4 22.3, 11.4 21.9
+                 C 11.4 21.5, 11.2 21.3, 11 21.0 Z"
+              fill="light-dark(#facc15, #fde047)"/>
+
+        <text x="22" y="21.2" text-anchor="middle"
+              font-size="1.5" font-weight="bold"
+              fill="currentColor">Router / Firewall</text>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 3: Inbound traffic blocked (from the Internet)
+         ═══════════════════════════════════════════════════ -->
+    <g class="incremental fade-in">
+        <!-- flow from Internet up to the firewall -->
+        <line x1="14" y1="32.5" x2="14" y2="24.1"
+              stroke="#dc2626" stroke-width="0.24"
+              stroke-dasharray="0.7,0.5"/>
+        <!-- direction chevron (up) -->
+        <path d="M13.55 26.5 L14.45 26.5 L14 25.75 Z" fill="#dc2626"/>
+        <!-- prohibited badge -->
+        <circle cx="14" cy="23" r="1.1"
+                fill="light-dark(#ffffff, #0b1220)"
+                stroke="#dc2626" stroke-width="0.32"/>
+        <line x1="13.22" y1="23.78" x2="14.78" y2="22.22"
+              stroke="#dc2626" stroke-width="0.32"/>
+        <!-- label -->
+        <text x="14.5" y="25.4" font-size="1.0" font-style="italic"
+              fill="#dc2626">
+            <tspan x="14.5">blocked</tspan>
+            <tspan x="14.5" dy="1.1" font-size="0.85">(inbound)</tspan>
+        </text>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 4: Outbound traffic blocked (from the client)
+         ═══════════════════════════════════════════════════ -->
+    <g class="incremental fade-in">
+        <!-- flow from the client down to the firewall -->
+        <line x1="31" y1="8" x2="31" y2="16.9"
+              stroke="light-dark(#2563eb, #60a5fa)" stroke-width="0.24"
+              stroke-dasharray="0.7,0.5"/>
+        <!-- direction chevron (down) -->
+        <path d="M30.55 12.5 L31.45 12.5 L31 13.25 Z"
+              fill="light-dark(#2563eb, #60a5fa)"/>
+        <!-- prohibited badge -->
+        <circle cx="31" cy="18" r="1.1"
+                fill="light-dark(#ffffff, #0b1220)"
+                stroke="light-dark(#2563eb, #60a5fa)" stroke-width="0.32"/>
+        <line x1="30.22" y1="18.78" x2="31.78" y2="17.22"
+              stroke="light-dark(#2563eb, #60a5fa)" stroke-width="0.32"/>
+        <!-- label -->
+        <text x="30.2" y="15.25" text-anchor="end" font-size="1.0"
+              font-style="italic" fill="light-dark(#2563eb, #60a5fa)">
+            <tspan x="30.75">blocked</tspan>
+            <tspan x="30.75" dy="1.1" font-size="0.85">(outbound)</tspan>
+        </text>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 5: Outbound traffic allowed — passes through
+         ═══════════════════════════════════════════════════ -->
+    <g class="incremental fade-in">
+        <!-- request leaves the client toward the firewall -->
+        <line x1="24" y1="8" x2="24" y2="16.9"
+              stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.24"
+              stroke-dasharray="0.7,0.5"/>
+        <!-- allowed badge: passes the firewall check -->
+        <circle cx="24" cy="18" r="1.1"
+                fill="light-dark(#ffffff, #0b1220)"
+                stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.32"/>
+        <path d="M23.35 18.0 L23.8 18.5 L24.7 17.4"
+              fill="none" stroke="light-dark(#16a34a, #4ade80)"
+              stroke-width="0.32" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- continues through and reaches the Internet -->
+        <line x1="24" y1="23" x2="24" y2="33"
+              stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.24"
+              stroke-dasharray="0.7,0.5"
+              marker-end="url(#arrow)"/>
+        <!-- label -->
+        <text x="24.5" y="28.2" font-size="1.0" font-style="italic"
+              fill="light-dark(#16a34a, #4ade80)">
+            <tspan x="24.5">allowed</tspan>
+            <tspan x="24.5" dy="1.1" font-size="0.85">(outbound)</tspan>
+        </text>
+    </g>
+
+</svg>
+</div></ld-cell></ld-grid></ld-topic>
 <ld-topic id="screened-host">
 <h2>Screened Host</h2>
 <object aria-label="Screened Host" class="light-image align-right" data="images/firewalls/screened-host.svg" role="img" type="image/svg+xml">

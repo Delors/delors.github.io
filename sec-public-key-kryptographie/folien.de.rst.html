@@ -42,7 +42,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.2.1</dd>
+<dd class="version">1.2.2</dd>
 </dl>
 <dl class="sources field-list simple">
 <dt>Quelle<span class="colon">:</span></dt>
@@ -123,7 +123,7 @@
 <h2>Verschlüsselung mit privatem Schlüssel</h2>
 <object aria-label="Verschlüsselung mit privatem Schlüssel" class="light-image align-center" data="drawings/public_key_cryptography/enc_with_priv_key.svg" role="img" type="image/svg+xml">
 </object></ld-topic>
-<ld-topic class="smaller-slide-title" id="konventionelle-und-public-key-verschlusselung">
+<ld-topic id="konventionelle-und-public-key-verschlusselung">
 <h2>Konventionelle und Public-Key-Verschlüsselung</h2>
 <ld-story>
 <ld-grid class="default-layout">
@@ -228,6 +228,8 @@
 </ld-card></ld-deck></ld-topic>
 <ld-topic id="anforderungen-an-public-key-algorithmen">
 <h2>Anforderungen an Public-Key-Algorithmen</h2>
+<ld-deck>
+<ld-card>
 <ul class="incremental-list positive-list simple">
 <li><p>Für eine Partei <span class="math">\(B\)</span> ist es <em>rechnerisch einfach</em>, ein Schlüsselpaar (bestehend aus öffentlicher Schlüssel <span class="math">\(PU_b\)</span> und privater Schlüssel <span class="math">\(PR_b\)</span>) zu erzeugen.</p></li>
 <li><p>Für einen Absender <span class="math">\(A\)</span> ist es <em>rechnerisch einfach</em>, bei Kenntnis des öffentlichen Schlüssels von <span class="math">\(B\)</span> und der zu verschlüsselnden Nachricht den entsprechenden Chiffretext zu erzeugen.</p></li>
@@ -238,17 +240,20 @@
 <li><p>Für einen Angreifer, der den öffentlichen Schlüssel kennt, ist es <em>rechnerisch unmöglich</em>, den privaten Schlüssel zu ermitteln.</p></li>
 <li><p>Für einen Angreifer, der den öffentlichen Schlüssel und einen Chiffretext kennt, ist es <em>rechnerisch unmöglich</em>, die ursprüngliche Nachricht wiederherzustellen.</p></li>
 </ul>
-</ld-topic>
-<ld-topic id="anforderungen-an-public-key-algorithmen-1">
-<h2>Anforderungen an Public-Key-Algorithmen</h2>
-<aside class="admonition" data-theme="repetition"><p class="admonition-title" data-theme="repetition-header"><span>Wiederholung</span></p><p>Eine Einwegfunktion ist im Allgemeinen eine Funktion, bei der jeder Funktionswert <span class="math-i">Y</span> eine eindeutige Umkehrung hat, wobei die <em>Berechnung der Funktion einfach</em> ist, während die <em>Bestimmung der Umkehrfunktion praktisch undurchführbar ist</em>.</p>
+</ld-card><ld-card class="incremental">
+<aside class="admonition" data-theme="repetition"><p class="admonition-title" data-theme="repetition-header"><span>Wiederholung</span></p><p>Eine <em>Einwegfunktion</em> ist eine Funktion <span class="math">\(f\)</span>, die <em>leicht zu berechnen</em>,
+aber <em>praktisch nicht zu invertieren</em> ist:</p>
 <ul class="simple">
-<li><p><span class="math">\(Y = f(X)\)</span> einfach</p></li>
-<li><p><span class="math">\(X = f^{–1}(Y)\)</span> „unmöglich“</p></li>
+<li><p><span class="math">\(X \mapsto Y = f(X)\)</span> — leicht (effizient für jedes <span class="math">\(X\)</span>)</p></li>
+<li><p><span class="math">\(Y \mapsto X'\)</span> mit <span class="math">\(f(X') = Y\)</span> — praktisch undurchführbar</p></li>
 </ul>
-</aside><ld-story>
-<ul class="incremental-list">
+<p>D. h. zu einem gegebenen <span class="math">\(Y\)</span> ist es berechnungstechnisch nicht praktikabel,
+<em>irgendein</em> Urbild <span class="math">\(X'\)</span> mit <span class="math">\(f(X') = Y\)</span> zu bestimmen.</p>
+</aside></ld-card><ld-card class="incremental">
+<ul class="simple">
 <li><p>Benötigt wird jedoch eine Falltürfunktion (<span class="eng">Trapdoor one-way function</span>); d. h. eine Einwegfunktion die effizient umkehrbar ist, <strong>wenn ein Geheimnis bekannt ist</strong>.</p></li>
+</ul>
+<ul class="incremental-list">
 <li><p>Eine Einwegfunktion mit Falltür ist eine Familie invertierbarer Funktionen <span class="math">\(f_k\)</span>, für die gilt:</p>
 <blockquote>
 <ul class="simple">
@@ -258,9 +263,9 @@
 </ul>
 </blockquote>
 </li>
-<li><p>Ein praktisches Public-Key-Verfahren hängt von einer geeigneten Trapdoor-Einwegfunktion ab.</p></li>
+<li><p>Ein praktisches Public-Key-Verfahren hängt von einer geeigneten Falltür(einweg)funktion ab.</p></li>
 </ul>
-</ld-story><ld-supplemental><p>Ein Falltürfunktion lässt sich nicht trivial umkehren; bzw. die Umkehrung erfordert spezielle (weitergehende) Informationen; d. h. die Falltür.</p>
+</ld-card></ld-deck><ld-supplemental><p>Ein Falltürfunktion lässt sich nicht trivial umkehren; bzw. die Umkehrung erfordert spezielle (weitergehende) Informationen; d. h. die Falltür.</p>
 </ld-supplemental></ld-topic>
 <ld-topic id="public-key-kryptoanalyse">
 <h2>Public-Key-Kryptoanalyse</h2>

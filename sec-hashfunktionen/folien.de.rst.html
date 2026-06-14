@@ -192,7 +192,7 @@ MTAwMDAw:omCBNdSoplM3cnMJPY8mgkv5NgddNZSgPdt15Eq7zo0=:Wz91bPkiiQmjm33/:H9QjObhPj
 <p>Garantiert Vertraulichkeit - Authentizität ist im Allgemeinen nicht garantiert</p>
 </figcaption>
 </figure>
-<ld-supplemental embed-in-document-flow><aside class="admonition" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung: Warum garantiert die Verwendung „nur von Verschlüsselung“ (Szenario 1) keine Authentizität?</span></p><p>Setzen Sie z. B. AES-CTR oder AES-OFB ein, so gilt c = (M ‖ H(M)) ⊕ Schlüsselstrombits. Wer M kennt oder errät, kann eine beliebige Zielnachricht M′ wählen und die Differenzen ΔM = M ⊕ M′ sowie ΔH = H(M) ⊕ H(M′) ohne Schlüssel berechnen – H ist ja öffentlich. XOR-t er diese Differenzen an den passenden Stellen in den Chiffretext, so entschlüsselt dieser beim Empfänger zu M′ ‖ H(M′): Der eingebettete Hash passt zur manipulierten Nachricht, die Integritätsprüfung schlägt nicht an. Der Angreifer muss dafür weder den Schlüsselstrom kennen noch selbst ver-/entschlüsseln.</p>
+<ld-supplemental embed-in-document-flow><aside class="admonition" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung: Warum garantiert die Verwendung „nur von Verschlüsselung“ (Szenario 1) keine Authentizität?</span></p><p>Setzen Sie z. B. AES-CTR oder AES-OFB ein, so gilt c = (M ‖ H(M)) ⊕ Schlüsselstrombits. Wer M kennt oder errät, kann eine beliebige Zielnachricht M′ wählen und die Differenzen ΔM = M ⊕ M′ sowie ΔH = H(M) ⊕ H(M′) ohne Schlüssel berechnen – H ist ja öffentlich. XOR-t er diese Differenzen an den passenden Stellen in den Chiffretext, so entschlüsselt dieser beim Empfänger zu M′ ‖ H(M′): Der eingebettete Hash passt zur manipulierten Nachricht und die Integritätsprüfung schlägt nicht an. Der Angreifer muss dafür weder den Schlüsselstrom kennen noch selbst ver-/entschlüsseln.</p>
 <p>Das zugrundeliegende Problem ist, dass Verschlüsselung allein keine Integrität garantiert: Die gängigen, nicht explizit authentisierten Verschlüsselungsmodi sind verformbar (malleable) – ein Angreifer kann den Chiffretext gezielt in einen verwandten Chiffretext überführen, ohne den Schlüssel zu kennen.</p>
 </aside></ld-supplemental></ld-card><ld-card class="incremental">
 <figure class="align-center">
@@ -288,6 +288,9 @@ MTAwMDAw:omCBNdSoplM3cnMJPY8mgkv5NgddNZSgPdt15Eq7zo0=:Wz91bPkiiQmjm33/:H9QjObhPj
 </dd>
 <dt>D<span class="colon">:</span></dt>
 <dd><p>der Entschlüsselungsalgorithmus</p>
+</dd>
+<dt>K<span class="colon">:</span></dt>
+<dd><p>ein geheimer Schlüssel</p>
 </dd>
 <dt>PR<sub>a</sub><span class="colon">:</span></dt>
 <dd><p>der private Schlüssel von a</p>
@@ -673,14 +676,32 @@ K' &amp; = &amp;\begin{cases}
 </li>
 <li><p>Standardisiert - sicher gegen Längenerweiterungsangriffe.</p></li>
 </ul>
-<ld-supplemental><aside class="admonition" data-theme="legend"><p class="admonition-title" data-theme="legend-header"><span>Legende</span></p><p><span class="math-i">H</span> is eine kryptografische Hashfunktion.</p>
-<p><span class="math-i">m</span> ist die Nachricht.</p>
-<p><span class="math-i">K</span> ist der geheime Schlüssel (<em>Secret Key</em>).</p>
-<p><span class="math-i">K'</span> ist vom Schlüssel K abgeleiteter Schlüssel mit Blockgröße (ggf. <em>padded</em> oder <em>gehasht</em>).</p>
-<p><span class="math">\(||\)</span> ist die Konkatenation.</p>
-<p><span class="math">\(\oplus\)</span> ist die XOR Operation.</p>
-<p><span class="math-i">opad</span> ist das äußere Padding bestehend aus Wiederholungen von 0x5c in Blockgröße.</p>
-<p><span class="math-i">ipad</span> ist das innere Padding bestehend aus Wiederholungen von 0x36 in Blockgröße.</p>
+<ld-supplemental><aside class="admonition" data-theme="legend"><p class="admonition-title" data-theme="legend-header"><span>Legende</span></p><dl class="dd-margin-left-4em field-list simple">
+<dt>H<span class="colon">:</span></dt>
+<dd><p>ist eine kryptografische Hashfunktion.</p>
+</dd>
+<dt>m<span class="colon">:</span></dt>
+<dd><p>ist die Nachricht.</p>
+</dd>
+<dt>K<span class="colon">:</span></dt>
+<dd><p>ist der geheime Schlüssel (<em>Secret Key</em>).</p>
+</dd>
+<dt>K'<span class="colon">:</span></dt>
+<dd><p>ist vom Schlüssel K abgeleiteter Schlüssel mit Blockgröße (ggf. <em>padded</em> oder <em>gehasht</em>).</p>
+</dd>
+<dt>||<span class="colon">:</span></dt>
+<dd><p>ist die Konkatenation.</p>
+</dd>
+<dt>⊕<span class="colon">:</span></dt>
+<dd><p>ist die XOR Operation.</p>
+</dd>
+<dt>opad<span class="colon">:</span></dt>
+<dd><p>ist das äußere Padding bestehend aus Wiederholungen von 0x5c in Blockgröße.</p>
+</dd>
+<dt>ipad<span class="colon">:</span></dt>
+<dd><p>ist das innere Padding bestehend aus Wiederholungen von 0x36 in Blockgröße.</p>
+</dd>
+</dl>
 </aside></ld-supplemental></ld-topic>
 <ld-topic class="no-title" id="hmac-berechnung-visualisiert">
 <h2>HMAC Berechnung visualisiert</h2>
