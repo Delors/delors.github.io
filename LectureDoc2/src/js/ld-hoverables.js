@@ -17,12 +17,15 @@ console.log("loading ld-hoverable.js");
  * See {@link afterLDDOMManipulations} for the implementation.
  */
 const listClassesToPropagateToItems = [
-    "scale-up-on-hover",
     "show-list-item-content-on-hover",
     "highlight-list-item-on-hover",
 ];
 
-const classes = ["scale-on-hover", ...listClassesToPropagateToItems];
+const classes = [
+    "scale-on-hover",
+    "scale-up-on-hover",
+    ...listClassesToPropagateToItems,
+];
 
 const hoverables = [];
 
@@ -102,7 +105,7 @@ function afterLDListenerRegistrations() {
         }
     }
 
-    // console.log("hoverables", hoverables);
+    console.log("hoverables", hoverables);
     hoverables.forEach((element) => {
         //console.log("registering hover listener", element);
         element.addEventListener("mouseenter", () => addHoverState(element));

@@ -12,8 +12,13 @@
     --ld-slide-height: 1200px; /* cf. lectureDoc2.presentation.slide.height */
 }
 
+body[data-ld-mode="slide-view"] {
+    /* Absolutely crucial to enable animations in the slide-view. */
+    overflow: clip;
+}
+
 #ld-slides-pane {
-    /* FIXME use ld-slides */
+    /* FIXME use ld-slides-view */
     --ld-rendering-mode: slides-pane; /*FIXME rename to slides-view */
 
     height: 100dvh;
@@ -36,10 +41,8 @@
 
         position: absolute;
 
-        display: none;
-
-        &.ld-revealed {
-            display: block;
+        &:not(.ld-revealed) {
+            display: none;
         }
     }
 

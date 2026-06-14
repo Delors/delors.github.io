@@ -71,10 +71,6 @@
         }
     }
 
-    .scale-factor-2x {
-        --on-hover-scale-factor: 2;
-    }
-
     /* Scales a container/compound on hover.
 
        This class is intended to be used with generic containers.
@@ -89,6 +85,7 @@
 
        (Part of the logic is implemented in JavaScript.) */
     .scale-up-on-hover {
+        --on-hover-scale-factor: var(--slide-to-document-font-size-ratio);
         position: relative;
         border-radius: var(--small-border-radius);
 
@@ -97,8 +94,11 @@
         z-index: 1;
 
         &.\:hover {
-            transform: scale(var(--slide-to-document-font-size-ratio));
+            transform: scale(var(--on-hover-scale-factor));
         }
+    }
+    .scale-factor-2x {
+        --on-hover-scale-factor: 2;
     }
     .transform-origin-top-right {
         transform-origin: top right;
