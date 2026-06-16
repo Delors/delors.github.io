@@ -42,7 +42,7 @@ function scaleDocumentImagesAndVideos(
     );
 
     rootElement.querySelectorAll(`:scope img`).forEach((img) => {
-        if (img.parentElement.classList.contains("scale-on-hover")) {
+        if (img.parentElement.classList.contains("scale-up-on-hover")) {
             console.log(
                 "skipping scaling of image due to parent element having class 'scale-on-hover'",
                 img,
@@ -78,9 +78,9 @@ function scaleDocumentImagesAndVideos(
     rootElement
         .querySelectorAll(`:scope object[role='img'][type='image/svg+xml']`)
         .forEach((object) => {
-            if (object.parentElement.classList.contains("scale-on-hover")) {
+            if (object.parentElement.classList.contains("scale-up-on-hover")) {
                 console.log(
-                    "skipping scaling of image due to parent element having class 'scale-on-hover'",
+                    "skipping scaling of image due to parent element having class 'scale-up-on-hover'",
                     object,
                 );
                 return;
