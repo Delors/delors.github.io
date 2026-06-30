@@ -652,12 +652,19 @@
 </ld-card><ld-card class="incremental">
 <p class="rubric">Für die mündliche Prüfung (31.7. - Raum 261C)</p>
 <ul>
-<li><p>Anzahl und Art der gefundenen Schwachstellen</p></li>
-<li><p>Demonstration der Schwachstellen</p></li>
-<li><p>Beantwortung von Fragen</p></li>
-<li><p>Notenanteil: 25% von der Gesamtnote - d.h. 30 Punkte:</p>
-<p>(Details werden am 2.7. bekannt gegeben.)</p>
+<li><p>Anzahl und Art der gefundenen Schwachstellen</p>
+<p>Fertigen Sie ein Dokument (.md, .pdf) an, dass Sie mitbringen und in dem Sie die Lücken kurz dokumentieren. Pro Lücke dokumentieren Sie den Server + die Anwendung/den API Endpunkt/... der Vulnerabel ist und mit welchem CWE die Lücke verknüpft ist. Sollte Sie kein CWE finden, dann schreiben Sie ein/zwei Sätze, um die Lücke zu charakterisieren.</p>
+<p>Eine detaillierte Dokumentation is nicht erforderlich, da es sich im wesentlichen, um ein Prüfungsgespräch handelt.</p>
+<p><strong>Wir werden diese Liste als Start für unsere Diskussion bzw. Demonstration verwenden.</strong></p>
 </li>
+<li><p>Demonstration der Schwachstellen</p>
+<p><strong>Bringen Sie (mind.) einen Rechner mit, auf dem Sie alle Tools etc. installiert haben, und mit dem Sie in der Lage sind die Lücke unmittelbar zu demonstrieren.</strong></p>
+<p>Das Anlegen von (kleineren) Scripten ist empfohlen.</p>
+</li>
+<li><p>Beantwortung von Fragen</p>
+<p><strong>Jeder muss zu jeder Lücke sprechfähig sein.</strong></p>
+</li>
+<li><p>Notenanteil: 25% von der Gesamtnote - d. h. 30 Punkte:</p></li>
 <li><p>Dauer: ca. 25 Minuten pro Gruppe</p></li>
 </ul>
 </ld-card></ld-deck></ld-topic>
@@ -748,6 +755,68 @@
 </tbody>
 </table>
 </ld-topic>
+<ld-topic id="pentesting">
+<h2>Pentesting</h2>
+<ld-story>
+<blockquote>
+<p>Die folgenden Server dürfen Sie einem Pentest unterziehen:</p>
+<table class="booktabs">
+<thead>
+<tr><th class="head"><p>Server</p></th>
+<th class="head"><p>Komplexität</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>141.72.12.138</p></td>
+<td><p><strong>* – **</strong></p></td>
+</tr>
+<tr><td><p>141.72.13.218</p></td>
+<td><p><strong>*</strong></p></td>
+</tr>
+<tr><td><p>141.72.12.145 (four-wins.michael-eichberg-at-dhbw-de.users.dhbw.site)</p></td>
+<td><p><strong>* – **</strong></p></td>
+</tr>
+<tr><td><p>141.72.176.151</p></td>
+<td></td>
+</tr>
+<tr><td><p>141.72.12.141 (quizzy.michael-eichberg-at-dhbw-de.users.dhbw.site)</p></td>
+<td><p><strong>***</strong></p></td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition" data-theme="legend"><p class="admonition-title" data-theme="legend-header"><span>Legende</span></p><p>* = einfach; *** = sehr schwer</p>
+</aside><aside class="admonition incremental" data-theme="danger"><p class="admonition-title" data-theme="danger-header">!GEFAHR!</p>
+<p>Unter keinen Umständen dürfen Sie andere als die hier gelisteten Server <em>angreifen</em>. Scans von Subdomänen (es gibt auch keine) oder anderen IP-Adressen sind untersagt.</p>
+<p>Sie dürfen auch immer nur die hier beschriebenen Angriffe/Änderungen vornehmen. Jegliche darüber hinausgehenden Tätigkeiten sind untersagt.</p>
+</aside>
+<aside class="admonition incremental" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p>
+<p>Pentesting der VMs ist nur aus dem Netz der DHBW heraus möglich. D. h. nur wenn Sie eine IP-Adresse im Bereich 141.72.0.0/16 haben. Nutzen Sie eine VM auf OpenStack, dann stellen Sie sicher, dass diese VM keine Egress-Filterung vornimmt und im richtigen Netz ist (ggf. in den Security-Policies zu konfigurieren). Wenn Sie sich per VPN verbinden, dann sollte dies immer der Fall sein.</p>
+</aside>
+<div class="incremental compound">
+<p class="rubric">Was ist erlaubt/was nicht...</p>
+<ul class="incremental-list">
+<li><p>Metasploit ist nicht zu verwenden, erfolgreiche Angriffe mit Metasploit werden nicht anerkannt.</p></li>
+<li><p>Sie dürfen keine Masßnahmen durchführen, die die Verfügbarkeiten der Server dramatisch einschränken.</p>
+<p>(Eine Suche nach <em>versteckten</em> Dateien mit Tools wie Gobuster ist nicht notwendig.)</p>
+</li>
+<li><p>Sollten Sie ggf. auf Informationen über Nutzeraccounts stoßen oder selbige angreifen wollen, dann <strong>nehmen Sie den Nutzeraccount, der zu Ihrer Gruppennummer gehört</strong>.</p></li>
+<li><p>Horizontale Privilegienerweiterungen, sind nicht prüfungsrelevant.</p></li>
+<li><p>Sie dürfen unter keinen Umständen Veränderungen oder Aktualisierungen an den Servereinstellungen vornehmen, sollten Sie auf einem oder mehreren Servern Root-Access erlangen!</p></li>
+<li><p>Möchten Sie auf einem Server Daten ablegen, dann legen Sie diese auf jeden Fall <strong>nur</strong> in dem Verzeichnis ab, der zu Ihrer Gruppennummer passt! (/home/gruppe&lt;N&gt;, /home/group&lt;N&gt;, ...)</p></li>
+<li><p>Sollten Sie Zugriff auf einen Server bekommen - sei es als normaler Nutzer oder als Root-Nutzer - dann dürfen Sie sich auf jeden Fall frei umsehen.</p></li>
+<li><p>Die Server haben ggf. viele Schwachstellen; die aber bei Weitem nicht alle gleich einfach auszunutzen sind; suchen Sie die einfachste!</p></li>
+<li><p>Bei den Webanwendungen sollten Sie versuchen, so viele verschiedene Schwachstellen wie möglich zu finden. Mappen Sie Ihre Schwachstelle auch immer auf eine CWE! Schwachstellen, den immer nur dieselbe CWE zugrunde liegt, wird nur als eine Schwachstelle gewertet.</p></li>
+<li><p>Die Struktur von Datenbanken (<code class="sql"><span class="keyword">alter</span><span class="whitespace"> </span><span class="punctuation">...</span></code>) darf nicht verändert werden; semantisch sinnvolle Datensätze dürfen hinzugefügt werden (<code class="sql"><span class="keyword">update</span></code>). Daten, die zur Anwendungslogik gehören, dürfen nicht gelöscht werden!</p></li>
+<li><p>Alle Sicherheitslücken, die direkt auf die Verwendung von HTTP zurückzuführen sind, sind zu ignorieren!</p></li>
+</ul>
+</div>
+</blockquote>
+<ld-grid class="incremental margin-top-4em default-layout">
+<ld-cell class="width-40" style="align-self:auto;">
+<p>Verifiziert am: ______________________</p>
+</ld-cell><ld-cell class="width-60" style="align-self:auto;">
+<p>Unterschrift: ___________________________________________</p>
+</ld-cell></ld-grid></ld-story></ld-topic>
 </template>
 </body>
 </html>
