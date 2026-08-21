@@ -42,7 +42,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><a class="reference external" href="mailto:michael.eichberg&#64;dhbw.de">michael.eichberg&#64;dhbw.de</a></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">2.5.1</dd>
+<dd class="version">2.5.2.1</dd>
 </dl>
 <dl class="sources field-list simple">
 <dt>Quelle<span class="colon">:</span></dt>
@@ -59,6 +59,14 @@
 </dd>
 <dt>Kontrollaufgaben<span class="colon">:</span></dt>
 <dd><a class="reference external" href="https://delors.github.io/sec-hashfunktionen/kontrollaufgaben.de.rst.html">https://delors.github.io/sec-hashfunktionen/kontrollaufgaben.de.rst.html</a></dd>
+</dl>
+<dl class="field-list simple">
+<dt>KI Verwendung<span class="colon">:</span></dt>
+<dd><p>Bei der Erstellung der Unterlagen wurden KI Assistenten (insbesondere Claude aber ggf. auch ChatGPT, Ollama mit Gemma/LLama/Qwen oder OpenCode mit Kimi/Qwen/Deepseek...) unterstützend eingesetzt.
+Dies erfolgte insbesondere zur Unterstützung bei der Generierung von Grafiken (d. h. SVG Dateien), oder um sich Übersichtstabellen generieren zu lassen.
+Weiterhin wurde KI zur allgemeinen Qualitätssicherung eingesetzt.
+Inhalte, die ggf. von der KI vorgeschlagen wurden, wurden im Falle der Übernahme explizit validiert und angepasst.</p>
+</dd>
 </dl>
 </ld-supplemental></ld-topic>
 <ld-topic class="new-section" id="hashfunktionen-grundlagen">
@@ -186,7 +194,8 @@ MTAwMDAw:omCBNdSoplM3cnMJPY8mgkv5NgddNZSgPdt15Eq7zo0=:Wz91bPkiiQmjm33/:H9QjObhPj
 <ld-card>
 <p>Nachrichten können auf verschiedene Weisen authentifiziert werden, so dass <em>Person-in-the-Middle-Angriffe</em><a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> verhindert werden können.</p>
 </ld-card><ld-card class="incremental">
-<figure class="align-center">
+<ld-supplemental embed-in-document-flow><p>Im ersten Szenario wird der Hash an die Nachricht angehängt und als Ganzes verschlüsselt.</p>
+</ld-supplemental><figure class="align-center">
 <object class="light-image" data="drawings/digests/all_encrypted.svg" role="img" type="image/svg+xml">
 </object><figcaption>
 <p>Garantiert Vertraulichkeit - Authentizität ist im Allgemeinen nicht garantiert</p>
@@ -195,21 +204,24 @@ MTAwMDAw:omCBNdSoplM3cnMJPY8mgkv5NgddNZSgPdt15Eq7zo0=:Wz91bPkiiQmjm33/:H9QjObhPj
 <ld-supplemental embed-in-document-flow><aside class="admonition" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung: Warum garantiert die Verwendung „nur von Verschlüsselung“ (Szenario 1) keine Authentizität?</span></p><p>Setzen Sie z. B. AES-CTR oder AES-OFB ein, so gilt c = (M ‖ H(M)) ⊕ Schlüsselstrombits. Wer M kennt oder errät, kann eine beliebige Zielnachricht M′ wählen und die Differenzen ΔM = M ⊕ M′ sowie ΔH = H(M) ⊕ H(M′) ohne Schlüssel berechnen – H ist ja öffentlich. XOR-t er diese Differenzen an den passenden Stellen in den Chiffretext, so entschlüsselt dieser beim Empfänger zu M′ ‖ H(M′): Der eingebettete Hash passt zur manipulierten Nachricht und die Integritätsprüfung schlägt nicht an. Der Angreifer muss dafür weder den Schlüsselstrom kennen noch selbst ver-/entschlüsseln.</p>
 <p>Das zugrundeliegende Problem ist, dass Verschlüsselung allein keine Integrität garantiert: Die gängigen, nicht explizit authentisierten Verschlüsselungsmodi sind verformbar (malleable) – ein Angreifer kann den Chiffretext gezielt in einen verwandten Chiffretext überführen, ohne den Schlüssel zu kennen.</p>
 </aside></ld-supplemental></ld-card><ld-card class="incremental">
-<figure class="align-center">
+<ld-supplemental embed-in-document-flow><p>Im zweiten Szenario wird der Hash der Nachricht berechnet und dann verschlüsselt. Der Empfänger kann den Hash berechnen und mit dem entschlüsselten Hash vergleichen. Wir erhalten Authentizität, aber keine Vertraulichkeit.</p>
+</ld-supplemental><figure class="align-center">
 <object class="light-image" data="drawings/digests/hash_encrypted.svg" role="img" type="image/svg+xml">
 </object><figcaption>
 <p>Garantiert Authentizität, benötigt aber sowohl Hashing als auch Verschlüsselung – ist potential anfällig gegen bestimmte Angriffe auf den verschlüsselten Hash</p>
 </figcaption>
 </figure>
 </ld-card><ld-card class="incremental">
-<figure class="align-center">
+<ld-supplemental embed-in-document-flow><p>Im dritten Szenario wird an die Nachricht ein geteiltes Secret angehängt und  alles zusammen gehasht. Die Nachricht wird dann mit dem Ergebnis der vorhergehenden Operation zusammen verschickt.</p>
+</ld-supplemental><figure class="align-center">
 <object class="light-image" data="drawings/digests/secret_appended.svg" role="img" type="image/svg+xml">
 </object><figcaption>
 <p>Garantiert Authentizität und es wird nur ein Hashalgorithmus benötigt; anfällig für bestimmte Angriffe - insbesondere gegen Angriffe mit Längenerweiterung bei Hashverfahren basierend auf Merkle-Damgard Konstruktionen.</p>
 </figcaption>
 </figure>
 </ld-card><ld-card class="incremental">
-<figure class="align-center">
+<ld-supplemental embed-in-document-flow><p>Im letzten Szenario werden alle Ansätze kombiniert.</p>
+</ld-supplemental><figure class="align-center">
 <object class="light-image" data="drawings/digests/secret_encrypted.svg" role="img" type="image/svg+xml">
 </object><figcaption>
 <p>Garantiert Authentizität und Vertraulichkeit.</p>
@@ -221,12 +233,7 @@ MTAwMDAw:omCBNdSoplM3cnMJPY8mgkv5NgddNZSgPdt15Eq7zo0=:Wz91bPkiiQmjm33/:H9QjObhPj
 <p><em>Person-in-the-Middle</em> (in Standards auch <em>on-path attack</em>) ist die gender-neutrale Version von <em>Man-in-the-Middle</em>.</p>
 </aside>
 </aside>
-<ld-supplemental><p><strong>Szenarien</strong></p>
-<p>Im ersten Szenario wird der Hash an die Nachricht angehängt und als Ganzes verschlüsselt. Wir erhalten Vertraulichkeit und Authentizität.</p>
-<p>Im zweiten Szenario wird der Hash der Nachricht berechnet und dann verschlüsselt. Der Empfänger kann den Hash berechnen und mit dem entschlüsselten Hash vergleichen. Wir erhalten Authentizität, aber keine Vertraulichkeit.</p>
-<p>Im dritten Szenario wird an die Nachricht ein geteiltes Secret angehängt und  alles zusammen gehasht. Die Nachricht wird dann mit dem Ergebnis der vorhergehenden Operation zusammen verschickt.</p>
-<p>Im letzten Szenario werden alle Ansätze kombiniert.</p>
-<aside class="admonition dd-margin-left-2em" data-theme="legend"><p class="admonition-title" data-theme="legend-header"><span>Legende</span></p><dl class="field-list simple">
+<ld-supplemental><aside class="admonition dd-margin-left-2em" data-theme="legend"><p class="admonition-title" data-theme="legend-header"><span>Legende</span></p><dl class="field-list simple">
 <dt>M<span class="colon">:</span></dt>
 <dd><p>die Nachricht</p>
 </dd>

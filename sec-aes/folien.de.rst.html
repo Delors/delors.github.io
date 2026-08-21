@@ -42,7 +42,7 @@
 <dt class="contact">Kontakt<span class="colon">:</span></dt>
 <dd class="contact"><cite>michael.eichberg&#64;dhbw.de</cite></dd>
 <dt class="version">Version<span class="colon">:</span></dt>
-<dd class="version">1.1</dd>
+<dd class="version">1.1.1.1</dd>
 </dl>
 <dl class="sources field-list simple">
 <dt>Quellen<span class="colon">:</span></dt>
@@ -68,6 +68,14 @@
 </dd>
 <dt>Fehler melden<span class="colon">:</span></dt>
 <dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt>KI Verwendung<span class="colon">:</span></dt>
+<dd><p>Bei der Erstellung der Unterlagen wurden KI Assistenten (insbesondere Claude aber ggf. auch ChatGPT, Ollama mit Gemma/LLama/Qwen oder OpenCode mit Kimi/Qwen/Deepseek...) unterstützend eingesetzt.
+Dies erfolgte insbesondere zur Unterstützung bei der Generierung von Grafiken (d. h. SVG Dateien), oder um sich Übersichtstabellen generieren zu lassen.
+Weiterhin wurde KI zur allgemeinen Qualitätssicherung eingesetzt.
+Inhalte, die ggf. von der KI vorgeschlagen wurden, wurden im Falle der Übernahme explizit validiert und angepasst.</p>
 </dd>
 </dl>
 </ld-supplemental></ld-topic>
@@ -1334,7 +1342,23 @@ A6 &amp; = &amp; &amp; (1010\,0110) \\
 <ld-topic id="aes-schlusselexpansion-visualisiert">
 <h2>AES Schlüsselexpansion - Visualisiert</h2>
 <object aria-label="AES Schlüsselexpansion" class="light-image align-center" data="drawings/aes/key_expansion.svg" role="img" type="image/svg+xml">
-</object></ld-topic>
+</object><ld-supplemental><aside class="admonition" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung</span></p><p>(Nicht prüfungsrelevant!)</p>
+<p>Die KeyExpansion bei längeren Schlüsseln ist konzeptionell vergleichbar, aber nicht identisch. Zum Beispiel arbeitet die KeyExpansion bei einem 256-Bit-Schlüssel vereinfacht wie folgt:</p>
+<p>Die 256 Bit des Schlüssels bilden direkt die Grundlage für die ersten beiden Rundenschlüssel. Der dritte Rundenschlüssel wird anschließend ausgehend vom ersten Rundenschlüssel und einer Transformation des zweiten berechnet; entsprechend wird der vierte ausgehend vom zweiten und einer Transformation des dritten Rundenschlüssels berechnet.</p>
+<div class="monospaced docutils container">
+<p>RoundKey 3</p>
+<p>w8  = w0  XOR g(w7)</p>
+<p>w9  = w1  XOR w8</p>
+<p>w10 = w2  XOR w9</p>
+<p>w11 = w3  XOR w10</p>
+<p>RoundKey 4</p>
+<p>w12 = w4  XOR SubWord(w11)</p>
+<p>w13 = w5  XOR w12</p>
+<p>w14 = w6  XOR w13</p>
+<p>w15 = w7  XOR w14</p>
+</div>
+<p>Dabei ist <em>SubWord</em> lediglich die byteweise Anwendung der AES-S-Box.</p>
+</aside></ld-supplemental></ld-topic>
 <ld-topic id="aes-round-constant-berechnung">
 <h2>AES <em>Round Constant</em> Berechnung</h2>
 <div class="math">
