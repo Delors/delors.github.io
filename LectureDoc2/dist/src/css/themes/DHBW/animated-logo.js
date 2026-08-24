@@ -1,4 +1,4 @@
-import{a as e}from"../../../chunk-V7YYNURZ.js";import"../../../chunk-PAEI7YB2.js";import"../../../chunk-5VY55ISN.js";var o=`
+import{a as e}from"../../../chunk-OFWT6L5I.js";import"../../../chunk-PAEI7YB2.js";import"../../../chunk-5VY55ISN.js";var o=`
     <style>
     dhbw-logo {
         position: absolute;

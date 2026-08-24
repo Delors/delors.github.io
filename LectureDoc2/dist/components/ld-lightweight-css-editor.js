@@ -1,4 +1,4 @@
-import{a as s}from"../src/chunk-V7YYNURZ.js";import"../src/chunk-PAEI7YB2.js";import"../src/chunk-5VY55ISN.js";var r=class extends HTMLElement{#t;constructor(){super()}initialize(t,e,o){let i=this.attachShadow({mode:"open"});i.innerHTML=`
+import{a as s}from"../src/chunk-OFWT6L5I.js";import"../src/chunk-PAEI7YB2.js";import"../src/chunk-5VY55ISN.js";var r=class extends HTMLElement{#t;constructor(){super()}initialize(t,e,o){let i=this.attachShadow({mode:"open"});i.innerHTML=`
             <style>
                 style[contenteditable] {
                     display: block;

@@ -1,4 +1,4 @@
-import{a as s}from"../src/chunk-V7YYNURZ.js";import"../src/chunk-PAEI7YB2.js";import"../src/chunk-5VY55ISN.js";var c=14,m=36,b=`
+import{a as s}from"../src/chunk-OFWT6L5I.js";import"../src/chunk-PAEI7YB2.js";import"../src/chunk-5VY55ISN.js";var c=14,m=36,b=`
     <style>
         :root {
             --min-base-font-size: ${c}px;
