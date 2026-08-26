@@ -1,4 +1,4 @@
-import{a as e}from"../../../chunk-OFWT6L5I.js";import"../../../chunk-PAEI7YB2.js";import"../../../chunk-5VY55ISN.js";var o=`
+import{a as t}from"../../../chunk-PD5K2CC2.js";import"../../../chunk-PAEI7YB2.js";import"../../../chunk-5VY55ISN.js";var o=`
     <style>
     dhbw-logo {
         position: absolute;
@@ -61,6 +61,12 @@ import{a as e}from"../../../chunk-OFWT6L5I.js";import"../../../chunk-PAEI7YB2.js
         }
     }
 
+    @media (prefers-color-scheme: dark) {
+        dhbw-logo {
+            mix-blend-mode: initial;
+        }   
+    }
+
     @keyframes move-across {
         0% {
             transform: rotateX(0deg) rotateY(0deg) rotateZ(15deg) translate3d(-1500px,-800px,-100px) scale(4) ;
@@ -91,5 +97,5 @@ import{a as e}from"../../../chunk-OFWT6L5I.js";import"../../../chunk-PAEI7YB2.js
             <div class="side right"></div>
         </div>
     </dhbw-logo>
-    `;function s(){let t=document.createElement("template");t.innerHTML=o;let a=document.querySelector("#ld-slides-pane ld-slide:has(h1).animated-logo"),r=t.content.cloneNode(!0);a.prepend(r)}e.addEventListener("afterLDDOMManipulations",s);
+    `;function s(){let e=document.createElement("template");e.innerHTML=o;let a=document.querySelector("#ld-slides-pane ld-slide:has(h1).animated-logo"),r=e.content.cloneNode(!0);a.prepend(r)}t.addEventListener("afterLDDOMManipulations",s);
 //# sourceMappingURL=animated-logo.js.map
