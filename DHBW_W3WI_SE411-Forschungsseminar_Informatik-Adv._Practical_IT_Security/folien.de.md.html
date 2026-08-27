@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Michael Eichberg" />
+<meta name="keywords" content="&quot;IT Sicherheit&quot;, &quot;Pentesting&quot;" />
+<meta name="description" content="Fortgeschrittene Angewandte IT Sicherheit - Pentesting" lang="de" xml:lang="de" />
+<meta name="id" content="lv-forschungsseminar_informatik-advanced_practical_it_security" />
+<meta name="first-slide" content="last-viewed" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:+NNIQ38anTLnLFlSnXTu3umEyQ==" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>W3WI_SE411 - Forschungsseminar Informatik / Advanced Practical IT Security</title>
+<link rel="stylesheet" href="../shared/ext/katex/katex.min.css" />
+<script src="../LectureDoc2/dist/src/ld.js" type="module"></script>
+<link rel="stylesheet" href="../LectureDoc2/dist/src/ld.css" />
+<style>@import url("../LectureDoc2/dist/src/css/themes/dhbw.css") layer(theme);</style>
+</head>
+<body data-theme="<light-dark>">
+<template>
+<ld-topic id="lv-forschungsseminar_informatik-advanced_practical_it_security"><h1 class="title">W3WI_SE411 - Forschungsseminar Informatik / Advanced Practical IT Security</h1><dl class="docinfo"><dt class="dozent">Dozent<span class="colon">:</span></dt><dd class="dozent"><a class="reference external" href="https://delors.github.io/cv/folien.de.md.html">Prof. Dr. Michael Eichberg</a></dd><dt class="contact">Kontakt<span class="colon">:</span></dt><dd class="contact"><a class="reference external" href="mailto:michael.eichberg@dhbw-mannheim.de">michael.eichberg@dhbw-mannheim.de</a>
+, Raum 149B</dd><dt class="unterlagen">Unterlagen<span class="colon">:</span></dt><dd class="unterlagen">Moodle</dd><dt class="version">Version<span class="colon">:</span></dt><dd class="version">24SEA - 2026-08-27</dd></dl></ld-topic>
+<ld-topic id="teaser"><h2>Teaser</h2><ld-deck><ld-card><p>In dieser Veranstaltung werden wir uns mit den Grundlagen praktischer Angriffe und Verteidigungsmaßnahmen im Bereich IT Security auseinandersetzen. Wir werden uns der Frage widmen wie, wann und in welcher Form man - auf den ersten Blick abgesicherte Systeme/geschützte Daten - einerseits angreifen (<span class="eng">to exploit</span>) kann und wie man die Sicherheit weiter erhöhen kann.</p><p>Wir werden uns in diesem und dem nächsten Semester ausgewählten Themen widmen, die von der Sicherheit von Passwörtern und Angriffen auf selbige bis hin zu der Sicherheit von Netzwerken und Webanwendungen reichen.</p><p><span class="peripheral">Wir werden uns somit auf praktische Aspekte der IT Sicherheit fokussieren. Theoretische Grundlagen sind nur in so weit relevant, dass sie in der Praxis eine Relevanz haben.</span></p></ld-card><ld-card class="incremental"><aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p><p>Für diese Veranstaltung sind Grundkenntnisse in Linux/Unix/MacOS hilfreich aber nicht notwendig. Notwendig ist aber Interesse an tiefer gehenden technischen Details.</p><p>Es wird  empfohlen sich eine virtuelle Maschine (z. B. mit VirtualBox oder UTM) aufzusetzen, auf der Sie Linux (ganz insbesondere z. B. Kali Linux) oder ggf. Mac OS installieren. Auf eigene Gefahr hin können Sie auch WSL2 unter Windows verwenden. Mac User können viele der Tools direkt installieren oder über Homebrew bzw. MacPorts beziehen.</p><p>Eine installation in einer VM ist aber immer empfohlen.</p></aside></ld-card></ld-deck></ld-topic>
+<ld-topic id="grober-ablauf"><h2>Grober Ablauf</h2><ul class="simple"><li><ol class="arabic simple"><li><p>Semester: 6 Termine; (50% der Endnote - d. h. 60 von 120 Punkten)</p></li></ol></li><li><ol class="arabic simple" start="2"><li><p>Semester: X Termine (50% der Endnote - d. h. 60 von 120 Punkten)</p></li></ol></li></ul></ld-topic>
+<ld-topic class="new-section" id="erstes-semester-passwortwiederherstellung-und-reverse-engineering"><h2>Erstes Semester: Passwortwiederherstellung und Reverse-Engineering</h2></ld-topic>
+<ld-topic id="ablauf-1-semester"><h2>Ablauf - 1. Semester</h2><dl class="field-list"><dt>28. August<span class="colon">:</span></dt><dd><p><em>Einführung in Passwortwiederherstellung</em></p></dd><dt>4. September<span class="colon">:</span></dt><dd><p>Begleitung bei der Bearbeitung von Übungen</p></dd><dt>7. September<span class="colon">:</span></dt><dd><p><strong>Bewertetes Lab (max. 30 Punkte)</strong> zum Thema Passwortwiederherstellung</p><aside class="admonition" data-theme="attention"><p class="admonition-title" data-theme="attention-header">Achtung!</p><p>Sollten Sie an diesem Tag verhindert sein, dann ist ein offizieller Prüfungsrücktritt erforderlich!</p></aside></dd><dt>11. September<span class="colon">:</span></dt><dd><p><em>Einführung in Reverse Engineering</em></p></dd><dt>18. September<span class="colon">:</span></dt><dd><p>Begleitete Übung zum Thema Reverse Engineering</p></dd><dt>12. Oktober<span class="colon">:</span></dt><dd><p><strong>Bewertetes Lab (max. 30 Punkte)</strong> zum Thema Reverse Engineering</p><aside class="admonition" data-theme="attention"><p class="admonition-title" data-theme="attention-header">Achtung!</p><p>Sollten Sie an diesem Tag verhindert sein, dann ist ein offizieller Prüfungsrücktritt erforderlich!</p></aside></dd></dl></ld-topic>
+<ld-topic id="inhalte"><h2>Inhalte</h2><aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p><p>Diese Veranstaltung ist ergänzend zur Veranstaltung SE III IT-Sicherheit zu sehen. D. h. Inhalte, die dort vermittelt werden, werden hier nicht noch einmal behandelt, sind aber potentiell relevant.</p></aside></ld-topic>
+<ld-topic id="notenzusammenstellung-1-semester-passwortwiederherstellung"><h2>Notenzusammenstellung - 1. Semester - Passwortwiederherstellung</h2><table class="incremental-table-rows booktabs table-header-align-left" style="width: 100%;"><thead><tr><th class="head"><p>Leistungsnachweis</p></th><th class="head"><p>Notenanteil</p></th></tr></thead><tbody><tr><td><p>Fachpräsentation (10 Minuten pro Person)</p></td><td><p>15%</p></td></tr><tr><td><p>Lösungen der Aufgaben bzg. Passwortwiederherstellung</p></td><td><p>15%</p></td></tr><tr><td><p>Lösungen der Aufgaben bzgl. Reverse Engineering</p></td><td><p>15%</p></td></tr><tr><td><p>Lösungspräsentationen (5 Minuten pro Person)</p></td><td><p>5%</p></td></tr></tbody></table></ld-topic>
+<ld-topic class="new-section" id="zweites-semester-pentesting-von-webanwendungen"><h2>Zweites Semester: Pentesting von Webanwendungen</h2></ld-topic>
+<ld-topic id="ablauf-2-semester-voraussichtlich"><h2>Ablauf - 2. Semester (voraussichtlich)</h2><ol class="arabic simple"><li><p>Einführung in Pentesting</p></li><li><p>Studentische <a class="reference external" href="../allg-vortraege/folien.de.md.html">Präsentationen</a> zur Vertiefung bzw. Betrachtung wichtiger Aspekte.</p></li><li><p>Aufgaben für die entsprechende Fragestellung.</p></li><li><p>Prüfungsgespräch zu Ihren Ergebnissen</p></li></ol><pre class="literal-block"><code>
+
+# Ablauf
+
+:::::{story}
+
+{.incremental-list}
+
+X.Y.2027
+:   - Ausgabe der Themen zur Bearbeitung
+
+    - Kurze Einführung in das Thema Pentesting
+
+X.Y.2027
+:   - Bearbeitung der Themen mit dem Ziel „Hands-on“
+
+    - Ich stehe für Rückfragen *online* (&lt;https://bbb.dhbw.de/rooms/eic-uue-f52-6xb/join&gt;) zur Verfügung
+
+X.Y.2027
+:   - Halten der Präsentationen (Doppeltermin)
+
+      Thema 1 bis 12
+
+X.Y.2027
+:   - Halten der Präsentationen
+
+      Thema 13 bis 18
+
+X.Y.2027 - Online
+:   - Ausgabe der Pentesting-Aufgabe
+
+
+::::{compound}
+:class: incremental
+
+## X.Y.2027 (Prüfungsgespräche)
+
+- Gruppenindividuelle Prüfungsgespräche (8 Gruppen)
+</code></pre><pre class="literal-block"><code>
+# Vortragsthemen - Grundlagen
+
+**Dauer pro Person: 15 Minuten**
+
+:::{story}
+
+{.list-with-explanations .incremental-list}
+
+- [1 Person] Grenzen der Multi-Faktor-Authentifizierung
+
+  (MFA fatigue, [Token Theft](https://www.heise.de/en/news/Microsoft-Authenticator-Critical-vulnerability-allows-token-theft-11296758.html), ...)
+
+- [1 Person] [Shodan](https://www.shodan.io) and OSINT im Pentesting
+
+- [1 Person] Server-Side Request Forgery ([Portswigger - SSRF](https://portswigger.net/web-security/ssrf))
+
+  (Ggf. inkl. Demonstration und Erklärung wie man sich schützt.)
+
+- [2 Personen] [MITRE ATT&amp;CK](https://attack.mitre.org)
+
+  (Knowledge base of adversary tactics and techniques based on real-world observations.)
+
+  1. Person - allgemeine Einführung
+
+  2. Person - Darstellung ausgewähter Themen
+
+  (Bitte darauf achten, dass es mit den OWASP Vorträgen zu keinen relevanten Überschneidungen kommt.)
+
+- [1 Person] [OWASP Web Security Testing Guide](https://owasp.org/www-project-web-security-testing-guide/v42/)
+
+- [1 Person] [OWASP Mobile Application Security](https://owasp.org/www-project-mobile-app-security/)
+
+- [1 Person] Copy Fail (&lt;https://copy.fail&gt;) (case study)
+
+  Als Case-study aufarbeiten und auch die Entstehungsgeschichte erklären. Bitte auch in Relation zu den entsprechenden klassischen Sicherheitsprinzipien von Saltzer und Schroeder (1975) setzen.
+
+- [1 Person] [Scapy](https://scapy.net/)
+
+  (Interactive packet manipulation library)
+
+  Eine Demo ist sehr wünschenswert.
+
+- [1 Person] [OpenVAS - Community Edition](https://greenbone.github.io/docs/latest/background.html#architecture) ([Scanner](https://github.com/greenbone/openvas-scanner))
+
+  (Vulnerability Testing)
+
+  *Achtung: bei der Community Edition handelt es sich wohl um ein „rohes Produkt“.*
+
+- [2 Personen] [OWASP Top Ten 2025](https://owasp.org/Top10/2025/) (z. B. 1. Person Lücke 1-5; 2. Person Lücke 6 - 10; die konkrete Einteilung ist aber freigestellt!)
+
+  Jeweils mit konkreten Beispielen in etablierten Sprachen/Frameworks.
+
+- [2 Personen] [OWASP Top Ten for LLM Applications](https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/) (z. B. 1. Person Lücke 1-5; 2. Person Lücke 6 - 10; die konkrete Einteilung ist aber freigestellt!)
+
+- [1 Person] Wireshark für Pentester
+
+  Fokus auf: typische Filter, Credentials finden, verdächtige Muster
+
+- [1 Person] [Gobuster](https://github.com/OJ/gobuster)
+
+  (A directory/file, DNS and virtual host brute-forcing tool)
+
+:::
+
+% Vorträge auf Vorrat :
+%     - **Fingerprinting von Webanwendungen**
+%         - Frameworks, Server, CMS erkennen
+%         - Warum das für Angriffe relevant ist
+%     - - **Schwache Netzwerkdienste &amp; Legacy-Protokolle**
+%         - FTP, Telnet, SMBv1
+%         - Warum sie heute noch existieren
+%     - **Kali Linux – Überblick über typische Pentest-Tools**
+%         - Tool-Kategorien statt Tool-Details
+%         - Warum Kali Standard ist
+
+# Vortragsthemen - Angewandt
+
+**Dauer pro Person: 15 Minuten**
+
+::::{story}
+
+:::{attention}
+
+Niemand, der eines der folgenden Themen bearbeitet, darf mit jemand anderem aus dieser Gruppe bei der Bearbeitung der Portfolioaufgabe zusammenarbeiten.
+
+:::
+
+{.list-with-explanations .incremental-list}
+
+- [1 Person] [Nmap (und ncat)](https://nmap.org/)
+
+  (Network discovery and security auditing.)
+
+- [2 Personen] [Zed Attack Proxy (ZAP)](https://www.zaproxy.org/)
+
+  (Wep App Scanner)
+
+  1. Einführung (inkl. Marketplace)
+
+  2. Live Demo basierend auf einer Webanwendung (bitte erst in die Anwendung und die Lücken einführen und dann ZAP demonstrieren!)
+
+- [2 Personen] [Burp Suite](https://portswigger.net/burp/communitydownload)
+
+  (Penetration testing toolkit.)
+
+  1. Einführung (inkl. Marketplace)
+
+  2. Live Demo basierend auf einer Webanwendung (bitte erst in die Anwendung und die Lücken einführen und dann Burp Suite demonstrieren!)
+
+- [2 Personen] [Metasploit (Open Source)](https://www.metasploit.com/)
+
+  (Penetration testing framework.)
+
+  1. Einführung in Metasploit - d. h. Architektur und Aufbau von Metasploit
+
+  2. Live Demo (bitte erst in das Szenario einführen)
+
+- [1 Person] [Nikto](https://cirt.net/nikto/)
+
+  (Open-source web server scanner checking for dangerous or interesting files and programs, identifying outdated versions of servers and components, detecting common server misconfigurations such as multiple index files, HTTP server options, and more.)
+
+::::
+
+
+
+# Themenverteilung
+
+:::{scrollable}
+
+```{csv-table}
+:class: sticky-header
+:header: Nr., Thema, #Stud., 1. Student, 2. Student
+:width: 100%
+:widths: 1,6,2,10,10
+
+1., MFA, 1, Wrede ,
+2., OSINT, 1, Weber ,
+3., SSRF, 1, Clauss ,
+4., ATT&amp;CK, 2, Teschke, Tikce
+5., OWASP - WSTG, 1, Stammer ,
+6., OWASP - MAS, 1, Wieder ,
+7., Gobuster, 1, Müller ,
+8., Scapy, 1, Saado ,
+9., OpenVAS, 1, Singh ,
+10., OWASP Top Ten, 2, Pjano , Korten
+11., "OWASP Top Ten for LLM Apps", 2 , Erhard, Bäck
+12., Wireshark, 1, Jun ,
+13., Copy Fail, 1, Plett ,
+14., Nmap, 1, Molter ,
+15., ZAP, 2, Priemer , Meli
+16., Burp, 2, Stahl , Zweigert
+17., Metasploit, 2, Meinel , Sönmez
+18., Nikto, 1, Kling
+```
+
+:::
+
+
+
+# Bewertungskriterien
+
+:::::::{deck}
+
+::::{card}
+
+:::{rubric} Für die Präsentation Ihres Fachvortrags
+:::
+
+- [Hinweise für Präsentationen](../allg-vortraege/folien.de.md.html)
+
+- Notenanteil: 25% von der Gesamtnote - d.h. 30 Punkte:
+
+  {.list-with-explanations}
+
+  - 29 Punkte für den Vortrag
+
+    Der Vortrag muss am Tag der Präsentation bis spätestens 7:00 Uhr hochgeladen sein.
+
+    Für die Teile, die sie demonstrieren, laden Sie bitte eine ausreichende Anzahl an Screenshots (in einem PDF) hoch, damit nachvollzogen werden kann, was demonstriert wurde; alternativ können Sie einen Screencast Ihrer Demo erstellen und diesen *direkt* nach Ihrem Vortrag hochladen.
+
+  - 1 Punkt für das Ausfüllen, Gegenzeichnen und zeitgerechte Hochladen der [Checkliste](../allg-vortraege/folien.de.md.html#slide-7)
+
+    Bei Gruppenarbeit hat dies jeder Studierende eigenständig zu machen; es erfolgt keine Abgabe der Checkliste für die Gruppe.
+
+::::
+
+::::::{card}
+
+:::{rubric} Für die mündliche Prüfung (X.Y.2027 - Raum 261C)
+:::
+
+:::::{deck}
+
+::::{card}
+
+- Anzahl und Art der gefundenen Schwachstellen
+
+  Fertigen Sie ein Dokument (.md, .pdf) an, dass Sie vorher (siehe Moodle) hochladen und in dem Sie die Lücken kurz dokumentieren. Pro Lücke dokumentieren Sie den Server + die Anwendung/den API Endpunkt/... der Vulnerabel ist und mit welchem CWE die Lücke verknüpft ist. Sollte Sie kein CWE finden, dann schreiben Sie ein/zwei Sätze, um die Lücke zu charakterisieren.
+
+  :::{attention}
+
+  Eine detaillierte Dokumentation is nicht erforderlich, da es sich im wesentlichen, um ein Prüfungsgespräch handelt.
+  Es geht hier ausschließlich um eine knappe Auflistung der Lücken! Eine Beschreibung der Lücken oder wie diese gefixt werden könnten ist nicht gewünscht.
+
+  {warning}`Der Einsatz von KI zur Erstellung/Verbesserung der Liste ist strikt untersagt.`
+
+  :::
+
+  **Wir werden diese Liste als Start für das Prüfungsgespräch verwenden.**
+
+::::
+
+:::{card}
+
+- Demonstration der Schwachstellen
+
+  &gt; **Bringen Sie (mind.) einen Rechner mit, auf dem Sie alle Tools etc. installiert haben, und mit dem Sie in der Lage sind die Lücke unmittelbar zu demonstrieren.**
+  &gt;
+  &gt; Das Anlegen von (kleineren) Scripten ist ggf. empfohlen.
+
+- Beantwortung von Fragen
+
+  **Jeder muss zu jeder Lücke sprechfähig sein.**
+
+- Notenanteil: 25% von der Gesamtnote - d. h. 30 Punkte:
+
+- Dauer: ca. 25 Minuten pro Gruppe
+
+:::
+
+::::{card}
+
+:::{rubric} Teilnahme am Pentest
+:::
+
+Laden Sie bis zum X.Y.2027 7:00 Uhr, Ihre Bestätigung der Teilnahmebedingungen hoch.
+
+::::
+</code></pre><pre class="literal-block"><code></code></pre></ld-topic>
+<ld-topic id="gruppenzuteilung-pentesting"><h2>Gruppenzuteilung Pentesting</h2><dl class="field-list simple"><dt>Datum<span class="colon">:</span></dt><dd><p>X.Y.2027</p></dd><dt>Ort<span class="colon">:</span></dt><dd><p>261 C</p></dd></dl><table class="accentuated-header booktabs table-header-align-left" style="width: 100%;"><colgroup><col style="width: 2.8%"><col style="width: 13.9%"><col style="width: 27.8%"><col style="width: 27.8%"><col style="width: 27.8%"></colgroup><thead><tr><th class="head"><p>#</p></th><th class="head"><p>Uhrzeit</p></th><th class="head"><ol class="arabic simple"><li><p>Stud.</p></li></ol></th><th class="head"><ol class="arabic simple" start="2"><li><p>Stud.</p></li></ol></th><th class="head"><ol class="arabic simple" start="3"><li><p>Stud.</p></li></ol></th></tr></thead><tbody><tr><td><p>1</p></td><td><p>8:30</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td></tr><tr><td><p>2</p></td><td><p>9:10</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td></tr><tr><td><p>3</p></td><td><p>9:50</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td></tr><tr><td><p>4</p></td><td><p>10:30</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td></tr><tr><td><p>5</p></td><td><p>11:10</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td></tr><tr><td><p>6</p></td><td><p>13:30</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td></tr><tr><td><p>7</p></td><td><p>14:10</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td></tr><tr><td><p>8</p></td><td><p>14:50</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td></tr></tbody></table></ld-topic>
+<ld-topic class="hide" id="pentesting"><h2>Pentesting</h2><ld-story><p>Die folgenden Server dürfen Sie einem Pentest unterziehen:</p><table class="booktabs table-header-align-left" style="width: 100%;"><thead><tr><th class="head"><p>Server</p></th><th class="head"><p>Komplexität</p></th></tr></thead><tbody><tr><td><p>141.72.13.218</p></td><td><p><strong>*</strong></p></td></tr><tr><td><p>141.72.12.145</p></td><td><p><strong>**</strong></p></td></tr><tr><td><p>141.72.12.138</p><p><em>four-wins.michael-eichberg-at-dhbw-de.users.dhbw.site</em></p></td><td><p><strong>**</strong></p></td></tr><tr><td><p>141.72.176.151</p><p><strong>(ab 4. Juli)</strong></p></td><td><p><strong>* – **</strong></p></td></tr><tr><td><p>141.72.12.141</p><p><em>quizzy.michael-eichberg-at-dhbw-de.users.dhbw.site</em></p></td><td><p><strong>***</strong></p></td></tr></tbody></table><aside class="admonition" data-theme="legend"><p class="admonition-title" data-theme="legend-header"><span>Legende</span></p><p>* = einfach; *** = sehr schwer</p></aside><aside class="admonition incremental" data-theme="danger"><p class="admonition-title" data-theme="danger-header">!GEFAHR!</p><p>Unter keinen Umständen dürfen Sie andere als die hier gelisteten Server <em>angreifen</em>. Scans von Subdomänen (es gibt auch keine) oder anderen IP-Adressen sind untersagt.</p><p>Sie dürfen auch immer nur die hier beschriebenen Angriffe/Änderungen vornehmen. Jegliche darüber hinausgehenden Tätigkeiten sind untersagt.</p></aside><aside class="admonition incremental" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p><p>Pentesting der VMs ist nur aus dem Netz der DHBW heraus möglich. D. h. nur wenn Sie eine IP-Adresse im Bereich 141.72.0.0/16 haben. Nutzen Sie eine VM auf OpenStack, dann stellen Sie sicher, dass diese VM keine Egress-Filterung vornimmt und im richtigen Netz ist (ggf. in den Security-Policies zu konfigurieren). Wenn Sie sich per VPN verbinden, dann sollte dies immer der Fall sein.</p></aside></ld-story></ld-topic>
+<ld-topic id="pentesting-rahmenbedingungen"><h2>Pentesting - Rahmenbedingungen</h2><ld-story><p class="rubric">Was ist erlaubt/was nicht...</p><ul class="incremental-list simple"><li><p>Metasploit ist nicht zu verwenden, erfolgreiche Angriffe mit Metasploit werden nicht anerkannt.</p></li><li><p>Horizontale Privilegienerweiterungen, sind nicht prüfungsrelevant.</p></li><li><p>Alle Sicherheitslücken, die ggf. direkt auf die Verwendung von HTTP zurückzuführen sind, sind zu ignorieren!</p></li><li><p>Sollten Sie ggf. auf Informationen über Nutzeraccounts stoßen oder selbige angreifen wollen, dann <strong>nehmen Sie den Nutzeraccount/Gruppenaccount, der zu Ihrer Gruppennummer gehört</strong>.</p></li><li><p>Möchten Sie auf einem Server Daten ablegen, dann legen Sie diese auf jeden Fall <strong>nur</strong> in dem Verzeichnis ab, der zu Ihrer Gruppennummer passt! (/home/gruppe&#x3C;N>, /home/group&#x3C;N>, ...)</p></li><li><p>Sollten Sie Zugriff auf einen Server bekommen - sei es als normaler Nutzer oder als Root-Nutzer - dann dürfen Sie sich auf jeden Fall frei umsehen.</p></li><li><p>Die Server haben ggf. viele Schwachstellen; die aber bei Weitem nicht alle gleich einfach auszunutzen sind; suchen Sie die einfachste!</p></li><li><p>Bei den Webanwendungen sollten Sie versuchen, so viele verschiedene Schwachstellen wie möglich zu finden. Mappen Sie Ihre Schwachstelle auch immer auf eine CWE! Schwachstellen, den immer nur dieselbe CWE zugrunde liegt, wird nur als eine Schwachstelle gewertet.</p></li><li><p>Bei allen Aktionen bedenken Sie, dass auch andere Personen an dem Pentest teilnehmen und eine Einschränkung anderer Personen nicht gestattet ist.</p></li><li><p>Sie dürfen keine Maßnahmen durchführen, die die Verfügbarkeiten der Server dramatisch einschränken.</p></li><li><p>Sie dürfen unter keinen Umständen Veränderungen oder Aktualisierungen an den Servereinstellungen vornehmen, sollten Sie auf einem oder mehreren Servern Root-Access erlangen!</p></li><li><p>Die Struktur von Datenbanken (<code class="sql"><span class="keyword">alter</span> <span class="punctuation">.</span><span class="punctuation">.</span><span class="punctuation">.</span></code>) darf nicht verändert werden; semantisch sinnvolle Datensätze, um zum Beispiel die Privilegien eines Nutzer zu erweitern, dürfen hinzugefügt werden (<code class="sql"><span class="keyword">update</span><span class="punctuation">.</span><span class="punctuation">.</span><span class="punctuation">.</span></code>). Daten, die zur Anwendungslogik gehören, dürfen nicht gelöscht werden!</p></li><li><p>Untersagt sind darüber hinaus sämtliche Handlungen, die ein verständiger Teilnehmer bei objektiver Betrachtung als nicht vom Zweck der Veranstaltung gedeckt erkennen muss — unabhängig davon, ob sie in diesen Bedingungen ausdrücklich aufgeführt sind. Die vorstehenden Verbote sind beispielhaft, nicht abschließend zu verstehen.</p></li></ul><aside class="admonition incremental" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung</span></p><p>Sollten Sie auf Probleme stoßen, dann melden Sie sich bitte sowohl <strong>bei Herrn Rutesic</strong> als auch bei mir per Mail.</p></aside><aside class="admonition incremental" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warnung</p><p>Für eine Teilnahme an dem Pentest ist die Gegenzeichnung bis zum 3. Juli 2026 7:00 Uhr erforderlich und <em>persönlich</em> im Moodle hochzuladen.</p></aside><ld-grid class="incremental margin-top-4em default-layout"><ld-cell class="width-40" style="align-self:auto;"><p>Datum: ______________________</p></ld-cell><ld-cell class="width-60" style="align-self:auto;"><p>Unterschrift: ___________________________________________</p></ld-cell></ld-grid></ld-story></ld-topic>
+</template>
+</body>
+</html>

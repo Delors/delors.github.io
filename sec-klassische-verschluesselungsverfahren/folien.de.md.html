@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Michael Eichberg" />
+<meta name="keywords" content="&quot;Verschlüsselung&quot;, &quot;Vernam&quot;, &quot;Vigenère&quot;, &quot;Caesar&quot;, &quot;Hill&quot;, &quot;Playfair&quot;, &quot;Steganographie&quot;" />
+<meta name="description" content="Klassische Verschlüsselungsmethoden" lang="de" xml:lang="de" />
+<meta name="id" content="vorlesung-it-sicherheit-klassische-verschluesselungsverfahren" />
+<meta name="first-slide" content="last-viewed" />
+<meta name="exercises-passwords" content="MTAwMDAw:Q6CWhGWkr8cxERtzvKRDD9Bgb88Vof9TrUe52n8TKF8=:1akfzDryxKiVRPY5:WVdpA1jxvNvNWsjHz1guvRtTC0Xcf1FC4nLZrfq/1XVrond5CNR+XCzzs+47a/WRaFXv1dFgXd2fPtn1qbvAB/TrRUWi3O2w68ZW6BsCxPlcdZ6sPon17Pu2RDyRPLYGLpNkq/Zlly4LW9gdbtgN4C2xzoGxfoLpS3pwqh0UesKWsViz1+XgdTvy0yUaqchsukM7YRll5uDSNWj1MJXpr5l7kTYZpQwo37sK5yBFDJ68gN7m0S+1QuxEvOHyl3HHXhOzB3+EBtDt95q+zv04rLEZdmU4ta/KXDi1BxMC1o/c5gXQuUZGuLRFzztGJfiqTJl5dHCmSdMSzykuwVGh1L1iJYZBcjxJHxuZqHJgH5LWhGr4JbFy3TEuKtwJuDYPcHCyPG+gNW5qzBYIwYymtihBBkbFQg6fL0FgceSsClNVCiETpLWyWdLOZpLXvGe/CLkOsEWb/B42sMF1/5GvOYnFHb2an2BOv7/3TqYkC6MJ7R6SfaEFvl4XwzLJ4G9dibIEanWFvxMAxh0Ah33s6rLDPEL+OhJqFFXmWwcnuVS4x2z7vMi3lVzzD6MbxOpLaRSXouSeXkmONTRgX1eymqWwhFMTOD1NdofFa/CiwppSxIsSpQFXL9OCN+hqV6qimd9TkGK8k9qAzMFxLIcb2HEHKteTMa0CAYDpu+Fyc5UODbvotbyPb+GW9WB7TeEzJv8xQ/2HGAGodWUgpLH+0VgW6lWbTwBmmZiQbVxD1pKAILgPjMJ4wtDkSSdGahjTfumR1d2Jid+2TvEgCC0zRwteItCD9O8CnylG+6fw2cGJScU/3WAgWcK+oCdmDZSY0D8JkRsstnceO0KlO9sqXLWNbQCYOrL89Dr3BGu0/ze15D9DERVAWQ==" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>Klassische Verschlüsselungsmethoden</title>
+<link rel="stylesheet" href="../shared/ext/katex/katex.min.css" />
+<script src="../LectureDoc2/dist/src/ld.js" type="module"></script>
+<link rel="stylesheet" href="../LectureDoc2/dist/src/ld.css" />
+<style>@import url("../LectureDoc2/dist/src/css/themes/dhbw.css") layer(theme);</style>
+</head>
+<body data-theme="<light-dark>">
+<ld-svg-globals><svg xmlns="http://www.w3.org/2000/svg" class="svg-global-style"><style>/* bars take the slide accent; fallback reads on light or dark */
+.letterfreq .bar {
+    fill: var(--accent-color, #4b6bdc);
+}
+
+/* stroke "drawing": hidden = fully dashed, revealed = closed up */
+.letterfreq .draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 0.8s ease;
+}
+.letterfreq .ld-revealed .draw {
+    stroke-dashoffset: 0;
+}
+
+/* gridlines + labels fade in */
+.letterfreq .fade {
+    opacity: 0;
+    transition: opacity 0.5s ease 0.15s;
+}
+.letterfreq .ld-revealed .fade {
+    opacity: 1;
+}
+
+/* bars grow from the baseline, staggered left-to-right via --i */
+.letterfreq .bar {
+    transform: scaleY(0);
+    transform-box: fill-box;
+    transform-origin: bottom;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition-delay: calc(var(--i) * 0.03s);
+}
+.letterfreq .ld-revealed .bar {
+    transform: scaleY(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .letterfreq .draw,
+    .letterfreq .fade,
+    .letterfreq .bar {
+        transition: none;
+    }
+}
+</style></svg></ld-svg-globals>
+<template>
+<ld-topic id="vorlesung-it-sicherheit-klassische-verschluesselungsverfahren"><h1 class="title">Klassische Verschlüsselungsmethoden</h1><dl class="docinfo"><dt class="dozent">Dozent<span class="colon">:</span></dt><dd class="dozent"><a class="reference external" href="https://delors.github.io/cv/folien.de.md.html">Prof. Dr. Michael Eichberg</a></dd><dt class="contact">Kontakt<span class="colon">:</span></dt><dd class="contact"><a class="reference external" href="mailto:michael.eichberg@dhbw.de">michael.eichberg@dhbw.de</a>
+, Raum 149B</dd><dt class="version">Version<span class="colon">:</span></dt><dd class="version">1.1.5.3</dd></dl><dl class="sources field-list simple"><dt>Quelle<span class="colon">:</span></dt><dd><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p></dd></dl><ld-supplemental><p><a class="reference external" href="./kontrollfragen.de.md.html">Kontrollfragen</a></p><dl class="field-list"><dt>Folien<span class="colon">:</span></dt><dd><p>[HTML] <a class="reference external" href="https://delors.github.io/sec-klassische-verschluesselungsverfahren/folien.de.md.html">https://delors.github.io/sec-klassische-verschluesselungsverfahren/folien.de.md.html</a></p><p>[PDF] <a class="reference external" href="https://delors.github.io/sec-klassische-verschluesselungsverfahren/folien.de.md.html.pdf">https://delors.github.io/sec-klassische-verschluesselungsverfahren/folien.de.md.html.pdf</a></p></dd><dt>Fehler melden<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p></dd></dl><dl class="field-list simple"><dt>KI Verwendung<span class="colon">:</span></dt><dd><p>Bei der Erstellung der Unterlagen wurden KI Assistenten (insbesondere Claude
+aber ggf. auch ChatGPT, Ollama mit Gemma/LLama/Qwen oder OpenCode mit
+Kimi/Qwen/Deepseek...) unterstützend eingesetzt.
+Dies erfolgte insbesondere zur Unterstützung bei der Generierung von Grafiken
+(d. h. SVG Dateien), oder um sich Übersichtstabellen generieren zu lassen.
+Weiterhin wurde KI zur allgemeinen Qualitätssicherung eingesetzt.
+Inhalte, die ggf. von der KI vorgeschlagen wurden, wurden im Falle der
+Übernahme explizit validiert und angepasst.</p></dd></dl></ld-supplemental></ld-topic>
+<ld-topic class="new-section" id="einfuhrung"><h2>Einführung</h2></ld-topic>
+<ld-topic id="zentrale-begriffe"><h2>Zentrale Begriffe</h2><ld-story><aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition: Klartext (<span class="eng">Plaintext</span>)</span></p><p>Die Originalnachricht, die verschlüsselt werden soll.</p></aside><aside class="admonition incremental" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition: Geheimtext oder Chiffretext (<span class="eng">Ciphertext</span>)</span></p><p>Die kodierte/verschlüsselte Nachricht.</p><p><span class="peripheral">(Im Deutschen gelegentlich auch Kryptogramm genannt.)</span></p></aside><aside class="admonition incremental" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition: Verschlüsselung (<span class="eng">Encryption</span>)</span></p><p>Der Prozess der Umwandlung von Klartext in Geheimtext.</p></aside><aside class="admonition incremental" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition: Entschlüsselung (<span class="eng">Decryption</span>)</span></p><p>Der Prozess der Wiederherstellung des Klartextes aus dem Geheimtext.</p></aside><aside class="admonition incremental" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition: Kryptographie (<span class="eng">Cryptography</span>)</span></p><p>Das Studiengebiet der Verschlüsselungsschemata.</p></aside><aside class="admonition incremental" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition: Kryptoanalyse (<span class="eng">Cryptanalysis</span>)</span></p><p>Methoden und Techniken, die zur Gewinnung von Informationen aus einer verschlüsselten Nachricht dienen.</p><p>Analyse von kryptographischen Verfahren.</p></aside><aside class="admonition incremental" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition: Kryptologie (<span class="eng">Cryptology</span>)</span></p><p>Die Bereiche Kryptographie und Kryptoanalyse.</p></aside></ld-story></ld-topic>
+<ld-topic id="vereinfachtes-modell-der-symmetrischen-verschlusselung"><h2>Vereinfachtes Modell der symmetrischen Verschlüsselung</h2><object class="light-image align-center" data="drawings/symmetrische_verschluesselung/simplified_model.svg" type="image/svg+xml" role="img" aria-label="Vereinfachtes Modell der symmetrischen Verschlüsselung"></object></ld-topic>
+<ld-topic id="symmetrisches-verschlusselungsmodell"><h2>Symmetrisches Verschlüsselungsmodell</h2><p>Es gibt zwei Voraussetzungen für die sichere Verwendung der herkömmlichen Verschlüsselung:</p><ol class="arabic incremental-list simple"><li><p>Ein starker Verschlüsselungsalgorithmus.</p></li><li><p>Effektive Schlüsselverwaltung:</p><ol class="loweralpha incremental-list simple"><li><p>Sender und Empfänger müssen Kopien des geheimen Schlüssels auf sichere Weise erhalten haben und</p></li><li><p>den Schlüssel sicher aufbewahren.</p></li></ol></li></ol></ld-topic>
+<ld-topic id="modell-eines-symmetrischen-kryptosystems"><h2>Modell eines symmetrischen Kryptosystems</h2><object class="light-image align-center" data="drawings/symmetrische_verschluesselung/model.svg" type="image/svg+xml" role="img" aria-label="Modell eines symmetrischen Kryptosystems"></object></ld-topic>
+<ld-topic id="kryptografische-systeme-konnen-entlang-dreier-unabhangiger-dimensionen-charakterisiert-werden"><h2>Kryptografische Systeme können entlang dreier unabhängiger Dimensionen charakterisiert werden</h2><aside class="admonition width-30" data-theme="note"><p class="admonition-title" data-theme="note-header">Bemerkung</p><p>Eine Permutation ist eine Folge von Vertauschungen.</p></aside><ol class="arabic incremental-list"><li><p>Die Art der Operation, die zur Umwandlung von Klartext in Chiffretext verwendet wird:</p><ul class="incremental-list simple"><li><p>Substitution</p></li><li><p>Transposition (Vertauschungen)</p></li></ul></li><li><p>Die Anzahl der verwendeten Schlüssel.</p><dl class="incremental-list field-list simple"><dt>Symmetrisch<span class="colon">:</span></dt><dd><p>Ein-Schlüssel bzw. <strong>Secret-Key</strong>- (<em>konventionelle Verschlüsselung</em>)</p></dd><dt>Asymmetrisch<span class="colon">:</span></dt><dd><p>Zwei-Schlüssel bzw. <strong>Public-Key</strong>-Verschlüsselung</p></dd></dl></li><li><p>Die Art und Weise, in der der Klartext verarbeitet wird:</p><ul class="incremental-list simple"><li><p>Blockchiffre</p></li><li><p>Stromchiffre</p></li></ul></li></ol></ld-topic>
+<ld-topic id="klassifizierung-von-angriffen"><h2>Klassifizierung von Angriffen</h2><ld-story><table class="accentuated-header zebra incremental-table-rows sticky-header" style="width: 100%;"><colgroup><col style="width: 20.0%"><col style="width: 80.0%"></colgroup><thead><tr><th class="stub head"><p>Art des Angriffs</p></th><th class="head"><p>dem Kryptoanalytiker bekannt</p></th></tr></thead><tbody><tr><th class="stub"><p>Ciphertext Only</p></th><td><ul class="simple"><li><p>Verschlüsselungsalgorithmus und Chiffretext</p></li></ul></td></tr><tr><th class="stub"><p>Known Plaintext</p></th><td><ul class="simple"><li><p>Verschlüsselungsalgorithmus und Chiffretext</p></li><li><p><em>ein oder mehrere Klartext-Chiffretext-Paare, die mit dem geheimen Schlüssel verschlüsselt wurden</em></p></li></ul></td></tr><tr><th class="stub"><p>Chosen Plaintext</p></th><td><ul class="simple"><li><p>Verschlüsselungsalgorithmus und Chiffretext</p></li><li><p><em>Klartextnachricht, die vom Kryptoanalytiker gewählt wurde, zusammen mit dem zugehörigen Chiffretext, der mit dem geheimen Schlüssel verschlüsselt wurde.</em></p></li></ul></td></tr><tr><th class="stub"><p>Chosen Ciphertext</p></th><td><ul class="simple"><li><p>Verschlüsselungsalgorithmus und Chiffretext</p></li><li><p><em>Chiffretext, der vom Kryptoanalytiker gewählt wurde, zusammen mit dem zugehörigen entschlüsselten Klartext, der mit dem geheimen Schlüssel entschlüsselt wurde.</em></p></li></ul></td></tr><tr><th class="stub"><p>Chosen Text</p></th><td><ul class="simple"><li><p>Verschlüsselungsalgorithmus und Chiffretext</p></li><li><p><em>vom Kryptoanalytiker gewählte Klartextnachricht, zusammen mit dem zugehörigen Chiffretext, der mit dem geheimen Schlüssel verschlüsselt wurde.</em></p></li><li><p><em>vom Kryptoanalytiker gewählter Chiffretext zusammen mit dem entsprechenden entschlüsselten Klartext, der mit dem geheimen Schlüssel erzeugt wurde.</em></p></li></ul></td></tr></tbody></table></ld-story><ld-supplemental><p>Das Ziel ist es immer den Schlüssel zu ermitteln, damit man weitere Kommunikation effektiv entschlüsseln kann.</p></ld-supplemental></ld-topic>
+<ld-topic id="sicherheit-von-verschlusselungsschemata"><h2>Sicherheit von Verschlüsselungsschemata</h2><div><p class="rubric">Bedingungslos Sicher (<span class="eng">Unconditionally Secure</span>)</p><ul class="simple"><li><p>Unabhängig davon wie viel Zeit ein Gegner hat, ist es ihm unmöglich, den Geheimtext zu entschlüsseln, weil die erforderlichen Informationen nicht vorhanden sind.</p></li></ul></div><div class="incremental"><p class="rubric">Rechnerisch Sicher (<span class="eng">Computationally Secure</span>)</p><ul class="simple"><li><p>Die Kosten für das Brechen der Chiffre übersteigen den Wert der verschlüsselten Informationen.</p></li><li><p>Die zum Knacken der Chiffre benötigte Zeit übersteigt die Lebensdauer der Informationen.</p></li></ul></div><aside class="admonition incremental" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Wie lange könnte der Nutzen einer bestimmten Information andauern?</p></aside></ld-topic>
+<ld-topic id="kryptoanalyse"><h2>Kryptoanalyse</h2><div><p><strong>Kryptoanalyse</strong></p><ul class="simple"><li><p>Der Angriff beruht auf den Eigenschaften des Algorithmus und einer gewissen Kenntnis der allgemeinen Merkmale des Klartextes.</p></li><li><p>Der Angriff nutzt die Eigenschaften des Algorithmus aus, um zu versuchen, einen bestimmten Klartext zu entschlüsseln oder den verwendeten Schlüssel zu ermitteln.</p></li></ul></div></ld-topic>
+<ld-topic id="brute-force-angriff"><h2>Brute-Force Angriff</h2><ul class="incremental-list"><li><p>Es werden alle möglichen Schlüssel ausprobiert, bis eine verständliche Übersetzung des Chiffriertextes in Klartext erreicht wird.</p></li><li><p>Im Durchschnitt muss die Hälfte aller möglichen Schlüssel ausprobiert werden, um Erfolg zu haben.</p></li><li><p>Zur Durchführung des Brute-Force-Ansatzes ist ein gewisses Maß an Wissen über den zu erwartenden Klartext erforderlich. Es werden Mittel zur automatischen Unterscheidung von Klartext und „Müll“ benötigt.</p><aside class="admonition" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Was bedeuted somit <em>bis eine verständliche Übersetzung des Chiffriertextes in Klartext erreicht wird</em>?</p><p><span class="incremental">Wie können Sie feststellen ob Sie erfolgreich entschlüsselt haben, wenn der Klartext zum Beispiel ein Bild, ein Video oder ein Computerprogramm ist?</span></p><p><span class="incremental">Wie können Sie feststellen, ob Sie erfolgreich entschlüsselt haben, wenn die Datei zweifach (d. h. mit zwei verschiedenen Schlüsseln) verschlüsselt wurde?</span></p></aside></li></ul></ld-topic>
+<ld-topic class="new-section transition-fade" id="substitutions-chiffren"><h2>Substitutions-Chiffren</h2></ld-topic>
+<ld-topic id="substitutionsverfahren-allgemeine-vorgehensweise"><h2>Substitutionsverfahren - Allgemeine Vorgehensweise</h2><ul class="simple"><li><p>Bei der Substitution werden die Buchstaben des Klartextes durch andere Buchstaben oder durch Zahlen oder Symbole ersetzt.</p></li><li><p>Wenn der Klartext als eine Folge von Bits betrachtet wird, beinhaltet die Substitution das Ersetzen von Bitmustern des Klartextes durch Bitmuster des Geheimtextes.</p></li></ul></ld-topic>
+<ld-topic id="casar-chiffre"><h2>Cäsar-Chiffre</h2><ul class="simple"><li><p>Einfachste und früheste bekannte Verwendung einer Substitutions-Chiffre; verwendet von Julius Cäsar.</p></li></ul><div class="incremental"><ul><li><p>Dabei wird jeder Buchstabe des Alphabets durch einen Buchstaben ersetzt, der drei Stellen weiter hinten im Alphabet steht.</p></li><li><p>Am Ende des Alphabets wird wieder am Anfang begonnen. Somit folgt auf den Buchstabe Z der Buchstabe A.</p><dl class="field-list simple"><dt>unverschlüsselt<span class="colon">:</span></dt><dd><p><span class="docutils literal">meet me after the toga party</span></p></dd></dl><dl class="incremental field-list simple"><dt>verschlüsselt<span class="colon">:</span></dt><dd><p><span class="docutils literal">PHHW PH DIWHU WKH WRJD SDUWB</span></p></dd></dl></li></ul></div></ld-topic>
+<ld-topic id="casar-chiffre-historische-verwendung"><h2>Cäsar-Chiffre: historische Verwendung</h2><p>Die Transformation kann mit folgender Tabelle ausgedrückt werden:</p><table class="compact table-data-monospaced text-align-center highlight-cell-on-hover" style="width: 100%;"><thead><tr><th class="head"><p>a</p></th><th class="head"><p>b</p></th><th class="head"><p>c</p></th><th class="head"><p>d</p></th><th class="head"><p>e</p></th><th class="head"><p>f</p></th><th class="head"><p>g</p></th><th class="head"><p>h</p></th><th class="head"><p>i</p></th><th class="head"><p>j</p></th><th class="head"><p>k</p></th><th class="head"><p>l</p></th><th class="head"><p>m</p></th><th class="head"><p>n</p></th><th class="head"><p>o</p></th><th class="head"><p>p</p></th><th class="head"><p>q</p></th><th class="head"><p>r</p></th><th class="head"><p>s</p></th><th class="head"><p>t</p></th><th class="head"><p>u</p></th><th class="head"><p>v</p></th><th class="head"><p>w</p></th><th class="head"><p>x</p></th><th class="head"><p>y</p></th><th class="head"><p>z</p></th></tr></thead><tbody><tr><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td></tr></tbody></table><div class="incremental"><p>Mathematisch, wenn wir jedem Buchstaben einen Wert zuweisen:</p><table class="compact table-data-monospaced text-align-center highlight-cell-on-hover" style="width: 100%;"><colgroup><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"><col style="width: 3.8%"></colgroup><thead><tr><th class="head"><p>a</p></th><th class="head"><p>b</p></th><th class="head"><p>c</p></th><th class="head"><p>d</p></th><th class="head"><p>e</p></th><th class="head"><p>f</p></th><th class="head"><p>g</p></th><th class="head"><p>h</p></th><th class="head"><p>i</p></th><th class="head"><p>j</p></th><th class="head"><p>k</p></th><th class="head"><p>l</p></th><th class="head"><p>m</p></th><th class="head"><p>n</p></th><th class="head"><p>o</p></th><th class="head"><p>p</p></th><th class="head"><p>q</p></th><th class="head"><p>r</p></th><th class="head"><p>s</p></th><th class="head"><p>t</p></th><th class="head"><p>u</p></th><th class="head"><p>v</p></th><th class="head"><p>w</p></th><th class="head"><p>x</p></th><th class="head"><p>y</p></th><th class="head"><p>z</p></th></tr></thead><tbody><tr><td><p>0</p></td><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td><td><p>10</p></td><td><p>11</p></td><td><p>12</p></td><td><p>13</p></td><td><p>14</p></td><td><p>15</p></td><td><p>16</p></td><td><p>17</p></td><td><p>18</p></td><td><p>19</p></td><td><p>20</p></td><td><p>21</p></td><td><p>22</p></td><td><p>23</p></td><td><p>24</p></td><td><p>25</p></td></tr></tbody></table><p>Der Algorithmus zur Verschlüsselung ist dann (p sei der Wert des zu verschlüsselnden Buchstabens):</p><p>Y = E(3,p) = (p + 3) mod 26</p></div></ld-topic>
+<ld-topic id="verallgemeinerter-casar-chiffre-algorithmus"><h2>Verallgemeinerter Cäsar-Chiffre-Algorithmus</h2><p>Eine Verschiebung (k) kann beliebig groß sein, so dass der allgemeine Cäsar-Algorithmus lautet:</p><p>Y = E(k,p) = (p + k) mod 26</p><p>Wobei k einen Wert im Bereich von 1 bis 25 annimmt; der Entschlüsselungsalgorithmus ist einfach:</p><p>p = D(k,Y) = (Y - k) mod 26</p></ld-topic>
+<ld-topic id="brute-force-kryptoanalyse-der-casar-chiffre"><h2>Brute-Force-Kryptoanalyse der Cäsar-Chiffre</h2><table class="highlight-row-on-hover compact table-data-monospaced booktabs align-center"><tbody><tr><th class="stub"><p><strong>Key</strong></p></th><td><p>PHHW</p></td><td><p>PH</p></td><td><p>DIWHU</p></td><td><p>WKH</p></td><td><p>WRJD</p></td><td><p>SDUWB</p></td><td><p>(Ciphertext)</p></td></tr><tr><th class="stub"><p>1</p></th><td><p>oggv</p></td><td><p>og</p></td><td><p>chvgt</p></td><td><p>vjg</p></td><td><p>vqic</p></td><td><p>rctva</p></td><td></td></tr><tr><th class="stub"><p>2</p></th><td><p>nffu</p></td><td><p>nf</p></td><td><p>bgufs</p></td><td><p>uif</p></td><td><p>uphb</p></td><td><p>qbsuz</p></td><td></td></tr><tr><th class="stub"><p>3</p></th><td><p>meet</p></td><td><p>me</p></td><td><p>after</p></td><td><p>the</p></td><td><p>toga</p></td><td><p>party</p></td><td></td></tr><tr><th class="stub"><p>4</p></th><td><p>ldds</p></td><td><p>ld</p></td><td><p>zesdq</p></td><td><p>sgd</p></td><td><p>snfz</p></td><td><p>ozqsx</p></td><td></td></tr><tr><th class="stub"><p>5</p></th><td><p>kccr</p></td><td><p>kc</p></td><td><p>ydrcp</p></td><td><p>rfc</p></td><td><p>rmey</p></td><td><p>nyprw</p></td><td></td></tr><tr><th class="stub"><p>6</p></th><td><p>jbbq</p></td><td><p>jb</p></td><td><p>xcqbo</p></td><td><p>qeb</p></td><td><p>qldx</p></td><td><p>mxoqv</p></td><td></td></tr><tr><th class="stub"><p>7</p></th><td><p>iaap</p></td><td><p>ia</p></td><td><p>wbpan</p></td><td><p>pda</p></td><td><p>pkcw</p></td><td><p>lwnpu</p></td><td></td></tr><tr><th class="stub"><p>8</p></th><td><p>hzzo</p></td><td><p>hz</p></td><td><p>vaozm</p></td><td><p>ocz</p></td><td><p>ojbv</p></td><td><p>kvmot</p></td><td></td></tr><tr><th class="stub"><p>9</p></th><td><p>gyyn</p></td><td><p>gy</p></td><td><p>uznyl</p></td><td><p>nby</p></td><td><p>niau</p></td><td><p>julns</p></td><td></td></tr><tr><th class="stub"><p>10</p></th><td><p>fxxm</p></td><td><p>fx</p></td><td><p>tymxk</p></td><td><p>max</p></td><td><p>mhzt</p></td><td><p>itkmr</p></td><td></td></tr><tr><th class="stub"><p>11</p></th><td><p>ewwl</p></td><td><p>ew</p></td><td><p>sxlwj</p></td><td><p>lzw</p></td><td><p>lgys</p></td><td><p>hsjlq</p></td><td></td></tr><tr><th class="stub"><p>12</p></th><td><p>dvvk</p></td><td><p>dv</p></td><td><p>rwkvi</p></td><td><p>kyv</p></td><td><p>kfxr</p></td><td><p>grikp</p></td><td></td></tr><tr><th class="stub"><p>13</p></th><td><p>cuuj</p></td><td><p>cu</p></td><td><p>qvjuh</p></td><td><p>jxu</p></td><td><p>jewq</p></td><td><p>fqhjo</p></td><td></td></tr><tr><th class="stub"><p>...</p></th><td><p>....</p></td><td><p>..</p></td><td><p>.....</p></td><td><p>...</p></td><td><p>....</p></td><td><p>.....</p></td><td></td></tr><tr><th class="stub"><p>25</p></th><td><p>qiix</p></td><td><p>qi</p></td><td><p>ejxiv</p></td><td><p>xli</p></td><td><p>xske</p></td><td><p>tevxc</p></td><td></td></tr></tbody></table></ld-topic>
+<ld-topic id="brute-force-kryptoanalyse-z-b-der-caesar-chiffre"><h2>Brute-Force-Kryptoanalyse (z. B. der Caesar-Chiffre)</h2><ld-deck><ld-card><p>Die Entschlüsselung ist komplizierter, wenn der Klartext bereits eine sehr hohe Entropie aufweist, wie z. B. im Falle einer komprimierten ZIP Datei:</p><table class="compact table-data-monospaced highlight-row-on-hover booktabs font-size-85" style="width: 100%;"><tbody><tr><td><p>00000000:</p></td><td><p>504b</p></td><td><p>0304</p></td><td><p>1400</p></td><td><p>0000</p></td><td><p>0800</p></td><td><p>afb1</p></td><td><p>4257</p></td><td><p>1da9</p></td><td><p>PK..........BW..</p></td></tr><tr><td><p>00000010:</p></td><td><p>b0b9</p></td><td><p>4b00</p></td><td><p>0000</p></td><td><p>4f04</p></td><td><p>0000</p></td><td><p>0800</p></td><td><p>1c00</p></td><td><p>6465</p></td><td><p>..K...O.......de</p></td></tr><tr><td><p>00000020:</p></td><td><p>6d6f</p></td><td><p>2e74</p></td><td><p>7874</p></td><td><p>5554</p></td><td><p>0900</p></td><td><p>036a</p></td><td><p>241b</p></td><td><p>65a4</p></td><td><p>mo.txtUT...j$.e.</p></td></tr><tr><td><p>00000030:</p></td><td><p>a9c0</p></td><td><p>6575</p></td><td><p>780b</p></td><td><p>0001</p></td><td><p>04f8</p></td><td><p>0100</p></td><td><p>0004</p></td><td><p>1400</p></td><td><p>..eux...........</p></td></tr><tr><td><p>00000040:</p></td><td><p>0000</p></td><td><p>edcc</p></td><td><p>db09</p></td><td><p>8030</p></td><td><p>0c05</p></td><td><p>d07f</p></td><td><p>a7c8</p></td><td><p>049d</p></td><td><p>.......0........</p></td></tr><tr><td><p>00000050:</p></td><td><p>a28b</p></td><td><p>c4f6</p></td><td><p>6203</p></td><td><p>e983</p></td><td><p>18d0</p></td><td><p>6e2f</p></td><td><p>ee91</p></td><td><p>ffc3</p></td><td><p>....b.....n/....</p></td></tr><tr><td><p>00000060:</p></td><td><p>c928</p></td><td><p>b697</p></td><td><p>cb1c</p></td><td><p>2437</p></td><td><p>f569</p></td><td><p>a032</p></td><td><p>fb52</p></td><td><p>29ec</p></td><td><p>.(....$7.i.2.R).</p></td></tr><tr><td><p>00000070:</p></td><td><p>a8f4</p></td><td><p>340c</p></td><td><p>f206</p></td><td><p>5aca</p></td><td><p>321c</p></td><td><p>afff</p></td><td><p>8cd5</p></td><td><p>c075</p></td><td><p>..4...Z.2......u</p></td></tr><tr><td><p>00000080:</p></td><td><p>d3c5</p></td><td><p>762a</p></td><td><p>d291</p></td><td><p>2389</p></td><td><p>2492</p></td><td><p>48d2</p></td><td><p>0750</p></td><td><p>4b01</p></td><td><p>..v*..#.$.H..PK.</p></td></tr><tr><td><p>00000090:</p></td><td><p>021e</p></td><td><p>0314</p></td><td><p>0000</p></td><td><p>0008</p></td><td><p>00af</p></td><td><p>b142</p></td><td><p>571d</p></td><td><p>a9b0</p></td><td><p>...........BW...</p></td></tr><tr><td><p>000000a0:</p></td><td><p>b94b</p></td><td><p>0000</p></td><td><p>004f</p></td><td><p>0400</p></td><td><p>0008</p></td><td><p>0018</p></td><td><p>0000</p></td><td><p>0000</p></td><td><p>.K...O..........</p></td></tr><tr><td><p>000000b0:</p></td><td><p>0001</p></td><td><p>0000</p></td><td><p>00ff</p></td><td><p>8100</p></td><td><p>0000</p></td><td><p>0064</p></td><td><p>656d</p></td><td><p>6f2e</p></td><td><p>...........demo.</p></td></tr><tr><td><p>000000c0:</p></td><td><p>7478</p></td><td><p>7455</p></td><td><p>5405</p></td><td><p>0003</p></td><td><p>6a24</p></td><td><p>1b65</p></td><td><p>7578</p></td><td><p>0b00</p></td><td><p>txtUT...j$.eux..</p></td></tr><tr><td><p>000000d0:</p></td><td><p>0104</p></td><td><p>f801</p></td><td><p>0000</p></td><td><p>0414</p></td><td><p>0000</p></td><td><p>0050</p></td><td><p>4b05</p></td><td><p>0600</p></td><td><p>...........PK...</p></td></tr><tr><td><p>000000e0:</p></td><td><p>0000</p></td><td><p>0001</p></td><td><p>0001</p></td><td><p>004e</p></td><td><p>0000</p></td><td><p>008d</p></td><td><p>0000</p></td><td><p>0000</p></td><td><p>.......N........</p></td></tr><tr><td><p>000000f0:</p></td><td><p>00</p></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></ld-card><ld-card class="s-overlay center-content incremental"><aside class="admonition backdrop-blur" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Wie kann man - wenn man weiss, dass es sich um eine ZIP Datei handelt - die Caesar-Chiffre knacken?</p></aside></ld-card></ld-deck></ld-topic>
+<ld-topic id="monoalphabetische-chiffren"><h2>Monoalphabetische Chiffren</h2><ul><li><p>Eine Permutation einer endlichen Menge von Elementen S ist eine geordnete Folge aller Elemente von S, wobei jedes Element genau einmal vorkommt.</p><aside class="admonition incremental" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel</span></p><table class="table-data-monospaced table-header-align-center table-data-align-center s-font-size-90 ultra-compact borderless" style="width: 100%;"><colgroup><col style="width: 18.8%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"><col style="width: 3.1%"></colgroup><thead><tr><th class="stub head"><p>Zeichen</p></th><th class="head"><p>a</p></th><th class="head"><p>b</p></th><th class="head"><p>c</p></th><th class="head"><p>d</p></th><th class="head"><p>e</p></th><th class="head"><p>f</p></th><th class="head"><p>g</p></th><th class="head"><p>h</p></th><th class="head"><p>i</p></th><th class="head"><p>j</p></th><th class="head"><p>k</p></th><th class="head"><p>l</p></th><th class="head"><p>m</p></th><th class="head"><p>n</p></th><th class="head"><p>o</p></th><th class="head"><p>p</p></th><th class="head"><p>q</p></th><th class="head"><p>r</p></th><th class="head"><p>s</p></th><th class="head"><p>t</p></th><th class="head"><p>u</p></th><th class="head"><p>v</p></th><th class="head"><p>w</p></th><th class="head"><p>x</p></th><th class="head"><p>y</p></th><th class="head"><p>z</p></th></tr></thead><tbody><tr><th class="stub"><p>Ersetzung</p></th><td><p>d</p></td><td><p>f</p></td><td><p>v</p></td><td><p>e</p></td><td><p>n</p></td><td><p>k</p></td><td><p>i</p></td><td><p>b</p></td><td><p>s</p></td><td><p>p</p></td><td><p>t</p></td><td><p>q</p></td><td><p>l</p></td><td><p>w</p></td><td><p>u</p></td><td><p>c</p></td><td><p>x</p></td><td><p>r</p></td><td><p>j</p></td><td><p>g</p></td><td><p>z</p></td><td><p>m</p></td><td><p>a</p></td><td><p>h</p></td><td><p>y</p></td><td><p>o</p></td></tr></tbody></table></aside><ld-supplemental><p class="rubric">Erzeugung einer beliebigen Permutation der 26 Buchstaben mit Python</p><pre class="code python copy-to-clipboard literal-block"><code><span class="keyword">from</span> random <span class="keyword">import</span> shuffle
+alphabet<span class="operator">=</span><span class="punctuation">[</span><span class="literal string">"a"</span><span class="punctuation">,</span><span class="literal string">"b"</span><span class="punctuation">,</span><span class="literal string">"c"</span><span class="punctuation">,</span><span class="literal string">"d"</span><span class="punctuation">,</span><span class="literal string">"e"</span><span class="punctuation">,</span><span class="literal string">"f"</span><span class="punctuation">,</span><span class="literal string">"g"</span><span class="punctuation">,</span><span class="literal string">"h"</span><span class="punctuation">,</span><span class="literal string">"i"</span><span class="punctuation">,</span><span class="literal string">"j"</span><span class="punctuation">,</span><span class="literal string">"k"</span><span class="punctuation">,</span><span class="literal string">"l"</span><span class="punctuation">,</span><span class="literal string">"m"</span><span class="punctuation">,</span><span class="literal string">"n"</span><span class="punctuation">,</span><span class="literal string">"o"</span><span class="punctuation">,</span><span class="literal string">"p"</span><span class="punctuation">,</span><span class="literal string">"q"</span><span class="punctuation">,</span><span class="literal string">"r"</span><span class="punctuation">,</span><span class="literal string">"s"</span><span class="punctuation">,</span><span class="literal string">"t"</span><span class="punctuation">,</span><span class="literal string">"u"</span><span class="punctuation">,</span><span class="literal string">"v"</span><span class="punctuation">,</span><span class="literal string">"w"</span><span class="punctuation">,</span><span class="literal string">"x"</span><span class="punctuation">,</span><span class="literal string">"y"</span><span class="punctuation">,</span><span class="literal string">"z"</span><span class="punctuation">]</span>
+shuffle<span class="punctuation">(</span>alphabet<span class="punctuation">)</span>
+<span class="keyword">print</span><span class="punctuation">(</span>alphabet<span class="punctuation">)</span></code></pre></ld-supplemental></li></ul><ul class="incremental simple"><li><p>Wenn die „Chiffre“-Zeile (siehe Cäsar-Chiffre) eine beliebige Permutation der 26 alphabetischen Zeichen sein kann, dann gibt es 26! (<em>26 Fakultät</em>) oder mehr als 4 · 10²⁶ mögliche Schlüssel.</p><ul class="simple"><li><p>Dies ist um 10 Größenordnungen größer als der Schlüsselraum des Verschlüsselungsalgorithmus DES!</p></li><li><p>Der Ansatz wird als monoalphabetische Substitutions-Chiffre bezeichnet, da pro Nachricht ein einziges Chiffre-Alphabet verwendet wird.</p></li></ul></li></ul></ld-topic>
+<ld-topic id="angriffsvektor-haufigkeit-der-hier-englischen-buchstaben"><h2>Angriffsvektor: Häufigkeit der (hier: englischen) Buchstaben<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2><div class="align-center"><div style="width: 74ch; height: 34.45ch">
+<svg
+        class="letterfreq"
+        viewBox="4 1 116 54"
+        font-size="1"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+    >
+<title>Relative frequency of letters in English text</title>
+<desc
+        >Bar chart of the 26 letters a–z and their relative frequency in typical English text.</desc>
+<!-- Step 1: axis frame, gridlines, labels -->
+<g class="incremental">
+    <path
+                class="axis draw"
+                d="M12.0,6.0 L12.0,50.0 L116.0,50.0"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="0.3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                pathLength="1"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="43.71"
+                x2="116.0"
+                y2="43.71"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="37.43"
+                x2="116.0"
+                y2="37.43"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="31.14"
+                x2="116.0"
+                y2="31.14"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="24.86"
+                x2="116.0"
+                y2="24.86"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="18.57"
+                x2="116.0"
+                y2="18.57"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="12.29"
+                x2="116.0"
+                y2="12.29"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <line
+                class="grid fade"
+                x1="12.0"
+                y1="6.0"
+                x2="116.0"
+                y2="6.0"
+                stroke="currentColor"
+                stroke-width="0.1"
+                stroke-dasharray="0.6 0.6"
+                stroke-opacity="0.3"
+            />
+    <text
+                class="tick fade"
+                x="10.8"
+                y="50.7"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >0</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="44.41"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >2</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="38.13"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >4</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="31.84"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >6</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="25.56"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >8</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="19.27"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >10</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="12.99"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >12</text>
+    <text
+                class="tick fade"
+                x="10.8"
+                y="6.7"
+                fill="currentColor"
+                font-size="2"
+                text-anchor="end"
+            >14</text>
+    <text
+                class="ytitle fade"
+                x="6"
+                y="28"
+                transform="rotate(-90 6 28)"
+                fill="currentColor"
+                fill-opacity="0.75"
+                font-size="2.2"
+                text-anchor="middle"
+            >Relative Häufigkeit (%)</text>
+    <text
+                class="xlabel fade"
+                x="14.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >a</text>
+    <text
+                class="xlabel fade"
+                x="18.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >b</text>
+    <text
+                class="xlabel fade"
+                x="22.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >c</text>
+    <text
+                class="xlabel fade"
+                x="26.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >d</text>
+    <text
+                class="xlabel fade"
+                x="30.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >e</text>
+    <text
+                class="xlabel fade"
+                x="34.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >f</text>
+    <text
+                class="xlabel fade"
+                x="38.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >g</text>
+    <text
+                class="xlabel fade"
+                x="42.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >h</text>
+    <text
+                class="xlabel fade"
+                x="46.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >i</text>
+    <text
+                class="xlabel fade"
+                x="50.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >j</text>
+    <text
+                class="xlabel fade"
+                x="54.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >k</text>
+    <text
+                class="xlabel fade"
+                x="58.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >l</text>
+    <text
+                class="xlabel fade"
+                x="62.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >m</text>
+    <text
+                class="xlabel fade"
+                x="66.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >n</text>
+    <text
+                class="xlabel fade"
+                x="70.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >o</text>
+    <text
+                class="xlabel fade"
+                x="74.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >p</text>
+    <text
+                class="xlabel fade"
+                x="78.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >q</text>
+    <text
+                class="xlabel fade"
+                x="82.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >r</text>
+    <text
+                class="xlabel fade"
+                x="86.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >s</text>
+    <text
+                class="xlabel fade"
+                x="90.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >t</text>
+    <text
+                class="xlabel fade"
+                x="94.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >u</text>
+    <text
+                class="xlabel fade"
+                x="98.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >v</text>
+    <text
+                class="xlabel fade"
+                x="102.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >w</text>
+    <text
+                class="xlabel fade"
+                x="106.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >x</text>
+    <text
+                class="xlabel fade"
+                x="110.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >y</text>
+    <text
+                class="xlabel fade"
+                x="114.0"
+                y="53.0"
+                fill="currentColor"
+                font-size="2.2"
+                text-anchor="middle"
+            >z</text>
+</g>
+<!-- Step 2: bars grow from the baseline -->
+<g class="incremental">
+    <rect class="bar" style="--i:0" x="12.6" y="24.32" width="2.8" height="25.68" />
+    <rect class="bar" style="--i:1" x="16.6" y="45.3" width="2.8" height="4.7" />
+    <rect class="bar" style="--i:2" x="20.6" y="41.25" width="2.8" height="8.75" />
+    <rect class="bar" style="--i:3" x="24.6" y="36.62" width="2.8" height="13.38" />
+    <rect class="bar" style="--i:4" x="28.6" y="10.07" width="2.8" height="39.93" />
+    <rect class="bar" style="--i:5" x="32.6" y="42.99" width="2.8" height="7.01" />
+    <rect class="bar" style="--i:6" x="36.6" y="43.66" width="2.8" height="6.34" />
+    <rect class="bar" style="--i:7" x="40.6" y="30.84" width="2.8" height="19.16" />
+    <rect class="bar" style="--i:8" x="44.6" y="28.09" width="2.8" height="21.91" />
+    <rect class="bar" style="--i:9" x="48.6" y="49.51" width="2.8" height="0.49" />
+    <rect class="bar" style="--i:10" x="52.6" y="47.56" width="2.8" height="2.44" />
+    <rect class="bar" style="--i:11" x="56.6" y="37.34" width="2.8" height="12.66" />
+    <rect class="bar" style="--i:12" x="60.6" y="42.43" width="2.8" height="7.57" />
+    <rect class="bar" style="--i:13" x="64.6" y="28.78" width="2.8" height="21.22" />
+    <rect class="bar" style="--i:14" x="68.6" y="26.39" width="2.8" height="23.61" />
+    <rect class="bar" style="--i:15" x="72.6" y="43.93" width="2.8" height="6.07" />
+    <rect class="bar" style="--i:16" x="76.6" y="49.7" width="2.8" height="0.3" />
+    <rect class="bar" style="--i:17" x="80.6" y="31.18" width="2.8" height="18.82" />
+    <rect class="bar" style="--i:18" x="84.6" y="30.1" width="2.8" height="19.9" />
+    <rect class="bar" style="--i:19" x="88.6" y="21.53" width="2.8" height="28.47" />
+    <rect class="bar" style="--i:20" x="92.6" y="41.32" width="2.8" height="8.68" />
+    <rect class="bar" style="--i:21" x="96.6" y="46.92" width="2.8" height="3.08" />
+    <rect class="bar" style="--i:22" x="100.6" y="42.58" width="2.8" height="7.42" />
+    <rect class="bar" style="--i:23" x="104.6" y="49.52" width="2.8" height="0.48" />
+    <rect class="bar" style="--i:24" x="108.6" y="43.78" width="2.8" height="6.22" />
+    <rect class="bar" style="--i:25" x="112.6" y="49.76" width="2.8" height="0.24" />
+</g>
+</svg>
+</div></div><aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-1" role="doc-footnote"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span><p>Analyse des Concise Oxford Dictionary (9th edition, 1995) – <a class="reference external" href="https://www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html">https://www.nd.edu</a></p></aside></aside></ld-topic>
+<ld-topic id="angriffe-auf-monoalphabetische-chiffren"><h2>Angriffe auf Monoalphabetische Chiffren</h2><p>Sie sind leicht zu knacken, da sie die Häufigkeitsdaten des ursprünglichen Alphabets wiederspiegeln.</p><div class="incremental"><p>Die Gegenmaßnahme besteht darin, mehrere Substitute (Homophone) für einen einzigen Buchstaben anzubieten.</p></div></ld-topic>
+<ld-topic id="playfair-cipher"><h2>Playfair Cipher</h2><p>Erfunden vom britischen Wissenschaftler Sir Charles Wheatstone im Jahr 1854.</p><aside class="admonition width-30" data-theme="note"><p class="admonition-title" data-theme="note-header">Bemerkung</p><p><em>Digram</em></p><ul class="simple"><li><p>Zwei-Buchstaben-Kombination</p></li><li><p>am häufigsten im Englischen: "<em>th</em>"</p></li></ul><p><em>Trigram</em></p><ul class="simple"><li><p>Drei-Buchstaben-Kombination</p></li><li><p>am häufigsten im Englischen: "<em>the</em>"</p></li></ul></aside><ul class="incremental-list simple"><li><p>Bekannteste Chiffrierung mit mehreren Buchstaben.</p></li><li><p>Behandelt Digramme im Klartext als einzelne Einheiten und übersetzt diese Einheiten in Digramme des Geheimtextes.</p></li><li><p>Basiert auf der Verwendung einer 5 x 5 Buchstabenmatrix, die mit Hilfe eines Schlüsselworts konstruiert wird.</p></li><li><p>Wurde von der britischen Armee im Ersten Weltkrieg und von der US-Armee und anderen alliierten Streitkräften im zweiten Weltkrieg als Standardfeldsystem verwendet.</p></li></ul></ld-topic>
+<ld-topic id="playfair-key-matrix"><h2>Playfair Key Matrix</h2><p>Füllen Sie die Buchstaben des Schlüsselworts (abzüglich der Duplikate) von links nach rechts und von oben nach unten aus, dann füllen Sie den Rest der Matrix mit den restlichen Buchstaben in alphabetischer Reihenfolge aus. Die Buchstaben I und J zählen als ein Buchstabe.</p><p>Sei das Schlüsselwort MONARCHY:</p><table class="highlight-cell-on-hover align-center"><tbody><tr><td><p><em>M</em></p></td><td><p><em>O</em></p></td><td><p><em>N</em></p></td><td><p><em>A</em></p></td><td><p><em>R</em></p></td></tr><tr><td><p><em>C</em></p></td><td><p><em>H</em></p></td><td><p><em>Y</em></p></td><td><p>B</p></td><td><p>D</p></td></tr><tr><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>I/J</p></td><td><p>K</p></td></tr><tr><td><p>L</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>S</p></td><td><p>T</p></td></tr><tr><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Z</p></td></tr></tbody></table></ld-topic>
+<ld-topic id="playfair-verschlusselung"><h2>Playfair Verschlüsselung</h2><p>Die Verschlüsselung wird für jedes Buchstabenpaar des Klartextes durchgeführt.</p><div class="compound width-25 float-right"><table class="highlight-cell-on-hover align-center"><tbody><tr><td><p>M</p></td><td><p>O</p></td><td><p>N</p></td><td><p>A</p></td><td><p>R</p></td></tr><tr><td><p>C</p></td><td><p>H</p></td><td><p>Y</p></td><td><p>B</p></td><td><p>D</p></td></tr><tr><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>I/J</p></td><td><p>K</p></td></tr><tr><td><p>L</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>S</p></td><td><p>T</p></td></tr><tr><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Z</p></td></tr></tbody></table></div><ol class="arabic incremental-list simple"><li><p>Wenn beide Buchstaben gleich sind (oder nur ein Buchstabe übrig ist), fügen Sie ein <span class="docutils literal">X</span> hinter dem ersten Buchstaben ein. Verschlüsseln Sie das neue Paar und fahren Sie fort (z. B. würde <span class="docutils literal">ballon</span> als <span class="docutils literal">ba lX lo nX</span> verschlüsselt werden).</p></li><li><p>Wenn die Buchstaben in der gleichen Zeile stehen, ersetzen Sie sie durch die Buchstaben unmittelbar rechts davon (ggf. umbrechen) (z. B. wird <span class="docutils literal">ar</span> als <span class="docutils literal">RM</span> verschlüsselt).</p></li><li><p>Tauchen die Buchstaben in derselben Spalte auf, so sind sie durch die unmittelbar darunter liegenden Buchstaben zu ersetzen (ggf. umbrechen) (z. B. wird <span class="docutils literal">mu</span> als <span class="docutils literal">CM</span> verschlüsselt).</p></li><li><p>Befinden sich die Buchstaben nicht in derselben Zeile oder Spalte, so werden sie durch die Buchstaben in derselben Zeile bzw. in dem anderen Paar von Ecken des durch das ursprüngliche Paar definierten Rechtecks ersetzt (z. B. <span class="docutils literal">hs</span> → <span class="docutils literal">BP</span>; <span class="docutils literal">ea</span> → <span class="docutils literal">IM</span>).</p></li></ol></ld-topic>
+<ld-topic id="hill-chiffre"><h2>Hill Chiffre</h2><p>Entwickelt von dem Mathematiker Lester Hill im Jahr 1929.</p><ul class="simple"><li><p>Die Stärke ist, dass die Häufigkeit von einzelnen Buchstaben vollständig ausgeblendet wird.</p><ul class="simple"><li><p>Durch die Verwendung einer größeren Matrix werden mehr Frequenzinformationen verborgen.</p></li><li><p>Eine 3 x 3 Hill-Chiffre verbirgt nicht nur die Häufigkeiten einzelner Buchstaben sondern auch von Digrammen.</p></li></ul></li><li><p>Stark gegen einen einen Angriff auf den Geheimtext, aber leicht zu brechen sobald ein Klartext vorliegt (<em>known plaintext attack</em>).</p></li></ul></ld-topic>
+<ld-topic id="polyalphabetische-chiffren"><h2>Polyalphabetische Chiffren</h2><aside class="admonition width-40" data-theme="note"><p class="admonition-title" data-theme="note-header">Bemerkung</p><p><strong>Alle diese Techniken haben die folgenden Merkmale gemeinsam:</strong></p><ul class="simple"><li><p>Es wird ein Satz verwandter monoalphabetischer Substitutionsregeln verwendet.</p></li><li><p>Ein Schlüssel bestimmt, welche bestimmte Regel für eine bestimmte Umwandlung gewählt wird.</p></li></ul></aside><p>Polyalphabetische Substitutions-Chiffren verbessern einfache monoalphabetische Chiffren, indem sie verschiedene monoalphabetische Substitutionen verwenden, während man die Klartextnachricht verschlüsselt.</p></ld-topic>
+<ld-topic id="vigenere-chiffre"><h2>Vigenère Chiffre</h2><ul class="simple"><li><p>Die bekannteste und eine der einfachsten polyalphabetischen Substitutions-Chiffren.</p></li><li><p>In diesem Schema besteht die Menge der verwandten monoalphabetischen Substitutionsregeln aus den 26 Cäsar-Chiffren mit Verschiebungen von 0 bis 25.</p></li><li><p>Jede Chiffre wird durch einen Schlüsselbuchstaben identifiziert, der den Klartextbuchstaben durch den Chiffretextbuchstaben ersetzt.</p></li></ul></ld-topic>
+<ld-topic class="no-title" id="vigenere-tableau"><h2>Vigenère-Tableau</h2><ld-grid class="default-layout"><ld-cell class="width-25" style="align-self:auto;"><p class="rubric">Aufbau des Vigenère-Tableaus</p><ul class="simple"><li><p>Kopfzeile: Klartextbuchstabe</p></li><li><p>1. Spalte: Schlüsselbuchstabe</p></li><li><p>Tableau: Verschlüsselter Buchstabe</p></li></ul><aside class="admonition incremental s-font-size-90" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel</span></p><p>Sei der Schlüssel <span class="docutils literal">D</span> und der Klartextbuch- stabe <span class="docutils literal">b</span>, dann ist der Chiffretextbuchstabe <span class="docutils literal">E</span>.</p></aside></ld-cell><ld-cell class="width-75" style="align-self:auto;"><table class="font-size-75 ultra-compact highlight-on-hover monospaced text-align-center"><tbody><tr><td><p>/</p></td><td><p><strong>a</strong></p></td><td><p><strong>b</strong></p></td><td><p><strong>c</strong></p></td><td><p><strong>d</strong></p></td><td><p><strong>e</strong></p></td><td><p><strong>f</strong></p></td><td><p><strong>g</strong></p></td><td><p><strong>h</strong></p></td><td><p><strong>i</strong></p></td><td><p><strong>j</strong></p></td><td><p><strong>k</strong></p></td><td><p><strong>l</strong></p></td><td><p><strong>m</strong></p></td><td><p><strong>n</strong></p></td><td><p><strong>o</strong></p></td><td><p><strong>p</strong></p></td><td><p><strong>q</strong></p></td><td><p><strong>r</strong></p></td><td><p><strong>s</strong></p></td><td><p><strong>t</strong></p></td><td><p><strong>u</strong></p></td><td><p><strong>v</strong></p></td><td><p><strong>w</strong></p></td><td><p><strong>x</strong></p></td><td><p><strong>y</strong></p></td><td><p><strong>z</strong></p></td></tr><tr><td><p><strong>A</strong></p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td></tr><tr><td><p><strong>B</strong></p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td></tr><tr><td><p><strong>C</strong></p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td></tr><tr><td><p><strong>D</strong></p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td></tr><tr><td><p><strong>E</strong></p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td></tr><tr><td><p><strong>F</strong></p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td></tr><tr><td><p><strong>G</strong></p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td></tr><tr><td><p><strong>H</strong></p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td></tr><tr><td><p><strong>I</strong></p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td></tr><tr><td><p><strong>J</strong></p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td></tr><tr><td><p><strong>K</strong></p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td></tr><tr><td><p><strong>L</strong></p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td></tr><tr><td><p><strong>M</strong></p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td></tr><tr><td><p><strong>N</strong></p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td></tr><tr><td><p><strong>O</strong></p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td></tr><tr><td><p><strong>P</strong></p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td></tr><tr><td><p><strong>Q</strong></p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td></tr><tr><td><p><strong>R</strong></p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td></tr><tr><td><p><strong>S</strong></p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td></tr><tr><td><p><strong>T</strong></p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td></tr><tr><td><p><strong>U</strong></p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td></tr><tr><td><p><strong>V</strong></p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td></tr><tr><td><p><strong>W</strong></p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td></tr><tr><td><p><strong>X</strong></p></td><td><p>X</p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td></tr><tr><td><p><strong>Y</strong></p></td><td><p>Y</p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td></tr><tr><td><p><strong>Z</strong></p></td><td><p>Z</p></td><td><p>A</p></td><td><p>B</p></td><td><p>C</p></td><td><p>D</p></td><td><p>E</p></td><td><p>F</p></td><td><p>G</p></td><td><p>H</p></td><td><p>I</p></td><td><p>J</p></td><td><p>K</p></td><td><p>L</p></td><td><p>M</p></td><td><p>N</p></td><td><p>O</p></td><td><p>P</p></td><td><p>Q</p></td><td><p>R</p></td><td><p>S</p></td><td><p>T</p></td><td><p>U</p></td><td><p>V</p></td><td><p>W</p></td><td><p>X</p></td><td><p>Y</p></td></tr></tbody></table></ld-cell></ld-grid></ld-topic>
+<ld-topic id="beispiel-einer-vigenere-verschusselung"><h2>Beispiel einer Vigenère-Verschüsselung</h2><ul class="simple"><li><p>Um eine Nachricht zu verschlüsseln, wird ein Schlüssel benötigt, der so lang ist wie die Nachricht.</p></li><li><p>In der Regel ist der Schlüssel ein sich wiederholendes Schlüsselwort.</p></li></ul><aside class="admonition incremental" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel</span></p><p>Wenn das Schlüsselwort <span class="docutils literal">deceptive</span> ist, wird die Nachricht: <span class="docutils literal">We are discovered save yourself</span>, wie folgt verschlüsselt:</p><dl class="field-list simple"><dt>Schlüssel<span class="colon">:</span></dt><dd><p><span class="docutils literal">DECEPTIVEDECEPTIVEDECEPTIVE</span></p></dd><dt>Klartext<span class="colon">:</span></dt><dd><p><span class="docutils literal">wearediscoveredsaveyourself</span></p></dd><dt>Geheimtext<span class="colon">:</span></dt><dd><p><span class="docutils literal">ZICVTWQNGRZGVTWAVZHCQYGLMGJ</span></p></dd></dl></aside></ld-topic>
+<ld-topic id="vigenere-autokey-system"><h2>Vigenère <em>Autokey System</em></h2><p>Ein Schlüsselwort wird mit dem Klartext selbst verkettet, um einen laufenden Schlüssel zu erhalten.</p><aside class="admonition incremental" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel</span></p><dl class="field-list simple"><dt>Schlüssel<span class="colon">:</span></dt><dd><p><span class="docutils literal">DECEPTIVEwearediscoveredsav</span></p></dd><dt>Klartext<span class="colon">:</span></dt><dd><p><span class="docutils literal">wearediscoveredsaveyourself</span></p></dd><dt>Geheimtext<span class="colon">:</span></dt><dd><p><span class="docutils literal">ZICVTWQNGKZEIIGASXSTSLVVWLA</span></p></dd></dl></aside><div class="incremental"><p>Auch dieses Verfahren ist anfällig für eine Kryptoanalyse, da der Schlüssel und der Klartext die gleiche Häufigkeitsverteilung der Buchstaben aufweisen und eine statistische Technik angewendet werden kann.</p></div></ld-topic>
+<ld-topic id="vernam-chiffre"><h2>Vernam Chiffre</h2><object class="light-image align-center" data="drawings/vernam_cipher.svg" type="image/svg+xml" role="img" aria-label="Vernam Cipher"></object></ld-topic>
+<ld-topic id="one-time-pad"><h2>One-Time Pad</h2><ul class="incremental-list simple"><li><p>Verbesserung der Vernam-Chiffre, vorgeschlagen von dem Offizier Joseph Mauborgne des Army Signal Corp.</p></li><li><p>Verwendung eines Zufallsschlüssels, der so lang wie die Nachricht ist, so dass der Schlüssel nicht wiederholt werden muss.</p></li><li><p>Der Schlüssel wird zum Ver- und Entschlüsseln einer einzigen Nachricht verwendet und dann verworfen.</p></li><li><p>Jede neue Nachricht erfordert einen neuen Schlüssel mit der gleichen Länge wie die neue Nachricht.</p></li><li><p>Das Schema ist nachweislich nicht zu knacken.</p><ul class="incremental-list simple"><li><p>Erzeugt eine zufällige Ausgabe, die in keinem statistischen Zusammenhang mit dem Klartext steht.</p></li><li><p>Da der Chiffriertext keinerlei Informationen über den Klartext enthält, gibt es keine Möglichkeit, den Code zu knacken.</p></li></ul></li></ul></ld-topic>
+<ld-topic id="schwierigkeiten-von-one-time-pads"><h2>Schwierigkeiten von One-Time-Pads</h2><ul class="incremental-list"><li><p>Das One-Time-Pad bietet vollständige Sicherheit, hat aber in der Praxis zwei grundlegende Schwierigkeiten:</p><ol class="arabic incremental-list list-with-explanations"><li><p>Es gibt das praktische Problem der Herstellung großer Mengen von Zufallsschlüsseln.</p><p>Jedes stark genutzte System würde regelmäßig Millionen von zufälligen Zeichen benötigen.</p></li><li><p>Ein „gigantisches“ Schlüsselverteilungsproblem</p><p>Für jede zu übermittelnde Nachricht benötigen Sender und Empfänger einen gleich langen Schlüssel.</p></li></ol></li><li><p>Aufgrund dieser Schwierigkeiten ist das One-Time-Pad nur von begrenztem Nutzen; es eignet sich vor allem für Kanäle mit geringer Bandbreite, die eine sehr hohe Sicherheit erfordern.</p></li><li><p>Das One-Time-Pad ist das einzige Kryptosystem, das eine perfekte Geheimhaltung bietet.</p></li></ul></ld-topic>
+<ld-topic class="new-section transition-fade" id="transpositions-chiffren"><h2>Transpositions-Chiffren</h2></ld-topic>
+<ld-topic id="rail-fence-chiffre"><h2>Rail Fence Chiffre</h2><ul class="simple"><li><p>Einfachste Transpositions-Chiffre (d. h. Chiffre basierend auf <span class="docutils literal">Vertauschung</span>).</p></li><li><p>Der Klartext wird als eine Folge von Diagonalen aufgeschrieben und dann als eine Folge von Zeilen abgelesen.</p></li></ul><aside class="admonition incremental-1" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel</span></p><p>Um die Nachricht: „Meet me after the Toga-Party“ mit einer Rail Fence Chiffre der Tiefe 2 (Schlüssel) zu verschlüsseln, würden wir schreiben:</p><div class="pre monospaced"><p><span class="incremental-2">m</span> <span class="incremental-4">e</span> <span class="incremental-6">m</span> <span class="incremental-8">a</span> <span class="incremental-10">t</span> <span class="incremental-12">r</span> <span class="incremental-14">h</span> <span class="incremental-16">t</span> <span class="incremental-18">g</span> <span class="incremental-20">p</span> <span class="incremental-22">r</span> <span class="incremental-24">y</span></p><p> <span class="incremental-3">e</span> <span class="incremental-5">t</span> <span class="incremental-7">e</span> <span class="incremental-9">f</span> <span class="incremental-11">e</span> <span class="incremental-13">t</span> <span class="incremental-15">e</span> <span class="incremental-17">o</span> <span class="incremental-19">a</span> <span class="incremental-21">a</span> <span class="incremental-23">t</span></p></div><p>Die verschlüsselte Nachricht ist: MEMATRHTGPRYETEFETEOAAT</p></aside><ld-supplemental embed-in-document-flow=""><p>Um die Nachricht zu entschlüsseln, konstruieren Sie eine <em>Railfence</em> mit der entsprechenden Tiefe und Länge des Chiffretexts. Danach können Sie die Nachricht direkt ablesen.</p><p>Geben Sie die folgende Nachricht: <span class="docutils literal">voeodrgy</span> und der Schlüssel sei 4.</p><table class="table-data-monospaced"><tbody><tr><th class="stub"><p>Nachricht</p></th><td><p>v</p></td><td><p>o</p></td><td><p>e</p></td><td><p>o</p></td><td><p>d</p></td><td><p>r</p></td><td><p>g</p></td><td><p>y</p></td></tr><tr><th class="stub"><p>Index</p></th><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td></tr></tbody></table><ol class="arabic simple"><li><p>Railfence der Tiefe 4 für eine Nachricht der Länge 8.</p></li></ol><pre class="literal-block"><code>-     -
+ -   - -
+  - -
+   -</code></pre><ol class="arabic simple" start="2"><li><p>Daraus ergibt sich unmittelbar welcher Buchstabe an welcher Stelle im Chriffretext gelandet ist (wir numerieren einfach die Platzhalter zeilenweise durch):</p></li></ol><pre class="literal-block"><code>-     -     ⇒   1     2
+ -   - -         3   4 5
+  - -             6 7
+   -               8</code></pre><ol class="arabic simple" start="3"><li><p>Ersetzen des Index mit dem Buchstaben aus der verschlüsselten Nachricht:</p></li></ol><pre class="literal-block"><code>-     -       1 ⇒ v            2 ⇒ o
+ -   - -         3 ⇒ e      4 ⇒ o   5 ⇒ d
+  - -               6 ⇒ r  7 ⇒ g
+   -                    8 ⇒ y</code></pre><p>Plaintext = very good</p></ld-supplemental></ld-topic>
+<ld-topic id="skytale"><h2>Skytale</h2><ul class="simple"><li><p>Ältestes bekannte (militärische) Verschlüsselungsverfahren.</p></li><li><p>Vor mehr als 2500 Jahren (vermutlich) von den Spartanern entwickelt.</p></li><li><p>Die Verschlüsselung erfolgte mit einen (Holz-)Stab mit einem bestimmten Durchmesser („Schlüssel“) (Skytale).</p></li></ul><object class="align-right" data="drawings/skytale.svg" type="image/svg+xml" role="img" aria-label="Skytale"></object></ld-topic>
+<ld-topic id="zeilenverschiebungs-chiffre"><h2>Zeilenverschiebungs-Chiffre</h2><ld-story><ul class="simple"><li><p>Ist eine komplexere Transposition.</p></li><li><p>Vorgehen: Schreiben Sie die Nachricht zeilenweise in ein Rechteck mit wohldefinierter Breite und lesen Sie die Nachricht spaltenweise ab, aber vertauschen Sie die Reihenfolge der Spalten.</p></li><li><p>Die Reihenfolge der Spalten ist dann der Schlüssel.</p></li></ul><aside class="admonition incremental" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel: Verschlüsselung von: <span class="docutils literal">attack postponed until two am</span></span></p><dl class="field-list"><dt>Schlüssel<span class="colon">:</span></dt><dd><p><span class="docutils literal">4312567</span></p></dd><dt>Klartext<span class="colon">:</span></dt><dd><div class="monospaced"><p>attackp</p><p>ostpone</p><p>duntilt</p><p>woamxyz</p></div></dd><dt>Geheimtext<span class="colon">:</span></dt><dd><p><span class="docutils literal">TTNA APTM TSUO AODW COIX KNLY PETZ</span></p></dd><dt>Spalte<span class="colon">:</span></dt><dd><p><span class="docutils literal">3--- 4--- 2--- 1--- 5--- 6--- 7---</span></p></dd></dl></aside></ld-story><ld-supplemental><ul><li><p>Zeilenverschiebungs-Chiffre ≘ <span class="eng">Row Transposition Cipher</span></p></li><li><p>Wenn der Schlüssel <span class="docutils literal">4312567</span> ist, dann wird:</p><ul class="simple"><li><p>die erste Spalte wird als die <em>vierte</em> (<span class="docutils literal">4</span>),</p></li><li><p>die zweite Spalte als die <em>dritte</em> (<span class="docutils literal">3</span>),</p></li><li><p>die dritte Spalte als die <em>erste</em> (<span class="docutils literal">1</span>),</p></li><li><p>...</p></li></ul><p>geschrieben</p></li><li><p>Beim Entschlüsseln ergibt sich die Anzahl der Reihen trivial aus der Länge der Nachricht (28 Zeichen) und der Länge des Schlüssels (7 Zeichen); 28/7 = 4.</p></li><li><p><span class="docutils literal">xyz</span> am Ende der Nachricht sind nur Platzhalter (<em>Padding</em>), um die letzte Zeile zu füllen, damit die Nachricht in ein Rechteck passt. Sie werden bei der Entschlüsselung einfach ignoriert.</p></li></ul></ld-supplemental></ld-topic>
+<ld-topic class="new-section transition-fade" id="steganografie"><h2>Steganografie</h2></ld-topic>
+<ld-topic id="text-basierte-steganografie"><h2>Text-basierte Steganografie</h2><div class="ld-exercise" id="ld-exercise-1" data-exercise-id="1" data-exercise-title="1 - Entschlüsseln"><p class="ld-exercise-title rubric"><span>Entschlüsseln</span></p><pre class="code Text copy-to-clipboard literal-block"><code>Dear Friend ; We know you are interested in receiving cutting-edge
+announcement . If you are not interested in our publications and wish to be
+removed from our lists, simply do NOT respond and ignore this mail . This mail
+is being sent in compliance with Senate bill 1626 ; Title 4 , Section 305 .
+This is a ligitimate business proposal ! Why work for somebody else when you
+can become rich in 96 months . Have you ever noticed nobody is getting any
+younger &amp; nobody is getting any younger . Well, now is your chance to
+capitalize on  this ! We will help you decrease perceived waiting time by 170%
+and use credit cards on your website ! You are guaranteed to succeed because
+we take all the risk ! But don't believe us . Mrs Anderson of Indiana tried us
+and says "I was skeptical but it worked for me" . We assure you that we
+operate within all applicable laws . You will blame yourself forever if you
+don't order now . Sign up a friend and you'll get a discount of 10% !
+Thank-you for your serious consideration of our offer !</code></pre><p>Mit Spammimic <a class="reference external" href="https://www.spammimic.com/">https://www.spammimic.com/</a>, kann die Nachricht extrahiert werden.</p><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:FKLSVaBRySlQ6QiJc3SYlZ9NEDSr7OF1Sf9xS1XOkls=:WNz8FAM1juHJ+KbC:4SVUha/0MTWWL9I7dhzGlvGlO9+OWlTitwmCYAj68+wFmgzKybIE8w0VwfI19MAGkfh50A==</div></div></ld-topic>
+<ld-topic id="auswahl-anderer-steganographie-techniken"><h2>Auswahl anderer Steganographie-Techniken</h2><dl class="incremental-list field-list simple"><dt>Zeichenmarkierung<span class="colon">:</span></dt><dd><p>Ausgewählte Buchstaben eines gedruckten oder maschinengeschriebenen Textes werden mit Bleistift überstrichen. Die Markierungen sind nur sichtbar, wenn das Papier schräg in helles Licht gehalten wird.</p></dd><dt>Unsichtbare Tinte<span class="colon">:</span></dt><dd><p>Es gibt eine Reihe von Substanzen, die zum Schreiben verwendet werden können, aber keine sichtbaren Spuren hinterlassen, solange das Papier nicht erhitzt oder mit einer chemischen Substanz behandelt wird.</p></dd><dt>Nadelstiche<span class="colon">:</span></dt><dd><p>Kleine Nadelstiche auf ausgewählten Buchstaben sind normalerweise nicht sichtbar, es sei denn, das Papier wird vor ein Licht gehalten.</p></dd><dt>Sehr helle Tinte<span class="colon">:</span></dt><dd><p>Druckerhersteller drucken winzige Punktmuster in sehr hellen Farben auf die Seiten. Dies erlaubt es Dokumente zu dem Drucker zurückzuverfolgen, auf dem sie gedruckt wurden.</p></dd></dl></ld-topic>
+<ld-topic id="steganographie-vs-verschlusselung"><h2>Steganographie vs. Verschlüsselung</h2><ul class="simple"><li><p>Steganografie hat eine Reihe von <em>Nachteilen</em> im Vergleich zur Verschlüsselung:</p><ul class="incremental-list negative-list simple"><li><p>Es erfordert einen hohen Overhead, um relativ wenige Bits an Informationen zu verbergen.</p></li><li><p>Sobald das System entdeckt wird, wird es praktisch wertlos.</p></li></ul></li></ul><ul class="incremental simple"><li><p>Der <em>Vorteil</em> der Steganografie:</p><ul class="incremental-list positive-list simple"><li><p>Sie kann von Parteien eingesetzt werden, die etwas zu verlieren haben, wenn allein die Tatsache ihrer geheimen Kommunikation (unabhängig vom Inhalt) entdeckt wird.</p></li><li><p>Verschlüsselung kennzeichnet den Verkehr als wichtig oder geheim oder kann den Sender oder Empfänger als jemanden identifizieren, der etwas zu verbergen hat.</p></li></ul></li></ul></ld-topic>
+<ld-topic class="exercises" id="ubung"><h2>Übung</h2><div class="ld-exercise" id="ld-exercise-2" data-exercise-id="2" data-exercise-title="2 - Playfair Chiffre"><p class="ld-exercise-title rubric"><span>Playfair Chiffre</span></p><p>Entschlüsseln Sie: <span class="docutils literal">XGAWMGAZ</span>. Das Passwort ist <span class="docutils literal">MONARCHY</span> (wie auf den Folien.)</p><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:fOhPByf52yrZ8npnXiNjDO+Zh3npn8ykQHKijC60j4w=:6/a3saUAyxgi6Xzv:HeaybFmm/yjOBu7Ngh0QvpbWPHYCvXP6YVPSSK+1sntDa4a01bJNJ8d2SuSnvOLX2NOfU2GtFrucZaGTNZgc8yjazlyDEcc7/UCnmx1gvvXIsSS5pfaufYMdzuIC7wrqGgavUIa3jbLk14kWbdZw6INeblwFnYk1s7M=</div></div><div class="ld-exercise" id="ld-exercise-3" data-exercise-id="3" data-exercise-title="3 - Vigenère Chiffre"><p class="ld-exercise-title rubric"><span>Vigenère Chiffre</span></p><p>Sie haben das folgende Klartext-Chiffretext-Paar:</p><dl class="field-list simple"><dt>P<span class="colon">:</span></dt><dd><p><span class="docutils literal">secret</span></p></dd><dt>C<span class="colon">:</span></dt><dd><p><span class="docutils literal">HSFGSW</span></p></dd></dl><ol class="arabic simple"><li><p>Wie ist der Schlüssel?</p></li><li><p>Welche Art von Angriff haben Sie durchgeführt?</p></li></ol><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:sjRpz6ZwYit6bgE5Ur8gRV3FEmO8oGKbC1WsjIeF+EQ=:NhheBCX5JF8mmACB:fT8GDm9EWZ8kxkYRJuAcJhLgCpIJiKB1SFMjIZ93bKbjY/KiqjcT5mS05vmPYuUgs6+PzucIZmUnmQ4clVN0BZLr6adJtqZYeNPp9NUJ5aSuiFDAqHmNAjwPmGQ9ezMM/OPCaHy6u3gEB6hygvmzuR32mb54kLnxB9sNlZcoe0G7t9uS9fr1Kxc4WnlFUmq4mXkPULukQiChhmxCigi18MNT+UOQYLNSJE2m</div></div></ld-topic>
+<ld-topic class="exercises" id="ubung"><h2>Übung</h2><div class="ld-exercise" id="ld-exercise-4" data-exercise-id="4" data-exercise-title="4 - Rail-fence Chiffre"><p class="ld-exercise-title rubric"><span>Rail-fence Chiffre</span></p><p>Entschlüsseln Sie: gestugmitrtee</p><p>D. h. finden Sie den Schlüssel k.</p><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:0PJUWIAOiRsqH+eA0PrPCGiTo4CbR4BhT9I+QT2ZW6c=:tryS5r14B8+K/+qn:LzY0Xq9eCz32cYQ0fhCj5EmfjruRa12Fh4g2iVyn1X5Et1Q74rGO4U6uWCmbZKeIOF4pIZzpgaIEJDzz+nEAIh4CcHbsSyK3KBe1vfI9yE80ePx3/viP3/9np04ybJaaokpYuSfhRee8Rkvx16jY6FoumvkeeQD+69+hYNP5AfBjzHDRfbvTTjUActzWoXLGAFW2+xdAKvXU2+vOFaxz4tgkye6kqSOK4Al7gRQqhmbPeA4OfiNLeTSzN3GRcmqgYxUzqDCVC0yrZL8vHdci+luIw1hgV61y/I+T3pBgmwybKFFn5D3Xea8JKYt7QyBikXfawyPoabDrCS8BtxfGs+TbKqRMKbn8fx/C8HW5/Q+vPTvyatKsBKYbaQNg7pgHvpEPWcXzjbE+APFqXJtQcOciO/SdZ3j1N62Fn8a1DBWF2bwK64ZO3DR0PsPwvVa1Qqeh9biPkkYM7fuCKKGAotHgpu5FsddIfOi1s6pumSnbN8mOt8Mi9ABy3NhKlJp38CvqS+vSzSFS5uPWY5PBvurRZolPFyhMmig7PaoSsQ5/AmsLlPLqeX5bskL6SaSx7FTCGpTwsUmWCHt+d7qhpwlGUpIOWMPskh4skyiaNXse4Ip9oKFlGs4BmZAsJE9/qxoqVKbezRDWVfytZ/De1qmLQElUPywIBAZE0FwZblc92ZTKxs83ikQ1TPNF74aChtwIvy+hEnFnN4UOhELsqbG3w16Ov6Oj/jQjywRjj+cbsCBvg/uo+pRuoidKhaiIQgeQl/hRhgs6g/BL0Us26Wbzb7IeTLyQhiWjYPxBI1T3+al/tIVysYv0LXAynhgAgRlgFs/eC4+WIdOuIhpDQHVh4FL34CJCcoGK9O9G+WmiP5AjdAqSHV1LzN30b/KR8S1VDKTCw0CPo8tBcUFdWFtV3sulamOckxh1WZkOU6wrvg8Hu07oQ9MlBdnvRZrOPtM6CZ+Nmp0k8g6rW9UF10OJEVU92ekjMpHQJqM+S8mRFCf8i0Jx8Sa00hfQojwzSzZFAv7XuLzST2P1RQKIKTrgpUjnDF8qvYjSSNcrQpQEgI/CIaO4yADMLy40InZRveWT8MJyxvuvwqYO1J8Xuffhz68hCkKncWCFk28AoC3aALjdK+rJO7UYt2iaYU2eLTqXPDn4jT87nJDbtRA+t7fe7L7msgmf3wPyj1b+XPVBBnTKgb+ioGdQwdV3HtZhMuaO+SeAaXdSfWd38LNalcC8kbY0FdA+rxXgDhBVrOjJZgaeIH6mtzM1of4Sci2VXgGlkiVcaF2P0Du6fcy+DdkC8USLX9sqjalQMqeEsXfNnVILHnEtxvxPYCdFc4ENgc3fODB7rmegH8cSu5iFaX1IO/EnyECsz0jy/oTNj6GqPPVBrhkml+HA74PoCHnHQMnkow4FPL483bDV8Ht8EtsMs+CvrH9cy9rt6mAcX8HeZtTNEs8/l3nrOQym+XIX3IsqaZfLsSnqtUYT8WXOORTzGiz/ow5LPp/dUwPLqJBEHjYLd6mK2uhTVsPBkAB//SZv0CWobCt9bZy41PzPwabUVff5CxYPLVtrmot7Px2xqGB+9kq/of/PqHH+31cVIOiWrBgjOscAYhrSvY51PN4EYIkslFl+xhn/KXL1NclPVpDZKyxV7pzCkKDhp2QlSeN7jXdd6Kqbf4utej9YUH4HLT1feNLngt9BDXJZPMmxyJWuhudFlEy5KarVouqdmg/PdSw=</div></div><div class="ld-exercise" id="ld-exercise-5" data-exercise-id="5" data-exercise-title="5 - Rail-fence Chiffre"><p class="ld-exercise-title rubric"><span>Rail-fence Chiffre</span></p><p>Verschlüsseln Sie "i love crypto" mit dem Schlüssel/der Tiefe 3. (Ignorieren Sie Leerzeichen.)</p><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:nhFGBBZU8JnolbbZ6cUSzzgt71KKs8KMiJ009U5adEU=:aVQZ6+5lFVwl9Dkw:NSaFKMhhIJLijXAJCb5Z6zBbo+2wQxfvK0pfPeRcrOLbo7i+yDwySO6uowsh/PcWQr6c5ejEukxQuyXaziIjFFU3DXz3x7TfZAUH8aTPar4ZzdFp0scqKjVqMukLBAxt/tVRMgUij4mvLmL4/UIDxW1QOUadZP4HWjNurlfXaB/PkzFgX/uRWpIcZBVh0T5yLVp/QFObj9iz9P2/n2/CH34g2xCp4UvQ5haTUm2i</div></div></ld-topic>
+<ld-topic class="exercises" id="ubung"><h2>Übung</h2><div class="ld-exercise" id="ld-exercise-6" data-exercise-id="6" data-exercise-title="6 - Zeilenverschiebungs-Chiffre"><p class="ld-exercise-title rubric"><span>Zeilenverschiebungs-Chiffre</span></p><p>Sie haben die folgende Nachricht erhalten:</p><div class="monospaced"><p>YSFRITTUNCOSPJU</p></div><p>Außerdem konnten Sie den Schlüssel bis auf einen Wert ermitteln: 4153.</p><ol class="loweralpha simple"><li><p>Wie viele Entschlüsselungsmöglichkeiten gibt es (noch)?</p></li><li><p>Bestimmen Sie den richtigen Schlüssel und entschlüsseln Sie den Text?</p></li></ol><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:gyHYtHOhK2W+eOiUFDgJs+ugQpPfETvuCYOT346NOms=:m9fIdme5tzw1iBQf:+a4rA4q9MGvVe7CJNvke/wnP6KRuyforJM4EsI899dznx65XKwGxndstlAWhjwn6LH0Mq1waVCitTy1/Lq8Y9mu01XjNMsbbAkb/cIn/sz46i++SxIzaoaIoKXpnKtQYQgxwD6xw8XvQ9oNFPGwLh4+HEbr+3ZUdrAi2NwG0K5eENYy1rH9x2M81RXN/9q2Syvn1k5ALPEKTORJLxyn0QdZhCxn2PdLPtA2PcXEfzUcnowwempLoFW7tDVJLV5cW6R0pNO83VABXZ1+hcRA+6n/Bs7Iz4jCtoHribUIBk12QIlPZYw8yWp8wU47ygLeC2cSLiEVjJk+LSQeBe63St803pjK60wV5mN0J0JODtRAIriXxIhPb2ZE8AaNqyeLh4jXhc2lv+4+LNztedroZTNb1rSgJ17EF3UgZcl5vq3y11li2x/5NE441ZqZISV7O+nXc0nYAPBxsUupzCSJ6eyTgIXzLwjaOj0O5I/4WYs3WuXE2hytau2eTWQPvn2NrXZ1Fede/UNBfleksac0JCF2oomvlDjNq1WEFuywRvwdZK/WWuRkbma3OwKka2fsokVYO/YK2wRfDdiSoXdJWLOakYr9Qpt0O0wyekPGpXQUBsoCGvGCXNxZaAHLNzyJq7JKpRf9QiCge3daqflIiywMRkzWgUtuZCD/bJV1s9G1S9BVCd7NZayr20I5PTyF221ZvAPvPHeHmxZX3o94+cMyYmCJaCt+yEgUkN9QvTf7M31v4b4HFvCzvu5r6yDSetAjqmyGiNUAPigCjOsfyw8XARtT8R+BiDhLodBj2xBrTdPGg7PrdFTL0pE3v8cQxHBbGbPqaMhfVwpItwKxOI7J9Be2MXyTnL3gRTex8RNxghWkpff5+RWz7aIxkUVd/z9JuXxWQBb3fI1uqG0RbxMHzKfSbYnDH/CfIiFgkpE+Amqn69QWhNpXD6EtKSaSM0l8vwpRiuRJMKlTvtgT5XsWzLu1b3Flr3LJoxT5AOmlvXo1hPKBNZ37icCLgFoHbF3fsNR0YKUZDxfrd7NrbEwy/MFC2T7cMRLWsWItnVX6QC+z2nZdMW6wPSjYjmw5lHb9y6+RcAyHtxg==</div></div><div class="ld-exercise" id="ld-exercise-7" data-exercise-id="7" data-exercise-title="7 - Eigenschaften von Chiffren"><p class="ld-exercise-title rubric"><span>Eigenschaften von Chiffren</span></p><ol class="arabic simple"><li><p>Wie unterscheiden sich Transpositions- und Substitutions-Chiffren?</p></li><li><p>Handelt es sich bei Monoalphabetischen Chiffren um Transpositions- oder Substitutions-Chiffren?</p></li><li><p>Kann man Transpositions- und Substitutions-Chiffren kombinieren?</p></li></ol></div></ld-topic>
+</template>
+</body>
+</html>
