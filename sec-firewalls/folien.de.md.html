@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Michael Eichberg" />
+<meta name="keywords" content="&quot;IDS&quot;, &quot;Firewalls&quot;" />
+<meta name="description" content="Network Security - Eine Einführung in die Sicherheit von (verteilten) Systemen" lang="de" xml:lang="de" />
+<meta name="id" content="it-security-firewalls-vorlesung" />
+<meta name="first-slide" content="last-viewed" />
+<meta name="exercises-passwords" content="MTAwMDAw:lmzfMm4Jzgys7NMRw+5dez1TTmB7/eQ0a/JGX++ZRNw=:IaWy7o/p1dznoGdI:XeHQAtJYp76OObh9kpQPWasz2t3NqGJnHLE7IPh+f79pcFzpt31Gt/UFRqEI//4QqccNblLwqHuxQbfibz/TouAfxQ0JRi990ZZUzkcnVhv7bSZiX1SOJ14mtngG9/+tZOd+JuNwU64WtrEk5CuCR8ZYc9MdN6FtbxuQYAdZWLgldMOKWrIi1UWgSFfO0pFWpNXBgdaXgmo=" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>Aspect der Sicherheit von verteilten Systemen: Firewalls</title>
+<link rel="stylesheet" href="../shared/ext/katex/katex.min.css" />
+<script src="../LectureDoc2/dist/src/ld.js" type="module"></script>
+<link rel="stylesheet" href="../LectureDoc2/dist/src/ld.css" />
+<style>@import url("../LectureDoc2/dist/src/css/themes/dhbw.css") layer(theme);</style>
+</head>
+<body data-theme="<light-dark>">
+<template>
+<ld-topic id="it-security-firewalls-vorlesung"><h1 class="title">Aspect der Sicherheit von verteilten Systemen: Firewalls</h1><dl class="docinfo"><dt class="dozent">Dozent<span class="colon">:</span></dt><dd class="dozent"><a class="reference external" href="https://delors.github.io/cv/folien.de.md.html">Prof. Dr. Michael Eichberg</a></dd><dt class="contact">Kontakt<span class="colon">:</span></dt><dd class="contact"><a class="reference external" href="mailto:michael.eichberg@dhbw.de">michael.eichberg@dhbw.de</a></dd><dt class="version">Version<span class="colon">:</span></dt><dd class="version">1.3.7.1</dd></dl><dl class="sources field-list simple"><dt>Quellen<span class="colon">:</span></dt><dd><p>Teilweise basierend  auf Folien von Prof. Dr. Henning Pagnia bzgl. Netzwerksicherheit</p></dd></dl><ld-supplemental><dl class="field-list"><dt>Folien<span class="colon">:</span></dt><dd><p>[HTML] <a class="reference external" href="https://delors.github.io/sec-firewalls/folien.de.md.html">https://delors.github.io/sec-firewalls/folien.de.md.html</a></p><p>[PDF] <a class="reference external" href="https://delors.github.io/sec-firewalls/folien.de.md.html.pdf">https://delors.github.io/sec-firewalls/folien.de.md.html.pdf</a></p></dd><dt>Fehler melden<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p></dd></dl><dl class="field-list simple"><dt>KI Verwendung<span class="colon">:</span></dt><dd><p>Bei der Erstellung der Unterlagen wurden KI Assistenten (insbesondere Claude
+aber ggf. auch ChatGPT, Ollama mit Gemma/LLama/Qwen oder OpenCode mit
+Kimi/Qwen/Deepseek...) unterstützend eingesetzt.
+Dies erfolgte insbesondere zur Unterstützung bei der Generierung von Grafiken
+(d. h. SVG Dateien), oder um sich Übersichtstabellen generieren zu lassen.
+Weiterhin wurde KI zur allgemeinen Qualitätssicherung eingesetzt.
+Inhalte, die ggf. von der KI vorgeschlagen wurden, wurden im Falle der
+Übernahme explizit validiert und angepasst.</p></dd></dl></ld-supplemental></ld-topic>
+<ld-topic class="new-section transition-fade" id="firewalls"><h2>Firewalls</h2></ld-topic>
+<ld-topic id="unabhangiges-netz-ideale-situation"><h2>Unabhängiges Netz - „Ideale Situation“</h2><object class="light-image align-center" data="images/firewalls/all-save.svg" type="image/svg+xml" role="img" aria-label="Ideale Situation"></object><dl class="incremental-list field-list simple"><dt>Vorteile<span class="colon">:</span></dt><dd><ul class="simple"><li><p>keinerlei Angriffsmöglichkeiten von außen</p></li></ul></dd><dt>Nachteile<span class="colon">:</span></dt><dd><ul class="simple"><li><p>kein Schutz gegen Insider</p></li><li><p>kein Zugang zum Internet</p></li></ul></dd></dl><ld-supplemental embed-in-document-flow=""><p>Wie bereits diskutiert gibt es auch Angriffsmuster gegen Air-Gapped-Systeme. Ein Beispiel ist der Stuxnet-Wurm, der sich initial über USB-Sticks verbreitet.</p><p>Wenn man kein Zugang zum Internet hat ist das Einspielen von Updates ist nur über Umwege möglich. Aber man hat zum Beispiel auch keinen Zugriff auf externe Dienste wie NTP.</p></ld-supplemental></ld-topic>
+<ld-topic id="von-der-notwendigkeit-des-schutzes-von-rechnern"><h2>Von der Notwendigkeit des Schutzes von Rechnern</h2><blockquote class="epigraph"><p>[...] Züger und sein Team hätten [...] erst kürzlich ein Experiment durchgeführt, [...]. Sie hätten einen Computer "ohne jeglichen Schutz" mit dem Internet verbunden, um zu sehen, wie lange es dauere, bis er befallen sei. Konkrete Details zur Konfiguration dieses Systems werden zwar nicht genannt, angeblich war der Rechner aber schon nach 20 Minuten infiltriert.</p><p class="attribution">—<a class="reference external" href="https://www.golem.de/news/iot-hacker-missbrauchen-zahnbuersten-fuer-ddos-angriffe-2402-181921.html">Golem.de 6.2.2024</a></p></blockquote></ld-topic>
+<ld-topic id="schutzschicht-zwischen-internem-und-externem-netz"><h2>Schutzschicht zwischen internem und externem Netz</h2><ld-supplemental embed-in-document-flow=""><p>Eine Firewall schafft zwischen verbundenen Netzen Sicherheitsdomänen mit unterschiedlichem Schutzbedarf. Eine wichtige Teilaufgabe ist das Ausarbeiten von Sicherheitsrichtlinien.</p></ld-supplemental><object class="light-image align-center" data="images/firewalls/firewall.svg" type="image/svg+xml" role="img" aria-label="Schutzschicht zwischen internem und externem Netz"></object><ul class="simple"><li><p>Kontrolle des Nachrichtenverkehrs durch Filterung</p></li><li><p>begrenzte Isolation mit begrenztem Schutz</p></li></ul></ld-topic>
+<ld-topic id="realisierung-von-virtual-private-networks-vpn"><h2>Realisierung von Virtual Private Networks (VPN)</h2><object class="light-image align-center" data="images/firewalls/vpn.svg" type="image/svg+xml" role="img" aria-label="Realisierung von Virtual Private Networks (VPN)"></object><ul class="simple"><li><p>Aufbau einer scheinbar privaten Verbindung von Firmenteilnetzen über das (öffentliche) Internet.</p></li><li><p>Zusätzliche Verbindungsverschlüsselung zwischen den Firewalls.</p></li></ul><ld-supplemental embed-in-document-flow=""><p>Ziel ist es aktive und passive Angriffe zu unterbinden.
+Selbst bei verschlüsselten Verbindungen kann die Verkehrsflussanalyse noch Informationen liefern über die Verbindungen liefern.</p></ld-supplemental></ld-topic>
+<ld-topic id="kommerzielle-vpns-fur-endnutzer"><h2>Kommerzielle VPNs für Endnutzer</h2><object class="light-image align-center" data="images/firewalls/vpn-commercial.svg" type="image/svg+xml" role="img" aria-label="Einsatz von Virtual Private Networks (VPN) für Privatnutzer"></object><ld-supplemental><p><strong>Motivation</strong></p><ul class="simple"><li><p>Schutz der Privatsphäre; der ISP kennt nicht mehr die Webseiten, die man aufruft.</p></li><li><p>Die IP-Adresse des Nutzers ist den aufgerufenen Webseiten nicht mehr bekannt und kann deswegen der Umgehung von Geo-Blocking dienen.</p></li></ul><p><strong>Nachteile?</strong></p><ul class="simple"><li><p>Vertrauen in den VPN-Anbieter muss vorhanden sein. Insbesondere, beim Einsatz zum Stärken der Privatsphäre, muss der VPN-Anbieter vertrauenswürdig sein und sollte ein so genannter „no-log“ Anbieter sein.</p></li><li><p>Es gibt auch (scheinbar kostenlose) VPN-Anbieter, die die Daten der Nutzer dann aber verkaufen (ehemals: <a class="reference external" href="https://techcrunch.com/2019/02/21/facebook-removes-onavo/?guccounter=1&#x26;guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&#x26;guce_referrer_sig=AQAAAGVIppEgEOd9Z0FoMbmk2TCleRmD9wCMWDmIzGYEjIo1c7Cmz8NpiSoibthFG5IZQzmZ-kiJq-5Wj1bj21byh7YUrC_aSJJk1Bapwz80GSgzLFS-LHCF2OOetUYLSKwEG7W75znuqJJBJcNTTbtJ1UGB95Yu90saK9aIIkEywcRq">Facebook Onavo</a>).</p></li></ul></ld-supplemental></ld-topic>
+<ld-topic id="schutz-auf-den-schichten-des-tcp-ip-stacks"><h2>Schutz auf den Schichten des TCP/IP Stacks</h2><p>Zentraler Schutz des gesamten internen Netzwerks durch:</p><ul class="incremental-list"><li><p>Paket Filter (<span class="eng">Packet Filtering</span>)</p><ul class="list-with-explanations"><li><p>Blockieren bestimmter IP-Empfänger-Adressen (extern / intern)</p></li><li><p>Blockieren bestimmter IP-Absender-Adressen (extern / intern)</p><p>(z. B. aus dem Internet mit internen IP-Absender-Adressen)</p></li><li><p>Blockieren bestimmter Dienste; ggf. nur für bestimmte IP-Adressen</p></li></ul></li><li><p>Filter auf Anwendungsebene (<span class="eng">Application-level Filtering</span>)</p><ul class="list-with-explanations"><li><p>inhaltsbezogene Filterung der Verkehrsdaten eines Dienstes</p><p>(z. B. Virenfilter oder Spamfilter)</p></li><li><p>wirkungslos bei verschlüsselten Verkehrsdaten</p></li></ul></li><li><p>Protokollierungsmöglichkeit der Kommunikation von / nach extern</p></li></ul><ld-supplemental><p>Firewalls (alleine) können die Struktur des Netzwerks nicht verbergen.</p></ld-supplemental></ld-topic>
+<ld-topic id="dos-attacke-auf-anwendungsebene"><h2>DoS Attacke auf Anwendungsebene</h2><blockquote class="epigraph"><p>[...] Angriff auf die Kleinen</p><p>Waren bei früheren Spamangriffen massenhaft Accounts auf der größten Mastodon-Instanz <span class="docutils literal">mastodon.social</span> angelegt worden, die dann von dort ihre Inhalte verbreiteten, trifft es nun nicht die größte, sondern die kleinsten. Automatisiert werden dabei Instanzen ausgesucht, auf denen eine Registrierung ohne Überprüfung und sogar ohne ein Captcha möglich ist. Das können etwa solche mit wenigen Accounts sein, die von Enthusiasten etwa für eine Gemeinde betrieben werden. Waren die Verantwortlichen in den vergangenen Tagen nicht aufmerksam, wurden diese Instanzen dann regelrecht überrannt. Die Spam-Accounts verschickten massenhaft Nachrichten mit einem Bild des namensgebenden Frühstücksfleischs und Links zu Discord-Servern, die wohl lahmgelegt werden sollten.</p><p class="attribution">—<a class="reference external" href="https://www.heise.de/news/Mastodon-Spamwelle-zeigt-Schwaechen-auf-und-weckt-Sorge-vor-schlimmerer-Methode-9632055.html">Mastodon: Spamwelle zeigt Schwächen auf [...]</a></p></blockquote></ld-topic>
+<ld-topic id="realisierungsmoglichkeiten-von-firewalls"><h2>Realisierungsmöglichkeiten von Firewalls</h2><ul class="incremental-list simple"><li><p>Hardware-Firewall</p><ul class="simple"><li><p>Screening Router</p></li><li><p>Application Gateway (auch Bastion Host)</p><ul class="simple"><li><p>(Reverse-)Proxy-Server für bestimmte Dienste</p></li><li><p>Endpunkt aus Sicht von Client-Software (HTTP-Browser, EMail, ...)</p></li><li><p>spezialisierte Server-Software</p></li></ul></li></ul></li><li><p>Software-Firewall (<em>Personal Firewall</em>)</p></li></ul><ld-supplemental embed-in-document-flow=""><p>Im Falle eines <span class="eng">Bastion Host</span>, ist dies der einzige unmittelbar aus dem Internet erreichbare Rechner.</p></ld-supplemental></ld-topic>
+<ld-topic id="dual-homed-host"><h2>Dual-Homed Host</h2><div class="compound encapsulate-floats"><object class="light-image align-right" data="images/firewalls/dual-homed-host.svg" type="image/svg+xml" role="img" aria-label="Dual-Homed Host"></object><p><strong>Aufbau</strong></p><ul class="simple"><li><p>zwei Netzwerkkarten: ggf. private interne Adressen</p></li><li><p>Screening Router &#x26; Gate: Packet Filter und Application-Level Filter</p></li><li><p>Proxy-Dienste installieren</p></li><li><p>Benutzer-Logins von extern</p></li></ul></div><aside class="admonition incremental" data-theme="important"><p class="admonition-title" data-theme="important-header">Wichtig</p><p>Bei der Konfiguration der Netzwerkkarten gilt:</p><p><em>IP-Pakete nicht automat. weiterleiten</em></p></aside></ld-topic>
+<ld-topic id="screening-router"><h2>Screening Router</h2><ld-grid class="default-layout"><ld-cell class="width-50" style="align-self:auto;"><p><strong>Aufbau</strong></p><p>Programmierbarer Hardwarerouter mit simplen Filterfunktionen:</p><ul class="simple"><li><p>nur Paket-Header prüfen</p></li><li><p>schnelle Auswertung ermöglicht hohen Durchsatz</p></li><li><p>Realisierung eines Packet Filters</p></li></ul><aside class="admonition incremental-10 fade-in" data-theme="assessment"><p class="admonition-title" data-theme="assessment-header"><span>Bewertung</span></p><ul class="columns simple"><li><ul class="positive-list incremental simple"><li><p>einfach und billig</p></li><li><p>flexibel</p></li></ul></li><li><ul class="negative-list incremental simple"><li><p>schwer zu testen</p></li><li><p>Protokollierung</p></li><li><p>Fernwartung</p></li><li><p>keine Inhaltsfilterung</p></li></ul></li></ul></aside></ld-cell><ld-cell class="width-50 incremental-1 fade-in" style="align-self:auto;"><div style="width: 12lh; height: 17lh;" aria-label="Screening Router"><svg viewBox="4.5 0.5 31 42"
+     font-size="1"
+     version="1.1"
+     xmlns="http://www.w3.org/2000/svg">
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 0: Internal network (LAN) — visible immediately
+         ═══════════════════════════════════════════════════ -->
+    <g>
+        <!-- Trusted-zone backdrop -->
+        <rect x="5" y="1" width="30" height="13.4" rx="1"
+              fill="none"
+              stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.12"
+              stroke-dasharray="0.6,0.4" opacity="0.6"/>
+        <text x="20" y="2.6" font-size="1" text-anchor="middle"
+              fill="light-dark(#16a34a, #4ade80)">LAN</text>
+
+        <!-- Server -->
+        <rect x="8" y="2.6" width="6" height="6.8" rx="0.6"
+              fill="light-dark(#dcfce7, #14532d)"
+              stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.18"/>
+        <g fill="light-dark(#bbf7d0, #166534)"
+           stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.08">
+            <rect x="8.7" y="3.3" width="4.6" height="1.5" rx="0.25"/>
+            <rect x="8.7" y="5.1" width="4.6" height="1.5" rx="0.25"/>
+            <rect x="8.7" y="6.9" width="4.6" height="1.5" rx="0.25"/>
+        </g>
+        <g fill="light-dark(#16a34a, #86efac)" stroke="none">
+            <circle cx="9.4" cy="4.05" r="0.22"/>
+            <circle cx="9.4" cy="5.85" r="0.22"/>
+            <circle cx="9.4" cy="7.65" r="0.22"/>
+        </g>
+        <text x="13" y="10.5" text-anchor="middle" font-size="1.2"
+              fill="currentColor">Server</text>
+
+        <!-- Laptop (browser client) -->
+        <g transform="translate(-1.5,0)">
+            <rect x="25.5" y="2.2" width="7" height="4.8" rx="0.4"
+                fill="light-dark(#dcfce7, #14532d)"
+                stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.18"/>
+            <!-- browser -->
+            <rect x="26" y="2.7" width="6" height="1" rx="0.2"
+                fill="light-dark(#ffffff, #052e16)"
+                stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.08"/>
+            <g fill="light-dark(#16a34a, #86efac)">
+                <circle cx="26.4" cy="3.2" r="0.13"/>
+                <circle cx="26.85" cy="3.2" r="0.13"/>
+                <circle cx="27.3" cy="3.2" r="0.13"/>
+            </g>
+            <rect x="28" y="2.95" width="3.6" height="0.5" rx="0.25"
+                fill="light-dark(#bbf7d0, #166534)"/>
+            <!-- page content lines -->
+            <g fill="light-dark(#86efac, #15803d)">
+                <rect x="26.1" y="4.2" width="4.6" height="0.45" rx="0.2"/>
+                <rect x="26.1" y="5.1" width="5.6" height="0.45" rx="0.2"/>
+                <rect x="26.1" y="6.0" width="3.4" height="0.45" rx="0.2"/>
+            </g>
+        </g>
+        <!-- base -->
+        <path d="M24.6 7 L30.4 7 L31.2 8 L23.8 8 Z"
+              fill="light-dark(#bbf7d0, #166534)"
+              stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.18"
+              stroke-linejoin="round"/>
+        <text x="29" y="9.25" text-anchor="middle" font-size="1.2"
+              fill="currentColor">Client</text>
+
+        <!-- LAN bus + drops -->
+        <line x1="11" y1="13" x2="27" y2="13"
+              stroke="currentColor" stroke-width="0.2"/>
+        <line x1="11" y1="9.5" x2="11" y2="13"
+              stroke="currentColor" stroke-width="0.2"/>
+        <line x1="27" y1="8" x2="27" y2="13"
+              stroke="currentColor" stroke-width="0.2"/>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 1: The (untrusted) Internet
+         ═══════════════════════════════════════════════════ -->
+    <g class="incremental fade-in">
+        <path d="M 14.96 41.18
+                 C 12.94 41.18, 11.50 39.60, 11.79 37.72
+                 C 10.78 37.15, 11.07 35.13, 12.73 34.84
+                 C 12.80 32.97, 14.89 31.89, 16.62 32.97
+                 C 17.70 31.39, 21.37 31.32, 22.59 33.19
+                 C 25.11 32.40, 27.42 33.98, 26.70 36.14
+                 C 29.00 36.57, 29.07 39.74, 26.91 40.60
+                 C 26.34 41.61, 23.60 41.90, 22.30 41.04
+                 L 14.96 41.18 Z"
+              fill="none"
+              stroke="currentColor" stroke-width="0.22"/>
+        <text x="20" y="37.6" text-anchor="middle"
+              font-size="2.0" font-weight="bold"
+              fill="currentColor">Internet</text>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 2: Router / Firewall — plugs into LAN and Internet
+         ═══════════════════════════════════════════════════ -->
+    <g class="incremental fade-in">
+        <!-- spines connecting LAN (top) and Internet (bottom) -->
+        <line x1="20" y1="13" x2="20" y2="18"
+              stroke="currentColor" stroke-width="0.2"/>
+        <line x1="20" y1="23" x2="20" y2="31.8"
+              stroke="currentColor" stroke-width="0.2"/>
+
+        <!-- device body -->
+        <rect x="5" y="18" width="30" height="5" rx="1.2"
+              fill="light-dark(#e5e7eb, #1f2937)"
+              stroke="light-dark(#9ca3af, #6b7280)" stroke-width="0.22"/>
+
+        <!-- vents -->
+        <g fill="light-dark(#9ca3af, #6b7280)">
+            <circle cx="6.5" cy="19.1" r="0.16"/>
+            <circle cx="7.3" cy="19.1" r="0.16"/>
+            <circle cx="8.1" cy="19.1" r="0.16"/>
+            <circle cx="6.5" cy="21.9" r="0.16"/>
+            <circle cx="7.3" cy="21.9" r="0.16"/>
+            <circle cx="8.1" cy="21.9" r="0.16"/>
+            <circle cx="31.9" cy="19.1" r="0.16"/>
+            <circle cx="32.7" cy="19.1" r="0.16"/>
+            <circle cx="33.5" cy="19.1" r="0.16"/>
+            <circle cx="31.9" cy="21.9" r="0.16"/>
+            <circle cx="32.7" cy="21.9" r="0.16"/>
+            <circle cx="33.5" cy="21.9" r="0.16"/>
+        </g>
+
+        <!-- firewall flame -->
+        <path d="M 11 19.2
+                 C 10.2 20.0, 9.9 20.6, 9.9 21.2
+                 C 9.9 22.2, 10.6 22.8, 11 22.8
+                 C 11.4 22.8, 12.1 22.2, 12.1 21.2
+                 C 12.1 20.7, 11.8 20.3, 11.5 19.9
+                 C 11.6 20.5, 11.3 20.9, 11 20.9
+                 C 10.8 20.9, 10.7 20.7, 10.8 20.4
+                 C 10.9 20.0, 11 19.6, 11 19.2 Z"
+              fill="#f97316"/>
+        <path d="M 11 21.0
+                 C 10.7 21.3, 10.6 21.6, 10.6 21.9
+                 C 10.6 22.3, 10.8 22.5, 11 22.5
+                 C 11.2 22.5, 11.4 22.3, 11.4 21.9
+                 C 11.4 21.5, 11.2 21.3, 11 21.0 Z"
+              fill="light-dark(#facc15, #fde047)"/>
+
+        <text x="22" y="21.2" text-anchor="middle"
+              font-size="1.5" font-weight="bold"
+              fill="currentColor">Router / Firewall</text>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 3: Inbound traffic blocked (from the Internet)
+         ═══════════════════════════════════════════════════ -->
+    <g class="incremental fade-in">
+        <!-- flow from Internet up to the firewall -->
+        <line x1="14" y1="32.5" x2="14" y2="24.1"
+              stroke="#dc2626" stroke-width="0.24"
+              stroke-dasharray="0.7,0.5"/>
+        <!-- direction chevron (up) -->
+        <path d="M13.55 26.5 L14.45 26.5 L14 25.75 Z" fill="#dc2626"/>
+        <!-- prohibited badge -->
+        <circle cx="14" cy="23" r="1.1"
+                fill="light-dark(#ffffff, #0b1220)"
+                stroke="#dc2626" stroke-width="0.32"/>
+        <line x1="13.22" y1="23.78" x2="14.78" y2="22.22"
+              stroke="#dc2626" stroke-width="0.32"/>
+        <!-- label -->
+        <text x="14.5" y="25.4" font-size="1.0" font-style="italic"
+              fill="#dc2626">
+            <tspan x="14.5">blocked</tspan>
+            <tspan x="14.5" dy="1.1" font-size="0.85">(inbound)</tspan>
+        </text>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 4: Outbound traffic blocked (from the client)
+         ═══════════════════════════════════════════════════ -->
+    <g class="incremental fade-in">
+        <!-- flow from the client down to the firewall -->
+        <line x1="31" y1="8" x2="31" y2="16.9"
+              stroke="light-dark(#dc2626, #ff9090)" stroke-width="0.24"
+              stroke-dasharray="0.7,0.5"/>
+        <!-- direction chevron (down) -->
+        <path d="M30.55 12.5 L31.45 12.5 L31 13.25 Z"
+              fill="light-dark(#dc2626, #ff9090)"/>
+        <!-- prohibited badge -->
+        <circle cx="31" cy="18" r="1.1"
+                fill="light-dark(white,black)"
+                stroke="light-dark(#dc2626, #ff9090)" stroke-width="0.32"/>
+        <line x1="30.22" y1="18.78" x2="31.78" y2="17.22"
+              stroke="light-dark(#dc2626, #ff9090)" stroke-width="0.32"/>
+        <!-- label -->
+        <text x="30.2" y="15.25" text-anchor="end" font-size="1.0"
+              font-style="italic" fill="light-dark(#dc2626, #ff9090)">
+            <tspan x="30.75">blocked</tspan>
+            <tspan x="30.75" dy="1.1" font-size="0.85">(outbound)</tspan>
+        </text>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════
+         Step 5: Outbound traffic allowed — passes through
+         ═══════════════════════════════════════════════════ -->
+    <g class="incremental fade-in">
+        <!-- request leaves the client toward the firewall -->
+        <line x1="24" y1="8" x2="24" y2="16.9"
+              stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.24"
+              stroke-dasharray="0.7,0.5"/>
+        <!-- direction chevron (down) -->
+        <path d="M23.55 12.5 L24.45 12.5 L24 13.25 Z"
+              fill="light-dark(#16a34a, #4ade80)"/>              
+        <!-- allowed badge: passes the firewall check -->
+        <circle cx="24" cy="18" r="1.1"
+                fill="light-dark(#ffffff, #0b1220)"
+                stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.32"/>
+        <path d="M23.35 18.0 L23.8 18.5 L24.7 17.4"
+              fill="none" stroke="light-dark(#16a34a, #4ade80)"
+              stroke-width="0.32" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- continues through and reaches the Internet -->
+        <line x1="24" y1="23" x2="24" y2="33"
+              stroke="light-dark(#16a34a, #4ade80)" stroke-width="0.24"
+              stroke-dasharray="0.7,0.5"
+              marker-end="url(#arrow)"/>
+        <!-- label -->
+        <text x="24.5" y="28.2" font-size="1.0" font-style="italic"
+              fill="light-dark(#16a34a, #4ade80)">
+            <tspan x="24.5">allowed</tspan>
+            <tspan x="24.5" dy="1.1" font-size="0.85">(outbound)</tspan>
+        </text>
+    </g>
+
+</svg>
+</div></ld-cell></ld-grid></ld-topic>
+<ld-topic id="screened-host"><h2>Screened Host</h2><object class="light-image align-right" data="images/firewalls/screened-host.svg" type="image/svg+xml" role="img" aria-label="Screened Host"></object><p><strong>Aufbau</strong></p><ul class="simple"><li><p>Screening Router blockiert:</p><ul class="simple"><li><p>Pakete von / an interne Rechner (nicht Gate)</p></li><li><p>Source-Routed Pakete</p></li></ul></li><li><p>von extern nur Gate sichtbar</p></li><li><p>Pakete von intern nur via Gate</p></li><li><p>Gate bietet Proxy-Server (z. B. für E-Mail)</p></li></ul><ld-supplemental><p><em>Source-Routed Pakete</em> sind Pakete, die den Weg durch das Netzwerk explizit angeben. (<em>Source-routing</em> wird auch als <em>Path Addressing</em> bezeichnet und wird im Allgemeinen als Sicherheitsproblem angesehen.)</p><p>Gibt es für eine bestimmte Anwendung kein Application-level Proxy, dann kann auf einen für TCP/UDP generischen Proxy zurückgegriffen werden. Dieser arbeitet auf dem Session Layer und kann nur die Header-Informationen auswerten. Es handelt sich dann um ein <span class="eng">Circuit-level Proxy/Gateway</span>. Im Vergleich zu einem Application-level Proxy ist die Sicherheit geringer, da der Circuit-level Proxy nicht in der Lage ist, die Daten zu interpretieren.</p><p>Ein allgemeines Problem ist, dass viele Anwendungen auf generische Protokolle wie HTTP aufsetzen. Weiterhin betreiben einige Anwendungen „Port Hopping“, d. h. sie wechseln den Port wenn der Standardport nicht offen ist.</p><p>Eine Anforderung an „Next-generation Firewalls“ ist, dass diese die Analyse von den Daten einer Anwendung unabhängig vom Port und Protokoll ermöglichen.</p></ld-supplemental></ld-topic>
+<ld-topic id="konfiguration-eines-gateways"><h2>Konfiguration eines Gateways</h2><p>Das Ziel der Konfiguration muss eine minimale angreifbare Oberfläche sein.</p><ul class="incremental-list simple"><li><p>Abschalten aller nicht-benötigten Netzdienste</p></li><li><p>Löschen aller nicht benötigter Programme</p></li><li><p>Rechte von <span class="docutils literal">/bin/sh</span> auf 500 setzen</p></li><li><p>Rechte aller Systemverzeichnisse auf 711 setzen</p></li><li><p>keine regulären Benutzerkennungen</p></li><li><p>root-Login mit Einmal-Passwortsystem bzw. 2-Faktor Authentifizierung</p></li><li><p>setzen von Platten- und Prozess-Quotas</p></li><li><p>volle Protokollierung, möglichst auf Hardcopy-Gerät</p></li><li><p>möglichst sichere, stabile und regelmäßig aktualisierte Betriebssystemversion einsetzen</p></li></ul><ld-supplemental><p>Die Rechte von <span class="docutils literal">/bin/sh</span> auf 500 setzen bedeutet, dass nur der Eigentümer (root) es ausführen kann.</p><p>Default:</p><pre class="code sh literal-block"><code>$ <span class="name function">ls</span> <span class="name variable">-al</span> /bin/sh
+-rwxr-xr-x  <span class="literal number integer">1</span> root  wheel  <span class="literal number integer">101232</span> Oct  <span class="literal number integer">1</span> 06:10 /bin/sh</code></pre></ld-supplemental></ld-topic>
+<ld-topic id="screened-subnet"><h2>Screened Subnet</h2><object class="light-image align-right" data="images/firewalls/screened-subnet.svg" type="image/svg+xml" role="img" aria-label="Screened Subnet"></object><p><strong>Aufbau</strong></p><ul class="incremental-list simple"><li><p>interner Screening Router als weiterer Schutzwall</p><ul class="simple"><li><p>blockiert Dienste, die nicht einmal bis zum Gate gelangen sollen</p></li><li><p>lässt nur Pakete zum / vom Gate durch</p></li></ul></li><li><p>äußeres Netz realisiert Demilitarisierte Zone (DMZ) für HTTP-Server, Mail-Server, ...</p></li></ul></ld-topic>
+<ld-topic class="new-section transition-fade" id="intrusion-detection-systeme-ids"><h2>Intrusion Detection Systeme (IDS)</h2></ld-topic>
+<ld-topic id="intrusion-detection-systeme-ids"><h2>Intrusion Detection Systeme (IDS)</h2><aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><p>Ein IDS ist ein Gerät (meist ein speziell konfigurierter Rechner), das vielfältige Techniken zur Erkennung von Angriffen anwendet und Angriffe meldet und ggf. abwehrt, in dem (z. B.) die Firewall automatisch umkonfiguriert wird.</p></aside><div class="compound incremental"><p><strong>Motivation</strong></p><ul class="incremental-list simple"><li><p>Firewalls alleine sind zu statisch und deswegen häufig nicht ausreichend</p></li><li><p>bessere Aufzeichnung und flexiblere Erkennung notwendig</p></li><li><p>angepasste Reaktion notwendig</p></li></ul></div><div class="compound incremental"><p><strong>Umsetzung</strong></p><p>An verschiedenen, neuralgischen Stellen werden spezielle Sensoren platziert, die (hier) den Netzwerkverkehr überwachen und verdächtige Aktivitäten melden.</p></div><ld-supplemental><p>Miteinander verwandt bzw. typischerweise in einem Produkt zu finden:</p><ul class="simple"><li><p>Intrusion Detection (IDS)</p></li><li><p>Intrusion Response (IRS)</p></li><li><p>Intrusion Prevention (IPS)</p></li></ul></ld-supplemental></ld-topic>
+<ld-topic id="ids-erkennungstechniken"><h2>IDS-Erkennungstechniken</h2><ul class="incremental-list simple"><li><p>Signaturerkennung</p></li><li><p>statistische Analyse</p></li><li><p>Anomalieerkennung</p></li></ul><aside class="admonition incremental"><p class="admonition-title">Probleme</p><ul class="simple"><li><p>Fälschlicherweise gemeldete Angriffe (false positives)</p></li><li><p>nicht gemeldete Angriffe (false negatives) (insbesondere bei neuartigen Angriffen)</p></li><li><p>Echtzeitanforderung, insbesondere bei Hochgeschwindigkeitsnetzen</p></li><li><p>Aufzeichnung bei Netzwerken mit Switches ( ⇒ spez. SPAN Port)</p></li><li><p>Sensoren sollen unbeobachtbar sein (<em>stealth</em>)</p></li></ul></aside><ld-supplemental><p>SPAN (<span class="eng">Switched Port Analyzer</span>) Ports sind spezielle Ports auf Switches, die bestimmten Verkehr (z. B. bestimmte Pakete) die über ein Switch gehen, an einen definierten Port weiterleiten können. An diesem Port kann dann eine Analyse des Verkehrs durchgeführt werden / ein Sensor angeschlossen werden.</p></ld-supplemental></ld-topic>
+<ld-topic class="exercises transition-move-left" id="ubung"><h2>Übung</h2><div class="ld-exercise" id="ld-exercise-1" data-exercise-id="1" data-exercise-title="1 - Firewalls"><p class="ld-exercise-title rubric"><span>Firewalls</span></p><ol class="arabic simple"><li><p>Was sind Vorteile eines Dual Homed Host gegenüber einem Paketfilter? Was sind die Nachteile?</p></li><li><p>Benennen Sie zwei konzeptionelle Grenzen von Firewalls. D. h. zwei Szenarien gegen die Firewalls nicht schützen können.</p></li><li><p>Für welche der folgenden Cybersicherheitsstrategien können Firewalls eingesetzt werden:</p><ol class="arabic simple"><li><p>Angriffe vermeiden</p></li><li><p>Angriffe erkennen</p></li><li><p>Angriffe abwehren/Angriffen entgegenwirken</p></li><li><p>Reaktion auf Angriffe</p></li></ol></li><li><p>Sie werden beauftragt die Firewall so einzurichten, dass Mails mit Schadsoftware nicht durchgelassen werden. Wie reagieren Sie?</p></li></ol><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:ZXLGKmcfPGQ//lwS3Jx0/u8sUq6vDusXGcVXtZoBhGE=:2AzUx/JJt+ugYXEN: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</div></div></ld-topic>
+</template>
+</body>
+</html>
