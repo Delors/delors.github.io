@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Michael Eichberg" />
+<meta name="keywords" content="&quot;Testen&quot;, &quot;Abdeckung&quot;, &quot;Metriken&quot;" />
+<meta name="description" content="Software Engineering - Testen und Metriken" lang="de" xml:lang="de" />
+<meta name="id" content="lecture-se-testen-und-metriken" />
+<meta name="first-slide" content="last-viewed" />
+<meta name="exercises-passwords" content="MTAwMDAw:eIuY5aWDgZGacoWmoXfPD/5xmygKeqPoSVNpQYH7p7Y=:bfiY3MOjRrpGLMlK:50r6f2axnZ2H9cHQelTeEti8mLVQ98vo6iL/ONWIQeAGlX+ZSWnn41zIF9h/06qCuWEY8hJ5wgYXOkE0exzsWgYskci1i4Iz/PPqQNx6cG048NehvKI1O2GYmClHkQSSmX79EcDd271vdd/FEMf1XLBOFYWdzFksJtPHFI4PffPcyZXt2vDCoORH2/f7V1gGaKCWcr9wfiE3QfVbmNeprByIwpSWyoRGuunwU6VtZJ2yrEM+KPwSfrR9RueA0H6DN/QnYggeI6DdVLElVD26N6/bqxE+OJz1TtyAU60yaE3HfX8IZ2ey9/eTZwiLokcXU2tqo1I8dutLYOCUkJcKAjVKqjgE/WhJ2Y/l" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>Software Engineering - Projekte bauen, Testen und Bewerten</title>
+<link rel="stylesheet" href="../shared/ext/katex/katex.min.css" />
+<script src="../LectureDoc2/dist/src/ld.js" type="module"></script>
+<link rel="stylesheet" href="../LectureDoc2/dist/src/ld.css" />
+<style>@import url("../LectureDoc2/dist/src/css/themes/dhbw.css") layer(theme);</style>
+<style>/* ---------------------------------------------------------------------------
+   Farbgebung der Diagramme dieses Foliensatzes (über ld.include-styles).
+
+   Alle Flächen, Linien und Beschriftungen leiten sich von currentColor ab und
+   folgen damit automatisch dem Light-/Dark-Theme und der umgebenden Admonition.
+   `light-dark()` steht hier bewusst nicht: es hängt allein an
+   prefers-color-scheme, während LectureDoc2 über [data-theme] schaltet.
+
+   Voraussetzung: das SVG wird mit {include-svg} *inline* eingebunden. Bei
+   {image} lädt der Browser es als eigenes Dokument; weder dieses Stylesheet
+   noch currentColor erreichen es dann.
+
+   Alle Regeln sind unter .se-diagram gescopt. Die Klassenselektoren
+   unten gewinnen gegenüber Element-scoped Selektoren — deshalb trägt im Diagramm
+   *jedes* sichtbare Element eine Klasse.
+   --------------------------------------------------------------------------- */
+
+.se-diagram {
+    
+    font-family: var(--default-font-family);
+
+    /* Dokumente und Artefakte des Entwicklungsprozesses. */
+    .artifact {
+        fill: currentColor;
+        fill-opacity: 0.08;
+        stroke: currentColor;
+        stroke-opacity: 0.8;
+        stroke-width: 1;
+    }
+
+    /* Hervorgehobene Kästen: die Technik selbst („Software Inspektionen")
+       und ihr dynamisches Gegenstück („Programm Testing"). */
+    .artifact-accent {
+        fill: currentColor;
+        fill-opacity: 0.28;
+        stroke: currentColor;
+        stroke-opacity: 0.8;
+        stroke-width: 1;
+    }
+
+    /* Die beiden senkrechten Striche der Komponenten-Kästen. */
+    .artifact-mark {
+        fill: none;
+        stroke: currentColor;
+        stroke-opacity: 0.8;
+        stroke-width: 1;
+    }
+
+    /* Verbindungslinien; Pfeilspitze über marker-end="url(#se-arrow)". */
+    .connector {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: butt;
+        stroke-linejoin: miter;
+    }
+
+    .label {
+        fill: currentColor;
+        font-family: var(--default-font-family);
+        text-anchor: middle;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Pfeilspitze (definiert in se-defs.svg, eingehängt unter <ld-globals>).
+
+   var(--color) und nicht currentColor: beides träfe hier dieselbe Farbe —
+   <ld-globals> ist ein Kind von <body>, das [data-theme] und damit
+   `color: var(--color)` trägt —, var(--color) benennt sie nur direkt.
+   --------------------------------------------------------------------------- */
+
+#se-arrow path {
+    fill: var(--color);
+    stroke: none;
+}
+</style>
+<style>rect {
+    fill: white;
+    stroke: blue;
+    stroke-width: 0.2;
+}
+text {
+    fill: black;
+    font-family: var(--code-font-family);
+}
+</style>
+</head>
+<body data-theme="<light-dark>">
+<ld-globals><svg xmlns="http://www.w3.org/2000/svg">
+<defs>
+
+    <!-- Pfeilspitze für die Diagramme dieses Foliensatzes.
+
+         Die Definition liegt hier und nicht im Diagramm selbst: {include-svg}
+         kopiert jedes Diagramm in dasselbe Dokument, und gleichnamige
+         <defs>-Ids würden sich gegenseitig verdrängen. Der Präfix "se-" hält
+         sie von den Marker-Ids des LectureDoc2-Themes (FilledArrow_Marker …)
+         und vom deckeigenen #arrow des Kontrollflussgraphen getrennt.
+
+         refX="10" setzt den Bezugspunkt auf die Spitze — eine Linie endet
+         damit genau dort, wo der Pfeil endet, ohne Korrekturrechnung.
+
+         Die Farbe steht in se-diagrams.css als var(--color) und NICHT hier als
+         Attribut: ein Marker wird im Kontext seiner *Definition* gemalt, und
+         die liegt in <ld-globals> unterhalb von <body> mit [data-theme].
+         `context-stroke` wäre semantisch richtig, fehlt in WebKit aber bis
+         heute (Stand 2026); `light-dark()` hinge allein an prefers-color-scheme
+         und ginge an der Theme-Wahl des Decks vorbei. Siehe LectureDoc2/SVGs.md. -->
+
+    <marker id="se-arrow"
+            viewBox="0 0 10 10"
+            refX="10"
+            refY="5"
+            markerWidth="4"
+            markerHeight="4"
+            markerUnits="strokeWidth"
+            orient="auto">
+        <path d="M 0 0 L 10 5 L 0 10 Z" />
+    </marker>
+
+</defs>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg"><defs>
+<marker
+id="arrow"
+viewBox="0 0 10 10"
+refX="10"
+refY="5"
+markerWidth="4"
+markerHeight="4"
+orient="auto-start-reverse">
+    <path class="arrow-head" d="M 0 0 L 10 5 L 0 10 z" />
+</marker>
+</defs></svg>
+</ld-globals>
+<template>
+<ld-topic id="lecture-se-testen-und-metriken"><h1 class="title">Software Engineering - Projekte bauen, Testen und Bewerten</h1><p>Eine allererste Einführung</p><dl class="field-list simple"><dt>Dozent<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.md.html">Prof. Dr. Michael Eichberg</a></p></dd><dt>Kontakt<span class="colon">:</span></dt><dd><p><a class="reference external" href="mailto:michael.eichberg@dhbw.de">michael.eichberg@dhbw.de</a></p></dd><dt>Version<span class="colon">:</span></dt><dd><p>1.1.2.1</p></dd></dl><p>Die Folien basieren in Teilen auf Folien von Dr. Helm und Prof. Dr. Hermann.</p><p>Alle Fehler sind meine eigenen.</p><ld-supplemental><dl class="field-list"><dt>Folien<span class="colon">:</span></dt><dd><p>[HTML] <a class="reference external" href="https://delors.github.io/se-build-test-measure/folien.de.md.html">https://delors.github.io/se-build-test-measure/folien.de.md.html</a></p><p>[PDF] <a class="reference external" href="https://delors.github.io/se-build-test-measure/folien.de.md.html.pdf">https://delors.github.io/se-build-test-measure/folien.de.md.html.pdf</a></p></dd><dt>Fehler melden<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p></dd></dl><dl class="field-list simple"><dt>KI Verwendung<span class="colon">:</span></dt><dd><p>Bei der Erstellung der Unterlagen wurden KI Assistenten (insbesondere Claude
+aber ggf. auch ChatGPT, Ollama mit Gemma/LLama/Qwen oder OpenCode mit
+Kimi/Qwen/Deepseek...) unterstützend eingesetzt.
+Dies erfolgte insbesondere zur Unterstützung bei der Generierung von Grafiken
+(d. h. SVG Dateien), oder um sich Übersichtstabellen generieren zu lassen.
+Weiterhin wurde KI zur allgemeinen Qualitätssicherung eingesetzt.
+Inhalte, die ggf. von der KI vorgeschlagen wurden, wurden im Falle der
+Übernahme explizit validiert und angepasst.</p></dd></dl></ld-supplemental></ld-topic>
+<ld-topic class="new-section transition-scale" id="buildsysteme"><h2>Buildsysteme</h2></ld-topic>
+<ld-topic id="buildsysteme-hier-sbt"><h2>Buildsysteme (hier: sbt)</h2><ul class="incremental-list list-with-explanations"><li><p>Buildsysteme automatisieren repetitive Aufgaben</p></li><li><p>Sie haben eingebaute Unterstützung oder Plugins für häufige Aufgaben:</p><ul class="incremental-list simple"><li><p>Code zur einer ausführbaren Datei kompilieren: <code class="console">sbt compile</code></p></li><li><p>Tests ausführen: <code class="console">sbt <span class="name class">test</span></code></p></li><li><p>Kompilierte Dateien entfernen: <code class="console">sbt clean</code></p></li><li><p>Start eines interaktiven Interpreters: <code class="console">sbt console</code></p></li><li><p>Code-Dokumentation als HTML oder PDF ausgeben: <code class="console">sbt doc</code></p></li><li><p>Code formatieren, Code-Stil prüfen: <code class="console">sbt scalafmt</code>, <code class="console">sbt scalastyle</code></p></li><li><p>...</p></li><li><p>Ausführbare Datei (auf Server) publizieren: <code class="console">sbt publish</code></p></li></ul></li><li><p>Buildsysteme werden mit Buildskripten konfiguriert</p></li><li><p>Buildsysteme verarbeiten meist nur geänderte und davon abhängige Dateien</p><p>(Inkrementalität)</p></li></ul><ld-supplemental><p>Heutzutage bringen fast alle Programmiersprachen eigene Buildsysteme mit oder es gibt etablierte Buildsysteme.</p><dl class="field-list simple"><dt>C/C++<span class="colon">:</span></dt><dd><p><strong>Make</strong>, <strong>CMake</strong></p></dd><dt>Java<span class="colon">:</span></dt><dd><p><strong>Maven</strong>, Gradle, <s>Ant</s>, sbt</p></dd><dt>Scala<span class="colon">:</span></dt><dd><p><strong>sbt</strong></p></dd><dt>Rust<span class="colon">:</span></dt><dd><p><strong>Cargo</strong></p></dd><dt>...<span class="colon">:</span></dt><dd><p>...</p></dd></dl></ld-supplemental></ld-topic>
+<ld-topic id="minimale-anforderungen-an-ein-buildskript-fur-softwareprojekte"><h2>Minimale Anforderungen an ein Buildskript für Softwareprojekte</h2><ol class="arabic incremental-list simple"><li><p><strong>Kompilieren</strong> des Codes nach einem frischen Update (<span class="fail">bei Fehler Abbruch</span>)</p></li><li><p><strong>Testen</strong> des Codes:</p><ol class="arabic incremental-list simple"><li><p><strong>Unit-Tests</strong> (<span class="fail">bei Fehler Abbruch</span>)</p></li><li><p><strong>Integrationstests</strong> (<span class="fail">bei Fehler Abbruch</span>)</p></li><li><p>Systemtests/Abnahmetests (<span class="fail">bei Fehler Abbruch</span>)</p></li></ol></li><li><p><strong>Packaging</strong> des Projekts (<span class="fail">bei Fehler Abbruch</span>)</p></li><li><p><strong>Deployment</strong> (typischerweise in einer Testumgebung)</p></li></ol></ld-topic>
+<ld-topic id="buildskripte-fur-gro-ere-softwareprojekte"><h2>Buildskripte für größere Softwareprojekte</h2><p>Insbesondere bei größeren Projekten kommen häufig noch viele weitere Schritte hinzu:</p><ul class="simple"><li><p>Code-Dokumentation erzeugen und veröffentlichen</p></li><li><p>verschiedene statische Analysen durchführen, um Fehler zu finden</p></li><li><p>zahlreiche Skripte um zum Beispiel Datenbanken zu aktualisieren, Docker-Container zu bauen und zu starten...</p></li><li><p>...</p></li></ul></ld-topic>
+<ld-topic class="new-section transition-fade" id="testen-von-software"><h2>Testen von Software</h2></ld-topic>
+<ld-topic id="validierung-vs-verifikation-v-v"><h2>Validierung vs. Verifikation (V&#x26;V)</h2><ld-deck class="height-100"><ld-card><dl class="field-list simple"><dt>Validierung<span class="colon">:</span></dt><dd><p>„Bauen wir das richtige Produkt?“</p></dd><dt>Verifikation<span class="colon">:</span></dt><dd><p>„Bauen wir das Produkt korrekt?“</p></dd></dl></ld-card><ld-card class="incremental"><ld-grid class="default-layout"><ld-cell class="width-50" style="align-self:auto;"><div style="width: 36ch; height: 37.7ch;"><!-- SVG meant to be directly embedded in a LectureDoc Document. -->
+<svg
+  class="se-diagram"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 354 338"
+  font-size="14"
+>
+  <title>Software-Inspektionen im Entwicklungsprozess</title>
+
+  <!-- Die Technik selbst -->
+  <rect class="artifact-accent" x="8" y="6" width="128" height="44" />
+  <text class="label" x="72">
+    <tspan y="23.5">Software</tspan>
+    <tspan x="72" y="42.5">Inspektionen</tspan>
+  </text>
+
+
+  <!-- Statisch geprüfte Artefakte (linke Spalte) -->
+  <g class="incremental">
+    <path class="connector" d="M 30 50 V 84" />
+    <g class="connector" marker-end="url(#se-arrow)" fill="none">
+      <path d="M 30 84 H 52" />
+    </g>
+
+    <rect class="artifact" x="52" y="62" width="128" height="44" />
+    <text class="label" x="116">
+      <tspan y="79.5">Anforderungs-</tspan>
+      <tspan x="116" y="98.5">spezifikation</tspan>
+    </text>
+  </g>
+
+
+  <g class="incremental">
+    <path class="connector" d="M 30 50 V 140" />
+    <g class="connector" marker-end="url(#se-arrow)" fill="none">
+      <path d="M 30 140 H 52" />
+    </g>
+
+    <rect class="artifact" x="52" y="118" width="128" height="44" />
+    <text class="label" x="116" y="145">High-level Design</text>
+  </g>
+
+  <g class="incremental">
+    <path class="connector" d="M 30 50 V 196" />
+    <g class="connector" marker-end="url(#se-arrow)" fill="none">
+      <path d="M 30 196 H 52" />
+    </g>
+
+    <rect class="artifact" x="52" y="174" width="128" height="44" />
+    <text class="label" x="116">
+      <tspan y="191.5">formale</tspan>
+      <tspan x="116" y="210.5">Spezifikation</tspan>
+    </text>
+  </g>
+
+  <g class="incremental">
+    <path class="connector" d="M 30 50 V 252" />
+    <g class="connector" marker-end="url(#se-arrow)" fill="none">
+      <path d="M 30 252 H 52" />
+    </g>
+
+    <rect class="artifact" x="52" y="230" width="128" height="44" />
+    <text class="label" x="116">
+      <tspan y="247.5">detaillierter</tspan>
+      <tspan x="116" y="266.5">Entwurf</tspan>
+    </text>
+  </g>
+
+  <!-- Das Programm -->
+  <g class="incremental">
+    <path class="connector" d="M 30 50 V 308" />
+    <g class="connector" marker-end="url(#se-arrow)" fill="none">
+      <path d="M 30 308 H 52" />
+    </g>
+
+    <rect class="artifact" x="52" y="286" width="128" height="44" />
+    <path class="artifact-mark" d="M 65 286 V 330 M 167 286 V 330" />
+    <text class="label" x="116" y="313">Programm</text>
+  </g>
+
+  <!-- Prototyp: aus der Anforderungsspezifikation gebaut -->
+  <g class="incremental">
+    <rect class="artifact" x="218" y="62" width="128" height="44" />
+    <path class="artifact-mark" d="M 231 62 V 106 M 333 62 V 106" />
+    <text class="label" x="282" y="89">Prototyp</text>
+    <path class="connector" d="M 180 84 H 218" marker-end="url(#se-arrow)" />
+  </g>
+
+  <!-- Programm-Testing: die dynamische Technik -->
+  <g class="incremental">
+    <rect class="artifact-accent" x="218" y="286" width="128" height="44" rx="22" ry="22" />
+    <text class="label" x="282">
+      <tspan y="303.5">Programm</tspan>
+      <tspan x="282" y="322.5">Testing</tspan>
+    </text>
+    <path class="connector" d="M 218 308 H 180" marker-end="url(#se-arrow)" />
+    <path class="connector" d="M 282 286 V 106" marker-end="url(#se-arrow)" />
+  </g>
+
+</svg>
+</div></ld-cell><ld-cell class="width-50" style="align-self:auto;"><p class="rubric">Zwei komplementäre Ansätze die (V&#x26;V) unterscheiden:</p><ol class="arabic list-with-explanations"><li><p>Software-Inspektionen oder Peer-Reviews (statische Technik)</p><p>Software-Inspektionen können in allen Phasen des Prozesses durchgeführt werden.</p></li><li><p>Software-Tests (dynamische Technik)</p></li></ol></ld-cell></ld-grid></ld-card></ld-deck></ld-topic>
+<ld-topic id="software-inspektionen-uberprufen-die-ubereinstimmung-zwischen-einem-programm-und-seiner-spezifikation"><h2>Software-Inspektionen überprüfen die Übereinstimmung zwischen einem Programm und seiner Spezifikation.</h2><p>Ausgewählte Ansätze:</p><ld-story><div class="compound"><p class="rubric">Programminspektionen</p><p>Ziel ist es, Programmfehler, Verstöße gegen Standards und mangelhaften Code zu finden, und nicht, allgemeinere Designfragen zu berücksichtigen; sie werden in der Regel von einem Team durchgeführt, dessen Mitglieder den Code systematisch analysieren. Eine Inspektion wird in der Regel anhand von Checklisten durchgeführt.</p><ld-supplemental><p>Studien haben gezeigt, dass eine Inspektion von etwa 100LoC etwa einen Personentag an Aufwand erfordert.</p></ld-supplemental></div><div class="compound incremental"><p class="rubric">automatisierte Quellcodeanalyse</p><p>Diese umfasst u. a. Kontrollflussanalysen, Datenverwendungs-/flussanalyse, Informationsflussanalyse und Pfadanalyse.</p><p>Statische Analysen lenken die Aufmerksamkeit auf Anomalien.</p></div><div class="compound incremental"><p class="rubric">Formale Verifikation</p><p>Die formale Verifizierung kann das Nichtvorhandensein bestimmter Fehler garantieren. So kann z. B. garantiert werden, dass ein Programm keine Deadlocks, Race Conditions oder Pufferüberläufe enthält.</p></div><aside class="admonition incremental" data-theme="summary"><p class="admonition-title" data-theme="summary-header"><span>Zusammenfassung</span></p><p>Software-Inspektionen zeigen nicht, dass die Software nützlich ist.</p></aside></ld-story></ld-topic>
+<ld-topic id="ausgewahlte-testziele"><h2>ausgewählte Testziele</h2><ul class="simple"><li><p>Test der Funktionalität</p></li><li><p>Test auf Robustheit</p></li><li><p>Test der Effizienz/Performance</p></li><li><p><span class="peripheral">Test auf Wartbarkeit</span></p></li><li><p>Test auf Nutzbarkeit</p></li></ul></ld-topic>
+<ld-topic class="no-title" id="testarten"><h2>Testarten</h2><ld-grid class="height-100 default-layout"><ld-cell class="width-50 height-100" style="align-self:auto;"><div class="compound padding-1em" data-theme="dark"><p><strong>Black Box Testen</strong></p><p>Wir wollen die Korrektheit zeigen.</p><p>Testdaten werden durch die Untersuchung der Domäne gewonnen. Was sind gültige und was sind ungültige Eingabewerte in der Domäne?</p><p>Der Test kann (und sollte!) ohne Betrachtung der konkreten Implementierung entwickelt werden.</p></div></ld-cell><ld-cell class="width-50 height-100" style="align-self:auto;"><div class="compound padding-1em" data-theme="light"><p><strong>White Box Testen</strong></p><p>Wie auch beim Black-Box Test wollen wir die Korrektheit zeigen.</p><p>Testdaten werden durch die Inspektion des Programms gewonnen.</p><p>Das heißt im Umkehrschluss, dass wir den Quellcode des Programms benötigen.</p></div></ld-cell></ld-grid></ld-topic>
+<ld-topic id="der-umfang-eines-tests-ist-die-sammlung-der-zu-prufenden-softwarekomponenten"><h2>Der Umfang eines Tests ist die Sammlung der zu prüfenden Softwarekomponenten.</h2><dl class="incremental-list field-list simple"><dt>Unit Tests (Modultest)<span class="colon">:</span></dt><dd><p>Umfasst eine relativ kleine ausführbare Datei; z.B. ein einzelnes Objekt.</p></dd><dt>Integrationstest<span class="colon">:</span></dt><dd><p>Komplettes (Teil-)System. Schnittstellen zwischen den Einheiten werden getestet, um zu zeigen, dass die Einheiten gemeinsam funktionsfähig sind.</p></dd><dt>Systemtest<span class="colon">:</span></dt><dd><p>Eine vollständige integrierte Anwendung. Kategorisiert nach der Art der Konformität, die festgestellt werden soll: funktional, Leistung, Stress oder Belastung</p></dd><dt>Abnahmetests<span class="colon">:</span></dt><dd><p>Tests (durch den Kunden), um zu zeigen, dass das System die Anforderungen erfüllt.</p></dd></dl></ld-topic>
+<ld-topic id="testplane"><h2>Testpläne</h2><p>Testpläne beschreiben, wie die Software getestet wird.</p><aside class="admonition incremental" data-theme="observation"><p class="admonition-title" data-theme="observation-header"><span>Beobachtung</span></p><p>Da die Anzahl der Tests praktisch unendlich ist, müssen wir (für praktische Zwecke) eine Annahme darüber treffen, wo Fehler wahrscheinlich zu finden sind; d. h. die Tests müssen auf einem Fehlermodell beruhen.</p></aside><div class="incremental"><p>Es gibt zwei allgemeine Fehlermodelle und entsprechende Prüfstrategien:</p><ol class="arabic simple"><li><p>konformitätsorientiertes Testen</p></li><li><p>fehlerorientiertes Testen</p></li></ol></div></ld-topic>
+<ld-topic id="entwicklung-eines-testplans-beispiel"><h2>Entwicklung eines Testplans - Beispiel</h2><ld-deck><ld-card><p>Entwickeln Sie einen Testplan für ein Programm, das ...</p><ol class="arabic simple"><li><p>drei ganzzahlige Werte liest,</p></li><li><p>diese dann als die Länge der Seiten eines Dreiecks interpretiert</p></li><li><p>danach ausgibt ob das Dreieck...</p><ul class="simple"><li><p>gleichschenklig,</p></li><li><p>schief oder</p></li><li><p>gleichseitig ist.</p></li></ul></li></ol><aside class="admonition incremental" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p><p>Ein gültiges Dreieck muss zwei Bedingungen erfüllen:</p><ul class="simple"><li><p>Keine Seite darf eine Länge von Null haben</p></li><li><p>Jede Seite muss kürzer sein als die Summe aller Seiten geteilt durch 2</p></li></ul></aside></ld-card><ld-card class="incremental"><table class="incremental-table-rows"><colgroup><col style="width: 54.1%"><col style="width: 8.1%"><col style="width: 8.1%"><col style="width: 8.1%"><col style="width: 21.6%"></colgroup><thead><tr><th class="head"><p>Beschreibung</p></th><th class="head"><p>A</p></th><th class="head"><p>B</p></th><th class="head"><p>C</p></th><th class="head"><p>Erwartetes Ergebnis</p></th></tr></thead><tbody><tr><td><p>Gültiges schiefes Dreieck</p></td><td><p>5</p></td><td><p>3</p></td><td><p>4</p></td><td><p>Schief</p></td></tr><tr><td><p>Gültiges gleichschenkliges Dreieck</p></td><td><p>3</p></td><td><p>3</p></td><td><p>4</p></td><td><p>Gleichschenklig</p></td></tr><tr><td><p>Gültiges gleichseitiges Dreieck</p></td><td><p>3</p></td><td><p>3</p></td><td><p>3</p></td><td><p>Gleichseitig</p></td></tr><tr><td><p>Erste Permutation von zwei gleichen Seiten</p></td><td><p>50</p></td><td><p>50</p></td><td><p>25</p></td><td><p>Gleichschenklig</p></td></tr><tr><td><p>(Permutationen des vorherigen Testfalls)</p></td><td><p>...</p></td><td><p>...</p></td><td><p>...</p></td><td><p>Gleichschenklig</p></td></tr><tr><td><p>Eine Seite ist Null</p></td><td><p>1000</p></td><td><p>1000</p></td><td><p>0</p></td><td><p>Ungültig</p></td></tr><tr><td><p>Erste Permutation von zwei gleichen Seiten</p></td><td><p>10</p></td><td><p>5</p></td><td><p>5</p></td><td><p>Ungültig</p></td></tr><tr><td><p>Zweite Permutation von zwei gleichen Seiten</p></td><td><p>5</p></td><td><p>10</p></td><td><p>5</p></td><td><p>Ungültig</p></td></tr><tr><td><p>Dritte Permutation von zwei gleichen Seiten</p></td><td><p>5</p></td><td><p>5</p></td><td><p>10</p></td><td><p>Ungültig</p></td></tr><tr><td><p>Drei Seiten größer als Null, Summe der zwei Kleinsten ist kleiner als die Größte</p></td><td><p>8</p></td><td><p>5</p></td><td><p>2</p></td><td><p>Ungültig</p></td></tr><tr><td><p>Drei Seiten mit maximaler Länge</p></td><td><p>MAX</p></td><td><p>MAX</p></td><td><p>MAX</p></td><td><p>Gleichseitig</p></td></tr><tr><td><p>Zwei Seiten mit maximaler Länge</p></td><td><p>MAX</p></td><td><p>MAX</p></td><td><p>1</p></td><td><p>Gleichschenklig</p></td></tr><tr><td><p>Eine Seite mit maximaler Länge</p></td><td><p>1</p></td><td><p>1</p></td><td><p>MAX</p></td><td><p>Ungültig</p></td></tr></tbody></table><ld-supplemental><p>Die Testfälle sind noch nicht vollständig (zum Beispiel wenn A, B und C alle 0 sind; oder wenn eine Seite die Länge der beiden anderen Seiten addiert hat). Tests zum Beispiel in Hinblick auf objektorientierte Struktur, Fehlerbehandlung, etc. ... fehlen.</p></ld-supplemental></ld-card></ld-deck></ld-topic>
+<ld-topic id="test-uberdeckung-eng-test-coverage"><h2>(Test-)Überdeckung (eng.  (Test-)Coverage)</h2><aside class="admonition" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Wie wissen wir aber wie “gut” unsere Tests sind?</p></aside><aside class="admonition incremental" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><p>Testüberdeckung beschreibt, wie viel des Programms durch die Tests geprüft wird.</p></aside><div class="incremental"><p>Hierbei gibt es verschiedene Überdeckungskriterien, die verschiedene Metriken für die Beschreibung der Testgüte nutzen.</p></div></ld-topic>
+<ld-topic id="anweisungsuberdeckung-statement-coverage"><h2>Anweisungsüberdeckung (<span class="eng">Statement Coverage</span>)</h2><p>Alternativ auch Zeilenüberdeckung oder <span class="eng">Line Coverage</span> genannt.</p><ld-grid class="default-layout"><ld-cell style="align-self:auto;"><p>Zu testende Software:</p><pre class="code java literal-block"><small class="ln">1</small><code data-lineno="1"><span class="keyword">public</span> <span class="keyword">double</span> compute <span class="punctuation">(</span><span class="keyword">boolean</span> includeTax<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">2</small><code data-lineno="2">    <span class="keyword">double</span> result <span class="operator">=</span> <span class="literal number integer">1.3</span><span class="punctuation">;</span>
+</code><small class="ln">3</small><code data-lineno="3">    <span class="keyword">if</span> <span class="punctuation">(</span>includeTax<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">4</small><code data-lineno="4">        result <span class="operator">*=</span> <span class="literal number integer">1.19</span><span class="punctuation">;</span>
+</code><small class="ln">5</small><code data-lineno="5">    <span class="punctuation">}</span>
+</code><small class="ln">6</small><code data-lineno="6">    <span class="keyword">return</span> result<span class="punctuation">;</span>
+</code><small class="ln">7</small><code data-lineno="7"><span class="punctuation">}</span></code></pre></ld-cell><ld-cell class="incremental" style="align-self:auto;"><p>Testfälle:</p><pre class="code java literal-block"><small class="ln">1</small><code data-lineno="1"><span class="name function">compute</span><span class="punctuation">(</span><span class="keyword constant">false</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">2</small><code data-lineno="2"><span class="name function">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">)</span><span class="punctuation">;</span></code></pre><aside class="admonition incremental" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Wie hoch ist die Anweisungsüberdeckung? Sind beide Testfälle notwendig?</p><ld-presenter-note encrypted="">MTAwMDAw:clQKmzjc0gNnO7c0KyCmejCn03vwSE3Ld3BGqPlCGC4=:xdx0kt4SUfZh4ORo:Zimc8a3WZcm2UsXCG6NWuwSmgXhL0fXmedbc69U7jPOIIGhD5aCwEuPS24SqewOq8paFU4flUFMoVps2se7XXRoMuIjdKDJgxTdyFPBMeE6djU2j42O1ZbO+KaxaP9hAViz/pw5Q+mY=</ld-presenter-note></aside></ld-cell></ld-grid><aside class="admonition margin-top-1em incremental" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><div class="math"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mtext>Anweisungs</mtext><mover accent="true"><mtext>u</mtext><mo>¨</mo></mover><mtext>berdeckung</mtext></mrow><mo>=</mo><mfrac><mrow><mtext># ausgef</mtext><mover accent="true"><mtext>u</mtext><mo>¨</mo></mover><mtext>hrte Anweisungen</mtext></mrow><mtext># aller Anweisungen</mtext></mfrac><mo>⋅</mo><mn>100</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">\text{Anweisungsüberdeckung} = \frac{\text{\# ausgeführte Anweisungen}}{\text{\# aller Anweisungen}} \cdot 100\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Anweisungs</span><span class="mord katex-accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord">u</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">¨</span></span></span></span></span></span></span><span class="mord">berdeckung</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.2519em;vertical-align:-0.8804em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"># aller Anweisungen</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"># ausgef</span><span class="mord katex-accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord">u</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">¨</span></span></span></span></span></span></span><span class="mord">hrte Anweisungen</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">100%</span></span></span></span></span></div></aside></ld-topic>
+<ld-topic id="zweiguberdeckung-branch-coverage"><h2>Zweigüberdeckung (<span class="eng">Branch Coverage</span>)</h2><ld-grid class="default-layout"><ld-cell style="align-self:auto;"><p>Zu testende Software:</p><pre class="code java literal-block"><small class="ln">1</small><code data-lineno="1"><span class="keyword">public</span> <span class="keyword">double</span> compute <span class="punctuation">(</span><span class="keyword">boolean</span> includeTax<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">2</small><code data-lineno="2">    <span class="keyword">double</span> result <span class="operator">=</span> <span class="literal number integer">1.3</span><span class="punctuation">;</span>
+</code><small class="ln">3</small><code data-lineno="3">    <span class="keyword">if</span> <span class="punctuation">(</span>includeTax<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">4</small><code data-lineno="4">        result <span class="operator">*=</span> <span class="literal number integer">1.19</span><span class="punctuation">;</span>
+</code><small class="ln">5</small><code data-lineno="5">    <span class="punctuation">}</span>
+</code><small class="ln">6</small><code data-lineno="6">    <span class="keyword">return</span> result<span class="punctuation">;</span>
+</code><small class="ln">7</small><code data-lineno="7"><span class="punctuation">}</span></code></pre></ld-cell><ld-cell class="incremental" style="align-self:auto;"><p>Kontrollflussgraph:</p><div style="width: 30ch; height: 7lh; container-type:size;">
+<svg viewBox="0 0 30 13" font-size="1.75" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <rect width="21" height="4.25" x="1" y="0.15" rx="1" ry="1" />
+    <text class="code" x="2.5" y="1.75">
+        <tspan class="keyword type">double</tspan>
+        <tspan class="name">result</tspan>
+        <tspan class="operator">=</tspan>
+        <tspan class="literal number">1.3</tspan>
+    </text>
+    <text class="code" x="2.5" y="3.75">
+        <tspan class="keyword">if</tspan>
+        <tspan class="whitespace"> </tspan>
+        <tspan class="punctuation">(</tspan>
+        <tspan class="name">includeTax</tspan>
+        <tspan class="punctuation">)</tspan>
+    </text>
+
+    <g class="incremental">
+    <line x1="14" y1="4.4" x2="14" y2="6.15" style="stroke:blue;stroke-width:0.2" marker-end="url(#arrow)"/>
+    <rect width="16.5" height="2" x="6" y="6.15" rx="1" ry="1" />
+    <text class="code" x="7.5" y="7.75">
+        <tspan class="name">result</tspan>
+        <tspan class="whitespace"> </tspan>
+        <tspan class="operator">*=</tspan>
+        <tspan class="whitespace">
+        </tspan>
+        <tspan class="literal number float">1.19</tspan>
+    </text>
+    </g>
+
+    <g class="incremental">
+    <line x1="4" y1="4.4" x2="4" y2="10.15" style="stroke:blue;stroke-width:0.2" marker-end="url(#arrow)"/>
+    <line x1="14" y1="8.15" x2="14" y2="10.15" style="stroke:blue;stroke-width:0.2" marker-end="url(#arrow)"/>
+    <rect width="15" height="2" x="1" y="10.15" rx="1" ry="1" />
+    <text class="code" x="2.5" y="11.75">
+        <tspan class="keyword">return</tspan>
+        <tspan class="whitespace"> </tspan>
+        <tspan class="name">result</tspan>
+    </text>
+    </g>
+</svg>
+</div></ld-cell></ld-grid><ld-deck class="incremental"><ld-card><aside class="admonition" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Wie hoch ist die Anweisungsüberdeckung? Sind beide Testfälle notwendig?</p><ld-presenter-note encrypted="">MTAwMDAw:clQKmzjc0gNnO7c0KyCmejCn03vwSE3Ld3BGqPlCGC4=:xdx0kt4SUfZh4ORo:Zimc8a3WZcm2UsXCG6NWuwSmgXhL0fXmedbc69U7jPOIIGhD5aCwEuPS24SqewOq8paFU4flUFMoVps2se7XXRoMuIjdKDJgxTdyFPBMeE6djU2j42O1ZbO+KaxaP9hAViz/pw5Q+mY=</ld-presenter-note></aside></ld-card><ld-card class="incremental"><aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><div class="math"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mtext>Zweig</mtext><mover accent="true"><mtext>u</mtext><mo>¨</mo></mover><mtext>berdeckung</mtext></mrow><mo>=</mo><mfrac><mrow><mtext># ausgef</mtext><mover accent="true"><mtext>u</mtext><mo>¨</mo></mover><mtext>hrte Zweige</mtext></mrow><mtext># aller Zweige</mtext></mfrac><mo>⋅</mo><mn>100</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">\text{Zweigüberdeckung} = \frac{\text{\# ausgeführte Zweige}}{\text{\# aller Zweige}} \cdot 100\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Zweig</span><span class="mord katex-accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord">u</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">¨</span></span></span></span></span></span></span><span class="mord">berdeckung</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.2519em;vertical-align:-0.8804em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"># aller Zweige</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"># ausgef</span><span class="mord katex-accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord">u</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">¨</span></span></span></span></span></span></span><span class="mord">hrte Zweige</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">100%</span></span></span></span></span></div></aside></ld-card></ld-deck></ld-topic>
+<ld-topic id="pfaduberdeckung-path-coverage"><h2>Pfadüberdeckung (<span class="eng">Path Coverage</span>)</h2><ld-deck><ld-card><aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition</span></p><div class="math"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mtext>Pfad</mtext><mover accent="true"><mtext>u</mtext><mo>¨</mo></mover><mtext>berdeckung</mtext></mrow><mo>=</mo><mfrac><mrow><mtext># ausgef</mtext><mover accent="true"><mtext>u</mtext><mo>¨</mo></mover><mtext>hrten Pfade</mtext></mrow><mrow><mtext># aller (m</mtext><mover accent="true"><mtext>o</mtext><mo>¨</mo></mover><mtext>glichen) Pfade</mtext></mrow></mfrac><mo>⋅</mo><mn>100</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">\text{Pfadüberdeckung} = \frac{\text{\# ausgeführten Pfade}}{\text{\# aller (möglichen) Pfade}} \cdot 100\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Pfad</span><span class="mord katex-accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord">u</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">¨</span></span></span></span></span></span></span><span class="mord">berdeckung</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.3074em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"># aller (m</span><span class="mord katex-accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord">o</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">¨</span></span></span></span></span></span></span><span class="mord">glichen) Pfade</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"># ausgef</span><span class="mord katex-accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord">u</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">¨</span></span></span></span></span></span></span><span class="mord">hrten Pfade</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">100%</span></span></span></span></span></div></aside></ld-card><ld-card class="incremental"><ld-grid class="default-layout"><ld-cell style="align-self:auto;"><p>Zu testende Software:</p><pre class="code java literal-block"><small class="ln"> 1</small><code data-lineno=" 1"><span class="keyword">public</span> <span class="keyword">double</span> compute <span class="punctuation">(</span><span class="keyword">boolean</span> includeTax<span class="punctuation">,</span>
+</code><small class="ln"> 2</small><code data-lineno=" 2">                       <span class="keyword">boolean</span> reducedTax<span class="punctuation">,</span>
+</code><small class="ln"> 3</small><code data-lineno=" 3">                       <span class="keyword">double</span> discount<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln"> 4</small><code data-lineno=" 4">  <span class="keyword">double</span> result <span class="operator">=</span> <span class="literal number integer">1.3</span><span class="punctuation">;</span>
+</code><small class="ln"> 5</small><code data-lineno=" 5">  <span class="keyword">if</span> <span class="punctuation">(</span>includeTax<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln"> 6</small><code data-lineno=" 6">    <span class="keyword">if</span> <span class="punctuation">(</span>reducedTax<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln"> 7</small><code data-lineno=" 7">      result <span class="operator">*=</span> <span class="literal number integer">1.07</span><span class="punctuation">;</span>
+</code><small class="ln"> 8</small><code data-lineno=" 8">    <span class="keyword">else</span> <span class="punctuation">{</span>
+</code><small class="ln"> 9</small><code data-lineno=" 9">      result <span class="operator">*=</span> <span class="literal number integer">1.19</span><span class="punctuation">;</span>
+</code><small class="ln">10</small><code data-lineno="10">  <span class="punctuation">}</span> <span class="punctuation">}</span>
+</code><small class="ln">11</small><code data-lineno="11">  <span class="keyword">if</span> <span class="punctuation">(</span>discount <span class="operator">&gt;</span> <span class="literal number integer">0.0</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">12</small><code data-lineno="12">    result <span class="operator">*=</span> <span class="punctuation">(</span><span class="literal number integer">1.0</span> <span class="operator">-</span> discount<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">13</small><code data-lineno="13">  <span class="punctuation">}</span>
+</code><small class="ln">14</small><code data-lineno="14">  <span class="keyword">return</span> result<span class="punctuation">;</span>
+</code><small class="ln">15</small><code data-lineno="15"><span class="punctuation">}</span></code></pre></ld-cell><ld-cell class="incremental" style="align-self:auto;"><p>Testfälle:</p><pre class="code java literal-block"><small class="ln">1</small><code data-lineno="1"><span class="name function">compute</span><span class="punctuation">(</span><span class="keyword constant">false</span><span class="punctuation">,</span> <span class="keyword constant">false</span><span class="punctuation">,</span> <span class="literal number integer">0.0</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">2</small><code data-lineno="2"><span class="name function">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">,</span> <span class="keyword constant">false</span><span class="punctuation">,</span> <span class="literal number integer">0.0</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">3</small><code data-lineno="3"><span class="name function">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">,</span> <span class="keyword constant">true</span><span class="punctuation">,</span> <span class="literal number integer">0.0</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">4</small><code data-lineno="4"><span class="name function">compute</span><span class="punctuation">(</span><span class="keyword constant">false</span><span class="punctuation">,</span> <span class="keyword constant">false</span><span class="punctuation">,</span> <span class="literal number integer">0.1</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">5</small><code data-lineno="5"><span class="name function">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">,</span> <span class="keyword constant">false</span><span class="punctuation">,</span> <span class="literal number integer">0.1</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">6</small><code data-lineno="6"><span class="name function">compute</span><span class="punctuation">(</span><span class="keyword constant">true</span><span class="punctuation">,</span> <span class="keyword constant">true</span><span class="punctuation">,</span> <span class="literal number integer">0.1</span><span class="punctuation">)</span><span class="punctuation">;</span></code></pre><aside class="admonition incremental" data-theme="question"><p class="admonition-title" data-theme="question-header"><span>Frage</span></p><p>Wie hoch ist die Pfadüberdeckung?</p><ld-presenter-note encrypted="">MTAwMDAw:UXN7Uqv2nWe3l7lzywDzYvqxWtRhDSw0Pb2/qsyX2yw=:CaGuJ493MInAg9MC:Tp0VmKE07GMgxqOtJVnEamUsy0EMd4Xphi1hElFEks/WombfRgWyvJNj0J4hIaVPcJG746yy</ld-presenter-note></aside></ld-cell></ld-grid></ld-card><ld-card class="center-content incremental"><aside class="admonition" data-theme="attention"><p class="admonition-title" data-theme="attention-header">Achtung!</p><p>Die Pfadüberdeckung ist in der Praxis oft nicht realisierbar, da die Anzahl der möglichen Pfade exponentiell mit der Anzahl der Verzweigungen wächst.</p><p>In der Praxis wird daher oft die Zweigüberdeckung als Kompromiss genutzt.</p></aside></ld-card></ld-deck></ld-topic>
+<ld-topic id="weitere-uberdeckungskriterien"><h2>Weitere Überdeckungskriterien</h2><ul class="incremental-list list-with-explanations"><li><p>(einfache) Bedingungsüberdeckung (<span class="eng">(Simple) Condition Coverage</span>)</p></li><li><p>Eingangs-/Ausgangsüberdeckung (<span class="eng">Entry/Exit Coverage</span>)</p></li><li><p>Schleifenüberdeckung (<span class="eng">Loop Coverage</span>)</p></li><li><p>Zustandsüberdeckung (<span class="eng">State Coverage</span>)</p><p>(Erfodert ggf. das ein endlicher Automat modelliert wird.)</p></li><li><p>Datenflussüberdeckung (<span class="eng">Data Flow Coverage</span>)</p></li></ul></ld-topic>
+<ld-topic id="uberdeckungsziele"><h2>Überdeckungsziele</h2><ld-deck><ld-card><dl class="field-list"><dt>IEEE 29119 “Software Testing”<span class="colon">:</span></dt><dd><p>100% Anweisungsabdeckung</p><p>100% Zweigabdeckung für kritische Module</p></dd><dt>DO-178B “Software Considerations in Airborne Systems and Equipment Certification”<span class="colon">:</span></dt><dd><p>Abhängig von der Auswirkung von Systemfehlern.
+Beispiel: 100% Anweisungsabdeckung bei Verletzungsgefahr von Passagieren.</p></dd><dt>IEC 61508 “Functional Safety of Electrical/Electronic/Programmable Electronic Safety-Related Systems”<span class="colon">:</span></dt><dd><p>100% Anweisungs-/Zweig-/Bedingungsabdeckung je nach Sicherheitsanforderung</p></dd><dt>ISO 26262 “Road vehicles - Functional safety”<span class="colon">:</span></dt><dd><p>Abhängig von der Kritikalität der Komponente</p></dd></dl></ld-card><ld-card class="s-overlay center-content height-100 incremental"><aside class="admonition backdrop-blur" data-theme="summary"><p class="admonition-title" data-theme="summary-header"><span>Zusammenfassung</span></p><p>Das Erreichen eines Überdeckungsziels erfordert Aufwand, der durch die Kritikalität möglicher Fehler motiviert sein muss.</p><p>In vielen Anwendersystemen ist eine hundertprozentige Testabdeckung nicht notwendig. Testabdeckung ist dennoch zu messen.</p></aside></ld-card></ld-deck></ld-topic>
+<ld-topic class="transition-flip no-title center-content" id="grenzen-des-testens"><h2>Grenzen des Testens</h2><blockquote class="epigraph"><p>Tests können nur das Vorhandensein von Fehlern zeigen, nicht deren Abwesenheit.</p><p class="attribution">—E. Dijkstra</p></blockquote></ld-topic>
+<ld-topic id="junit-test-case-beispiel"><h2>JUnit Test Case - Beispiel</h2><pre class="code java literal-block"><small class="ln"> 1</small><code data-lineno=" 1"><span class="keyword">import</span> <span class="name namespace">org<span class="punctuation">.</span>junit<span class="punctuation">.</span></span><span class="name class">Test</span><span class="punctuation">;</span>
+</code><small class="ln"> 2</small><code data-lineno=" 2"><span class="keyword">import</span> <span class="keyword">static</span> <span class="name namespace">org<span class="punctuation">.</span>junit<span class="punctuation">.</span></span><span class="name class">Assert</span><span class="punctuation">.</span>assertEquals<span class="punctuation">;</span>
+</code><small class="ln"> 3</small><code data-lineno=" 3"><span class="keyword">import</span> <span class="keyword">static</span> <span class="name namespace">org<span class="punctuation">.</span>junit<span class="punctuation">.</span></span><span class="name class">Assert</span><span class="punctuation">.</span>fail<span class="punctuation">;</span>
+</code><small class="ln"> 4</small><code data-lineno=" 4">
+</code><small class="ln"> 5</small><code data-lineno=" 5"><span class="keyword">import</span> <span class="name namespace">java<span class="punctuation">.</span>util<span class="punctuation">.</span></span><span class="name class">Arrays</span><span class="punctuation">;</span>
+</code><small class="ln"> 6</small><code data-lineno=" 6">
+</code><small class="ln"> 7</small><code data-lineno=" 7"><span class="keyword">public</span> <span class="keyword">class</span> <span class="name class">SimpleCalculatorTest</span> <span class="punctuation">{</span>
+</code><small class="ln"> 8</small><code data-lineno=" 8">
+</code><small class="ln"> 9</small><code data-lineno=" 9">  <span class="punctuation">@Test</span>                                                <span class="comment single">// &lt;= JUnit Test Annotation</span>
+</code><small class="ln">10</small><code data-lineno="10">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="name function">testProcess</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">11</small><code data-lineno="11">
+</code><small class="ln">12</small><code data-lineno="12">    <span class="name class">String</span><span class="punctuation">[</span><span class="punctuation">]</span> term <span class="operator">=</span> <span class="keyword">new</span> <span class="name class">String</span><span class="punctuation">[</span><span class="punctuation">]</span> <span class="punctuation">{</span>
+</code><small class="ln">13</small><code data-lineno="13">      <span class="literal string">"4"</span><span class="punctuation">,</span> <span class="literal string">"5"</span><span class="punctuation">,</span> <span class="literal string">"+"</span><span class="punctuation">,</span> <span class="literal string">"7"</span><span class="punctuation">,</span> <span class="literal string">"*"</span>
+</code><small class="ln">14</small><code data-lineno="14">    <span class="punctuation">}</span><span class="punctuation">;</span>
+</code><small class="ln">15</small><code data-lineno="15">    <span class="keyword">long</span> result <span class="operator">=</span> <span class="name class">SimpleCalculator</span><span class="punctuation">.</span><span class="name function">process</span><span class="punctuation">(</span>term<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">16</small><code data-lineno="16">      <span class="name function">assertEquals</span><span class="punctuation">(</span><span class="name class">Arrays</span><span class="punctuation">.</span><span class="name function">toString</span><span class="punctuation">(</span>term<span class="punctuation">)</span><span class="punctuation">,</span> <span class="literal number integer">63</span><span class="punctuation">,</span> result<span class="punctuation">)</span><span class="punctuation">;</span> <span class="comment single">// &lt;= JUnit Assertion</span>
+</code><small class="ln">17</small><code data-lineno="17">  <span class="punctuation">}</span>
+</code><small class="ln">18</small><code data-lineno="18"><span class="punctuation">}</span></code></pre></ld-topic>
+<ld-topic id="testng-beispiel"><h2>TestNG - Beispiel</h2><pre class="code java literal-block"><small class="ln"> 1</small><code data-lineno=" 1"><span class="comment single">// This method will provide data to any test method</span>
+</code><small class="ln"> 2</small><code data-lineno=" 2"><span class="comment single">// that declares that its Data Provider is named "provider1".</span>
+</code><small class="ln"> 3</small><code data-lineno=" 3"><span class="punctuation">@DataProvider</span><span class="punctuation">(</span>name <span class="operator">=</span> <span class="literal string">"provider1"</span><span class="punctuation">)</span>
+</code><small class="ln"> 4</small><code data-lineno=" 4"><span class="keyword">public</span> <span class="name class">Object</span><span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">[</span><span class="punctuation">]</span> <span class="name function">createData1</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln"> 5</small><code data-lineno=" 5">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="name class">Object</span><span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">[</span><span class="punctuation">]</span> <span class="punctuation">{</span>
+</code><small class="ln"> 6</small><code data-lineno=" 6">        <span class="punctuation">{</span> <span class="literal string">"Cedric"</span><span class="punctuation">,</span> <span class="keyword">new</span> <span class="name class">Integer</span><span class="punctuation">(</span><span class="literal number integer">36</span><span class="punctuation">)</span> <span class="punctuation">}</span><span class="punctuation">,</span>
+</code><small class="ln"> 7</small><code data-lineno=" 7">        <span class="punctuation">{</span> <span class="literal string">"Anne"</span><span class="punctuation">,</span> <span class="keyword">new</span> <span class="name class">Integer</span><span class="punctuation">(</span><span class="literal number integer">37</span><span class="punctuation">)</span> <span class="punctuation">}</span>
+</code><small class="ln"> 8</small><code data-lineno=" 8">    <span class="punctuation">}</span><span class="punctuation">;</span>
+</code><small class="ln"> 9</small><code data-lineno=" 9"><span class="punctuation">}</span>
+</code><small class="ln">10</small><code data-lineno="10">
+</code><small class="ln">11</small><code data-lineno="11"><span class="comment single">// This test method declares that its data should be</span>
+</code><small class="ln">12</small><code data-lineno="12"><span class="comment single">// supplied by the Data Provider named "provider1".</span>
+</code><small class="ln">13</small><code data-lineno="13"><span class="punctuation">@Test</span><span class="punctuation">(</span>dataProvider <span class="operator">=</span> <span class="literal string">"provider1"</span><span class="punctuation">)</span>
+</code><small class="ln">14</small><code data-lineno="14"><span class="keyword">public</span> <span class="keyword">void</span> <span class="name function">verifyData1</span><span class="punctuation">(</span><span class="name class">String</span> n1<span class="punctuation">,</span> <span class="name class">Integer</span> n2<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">15</small><code data-lineno="15">    <span class="name class">System</span><span class="punctuation">.</span>out<span class="punctuation">.</span><span class="name function">println</span><span class="punctuation">(</span>n1 <span class="operator">+</span> <span class="literal string">" "</span> <span class="operator">+</span> n2<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">16</small><code data-lineno="16"><span class="punctuation">}</span></code></pre></ld-topic>
+<ld-topic id="behavior-driven-development"><h2>Behavior-Driven Development</h2><p>Das Ziel ist, dass die Entwickler die Verhaltensabsichten des Systems, das sie entwickeln, definieren.<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> Hier mit Hilfe von ScalaTest.</p><pre class="code scala literal-block"><small class="ln"> 1</small><code data-lineno=" 1"><span class="keyword">import</span> <span class="name namespace">org<span class="punctuation">.</span>specs<span class="punctuation">.</span>runner<span class="punctuation">.</span></span>_
+</code><small class="ln"> 2</small><code data-lineno=" 2"><span class="keyword">import</span> <span class="name namespace">org<span class="punctuation">.</span>specs<span class="punctuation">.</span></span>_
+</code><small class="ln"> 3</small><code data-lineno=" 3">
+</code><small class="ln"> 4</small><code data-lineno=" 4"><span class="keyword">object</span> SimpleCalculatorSpec <span class="keyword">extends</span> Specification <span class="punctuation">{</span>
+</code><small class="ln"> 5</small><code data-lineno=" 5">
+</code><small class="ln"> 6</small><code data-lineno=" 6">    <span class="literal string">"The Simple Calculator"</span> should <span class="punctuation">{</span>
+</code><small class="ln"> 7</small><code data-lineno=" 7">        <span class="literal string">"return the value 36 for the input {“6”,“6”,“*”}"</span> in <span class="punctuation">{</span>
+</code><small class="ln"> 8</small><code data-lineno=" 8">            SimpleCalculator<span class="punctuation">.</span>process<span class="punctuation">(</span>Array<span class="punctuation">(</span><span class="literal string">"6"</span><span class="punctuation">,</span><span class="literal string">"6"</span><span class="punctuation">,</span><span class="literal string">"*"</span><span class="punctuation">)</span><span class="punctuation">)</span> must_<span class="operator">==</span> <span class="literal number integer">36</span>
+</code><small class="ln"> 9</small><code data-lineno=" 9">        <span class="punctuation">}</span>
+</code><small class="ln">10</small><code data-lineno="10">    <span class="punctuation">}</span>
+</code><small class="ln">11</small><code data-lineno="11"><span class="punctuation">}</span></code></pre><aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-1" role="doc-footnote"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span><p><a class="reference external" href="http://behaviour-driven.org/">http://behaviour-driven.org/</a></p></aside></aside></ld-topic>
+<ld-topic id="the-last-word"><h2>The Last Word</h2><blockquote class="epigraph"><p><strong>A Tester’s Courage</strong></p><p>The Director of a software company proudly announced that a flight software developed by the company was installed in an airplane and the airline was offering free first flights to the members of the company. “Who are interested?” the Director asked. Nobody came forward. Finally, one person volunteered. The brave Software Tester stated, ‘I will do it. I know that the airplane will not be able to take off.’</p><p class="attribution">—Unknown Author @ <a class="reference external" href="http://www.softwaretestingfundamentals.com">http://www.softwaretestingfundamentals.com</a></p></blockquote></ld-topic>
+<ld-topic class="exercises" id="ubung"><h2>Übung</h2><ld-scrollable><div class="ld-exercise" id="ld-exercise-1" data-exercise-id="1" data-exercise-title="1"><p>Entwickeln Sie einen Testplan für das folgende Programm:</p><pre class="code java copy-to-clipboard literal-block"><small class="ln"> 1</small><code data-lineno=" 1"><span class="keyword">import</span> <span class="name namespace">java<span class="punctuation">.</span>util<span class="punctuation">.</span></span><span class="name class">Stack</span><span class="punctuation">;</span>
+</code><small class="ln"> 2</small><code data-lineno=" 2">
+</code><small class="ln"> 3</small><code data-lineno=" 3"><span class="keyword">public</span> <span class="keyword">class</span> <span class="name class">RPN</span> <span class="punctuation">{</span>
+</code><small class="ln"> 4</small><code data-lineno=" 4">
+</code><small class="ln"> 5</small><code data-lineno=" 5">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="name function">main</span><span class="punctuation">(</span><span class="name class">String</span><span class="punctuation">[</span><span class="punctuation">]</span> args<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln"> 6</small><code data-lineno=" 6">        <span class="keyword">if</span> <span class="punctuation">(</span>args<span class="punctuation">.</span>length <span class="operator">==</span> <span class="literal number integer">0</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln"> 7</small><code data-lineno=" 7">            <span class="name class">System</span><span class="punctuation">.</span>out<span class="punctuation">.</span><span class="name function">println</span><span class="punctuation">(</span><span class="literal string">"Usage: java RPN &lt;expr&gt;"</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 8</small><code data-lineno=" 8">            <span class="keyword">return</span><span class="punctuation">;</span>
+</code><small class="ln"> 9</small><code data-lineno=" 9">        <span class="punctuation">}</span>
+</code><small class="ln">10</small><code data-lineno="10">        <span class="comment single">// Main logic</span>
+</code><small class="ln">11</small><code data-lineno="11">        <span class="name class">Stack</span><span class="punctuation">&lt;</span><span class="name class">String</span><span class="punctuation">&gt;</span> infix <span class="operator">=</span> <span class="keyword">new</span> <span class="name class">Stack</span><span class="punctuation">&lt;</span><span class="punctuation">&gt;</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">12</small><code data-lineno="12">        <span class="name class">Stack</span><span class="punctuation">&lt;</span><span class="name class">Double</span><span class="punctuation">&gt;</span> ops <span class="operator">=</span> <span class="keyword">new</span> <span class="name class">Stack</span><span class="punctuation">&lt;</span><span class="punctuation">&gt;</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">13</small><code data-lineno="13">        <span class="keyword">for</span> <span class="punctuation">(</span><span class="name class">String</span> arg <span class="operator">:</span> args<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">14</small><code data-lineno="14">            <span class="keyword">switch</span> <span class="punctuation">(</span>arg<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">15</small><code data-lineno="15">                <span class="keyword">case</span> <span class="literal string">"+"</span><span class="operator">:</span>
+</code><small class="ln">16</small><code data-lineno="16">                <span class="keyword">case</span> <span class="literal string">"*"</span><span class="operator">:</span>
+</code><small class="ln">17</small><code data-lineno="17">                <span class="keyword">case</span> <span class="literal string">"/"</span><span class="operator">:</span>
+</code><small class="ln">18</small><code data-lineno="18">                    <span class="keyword">if</span> <span class="punctuation">(</span>ops<span class="punctuation">.</span><span class="name function">size</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="operator">&lt;</span> <span class="literal number integer">2</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">19</small><code data-lineno="19">                        <span class="name class">System</span><span class="punctuation">.</span>out<span class="punctuation">.</span><span class="name function">println</span><span class="punctuation">(</span><span class="literal string">"Error: / requires two operands"</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">20</small><code data-lineno="20">                        <span class="keyword">return</span><span class="punctuation">;</span>
+</code><small class="ln">21</small><code data-lineno="21">                    <span class="punctuation">}</span>
+</code><small class="ln">22</small><code data-lineno="22">                    <span class="keyword">var</span> right <span class="operator">=</span> ops<span class="punctuation">.</span><span class="name function">pop</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">23</small><code data-lineno="23">                    <span class="keyword">var</span> left <span class="operator">=</span> ops<span class="punctuation">.</span><span class="name function">pop</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">24</small><code data-lineno="24">                    <span class="keyword">var</span> rightTerm <span class="operator">=</span> infix<span class="punctuation">.</span><span class="name function">pop</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">25</small><code data-lineno="25">                    <span class="keyword">var</span> leftTerm <span class="operator">=</span> infix<span class="punctuation">.</span><span class="name function">pop</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">26</small><code data-lineno="26">                    <span class="keyword">switch</span> <span class="punctuation">(</span>arg<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">27</small><code data-lineno="27">                        <span class="keyword">case</span> <span class="literal string">"+"</span> <span class="operator">-&gt;</span> ops<span class="punctuation">.</span><span class="name function">push</span><span class="punctuation">(</span>left <span class="operator">+</span> right<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">28</small><code data-lineno="28">                        <span class="keyword">case</span> <span class="literal string">"*"</span> <span class="operator">-&gt;</span> ops<span class="punctuation">.</span><span class="name function">push</span><span class="punctuation">(</span>left <span class="operator">*</span> right<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">29</small><code data-lineno="29">                        <span class="keyword">case</span> <span class="literal string">"/"</span> <span class="operator">-&gt;</span> ops<span class="punctuation">.</span><span class="name function">push</span><span class="punctuation">(</span>left <span class="operator">/</span> right<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">30</small><code data-lineno="30">                    <span class="punctuation">}</span>
+</code><small class="ln">31</small><code data-lineno="31">                    infix<span class="punctuation">.</span><span class="name function">push</span><span class="punctuation">(</span><span class="literal string">"("</span> <span class="operator">+</span> leftTerm <span class="operator">+</span> <span class="literal string">" "</span> <span class="operator">+</span> arg <span class="operator">+</span> <span class="literal string">" "</span> <span class="operator">+</span> rightTerm <span class="operator">+</span> <span class="literal string">")"</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">32</small><code data-lineno="32">                    <span class="keyword">break</span><span class="punctuation">;</span>
+</code><small class="ln">33</small><code data-lineno="33">                <span class="keyword">case</span> <span class="literal string">"sqrt"</span><span class="operator">:</span>
+</code><small class="ln">34</small><code data-lineno="34">                    <span class="keyword">if</span> <span class="punctuation">(</span>ops<span class="punctuation">.</span><span class="name function">size</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="operator">&lt;</span> <span class="literal number integer">1</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">35</small><code data-lineno="35">                        <span class="name class">System</span><span class="punctuation">.</span>out<span class="punctuation">.</span><span class="name function">println</span><span class="punctuation">(</span><span class="literal string">"Error: sqrt requires one operand"</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">36</small><code data-lineno="36">                        <span class="keyword">return</span><span class="punctuation">;</span>
+</code><small class="ln">37</small><code data-lineno="37">                    <span class="punctuation">}</span>
+</code><small class="ln">38</small><code data-lineno="38">                    ops<span class="punctuation">.</span><span class="name function">push</span><span class="punctuation">(</span><span class="name class">Math</span><span class="punctuation">.</span><span class="name function">sqrt</span><span class="punctuation">(</span>ops<span class="punctuation">.</span><span class="name function">pop</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">39</small><code data-lineno="39">                    infix<span class="punctuation">.</span><span class="name function">push</span><span class="punctuation">(</span><span class="literal string">"sqrt("</span> <span class="operator">+</span> infix<span class="punctuation">.</span><span class="name function">pop</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="operator">+</span> <span class="literal string">")"</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">40</small><code data-lineno="40">                    <span class="keyword">break</span><span class="punctuation">;</span>
+</code><small class="ln">41</small><code data-lineno="41">                <span class="keyword">default</span><span class="operator">:</span>
+</code><small class="ln">42</small><code data-lineno="42">                    infix<span class="punctuation">.</span><span class="name function">push</span><span class="punctuation">(</span>arg<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">43</small><code data-lineno="43">                    ops<span class="punctuation">.</span><span class="name function">push</span><span class="punctuation">(</span><span class="name class">Double</span><span class="punctuation">.</span><span class="name function">parseDouble</span><span class="punctuation">(</span>arg<span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">44</small><code data-lineno="44">            <span class="punctuation">}</span>
+</code><small class="ln">45</small><code data-lineno="45">        <span class="punctuation">}</span>
+</code><small class="ln">46</small><code data-lineno="46">        <span class="name class">System</span><span class="punctuation">.</span>out<span class="punctuation">.</span><span class="name function">println</span><span class="punctuation">(</span>infix<span class="punctuation">.</span><span class="name function">pop</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="operator">+</span> <span class="literal string">" = "</span> <span class="operator">+</span> ops<span class="punctuation">.</span><span class="name function">pop</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">47</small><code data-lineno="47">
+</code><small class="ln">48</small><code data-lineno="48">        <span class="keyword">if</span> <span class="punctuation">(</span>infix<span class="punctuation">.</span><span class="name function">size</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="operator">&gt;</span> <span class="literal number integer">0</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">49</small><code data-lineno="49">            <span class="name class">System</span><span class="punctuation">.</span>out<span class="punctuation">.</span><span class="name function">println</span><span class="punctuation">(</span><span class="literal string">"Unused: "</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">50</small><code data-lineno="50">            infix<span class="punctuation">.</span><span class="name function">forEach</span><span class="punctuation">(</span><span class="name class">System</span><span class="punctuation">.</span>out<span class="operator">::</span><span class="name function">println</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">51</small><code data-lineno="51">        <span class="punctuation">}</span>
+</code><small class="ln">52</small><code data-lineno="52">    <span class="punctuation">}</span>
+</code><small class="ln">53</small><code data-lineno="53"><span class="punctuation">}</span></code></pre><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:6MiXB4rAMH7K4OFqX4g7GOh7w0zNcMNKARXP/n+2pS4=:j8hW8p/BzD5c/llZ:B80y9gkD1vFQiw4wIPxg9acPQVKC7hY1RJBOOYe4Rl3IDX6RHpNAo8tJMGfR0vjP6DBRDlET2v33K1KNxi0RcoON/mZNxJF7vX3xtnFsKMOAX/eiERscD1tQP/bs10dx/B7q8z5UkstZ7KKu+P5NDzvDT3ACHoq+Nl4e08c4RwVIqsqgr27UVgtMjTOz0ZzrnZqUUBf1n7CUnCXwUtHJC7RW4W40QnAZyj3aXlq3jMmqLqJiKdJpQzZ6QrGP2xLeHd/l1kPZNexEIRXb09ZdWxzYX4JtUhhHYRnDOSy4wqL61hIOaorXCp73E+qOXNWKMEQv8+YurJ+kvoJK4FLPyXKu/rEIZehfNh+opiO+EzwDN/WzY86T4YppXz/ovpmG5cNCywojl44OHc41eYrUPiHeQSUT+OyP3nykJPURIxBMYNmcwHRxNjWYUPIi0mDp4cTUJppe/B/IrIVeATTX4BFy3VyBfHbRoDFk8lkeZC0cGvFF62OODvz3PzKQanlfSebDjeUvsEcJOWwbAHhSauj66jfo/4bTxZfV21LvM41kJqR9DjIZEHVcCHJ9S3J8MZsuqWNRPv7+aZWKyiBSumFroweazm4zqezS/CweWg8S81ZTRH9es4gOMClrwW/Tq6b4HDG6vIGw4MEzm7hg26DfmiBqEpTnONdfoHGzzrjMVU39VeGwUi8j43CAsvBfbP+QDb5qXSoU7iEl9MfmTmuVW9lvWiRE3FtNDYzfNx7uNPxqWox008Yqh4gKvqXE7MsdVcuMuOigSOPlQ2dvorQaRpUnT366+ovLXfkhy6O0Xzg2VJ/aSgv4JDG0OB/wxI4aFo2Didx0Zf27c9DYIV9hVqbizNdne9OeBABsdMOrDf0MrJlgF9XC2QN07I3NFgQlPOi9VxzY5iWFqpk9eBh1HfbkD6fLZeT423dzqg6ule47ypY1lanTfXZk5/z7jaUL7mW3G4gDRYcI5nDCo/aufFKoRY0GMLySsKdpl8tsvwUvXD2EKTMq+D76sbuav23G9ClFwGSOpH+ZshNkoFdSuRvmXSz1JS36Hy7lywD/4QcHVEfdV5IRqdDoIyR3BNASTJCktRkBCalm5yPK+l8o4aDXetrlZ9dutOMjB/63tDG6JlL27wiKq3nJZIdFUL6jJ5yPvgumG7NdYsQDy7ahJap+eXwUajDVEhydqQb2T4BgZNKVooo+ClaPV16FFgPyw71PtrrPQI+X7pyRP8lhMn0heKEEAtUAvSgC8LvV/qT9RTmSH9f8GMeCQlpsTWyDroDxS3EtWX6Ho9rTwHWADsckLgm+JfF2ScHqQumvlAnVcKL9O/ow6GhFrTK6+mQqd7ooy74LlXWeG/dRE1GT1cIzNpH7G4jEnukBd/ClaO8sRoPnSwzdtEQ+MMqVommvUXOr9X4ovZ8XGOpzb6Yt54fYVg3BIdgipbjhb7/xNQBMa+JirG3HCIkElQhkqXUDrvRn+dfqgptVspmXnPf8WWOndNs5b3yaWzFhePk=</div></div></ld-scrollable></ld-topic>
+<ld-topic class="transition-move-to-top new-section" id="metriken"><h2>Metriken</h2></ld-topic>
+<ld-topic id="qualitatsmetriken"><h2>Qualitätsmetriken</h2><ld-deck><ld-card><p class="rubric">Warum?</p><ul class="incremental-list simple"><li><p>Neue Features oder Code-Qualität erhöhen?</p></li><li><p>Kann ich Komponente C austauschen? Bzw. wie viel Aufwand ist das?</p></li><li><p>Haben die letzten Änderungen das System negativ beeinflusst?</p></li><li><p>Welche Systemteile sind besonders sicherheitskritisch?</p></li></ul></ld-card><ld-card class="incremental"><p class="rubric">Ziele</p><ul class="incremental-list simple"><li><p>Mögliche Bugs frühzeitig erkennen</p></li><li><p>Systeme quantitativ miteinander vergleichen</p></li><li><p>Wartbarkeit einschätzen</p></li><li><p>Refactoring planen</p></li><li><p>Änderungen bewerten</p></li><li><p>Evolution des Systems überwachen bzw. verstehen</p></li></ul></ld-card><ld-card class="incremental"><p class="rubric">Verwendung</p><ul class="incremental-list"><li><p>Als <em>Quality Gates</em> in Buildsystemen</p><p>z. B. Zeilen pro Methode &#x3C; 50</p></li><li><p>Zur Bewertung von Software</p></li></ul></ld-card><ld-card class="incremental"><p class="rubric">Einfache Metriken</p><dl class="incremental-list field-list simple"><dt>Lines of Code (LOC)<span class="colon">:</span></dt><dd><p>Alle Zeilen zählen so, wie sie im Quellcode stehen</p></dd><dt>Source Lines of Code (SLOC)<span class="colon">:</span></dt><dd><p>Alle Zeilen ohne Leerzeile oder Kommentare</p></dd><dt>Comment Lines of Code (CLOC)<span class="colon">:</span></dt><dd><p>Es zählen nur Zeilen mit Kommentaren; dies können ganze Zeilen sein, oder einfach nur Inline Kommentare; auskommentierter Code zählt ggf. auch</p></dd><dt>Non-Comment Lines of Code (NCLOC) / Effective Lines of Code (ELOC)<span class="colon">:</span></dt><dd><p>Codezeilen ohne Kommentarzeile oder Zeilen, die nur Klammern enthalten, reine Import Statements oder Methodendeklarationen</p></dd><dt>Logical Lines of Code (LLOC)<span class="colon">:</span></dt><dd><p>Zählt nur Anweisungen</p></dd></dl></ld-card><ld-card class="incremental"><p class="rubric">Fortgeschrittene Metriken</p><dl class="incremental-list field-list simple"><dt>Zyklomatische Komplexität (McCabe)<span class="colon">:</span></dt><dd><p>Anzahl der linear unabhängigen Pfade durch den Code</p></dd><dt>Kopplung<span class="colon">:</span></dt><dd><p>Anzahl der Abhängigkeiten zwischen Komponenten</p></dd><dt>...<span class="colon">:</span></dt><dd><p>...</p></dd></dl></ld-card></ld-deck></ld-topic>
+<ld-topic class="no-title center-content" id="es-gibt-keine-fixen-werten"><h2>Es gibt keine fixen Werten</h2><aside class="admonition" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warnung</p><p>Umfangreiche Forschung hat gezeigt, dass es keine fixen Werte gibt, die für alle Projekte gelten. Es hat sich weiterhin gezeigt, dass es keine einzige Metrik gibt, die alleine zur Bewertung der Qualität eines Systems ausreicht. Welche Metriken die Qualität des Systems am besten beschreiben, lässt sich immer nur posthum beantworten.</p><p>Metriken sind immer kontextabhängig zu bewerten.</p><p>Metriken eignen sich insbesondere, um Veränderungen zu bewerten und um die Entwicklung von Software zu überwachen.</p></aside></ld-topic>
+<ld-topic class="transition-fade new-section" id="softwarequalitatssicherung"><h2>Softwarequalitätssicherung</h2><div class="section-subtitle"><p>Konstruktiv vs. Analytisch</p></div></ld-topic>
+<ld-topic id="mechanismen-der-konstruktiven-softwarequalitatssicherung"><h2>Mechanismen der konstruktiven Softwarequalitätssicherung</h2><ul class="incremental-list simple"><li><p>Programmiersprachen (mit Typsystemen)</p></li><li><p>Softwareentwicklungsprozesse</p></li><li><p>Domain Specific Languages (DSLs)</p></li></ul></ld-topic>
+<ld-topic id="ansatze-der-analytischen-softwarequalitatssicherung"><h2>Ansätze der analytischen Softwarequalitätssicherung</h2><table class="incremental-table-rows"><thead><tr><th class="head"></th><th class="head"><p>Wiederverwend- barkeit</p></th><th class="head"><p>Wartbarkeit</p></th><th class="head"><p>Korrektheit</p></th><th class="head"><p>Aufwand</p></th></tr></thead><tbody><tr><td><p>leichtgewichtige statische Analysen</p></td><td></td><td><p>✓</p></td><td><p>✓</p></td><td><p>↓-○</p></td></tr><tr><td><p>Semiformale Methoden</p></td><td></td><td></td><td><p>✓</p></td><td><p>↓</p></td></tr><tr><td><p>formale Methoden</p></td><td></td><td></td><td><p><span class="success">✓</span></p></td><td><p>↑</p></td></tr><tr><td><p>Strukturanalysen</p></td><td><p>✓</p></td><td><p>✓</p></td><td></td><td><p>↓</p></td></tr><tr><td><p>Stilüberprüfungen</p><p>(<span class="eng">Linting</span>)</p></td><td></td><td><p><span class="success">✓</span></p></td><td></td><td><p>↓</p></td></tr></tbody></table><ld-supplemental><p>Leichtgewichtige statische Analysen können zum Beispiel Code-Clone erkennen (Maintenance), oder Verletzungen von empfohlenen Vorgehensweisen identifizieren und auf gängige Fehlermuster (<span class="eng">Bug Patterns</span>) hinweisen.</p></ld-supplemental></ld-topic>
+<ld-topic class="exercises" id="ubung"><h2>Übung</h2><ld-story><aside class="admonition incremental" data-theme="attention"><p class="admonition-title" data-theme="attention-header">Achtung!</p><p>Um einen Lernerfolg zu erhalten, sollten Sie die Schritte unten selber durchführen und nicht die Aufgabenstellung als solches direkt an den KI Assistenten Ihrer Wahl übergeben!</p></aside><aside class="admonition incremental" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung</span></p><p>Für die folgenden Aufgabe sind keine Kenntnisse von HTML, JavaScript oder CSS notwendig. Wenn es Probleme gibt, dann beschreiben Sie das Problem der KI und lassen sich helfen!</p></aside><aside class="admonition incremental" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p><p>Es kann sehr hilfreich sein, den Code häufig in ein Repository einzuchecken, da sie bei Problemen somit immer auf einen vorherigen Stand zurückkehren können.</p></aside><div class="ld-exercise" id="ld-exercise-2" data-exercise-id="2" data-exercise-title="2 - Eine eigene Webanwendung bauen mittels Vibe-Coding"><p class="ld-exercise-title rubric"><span>Eine eigene Webanwendung bauen mittels Vibe-Coding</span></p><p class="incremental">Entwickeln Sie mittels Vibe-Coding eine einfache, aber vollständige Webanwendung (z. B. Tic-Tac-Toe oder  4-Gewinnt gegen den Computer), die nur Standard JavaScript, CSS und HTML verwendet. Es sollen keine Frameworks oder externe Bibliotheken für die Ausführung der Anwendung notwendig sein.</p><ld-supplemental><p>Ein Beispiel für eine solche Anwendung wäre TicTacToe oder Stein-Schere-Papier, welches Sie gegen den Computer spielen. Sie können selbstverständlich auch ein anderes kleines Spiel wählen, dass keine komplexe Logik benötigt.</p></ld-supplemental><ol class="arabic incremental-list"><li><p>Erstellen Sie mit Hilfe eines <em>eigenem</em> Prompts die Anwendung. Dieser Prompt sollte die Anwendung beschreiben und die zu verwendenden Technologien. Fordern Sie ggf. explizit, dass der Code und das Styling in getrennten Dateien erfolgen soll, falls nur eine Datei (<span class="docutils literal">index.html</span>?) zu finden ist.</p></li><li><p>Lassen Sie sich ein <strong>NPM Build-Skript</strong> generieren, dass die nachfolgenden Schritte durchführt. D.h. es soll eine <span class="docutils literal">package.json</span> Datei erzeugt werden, die <em>alle</em> notwendigen Abhängigkeiten und Skripte definiert. Es muss insbesondere möglich sein: <span class="docutils literal">npm run build</span> und <span class="docutils literal">npm run clean</span> auszuführen.</p><ol class="arabic simple"><li><p>Formatierung aller Dateien (.js, .html, .css)</p></li><li><p>Linting aller Dateien (.js, .html, .css)</p></li></ol><p>Validieren Sie, dass Ihr Build-Skript auch die neuesten Versionen der eingebundenen Tools verwendet. <em>Dies erfordert in der Regel eine Google-Suche nach den aktuellen Versionen.</em></p><ld-supplemental><p>Wenn Sie NodeJs installieren, dann steht Ihnen auch NPM zur Verfügung.</p><aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p><p>KI Codegeneratoren referenzieren häufig veraltete Tools und Bibliotheken. Ggf. müssen Sie danach auch die Konfigurationsskripte anpassen lassen.</p></aside></ld-supplemental></li><li><p>Führen Sie Ihr Build-Skript aus und beheben Sie alle gefundenen Probleme.</p></li><li><p>Finden Sie heraus, wie Sie Ihre Anwendung für den Einsatz optimieren könn(t)en und erweitern Sie das Build-Skript entsprechend.</p><p>Ein Ziel könnte die Minimierung des Ressourcenverbrauchs sein.</p></li><li><p>Lassen Sie sich Testfälle generieren und führen Sie diese als Teil des Builds aus.</p><p>Beheben Sie ggf. gefundene Probleme.</p></li><li><p>Hinterfragen Sie den generierten, lauffähigen Code. Lassen Sie sich ggf. von der KI beim Verständnis helfen und stellen Sie kritische Fragen.</p></li><li><p>[Bonus] Lassen Sie sich die Testabdeckung (Coverage) des JavaScript Codes ermitteln und versuchen Sie eine möglichst hohe Abdeckung zu erreichen.</p></li></ol><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:uHFTHvgQVtDkw04L3DS0cXRX5FJ2MHe1Y6zDis6fwvQ=:ezzJi4vLLBvJKUH0:IhkMpxtDxbwdMVC1wdLjI9FqSdLs4iQpidDNNyOSL2ysX1YnW/+lY6t56xguAZ3FYxH3KzGK2kXK1vgrB3shP+FsyqLxxqauTsLvaoqa12faFpCF37YyEYyaqDOSD4/k/IupQ0Wkyyxnhq32uHLBOfVoP2hYAPMzT6S1ll0JszvUTgjqduGsmBlh0nc59jN+8ZFHa/rjqRc/gZqpm+VF62+bWoo4CiXl3gJIRmhV9hCKR7Y/g4TyNugLKWsyRQrOM2nY5EtmhK32VomT6KlFgVHyXrXZH8nhOIFIIruiFwUWGTMlu06YsX6EsM/1hl7gep7dV6N/BjHPKJVeYV+bfyDZVfpunLiZ1e/Zrh26rUokLzvtYISKm0KnEgTfOmpTYhzrI9PPgHq2fAcIz5yzWHvfmXSSyuaScKaJM5iYd66/M/i9t9Wh2FWmhlBMc8fPK+a4wDrPBYkaMTXiATGtN9IxIU3slgjAnUK92J9Jvq8CabYoR5ePeFeyorCjCZoCiGtXLzhEyIiotJ217fTorSKK1hwaPdJxCzFLpZvvObNMiiKSaJk6i9E+CWT6IQWBW1wbTa7mQC+5hWuQfDEnhRLxBKywadHJFYU8BxnjMwbcfRJgzcGPNZ/ygGG5FrYK9TnDnu3raDNCtQAJqqbYSbVa0TuNkGUoldb8sR7MLmTthAtWQbF5QTQgy/W4yxkmf7TFz+gV+GquATkRbHnynAqFrLfZbFhiYi1ocoemEnIgi2JkEGGm1U6x7cxq5CyWwsu2XYZvCmAV619kTuj+lDGC/ERRVYUZn1ZsyYYaBJ1yxerfbzu8xUEJU/J2gYS0ddlvzjzEo7nwV2T2p9PUNGF3mKfP8wrpK3FEyFix51PXKTsQ58NnYtEbZSkaOvrnAR/b+77ro3QKq11p0qZ6O15ysodJl4ACAIOtY45rI4tsYFP3l6wMuIq5jQV72h/0xVQK6zOzXwqAlNJv1n32PvNuo6T6I1w6kH341IBv7BxBAeRCnepVotBCiY3e1Tn/yZJOt/ccvl2WO0Bfi78VXZnpMul8Z5wGQeXNwrseRnmvY+uGBzFbw9b7UIlJEPVa5IgYTeKm5wezXerEpHwE0c1kYY4Pl5ylqqitBv233yb16BS6rCe565afstnF4JAs8NCQY9052BKS7ZGMO/hUeztbXFEiTWKs8ZuORNgGEWLACsJ1qIGj13SFYJWE89yZXtrUzr5pxGKhS2XJPHu13TtrDG7HrllyPZYDS1iy1ouPEZZHJAfQLSSpBlI816eVBuJIcWyPAJK8uNLCRBAqNqEvQ75tLU7+05oiY60ebJFpFrn3kcjqv/RxbMPv0PN9+jKeXclXgGdLy/z69JKb/65H8XnVOjIwxhTXm/g6+ks9oZ5HAf8V6PTi3ccro/9Jyx/yvEue+ccw5QyqipxEqaPD+3bi6IjIb6UR8yX4jo6xNHf1dSfzViN1SSqyCIgussg1ZFR9aixBvQKm0sMVWfOJqt/P9N/dSH4t2XtFt2POJIPwPm7xVvNCCjKyxNtF28Nf87JNfG62JMPYEXu8wbfhpLv0A1EpBufcgQEVrqRDqeo9yU5RRJkSBt4U8kP4RQKoD6LhDyGpZO6+MK/OXhUiy2FdNE0+tU15jAf9QnM430+ryjKpORt9oPaxcJaQcAgGTYZ+dxSagVj8BN5A/pzMCNC/t3CVuRsA3rzGExJazwWMvhlZO/8J/C3xGDjsAAG/gkUtGA6VELkn9q7JuftsPdMiFamS0NINesEdH1RZYCOB12yRJKsJvdoHB4zOMSQiHvY6iwJG+yfYGx5+5tkeTpvHhFudFsvlshvfVRITkfRVUCEYOXozd0nLLYz2IHKmC7TsQ5N2sMsG+6j3PheDxAEWkr41ePgcMV1NdVbpVu9A7o/QrYkP7gL1Cbxb0h+yKbmOTTNTZlbcAWA6M5Hc5WctKZaMNVtSlLq3L8ThGlfNHhFpz/bo6j8BdvHQ2rWwnEXB25RrWZ0HaqU0zBxRQZ/Ep0dPD2qebw4eaXsre/wa81pbE+X3+O6efesRImUiJT9HLwfsiD7gQ7U5dt5OmEWSeDKquU4yLGps+SHL2ahTh3F7b1lh5b80eX8HwabuaSR5sdi8kNkGM4OceCyhVE8wPS7KBleY3yfMivl7dvMiIXXYsERK5/VEHXOxGpbBgXRuBcpyCi1d9FlO6b+HzF5fct+owACH0drs9gtTENBoRQLDinh85GzCp0o7Zz9B3aMLE3bjJueJrd/PVETFCvhQIJX50AbtS04pOEqg2ZCOKvXO8y8sAo355/1JpMSloSEDlhBM+TkAka14RMntvxAj/VO/KbgsNf6QzjCDkP820jRUpPHmKTZQh8pTK2sM/vJkolMtgfQ7JtuggYqGLIjsyRrwsppxg5CI/l29sT1knXD1noKI2MmrD2RdU7MZhKvPsa+PbDDIo8FhNg1up9RSwAQpqnMlR62uusAdl2JxghDJiQvk6fqkwF/RSm/0IACJZK42nFnsX222iJiGLh4gMJMr0kmu+j8sAD+nZdCOkzQfn7jxCm3AQamXp/V6LtVueahGATihtMUwV0TFos9H0smnYhgKdulWq+r4NgEKRXl9Ak5FAAlT9Swvs5EN5xz3PTEqog+uo/WPQmzljhRXsF69wVfe4iCGHxoczinqiyEZ/8uJ/w7bOyNRgXWiVWHciHn4H+KRoIUb6z+1bJdBBGq+mDQACmWw7QDmU/nXYqTP0Eq9HhKn88hVgic2XC2Xmi8QpV1VunV3PjBbgelB5EtxxbtQK4KgVGWhfadY3GMBhH9bclTcdktyv5NdBWgjYM0mPMDhVN6ogT2AjntEWXTzzc/w9fjwIXnIm1ZZHTgnEDwYYEZec16bj5bp589f6CdXkF/4vJliPflSIJSQywIWcM+qUfWa9+Bve0Jiq9cENyBnIEW+QGl2dL+AW9h82FjjwpElV7dclUHNFn6JsC+rKOh9aTEU0vZiza9TFQu+HrH3Nry3FVXO8b3hKbUwYhIzYrmAcPF3KbNBZVxYoGR/eCDltzOhQO4Inr82k6lDRB7mxJ4EZrtBS0M6u4N63mtOFMrQW76GE+uprSUGk9x3Hz8Tx8ySSWY2cLt65dxfISl6BJgYBQpGnVxE2N3Hk5JsFwG6o8egf1tX0AFXqN8AL0Md9HEtZOshU3R+H4InSaqMm2tCdL57FqnUSJ+LQjihp4xF5rRYUNtlbqqfBHelef5W3YY56MxtCsJRvd9h5EvrvDE+6gcAtQZzZK/2ETleLocaw2rXR6htG/p0IqCDlvfMK3E84OVpCtrT7eO5OiSgnc9uZffMiDKj8P3s2T4WFlcPNlCVkSXToLc3gGn03Stp1AdKw/j4HQM3Azo+VkixHMhOQfSptyFJF3y4u1oKf7XwWu6UeAWsL4TWfG1mfLwIXz/uKWWDDIPZSyVc02bX2c6eUSSZ3pR+n2CeUO/zaWugIP6KL6GifEBnTuho53heudXwRFOMKHIQlLjPgrdVPewa6mPoB5KzyzI8bOpqGLW8AiKeqYkDo0ru3Ujn5PEKNELcN7v2QdNKj7xUsAwNXBWqB3+jsa/7m+pSO3kwf3m/GGS7vthka2+8P4BMntE2dE0jz2VSo5SMMBkWnQFu5kS8vuTcWyrZhuQvU+3dEjVzDVUYlUrpq2uND63ncvzDy46UeM4tVU05jKsnjjM+ivzewgWEcJE=</div></div></ld-story></ld-topic>
+</template>
+</body>
+</html>

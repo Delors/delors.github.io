@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Michael Eichberg" />
+<meta name="keywords" content="&quot;Git&quot;, &quot;Versionskontrolle&quot;" />
+<meta name="description" content="Software Engineering - Versionskontrolle und Git" lang="de" xml:lang="de" />
+<meta name="id" content="lecture-se-versionskontrolle" />
+<meta name="first-slide" content="last-viewed" />
+<meta name="exercises-passwords" content="MTAwMDAw:CVpumnAaC8foaP5pXtW1aR6+T+WCj58Dy6o3OKsEa0o=:KkcsvmvSdXtO/iQ4:gxvtjY+5Qtsa6ELnNQR6ZUrnDBPMu5nf92zKdD/XX6YBHbBzACoqDzxxgF1Bg35V4Br9hteZwAr59cfPI4+F94KRtpU0Mena0vQ7WA/jO6MiTJdWmLJpLPa9WNAh8rhmpwf8jR5K45lHdupRfLvbkPmi+7bsw8wH1hqEpBZ2sgC2gwK4YBXVdICx1JjxwETFkHhfdfZrR9E1FpcfKax72stdFD7py4bH41bhvl9VVUbSlKzWp6fRnEQYGyrYRQdKlPtt+IhY3Yrbpvst85V0Zu4gqpIc6j8iAQLX/INthY+tMFiINVlkJqn7a5YKxz3eFu2+EGvgByYKE2GWD9UD4Ko9xt2MgzODlGi8oUMcSV7PDROHflYITPDJJ/7GypCI7IU/s3WxMsEa+O9P9mCPVtVc0HZRA03ev4vGhm/TIqrUuoW4ytcsPyjUGHowvUoHHHvYnbTXyZMFL+aNDta2sy8wMkX53+AT4FaqNcfDjQS2IGh+XoOvXaailA/PxRfebL+bNdpU5Eeqj/jFafDZSrrwggV4lXjOzG4N31gckWtVNAb1YcCoRd9Nt/3kge8xeU8olUohS70FWMK5zUOp4Ze/Eco5C/nOM6R1ZjesBpwX0XxPBdCW48U=" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>Software Engineering - Versionskontrolle (mit Git)</title>
+<link rel="stylesheet" href="../shared/ext/katex/katex.min.css" />
+<script src="../LectureDoc2/dist/src/ld.js" type="module"></script>
+<link rel="stylesheet" href="../LectureDoc2/dist/src/ld.css" />
+<style>@import url("../LectureDoc2/dist/src/css/themes/dhbw.css") layer(theme);</style>
+<style>.svg-life-line {
+    stroke:rgb(0,0,0);
+    stroke-width:0.2ch;
+    stroke-dasharray: 1 1;
+}
+.svg-action {
+    stroke:rgb(0,0,0);
+    stroke-width:0.2;
+    marker-end:url("#arrow");
+}
+</style>
+</head>
+<body data-theme="<light-dark>">
+<ld-globals><svg xmlns="http://www.w3.org/2000/svg"><defs>
+<marker
+    id="arrow"
+    viewBox="0 0 10 10"
+    refX="7.5"
+    refY="5"
+    markerUnits="strokeWidth"
+    markerWidth="4"
+    markerHeight="4"
+    orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" />
+</marker>
+<g id="star">
+    <polygon
+        class="star"
+        points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9"
+        fill="gold"
+        stroke="black"
+        stroke-width="1"
+        style="transform: scale(0.05)"/>
+</g>
+</defs></svg>
+</ld-globals>
+<template>
+<ld-topic id="lecture-se-versionskontrolle"><h1 class="title">Software Engineering - Versionskontrolle (mit Git)</h1><p>Eine allererste Einführung</p><dl class="field-list simple"><dt>Dozent<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://delors.github.io/cv/folien.de.md.html">Prof. Dr. Michael Eichberg</a></p></dd><dt>Kontakt<span class="colon">:</span></dt><dd><p><a class="reference external" href="mailto:michael.eichberg@dhbw.de">michael.eichberg@dhbw.de</a></p></dd><dt>Version<span class="colon">:</span></dt><dd><p>1.0.0.1</p></dd></dl><p>Die Folien basieren in Teilen auf Folien von Dr. Helm und Prof. Dr. Hermann.</p><p>Alle Fehler sind meine eigenen.</p><ld-supplemental><dl class="field-list"><dt>Folien<span class="colon">:</span></dt><dd><p>[HTML] <a class="reference external" href="https://delors.github.io/se-versionskontrolle/folien.de.md.html">https://delors.github.io/se-versionskontrolle/folien.de.md.html</a></p><p>[PDF] <a class="reference external" href="https://delors.github.io/se-versionskontrolle/folien.de.md.html.pdf">https://delors.github.io/se-versionskontrolle/folien.de.md.html.pdf</a></p></dd><dt>Fehler melden<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p></dd><dt>Kontrollfragen<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://delors.github.io/se-versionskontrolle/kontrollfragen.de.md.html">https://delors.github.io/se-versionskontrolle/kontrollfragen.de.md.html</a></p></dd></dl><dl class="field-list simple"><dt>KI Verwendung<span class="colon">:</span></dt><dd><p>Bei der Erstellung der Unterlagen wurden KI Assistenten (insbesondere Claude
+aber ggf. auch ChatGPT, Ollama mit Gemma/LLama/Qwen oder OpenCode mit
+Kimi/Qwen/Deepseek...) unterstützend eingesetzt.
+Dies erfolgte insbesondere zur Unterstützung bei der Generierung von Grafiken
+(d. h. SVG Dateien), oder um sich Übersichtstabellen generieren zu lassen.
+Weiterhin wurde KI zur allgemeinen Qualitätssicherung eingesetzt.
+Inhalte, die ggf. von der KI vorgeschlagen wurden, wurden im Falle der
+Übernahme explizit validiert und angepasst.</p></dd></dl></ld-supplemental></ld-topic>
+<ld-topic class="new-section transition-fade" id="versionsmanagement-und-versionskontrollsysteme"><h2>Versionsmanagement und Versionskontrollsysteme</h2></ld-topic>
+<ld-topic id="aspekte-der-softwareentwicklung"><h2>Aspekte der Softwareentwicklung</h2><ld-deck><ld-card><aside class="admonition" data-theme="observation"><p class="admonition-title" data-theme="observation-header"><span>Beobachtung</span></p><ld-deck class="numbered"><ld-card><ul class="incremental-list simple"><li><p>Softwareentwicklung ist Teamarbeit</p></li><li><p>Viel (indirekte) Kommunikation nötig</p></li><li><p>Entwicklungswissen muss dokumentiert werden</p></li><li><p>Software besteht aus vielen Dokumenten:</p><ul class="simple"><li><p>Lastenheft</p></li><li><p>Pflichtenheft</p></li><li><p>Analyse- und Designdokument</p></li><li><p>Programmcode (Quellcode, Skripte, Konfigurationsdateien, ...)</p></li><li><p>Testdokumentation</p></li><li><p>Codedokumentation</p></li></ul></li></ul></ld-card><ld-card class="incremental"><ul class="simple"><li><p>Verschiedene Personen greifen (gleichzeitig) auf Dokumente zu</p></li><li><p>Oft bearbeiten verschiedene Personen gleichzeitig (unabhängig voneinander) das selbe Dokument</p></li></ul></ld-card></ld-deck></aside></ld-card><ld-card class="incremental"><ld-grid class="default-layout"><ld-cell class="width-50" style="align-self:auto;"><p class="rubric">Versionsmanagement</p><ul class="incremental-list list-with-explanations"><li><p>Wo ist die aktuelle Version?</p></li><li><p>Was ist die zuletzt lauffähige Version?</p></li><li><p>Wo ist die Implementierungsversion vom 01. April 2016?</p><p>Und welche Dokumente beziehen sich auf diese Version?</p></li><li><p>Welche Version wurde dem Kunden präsentiert?</p></li></ul></ld-cell><ld-cell class="incremental" style="align-self:auto;"><p class="rubric">Änderungsmanagement</p><ul class="incremental-list simple"><li><p>Was hat sich seit letzter Woche geändert?</p></li><li><p>Wer hat diese Änderung gemacht?</p></li><li><p>Warum wurde diese Änderung gemacht?</p></li></ul></ld-cell></ld-grid></ld-card><ld-card class="incremental"><p>Einfache „<em>ad-hoc Lösungen</em>“ bei der Entwicklung von Softwareprojekten</p><ul class="simple"><li><p>Austausch der Dokumente via USB-Stick / Festplatte</p></li><li><p>Austausch der Dokumente via Mail</p></li><li><p>Austausch über Netzwerkfestplatte</p></li></ul><p>Zusätzlich müssen dann noch Konventionen und Regeln im Team definiert werden.</p><aside class="admonition incremental" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warnung</p><p>Just, don't do it!</p></aside></ld-card></ld-deck></ld-topic>
+<ld-topic id="unterstutztes-versionsmanagement-motivation"><h2>Unterstütztes Versionsmanagement - Motivation</h2><aside class="admonition" data-theme="observation"><p class="admonition-title" data-theme="observation-header"><span>Beobachtung</span></p><ul class="simple"><li><p>„Einfache Lösungen“ um Versionen zu verwalten erzeugen neue Probleme</p></li><li><p>Konventionen und Regeln werden nicht eingehalten</p></li><li><p>Koordination ist aufwendig und führt zu Verzögerungen</p></li><li><p>Varianten und Konfigurationen werden von Hand verwaltet</p></li><li><p>Versions- und Änderungsfragen nicht bzw. nur schwer beantwortbar</p></li><li><p>Geistige Kapazität wird mit „Kleinkram“ verschwendet</p></li></ul></aside><aside class="admonition incremental" data-theme="conclusion"><p class="admonition-title" data-theme="conclusion-header"><span>Schlussfolgerung</span></p><p>Konventionen müssen technisch erzwungen werden!</p></aside></ld-topic>
+<ld-topic id="versionskontrollsysteme-vcs-uberblick"><h2>Versionskontrollsysteme (VCS) - Überblick</h2><ld-deck><ld-card><p class="rubric">Zweck</p><p>Versionskontrollsysteme verwalten mehrere Versionen des Codes.</p><ul class="simple"><li><p>Erlauben es mehreren Personen gleichzeitig am selben Projekt zu arbeiten</p></li><li><p>Änderungen unterschiedlicher Personen werden teil-automatisch integriert</p></li><li><p>Erhält Historie von Änderungen</p></li></ul></ld-card><ld-card class="dd-margin-left-6em incremental"><p class="rubric">Arten</p><dl class="incremental-list field-list"><dt>Zentralisierte VCS<span class="colon">:</span></dt><dd><p>synchronisieren alle Änderungen in einem zentralen Repository (Subversion, ... )</p><aside class="admonition incremental" data-theme="attention"><p class="admonition-title" data-theme="attention-header">Achtung!</p><p>Es ist keine Offline-Nutzung möglich.</p></aside></dd><dt>Dezentralisierte VCS<span class="colon">:</span></dt><dd><p>können mehrere, unabhängige Repositories haben (Git, Mercurial, ... )</p><aside class="admonition incremental" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung</span></p><p>Dezentralisierte VCS (insbesondere Git) sind heute am weitesten verbreitet.</p></aside></dd></dl></ld-card><ld-card class="dd-margin-left-2em incremental"><p class="rubric">Konsistenzmechanismen</p><dl class="field-list simple"><dt>Optimistische Mechanismen<span class="colon">:</span></dt><dd><ul class="simple"><li><p>System erlaubt gleichzeitiges Bearbeiten des Dokuments durch verschiedene Personen</p></li><li><p>System erkennt und integriert die Änderungen (Merging)</p></li><li><p>Evtl. funktioniert das nicht automatisch; dann muss der Konflikt manuell beseitigt werden</p></li></ul></dd><dt>Pessimistische Mechanismen<span class="colon">:</span></dt><dd><ul class="simple"><li><p>System verbietet gleichzeitiges Bearbeiten des Dokuments durch verschiedene Personen (Sperrprotokolle)</p></li></ul></dd></dl><p>Beide Mechanismen haben Vor- und Nachteile</p><ul class="positive-list simple"><li><p>Sperren serialisiert die Arbeit</p></li></ul><ul class="negative-list simple"><li><p>Mergen kann <em>in seltenen Fällen</em> komplex werden und zu Fehlern führen</p></li></ul></ld-card></ld-deck></ld-topic>
+<ld-topic class="new-section transition-fade" id="versionskontrolle-mit-git"><h2>Versionskontrolle mit Git</h2></ld-topic>
+<ld-topic id="vcs-git-einfache-verwendung"><h2>VCS - Git - einfache Verwendung</h2><ld-story><div class="compound accentuate"><p class="rubric">Repository auf Server einrichten</p><ol class="arabic simple"><li><p>Git repository einrichten (Beispielsweise über Web-Frontend wie <a class="reference external" href="https://github.com">https://github.com</a>)</p></li><li><p>Lokale Kopie des Remote-repositories „Klonen”: <code class="console"><span class="name function">git</span> clone <span class="operator">&lt;</span>repo-URL<span class="operator">&gt;</span> <span class="punctuation">[</span>lokales Verzeichnis<span class="punctuation">]</span></code></p></li></ol><p class="rubric">Repository lokal anlegen</p><p>In einem beliebigen Verzeichnis: <code class="console"><span class="name function">git</span> init</code></p></div><div class="compound accentuate incremental"><p class="rubric">Datei neu versionieren</p><ol class="arabic"><li><p>Dateien dem Repository hinzufügen</p><p><code class="console"><span class="name function">git</span> <span class="name function">add</span> <span class="operator">&lt;</span>Dateipfade<span class="operator">&gt;</span></code></p><p>Dateien landen dann in der sogenannten „Staging Area“.</p><ld-supplemental><p>Die Staging Area (oder Index) hält alle Änderungen, Hinzufügungen und Löschungen von Dateien, die Teil des nächsten Commits werden sollen.</p></ld-supplemental></li><li><p>gestagete Änderungen committen</p><p><code class="console"><span class="name function">git</span> ci</code></p><p>Dies fügt die Änderungen dem lokalen Repository hinzu.</p></li></ol></div></ld-story></ld-topic>
+<ld-topic id="vcs-git-prozess"><h2>VCS - Git - Prozess</h2><div class="align-center">
+<div style="width: 70ch; height: 18.15ch; container-type:size;">
+<svg viewBox="0 0 54 14" font-size="1" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g style="fill:white">
+        <rect width="6" height="3" x="2" y="0" rx="1" ry="1" style="fill:rgb(71, 65, 254)" />
+        <text x="3" y="1.5">Working</text>
+        <text x="3" y="2.5">Directory</text>
+        <line x1="5" y1="3" x2="5" y2="15" class="svg-life-line"/>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="6" height="3" x="17" y="0" rx="1" ry="1" style="fill:rgb(71, 65, 254)" />
+        <text x="18" y="2">Index</text>
+        <line x1="20" y1="3" x2="20" y2="15" class="svg-life-line"/>
+        <line x1="5" y1="4.5" x2="20" y2="4.5" class="svg-action" />
+        <text x="6" y="4.25" style="fill:black">add</text>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="6" height="3" x="32" y="0" rx="1" ry="1" style="fill:rgb(71, 65, 254)" />
+        <text x="33" y="1.5">Local</text>
+        <text x="33" y="2.5">Repo</text>
+        <line x1="35" y1="3" x2="35" y2="15" class="svg-life-line"/>
+        <line x1="20" y1="6" x2="35" y2="6" class="svg-action" />
+        <text x="21" y="5.75" style="fill:black">commit</text>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="6" height="3" x="47" y="0" rx="1" ry="1" style="fill:rgb(55,155,55)" />
+        <text x="48" y="1.5">Remote</text>
+        <text x="48" y="2.5">Repo</text>
+        <line x1="50" y1="3" x2="50" y2="15" class="svg-life-line"/>
+        <line x1="35" y1="7.5" x2="50" y2="7.5" class="svg-action" />
+        <text x="36" y="7.25" style="fill:black">push</text>
+    </g>
+    <g class="incremental" style="fill:black">
+        <line x2="35" y1="10.5" x1="50" y2="10.5" class="svg-action" />
+        <text x="36" y="10.25" style="fill:black">fetch</text>
+        <!-- To get a stable animation: --><circle cx="57" cy="13" r="0.1" fill="white"/>
+    </g>
+    <g class="incremental" style="fill:black">
+        <line x1="35" y1="10.5" x2="5" y2="10.5" class="svg-action" />
+        <text x="15" y="10.25" style="fill:black">merge/checkout</text>
+        <!-- To get a stable animation: --><circle cx="57" cy="13" r="0.1" fill="white"/>
+    </g>
+    <g class="incremental" style="fill:black">
+        <line x1="50" y1="13" x2="5" y2="13" class="svg-action" />
+        <text x="25" y="12.75" style="fill:black">pull</text>
+        <!-- To get a stable animation: --><circle cx="57" cy="13" r="0.1" fill="white"/>
+    </g>
+</svg>
+</div>
+</div></ld-topic>
+<ld-topic id="vcs-git-commits-beispiel"><h2>VCS - Git - Commits - Beispiel</h2><ld-scrollable><pre class="code diff literal-block"><small class="ln"> 1</small><code data-lineno=" 1">commit ace47c68a2deaa6290344a5f9c2d7749d01f0efc
+</code><small class="ln"> 2</small><code data-lineno=" 2">Author: Michael Eichberg &lt;mail@michael-eichberg.de&gt;
+</code><small class="ln"> 3</small><code data-lineno=" 3">Date:   Wed Jan 22 17:43:28 2025 +0100
+</code><small class="ln"> 4</small><code data-lineno=" 4">
+</code><small class="ln"> 5</small><code data-lineno=" 5">    encrypted presenter notes
+</code><small class="ln"> 6</small><code data-lineno=" 6">
+</code><small class="ln"> 7</small><code data-lineno=" 7">diff --git a/renaissance/css/core/slide-view.css b/renaissance/css/core/slide-view.css
+</code><small class="ln"> 8</small><code data-lineno=" 8">index 21d433b..03f010a 100644
+</code><small class="ln"> 9</small><code data-lineno=" 9">--- a/renaissance/css/core/slide-view.css
+</code><small class="ln">10</small><code data-lineno="10">+++ b/renaissance/css/core/slide-view.css
+</code><small class="ln">11</small><code data-lineno="11">@@ -47,6 +47,12 @@
+</code><small class="ln">12</small><code data-lineno="12">        /* The height will be computed by JavaScript depending on the mode. */
+</code><small class="ln">13</small><code data-lineno="13">    }
+</code><small class="ln">14</small><code data-lineno="14">
+</code><small class="ln">15</small><code data-lineno="15">+
+</code><small class="ln">16</small><code data-lineno="16">+
+</code><small class="ln">17</small><code data-lineno="17">+    /* Presenter Notes */
+</code><small class="ln">18</small><code data-lineno="18">+    ld-presenter-note-marker[data-encrypted="true"] {
+</code><small class="ln">19</small><code data-lineno="19">+        display: none;
+</code><small class="ln">20</small><code data-lineno="20">+    }
+</code><small class="ln">21</small><code data-lineno="21">}
+</code><small class="ln">22</small><code data-lineno="22">
+</code><small class="ln">23</small><code data-lineno="23">...</code></pre></ld-scrollable></ld-topic>
+<ld-topic id="vcs-git-commits"><h2>VCS - Git - Commits</h2><p class="rubric">Commits beschreiben eine atomare Änderung des Codes</p><ul class="simple"><li><p>Hashcode, um den Commit zu identifizieren</p></li><li><p>Autor und Zeit des Commits</p></li><li><p>Beschreibung der Änderung</p></li><li><p>Änderung als Diff: Hinzugefügte und entferne Zeilen je Datei</p></li></ul></ld-topic>
+<ld-topic id="vcs-git-hilfreiches"><h2>VCS - Git - Hilfreiches</h2><ld-deck><ld-card><p class="rubric">Zwischenspeichern von Änderungen</p><p>Aktuelle Änderungen zwischenspeichern und Working Copy resetten:</p><p><code class="console"><span class="name function">git</span> stash</code></p><p>Hilfreich z. B. wenn man vergessen hat, Änderungen von <em>Remote</em> zu pullen.
+Ein pull könnte lokale Änderungen überschreiben, mit <code class="console"><span class="name function">git</span> stash</code> werden diese Änderungen aber zunächst sicher beiseite gelegt.</p><p>Änderungen vom <em>Stash</em> in <em>Working Copy</em> zurückspielen:</p><p><code class="console"><span class="name function">git</span> stash pop</code></p></ld-card><ld-card class="incremental"><p class="rubric">Änderungen in der Working Copy zurücksetzen</p><p><code class="console"><span class="name function">git</span> reset <span class="name variable">--hard</span></code></p><p>Setzt alle Änderungen in der Working Copy auf den letzten Commit zurück (z. B. nach einem „Fehlversuch“).</p></ld-card><ld-card class="incremental"><p class="rubric">Metadaten setzen</p><p>Username und Emailadresse als Metadaten für Commits setzen:</p><p><code class="console"><span class="name function">git</span> config user.name <span class="operator">&lt;</span>name<span class="operator">&gt;</span></code></p><p><code class="console"><span class="name function">git</span> config user.email <span class="operator">&lt;</span>e-mail<span class="operator">&gt;</span></code></p></ld-card></ld-deck></ld-topic>
+<ld-topic id="git-branches"><h2>Git Branches</h2><p>Git verwaltet Versionen von Dokumenten mittels Commits in Branches.</p><ld-deck><ld-card><p class="rubric">Initiales Setup - main ist aktuell auf dieser Version</p><div style="width: 90ch; height:16ch">
+<svg viewBox="0 0 48 8" font-size="0.75" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <rect width="4" height="1" x="0" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="1.5" y="3.75" style="fill:white">A</text>
+
+    <rect width="6" height="1" x="6" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="0.75" style="fill:white">main</text>
+
+    <line x1="2" y1="3" x2="6" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+</svg>
+</div></ld-card><ld-card class="incremental"><p class="rubric"><em>main</em> ist der aktuell ausgecheckte Branch</p><div style="width: 90ch; height:16ch">
+<svg viewBox="0 0 48 8" font-size="0.75"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <rect width="4" height="1" x="0" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="1.5" y="3.75" style="fill:white">A</text>
+
+    <rect width="6" height="1" x="6" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="0.75" style="fill:white">main</text>
+
+    <line x1="2" y1="3" x2="6" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+
+    <use href="#star" x="11" y="0"/>
+</svg>
+</div></ld-card><ld-card class="incremental"><p class="rubric"><code class="console"><span class="name function">git</span> branch develop</code></p><div style="width: 90ch; height:16ch">
+<svg viewBox="0 0 48 8" font-size="0.75"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <rect width="4" height="1" x="0" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="1.5" y="3.75" style="fill:white">A</text>
+
+    <rect width="6" height="1" x="6" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="0.75" style="fill:white">main</text>
+    <line x1="2" y1="3" x2="6" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+    <use href="#star" x="11" y="0"/>
+
+    <rect width="8" height="1" x="6" y="6" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="6.75" style="fill:white">develop</text>
+    <line x1="2" y1="4" x2="6" y2="6.5" style="stroke:darkorange;stroke-width:0.2"/>
+</svg>
+</div></ld-card><ld-card class="incremental"><p class="rubric"><code class="console"><span class="name function">git</span> checkout develop</code></p><div style="width: 90ch; height:16ch">
+<svg viewBox="0 0 48 8" font-size="0.75"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <rect width="4" height="1" x="0" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="1.5" y="3.75" style="fill:white">A</text>
+
+    <rect width="6" height="1" x="6" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="0.75" style="fill:white">main</text>
+    <line x1="2" y1="3" x2="6" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+
+    <rect width="8" height="1" x="6" y="6" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="6.75" style="fill:white">develop</text>
+    <line x1="2" y1="4" x2="6" y2="6.5" style="stroke:darkorange;stroke-width:0.2"/>
+    <use href="#star" class="star" x="13" y="6" />
+</svg>
+</div></ld-card><ld-card class="incremental"><p class="rubric"><code class="console"><span class="name function">git</span> commit</code> von B</p><div style="width: 90ch; height:16ch">
+<svg viewBox="0 0 48 8" font-size="0.75"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <rect width="4" height="1" x="0" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="1.5" y="3.75" style="fill:white">A</text>
+
+    <rect width="4" height="1" x="8" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="9.5" y="3.75" style="fill:white">B</text>
+    <line x1="4" y1="3.5" x2="8" y2="3.5" style="stroke:blue;stroke-width:0.2"/>
+
+    <rect width="6" height="1" x="6" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="0.75" style="fill:white">main</text>
+    <line x1="2" y1="3" x2="6" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+
+    <rect width="8" height="1" x="6" y="6" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="6.75" style="fill:white">develop</text>
+    <line x1="2" y1="4" x2="6" y2="6.5" style="stroke:darkorange;stroke-width:0.2"/>
+    <use href="#star" class="star" x="13" y="6" />
+</svg>
+</div></ld-card><ld-card class="incremental"><p class="rubric"><code class="console"><span class="name function">git</span> commit</code> von B setzt den <em>aktuellen</em> Branch weiter</p><div style="width: 90ch; height:16ch">
+<svg viewBox="0 0 48 8" font-size="0.75"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <rect width="4" height="1" x="0" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="1.5" y="3.75" style="fill:white">A</text>
+
+    <rect width="4" height="1" x="8" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="9.5" y="3.75" style="fill:white">B</text>
+    <line x1="4" y1="3.5" x2="8" y2="3.5" style="stroke:blue;stroke-width:0.2" marker-end="url(#arrow)"/>
+
+    <rect width="6" height="1" x="6" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="0.75" style="fill:white">main</text>
+    <line x1="2" y1="3" x2="6" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+
+    <rect width="8" height="1" x="14" y="6" rx="1" ry="1" style="fill:darkorange" />
+    <text x="15" y="6.75" style="fill:white">develop</text>
+    <line x1="10" y1="4" x2="14" y2="6.5" style="stroke:darkorange;stroke-width:0.2"/>
+    <use href="#star" class="star" x="21" y="6" />
+</svg>
+</div></ld-card><ld-card class="incremental"><p class="rubric"><code class="console"><span class="name function">git</span> checkout <span class="name variable">-b</span> cveXXX-hotfix</code></p><div style="width: 90ch; height:16ch">
+<svg viewBox="0 0 48 8" font-size="0.75"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <rect width="4" height="1" x="0" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="1.5" y="3.75" style="fill:white">A</text>
+
+    <rect width="4" height="1" x="8" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="9.5" y="3.75" style="fill:white">B</text>
+    <line x1="4" y1="3.5" x2="8" y2="3.5" style="stroke:blue;stroke-width:0.2" marker-end="url(#arrow)"/>
+
+    <rect width="6" height="1" x="6" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="0.75" style="fill:white">main</text>
+    <line x1="2" y1="3" x2="6" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+
+    <rect width="8" height="1" x="14" y="5" rx="1" ry="1" style="fill:darkorange" />
+    <text x="15" y="5.75" style="fill:white">develop</text>
+    <line x1="10" y1="4" x2="14" y2="5.5" style="stroke:darkorange;stroke-width:0.2"/>
+
+    <rect width="8" height="1" x="14" y="7" rx="1" ry="1" style="fill:darkorange" />
+    <text x="15" y="7.75" style="fill:white">cveXXX-hotfix</text>
+    <line x1="10" y1="4" x2="14" y2="7.5" style="stroke:darkorange;stroke-width:0.2"/>
+    <use href="#star" class="star" x="21" y="7" />
+</svg>
+</div><aside class="admonition" data-theme="remark"><p class="admonition-title" data-theme="remark-header"><span>Bemerkung</span></p><p><span class="docutils literal">git checkout -b cveXXX-hotfix</span></p><p>ist lediglich eine Abkürzung für:</p><p><span class="docutils literal">git branch cveXXX-hotfix</span></p><p><span class="docutils literal">git checkout cveXXX-hotfix</span></p></aside></ld-card><ld-card class="incremental"><p class="rubric"><code class="console"><span class="name function">git</span> commit</code> von C</p><div style="width: 90ch; height:16ch">
+<svg viewBox="0 0 48 8" font-size="0.75"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <rect width="4" height="1" x="0" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="1.5" y="3.75" style="fill:white">A</text>
+
+    <rect width="4" height="1" x="8" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="9.5" y="3.75" style="fill:white">B</text>
+    <line x1="4" y1="3.5" x2="8" y2="3.5" style="stroke:blue;stroke-width:0.2" marker-end="url(#arrow)"/>
+
+    <rect width="4" height="1" x="16" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="17.5" y="3.75" style="fill:white">C</text>
+    <line x1="12" y1="3.5" x2="16" y2="3.5" style="stroke:blue;stroke-width:0.2" marker-end="url(#arrow)"/>
+
+    <rect width="6" height="1" x="6" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="0.75" style="fill:white">main</text>
+    <line x1="2" y1="3" x2="6" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+
+    <rect width="8" height="1" x="14" y="5" rx="1" ry="1" style="fill:darkorange" />
+    <text x="15" y="5.75" style="fill:white">develop</text>
+    <line x1="10" y1="4" x2="14" y2="5.5" style="stroke:darkorange;stroke-width:0.2"/>
+
+    <rect width="8" height="1" x="22" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="23" y="0.75" style="fill:white">cveXXX-hotfix</text>
+    <line x1="18" y1="3" x2="22" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+    <use href="#star" class="star" x="29" y="0" />
+</svg>
+</div></ld-card><ld-card class="incremental"><p class="rubric"><code class="console"><span class="name function">git</span> checkout develop</code></p><div style="width: 90ch; height:16ch">
+<svg viewBox="0 0 48 8" font-size="0.75"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <rect width="4" height="1" x="0" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="1.5" y="3.75" style="fill:white">A</text>
+
+    <rect width="4" height="1" x="8" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="9.5" y="3.75" style="fill:white">B</text>
+    <line x1="4" y1="3.5" x2="8" y2="3.5" style="stroke:blue;stroke-width:0.2" marker-end="url(#arrow)"/>
+
+    <rect width="4" height="1" x="16" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="17.5" y="3.75" style="fill:white">C</text>
+    <line x1="12" y1="3.5" x2="16" y2="3.5" style="stroke:blue;stroke-width:0.2" marker-end="url(#arrow)"/>
+
+    <rect width="6" height="1" x="6" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="0.75" style="fill:white">main</text>
+    <line x1="2" y1="3" x2="6" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+
+    <rect width="8" height="1" x="14" y="6" rx="1" ry="1" style="fill:darkorange" />
+    <text x="15" y="6.75" style="fill:white">develop</text>
+    <line x1="10" y1="4" x2="14" y2="6.5" style="stroke:darkorange;stroke-width:0.2"/>
+    <use href="#star" class="star" x="21" y="6" />
+
+    <rect width="8" height="1" x="22" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="23" y="0.75" style="fill:white">cveXXX-hotfix</text>
+    <line x1="18" y1="3" x2="22" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+</svg>
+</div></ld-card><ld-card class="incremental"><p class="rubric">Fast-forward Merge: <code class="console"><span class="name function">git</span> merge cveXXX-hotfix</code></p><div style="width: 90ch; height:16ch">
+<svg viewBox="0 0 48 8" font-size="0.75"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <rect width="4" height="1" x="0" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="1.5" y="3.75" style="fill:white">A</text>
+
+    <rect width="4" height="1" x="8" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="9.5" y="3.75" style="fill:white">B</text>
+    <line x1="4" y1="3.5" x2="8" y2="3.5" style="stroke:blue;stroke-width:0.2" marker-end="url(#arrow)"/>
+
+    <rect width="4" height="1" x="16" y="3" rx="1" ry="1" style="fill:darkblue" />
+    <text x="17.5" y="3.75" style="fill:white">C</text>
+    <line x1="12" y1="3.5" x2="16" y2="3.5" style="stroke:blue;stroke-width:0.2" marker-end="url(#arrow)"/>
+
+    <rect width="6" height="1" x="6" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="7" y="0.75" style="fill:white">main</text>
+    <line x1="2" y1="3" x2="6" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+
+    <rect width="8" height="1" x="22" y="6" rx="1" ry="1" style="fill:darkorange" />
+    <text x="23" y="6.75" style="fill:white">develop</text>
+    <line x1="18" y1="4" x2="22" y2="6.5" style="stroke:darkorange;stroke-width:0.2"/>
+    <use href="#star" class="star" x="29" y="6" />
+
+    <rect width="8" height="1" x="22" y="0" rx="1" ry="1" style="fill:darkorange" />
+    <text x="23" y="0.75" style="fill:white">cveXXX-hotfix</text>
+    <line x1="18" y1="3" x2="22" y2="0.5" style="stroke:darkorange;stroke-width:0.2"/>
+</svg>
+</div></ld-card><ld-card class="incremental"><!--ggf. Visualisierungen einbauen (Folien von Ben - X - Git-basierte Versionskontrolle.key ab ca. Folie 32)--><p class="rubric">Sonderfälle</p><ul class="simple"><li><p>wenn es auf beiden Branches Änderungen gab, dann kann ein Merge ggf. fehlschlagen und muss manuell gemerged werden.</p></li><li><p>Um Änderungen auf ein remote Repository zu schieben bzw. davon zu holen muss man git push und git pull verwenden. Dabei kann es auch zu Konflikten kommen, die manuell gelöst werden müssen.</p></li></ul></ld-card></ld-deck></ld-topic>
+<ld-topic id="git-flow"><h2>Git-Flow</h2><p>Git-Flow ist eine Konvention zur Nutzung von Branches in einer sinnvollen Art und Weise.<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p><p>Mindestens fünf Arten von Branches:</p><dl class="incremental-list field-list simple"><dt>main<span class="colon">:</span></dt><dd><p>enthält stets die zuletzt veröffentlichte Version</p></dd><dt>develop<span class="colon">:</span></dt><dd><p>enthält aktuelle Entwicklungsversion</p></dd><dt>feature/topic branches<span class="colon">:</span></dt><dd><p>zur Entwicklung individueller Features</p></dd><dt>hotfix branches<span class="colon">:</span></dt><dd><p>zur Implementierung dringender Bugfixes</p></dd><dt>release branches<span class="colon">:</span></dt><dd><p>zum Vorbereiten eines Releases</p></dd></dl><aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-1" role="doc-footnote"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span><p>Erstmals dokumentiert durch Vincent Driessen <a class="reference external" href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></p></aside></aside></ld-topic>
+<ld-topic id="dezentralisierte-vcs-verteiltes-arbeiten"><h2>Dezentralisierte VCS - Verteiltes Arbeiten</h2><div class="align-center">
+<div style="width: 70ch; height: 14ch; container-type:size;">
+<svg viewBox="0 0 48 9" font-size="1" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <g class="incremental" style="fill:white">
+        <rect width="12" height="3" x="0" y="0" rx="1" ry="1" style="fill:rgb(55,155,55)" />
+        <text x="1" y="1.5">Main</text>
+        <text x="1" y="2.5">Repository</text>
+    </g>
+    <g class="incremental" >
+        <rect width="12" height="3" x="18" y="6" rx="1" ry="1" style="fill:rgb(194, 191, 246)" />
+        <text x="19" y="7.5">Developer A</text>
+        <text x="19" y="8.5">Private</text>
+        <line x1="9" y1="3" x2="21" y2="6" style="stroke:rgb(0,0,0);stroke-width:0.2" marker-end="url(#arrow)"/>
+    </g>
+    <g class="incremental" >
+        <rect width="12" height="3" x="36" y="6" rx="1" ry="1" style="fill:rgb(194, 191, 246)" />
+        <text x="37" y="7.5">Developer B</text>
+        <text x="37" y="8.5">Private</text>
+        <line x1="9" y1="3" x2="39" y2="6" style="stroke:rgb(0,0,0);stroke-width:0.2" marker-end="url(#arrow)"/>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="12" height="3" x="18" y="0" rx="1" ry="1" style="fill:rgb(112, 105, 238)" />
+        <text x="19" y="1.5">Developer A</text>
+        <text x="19" y="2.5">Public</text>
+        <line x1="24" y1="6" x2="24" y2="3" style="stroke:rgb(0,0,0);stroke-width:0.2" marker-end="url(#arrow)"/>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="12" height="3" x="36" y="0" rx="1" ry="1" style="fill:rgb(112, 105, 238)" />
+        <text x="37" y="1.5">Developer B</text>
+        <text x="37" y="2.5">Public</text>
+        <line x1="42" y1="6" x2="42" y2="3" style="stroke:rgb(0,0,0);stroke-width:0.2" marker-end="url(#arrow)"/>
+    </g>
+    <g class="incremental" style="fill:white">
+        <rect width="12" height="3" x="0" y="6" rx="1" ry="1" style="fill:rgb(247, 173, 0)" />
+        <text x="1" y="7.5">Integration</text>
+        <text x="1" y="8.5">Repository</text>
+        <line x1="6" y1="6" x2="6" y2="3" style="stroke:rgb(0,0,0);stroke-width:0.2" marker-end="url(#arrow)"/>
+        <line x1="21" y1="3" x2="9" y2="6" style="stroke:rgb(0,0,0);stroke-width:0.2" marker-end="url(#arrow)"/>
+        <line x1="39" y1="3" x2="9" y2="6" style="stroke:rgb(0,0,0);stroke-width:0.2" marker-end="url(#arrow)"/>
+    </g>
+</svg>
+</div>
+</div><ld-deck><ld-card><p>(Verteilte) Workflows beschreiben, wie Personen Änderungen zwischen verteilten Repositories synchronisieren.</p><ul class="incremental-list simple"><li><p>Hängt von Projekt und Organisationsstruktur ab</p></li><li><p>Workflows unterscheiden öffentliche und private Repositories</p></li><li><p>In den meisten Workflows gibt es ein ausgezeichnetes Repository als <em>ground truth</em></p></li></ul></ld-card><ld-card class="incremental"><aside class="admonition" data-theme="attention"><p class="admonition-title" data-theme="attention-header">Achtung!</p><p>Die Commit-Historie des <em>blessed repository</em> niemals verändern!</p></aside></ld-card></ld-deck></ld-topic>
+<ld-topic id="git-befehle"><h2>GIT Befehle</h2><ul class="incremental-list simple"><li><p>Erstellen eines neuen lokalen Repositories: <code class="console"><span class="name function">git</span> init</code></p></li><li><p>Lokalen Klon von entferntem Repositories anlegen: <code class="console"><span class="name function">git</span> clone <span class="operator">&lt;</span>Repository-URL<span class="operator">&gt;</span></code></p></li><li><p>Geänderte Dateien anzeigen: <code class="console"><span class="name function">git</span> status</code></p></li><li><p>Zeilenweise Änderungen anzeigen: <code class="console"><span class="name function">git</span> <span class="name function">diff</span> <span class="punctuation">(</span><span class="operator">&lt;</span>Datei-Pfad<span class="operator">&gt;</span><span class="punctuation">)</span></code></p></li><li><p>Änderungshistorie ansehen: <code class="console"><span class="name function">git</span> log</code></p></li><li><p>Commit ansehen: <code class="console"><span class="name function">git</span> show <span class="operator">&lt;</span>Commit-Hash<span class="operator">&gt;</span></code></p></li><li><p>Dateien dem nächsten Commit hinzufügen: <code class="console"><span class="name function">git</span> <span class="name function">add</span> <span class="punctuation">(</span>--all<span class="operator">|</span><span class="operator">&lt;</span>Datei-Pfad<span class="operator">&gt;</span><span class="punctuation">)</span></code></p></li><li><p>Commit anlegen: <code class="console"><span class="name function">git</span> commit <span class="punctuation">(</span>-m <span class="literal string">" &lt;Beschreibung&gt;"</span><span class="punctuation">)</span></code></p></li><li><p>Neuen Branch anlegen: <code class="console"><span class="name function">git</span> checkout <span class="name variable">-b</span> <span class="operator">&lt;</span>Branch-Name<span class="operator">&gt;</span></code></p></li><li><p>Aktuellen Branch wechseln: <code class="console"><span class="name function">git</span> checkout <span class="operator">&lt;</span>Branch-Name<span class="operator">&gt;</span></code></p></li><li><p>Commits eines anderen in den aktuellen ziehen: <code class="console"><span class="name function">git</span> merge <span class="operator">&lt;</span>Branch-Name<span class="operator">&gt;</span></code></p></li><li><p>Commits vom entfernten zum lokalen Repository holen: <code class="console"><span class="name function">git</span> fetch</code></p></li><li><p>Commits vom lokalen zum entfernten Repository schieben: <code class="console"><span class="name function">git</span> push</code></p></li><li><p>Kombination von <code class="console"><span class="name function">git</span> fetch</code> und <code class="console"><span class="name function">git</span> merge</code>: <code class="console"><span class="name function">git</span> pull</code></p></li></ul></ld-topic>
+<ld-topic id="gitignore"><h2><a class="reference external" href="https://git-scm.com/docs/gitignore">.gitignore</a></h2><p>Die Datei .gitignore listet alle Arten von Dateien und Verzeichnissen auf, die von Git ignoriert werden sollen. Dies sind typischerweise alle Artefakte, die automatische generiert werden als Teil des Entwicklungsprozesses.</p><ld-grid class="default-layout"><ld-cell style="align-self:auto;"><ul class="incremental-list simple"><li><p>Kommentare beginnen mit #</p></li><li><p>Leerzeilen sind erlaubt</p></li><li><p>jede nicht-leere Zeile, die kein Kommentar ist, beschreibt ein Muster</p></li><li><p>Wildcards (*) sind erlaubt</p></li><li><p>! am Anfang negiert ein Muster</p></li><li><p>"/" separiert Verzeichnisse</p></li></ul></ld-cell><ld-cell class="incremental" style="align-self:auto;"><aside class="admonition" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Beispiel</span></p><pre class="code unixconfig literal-block"><small class="ln">1</small><code data-lineno="1">*.bak
+</code><small class="ln">2</small><code data-lineno="2">*.class
+</code><small class="ln">3</small><code data-lineno="3">*.jar
+</code><small class="ln">4</small><code data-lineno="4">target/
+</code><small class="ln">5</small><code data-lineno="5">
+</code><small class="ln">6</small><code data-lineno="6"># "Editors"
+</code><small class="ln">7</small><code data-lineno="7">.vscode/
+</code><small class="ln">8</small><code data-lineno="8">.zed/
+</code><small class="ln">9</small><code data-lineno="9">.idea/</code></pre></aside></ld-cell></ld-grid></ld-topic>
+<ld-topic class="exercises" id="ubung"><h2>Übung</h2><ld-story><div class="ld-exercise" id="ld-exercise-1" data-exercise-id="1" data-exercise-title="1 - Eine erste Übung mit GIT"><p class="ld-exercise-title rubric"><span>Eine erste Übung mit GIT</span></p><p>Installieren Sie Git auf Ihrem System, falls es nicht verfügbar sein sollte.</p><ol class="arabic incremental-list list-with-explanations simple"><li><p>Erstellen Sie ein neues Verzeichnis und legen Sie darin ein neues lokales Repository mit Hilfe von <code class="console"><span class="name function">git</span> init</code> an.</p></li><li><p>Entpacken Sie die Datei <a class="reference external" href="https://delors.github.io/se-versionskontrolle/exercise/RPN.zip">https://delors.github.io/se-versionskontrolle/exercise/RPN.zip</a> in dem Verzeichnis.</p></li><li><p>Führen Sie einen initialen Commit durch mit Hilfe von <code class="console"><span class="name function">git</span> <span class="name function">add</span></code> und <code class="console"><span class="name function">git</span> commit</code>.</p></li><li><p>Compilieren Sie die Sourcen mit <code class="console">javac</code>.</p></li><li><p>Legen Sie eine <span class="docutils literal">.gitignore</span> Datei an, um sicherzustellen, dass die Binärdateien nicht in das Repository gelangen.</p></li><li><p>Nutzen Sie <code class="console"><span class="name function">git</span> status</code>, um sich zu vergewissern, dass die Binärdateien ignoriert werden.</p></li><li><p>fügen Sie die <span class="docutils literal">.gitignore</span> Datei Ihrem Repository hinzu.</p></li></ol><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:SQlFV3FXbLroiI4LWscEhRoIE2/7bcG8VIBZ9weLIU4=:912LgmkPKvcbSKmO:j74eMNdCjl62K1vzOQ8d3Nbn+8bU0LSSyeUCMySc/NpEWGbF4yA8D0F9UcGCggj8IhJzwkisPnyZfOhCofV/35TZkfoPYN6GlwmN4TpWavIjSZZQZ5TXKfasABg9NZe77PUqM/xGXevqIFuuewnm5S2/i49HpoWtCgmsA6WN++SewsmxfwvGnIW8oZIQ2zOa3gIxfwFZzvjp6ajE+owcDQ6yACevGFwoxWSyKj847F74GaSJK4ZHMZpPmvfP83fCj8QnAE2WUME34ucVQJ6pklxfmm3mmyLhdG300Ex7eAtnwqql1Z+lXBQpRTH+lZT/hSa9pYCIoiSDNjVZ1vqcdlNLyBRKF+t+rYAW1To/T6MuCGmdIZyfo1P8obVzBr9H</div></div></ld-story></ld-topic>
+<ld-topic class="exercises" id="ubung-1"><h2>Übung</h2><ld-story><div class="ld-exercise" id="ld-exercise-2" data-exercise-id="2" data-exercise-title="2 - Branching mit GIT"><p class="ld-exercise-title rubric"><span>Branching mit GIT</span></p><ol class="arabic"><li><p>Erstellen Sie einen neuen Branch mit dem Namen <span class="docutils literal">feature/bugfix</span> und wechseln Sie auf den neuen Branch.</p><p>(Nutzen Sie <span class="docutils literal">git status</span>, um zu verifizieren, dass Sie auf dem neuen Branch sind)</p></li><li><p>Ändern Sie die Datei <span class="docutils literal">RPN.java</span>, um den Bug im Switch statement (<code class="java"><span class="keyword">case</span> <span class="literal string">"* "</span></code> => <code class="java"><span class="keyword">case</span> <span class="literal string">"*"</span></code>) zu beheben.</p></li><li><p>Committen Sie die Änderungen.</p></li><li><p>Wechseln Sie zurück auf den <span class="docutils literal">main</span> Branch.</p></li><li><p>Mergen Sie den Branch <span class="docutils literal">feature/bugfix</span> in den <span class="docutils literal">main</span> Branch mit Hilfe von <code class="console"><span class="name function">git</span> merge</code>.</p></li><li><p>Löschen Sie den Branch <span class="docutils literal">feature/bugfix</span> mit Hilfe von <code class="console"><span class="name function">git</span> branch <span class="name variable">-d</span></code>.</p></li></ol><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:yINwMWwDZXBNYpWgULcabGwFAAwFhz61/9rQPfQKO28=:sqIyVGszVoDd7GpL:qr9SmM3n87oqs4TuGHoKy1kt59DlYFMTg3Ah8l9A/2MAq+oUCE/02fX0Ho3qmplg6ZVs7RiyGD+IDJ4OcTR0Anqcurffr46bxsZBRAAnFlFNUezNuV10WJz+pfcub+MvUMmT9cxoXnEKWC9oVNelYujYwAm9K8ATKMzPiL1I8/o5jrpX6TpDbYu0hpy1V6wU3JRoeIi/EZXu5K5pJXtmbE4YM8vDvBP3TmK7bm+x/yVb8j42HohGJY8k549uqqfh0IvBJaKVKj1G4f/8iqA8uHzR6zOzroachcUVjYb0fLnY6H/P5ZM3Si7N8UKDhiw=</div></div></ld-story></ld-topic>
+<ld-topic class="exercises" id="ubung-2"><h2>Übung</h2><ld-story><div class="ld-exercise" id="ld-exercise-3" data-exercise-id="3" data-exercise-title="3 - Merging mit GIT"><p class="ld-exercise-title rubric"><span>Merging mit GIT</span></p><ol class="arabic"><li><p>Erstellen Sie einen neuen Branch develop und wechseln Sie auf diesen Branch.</p></li><li><p>Ändern Sie die Reihenfolge der Methoden <code class="java">pop</code> und <code class="java">peek</code> in der Klasse <code class="java"><span class="name class">Stack</span></code>.</p></li><li><p>Committen Sie die Änderungen.</p></li><li><p>Wechseln Sie zurück auf den <span class="docutils literal">main</span> Branch.</p><p><em>(Führen Sie noch keinen Merge durch!)</em></p></li><li><p>Entfernen Sie die <span class="docutils literal">{}</span> Klammern um die <code class="java"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="name class">NoSuchElementException</span><span class="punctuation">(</span><span class="punctuation">)</span></code> Anweisungen.</p></li><li><p>Committen Sie die Änderungen.</p></li><li><p>Führen Sie einen Merge von <span class="docutils literal">develop</span> in <span class="docutils literal">main</span> durch.</p></li><li><p>Öffnen Sie die Datei <span class="docutils literal">ds/Stack.java</span> und beheben Sie den Merge-Konflikt.</p></li><li><p>Committen Sie die Änderungen.</p></li></ol><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:MyppeYFvLI5IE0JQxmJVyXnt9sWUJW4TwmL7/dfTksw=:tGOCswPbSCOLvzcW:NoWOHWLqjwPWOjzzPO1p5/pfWrnDVq8v5Yb7Cs9OS8tZdmSwBcYslTPU9pDmpoTgZVmbC0nEvilgv7YTZvPL98zyOkZ5e9EU8w3u/moMPY7RO7XP34Dgwryes7udPNfXErHycYV8tNVBUGiaZci2hFOt8gqQGMZALBjwaVarq9G5fp2yTwI9w6geUwA3T1a8XKD+ZDf5sYkIkaONj669xe8EARbc42nINMpuzx6KY6FpU+cqIw5VyOLyPDdMEGbeLC3BRgQik3W4XXt46pHArJ2k1tAgLSBd1Boo4VBjcwJjOM+H+feo3mwzcTTpVecdvV1T3yJDY1fLdzjoNxaBEKWd0rczhlUG/oKViclUkBWllkiGuyD9m/rqbabNyZEROtyGm5xovX9gwFVlyL0TocqOgVsLAtgzVqIkSJ03FYuGac/ULel8TlpszWIw7QHqsfw=</div></div></ld-story></ld-topic>
+<ld-topic class="exercises" id="ubung-3"><h2>Übung</h2><ld-story><div class="ld-exercise" id="ld-exercise-4" data-exercise-id="4" data-exercise-title="4 - Weiterentwicklung vorbereiten"><p class="ld-exercise-title rubric"><span>Weiterentwicklung vorbereiten</span></p><ol class="arabic simple"><li><p>Nutzen Sie <code class="console"><span class="name function">git</span> log <span class="name variable">--oneline</span> <span class="name variable">--graph</span> <span class="name variable">--all</span></code> um sich die Commit-Historie anzusehen.</p></li><li><p>Wechseln Sie zurück zum <span class="docutils literal">develop</span> Branch.</p></li><li><p>Führen Sie einen Merge von <span class="docutils literal">main</span> in <span class="docutils literal">develop</span> durch.</p></li></ol><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:mi2lA4iGNpcii5HAG5tjWsRPkRr+baWYuuly3DFaS7o=:4dhys7f4v71agyi1:jHitqaIGN3eHXfybqjtu4+tG8yUI/tA9aJQcPygtgOZHYxXXI/zh4WxRGvPUmh2oxkJV4D+wt2zownizxAqpcOgyVRcEDtOcNpxLsNRbokdW+ASgeMx3rY9lrMMsF2tlI7jCz+HcpsMvp7fBN2p8viJNjRDMIZgqF/P66AsWSXcHnWW507QCNyNd</div></div></ld-story></ld-topic>
+</template>
+</body>
+</html>

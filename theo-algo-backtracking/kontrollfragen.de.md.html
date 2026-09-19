@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Michael Eichberg" />
+<meta name="keywords" content="&quot;Komplexität&quot;, &quot;Algorithmen&quot;, &quot;Kontrollfragen&quot;, &quot;Backtracking&quot;" />
+<meta name="description" content="Theoretische Informatik - Backtracking - Kontrollfragen" lang="de" xml:lang="de" />
+<meta name="id" content="lecture-theo-algo-backtracking-kontrollfragen" />
+<meta name="first-slide" content="last-viewed" />
+<meta name="exercises-passwords" content="MTAwMDAw:fTBdYQVK2NbJc554yjiKYVtV/P1NZBLvvhWhaOTf9jc=:3ZcvCQUJcn9lW9/z:rWcrmINYAgoA0Yh9tDKfv8uMImegDp9rpExmQZ0b7Q6vKn3oE420KHw5R2hGO2yUQtOz6tZPXPE6hPjz3Caakh2JEjNxgjqgArtRXCemHJ8EAeoIt9lqehjw9zIatcPtRp/43xRlfwB9ThdZ4tZvTuz5bKJFdKgTrqarVXYr6txPrC8ScfgRBFbhrpb3U3pePapQxHRUyxpUNW6R9YDwhr9i21VRsA+ettoA4Q3TlHnG1WsqjvJ15Nk5QMfvISwSNcLZalPFpJOzxsg2dFp5WCVWleZsVWZEvCjrwbwTsftUjBdiH18cM5aaoiTZNebbaJRIZnuN54OvyQfqVi9xK/Qcr9/0tUUcld79ZZwnGAFrh6aX/tsUmnZPEg2+DW+EIt423zPGvySEPF3xS8qHQ8d/IPDXfH3XkrDKwP2Fg6WtBqP06FVA9FyUYw==" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>Entwurf von Algorithmen: Backtracking - Kontrollfragen</title>
+<link rel="stylesheet" href="../shared/ext/katex/katex.min.css" />
+<script src="../LectureDoc2/dist/src/ld.js" type="module"></script>
+<link rel="stylesheet" href="../LectureDoc2/dist/src/ld.css" />
+<style>@import url("../LectureDoc2/dist/src/css/themes/dhbw.css") layer(theme);</style>
+</head>
+<body data-theme="<light-dark>">
+<template>
+<ld-topic id="lecture-theo-algo-backtracking-kontrollfragen"><h1 class="title">Entwurf von Algorithmen: Backtracking - Kontrollfragen</h1><dl class="docinfo"><dt class="dozent">Dozent<span class="colon">:</span></dt><dd class="dozent"><a class="reference external" href="https://delors.github.io/cv/folien.de.md.html">Prof. Dr. Michael Eichberg</a></dd><dt class="contact">Kontakt<span class="colon">:</span></dt><dd class="contact"><a class="reference external" href="mailto:michael.eichberg@dhbw.de">michael.eichberg@dhbw.de</a>
+, Raum 149B</dd><dt class="version">Version<span class="colon">:</span></dt><dd class="version">1.0.0.1</dd></dl><ld-supplemental><dl class="field-list simple"><dt>KI Verwendung<span class="colon">:</span></dt><dd><p>Bei der Erstellung der Unterlagen wurden KI Assistenten (insbesondere Claude
+aber ggf. auch ChatGPT, Ollama mit Gemma/LLama/Qwen oder OpenCode mit
+Kimi/Qwen/Deepseek...) unterstützend eingesetzt.
+Dies erfolgte insbesondere zur Unterstützung bei der Generierung von Grafiken
+(d. h. SVG Dateien), oder um sich Übersichtstabellen generieren zu lassen.
+Weiterhin wurde KI zur allgemeinen Qualitätssicherung eingesetzt.
+Inhalte, die ggf. von der KI vorgeschlagen wurden, wurden im Falle der
+Übernahme explizit validiert und angepasst.</p></dd></dl></ld-supplemental></ld-topic>
+<ld-topic class="exercises" id="backtracking-grundlagen"><h2>Backtracking - Grundlagen</h2><div class="ld-exercise" id="ld-exercise-1" data-exercise-id="1" data-exercise-title="1 - Backtracking vs. vollständige Enumeration"><p class="ld-exercise-title rubric"><span>Backtracking vs. vollständige Enumeration</span></p><blockquote><p>Erklären Sie - z. B. anhand des Beispiels der logischen Ausdrücke (SAT-Problem) - wie Backtracking die Anzahl der zu evaluierenden vollständigen Belegungen reduziert.</p></blockquote><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:JZao0BcpZPI++c8luhd1Tus7St7u3dB8X+8V/uYUo1I=:rJzEFXI1bzTiNoFN:FQW/cAUCUY6Yzn0g/2u2gl+NlfX9TwPz+PYzaxpTE6WXug6lH6+kDlDtEK9jxnMMMSRas1UieOYaud/Hv6Wv8GdBPYf/gSD9JwO+kuDUfsAq+SmeVgrkHE5OcTZ8pCOLw+sqmko2QmllYKHaItBDRA==</div></div><div class="ld-exercise" id="ld-exercise-2" data-exercise-id="2" data-exercise-title="2 - Komplexität von Backtracking-Algorithmen"><p class="ld-exercise-title rubric"><span>Komplexität von Backtracking-Algorithmen</span></p><blockquote><p>Warum verändern Backtracking-Algorithmen die theoretische Komplexitätsklasse des Problems nicht?</p></blockquote><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:gmghoaGZU4ts0b6UO+h7k0lHc6z2bfPhoXgLgNGtBrY=:grB1pxU6xTKlbjaj:wmftnkIfM8r2a0aEkcpZqhg+PZ60P1v9i5aMhyz2gr0xYa4aSq6xfv8mzYp5VxadQAFRCMusAvin0gV+5R50pXogulS1es5A7o1lI1Tta1bvgK0Ob1p44+hneSzsdjC8Py67cJcJg8aYDi2zlFBbQkFfY0pYXbWP8Q==</div></div></ld-topic>
+</template>
+</body>
+</html>

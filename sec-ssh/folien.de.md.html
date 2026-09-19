@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Michael Eichberg" />
+<meta name="keywords" content="&quot;SSH&quot;" />
+<meta name="description" content="Einführung in die Secure Shell (SSH)" lang="de" xml:lang="de" />
+<meta name="id" content="it-security-ssh-vorlesung" />
+<meta name="first-slide" content="last-viewed" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:+NNIQ38anTLnLFlSnXTu3umEyQ==" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>Secure Shell (SSH)</title>
+<link rel="stylesheet" href="../shared/ext/katex/katex.min.css" />
+<script src="../LectureDoc2/dist/src/ld.js" type="module"></script>
+<link rel="stylesheet" href="../LectureDoc2/dist/src/ld.css" />
+<style>@import url("../LectureDoc2/dist/src/css/themes/dhbw.css") layer(theme);</style>
+</head>
+<body data-theme="<light-dark>">
+<template>
+<ld-topic id="it-security-ssh-vorlesung"><h1 class="title">Secure Shell (SSH)</h1><dl class="docinfo"><dt class="dozent">Dozent<span class="colon">:</span></dt><dd class="dozent"><a class="reference external" href="https://delors.github.io/cv/folien.de.md.html">Prof. Dr. Michael Eichberg</a></dd><dt class="contact">Kontakt<span class="colon">:</span></dt><dd class="contact"><a class="reference external" href="mailto:michael.eichberg@dhbw.de">michael.eichberg@dhbw.de</a></dd><dt class="version">Version<span class="colon">:</span></dt><dd class="version">1.4.0.1</dd></dl><dl class="sources field-list simple"><dt>Quellen<span class="colon">:</span></dt><dd><p>Teilweise basierend auf Folien von Prof. Dr. Henning Pagnia bzgl. Netzwerksicherheit</p></dd></dl><ld-supplemental><dl class="field-list"><dt>Folien<span class="colon">:</span></dt><dd><p>[HTML] <a class="reference external" href="https://delors.github.io/sec-ssh/folien.de.md.html">https://delors.github.io/sec-ssh/folien.de.md.html</a></p><p>[PDF] <a class="reference external" href="https://delors.github.io/sec-ssh/folien.de.md.html.pdf">https://delors.github.io/sec-ssh/folien.de.md.html.pdf</a></p></dd><dt>Fehler melden<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p></dd></dl><dl class="field-list simple"><dt>KI Verwendung<span class="colon">:</span></dt><dd><p>Bei der Erstellung der Unterlagen wurden KI Assistenten (insbesondere Claude
+aber ggf. auch ChatGPT, Ollama mit Gemma/LLama/Qwen oder OpenCode mit
+Kimi/Qwen/Deepseek...) unterstützend eingesetzt.
+Dies erfolgte insbesondere zur Unterstützung bei der Generierung von Grafiken
+(d. h. SVG Dateien), oder um sich Übersichtstabellen generieren zu lassen.
+Weiterhin wurde KI zur allgemeinen Qualitätssicherung eingesetzt.
+Inhalte, die ggf. von der KI vorgeschlagen wurden, wurden im Falle der
+Übernahme explizit validiert und angepasst.</p></dd></dl></ld-supplemental></ld-topic>
+<ld-topic id="secure-shell-ssh"><h2><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc4254">Secure Shell (SSH)</a></h2><p><strong>Verschlüsselte Verbindung</strong></p><p>SSH ermöglicht die sichere Fernanmeldung von einem Computer bei einem anderen (typischerweise über TCP über Port 22). Es bietet mehrere Optionen für eine starke Authentifizierung und schützt die Sicherheit und Integrität der Kommunikation durch starke Verschlüsselung.</p><div class="compound incremental"><p><strong>Ablauf</strong></p><ol class="arabic simple"><li><p>Authentisierung des Server-Rechners</p></li><li><p>Authentisierung des Benutzers (bzw. des Clients) mittels</p><ol class="loweralpha simple"><li><p>Passwort</p></li><li><p><span class="s">.rhosts-Eintrag</span></p></li><li><p>privatem <span class="peripheral">(RSA-)</span>Key (hauptsächlich verwendete Methode)</p></li></ol></li><li><p>Kommunikation über symmetrisch verschlüsselte Verbindung</p></li></ol></div><ld-supplemental><p>Die Authentifizierung mittels eines Schlüsselpaars dient primär der Automatisierung (dann wird auch keine „Schlüsselphrase“ zum Schutz des Passworts verwendet). Auf jeden Fall ist effektives Schlüsselmanagement erforderlich:</p><blockquote class="epigraph"><p>[...] In einigen Fällen haben wir mehrere Millionen SSH-Schlüssel gefunden, die den Zugang zu Produktionsservern in Kundenumgebungen autorisieren, wobei 90 % der Schlüssel tatsächlich ungenutzt sind und für einen Zugang stehen, der zwar bereitgestellt, aber nie gekündigt wurde.</p><p class="attribution">—<a class="reference external" href="https://www.ssh.com/academy/ssh/protocol">SSH.com (Dez. 2023)</a></p></blockquote></ld-supplemental></ld-topic>
+<ld-topic id="secure-shell-ssh-protokoll"><h2>Secure Shell (SSH) - Protokoll</h2><ld-story><object class="light-image align-center" data="images/ssh/initiation.svg" type="image/svg+xml" role="img" aria-label="SSH Protokoll"></object><p>Beide Seiten haben einen Public-private Key Schlüsselpaar zur gegenseitigen Authentifizierung</p><dl class="incremental-list dd-margin-left-8em field-list simple"><dt>User Keys<span class="colon">:</span></dt><dd><ul class="simple"><li><p><span class="docutils literal">Authorized keys</span> - Serverseitige Datei mit den öffentlichen Schlüsseln der Nutzer</p></li><li><p><span class="docutils literal">Identity keys</span> - private Schlüssel der Nutzer</p></li></ul></dd><dt>Host keys<span class="colon">:</span></dt><dd><p>dienen der Authentifizierung von Servern (verhindern Person-in-the-Middle-Angriffe)</p></dd><dt>Session Keys<span class="colon">:</span></dt><dd><p>werden für die symmetrische Verschlüsselung der Daten in einer Verbindung verwendet. Session Keys (<span class="ger">Sitzungsschlüssel</span>) werden während des Verbindungsaufbaus ausgehandelt.</p></dd></dl></ld-story><ld-supplemental><p>Im Falle von SSH gibt es kein initiales Vertrauen zwischen Server und Client.</p></ld-supplemental></ld-topic>
+<ld-topic id="secure-shell-ssh-authentifizierung-mittels-passwort"><h2>Secure Shell (SSH) - Authentifizierung mittels Passwort</h2><ld-scrollable><figure class="align-center"><object class="light-image" data="external/SSH-sequence-password.svg" type="image/svg+xml" role="img" aria-label="SSH Protokoll" width="1850px"></object><figcaption><p><a class="reference external" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC 4.0</a> - <a class="reference external" href="https://commons.wikimedia.org/wiki/File:SSH-sequence-password.svg">Aleksey Valov - 29 February 2016</a></p><aside class="admonition" data-theme="legend"><p class="admonition-title" data-theme="legend-header"><span>Legende</span></p><p>The font was changed to "Noto Sans Display" for better compatibility.</p></aside></figcaption></figure></ld-scrollable></ld-topic>
+<ld-topic id="secure-shell-ssh-verbindungsaufbau-beispiel"><h2>Secure Shell (SSH) - Verbindungsaufbau - Beispiel</h2><ld-scrollable><pre class="code text literal-block"><code>debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: Applying options for *
+debug1: Connecting to example.org [1.2.3.4] port 22.
+debug1: Connection established.
+debug1: identity file /home/user/.ssh/id_rsa type -1
+debug1: identity file /home/user/.ssh/id_rsa-cert type -1
+debug1: identity file /home/user/.ssh/id_dsa type -1
+debug1: identity file /home/user/.ssh/id_dsa-cert type -1
+debug1: Remote protocol version 1.99, remote software version OpenSSH_5.8
+debug1: match: OpenSSH_5.8 pat OpenSSH*
+debug1: Enabling compatibility mode for protocol 2.0
+debug1: Local version string SSH-2.0-OpenSSH_5.5p1 Debian-6
+debug1: SSH2_MSG_KEXINIT sent
+debug1: SSH2_MSG_KEXINIT received
+debug1: kex: server-&gt;client aes128-ctr hmac-md5 none
+debug1: kex: client-&gt;server aes128-ctr hmac-md5 none
+debug1: SSH2_MSG_KEX_DH_GEX_REQUEST(1024&lt;1024&lt;8192) sent
+debug1: expecting SSH2_MSG_KEX_DH_GEX_GROUP
+debug1: SSH2_MSG_KEX_DH_GEX_INIT sent
+debug1: expecting SSH2_MSG_KEX_DH_GEX_REPLY
+debug1: Host 'example.org' is known and matches the RSA host key.
+debug1: Found key in /home/user/.ssh/known_hosts:1
+debug1: ssh_rsa_verify: signature correct
+debug1: SSH2_MSG_NEWKEYS sent
+debug1: expecting SSH2_MSG_NEWKEYS
+debug1: SSH2_MSG_NEWKEYS received
+debug1: Roaming not allowed by server
+debug1: SSH2_MSG_SERVICE_REQUEST sent
+debug1: SSH2_MSG_SERVICE_ACCEPT received
+debug1: Authentications that can continue: publickey,password,keyboard-interactive,hostbased
+debug1: Next authentication method: publickey
+debug1: Trying private key: /home/user/.ssh/id_rsa
+debug1: Trying private key: /home/user/.ssh/id_dsa
+debug1: Next authentication method: keyboard-interactive
+debug1: Authentications that can continue: publickey,password,keyboard-interactive,hostbased
+debug1: Next authentication method: password
+user@example.org's password:
+debug1: Authentication succeeded (password).
+debug1: channel 0: new [client-session]
+debug1: Requesting no-more-sessions@openssh.com
+debug1: Entering interactive session.
+debug1: Sending environment.
+debug1: Sending env LANG = en_US.UTF-8</code></pre></ld-scrollable></ld-topic>
+<ld-topic id="secure-shell-unterstutzte-transport-verschlusselungsverfahren"><h2>Secure Shell - <a class="reference external" href="https://www.openssh.org/specs.html">Unterstützte Transport-Verschlüsselungsverfahren</a></h2><p><strong>OpenSSH_10.2p1</strong></p><ld-scrollable><table class="sticky-header"><thead><tr><th class="head"><p>Cipher Name</p></th><th class="head"><p>Status</p></th><th class="head"><p>Beschreibung</p></th></tr></thead><tbody><tr><td><p>3des-cbc</p></td><td><p>DEPRECATED</p></td><td><p>three-key 3DES in CBC mode</p></td></tr><tr><td><p>aes256-cbc</p></td><td><p>LEGACY</p></td><td><p>AES in CBC mode, with a 256-bit key</p></td></tr><tr><td><p>aes192-cbc</p></td><td><p>LEGACY</p></td><td><p>AES with a 192-bit key</p></td></tr><tr><td><p>aes128-cbc</p></td><td><p>LEGACY</p></td><td><p>AES with a 128-bit key</p></td></tr><tr><td><p>aes128-ctr</p></td><td><p>RECOMMENDED</p></td><td><p>AES in CTR mode with a 128-bit key</p></td></tr><tr><td><p>aes192-ctr</p></td><td><p>RECOMMENDED</p></td><td><p>AES in CTR mode with a 192-bit key</p></td></tr><tr><td><p>aes256-ctr</p></td><td><p>RECOMMENDED</p></td><td><p>AES in CTR mode with a 256-bit key</p></td></tr><tr><td><p>aes128-gcm@openssh.com</p></td><td><p>RECOMMENDED</p></td><td><p>AES in Galois/Counter Mode (GCM) with a 128-bit key</p></td></tr><tr><td><p>aes256-gcm@openssh.com</p></td><td><p>RECOMMENDED</p></td><td><p>AES in Galois/Counter Mode (GCM) with a 256-bit key</p></td></tr><tr><td><p>chacha20-poly1305@openssh.com</p></td><td><p>RECOMMENDED</p></td><td><p>ChaCha20 stream cipher with Poly1305 MAC</p></td></tr></tbody></table><div class="legend"><dl class="field-list simple"><dt>DEPRECATED<span class="colon">:</span></dt><dd><p>Unterstützt, aber standardmäßig deaktiviert.</p></dd><dt>LEGACY<span class="colon">:</span></dt><dd><p>Unterstützt für Rückwärtskompatibilität, aber nicht empfohlen.</p></dd><dt>RECOMMENDED<span class="colon">:</span></dt><dd><p>Empfohlen für den Einsatz.</p></dd></dl></div></ld-scrollable><ld-supplemental><p><strong>Anmerkung</strong></p><p>CBC-Modi sind anfällig für bestimmte Angriffe (z. B. Padding-Oracle-Angriffe) und werden insbesondere für Rückwärtskompatibilität unterstützt.</p><p><strong>Algorithmen unterstützt von älteren OpenSSH-Versionen</strong></p><ul class="simple"><li><p>blowfish-cbc , Blowfish in CBC mode</p></li><li><p>twofish256-cbc , Twofish in CBC mode,with a 256-bit key</p></li><li><p>serpent256-cbc   , Serpent in CBC mode, with a 256-bit key</p></li><li><p>arcfour          , the ARCFOUR stream cipher with a 128-bit key</p></li><li><p>idea-cbc         , IDEA in CBC mode</p></li><li><p>cast128-cbc      , CAST-128 in CBC mode</p></li></ul></ld-supplemental></ld-topic>
+<ld-topic id="secure-shell-ssh-risiken-durch-mangelnde-schlusselverwaltung"><h2>Secure Shell (SSH) - Risiken durch mangelnde Schlüsselverwaltung</h2><ul class="incremental-list simple"><li><p>Schlüssel werden nicht regelmäßig ausgetauscht</p></li><li><p>Schlüssel werden nicht gelöscht, wenn sie nicht mehr benötigt werden</p></li><li><p>viele (die meisten) Schlüssel werden nicht verwendet</p></li><li><p>Es ist oft nicht bekannt, wer Zugriff auf welche Schlüssel hat(te)</p></li><li><p>Es ist nicht bekannt, welche Schlüssel auf welche Systeme Zugriff haben</p></li><li><p>Malware kann SSH-Schlüssel stehlen</p></li><li><p>SSH Keys können ggf. privilegierten Zugriff gewähren</p></li><li><p>SSH Keys können benutzt werden, um Backdoors zu verstecken</p></li><li><p>Server keys erlauben ggf. Person-in-the-Middle-Angriffe</p></li></ul></ld-topic>
+<ld-topic id="ssh-tunneling"><h2>SSH Tunneling</h2><ul class="list-with-details"><li><p>ermöglicht die Übertragung beliebiger Netzwerkdaten über eine verschlüsselte SSH-Verbindung. z. B.</p><ul class="simple"><li><p>um ältere Anwendungen zu verschlüsseln.</p></li><li><p>um VPNs (Virtual Private Networks) zu implementieren.</p></li><li><p>um über Firewalls hinweg auf Intranetdienste zuzugreifen.</p></li></ul></li><li><p>ermöglicht auch Port-forwarding</p><p>(Lokale Ports werden auf entfernten Rechner weitergeleitet.)</p></li></ul><object class="light-image align-center" data="images/ssh/tunneling.svg" type="image/svg+xml" role="img" aria-label="SSH Protokoll"></object></ld-topic>
+<ld-topic id="ssh-und-back-tunneling"><h2>SSH und „Back-tunneling“</h2><ul class="incremental-list simple"><li><p>Der Angreifer richtet einen Server außerhalb des Zielnetzwerks ein</p></li><li><p>Nach Infiltration des Zielsystems verbindet der Angreifer sich von innen mit dem externen SSH-Server.</p></li><li><p>Diese SSH-Verbindung wird so eingerichtet, dass eine TCP-Port-Weiterleitung von einem Port auf dem externen Server zu einem SSH-Port auf einem Server im internen Netzwerk möglich ist.</p></li><li><p>Die meisten Firewalls bieten wenig bis gar keinen Schutz dagegen.</p></li></ul><ld-supplemental><p>Es ist in diesem Fall besonders interessant für den Angreifer den SSH Server zum Beispiel bei einem Cloud-Anbieter zu betreiben, welcher von dem Unternehmen  standardmäßig verwendet wird (am Anfang steht immer die Aufklärung!). In diesem Fall wird die Firewall keine ausgehenden SSH-Verbindungen dorthin blockieren.</p></ld-supplemental></ld-topic>
+<ld-topic id="schwachstellen-in-ssh"><h2>Schwachstellen in SSH</h2><blockquote class="epigraph"><p><strong>Nearly 11 million SSH servers vulnerable to new Terrapin attacks</strong></p><p>[...]
+It [The Terrapin attack] manipulates sequence numbers during the handshake process to compromise the integrity of the SSH channel, particularly when specific encryption modes like ChaCha20-Poly1305 or CBC with Encrypt-then-MAC are used.
+[...]</p><p>By Bill Toulas</p><p class="attribution">—<a class="reference external" href="https://www.bleepingcomputer.com/news/security/nearly-11-million-ssh-servers-vulnerable-to-new-terrapin-attacks/">January 3, 2024 10:06 AM</a></p></blockquote></ld-topic>
+<ld-topic id="ssh-und-quantencomputer"><h2>SSH und Quantencomputer</h2><blockquote class="epigraph"><p>[...] ssh(1): add a warning when the connection negotiates a non-post quantum key agreement algorithm.</p><p class="attribution">—<a class="reference external" href="https://www.openssh.org/releasenotes.html">OpenSSH 10.1 Release Notes</a></p></blockquote></ld-topic>
+</template>
+</body>
+</html>
