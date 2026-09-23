@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Michael Eichberg" />
+<meta name="keywords" content="&quot;Demo&quot;, &quot;Showcase&quot;" />
+<meta name="description" content="Demonstrates LectureDoc2" lang="en" xml:lang="en" />
+<meta name="id" content="LectureDoc2-Showcase" />
+<meta name="first-slide" content="last-viewed" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:wrwh18a021mF7YLWsmw1AdIPAQ==" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>LectureDoc2</title>
+<link rel="stylesheet" href="../shared/ext/katex/katex.min.css" />
+<script src="dist/src/ld.js" type="module"></script>
+<link rel="stylesheet" href="dist/src/ld.css" />
+<style>@import url("dist/src/css/themes/dhbw.css") layer(theme);</style>
+<style>/* ---------------------------------------------------------------------------
+   Shared classes for the SVG drawings of LectureDoc2 decks.
+
+   Include with `ld.include-styles` (in a project: in `myst.yml`, together with
+   `ld-svg-defs.svg` in `ld.include-globals`). Documentation:
+   LectureDoc2Author/docs-svgs.md; the colour model: LectureDoc2/SVGs.md.
+
+   - Opt-in only: every rule needs an `ld-` class and matches only inside an
+     <svg>. Nothing here styles `line`, `path` or `text` as such, so drawings
+     that do not use the classes are unaffected.
+   - Everything paints with `currentColor`. The colour modifiers (`ld-muted`,
+     `ld-accent`, ...) only set `color`, so they work on a single element as
+     well as on a <g> or the root <svg>, and they follow the surrounding
+     [data-theme] (admonitions!).
+   - Lengths are in `em`, i.e. relative to the drawing's font-size. A drawing
+     that sets the size of a normal label as `font-size` on its root gets
+     stroke widths and dash patterns that match every other drawing.
+   - All rules sit in the cascade layer `ld-svg`. A deck's own CSS is not
+     layered and therefore always wins, whatever its specificity.
+   --------------------------------------------------------------------------- */
+
+@layer ld-svg {
+    /* ---- colour modifiers ------------------------------------------------ */
+
+    svg.ld-muted,
+    svg .ld-muted {
+        color: var(--muted-color);
+    }
+    svg.ld-accent,
+    svg .ld-accent {
+        color: var(--accent-color);
+    }
+    svg.ld-danger,
+    svg .ld-danger {
+        color: var(--danger-color);
+    }
+    svg.ld-success,
+    svg .ld-success {
+        color: var(--success-color);
+    }
+    svg.ld-info,
+    svg .ld-info {
+        color: var(--info-color);
+    }
+    svg.ld-warning,
+    svg .ld-warning {
+        color: var(--warning-color);
+    }
+
+    /* ---- lines ----------------------------------------------------------- */
+
+    svg .ld-line,
+    svg .ld-connector {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.1em;
+    }
+
+    /* A line with an arrowhead (ld-svg-defs.svg). The tip lies
+       1.5 x stroke-width beyond the line's end point. */
+    svg .ld-connector {
+        marker-end: url(#ld-arrow);
+    }
+
+    /* A marker is coloured where it is defined, not where it is used; the
+       modifiers therefore also have to switch the marker. Put the modifier on
+       the connector itself or on its closest group. */
+    :is(svg.ld-muted, svg .ld-muted) .ld-connector,
+    svg .ld-connector.ld-muted {
+        marker-end: url(#ld-arrow-muted);
+    }
+    :is(svg.ld-accent, svg .ld-accent) .ld-connector,
+    svg .ld-connector.ld-accent {
+        marker-end: url(#ld-arrow-accent);
+    }
+    :is(svg.ld-danger, svg .ld-danger) .ld-connector,
+    svg .ld-connector.ld-danger {
+        marker-end: url(#ld-arrow-danger);
+    }
+    :is(svg.ld-success, svg .ld-success) .ld-connector,
+    svg .ld-connector.ld-success {
+        marker-end: url(#ld-arrow-success);
+    }
+    :is(svg.ld-info, svg .ld-info) .ld-connector,
+    svg .ld-connector.ld-info {
+        marker-end: url(#ld-arrow-info);
+    }
+    :is(svg.ld-warning, svg .ld-warning) .ld-connector,
+    svg .ld-connector.ld-warning {
+        marker-end: url(#ld-arrow-warning);
+    }
+
+    svg .ld-dashed {
+        stroke-dasharray: 0.4em 0.25em;
+    }
+    svg .ld-dotted {
+        stroke-dasharray: 0 0.25em;
+        stroke-linecap: round;
+    }
+
+    /* ---- shapes ---------------------------------------------------------- */
+
+    svg .ld-box {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.1em;
+    }
+    /* Three fill levels of the current colour: background region, element,
+       emphasised element. They stack: a cell on a panel is darker still. */
+    svg .ld-panel {
+        fill: currentColor;
+        fill-opacity: 0.1;
+    }
+    svg .ld-cell {
+        fill: currentColor;
+        fill-opacity: 0.3;
+    }
+    svg .ld-highlight {
+        fill: currentColor;
+        fill-opacity: 0.65;
+    }
+
+    /* ---- text ------------------------------------------------------------ */
+
+    svg .ld-label {
+        fill: currentColor;
+    }
+    /* Text on a filled shape (e.g. on an ld-highlight). */
+    svg .ld-label-on-fill {
+        fill: var(--background-color);
+    }
+    /* Deliberately no `text-anchor` here: on a <tspan> in the middle of a
+       line it would re-anchor that chunk. Centre on the <text> or the <g>. */
+    svg .ld-mono {
+        font-family: var(--monospaced-font-family);
+    }
+}
+</style>
+</head>
+<body data-theme="<light-dark>">
+<ld-globals><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<!--
+    Shared definitions for the SVG drawings of LectureDoc2 decks.
+
+    Include this file ONCE per document with `ld.include-globals` (in a project:
+    in `myst.yml`, together with `ld-svg.css` in `ld.include-styles`). It is put
+    verbatim into <ld-globals>; every drawing inlined with {include-svg} can
+    then use the markers with `marker-end="url(#ld-arrow)"`.
+
+    Documentation: LectureDoc2Author/docs-svgs.md (catalog and usage) and
+    LectureDoc2/SVGs.md (why shared definitions live in <ld-globals>).
+
+    All markers follow the same rules:
+
+    - markerUnits="strokeWidth": a marker scales with the line it sits on.
+    - orient="auto-start-reverse": used as `marker-start`, an arrowhead points
+      backwards - one marker also draws a double-headed arrow.
+    - The outermost painted point lies exactly 1.5 x stroke-width beyond the
+      end point of the line. To let a tip touch a target, end the line
+      1.5 x stroke-width before it. The line's own (butt) end is hidden under
+      the head: 1.5 x stroke-width before the tip the head is already wider
+      than the line.
+    - Colour: `currentColor`, resolved at the DEFINITION site. <ld-globals> is
+      a child of <body>, which carries [data-theme] and therefore
+      `color: var(--color)` - so the plain markers have the deck's foreground
+      colour. The coloured variants set `color` to a theme variable on the
+      <marker> itself. Neither `light-dark()` (follows the OS only) nor
+      `context-stroke` (not implemented in WebKit) is used; see SVGs.md.
+    - A marker takes the colour of <body>, not of the admonition a drawing
+      sits in. Inside an admonition with its own theme, prefer a variant.
+-->
+<defs>
+
+    <!-- Filled arrowhead: 6 long, 5 wide; tip at +1.5, back at -4.5. -->
+    <marker id="ld-arrow" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+
+    <!-- The same arrowhead in the theme's semantic colours. -->
+    <marker id="ld-arrow-muted" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--muted-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-accent" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--accent-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-danger" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--danger-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-success" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--success-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-info" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--info-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-warning" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--warning-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+
+    <!-- Open arrowhead (chevron), same opening angle as ld-arrow. The mitred
+         vertex sits at +0.2; the mitre reaches +1.5. -->
+    <marker id="ld-arrow-open" viewBox="-5 -2.5 6.5 5" refX="0" refY="0"
+            markerWidth="6.5" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" overflow="visible">
+        <path d="M -4.3 -1.875 L 0.2 0 L -4.3 1.875" fill="none"
+              stroke="currentColor" stroke-width="1"
+              stroke-linejoin="miter" stroke-miterlimit="4" />
+    </marker>
+
+    <!-- Dot, centred on the end point (e.g. the start of a flow). -->
+    <marker id="ld-dot" viewBox="-1.5 -1.5 3 3" refX="0" refY="0"
+            markerWidth="3" markerHeight="3" markerUnits="strokeWidth">
+        <circle r="1.5" fill="currentColor" />
+    </marker>
+
+</defs>
+</svg>
+</ld-globals>
+<template>
+<ld-topic id="LectureDoc2-Showcase"><h1 class="title">LectureDoc2</h1><dl class="docinfo"><dt class="author">Autor<span class="colon">:</span></dt><dd class="author"><a class="reference external" href="https://delors.github.io/cv/folien.de.md.html">Prof. Dr. Michael Eichberg</a></dd><dt class="contact">Kontakt<span class="colon">:</span></dt><dd class="contact"><a class="reference external" href="mailto:michael.eichberg@dhbw.de">michael.eichberg@dhbw.de</a>
+, Raum 149B</dd></dl><ld-supplemental><dl class="field-list simple"><dt>Folien<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://delors.github.io/LectureDoc2/example-slides.en.md.html">https://delors.github.io/LectureDoc2/example-slides.en.md.html</a></p></dd><dt>Fehler melden<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p></dd></dl></ld-supplemental></ld-topic>
+<ld-topic class="new-section transition-move-to-top" id="introduction"><h2>Introduction</h2><p>This slide set primarily serves as a testbed for various features of the <span class="docutils literal">LectureDoc2</span> system. It also demonstrates how to use the system to create slides for a lecture.</p></ld-topic>
+<ld-topic class="transition-scale" id="supplemental-information-and-presenter-notes"><h2>Supplemental Information and Presenter Notes<a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></h2><p>You first have to enter the master password (press M and then enter Demo!) to see the presenter notes.</p><ld-supplemental><p>This is additional information that is not shown in the main text.</p></ld-supplemental><ld-presenter-note encrypted="">MTAwMDAw:4LtPFjyjIZ/B7vE3RiHXqNKxtkr5wDNMDU1HHXQszP4=:hHQe47JNQT4wprIT:ly0zJEtKm59IZQ/FEy22sxEz9KHl90DMthEy/9xRfimnUUEHn1QygpN5JF02hYnoBDTPC3k0ok2f0/bXUN5nHzBeel06AoSRbRBdFDzBEykgRzrV7HMd3gKgh8QkBO9wHp8=</ld-presenter-note><p>Some more text.</p><ld-presenter-note encrypted="">MTAwMDAw:i+GVNbP0BP+TlYxYiHmev5RARKhZxy04a+MJ1DwtUhc=:7/545/00/7yqGdyt:AfxztaxXysGYs5i8VsrFa95TJZD2aGz8phx0Gq3+pDpzOmNTEL4dJMoJHGnHeImH83eimIyKtZvCBxij5XwAQYqGGi5SsR1KY2M/9RYi9iuPl8v7zCAsIMujMHLLW9T/wtsVN5ECIg==</ld-presenter-note><ld-supplemental><p>This is some more additional information that is not shown in the main text.</p><ld-presenter-note encrypted="">MTAwMDAw:dzV6JjilpdJmPBrDf7nVO4ABaEzFIUY6kImCATrcHYc=:nytf3QInTlBZOCMX:iOi5SFzhFDM9lrVz2XDtDaDJTbCkaPRFN0obcb/XWtPv8XdAjU4fFc1+R+O3jccuDaPaIuL845UFFxKWEyOfXnxOtH/e0GSZMLgJqVvWlbPzSI6bWxdSYpKO5QRyHksGdlwUTT03Kp48mHOZvZ9lnQ==</ld-presenter-note></ld-supplemental><ld-supplemental embed-in-document-flow=""><p>Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled. Just a long text to demonstrate that the supplemental information is not immediately shown on the slide and that it can be scrolled.</p></ld-supplemental><aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-1" role="doc-footnote"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span><p>Supplemental information and presenter notes are not immediately shown on the slide.</p></aside></aside></ld-topic>
+<ld-topic class="transition-move-left" id="decks-and-cards"><h2>Decks and Cards</h2><ld-deck><ld-card><p>A deck is a collection of cards.</p></ld-card><ld-card class="incremental"><p>Where each card "replaces" the previous cards during the presentation belonging to the same deck.</p></ld-card><ld-card class="incremental"><aside class="admonition" data-theme="note"><p class="admonition-title" data-theme="note-header">Note</p><p>This is a simple note.</p></aside><p>This card contains a simple note. Where the height of the deck as a whole is determined by the tallest card.</p></ld-card><ld-card class="incremental"><blockquote class="epigraph"><p><strong>The Tallest One</strong></p><p>Above the crowd, I stand so high,
+A bridge between the ground and sky.
+I see the world in a broader frame,
+Yet hear the jokes—they’re all the same.</p><p class="attribution">—Jan. 2025 ChatGPT (Prompt: I need a short poem about being the tallest one.)</p></blockquote></ld-card><ld-card class="incremental"><p>Decks can be nested and can overlay each other!</p><p>However, a card with a nested deck is not allowed to also use floating elements (e.g. notes). In general, the use of floating elements in combination with overlays is discouraged.</p><ld-deck><ld-card><pre class="literal-block"><code>The first sentence of the first card in the nested deck.
+
+
+
+The last sentence of the first card in the nested deck.</code></pre></ld-card><ld-card class="overlay incremental"><pre class="literal-block"><code>T
+
+A sentence in between.
+
+T</code></pre></ld-card><ld-card class="incremental"><aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hint</p><aside class="admonition" data-theme="note"><p class="admonition-title" data-theme="note-header">Note</p><p>This is another simple note.</p></aside><p>This is the last meaningful card in the nested deck. The next two ones are a technical detail.</p></aside></ld-card><ld-card class="incremental"><p class="monospaced">------- ------- ------- ------- ------- ------- ------- ------ ------- ------- ------- ------- ------- ------- ------- ------ ------- ------- ------- ------- ------- ------- ------- ------ ------- ------- ------- ------- ------- ------- ------- ------ ------- ------- ------- ------- ------- ------- ------- ------ ------- ------- ------- ------- ------- ------- ------- ------ ------- -------</p></ld-card><ld-card class="overlay incremental"><p class="monospaced">xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxxx xxxxxx xxxxxxx xxxxxxx</p></ld-card></ld-deck></ld-card><ld-card class="incremental"><aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hint</p><p>This is the last card in the top-level deck.</p></aside></ld-card></ld-deck></ld-topic>
+<ld-topic class="transition-flip" id="stories"><h2>Stories</h2><p>Stories are used for content that should appear in a stepwise manner and which
+may scroll content out of the view.</p><ld-story><ol class="arabic incremental-list simple"><li><p>This is the first step.</p></li><li><p>This is the second step.</p></li><li><p>This is the third step.</p></li><li><p>This is the fourth step.</p></li><li><p>This is the fifth step.</p></li><li><p>This is the sixth step.</p></li><li><p>This is the seventh step.</p></li><li><p>This is the eighth step.</p></li><li><p>This is the ninth step.</p></li><li><p>This is the tenth step.</p></li><li><p>This is the eleventh step.</p></li><li><p>This is the twelfth step.</p></li><li><p>This is the thirteenth step.</p></li><li><p>This is the fourteenth step.</p></li><li><p>This is the fifteenth step.</p></li></ol><div class="incremental"><pre class="literal-block"><code>Some monospaced text.</code></pre></div><pre class="code java incremental copy-to-clipboard literal-block"><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="name class">HelloWorld</span> <span class="punctuation">{</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="name function">main</span><span class="punctuation">(</span><span class="name class">String</span><span class="punctuation">[</span><span class="punctuation">]</span> args<span class="punctuation">)</span> <span class="punctuation">{</span>
+        <span class="name class">System</span><span class="punctuation">.</span>out<span class="punctuation">.</span><span class="name function">println</span><span class="punctuation">(</span><span class="literal string">"Hello, World!"</span><span class="punctuation">)</span><span class="punctuation">;</span>
+    <span class="punctuation">}</span>
+<span class="punctuation">}</span></code></pre><pre class="code python incremental copy-to-clipboard literal-block"><code><span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">"Hello, World!"</span><span class="punctuation">)</span></code></pre><pre class="code rust incremental copy-to-clipboard literal-block"><code><span class="keyword">fn</span> main<span class="punctuation">(</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+    <span class="name attribute">println!</span><span class="punctuation">(</span><span class="literal string">"Hello, World!"</span><span class="punctuation">)</span><span class="punctuation">;</span>
+<span class="punctuation">}</span></code></pre><pre class="code zig incremental copy-to-clipboard literal-block"><code><span class="keyword">const</span> std <span class="operator">=</span> <span class="name builtin">@import</span><span class="punctuation">(</span><span class="literal string">"std"</span><span class="punctuation">)</span><span class="punctuation">;</span>
+
+<span class="keyword">pub</span> <span class="keyword">fn</span> <span class="name function">main</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="name class">void</span> <span class="punctuation">{</span>
+    std<span class="punctuation">.</span>debug<span class="punctuation">.</span><span class="name function">print</span><span class="punctuation">(</span><span class="literal string">"Hello, World!\n"</span><span class="punctuation">,</span> <span class="punctuation">.</span><span class="punctuation">{</span><span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">;</span>
+<span class="punctuation">}</span></code></pre></ld-story></ld-topic>
+<ld-topic class="transition-fade" id="scrollables"><h2>Scrollables</h2><p>A scrollable is a container whose content does not fit into the available space of a slide. During the presentation the content can be scrolled by the presenter and scrolling is relayed in secondary windows.</p><ld-scrollable><pre class="code javascript copy-to-clipboard literal-block"><small class="ln">  1</small><code data-lineno="  1"><span class="comment single">/* A small library to encrypt and decrypt strings using AES-GCM and PBKDF2.</span>
+</code><small class="ln">  2</small><code data-lineno="  2"> <span class="operator">*</span>
+</code><small class="ln">  3</small><code data-lineno="  3"> <span class="operator">*</span> Based on code found at<span class="operator">:</span> https<span class="operator">:</span><span class="operator">/</span><span class="operator">/</span>github<span class="punctuation">.</span>com<span class="operator">/</span>themikefuller<span class="operator">/</span>Web<span class="operator">-</span>Cryptography
+</code><small class="ln">  4</small><code data-lineno="  4"> <span class="operator">*</span>
+</code><small class="ln">  5</small><code data-lineno="  5"> <span class="operator">*</span> License<span class="operator">:</span> <span class="name constant">BSD</span><span class="operator">-</span><span class="literal number integer">3</span><span class="operator">-</span>Clause
+</code><small class="ln">  6</small><code data-lineno="  6"> <span class="operator">*</span><span class="operator">/</span>
+</code><small class="ln">  7</small><code data-lineno="  7"><span class="keyword">export</span> <span class="punctuation">{</span>
+</code><small class="ln">  8</small><code data-lineno="  8">    decrypt <span class="keyword">as</span> decryptAESGCMPBKDF<span class="punctuation">,</span>
+</code><small class="ln">  9</small><code data-lineno="  9">    encrypt <span class="keyword">as</span> encryptASEGCMPBKDF
+</code><small class="ln"> 10</small><code data-lineno=" 10"><span class="punctuation">}</span>
+</code><small class="ln"> 11</small><code data-lineno=" 11">
+</code><small class="ln"> 12</small><code data-lineno=" 12"><span class="keyword">async</span> <span class="keyword">function</span> <span class="name function">encrypt</span><span class="punctuation">(</span><span class="name variable">plaintext<span class="punctuation">,</span> password<span class="punctuation">,</span> iterations</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln"> 13</small><code data-lineno=" 13">
+</code><small class="ln"> 14</small><code data-lineno=" 14">    <span class="keyword">const</span> encodedPlaintext <span class="operator">=</span> <span class="keyword">new</span> <span class="name class">TextEncoder</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">encode</span><span class="punctuation">(</span>plaintext<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 15</small><code data-lineno=" 15">    <span class="keyword">const</span> encodedPassword <span class="operator">=</span> <span class="keyword">new</span> <span class="name class">TextEncoder</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">encode</span><span class="punctuation">(</span>password<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 16</small><code data-lineno=" 16">
+</code><small class="ln"> 17</small><code data-lineno=" 17">    <span class="keyword">const</span> pass <span class="operator">=</span> <span class="keyword">await</span> crypto<span class="punctuation">.</span>subtle<span class="punctuation">.</span><span class="name function">importKey</span><span class="punctuation">(</span>
+</code><small class="ln"> 18</small><code data-lineno=" 18">        <span class="literal string">'raw'</span><span class="punctuation">,</span>
+</code><small class="ln"> 19</small><code data-lineno=" 19">        encodedPassword<span class="punctuation">,</span>
+</code><small class="ln"> 20</small><code data-lineno=" 20">        <span class="punctuation">{</span> "name"<span class="operator">:</span> <span class="literal string">"PBKDF2"</span> <span class="punctuation">}</span><span class="punctuation">,</span>
+</code><small class="ln"> 21</small><code data-lineno=" 21">        <span class="keyword constant">false</span><span class="punctuation">,</span>
+</code><small class="ln"> 22</small><code data-lineno=" 22">        <span class="punctuation">[</span><span class="literal string">'deriveBits'</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 23</small><code data-lineno=" 23">
+</code><small class="ln"> 24</small><code data-lineno=" 24">    <span class="keyword">const</span> salt <span class="operator">=</span> crypto<span class="punctuation">.</span><span class="name function">getRandomValues</span><span class="punctuation">(</span><span class="keyword">new</span> <span class="name class">Uint8Array</span><span class="punctuation">(</span><span class="literal number integer">32</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 25</small><code data-lineno=" 25">    <span class="keyword">const</span> iv <span class="operator">=</span> crypto<span class="punctuation">.</span><span class="name function">getRandomValues</span><span class="punctuation">(</span><span class="keyword">new</span> <span class="name class">Uint8Array</span><span class="punctuation">(</span><span class="literal number integer">12</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 26</small><code data-lineno=" 26">
+</code><small class="ln"> 27</small><code data-lineno=" 27">    <span class="keyword">const</span> keyBits <span class="operator">=</span> <span class="keyword">await</span> crypto<span class="punctuation">.</span>subtle<span class="punctuation">.</span><span class="name function">deriveBits</span><span class="punctuation">(</span>
+</code><small class="ln"> 28</small><code data-lineno=" 28">        <span class="punctuation">{</span>
+</code><small class="ln"> 29</small><code data-lineno=" 29">            "name"<span class="operator">:</span> <span class="literal string">"PBKDF2"</span><span class="punctuation">,</span>
+</code><small class="ln"> 30</small><code data-lineno=" 30">            "salt"<span class="operator">:</span> salt<span class="punctuation">,</span>
+</code><small class="ln"> 31</small><code data-lineno=" 31">            "iterations"<span class="operator">:</span> iterations<span class="punctuation">,</span>
+</code><small class="ln"> 32</small><code data-lineno=" 32">            "hash"<span class="operator">:</span> <span class="punctuation">{</span> "name"<span class="operator">:</span> <span class="literal string">"SHA-256"</span> <span class="punctuation">}</span>
+</code><small class="ln"> 33</small><code data-lineno=" 33">        <span class="punctuation">}</span><span class="punctuation">,</span>
+</code><small class="ln"> 34</small><code data-lineno=" 34">        pass<span class="punctuation">,</span>
+</code><small class="ln"> 35</small><code data-lineno=" 35">        <span class="literal number integer">256</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 36</small><code data-lineno=" 36">
+</code><small class="ln"> 37</small><code data-lineno=" 37">    <span class="keyword">const</span> key <span class="operator">=</span> <span class="keyword">await</span> crypto<span class="punctuation">.</span>subtle<span class="punctuation">.</span><span class="name function">importKey</span><span class="punctuation">(</span>
+</code><small class="ln"> 38</small><code data-lineno=" 38">        <span class="literal string">'raw'</span><span class="punctuation">,</span>
+</code><small class="ln"> 39</small><code data-lineno=" 39">        keyBits<span class="punctuation">,</span> <span class="punctuation">{</span> "name"<span class="operator">:</span> <span class="literal string">"AES-GCM"</span> <span class="punctuation">}</span><span class="punctuation">,</span>
+</code><small class="ln"> 40</small><code data-lineno=" 40">        <span class="keyword constant">false</span><span class="punctuation">,</span>
+</code><small class="ln"> 41</small><code data-lineno=" 41">        <span class="punctuation">[</span><span class="literal string">'encrypt'</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 42</small><code data-lineno=" 42">
+</code><small class="ln"> 43</small><code data-lineno=" 43">    <span class="keyword">const</span> enc <span class="operator">=</span> <span class="keyword">await</span> crypto<span class="punctuation">.</span>subtle<span class="punctuation">.</span><span class="name function">encrypt</span><span class="punctuation">(</span>
+</code><small class="ln"> 44</small><code data-lineno=" 44">        <span class="punctuation">{</span>
+</code><small class="ln"> 45</small><code data-lineno=" 45">            "name"<span class="operator">:</span> <span class="literal string">"AES-GCM"</span><span class="punctuation">,</span>
+</code><small class="ln"> 46</small><code data-lineno=" 46">            "iv"<span class="operator">:</span> iv
+</code><small class="ln"> 47</small><code data-lineno=" 47">        <span class="punctuation">}</span><span class="punctuation">,</span>
+</code><small class="ln"> 48</small><code data-lineno=" 48">        key<span class="punctuation">,</span>
+</code><small class="ln"> 49</small><code data-lineno=" 49">        encodedPlaintext<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 50</small><code data-lineno=" 50">
+</code><small class="ln"> 51</small><code data-lineno=" 51">    <span class="keyword">const</span> iterationsB64 <span class="operator">=</span> <span class="name function">btoa</span><span class="punctuation">(</span>rounds<span class="punctuation">.</span><span class="name function">toString</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 52</small><code data-lineno=" 52">
+</code><small class="ln"> 53</small><code data-lineno=" 53">    <span class="keyword">const</span> saltB64 <span class="operator">=</span> <span class="name function">btoa</span><span class="punctuation">(</span>Array<span class="punctuation">.</span><span class="name function">from</span><span class="punctuation">(</span><span class="keyword">new</span> <span class="name class">Uint8Array</span><span class="punctuation">(</span>salt<span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">map</span><span class="punctuation">(</span><span class="name variable">val</span> <span class="operator">=&gt;</span> <span class="punctuation">{</span>
+</code><small class="ln"> 54</small><code data-lineno=" 54">        <span class="keyword">return</span> String<span class="punctuation">.</span><span class="name function">fromCharCode</span><span class="punctuation">(</span>val<span class="punctuation">)</span>
+</code><small class="ln"> 55</small><code data-lineno=" 55">    <span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">join</span><span class="punctuation">(</span><span class="literal string">''</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 56</small><code data-lineno=" 56">
+</code><small class="ln"> 57</small><code data-lineno=" 57">    <span class="keyword">const</span> ivB64 <span class="operator">=</span> <span class="name function">btoa</span><span class="punctuation">(</span>Array<span class="punctuation">.</span><span class="name function">from</span><span class="punctuation">(</span><span class="keyword">new</span> <span class="name class">Uint8Array</span><span class="punctuation">(</span>iv<span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">map</span><span class="punctuation">(</span><span class="name variable">val</span> <span class="operator">=&gt;</span> <span class="punctuation">{</span>
+</code><small class="ln"> 58</small><code data-lineno=" 58">        <span class="keyword">return</span> String<span class="punctuation">.</span><span class="name function">fromCharCode</span><span class="punctuation">(</span>val<span class="punctuation">)</span>
+</code><small class="ln"> 59</small><code data-lineno=" 59">    <span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">join</span><span class="punctuation">(</span><span class="literal string">''</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 60</small><code data-lineno=" 60">
+</code><small class="ln"> 61</small><code data-lineno=" 61">    <span class="keyword">const</span> encB64 <span class="operator">=</span> <span class="name function">btoa</span><span class="punctuation">(</span>Array<span class="punctuation">.</span><span class="name function">from</span><span class="punctuation">(</span><span class="keyword">new</span> <span class="name class">Uint8Array</span><span class="punctuation">(</span>enc<span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">map</span><span class="punctuation">(</span><span class="name variable">val</span> <span class="operator">=&gt;</span> <span class="punctuation">{</span>
+</code><small class="ln"> 62</small><code data-lineno=" 62">        <span class="keyword">return</span> String<span class="punctuation">.</span><span class="name function">fromCharCode</span><span class="punctuation">(</span>val<span class="punctuation">)</span>
+</code><small class="ln"> 63</small><code data-lineno=" 63">    <span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">join</span><span class="punctuation">(</span><span class="literal string">''</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 64</small><code data-lineno=" 64">
+</code><small class="ln"> 65</small><code data-lineno=" 65">    <span class="keyword">return</span> iterationsB64 <span class="operator">+</span> <span class="literal string">':'</span> <span class="operator">+</span> saltB64 <span class="operator">+</span> <span class="literal string">':'</span> <span class="operator">+</span> ivB64 <span class="operator">+</span> <span class="literal string">':'</span> <span class="operator">+</span> encB64<span class="punctuation">;</span>
+</code><small class="ln"> 66</small><code data-lineno=" 66"><span class="punctuation">}</span><span class="punctuation">;</span>
+</code><small class="ln"> 67</small><code data-lineno=" 67">
+</code><small class="ln"> 68</small><code data-lineno=" 68"><span class="keyword">async</span> <span class="keyword">function</span> <span class="name function">decrypt</span><span class="punctuation">(</span><span class="name variable">encrypted<span class="punctuation">,</span> password</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln"> 69</small><code data-lineno=" 69">
+</code><small class="ln"> 70</small><code data-lineno=" 70">    <span class="keyword">const</span> parts <span class="operator">=</span> encrypted<span class="punctuation">.</span><span class="name function">split</span><span class="punctuation">(</span><span class="literal string">':'</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 71</small><code data-lineno=" 71">    <span class="keyword">const</span> rounds <span class="operator">=</span> <span class="name function">parseInt</span><span class="punctuation">(</span><span class="name function">atob</span><span class="punctuation">(</span>parts<span class="punctuation">[</span><span class="literal number integer">0</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 72</small><code data-lineno=" 72">
+</code><small class="ln"> 73</small><code data-lineno=" 73">    <span class="keyword">const</span> salt <span class="operator">=</span> <span class="keyword">new</span> <span class="name class">Uint8Array</span><span class="punctuation">(</span><span class="name function">atob</span><span class="punctuation">(</span>parts<span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">split</span><span class="punctuation">(</span><span class="literal string">''</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">map</span><span class="punctuation">(</span><span class="name variable">val</span> <span class="operator">=&gt;</span> <span class="punctuation">{</span>
+</code><small class="ln"> 74</small><code data-lineno=" 74">        <span class="keyword">return</span> val<span class="punctuation">.</span><span class="name function">charCodeAt</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 75</small><code data-lineno=" 75">    <span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 76</small><code data-lineno=" 76">
+</code><small class="ln"> 77</small><code data-lineno=" 77">    <span class="keyword">const</span> iv <span class="operator">=</span> <span class="keyword">new</span> <span class="name class">Uint8Array</span><span class="punctuation">(</span><span class="name function">atob</span><span class="punctuation">(</span>parts<span class="punctuation">[</span><span class="literal number integer">2</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">split</span><span class="punctuation">(</span><span class="literal string">''</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">map</span><span class="punctuation">(</span><span class="name variable">val</span> <span class="operator">=&gt;</span> <span class="punctuation">{</span>
+</code><small class="ln"> 78</small><code data-lineno=" 78">        <span class="keyword">return</span> val<span class="punctuation">.</span><span class="name function">charCodeAt</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 79</small><code data-lineno=" 79">    <span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 80</small><code data-lineno=" 80">
+</code><small class="ln"> 81</small><code data-lineno=" 81">    <span class="keyword">const</span> enc <span class="operator">=</span> <span class="keyword">new</span> <span class="name class">Uint8Array</span><span class="punctuation">(</span><span class="name function">atob</span><span class="punctuation">(</span>parts<span class="punctuation">[</span><span class="literal number integer">3</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">split</span><span class="punctuation">(</span><span class="literal string">''</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">map</span><span class="punctuation">(</span><span class="name variable">val</span> <span class="operator">=&gt;</span> <span class="punctuation">{</span>
+</code><small class="ln"> 82</small><code data-lineno=" 82">        <span class="keyword">return</span> val<span class="punctuation">.</span><span class="name function">charCodeAt</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 83</small><code data-lineno=" 83">    <span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 84</small><code data-lineno=" 84">
+</code><small class="ln"> 85</small><code data-lineno=" 85">    <span class="keyword">const</span> encodedPassword <span class="operator">=</span> <span class="keyword">new</span> <span class="name class">TextEncoder</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">encode</span><span class="punctuation">(</span>password<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 86</small><code data-lineno=" 86">    <span class="keyword">const</span> pass <span class="operator">=</span> <span class="keyword">await</span> crypto<span class="punctuation">.</span>subtle<span class="punctuation">.</span><span class="name function">importKey</span><span class="punctuation">(</span>
+</code><small class="ln"> 87</small><code data-lineno=" 87">        <span class="literal string">'raw'</span><span class="punctuation">,</span>
+</code><small class="ln"> 88</small><code data-lineno=" 88">        encodedPassword<span class="punctuation">,</span>
+</code><small class="ln"> 89</small><code data-lineno=" 89">        <span class="punctuation">{</span> "name"<span class="operator">:</span> <span class="literal string">"PBKDF2"</span> <span class="punctuation">}</span><span class="punctuation">,</span>
+</code><small class="ln"> 90</small><code data-lineno=" 90">        <span class="keyword constant">false</span><span class="punctuation">,</span>
+</code><small class="ln"> 91</small><code data-lineno=" 91">        <span class="punctuation">[</span><span class="literal string">'deriveBits'</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 92</small><code data-lineno=" 92">
+</code><small class="ln"> 93</small><code data-lineno=" 93">    <span class="keyword">const</span> keyBits <span class="operator">=</span> <span class="keyword">await</span> crypto<span class="punctuation">.</span>subtle<span class="punctuation">.</span><span class="name function">deriveBits</span><span class="punctuation">(</span>
+</code><small class="ln"> 94</small><code data-lineno=" 94">        <span class="punctuation">{</span>
+</code><small class="ln"> 95</small><code data-lineno=" 95">            "name"<span class="operator">:</span> <span class="literal string">"PBKDF2"</span><span class="punctuation">,</span>
+</code><small class="ln"> 96</small><code data-lineno=" 96">            "salt"<span class="operator">:</span> salt<span class="punctuation">,</span>
+</code><small class="ln"> 97</small><code data-lineno=" 97">            "iterations"<span class="operator">:</span> rounds<span class="punctuation">,</span>
+</code><small class="ln"> 98</small><code data-lineno=" 98">            "hash"<span class="operator">:</span> <span class="punctuation">{</span>
+</code><small class="ln"> 99</small><code data-lineno=" 99">                "name"<span class="operator">:</span> <span class="literal string">"SHA-256"</span>
+</code><small class="ln">100</small><code data-lineno="100">            <span class="punctuation">}</span>
+</code><small class="ln">101</small><code data-lineno="101">        <span class="punctuation">}</span><span class="punctuation">,</span>
+</code><small class="ln">102</small><code data-lineno="102">        pass<span class="punctuation">,</span>
+</code><small class="ln">103</small><code data-lineno="103">        <span class="literal number integer">256</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">104</small><code data-lineno="104">
+</code><small class="ln">105</small><code data-lineno="105">    <span class="keyword">let</span> key <span class="operator">=</span> <span class="keyword">await</span> crypto<span class="punctuation">.</span>subtle<span class="punctuation">.</span><span class="name function">importKey</span><span class="punctuation">(</span>
+</code><small class="ln">106</small><code data-lineno="106">        <span class="literal string">'raw'</span><span class="punctuation">,</span>
+</code><small class="ln">107</small><code data-lineno="107">        keyBits<span class="punctuation">,</span> <span class="punctuation">{</span> "name"<span class="operator">:</span> <span class="literal string">"AES-GCM"</span> <span class="punctuation">}</span><span class="punctuation">,</span>
+</code><small class="ln">108</small><code data-lineno="108">        <span class="keyword constant">false</span><span class="punctuation">,</span>
+</code><small class="ln">109</small><code data-lineno="109">        <span class="punctuation">[</span><span class="literal string">'decrypt'</span><span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">110</small><code data-lineno="110">
+</code><small class="ln">111</small><code data-lineno="111">    <span class="keyword">let</span> dec <span class="operator">=</span> <span class="keyword">await</span> crypto<span class="punctuation">.</span>subtle<span class="punctuation">.</span><span class="name function">decrypt</span><span class="punctuation">(</span>
+</code><small class="ln">112</small><code data-lineno="112">        <span class="punctuation">{</span>
+</code><small class="ln">113</small><code data-lineno="113">            "name"<span class="operator">:</span> <span class="literal string">"AES-GCM"</span><span class="punctuation">,</span>
+</code><small class="ln">114</small><code data-lineno="114">            "iv"<span class="operator">:</span> iv
+</code><small class="ln">115</small><code data-lineno="115">        <span class="punctuation">}</span><span class="punctuation">,</span>
+</code><small class="ln">116</small><code data-lineno="116">        key<span class="punctuation">,</span>
+</code><small class="ln">117</small><code data-lineno="117">        enc<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">118</small><code data-lineno="118">
+</code><small class="ln">119</small><code data-lineno="119">    <span class="keyword">return</span> <span class="punctuation">(</span><span class="keyword">new</span> <span class="name class">TextDecoder</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">decode</span><span class="punctuation">(</span>dec<span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">120</small><code data-lineno="120"><span class="punctuation">}</span><span class="punctuation">;</span></code></pre></ld-scrollable></ld-topic>
+<ld-topic class="transition-zoom" id="scrollables-with-explicit-height"><h2>Scrollables with explicit height!<a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></h2><p>A scrollable can have an explicit height that will be used for the slide view.</p><ld-scrollable class="margin-bottom-1em" data-height="300px"><pre class="code javascript copy-to-clipboard literal-block"><small class="ln"> 1</small><code data-lineno=" 1"><span class="comment single">/**</span>
+</code><small class="ln"> 2</small><code data-lineno=" 2"> <span class="operator">*</span> Adds an event listener to the scrollable element that fires when the element
+</code><small class="ln"> 3</small><code data-lineno=" 3"> <span class="operator">*</span> is scrolled<span class="punctuation">.</span> In that <span class="keyword">case</span><span class="punctuation">,</span> the event is sent to the specified channel to
+</code><small class="ln"> 4</small><code data-lineno=" 4"> <span class="operator">*</span> make secondary windows aware <span class="keyword">of</span> the scrolling event <span class="keyword">in</span> the primary window<span class="punctuation">.</span>
+</code><small class="ln"> 5</small><code data-lineno=" 5"> <span class="operator">*</span>
+</code><small class="ln"> 6</small><code data-lineno=" 6"> <span class="operator">*</span> The data is sent using the <span class="punctuation">{</span>@link postMessage<span class="punctuation">}</span> method where the msg is the event title
+</code><small class="ln"> 7</small><code data-lineno=" 7"> <span class="operator">*</span> and the data is a two element array where the first element is the id <span class="keyword">of</span> the
+</code><small class="ln"> 8</small><code data-lineno=" 8"> <span class="operator">*</span> element that is being scrolled and the second element is the current scrollTop<span class="punctuation">.</span>
+</code><small class="ln"> 9</small><code data-lineno=" 9"> <span class="operator">*</span>
+</code><small class="ln">10</small><code data-lineno="10"> <span class="operator">*</span> The primary window is always the window that user interacts <span class="keyword">with</span><span class="punctuation">.</span> The secondary
+</code><small class="ln">11</small><code data-lineno="11"> <span class="operator">*</span> is every other window showing the same site<span class="punctuation">.</span>
+</code><small class="ln">12</small><code data-lineno="12"> <span class="operator">*</span>
+</code><small class="ln">13</small><code data-lineno="13"> <span class="operator">*</span> @param <span class="punctuation">{</span>Channel<span class="punctuation">}</span> channel <span class="operator">-</span> The channel that will be used to send the event<span class="punctuation">.</span>
+</code><small class="ln">14</small><code data-lineno="14"> <span class="operator">*</span> @param <span class="punctuation">{</span>string<span class="punctuation">}</span> eventTitle <span class="operator">-</span> The title <span class="keyword">of</span> the event that will be sent to the channel<span class="punctuation">.</span> The
+</code><small class="ln">15</small><code data-lineno="15"> <span class="operator">*</span>                            title has to be unique w<span class="punctuation">.</span>r<span class="punctuation">.</span>t<span class="punctuation">.</span> to the channel<span class="punctuation">.</span>
+</code><small class="ln">16</small><code data-lineno="16"> <span class="operator">*</span> @param <span class="punctuation">{</span>HTMLElement<span class="punctuation">}</span> scrollableElement <span class="operator">-</span> The element that is being scrolled<span class="punctuation">.</span>
+</code><small class="ln">17</small><code data-lineno="17"> <span class="operator">*</span> @param <span class="punctuation">{</span>string<span class="punctuation">}</span> id <span class="operator">-</span> The id <span class="keyword">of</span> the element that is being scrolled<span class="punctuation">.</span>
+</code><small class="ln">18</small><code data-lineno="18"> <span class="operator">*</span><span class="operator">/</span>
+</code><small class="ln">19</small><code data-lineno="19"><span class="keyword">export</span> <span class="keyword">function</span> <span class="name function">addScrollingEventListener</span><span class="punctuation">(</span><span class="name variable">channel<span class="punctuation">,</span> eventTitle<span class="punctuation">,</span> scrollableElement<span class="punctuation">,</span> id</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">20</small><code data-lineno="20">    <span class="comment single">// We will relay a scroll event to a secondary window, when there was no</span>
+</code><small class="ln">21</small><code data-lineno="21">    <span class="comment single">// more scrolling for at least TIMEOUTms. Additionally, if there is already an</span>
+</code><small class="ln">22</small><code data-lineno="22">    <span class="comment single">// event handler scheduled, we will not schedule another one.</span>
+</code><small class="ln">23</small><code data-lineno="23">    <span class="comment single">//</span>
+</code><small class="ln">24</small><code data-lineno="24">    <span class="comment single">// If we would directly relay the event, it may be possible that it will</span>
+</code><small class="ln">25</small><code data-lineno="25">    <span class="comment single">// result in all kinds of strange behaviors, because we cannot easily</span>
+</code><small class="ln">26</small><code data-lineno="26">    <span class="comment single">// distinguish between a programmatic and a user initiated scroll event.</span>
+</code><small class="ln">27</small><code data-lineno="27">    <span class="comment single">// (Using window blur and focus events didn't work reliably.)</span>
+</code><small class="ln">28</small><code data-lineno="28">    <span class="comment single">// This could result in a nasty ping-pong effect where scrolling between</span>
+</code><small class="ln">29</small><code data-lineno="29">    <span class="comment single">// two different position would happen indefinitely.</span>
+</code><small class="ln">30</small><code data-lineno="30">    <span class="keyword">const</span> <span class="name constant">TIMEOUT</span> <span class="operator">=</span> <span class="literal number integer">50</span><span class="punctuation">;</span>
+</code><small class="ln">31</small><code data-lineno="31">    <span class="keyword">let</span> lastEvent <span class="operator">=</span> <span class="keyword">undefined</span><span class="punctuation">;</span>
+</code><small class="ln">32</small><code data-lineno="32">    <span class="keyword">let</span> eventHandlerScheduled <span class="operator">=</span> <span class="keyword constant">false</span><span class="punctuation">;</span>
+</code><small class="ln">33</small><code data-lineno="33">    scrollableElement<span class="punctuation">.</span><span class="name function">addEventListener</span><span class="punctuation">(</span><span class="literal string">"scroll"</span><span class="punctuation">,</span> <span class="punctuation">(</span><span class="name variable">event</span><span class="punctuation">)</span> <span class="operator">=&gt;</span> <span class="punctuation">{</span>
+</code><small class="ln">34</small><code data-lineno="34">        lastEvent <span class="operator">=</span> <span class="keyword">new</span> <span class="name class">Date</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">getTime</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">35</small><code data-lineno="35">        <span class="keyword">function</span> <span class="name function">scheduleEventHandler</span><span class="punctuation">(</span><span class="name variable">timeout</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">36</small><code data-lineno="36">            <span class="name function">setTimeout</span><span class="punctuation">(</span><span class="punctuation">(</span><span class="punctuation">)</span> <span class="operator">=&gt;</span> <span class="punctuation">{</span>
+</code><small class="ln">37</small><code data-lineno="37">                <span class="keyword">const</span> currentTime <span class="operator">=</span> <span class="keyword">new</span> <span class="name class">Date</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">.</span><span class="name function">getTime</span><span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">38</small><code data-lineno="38">                <span class="keyword">if</span> <span class="punctuation">(</span>currentTime <span class="operator">-</span> lastEvent <span class="operator">&lt;</span> <span class="name constant">TIMEOUT</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">39</small><code data-lineno="39">                    <span class="name function">scheduleEventHandler</span><span class="punctuation">(</span><span class="name constant">TIMEOUT</span> <span class="operator">-</span> <span class="punctuation">(</span>currentTime <span class="operator">-</span> lastEvent<span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">40</small><code data-lineno="40">                    <span class="keyword">return</span><span class="punctuation">;</span>
+</code><small class="ln">41</small><code data-lineno="41">                <span class="punctuation">}</span>
+</code><small class="ln">42</small><code data-lineno="42">                <span class="name function">postMessage</span><span class="punctuation">(</span>channel<span class="punctuation">,</span> eventTitle<span class="punctuation">,</span> <span class="punctuation">[</span>id<span class="punctuation">,</span> event<span class="punctuation">.</span>target<span class="punctuation">.</span>scrollTop<span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">43</small><code data-lineno="43">                <span class="comment single">// console.log(eventTitle + " " + id + " " + event.target.scrollTop);</span>
+</code><small class="ln">44</small><code data-lineno="44">                eventHandlerScheduled <span class="operator">=</span> <span class="keyword constant">false</span><span class="punctuation">;</span>
+</code><small class="ln">45</small><code data-lineno="45">            <span class="punctuation">}</span><span class="punctuation">,</span> timeout<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">46</small><code data-lineno="46">        <span class="punctuation">}</span><span class="punctuation">;</span>
+</code><small class="ln">47</small><code data-lineno="47">        <span class="keyword">if</span><span class="punctuation">(</span><span class="operator">!</span>eventHandlerScheduled<span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">48</small><code data-lineno="48">            eventHandlerScheduled <span class="operator">=</span> <span class="keyword constant">true</span><span class="punctuation">;</span>
+</code><small class="ln">49</small><code data-lineno="49">            <span class="name function">scheduleEventHandler</span><span class="punctuation">(</span><span class="name constant">TIMEOUT</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">50</small><code data-lineno="50">        <span class="punctuation">}</span>
+</code><small class="ln">51</small><code data-lineno="51">    <span class="punctuation">}</span><span class="punctuation">,</span><span class="punctuation">{</span>passive<span class="operator">:</span> <span class="keyword constant">true</span><span class="punctuation">}</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">52</small><code data-lineno="52"><span class="punctuation">}</span></code></pre></ld-scrollable><hr><ld-scrollable class="margin-top-1em" data-height="-100px"><p>This is a scrollable that extends to the bottom of the slide -100px to leave
+some space for the footer.</p><pre class="code javascript literal-block"><small class="ln"> 1</small><code data-lineno=" 1"><span class="keyword">export</span> <span class="keyword">function</span> <span class="name function">getTopAndBottomMargin</span><span class="punctuation">(</span><span class="name variable">e</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln"> 2</small><code data-lineno=" 2">    <span class="keyword">const</span> style <span class="operator">=</span> window<span class="punctuation">.</span><span class="name function">getComputedStyle</span><span class="punctuation">(</span>e<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 3</small><code data-lineno=" 3">    <span class="keyword">return</span> <span class="name function">parseInt</span><span class="punctuation">(</span>style<span class="punctuation">.</span>marginTop<span class="punctuation">)</span> <span class="operator">+</span> <span class="name function">parseInt</span><span class="punctuation">(</span>style<span class="punctuation">.</span>marginBottom<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 4</small><code data-lineno=" 4"><span class="punctuation">}</span>
+</code><small class="ln"> 5</small><code data-lineno=" 5"><span class="keyword">export</span> <span class="keyword">function</span> <span class="name function">getLeftAndRightMargin</span><span class="punctuation">(</span><span class="name variable">e</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln"> 6</small><code data-lineno=" 6">    <span class="keyword">const</span> style <span class="operator">=</span> window<span class="punctuation">.</span><span class="name function">getComputedStyle</span><span class="punctuation">(</span>e<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 7</small><code data-lineno=" 7">    <span class="keyword">return</span> <span class="name function">parseInt</span><span class="punctuation">(</span>style<span class="punctuation">.</span>marginLeft<span class="punctuation">)</span> <span class="operator">+</span> <span class="name function">parseInt</span><span class="punctuation">(</span>style<span class="punctuation">.</span>marginRight<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln"> 8</small><code data-lineno=" 8"><span class="punctuation">}</span>
+</code><small class="ln"> 9</small><code data-lineno=" 9"><span class="keyword">export</span> <span class="keyword">function</span> <span class="name function">getLeftAndRightPadding</span><span class="punctuation">(</span><span class="name variable">e</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">10</small><code data-lineno="10">    <span class="keyword">const</span> style <span class="operator">=</span> window<span class="punctuation">.</span><span class="name function">getComputedStyle</span><span class="punctuation">(</span>e<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">11</small><code data-lineno="11">    <span class="keyword">return</span> <span class="name function">parseInt</span><span class="punctuation">(</span>style<span class="punctuation">.</span>paddingLeft<span class="punctuation">)</span> <span class="operator">+</span> <span class="name function">parseInt</span><span class="punctuation">(</span>style<span class="punctuation">.</span>paddingRight<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">12</small><code data-lineno="12"><span class="punctuation">}</span>
+</code><small class="ln">13</small><code data-lineno="13"><span class="keyword">export</span> <span class="keyword">function</span> <span class="name function">getLeftAndRightMarginAndPadding</span><span class="punctuation">(</span><span class="name variable">e</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">14</small><code data-lineno="14">    <span class="keyword">return</span> <span class="name function">getLeftAndRightMargin</span><span class="punctuation">(</span>e<span class="punctuation">)</span> <span class="operator">+</span> <span class="name function">getLeftAndRightPadding</span><span class="punctuation">(</span>e<span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">15</small><code data-lineno="15"><span class="punctuation">}</span>
+</code><small class="ln">16</small><code data-lineno="16">
+</code><small class="ln">17</small><code data-lineno="17"><span class="keyword">export</span> <span class="keyword">function</span> <span class="name function">postMessage</span><span class="punctuation">(</span><span class="name variable">channel<span class="punctuation">,</span> msg<span class="punctuation">,</span> data</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+</code><small class="ln">18</small><code data-lineno="18">    channel<span class="punctuation">.</span><span class="name function">postMessage</span><span class="punctuation">(</span><span class="punctuation">[</span>msg<span class="punctuation">,</span> data<span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">;</span>
+</code><small class="ln">19</small><code data-lineno="19"><span class="punctuation">}</span></code></pre></ld-scrollable><aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-2" role="doc-footnote"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span><p>Just a footer.</p></aside></aside></ld-topic>
+<ld-topic class="transition-dice-left" id="simple-column-based-layouts"><h2>Simple column-based Layouts</h2><p>One way to create a very simple multi-column layout consists of a list with the class <span class="docutils literal">columns</span>.</p><aside class="admonition" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Example</span></p><p><strong>Default layout:</strong></p><ul class="columns simple"><li><p>The first column.</p><ol class="arabic simple"><li><p>a nested list.</p></li></ol></li><li><p>The second column.</p><ol class="arabic simple"><li><p>a nested list.</p></li></ol></li></ul><p><strong>Left-aligned layout:</strong></p><ul class="columns left-aligned simple"><li><p>The first column.</p><ol class="arabic simple"><li><p>a nested list.</p></li></ol></li><li><p>The second column.</p><ol class="arabic simple"><li><p>a nested list.</p></li></ol></li></ul><p><strong>Evenly-spaced layout:</strong></p><ul class="columns evenly-spaced simple"><li><p>The first column.</p><ol class="arabic simple"><li><p>a nested list.</p></li></ol></li><li><p>The second column.</p><ol class="arabic simple"><li><p>a nested list.</p></li></ol></li></ul></aside></ld-topic>
+<ld-topic id="advanced-slide-layouts"><h2>Advanced Slide Layouts</h2><ld-grid class="default-layout"><ld-cell class="padding-1em" style="align-self:stretch;" data-theme="question"><p>Using Grids it is possible to design advanced slide layouts.</p><p>When you don't specify a specific layout for a grid a simple multi-column layout is used.</p></ld-cell><ld-cell class="padding-1em" style="align-self:auto;" data-theme="answer"><pre class="code rst copy-to-clipboard literal-block"><small class="ln"> 1</small><code data-lineno=" 1"><span class="punctuation">..</span> <span class="name function">grid<span class="punctuation">::</span></span>
+</code><small class="ln"> 2</small><code data-lineno=" 2">
+</code><small class="ln"> 3</small><code data-lineno=" 3">  <span class="punctuation">..</span> <span class="name function">cell<span class="punctuation">::</span></span> padding-1em
+</code><small class="ln"> 4</small><code data-lineno=" 4">    :theme: question
+</code><small class="ln"> 5</small><code data-lineno=" 5">
+</code><small class="ln"> 6</small><code data-lineno=" 6">    Using Grids it is possible to
+</code><small class="ln"> 7</small><code data-lineno=" 7">    design advanced slide layouts.
+</code><small class="ln"> 8</small><code data-lineno=" 8">
+</code><small class="ln"> 9</small><code data-lineno=" 9">  <span class="punctuation">..</span> <span class="name function">cell<span class="punctuation">::</span></span> padding-1em
+</code><small class="ln">10</small><code data-lineno="10">    :theme: answer
+</code><small class="ln">11</small><code data-lineno="11">
+</code><small class="ln">12</small><code data-lineno="12">    <span class="punctuation">..</span> <span class="name function">code<span class="punctuation">::</span></span> rst
+</code><small class="ln">13</small><code data-lineno="13">      :class: copy-to-clipboard
+</code><small class="ln">14</small><code data-lineno="14">
+</code><small class="ln">15</small><code data-lineno="15">      <span class="punctuation">**</span>The Code<span class="punctuation">**</span></code></pre></ld-cell></ld-grid></ld-topic>
+<ld-topic id="math"><h2>Math</h2><ld-grid class="default-layout"><ld-cell style="align-self:auto;"><p>Adding math (e.g. <span class="math"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">a^2+b^2=c^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span>) to a slide is done using the math directive or role.</p><div class="math"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>e</mi><mo>=</mo><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">e = mc^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8641em;"></span><span class="mord mathnormal">m</span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></div><p>Alternatively, it is often possible to use Unicode symbols:</p><p>Poor Man's Math:  e = mc².</p></ld-cell><ld-cell style="align-self:auto;"><aside class="admonition" data-theme="example"><p class="admonition-title" data-theme="example-header"><span>Example</span></p><pre class="code myst literal-block"><code>Adding math (e.g. $a^2+b^2=c^2$)
+to a slide is done using the math
+directive or role.
+
+$$
+e = mc^2
+$$
+
+Poor Man's Math: e = mc².</code></pre></aside></ld-cell></ld-grid></ld-topic>
+<ld-topic id="tables"><h2>Tables</h2><ld-grid class="default-layout"><ld-cell class="width-50" style="align-self:auto;"><p class="rubric">.highlight-identical-cells-on-hover</p><table class="highlight-identical-cells-on-hover build-up-from-left"><thead><tr><th class="stub head"></th><th class="head"><p>r</p></th><th class="head"><p>s</p></th><th class="head"><p>t</p></th><th class="head"><p>u</p></th><th class="head"><p>v</p></th><th class="head"><p>w</p></th><th class="head"><p>x</p></th><th class="head"><p>y</p></th><th class="head"><p>z</p></th></tr></thead><tbody><tr><th class="stub"><p>a</p></th><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td></tr><tr><th class="stub"><p>b</p></th><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td></tr><tr><th class="stub"><p>c</p></th><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td></tr></tbody></table><p class="rubric">.highlight-row-on-hover</p><table class="highlight-row-on-hover fade-in-rows"><thead><tr><th class="stub head"></th><th class="head"><p>r</p></th><th class="head"><p>s</p></th><th class="head"><p>t</p></th><th class="head"><p>u</p></th><th class="head"><p>v</p></th><th class="head"><p>w</p></th><th class="head"><p>x</p></th><th class="head"><p>y</p></th><th class="head"><p>z</p></th></tr></thead><tbody><tr><th class="stub"><p>a</p></th><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td></tr><tr><th class="stub"><p>b</p></th><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td></tr></tbody></table><p class="rubric">.highlight-on-hover</p><table class="highlight-on-hover fade-in-rows"><thead><tr><th class="stub head"></th><th class="head"><p>r</p></th><th class="head"><p>s</p></th><th class="head"><p>t</p></th><th class="head"><p>u</p></th><th class="head"><p>v</p></th><th class="head"><p>w</p></th><th class="head"><p>x</p></th><th class="head"><p>y</p></th><th class="head"><p>z</p></th></tr></thead><tbody><tr><th class="stub"><p>a</p></th><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td></tr><tr><th class="stub"><p>b</p></th><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td></tr></tbody></table></ld-cell><ld-cell class="width-50" style="align-self:auto;"><p class="rubric">.incremental-table-rows</p><table class="incremental-table-rows fade-in highlight-cell-on-hover"><thead><tr><th class="stub head"></th><th class="head"><p>r</p></th><th class="head"><p>s</p></th><th class="head"><p>t</p></th><th class="head"><p>u</p></th><th class="head"><p>v</p></th><th class="head"><p>w</p></th><th class="head"><p>x</p></th><th class="head"><p>y</p></th><th class="head"><p>z</p></th></tr></thead><tbody><tr><th class="stub"><p>a</p></th><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td></tr><tr><th class="stub"><p>b</p></th><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td></tr><tr><th class="stub"><p>c</p></th><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td></tr></tbody></table><p class="rubric">.incremental-table-cells</p><table class="build-up-from-left incremental-table-cells fade-in highlight-cell-and-row-on-hover"><thead><tr><th class="stub head"></th><th class="head"><p>r</p></th><th class="head"><p>s</p></th><th class="head"><p>t</p></th><th class="head"><p>u</p></th><th class="head"><p>v</p></th><th class="head"><p>w</p></th><th class="head"><p>x</p></th><th class="head"><p>y</p></th><th class="head"><p>z</p></th></tr></thead><tbody><tr><th class="stub"><p>a</p></th><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td></tr><tr><th class="stub"><p>b</p></th><td><p>4</p></td><td><p>5</p></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td></tr></tbody></table><p class="rubric">.incremental-table-rows</p><table class="incremental-table-rows fade-in highlight-non-empty-cell-on-hover"><thead><tr><th class="stub head"></th><th class="head"><p>r</p></th><th class="head"><p>s</p></th><th class="head"><p>t</p></th><th class="head"><p>u</p></th><th class="head"><p>v</p></th><th class="head"><p>w</p></th><th class="head"><p>x</p></th><th class="head"><p>y</p></th><th class="head"><p>z</p></th></tr></thead><tbody><tr><th class="stub"><p>a</p></th><td><p>1</p></td><td><p>2</p></td><td></td><td><p>4</p></td><td></td><td><p>6</p></td><td><p>7</p></td><td><p>8</p></td><td><p>9</p></td></tr><tr><th class="stub"><p>b</p></th><td><p>4</p></td><td></td><td><p>6</p></td><td></td><td><p>8</p></td><td><p>9</p></td><td><p>1</p></td><td></td><td><p>3</p></td></tr></tbody></table></ld-cell></ld-grid></ld-topic>
+</template>
+</body>
+</html>

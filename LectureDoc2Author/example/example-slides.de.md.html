@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Michael Eichberg" />
+<meta name="keywords" content="&quot;MyST&quot;, &quot;LectureDoc2&quot;" />
+<meta name="description" content="Demonstriert alle von LectureDoc2Author unterstützten Direktiven." lang="de" xml:lang="de" />
+<meta name="id" content="myst-to-lecturedoc2-example" />
+<meta name="first-slide" content="last-viewed" />
+<meta name="exercises-passwords" content="MTAwMDAw:DYc5qIqRB7Uh7TtHgcNDxDcDLugbk1P1gVxKXEqMDSE=:xxzkSkO8mHu0hNch:zw+5ZlNppfbvYAcW0LRs50QQF3m5zp9lKUpALR9kVnu12ExrAam+eRls/FroEh/yJf32Kq9dTw6Od/L7D/OOIzwE9siTreF+85fZ9ukOJpzyyJmUbLwisc8Kds+lQaIM1IQrHso9aQA5QTaR/REvpmoXERNzQVKiR13sENsnqP3CBfYycQz53lszxmxqQ8IqM0u9LXEey9OZOm0L" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>LectureDoc2Author – Beispielfoliensatz</title>
+<link rel="stylesheet" href="../../shared/ext/katex/katex.min.css" />
+<script src="../../LectureDoc2/dist/src/ld.js" type="module"></script>
+<link rel="stylesheet" href="../../LectureDoc2/dist/src/ld.css" />
+<style>@import url("../../LectureDoc2/dist/src/css/themes/dhbw.css") layer(theme);</style>
+<script src="../../LectureDoc2/dist/components/ld-timeline.js" type="module"></script>
+<style>/* ---------------------------------------------------------------------------
+   Shared classes for the SVG drawings of LectureDoc2 decks.
+
+   Include with `ld.include-styles` (in a project: in `myst.yml`, together with
+   `ld-svg-defs.svg` in `ld.include-globals`). Documentation:
+   LectureDoc2Author/docs-svgs.md; the colour model: LectureDoc2/SVGs.md.
+
+   - Opt-in only: every rule needs an `ld-` class and matches only inside an
+     <svg>. Nothing here styles `line`, `path` or `text` as such, so drawings
+     that do not use the classes are unaffected.
+   - Everything paints with `currentColor`. The colour modifiers (`ld-muted`,
+     `ld-accent`, ...) only set `color`, so they work on a single element as
+     well as on a <g> or the root <svg>, and they follow the surrounding
+     [data-theme] (admonitions!).
+   - Lengths are in `em`, i.e. relative to the drawing's font-size. A drawing
+     that sets the size of a normal label as `font-size` on its root gets
+     stroke widths and dash patterns that match every other drawing.
+   - All rules sit in the cascade layer `ld-svg`. A deck's own CSS is not
+     layered and therefore always wins, whatever its specificity.
+   --------------------------------------------------------------------------- */
+
+@layer ld-svg {
+    /* ---- colour modifiers ------------------------------------------------ */
+
+    svg.ld-muted,
+    svg .ld-muted {
+        color: var(--muted-color);
+    }
+    svg.ld-accent,
+    svg .ld-accent {
+        color: var(--accent-color);
+    }
+    svg.ld-danger,
+    svg .ld-danger {
+        color: var(--danger-color);
+    }
+    svg.ld-success,
+    svg .ld-success {
+        color: var(--success-color);
+    }
+    svg.ld-info,
+    svg .ld-info {
+        color: var(--info-color);
+    }
+    svg.ld-warning,
+    svg .ld-warning {
+        color: var(--warning-color);
+    }
+
+    /* ---- lines ----------------------------------------------------------- */
+
+    svg .ld-line,
+    svg .ld-connector {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.1em;
+    }
+
+    /* A line with an arrowhead (ld-svg-defs.svg). The tip lies
+       1.5 x stroke-width beyond the line's end point. */
+    svg .ld-connector {
+        marker-end: url(#ld-arrow);
+    }
+
+    /* A marker is coloured where it is defined, not where it is used; the
+       modifiers therefore also have to switch the marker. Put the modifier on
+       the connector itself or on its closest group. */
+    :is(svg.ld-muted, svg .ld-muted) .ld-connector,
+    svg .ld-connector.ld-muted {
+        marker-end: url(#ld-arrow-muted);
+    }
+    :is(svg.ld-accent, svg .ld-accent) .ld-connector,
+    svg .ld-connector.ld-accent {
+        marker-end: url(#ld-arrow-accent);
+    }
+    :is(svg.ld-danger, svg .ld-danger) .ld-connector,
+    svg .ld-connector.ld-danger {
+        marker-end: url(#ld-arrow-danger);
+    }
+    :is(svg.ld-success, svg .ld-success) .ld-connector,
+    svg .ld-connector.ld-success {
+        marker-end: url(#ld-arrow-success);
+    }
+    :is(svg.ld-info, svg .ld-info) .ld-connector,
+    svg .ld-connector.ld-info {
+        marker-end: url(#ld-arrow-info);
+    }
+    :is(svg.ld-warning, svg .ld-warning) .ld-connector,
+    svg .ld-connector.ld-warning {
+        marker-end: url(#ld-arrow-warning);
+    }
+
+    svg .ld-dashed {
+        stroke-dasharray: 0.4em 0.25em;
+    }
+    svg .ld-dotted {
+        stroke-dasharray: 0 0.25em;
+        stroke-linecap: round;
+    }
+
+    /* ---- shapes ---------------------------------------------------------- */
+
+    svg .ld-box {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.1em;
+    }
+    /* Three fill levels of the current colour: background region, element,
+       emphasised element. They stack: a cell on a panel is darker still. */
+    svg .ld-panel {
+        fill: currentColor;
+        fill-opacity: 0.1;
+    }
+    svg .ld-cell {
+        fill: currentColor;
+        fill-opacity: 0.3;
+    }
+    svg .ld-highlight {
+        fill: currentColor;
+        fill-opacity: 0.65;
+    }
+
+    /* ---- text ------------------------------------------------------------ */
+
+    svg .ld-label {
+        fill: currentColor;
+    }
+    /* Text on a filled shape (e.g. on an ld-highlight). */
+    svg .ld-label-on-fill {
+        fill: var(--background-color);
+    }
+    /* Deliberately no `text-anchor` here: on a <tspan> in the middle of a
+       line it would re-anchor that chunk. Centre on the <text> or the <g>. */
+    svg .ld-mono {
+        font-family: var(--monospaced-font-family);
+    }
+}
+</style>
+</head>
+<body data-theme="<light-dark>">
+<ld-globals><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<!--
+    Shared definitions for the SVG drawings of LectureDoc2 decks.
+
+    Include this file ONCE per document with `ld.include-globals` (in a project:
+    in `myst.yml`, together with `ld-svg.css` in `ld.include-styles`). It is put
+    verbatim into <ld-globals>; every drawing inlined with {include-svg} can
+    then use the markers with `marker-end="url(#ld-arrow)"`.
+
+    Documentation: LectureDoc2Author/docs-svgs.md (catalog and usage) and
+    LectureDoc2/SVGs.md (why shared definitions live in <ld-globals>).
+
+    All markers follow the same rules:
+
+    - markerUnits="strokeWidth": a marker scales with the line it sits on.
+    - orient="auto-start-reverse": used as `marker-start`, an arrowhead points
+      backwards - one marker also draws a double-headed arrow.
+    - The outermost painted point lies exactly 1.5 x stroke-width beyond the
+      end point of the line. To let a tip touch a target, end the line
+      1.5 x stroke-width before it. The line's own (butt) end is hidden under
+      the head: 1.5 x stroke-width before the tip the head is already wider
+      than the line.
+    - Colour: `currentColor`, resolved at the DEFINITION site. <ld-globals> is
+      a child of <body>, which carries [data-theme] and therefore
+      `color: var(--color)` - so the plain markers have the deck's foreground
+      colour. The coloured variants set `color` to a theme variable on the
+      <marker> itself. Neither `light-dark()` (follows the OS only) nor
+      `context-stroke` (not implemented in WebKit) is used; see SVGs.md.
+    - A marker takes the colour of <body>, not of the admonition a drawing
+      sits in. Inside an admonition with its own theme, prefer a variant.
+-->
+<defs>
+
+    <!-- Filled arrowhead: 6 long, 5 wide; tip at +1.5, back at -4.5. -->
+    <marker id="ld-arrow" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+
+    <!-- The same arrowhead in the theme's semantic colours. -->
+    <marker id="ld-arrow-muted" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--muted-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-accent" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--accent-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-danger" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--danger-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-success" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--success-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-info" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--info-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-warning" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--warning-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+
+    <!-- Open arrowhead (chevron), same opening angle as ld-arrow. The mitred
+         vertex sits at +0.2; the mitre reaches +1.5. -->
+    <marker id="ld-arrow-open" viewBox="-5 -2.5 6.5 5" refX="0" refY="0"
+            markerWidth="6.5" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" overflow="visible">
+        <path d="M -4.3 -1.875 L 0.2 0 L -4.3 1.875" fill="none"
+              stroke="currentColor" stroke-width="1"
+              stroke-linejoin="miter" stroke-miterlimit="4" />
+    </marker>
+
+    <!-- Dot, centred on the end point (e.g. the start of a flow). -->
+    <marker id="ld-dot" viewBox="-1.5 -1.5 3 3" refX="0" refY="0"
+            markerWidth="3" markerHeight="3" markerUnits="strokeWidth">
+        <circle r="1.5" fill="currentColor" />
+    </marker>
+
+</defs>
+</svg>
+</ld-globals>
+<template>
+<ld-topic id="myst-to-lecturedoc2-example"><h1 class="title">LectureDoc2Author – Beispielfoliensatz</h1><dl class="docinfo"><dt class="dozent">Dozent<span class="colon">:</span></dt><dd class="dozent"><a class="reference external" href="https://delors.github.io/cv/folien.de.rst.html">Prof. Dr. Michael Eichberg</a></dd><dt class="contact">Kontakt<span class="colon">:</span></dt><dd class="contact"><a class="reference external" href="mailto:michael.eichberg@dhbw.de">michael.eichberg@dhbw.de</a></dd><dt class="version">Version<span class="colon">:</span></dt><dd class="version">0.1</dd></dl><ld-supplemental><p>Dieser Foliensatz demonstriert <em>LectureDoc2</em> zusammen mit LectureDoc2Author.</p></ld-supplemental></ld-topic>
+<ld-topic class="center-child-elements" id="admonitions"><h2>Admonitions</h2><aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p><p>Die neun docutils-Admonitions bekommen ein <span class="docutils literal">data-theme</span> und ein lokalisiertes
+Label.</p></aside><aside class="admonition incremental" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warnung</p><p>Diese erscheint erst beim zweiten Schritt.</p></aside><aside class="admonition" data-theme="definition"><p class="admonition-title" data-theme="definition-header"><span>Definition: Monade</span></p><p>Ein Monoid in der Kategorie der Endofunktoren.</p></aside><aside class="admonition admonition-frei-gewahlter-titel"><p class="admonition-title">Frei gewählter Titel</p><p>Die generische Admonition hat kein Theme.</p></aside></ld-topic>
+<ld-topic id="layout-deck-und-karten"><h2>Layout: Deck und Karten</h2><ld-deck><ld-card><p>Erste Karte – immer sichtbar.</p></ld-card><ld-card class="incremental" data-theme="accent"><p>Zweite Karte – <span class="docutils literal">incremental</span>.</p></ld-card></ld-deck></ld-topic>
+<ld-topic id="layout-grid-und-zellen"><h2>Layout: Grid und Zellen</h2><ld-grid class="default-layout"><ld-cell style="align-self:center;"><p>Linke Spalte.</p></ld-cell><ld-cell style="align-self:auto;"><p>Rechte Spalte mit <sup>hochgestelltem</sup>, <sub>tiefgestelltem</sub> und
+<span class="kbd">Ctrl+C</span> Text.</p></ld-cell></ld-grid></ld-topic>
+<ld-topic id="mathematik-katex-eager"><h2>Mathematik (KaTeX, eager)</h2><p>Inline: <span class="math"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mrow><mi>i</mi><mi>π</mi></mrow></msup><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">e^{i\pi} + 1 = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.908em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8247em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">iπ</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></span> und <span class="math"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><mi>i</mi><mo>=</mo><mfrac><mrow><mi>n</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\sum_{i=1}^{n} i = \frac{n(n+1)}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.104em;vertical-align:-0.2997em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8043em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.355em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">n</span><span class="mbin mtight">+</span><span class="mord mtight">1</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>.</p><div class="math"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msubsup><mo>∫</mo><mrow><mo>−</mo><mi mathvariant="normal">∞</mi></mrow><mi mathvariant="normal">∞</mi></msubsup><msup><mi>e</mi><mrow><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></msup><mtext> </mtext><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><msqrt><mi>π</mi></msqrt></mrow><annotation encoding="application/x-tex">\int_{-\infty}^{\infty} e^{-x^2}\,\mathrm{d}x = \sqrt{\pi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:2.3846em;vertical-align:-0.9703em;"></span><span class="mop"><span class="mop op-symbol large-op" style="margin-right:0.4445em;position:relative;top:-0.0011em;">∫</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4143em;"><span style="top:-1.7881em;margin-left:-0.4445em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">∞</span></span></span></span><span style="top:-3.8129em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∞</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9703em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.0369em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-2.931em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="katex-sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathrm">d</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.04em;vertical-align:-0.1908em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8492em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord mathnormal" style="margin-right:0.0359em;">π</span></span></span><span style="top:-2.8092em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1908em;"><span></span></span></span></span></span></span></span></span></span></div><aside class="admonition" data-theme="observation"><p class="admonition-title" data-theme="observation-header"><span>Beobachtung: Kein Layout-Sprung</span></p><p>Da die Formeln beim Bauen gesetzt werden, steht ihre Größe fest, bevor
+LectureDoc2 die Folien vermisst.</p></aside></ld-topic>
+<ld-topic id="code-und-scrollables"><h2>Code und Scrollables</h2><pre class="code python literal-block"><small class="ln">1</small><code data-lineno="1"><span class="keyword">def</span> <span class="name function">fib</span><span class="punctuation">(</span>n<span class="punctuation">)</span><span class="punctuation">:</span>
+</code><small class="ln">2</small><code data-lineno="2">    a<span class="punctuation">,</span> b <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">,</span> <span class="literal number integer">1</span>
+</code><small class="ln">3</small><code data-lineno="3">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="name builtin">range</span><span class="punctuation">(</span>n<span class="punctuation">)</span><span class="punctuation">:</span>
+</code><small class="ln">4</small><code data-lineno="4">        a<span class="punctuation">,</span> b <span class="operator">=</span> b<span class="punctuation">,</span> a <span class="operator">+</span> b
+</code><small class="ln">5</small><code data-lineno="5">    <span class="keyword">return</span> a</code></pre><ld-scrollable data-height="200px"><p>Sehr langer Inhalt …</p></ld-scrollable></ld-topic>
+<ld-topic id="story"><h2>Story</h2><ld-story><ul class="incremental-list"><li><p>Punkt eins</p></li><li><p>Punkt zwei</p><aside class="admonition" data-theme="warning"><p class="admonition-title" data-theme="warning-header">Warnung</p><p>Verschachtelte Admonition innerhalb eines Listenpunkts.</p></aside></li><li><p>Punkt drei</p></li></ul></ld-story></ld-topic>
+<ld-topic id="ubungen"><h2>Übungen</h2><div class="ld-exercise" id="ld-exercise-1" data-exercise-id="1" data-exercise-title="1 - Fibonacci"><p class="ld-exercise-title rubric"><span>Fibonacci</span></p><p>Implementieren Sie <span class="docutils literal">fib</span> iterativ.</p><div class="ld-exercise-solution" data-encrypted="true">MTAwMDAw:zUXq67v/NeBkZXMsPkLu/BbBY3e9+o/iALYxHcT3cXk=:Mz8SvWgU0rSGm7/G:EMHT99biRUp9RGvN5OGKqG2rbLWkiEM8CWf401Ksgxo4Avp036RKx2Wo2AI=</div><aside class="admonition" data-theme="hint"><p class="admonition-title" data-theme="hint-header">Hinweis</p><p>Das Masterpasswort ist: "beispiel-master" und das Passwort für diese Übung ist: "lösung-eins".</p></aside></div><ld-presenter-note encrypted="">MTAwMDAw:OGQfbM7/neg5CAQKzg4cJ6/igZ2/gbv2+jq2La50HMU=:H6fjkCceNMxvUTor:W4TmKyzVSGpbqw4j71KsvO2mPRpQvwZGK1bZRqS7JGdSTyTG29Q3VZlAeYOX2wWFk3ADto9UscavTHW7RS7M1wyk9ia8AFAkunccFPFSmjvLVqUIg3JWyA==</ld-presenter-note></ld-topic>
+<ld-topic id="popover-compound-und-quelle"><h2>Popover, Compound und Quelle</h2><button type="button" class="popover" popovertarget="mehr-erfahren">Mehr erfahren</button><dialog id="mehr-erfahren" popover="auto"><p>Der Inhalt eines <span class="docutils literal">&#x3C;dialog popover></span>.</p></dialog><div class="compound" data-theme="accent"><p>Ein Absatz …</p><p>… und noch einer, die logisch zusammengehören.</p></div><p><a class="reference external" href="https://github.com/Delors/LectureDoc2Author/blob/main/example/example-slides.de.md">Quelle dieser Folien</a></p></ld-topic>
+<ld-topic id="eingebettetes-svg-und-globale-informationen"><h2>Eingebettetes SVG und globale Informationen</h2><div class="align-center" style="width: 20ch; height: 20ch;" aria-label="Ein Kreis"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img">
+    <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="4" />
+    <text x="50" y="56" text-anchor="middle" font-size="16" fill="currentColor">SVG</text>
+</svg>
+</div><ld-global-information type="cheat-sheet" title="Glossar" symbol="λ" formatted-title="<em>Glossar</em>
+ der Vorlesung"><p>Steht auf allen Folien zur Verfügung.</p></ld-global-information><ld-module name="timeline" scope="all"></ld-module></ld-topic>
+</template>
+</body>
+</html>
