@@ -15,8 +15,237 @@
 <script src="../LectureDoc2/dist/src/ld.js" type="module"></script>
 <link rel="stylesheet" href="../LectureDoc2/dist/src/ld.css" />
 <style>@import url("../LectureDoc2/dist/src/css/themes/dhbw.css") layer(theme);</style>
+<style>/* ---------------------------------------------------------------------------
+   Shared classes for the SVG drawings of LectureDoc2 decks.
+
+   Include with `ld.include-styles` (in a project: in `myst.yml`, together with
+   `ld-svg-defs.svg` in `ld.include-globals`). Documentation:
+   LectureDoc2Author/docs-svgs.md; the colour model: LectureDoc2/SVGs.md.
+
+   - Opt-in only: every rule needs an `ld-` class and matches only inside an
+     <svg>. Nothing here styles `line`, `path` or `text` as such, so drawings
+     that do not use the classes are unaffected.
+   - Everything paints with `currentColor`. The colour modifiers (`ld-muted`,
+     `ld-accent`, ...) only set `color`, so they work on a single element as
+     well as on a <g> or the root <svg>, and they follow the surrounding
+     [data-theme] (admonitions!).
+   - Lengths are in `em`, i.e. relative to the drawing's font-size. A drawing
+     that sets the size of a normal label as `font-size` on its root gets
+     stroke widths and dash patterns that match every other drawing.
+   - All rules sit in the cascade layer `ld-svg`. A deck's own CSS is not
+     layered and therefore always wins, whatever its specificity.
+   --------------------------------------------------------------------------- */
+
+@layer ld-svg {
+    /* ---- colour modifiers ------------------------------------------------ */
+
+    svg.ld-muted,
+    svg .ld-muted {
+        color: var(--muted-color);
+    }
+    svg.ld-accent,
+    svg .ld-accent {
+        color: var(--accent-color);
+    }
+    svg.ld-danger,
+    svg .ld-danger {
+        color: var(--danger-color);
+    }
+    svg.ld-success,
+    svg .ld-success {
+        color: var(--success-color);
+    }
+    svg.ld-info,
+    svg .ld-info {
+        color: var(--info-color);
+    }
+    svg.ld-warning,
+    svg .ld-warning {
+        color: var(--warning-color);
+    }
+
+    /* ---- lines ----------------------------------------------------------- */
+
+    svg .ld-line,
+    svg .ld-connector {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.1em;
+    }
+
+    /* A line with an arrowhead (ld-svg-defs.svg). The tip lies
+       1.5 x stroke-width beyond the line's end point. */
+    svg .ld-connector {
+        marker-end: url(#ld-arrow);
+    }
+
+    /* A marker is coloured where it is defined, not where it is used; the
+       modifiers therefore also have to switch the marker. Put the modifier on
+       the connector itself or on its closest group. */
+    :is(svg.ld-muted, svg .ld-muted) .ld-connector,
+    svg .ld-connector.ld-muted {
+        marker-end: url(#ld-arrow-muted);
+    }
+    :is(svg.ld-accent, svg .ld-accent) .ld-connector,
+    svg .ld-connector.ld-accent {
+        marker-end: url(#ld-arrow-accent);
+    }
+    :is(svg.ld-danger, svg .ld-danger) .ld-connector,
+    svg .ld-connector.ld-danger {
+        marker-end: url(#ld-arrow-danger);
+    }
+    :is(svg.ld-success, svg .ld-success) .ld-connector,
+    svg .ld-connector.ld-success {
+        marker-end: url(#ld-arrow-success);
+    }
+    :is(svg.ld-info, svg .ld-info) .ld-connector,
+    svg .ld-connector.ld-info {
+        marker-end: url(#ld-arrow-info);
+    }
+    :is(svg.ld-warning, svg .ld-warning) .ld-connector,
+    svg .ld-connector.ld-warning {
+        marker-end: url(#ld-arrow-warning);
+    }
+
+    svg .ld-dashed {
+        stroke-dasharray: 0.4em 0.25em;
+    }
+    svg .ld-dotted {
+        stroke-dasharray: 0 0.25em;
+        stroke-linecap: round;
+    }
+
+    /* ---- shapes ---------------------------------------------------------- */
+
+    svg .ld-box {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.1em;
+    }
+    /* Three fill levels of the current colour: background region, element,
+       emphasised element. They stack: a cell on a panel is darker still. */
+    svg .ld-panel {
+        fill: currentColor;
+        fill-opacity: 0.1;
+    }
+    svg .ld-cell {
+        fill: currentColor;
+        fill-opacity: 0.3;
+    }
+    svg .ld-highlight {
+        fill: currentColor;
+        fill-opacity: 0.65;
+    }
+
+    /* ---- text ------------------------------------------------------------ */
+
+    svg .ld-label {
+        fill: currentColor;
+    }
+    /* Text on a filled shape (e.g. on an ld-highlight). */
+    svg .ld-label-on-fill {
+        fill: var(--background-color);
+    }
+    /* Deliberately no `text-anchor` here: on a <tspan> in the middle of a
+       line it would re-anchor that chunk. Centre on the <text> or the <g>. */
+    svg .ld-mono {
+        font-family: var(--monospaced-font-family);
+    }
+}
+</style>
 </head>
 <body data-theme="<light-dark>">
+<ld-globals><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<!--
+    Shared definitions for the SVG drawings of LectureDoc2 decks.
+
+    Include this file ONCE per document with `ld.include-globals` (in a project:
+    in `myst.yml`, together with `ld-svg.css` in `ld.include-styles`). It is put
+    verbatim into <ld-globals>; every drawing inlined with {include-svg} can
+    then use the markers with `marker-end="url(#ld-arrow)"`.
+
+    Documentation: LectureDoc2Author/docs-svgs.md (catalog and usage) and
+    LectureDoc2/SVGs.md (why shared definitions live in <ld-globals>).
+
+    All markers follow the same rules:
+
+    - markerUnits="strokeWidth": a marker scales with the line it sits on.
+    - orient="auto-start-reverse": used as `marker-start`, an arrowhead points
+      backwards - one marker also draws a double-headed arrow.
+    - The outermost painted point lies exactly 1.5 x stroke-width beyond the
+      end point of the line. To let a tip touch a target, end the line
+      1.5 x stroke-width before it. The line's own (butt) end is hidden under
+      the head: 1.5 x stroke-width before the tip the head is already wider
+      than the line.
+    - Colour: `currentColor`, resolved at the DEFINITION site. <ld-globals> is
+      a child of <body>, which carries [data-theme] and therefore
+      `color: var(--color)` - so the plain markers have the deck's foreground
+      colour. The coloured variants set `color` to a theme variable on the
+      <marker> itself. Neither `light-dark()` (follows the OS only) nor
+      `context-stroke` (not implemented in WebKit) is used; see SVGs.md.
+    - A marker takes the colour of <body>, not of the admonition a drawing
+      sits in. Inside an admonition with its own theme, prefer a variant.
+-->
+<defs>
+
+    <!-- Filled arrowhead: 6 long, 5 wide; tip at +1.5, back at -4.5. -->
+    <marker id="ld-arrow" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+
+    <!-- The same arrowhead in the theme's semantic colours. -->
+    <marker id="ld-arrow-muted" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--muted-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-accent" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--accent-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-danger" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--danger-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-success" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--success-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-info" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--info-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-warning" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--warning-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+
+    <!-- Open arrowhead (chevron), same opening angle as ld-arrow. The mitred
+         vertex sits at +0.2; the mitre reaches +1.5. -->
+    <marker id="ld-arrow-open" viewBox="-5 -2.5 6.5 5" refX="0" refY="0"
+            markerWidth="6.5" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" overflow="visible">
+        <path d="M -4.3 -1.875 L 0.2 0 L -4.3 1.875" fill="none"
+              stroke="currentColor" stroke-width="1"
+              stroke-linejoin="miter" stroke-miterlimit="4" />
+    </marker>
+
+    <!-- Dot, centred on the end point (e.g. the start of a flow). -->
+    <marker id="ld-dot" viewBox="-1.5 -1.5 3 3" refX="0" refY="0"
+            markerWidth="3" markerHeight="3" markerUnits="strokeWidth">
+        <circle r="1.5" fill="currentColor" />
+    </marker>
+
+</defs>
+</svg>
+</ld-globals>
 <template>
 <ld-topic id="vorlesung-blockchiffre"><h1 class="title">Block Chiffre und der Data Encryption Standard (DES)</h1><dl class="docinfo"><dt class="dozent">Dozent<span class="colon">:</span></dt><dd class="dozent"><a class="reference external" href="https://delors.github.io/cv/folien.de.md.html">Prof. Dr. Michael Eichberg</a></dd><dt class="contact">Kontakt<span class="colon">:</span></dt><dd class="contact"><a class="reference external" href="mailto:michael.eichberg@dhbw.de">michael.eichberg@dhbw.de</a></dd><dt class="version">Version<span class="colon">:</span></dt><dd class="version">1.2.0.1</dd></dl><dl class="sources field-list simple"><dt>Quelle<span class="colon">:</span></dt><dd><p><em>Cryptography and Network Security - Principles and Practice, 8th Edition, William Stallings</em></p></dd></dl><ld-supplemental><p><a class="reference external" href="./kontrollfragen.de.md.html">Kontrollfragen</a></p><dl class="field-list simple"><dt>HTML [normativ]<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://delors.github.io/sec-blockchiffre/folien.de.md.html">https://delors.github.io/sec-blockchiffre/folien.de.md.html</a></p></dd><dt>PDF<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://delors.github.io/sec-blockchiffre/folien.de.md.html.pdf">https://delors.github.io/sec-blockchiffre/folien.de.md.html.pdf</a></p></dd><dt>Fehler melden<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p></dd></dl><dl class="field-list simple"><dt>KI Verwendung<span class="colon">:</span></dt><dd><p>Bei der Erstellung der Unterlagen wurden KI Assistenten (insbesondere Claude
 aber ggf. auch ChatGPT, Ollama mit Gemma/LLama/Qwen oder OpenCode mit

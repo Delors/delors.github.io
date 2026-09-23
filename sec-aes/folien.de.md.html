@@ -16,10 +16,153 @@
 <link rel="stylesheet" href="../LectureDoc2/dist/src/ld.css" />
 <style>@import url("../LectureDoc2/dist/src/css/themes/dhbw.css") layer(theme);</style>
 <style>/* ---------------------------------------------------------------------------
+   Shared classes for the SVG drawings of LectureDoc2 decks.
+
+   Include with `ld.include-styles` (in a project: in `myst.yml`, together with
+   `ld-svg-defs.svg` in `ld.include-globals`). Documentation:
+   LectureDoc2Author/docs-svgs.md; the colour model: LectureDoc2/SVGs.md.
+
+   - Opt-in only: every rule needs an `ld-` class and matches only inside an
+     <svg>. Nothing here styles `line`, `path` or `text` as such, so drawings
+     that do not use the classes are unaffected.
+   - Everything paints with `currentColor`. The colour modifiers (`ld-muted`,
+     `ld-accent`, ...) only set `color`, so they work on a single element as
+     well as on a <g> or the root <svg>, and they follow the surrounding
+     [data-theme] (admonitions!).
+   - Lengths are in `em`, i.e. relative to the drawing's font-size. A drawing
+     that sets the size of a normal label as `font-size` on its root gets
+     stroke widths and dash patterns that match every other drawing.
+   - All rules sit in the cascade layer `ld-svg`. A deck's own CSS is not
+     layered and therefore always wins, whatever its specificity.
+   --------------------------------------------------------------------------- */
+
+@layer ld-svg {
+    /* ---- colour modifiers ------------------------------------------------ */
+
+    svg.ld-muted,
+    svg .ld-muted {
+        color: var(--muted-color);
+    }
+    svg.ld-accent,
+    svg .ld-accent {
+        color: var(--accent-color);
+    }
+    svg.ld-danger,
+    svg .ld-danger {
+        color: var(--danger-color);
+    }
+    svg.ld-success,
+    svg .ld-success {
+        color: var(--success-color);
+    }
+    svg.ld-info,
+    svg .ld-info {
+        color: var(--info-color);
+    }
+    svg.ld-warning,
+    svg .ld-warning {
+        color: var(--warning-color);
+    }
+
+    /* ---- lines ----------------------------------------------------------- */
+
+    svg .ld-line,
+    svg .ld-connector {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.1em;
+    }
+
+    /* A line with an arrowhead (ld-svg-defs.svg). The tip lies
+       1.5 x stroke-width beyond the line's end point. */
+    svg .ld-connector {
+        marker-end: url(#ld-arrow);
+    }
+
+    /* A marker is coloured where it is defined, not where it is used; the
+       modifiers therefore also have to switch the marker. Put the modifier on
+       the connector itself or on its closest group. */
+    :is(svg.ld-muted, svg .ld-muted) .ld-connector,
+    svg .ld-connector.ld-muted {
+        marker-end: url(#ld-arrow-muted);
+    }
+    :is(svg.ld-accent, svg .ld-accent) .ld-connector,
+    svg .ld-connector.ld-accent {
+        marker-end: url(#ld-arrow-accent);
+    }
+    :is(svg.ld-danger, svg .ld-danger) .ld-connector,
+    svg .ld-connector.ld-danger {
+        marker-end: url(#ld-arrow-danger);
+    }
+    :is(svg.ld-success, svg .ld-success) .ld-connector,
+    svg .ld-connector.ld-success {
+        marker-end: url(#ld-arrow-success);
+    }
+    :is(svg.ld-info, svg .ld-info) .ld-connector,
+    svg .ld-connector.ld-info {
+        marker-end: url(#ld-arrow-info);
+    }
+    :is(svg.ld-warning, svg .ld-warning) .ld-connector,
+    svg .ld-connector.ld-warning {
+        marker-end: url(#ld-arrow-warning);
+    }
+
+    svg .ld-dashed {
+        stroke-dasharray: 0.4em 0.25em;
+    }
+    svg .ld-dotted {
+        stroke-dasharray: 0 0.25em;
+        stroke-linecap: round;
+    }
+
+    /* ---- shapes ---------------------------------------------------------- */
+
+    svg .ld-box {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.1em;
+    }
+    /* Three fill levels of the current colour: background region, element,
+       emphasised element. They stack: a cell on a panel is darker still. */
+    svg .ld-panel {
+        fill: currentColor;
+        fill-opacity: 0.1;
+    }
+    svg .ld-cell {
+        fill: currentColor;
+        fill-opacity: 0.3;
+    }
+    svg .ld-highlight {
+        fill: currentColor;
+        fill-opacity: 0.65;
+    }
+
+    /* ---- text ------------------------------------------------------------ */
+
+    svg .ld-label {
+        fill: currentColor;
+    }
+    /* Text on a filled shape (e.g. on an ld-highlight). */
+    svg .ld-label-on-fill {
+        fill: var(--background-color);
+    }
+    /* Deliberately no `text-anchor` here: on a <tspan> in the middle of a
+       line it would re-anchor that chunk. Centre on the <text> or the <g>. */
+    svg .ld-mono {
+        font-family: var(--monospaced-font-family);
+    }
+}
+</style>
+<style>/* ---------------------------------------------------------------------------
    Farbgebung der AES-Diagramme (eingebunden über ld.include-styles).
 
    Alle Flächen und Linien leiten sich von currentColor ab und folgen damit
-   automatisch dem Light-/Dark-Theme. `light-dark()` funktioniert nur in CSS,
+   automatisch dem Light-/Dark-Theme.
+
+   Allgemeine Klassen (ld-panel, ld-cell, ld-highlight, ld-label,
+   ld-label-on-fill) und die Pfeilspitze (#ld-arrow) kommen aus
+   LectureDoc2Author/shared/ld/svgs/ (über myst.yml eingebunden); hier steht
+   nur, was es nur in den AES-Diagrammen gibt. `light-dark()` funktioniert nur in CSS,
    nicht in SVG-Präsentationsattributen (fill="…", stroke="…") — deshalb steht
    hier das gesamte Farbschema und im SVG nur noch die Klasse.
 
@@ -58,7 +201,7 @@
    stroke und stroke-width daraus. Ein Selektor wie ".matrix rect" wuerde
    nicht greifen - der Symbolinhalt liegt im Shadow-Tree des <use>.
 
-   Die Werte entsprechen .cell (Flaeche) und dem frueheren .grid (Linien).
+   Die Werte entsprechen ld-cell (Flaeche) und dem frueheren .grid (Linien).
    --------------------------------------------------------------------------- */
 
 .matrix {
@@ -87,43 +230,18 @@
 }
 
 .aes-diagram {
-    /* Strukturflächen */
-    .panel          { fill: currentColor; fill-opacity: 0.1; }
-    .cell           { fill: currentColor; fill-opacity: 0.3; }
-    .cell-highlight { fill: currentColor; fill-opacity: 0.65; }
-
-    /* Linien */
+    /* Linien - bewusst nicht ld-connector: dessen Strichstärke hängt an der
+       Schriftgröße (0.1em), die Diagramme sind aber auf 2 abgestimmt. */
     .connector { fill: none; stroke: currentColor; stroke-width: 2; }
 
     /* Eckige Klammern um eine Matrix */
     .bracket   { fill: none; stroke: currentColor; stroke-width: 2;
                  stroke-linecap: square; stroke-linejoin: miter; }
 
-    /* Beschriftungen */
-    .label { fill: currentColor; }
-
     /* Die abgerundeten Marken („Variabler Input" / „Konstanter Input"):
-       Fläche aus currentColor, Schrift in der Folienhintergrundfarbe. */
-    .badge       { fill: currentColor; fill-opacity: 0.55; }
-    .badge-label { fill: var(--background-color, light-dark(white, black)); }
-}
-
-/* ---------------------------------------------------------------------------
-   Pfeilspitze (definiert in aes-defs.svg, eingehängt unter <ld-globals>).
-
-   Hier steht bewusst var(--color) und nicht light-dark(…):
-
-   * LectureDoc2 schaltet Hell/Dunkel über [data-theme] und die davon
-     abgeleiteten Custom Properties --color / --background-color
-     (theme.css). light-dark() dagegen hängt ausschließlich an
-     prefers-color-scheme, also an der Einstellung des Betriebssystems —
-     es liefe an jeder expliziten Theme-Wahl im Deck vorbei.
-   * <ld-globals> ist ein Kind von <body> und erbt --color von dort.
-   --------------------------------------------------------------------------- */
-
-#aes-arrow path {
-    fill: var(--color);
-    stroke: var(--color);
+       Fläche aus currentColor, Schrift (ld-label-on-fill) in der
+       Folienhintergrundfarbe. */
+    .badge { fill: currentColor; fill-opacity: 0.55; }
 }
 
 /* ---------------------------------------------------------------------------
@@ -171,43 +289,109 @@
 </style>
 </head>
 <body data-theme="<light-dark>">
-<ld-globals><svg xmlns="http://www.w3.org/2000/svg">
+<ld-globals><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<!--
+    Shared definitions for the SVG drawings of LectureDoc2 decks.
+
+    Include this file ONCE per document with `ld.include-globals` (in a project:
+    in `myst.yml`, together with `ld-svg.css` in `ld.include-styles`). It is put
+    verbatim into <ld-globals>; every drawing inlined with {include-svg} can
+    then use the markers with `marker-end="url(#ld-arrow)"`.
+
+    Documentation: LectureDoc2Author/docs-svgs.md (catalog and usage) and
+    LectureDoc2/SVGs.md (why shared definitions live in <ld-globals>).
+
+    All markers follow the same rules:
+
+    - markerUnits="strokeWidth": a marker scales with the line it sits on.
+    - orient="auto-start-reverse": used as `marker-start`, an arrowhead points
+      backwards - one marker also draws a double-headed arrow.
+    - The outermost painted point lies exactly 1.5 x stroke-width beyond the
+      end point of the line. To let a tip touch a target, end the line
+      1.5 x stroke-width before it. The line's own (butt) end is hidden under
+      the head: 1.5 x stroke-width before the tip the head is already wider
+      than the line.
+    - Colour: `currentColor`, resolved at the DEFINITION site. <ld-globals> is
+      a child of <body>, which carries [data-theme] and therefore
+      `color: var(--color)` - so the plain markers have the deck's foreground
+      colour. The coloured variants set `color` to a theme variable on the
+      <marker> itself. Neither `light-dark()` (follows the OS only) nor
+      `context-stroke` (not implemented in WebKit) is used; see SVGs.md.
+    - A marker takes the colour of <body>, not of the admonition a drawing
+      sits in. Inside an admonition with its own theme, prefer a variant.
+-->
 <defs>
 
-    <!-- Pfeilspitze für die AES-Diagramme.
-
-         Die Definition liegt bewusst hier und nicht im Diagramm selbst: bei
-         {include-svg} landen alle Diagramme im selben Dokument, und gleich
-         benannte <defs>-Ids würden sich gegenseitig verdrängen. Der Präfix
-         "aes-" hält sie zudem von den Marker-Ids des LectureDoc2-Themes
-         (FilledArrow_Marker …) getrennt.
-
-         Die Farbe wird in aes-diagrams.css gesetzt (var(--color)) und NICHT
-         hier als Attribut:
-
-         * `light-dark()` waere falsch: es haengt allein an
-           prefers-color-scheme, waehrend LectureDoc2 ueber [data-theme] und
-           --color / --background-color schaltet. Siehe LectureDoc2/SVGs.md.
-         * `context-stroke` waere semantisch das Richtige (Strichfarbe der
-           Linie, an der die Spitze sitzt), ist in WebKit/Safari aber - Stand
-           2026 - nicht implementiert; die Spitzen bleiben dort unsichtbar.
-           Firefox 111+ und Chromium 124+ koennen es.
-
-         `currentColor` taete es hier ebenfalls: <ld-globals> ist ein Kind von
-         <body>, und body traegt [data-theme], was `color: var(--color)`
-         setzt. var(--color) benennt dieselbe Farbe nur direkt. -->
-
-    <marker id="aes-arrow"
-            orient="auto"
-            overflow="visible"
-            markerUnits="strokeWidth"
-            viewBox="-1 -3 7 6"
-            markerWidth="7"
-            markerHeight="6"
-            stroke-linejoin="miter"
-            stroke-miterlimit="10">
-        <path d="M 4.8 0 L 0 -1.8 L 0 1.8 Z" stroke-width="1" />
+    <!-- Filled arrowhead: 6 long, 5 wide; tip at +1.5, back at -4.5. -->
+    <marker id="ld-arrow" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
     </marker>
+
+    <!-- The same arrowhead in the theme's semantic colours. -->
+    <marker id="ld-arrow-muted" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--muted-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-accent" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--accent-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-danger" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--danger-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-success" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--success-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-info" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--info-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-warning" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--warning-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+
+    <!-- Open arrowhead (chevron), same opening angle as ld-arrow. The mitred
+         vertex sits at +0.2; the mitre reaches +1.5. -->
+    <marker id="ld-arrow-open" viewBox="-5 -2.5 6.5 5" refX="0" refY="0"
+            markerWidth="6.5" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" overflow="visible">
+        <path d="M -4.3 -1.875 L 0.2 0 L -4.3 1.875" fill="none"
+              stroke="currentColor" stroke-width="1"
+              stroke-linejoin="miter" stroke-miterlimit="4" />
+    </marker>
+
+    <!-- Dot, centred on the end point (e.g. the start of a flow). -->
+    <marker id="ld-dot" viewBox="-1.5 -1.5 3 3" refX="0" refY="0"
+            markerWidth="3" markerHeight="3" markerUnits="strokeWidth">
+        <circle r="1.5" fill="currentColor" />
+    </marker>
+
+</defs>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg">
+<defs>
+
+    <!-- Pfeilspitzen kommen nicht mehr von hier, sondern aus den gemeinsamen
+         Definitionen (#ld-arrow in
+         LectureDoc2Author/shared/ld/svgs/ld-svg-defs.svg, eingebunden über
+         myst.yml). Deren Spitze ragt 1,5 × stroke-width über das
+         Linienende hinaus - eine Linie endet also 1,5 × stroke-width vor dem Ziel.
+
+         Hier stehen nur noch die AES-spezifischen Definitionen. Der Präfix
+         "aes-" hält sie von anderen Ids im Dokument getrennt: bei
+         {include-svg} landen alle Diagramme im selben Dokument. -->
 
     <!-- Quadratische Raster fuer Zustands- und S-Box-Darstellungen: ein
          gefuellter Block plus die Gitterlinien, statt eines Rechtecks je Zelle.
@@ -287,12 +471,12 @@ M347 1759 V0 H263 V1759 v1200 v1759 h84z"/></svg></span></span></span><span clas
          ═══════════════════════════════════════════════════════════════════ -->
 
     <use class="matrix plaintext" href="#aes-matrix-1x16" x="160.86328" y="612.9785" width="16" height="256" />
-    <text class="label" transform="translate(130.31836 855.5469) rotate(-90)" text-anchor="middle">
+    <text class="ld-label" transform="translate(130.31836 855.5469) rotate(-90)" text-anchor="middle">
       <tspan x="114.57" y="21">Klartext 16 Byte</tspan><tspan font-size="17"> (128 Bit)</tspan>
     </text>
-    <line class="connector" x1="176.86328" y1="740.9785" x2="196.96328" y2="740.9785" marker-end="url(#aes-arrow)" />
+    <line class="connector" x1="176.86328" y1="740.9785" x2="203.5633" y2="740.9785" marker-end="url(#ld-arrow)" />
     <use class="matrix" href="#aes-matrix-4x4" x="209.86328" y="708.9785" width="64" height="64" />
-    <text class="label" transform="translate(241.86328 777.9785)" font-size="18" text-anchor="middle">
+    <text class="ld-label" transform="translate(241.86328 777.9785)" font-size="18" text-anchor="middle">
       <tspan x="0" y="19" font-style="italic">State</tspan>
       <tspan x="0" y="43">am Anfang</tspan>
       <tspan x="0" y="66" font-size="17">(16 Byte)</tspan>
@@ -300,14 +484,14 @@ M347 1759 V0 H263 V1759 v1200 v1759 h84z"/></svg></span></span></span><span clas
 
     <g class="incremental">
       <!-- Initiale Transformation -->
-      <line class="connector" x1="273.86328" y1="740.9785" x2="287.1" y2="740.9785" marker-end="url(#aes-arrow)" />
-      <path class="cell" d="M 300 857.7285 L 300 624.2285 C 300 618.0153 305.0368 612.9785 311.25 612.9785 L 311.25 612.9785 C 317.4632 612.9785 322.5 618.0153 322.5 624.2285 L 322.5 857.7285 C 322.5 863.9417 317.4632 868.9785 311.25 868.9785 L 311.25 868.9785 C 305.0368 868.9785 300 863.9417 300 857.7285 Z" />
-      <text class="label" transform="translate(297.75 863.9785) rotate(-90)" text-anchor="middle">
+      <line class="connector" x1="273.86328" y1="740.9785" x2="293.7" y2="740.9785" marker-end="url(#ld-arrow)" />
+      <path class="ld-cell" d="M 300 857.7285 L 300 624.2285 C 300 618.0153 305.0368 612.9785 311.25 612.9785 L 311.25 612.9785 C 317.4632 612.9785 322.5 618.0153 322.5 624.2285 L 322.5 857.7285 C 322.5 863.9417 317.4632 868.9785 311.25 868.9785 L 311.25 868.9785 C 305.0368 868.9785 300 863.9417 300 857.7285 Z" />
+      <text class="ld-label" transform="translate(297.75 863.9785) rotate(-90)" text-anchor="middle">
         <tspan x="123" y="21">Initiale Transformation</tspan>
       </text>
-      <line class="connector" x1="322.5" y1="740.9785" x2="342.6" y2="740.9785" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="322.5" y1="740.9785" x2="349.2" y2="740.9785" marker-end="url(#ld-arrow)" />
       <use class="matrix" href="#aes-matrix-4x4" x="355.5" y="708.9785" width="64" height="64" />
-      <text class="label" transform="translate(387.5 777.9785)" font-size="18" text-anchor="middle">
+      <text class="ld-label" transform="translate(387.5 777.9785)" font-size="18" text-anchor="middle">
         <tspan x="0" y="19"><tspan font-style="italic">State</tspan> nach</tspan>
         <tspan x="0" y="43">initialer</tspan>
         <tspan x="0" y="67">Transformation</tspan>
@@ -317,15 +501,15 @@ M347 1759 V0 H263 V1759 v1200 v1759 h84z"/></svg></span></span></span><span clas
 
     <g class="incremental">
       <!-- Runde 1 -->
-      <line class="connector" x1="419.5" y1="740.9785" x2="439.6" y2="740.9785" marker-end="url(#aes-arrow)" />
-      <path class="cell" d="M 452.5 856.9785 L 452.5 624.9785 C 452.5 618.3511 457.8726 612.9785 464.5 612.9785 L 515 612.9785 C 521.6274 612.9785 527 618.3511 527 624.9785 L 527 856.9785 C 527 863.6059 521.6274 868.9785 515 868.9785 L 464.5 868.9785 C 457.8726 868.9785 452.5 863.6059 452.5 856.9785 Z" />
-      <text class="label" transform="translate(462.75 863.9785) rotate(-90)" text-anchor="middle">
+      <line class="connector" x1="419.5" y1="740.9785" x2="446.2" y2="740.9785" marker-end="url(#ld-arrow)" />
+      <path class="ld-cell" d="M 452.5 856.9785 L 452.5 624.9785 C 452.5 618.3511 457.8726 612.9785 464.5 612.9785 L 515 612.9785 C 521.6274 612.9785 527 618.3511 527 624.9785 L 527 856.9785 C 527 863.6059 521.6274 868.9785 515 868.9785 L 464.5 868.9785 C 457.8726 868.9785 452.5 863.6059 452.5 856.9785 Z" />
+      <text class="ld-label" transform="translate(462.75 863.9785) rotate(-90)" text-anchor="middle">
         <tspan x="123" y="21">Runde 1</tspan>
         <tspan x="123" y="48">(<tspan font-weight="700">4</tspan> Transformationen)</tspan>
       </text>
-      <line class="connector" x1="527" y1="740.9785" x2="547.1" y2="740.9785" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="527" y1="740.9785" x2="553.7" y2="740.9785" marker-end="url(#ld-arrow)" />
       <use class="matrix" href="#aes-matrix-4x4" x="560" y="708.9785" width="64" height="64" />
-      <text class="label" transform="translate(592 777.9785)" font-size="18" text-anchor="middle">
+      <text class="ld-label" transform="translate(592 777.9785)" font-size="18" text-anchor="middle">
         <tspan x="0" y="19"><tspan font-style="italic">State</tspan> nach</tspan>
         <tspan x="0" y="43">Runde 1</tspan>
         <tspan x="0" y="66" font-size="17">(16 Byte)</tspan>
@@ -334,15 +518,15 @@ M347 1759 V0 H263 V1759 v1200 v1759 h84z"/></svg></span></span></span><span clas
 
     <g class="incremental">
       <!-- Auslassung und Runde n-1 -->
-      <line class="connector" x1="624" y1="740.9785" x2="667.143" y2="740.9785" stroke-width="3" stroke-dasharray="3,12" marker-end="url(#aes-arrow)" />
-      <path class="cell" d="M 683.043 856.9785 L 683.043 624.9785 C 683.043 618.3511 688.41555 612.9785 695.043 612.9785 L 745.543 612.9785 C 752.1704 612.9785 757.543 618.3511 757.543 624.9785 L 757.543 856.9785 C 757.543 863.6059 752.1704 868.9785 745.543 868.9785 L 695.043 868.9785 C 688.41555 868.9785 683.043 863.6059 683.043 856.9785 Z" />
-      <text class="label" transform="translate(693.293 863.9785) rotate(-90)" text-anchor="middle">
+      <line class="connector" x1="624" y1="740.9785" x2="677.043" y2="740.9785" stroke-width="3" stroke-dasharray="3,12" marker-end="url(#ld-arrow)" />
+      <path class="ld-cell" d="M 683.043 856.9785 L 683.043 624.9785 C 683.043 618.3511 688.41555 612.9785 695.043 612.9785 L 745.543 612.9785 C 752.1704 612.9785 757.543 618.3511 757.543 624.9785 L 757.543 856.9785 C 757.543 863.6059 752.1704 868.9785 745.543 868.9785 L 695.043 868.9785 C 688.41555 868.9785 683.043 863.6059 683.043 856.9785 Z" />
+      <text class="ld-label" transform="translate(693.293 863.9785) rotate(-90)" text-anchor="middle">
         <tspan x="123" y="21">Runde n-1</tspan>
         <tspan x="123" y="48">(<tspan font-weight="700">4</tspan> Transformationen)</tspan>
       </text>
-      <line class="connector" x1="757.543" y1="740.9785" x2="771.4086" y2="740.9785" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="757.543" y1="740.9785" x2="778.0086" y2="740.9785" marker-end="url(#ld-arrow)" />
       <use class="matrix" href="#aes-matrix-4x4" x="784.3086" y="708.9785" width="64" height="64" />
-      <text class="label" transform="translate(816.3086 777.9785)" font-size="18" text-anchor="middle">
+      <text class="ld-label" transform="translate(816.3086 777.9785)" font-size="18" text-anchor="middle">
         <tspan x="0" y="19"><tspan font-style="italic">State</tspan> nach</tspan>
         <tspan x="0" y="43">Runde n-1</tspan>
         <tspan x="0" y="66" font-size="17">(16 Byte)</tspan>
@@ -351,15 +535,15 @@ M347 1759 V0 H263 V1759 v1200 v1759 h84z"/></svg></span></span></span><span clas
 
     <g class="incremental">
       <!-- Letzte Runde -->
-      <line class="connector" x1="848.3086" y1="740.9785" x2="860.7914" y2="740.9785" marker-end="url(#aes-arrow)" />
-      <path class="cell" d="M 873.6914 856.9785 L 873.6914 624.9785 C 873.6914 618.3511 879.064 612.9785 885.6914 612.9785 L 936.1914 612.9785 C 942.8188 612.9785 948.1914 618.3511 948.1914 624.9785 L 948.1914 856.9785 C 948.1914 863.6059 942.8188 868.9785 936.1914 868.9785 L 885.6914 868.9785 C 879.064 868.9785 873.6914 863.6059 873.6914 856.9785 Z" />
-      <text class="label" transform="translate(883.9414 863.9785) rotate(-90)" text-anchor="middle">
+      <line class="connector" x1="848.3086" y1="740.9785" x2="867.3914" y2="740.9785" marker-end="url(#ld-arrow)" />
+      <path class="ld-cell" d="M 873.6914 856.9785 L 873.6914 624.9785 C 873.6914 618.3511 879.064 612.9785 885.6914 612.9785 L 936.1914 612.9785 C 942.8188 612.9785 948.1914 618.3511 948.1914 624.9785 L 948.1914 856.9785 C 948.1914 863.6059 942.8188 868.9785 936.1914 868.9785 L 885.6914 868.9785 C 879.064 868.9785 873.6914 863.6059 873.6914 856.9785 Z" />
+      <text class="ld-label" transform="translate(883.9414 863.9785) rotate(-90)" text-anchor="middle">
         <tspan x="123" y="21">Runde n</tspan>
         <tspan x="123" y="48">(<tspan font-weight="700">3</tspan> Transformationen)</tspan>
       </text>
-      <line class="connector" x1="948.1914" y1="740.9785" x2="957.7289" y2="740.9785" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="948.1914" y1="740.9785" x2="964.3289" y2="740.9785" marker-end="url(#ld-arrow)" />
       <use class="matrix" href="#aes-matrix-4x4" x="970.6289" y="708.9785" width="64" height="64" />
-      <text class="label" transform="translate(1002.6289 777.9785)" font-size="18" text-anchor="middle">
+      <text class="ld-label" transform="translate(1002.6289 777.9785)" font-size="18" text-anchor="middle">
         <tspan x="0" y="19" font-style="italic">State</tspan>
         <tspan x="0" y="43">am Ende</tspan>
         <tspan x="0" y="66" font-size="17">(16 Byte)</tspan>
@@ -368,9 +552,9 @@ M347 1759 V0 H263 V1759 v1200 v1759 h84z"/></svg></span></span></span><span clas
 
     <g class="incremental">
       <!-- Geheimtext -->
-      <line class="connector" x1="1034.6289" y1="740.9785" x2="1044.1664" y2="740.9785" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="1034.6289" y1="740.9785" x2="1050.7664" y2="740.9785" marker-end="url(#ld-arrow)" />
       <use class="matrix ciphertext" href="#aes-matrix-1x16" x="1057.0664" y="612.9785" width="16" height="256" />
-      <text class="label" transform="translate(1100.0664 609.3203) rotate(90)" text-anchor="middle">
+      <text class="ld-label" transform="translate(1100.0664 609.3203) rotate(90)" text-anchor="middle">
         <tspan x="131.66" y="21">Geheimtext 16 Byte</tspan><tspan font-size="17"> (128 Bit)</tspan>
       </text>
     </g>
@@ -382,52 +566,52 @@ M347 1759 V0 H263 V1759 v1200 v1759 h84z"/></svg></span></span></span><span clas
     <g class="incremental">
       <!-- Schlüssel und Key Expansion -->
       <use class="matrix" href="#aes-matrix-1x16" x="159.36328" y="300.6719" width="16" height="256" />
-      <text class="label" transform="translate(130.31836 489.99023) rotate(-90)" font-size="18" text-anchor="middle">
+      <text class="ld-label" transform="translate(130.31836 489.99023) rotate(-90)" font-size="18" text-anchor="middle">
         <tspan x="61.32" y="19">Schlüssel </tspan><tspan font-size="17">(M Byte)</tspan>
       </text>
-      <line class="connector" x1="175.36328" y1="428.6719" x2="195.46328" y2="428.6719" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="175.36328" y1="428.6719" x2="202.0633" y2="428.6719" marker-end="url(#ld-arrow)" />
       <use class="matrix" href="#aes-matrix-4x4" x="208.36328" y="396.6719" width="64" height="64" />
-      <text class="label" transform="translate(240.36328 465.6719)" font-size="18" text-anchor="middle">
+      <text class="ld-label" transform="translate(240.36328 465.6719)" font-size="18" text-anchor="middle">
         <tspan x="0" y="19">Schlüssel</tspan>
         <tspan x="0" y="42" font-size="17">(M Byte)</tspan>
       </text>
-      <line class="connector" x1="272.36328" y1="428.6719" x2="285.6" y2="428.6719" marker-end="url(#aes-arrow)" />
-      <path class="panel" d="M 310.5 376.17188 L 985 376.17188 C 991.6274 376.17188 997 381.54446 997 388.17188 L 997 469.1719 C 997 475.7993 991.6274 481.1719 985 481.1719 L 310.5 481.1719 C 303.8726 481.1719 298.5 475.7993 298.5 469.1719 L 298.5 388.17188 C 298.5 381.54446 303.8726 376.17188 310.5 376.17188 Z" />
-      <text class="label" transform="translate(303.5 415.17188)">
+      <line class="connector" x1="272.36328" y1="428.6719" x2="292.2" y2="428.6719" marker-end="url(#ld-arrow)" />
+      <path class="ld-panel" d="M 310.5 376.17188 L 985 376.17188 C 991.6274 376.17188 997 381.54446 997 388.17188 L 997 469.1719 C 997 475.7993 991.6274 481.1719 985 481.1719 L 310.5 481.1719 C 303.8726 481.1719 298.5 475.7993 298.5 469.1719 L 298.5 388.17188 C 298.5 381.54446 303.8726 376.17188 310.5 376.17188 Z" />
+      <text class="ld-label" transform="translate(303.5 415.17188)">
         <tspan x="280.39" y="21" font-style="italic">KeyExpansion</tspan>
       </text>
     </g>
 
     <g class="incremental">
       <!-- Rundenschlüssel und ihre Zuführung in die Transformationen -->
-      <line class="connector" x1="311.25" y1="481.1719" x2="311.25" y2="509.6" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="311.25" y1="481.1719" x2="311.25" y2="516.2" marker-end="url(#ld-arrow)" />
       <use class="matrix" href="#aes-matrix-4x4" x="279.25" y="522.5" width="64" height="64" />
-      <text class="label" transform="translate(348.25 533.5)" font-size="18">
+      <text class="ld-label" transform="translate(348.25 533.5)" font-size="18">
         <tspan x="0" y="19"><tspan font-style="italic">Round Key</tspan> 0</tspan>
         <tspan x="0" y="42" font-size="17">(16 Byte)</tspan>
       </text>
-      <line class="connector" x1="490.40625" y1="481.1719" x2="490.40625" y2="509.6" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="490.40625" y1="481.1719" x2="490.4062" y2="516.2" marker-end="url(#ld-arrow)" />
       <use class="matrix" href="#aes-matrix-4x4" x="458.40625" y="522.5" width="64" height="64" />
-      <text class="label" transform="translate(527.40625 533.5)" font-size="18">
+      <text class="ld-label" transform="translate(527.40625 533.5)" font-size="18">
         <tspan x="0" y="19"><tspan font-style="italic">Round Key</tspan> 1</tspan>
         <tspan x="0" y="42" font-size="17">(16 Byte)</tspan>
       </text>
-      <line class="connector" x1="720.9492" y1="481.1719" x2="720.9492" y2="509.6" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="720.9492" y1="481.1719" x2="720.9492" y2="516.2" marker-end="url(#ld-arrow)" />
       <use class="matrix" href="#aes-matrix-4x4" x="688.9492" y="522.5" width="64" height="64" />
-      <text class="label" transform="translate(757.9492 533.5)" font-size="18">
+      <text class="ld-label" transform="translate(757.9492 533.5)" font-size="18">
         <tspan x="0" y="19"><tspan font-style="italic">Round Key</tspan> n-1</tspan>
         <tspan x="0" y="42" font-size="17">(16 Byte)</tspan>
       </text>
-      <line class="connector" x1="912.5977" y1="481.1719" x2="912.5977" y2="509.6" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="912.5977" y1="481.1719" x2="912.5977" y2="516.2" marker-end="url(#ld-arrow)" />
       <use class="matrix" href="#aes-matrix-4x4" x="880.5977" y="522.5" width="64" height="64" />
-      <text class="label" transform="translate(955.832 533.5)" font-size="18">
+      <text class="ld-label" transform="translate(955.832 533.5)" font-size="18">
         <tspan x="0" y="19"><tspan font-style="italic">Round Key</tspan> n</tspan>
         <tspan x="0" y="42" font-size="17">(16 Byte)</tspan>
       </text>
-      <line class="connector" x1="311.25" y1="586.5" x2="311.25" y2="600.0785" marker-end="url(#aes-arrow)" />
-      <line class="connector" x1="490.29364" y1="586.5" x2="490.24585" y2="600.0786" marker-end="url(#aes-arrow)" />
-      <line class="connector" x1="720.8366" y1="586.5" x2="720.7888" y2="600.0786" marker-end="url(#aes-arrow)" />
-      <line class="connector" x1="912.3134" y1="586.5" x2="912.1928" y2="600.079" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="311.25" y1="586.5" x2="311.25" y2="606.6785" marker-end="url(#ld-arrow)" />
+      <line class="connector" x1="490.29364" y1="586.5" x2="490.2226" y2="606.6786" marker-end="url(#ld-arrow)" />
+      <line class="connector" x1="720.8366" y1="586.5" x2="720.7656" y2="606.6786" marker-end="url(#ld-arrow)" />
+      <line class="connector" x1="912.3134" y1="586.5" x2="912.1342" y2="606.6787" marker-end="url(#ld-arrow)" />
     </g>
 
   </g>
@@ -460,162 +644,162 @@ M347 1759 V0 H263 V1759 v1200 v1759 h84z"/></svg></span></span></span><span clas
     <rect class="panel-enc" x="0"   y="14" width="290" height="632" rx="12" />
     <rect class="panel-dec" x="550" y="14" width="290" height="632" rx="12" />
 
-    <text class="label" transform="rotate(-90 20 330)" x="20" y="330" text-anchor="middle" font-size="20">Verschlüsselung</text>
-    <text class="label" transform="rotate(90 820 330)" x="820" y="330" text-anchor="middle" font-size="20">Entschlüsselung</text>
+    <text class="ld-label" transform="rotate(-90 20 330)" x="20" y="330" text-anchor="middle" font-size="20">Verschlüsselung</text>
+    <text class="ld-label" transform="rotate(90 820 330)" x="820" y="330" text-anchor="middle" font-size="20">Entschlüsselung</text>
 
     <!-- ═══ Verschlüsselung (linke Spalte, von oben nach unten) ═════════ -->
 
     <g>
-      <text class="label" x="160" y="32" text-anchor="middle">Klartext 16 Byte</text>
-      <line class="connector" x1="160" y1="44" x2="160" y2="50.4" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="160" y="32" text-anchor="middle">Klartext 16 Byte</text>
+      <line class="connector" x1="160" y1="44" x2="160" y2="57" marker-end="url(#ld-arrow)" />
 
       <!-- initiales AddRoundKey — bewusst außerhalb der Rundenkästen -->
       <rect class="flow-step" x="60" y="60" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="79" text-anchor="middle" font-style="italic">AddRoundKey</text>
+      <text class="ld-label" x="160" y="79" text-anchor="middle" font-style="italic">AddRoundKey</text>
 
-      <line class="connector" x1="160" y1="86" x2="160" y2="94.4" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="160" y1="86" x2="160" y2="101" marker-end="url(#ld-arrow)" />
 
       <!-- Runde 1 -->
       <rect class="round-group" x="32" y="99" width="246" height="168" rx="12" />
-      <text class="label" transform="rotate(-90 46 183)" x="46" y="189" text-anchor="middle" font-size="18">Runde 1</text>
+      <text class="ld-label" transform="rotate(-90 46 183)" x="46" y="189" text-anchor="middle" font-size="18">Runde 1</text>
       <rect class="flow-step" x="60" y="104" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="123" text-anchor="middle" font-style="italic">SubBytes</text>
-      <line class="connector" x1="160" y1="130" x2="160" y2="138.4" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="160" y="123" text-anchor="middle" font-style="italic">SubBytes</text>
+      <line class="connector" x1="160" y1="130" x2="160" y2="145" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="60" y="148" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="167" text-anchor="middle" font-style="italic">ShiftRows</text>
-      <line class="connector" x1="160" y1="174" x2="160" y2="182.4" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="160" y="167" text-anchor="middle" font-style="italic">ShiftRows</text>
+      <line class="connector" x1="160" y1="174" x2="160" y2="189" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="60" y="192" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="211" text-anchor="middle" font-style="italic">MixColumns</text>
-      <line class="connector" x1="160" y1="218" x2="160" y2="226.4" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="160" y="211" text-anchor="middle" font-style="italic">MixColumns</text>
+      <line class="connector" x1="160" y1="218" x2="160" y2="233" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="60" y="236" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="255" text-anchor="middle" font-style="italic">AddRoundKey</text>
+      <text class="ld-label" x="160" y="255" text-anchor="middle" font-style="italic">AddRoundKey</text>
 
-      <line class="connector" x1="160" y1="262" x2="160" y2="289.6" stroke-width="3" stroke-dasharray="3,12" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="160" y1="262" x2="160" y2="299.5" stroke-width="3" stroke-dasharray="3,12" marker-end="url(#ld-arrow)" />
 
       <!-- Runde 9 -->
       <rect class="round-group" x="32" y="299" width="246" height="168" rx="12" />
-      <text class="label" transform="rotate(-90 46 383)" x="46" y="389" text-anchor="middle" font-size="18">Runde 9</text>
+      <text class="ld-label" transform="rotate(-90 46 383)" x="46" y="389" text-anchor="middle" font-size="18">Runde 9</text>
       <rect class="flow-step" x="60" y="304" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="323" text-anchor="middle" font-style="italic">SubBytes</text>
-      <line class="connector" x1="160" y1="330" x2="160" y2="338.4" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="160" y="323" text-anchor="middle" font-style="italic">SubBytes</text>
+      <line class="connector" x1="160" y1="330" x2="160" y2="345" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="60" y="348" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="367" text-anchor="middle" font-style="italic">ShiftRows</text>
-      <line class="connector" x1="160" y1="374" x2="160" y2="382.4" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="160" y="367" text-anchor="middle" font-style="italic">ShiftRows</text>
+      <line class="connector" x1="160" y1="374" x2="160" y2="389" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="60" y="392" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="411" text-anchor="middle" font-style="italic">MixColumns</text>
-      <line class="connector" x1="160" y1="418" x2="160" y2="426.4" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="160" y="411" text-anchor="middle" font-style="italic">MixColumns</text>
+      <line class="connector" x1="160" y1="418" x2="160" y2="433" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="60" y="436" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="455" text-anchor="middle" font-style="italic">AddRoundKey</text>
+      <text class="ld-label" x="160" y="455" text-anchor="middle" font-style="italic">AddRoundKey</text>
 
-      <line class="connector" x1="160" y1="462" x2="160" y2="470.4" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="160" y1="462" x2="160" y2="477" marker-end="url(#ld-arrow)" />
 
       <!-- Runde 10 — ohne MixColumns -->
       <rect class="round-group" x="32" y="475" width="246" height="124" rx="12" />
-      <text class="label" transform="rotate(-90 46 537)" x="46" y="543" text-anchor="middle" font-size="18">Runde 10</text>
+      <text class="ld-label" transform="rotate(-90 46 537)" x="46" y="543" text-anchor="middle" font-size="18">Runde 10</text>
       <rect class="flow-step" x="60" y="480" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="499" text-anchor="middle" font-style="italic">SubBytes</text>
-      <line class="connector" x1="160" y1="506" x2="160" y2="514.4" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="160" y="499" text-anchor="middle" font-style="italic">SubBytes</text>
+      <line class="connector" x1="160" y1="506" x2="160" y2="521" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="60" y="524" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="543" text-anchor="middle" font-style="italic">ShiftRows</text>
-      <line class="connector" x1="160" y1="550" x2="160" y2="558.4" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="160" y="543" text-anchor="middle" font-style="italic">ShiftRows</text>
+      <line class="connector" x1="160" y1="550" x2="160" y2="565" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="60" y="568" width="200" height="26" rx="13" />
-      <text class="label" x="160" y="587" text-anchor="middle" font-style="italic">AddRoundKey</text>
+      <text class="ld-label" x="160" y="587" text-anchor="middle" font-style="italic">AddRoundKey</text>
 
-      <line class="connector" x1="160" y1="594" x2="160" y2="602.4" marker-end="url(#aes-arrow)" />
-      <text class="label" x="160" y="632" text-anchor="middle">Geheimtext 16 Byte</text>
+      <line class="connector" x1="160" y1="594" x2="160" y2="609" marker-end="url(#ld-arrow)" />
+      <text class="ld-label" x="160" y="632" text-anchor="middle">Geheimtext 16 Byte</text>
     </g>
 
     <!-- ═══ Entschlüsselung (rechte Spalte, von unten nach oben) ════════ -->
 
     <g>
-      <text class="label" x="680" y="32" text-anchor="middle">Klartext 16 Byte</text>
-      <line class="connector" x1="680" y1="60" x2="680" y2="53.6" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="680" y="32" text-anchor="middle">Klartext 16 Byte</text>
+      <line class="connector" x1="680" y1="60" x2="680" y2="47" marker-end="url(#ld-arrow)" />
 
       <!-- Runde 10 — ohne InvMixColumns -->
       <rect class="round-group" x="562" y="55" width="246" height="124" rx="12" />
-      <text class="label" transform="rotate(90 794 117)" x="794" y="123" text-anchor="middle" font-size="18">Runde 10</text>
+      <text class="ld-label" transform="rotate(90 794 117)" x="794" y="123" text-anchor="middle" font-size="18">Runde 10</text>
       <rect class="flow-step" x="580" y="60" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="79" text-anchor="middle" font-style="italic">AddRoundKey</text>
-      <line class="connector" x1="680" y1="104" x2="680" y2="95.6" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="680" y="79" text-anchor="middle" font-style="italic">AddRoundKey</text>
+      <line class="connector" x1="680" y1="104" x2="680" y2="89" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="580" y="104" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="123" text-anchor="middle" font-style="italic">InvSubBytes</text>
-      <line class="connector" x1="680" y1="148" x2="680" y2="139.6" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="680" y="123" text-anchor="middle" font-style="italic">InvSubBytes</text>
+      <line class="connector" x1="680" y1="148" x2="680" y2="133" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="580" y="148" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="167" text-anchor="middle" font-style="italic">InvShiftRows</text>
+      <text class="ld-label" x="680" y="167" text-anchor="middle" font-style="italic">InvShiftRows</text>
 
-      <line class="connector" x1="680" y1="192" x2="680" y2="183.6" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="680" y1="192" x2="680" y2="177" marker-end="url(#ld-arrow)" />
 
       <!-- Runde 9 -->
       <rect class="round-group" x="562" y="187" width="246" height="168" rx="12" />
-      <text class="label" transform="rotate(90 794 271)" x="794" y="277" text-anchor="middle" font-size="18">Runde 9</text>
+      <text class="ld-label" transform="rotate(90 794 271)" x="794" y="277" text-anchor="middle" font-size="18">Runde 9</text>
       <rect class="flow-step" x="580" y="192" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="211" text-anchor="middle" font-style="italic">InvMixColumns</text>
-      <line class="connector" x1="680" y1="236" x2="680" y2="227.6" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="680" y="211" text-anchor="middle" font-style="italic">InvMixColumns</text>
+      <line class="connector" x1="680" y1="236" x2="680" y2="221" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="580" y="236" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="255" text-anchor="middle" font-style="italic">AddRoundKey</text>
-      <line class="connector" x1="680" y1="280" x2="680" y2="271.6" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="680" y="255" text-anchor="middle" font-style="italic">AddRoundKey</text>
+      <line class="connector" x1="680" y1="280" x2="680" y2="265" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="580" y="280" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="299" text-anchor="middle" font-style="italic">InvSubBytes</text>
-      <line class="connector" x1="680" y1="324" x2="680" y2="315.6" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="680" y="299" text-anchor="middle" font-style="italic">InvSubBytes</text>
+      <line class="connector" x1="680" y1="324" x2="680" y2="309" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="580" y="324" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="343" text-anchor="middle" font-style="italic">InvShiftRows</text>
+      <text class="ld-label" x="680" y="343" text-anchor="middle" font-style="italic">InvShiftRows</text>
 
-      <line class="connector" x1="680" y1="392" x2="680" y2="364.4" stroke-width="3" stroke-dasharray="3,12" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="680" y1="392" x2="680" y2="354.5" stroke-width="3" stroke-dasharray="3,12" marker-end="url(#ld-arrow)" />
 
       <!-- Runde 1 -->
       <rect class="round-group" x="562" y="387" width="246" height="168" rx="12" />
-      <text class="label" transform="rotate(90 794 471)" x="794" y="477" text-anchor="middle" font-size="18">Runde 1</text>
+      <text class="ld-label" transform="rotate(90 794 471)" x="794" y="477" text-anchor="middle" font-size="18">Runde 1</text>
       <rect class="flow-step" x="580" y="392" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="411" text-anchor="middle" font-style="italic">InvMixColumns</text>
-      <line class="connector" x1="680" y1="436" x2="680" y2="427.6" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="680" y="411" text-anchor="middle" font-style="italic">InvMixColumns</text>
+      <line class="connector" x1="680" y1="436" x2="680" y2="421" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="580" y="436" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="455" text-anchor="middle" font-style="italic">AddRoundKey</text>
-      <line class="connector" x1="680" y1="480" x2="680" y2="471.6" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="680" y="455" text-anchor="middle" font-style="italic">AddRoundKey</text>
+      <line class="connector" x1="680" y1="480" x2="680" y2="465" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="580" y="480" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="499" text-anchor="middle" font-style="italic">InvSubBytes</text>
-      <line class="connector" x1="680" y1="524" x2="680" y2="515.6" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="680" y="499" text-anchor="middle" font-style="italic">InvSubBytes</text>
+      <line class="connector" x1="680" y1="524" x2="680" y2="509" marker-end="url(#ld-arrow)" />
       <rect class="flow-step" x="580" y="524" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="543" text-anchor="middle" font-style="italic">InvShiftRows</text>
+      <text class="ld-label" x="680" y="543" text-anchor="middle" font-style="italic">InvShiftRows</text>
 
-      <line class="connector" x1="680" y1="568" x2="680" y2="559.6" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="680" y1="568" x2="680" y2="553" marker-end="url(#ld-arrow)" />
 
       <!-- initiales AddRoundKey der Entschlüsselung — außerhalb der Kästen -->
       <rect class="flow-step" x="580" y="568" width="200" height="26" rx="13" />
-      <text class="label" x="680" y="587" text-anchor="middle" font-style="italic">AddRoundKey</text>
-      <line class="connector" x1="680" y1="612" x2="680" y2="603.6" marker-end="url(#aes-arrow)" />
-      <text class="label" x="680" y="632" text-anchor="middle">Geheimtext 16 Byte</text>
+      <text class="ld-label" x="680" y="587" text-anchor="middle" font-style="italic">AddRoundKey</text>
+      <line class="connector" x1="680" y1="612" x2="680" y2="597" marker-end="url(#ld-arrow)" />
+      <text class="ld-label" x="680" y="632" text-anchor="middle">Geheimtext 16 Byte</text>
     </g>
 
     <!-- ═══ Schlüssel und Key Expansion (mittlere Spalte) ═══════════════ -->
 
     <g>
-      <text class="label" x="420" y="10" text-anchor="middle">Schlüssel 16 Byte</text>
+      <text class="ld-label" x="420" y="10" text-anchor="middle">Schlüssel 16 Byte</text>
       <rect class="flow-step" x="310" y="18" width="220" height="26" rx="13" />
-      <text class="label" x="420" y="37" text-anchor="middle" font-style="italic">KeyExpansion</text>
+      <text class="ld-label" x="420" y="37" text-anchor="middle" font-style="italic">KeyExpansion</text>
 
-      <line class="connector" x1="420" y1="44" x2="420" y2="50.4" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="420" y1="44" x2="420" y2="57" marker-end="url(#ld-arrow)" />
       <rect class="key-word" x="372" y="60" width="96" height="26" rx="4" />
-      <text class="label" x="420" y="79" text-anchor="middle" font-size="18"><tspan font-style="italic">w</tspan>[0,3]</text>
-      <line class="connector" x1="372" y1="73" x2="269.6" y2="73" marker-end="url(#aes-arrow)" />
-      <line class="connector" x1="468" y1="73" x2="570.4" y2="73" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="420" y="79" text-anchor="middle" font-size="18"><tspan font-style="italic">w</tspan>[0,3]</text>
+      <line class="connector" x1="372" y1="73" x2="263" y2="73" marker-end="url(#ld-arrow)" />
+      <line class="connector" x1="468" y1="73" x2="577" y2="73" marker-end="url(#ld-arrow)" />
 
-      <line class="connector" x1="420" y1="86" x2="420" y2="226.4" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="420" y1="86" x2="420" y2="233" marker-end="url(#ld-arrow)" />
       <rect class="key-word" x="372" y="236" width="96" height="26" rx="4" />
-      <text class="label" x="420" y="255" text-anchor="middle" font-size="18"><tspan font-style="italic">w</tspan>[4,7]</text>
-      <line class="connector" x1="372" y1="249" x2="269.6" y2="249" marker-end="url(#aes-arrow)" />
-      <line class="connector" x1="468" y1="249" x2="570.4" y2="249" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="420" y="255" text-anchor="middle" font-size="18"><tspan font-style="italic">w</tspan>[4,7]</text>
+      <line class="connector" x1="372" y1="249" x2="263" y2="249" marker-end="url(#ld-arrow)" />
+      <line class="connector" x1="468" y1="249" x2="577" y2="249" marker-end="url(#ld-arrow)" />
 
-      <line class="connector" x1="420" y1="262" x2="420" y2="421.6" stroke-width="3" stroke-dasharray="3,12" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="420" y1="262" x2="420" y2="431.5" stroke-width="3" stroke-dasharray="3,12" marker-end="url(#ld-arrow)" />
       <rect class="key-word" x="372" y="436" width="96" height="26" rx="4" />
-      <text class="label" x="420" y="455" text-anchor="middle" font-size="18"><tspan font-style="italic">w</tspan>[36,39]</text>
-      <line class="connector" x1="372" y1="449" x2="269.6" y2="449" marker-end="url(#aes-arrow)" />
-      <line class="connector" x1="468" y1="449" x2="570.4" y2="449" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="420" y="455" text-anchor="middle" font-size="18"><tspan font-style="italic">w</tspan>[36,39]</text>
+      <line class="connector" x1="372" y1="449" x2="263" y2="449" marker-end="url(#ld-arrow)" />
+      <line class="connector" x1="468" y1="449" x2="577" y2="449" marker-end="url(#ld-arrow)" />
 
-      <line class="connector" x1="420" y1="462" x2="420" y2="558.4" marker-end="url(#aes-arrow)" />
+      <line class="connector" x1="420" y1="462" x2="420" y2="565" marker-end="url(#ld-arrow)" />
       <rect class="key-word" x="372" y="568" width="96" height="26" rx="4" />
-      <text class="label" x="420" y="587" text-anchor="middle" font-size="18"><tspan font-style="italic">w</tspan>[40,43]</text>
-      <line class="connector" x1="372" y1="581" x2="269.6" y2="581" marker-end="url(#aes-arrow)" />
-      <line class="connector" x1="468" y1="581" x2="570.4" y2="581" marker-end="url(#aes-arrow)" />
+      <text class="ld-label" x="420" y="587" text-anchor="middle" font-size="18"><tspan font-style="italic">w</tspan>[40,43]</text>
+      <line class="connector" x1="372" y1="581" x2="263" y2="581" marker-end="url(#ld-arrow)" />
+      <line class="connector" x1="468" y1="581" x2="577" y2="581" marker-end="url(#ld-arrow)" />
     </g>
 
     <!-- ═══════════════════════════════════════════════════════════════════
@@ -947,8 +1131,8 @@ S&#x27;_{0,0} = &amp; \mathtt{02} ∙ S_{0,0} &amp; ⊕ &amp; \mathtt{03} ∙ S_
     </g>
 
     <!-- Hintergrundflächen der beiden Spalten -->
-    <path class="panel" d="M 374.33147 423.88495 L 542.3315 423.88495 C 551.168 423.88495 558.3315 431.0484 558.3315 439.88495 L 558.3315 939.5126 C 558.3315 948.3492 551.168 955.5126 542.3315 955.5126 L 374.33147 955.5126 C 365.4949 955.5126 358.33147 948.3492 358.33147 939.5126 L 358.33147 439.88495 C 358.33147 431.0484 365.4949 423.88495 374.33147 423.88495 Z" />
-    <path class="panel" d="M 846.5 420.5 L 1014.5 420.5 C 1023.3366 420.5 1030.5 427.66344 1030.5 436.5 L 1030.5 939.5126 C 1030.5 948.3492 1023.3366 955.5126 1014.5 955.5126 L 846.5 955.5126 C 837.6634 955.5126 830.5 948.3492 830.5 939.5126 L 830.5 436.5 C 830.5 427.66344 837.6634 420.5 846.5 420.5 Z" />
+    <path class="ld-panel" d="M 374.33147 423.88495 L 542.3315 423.88495 C 551.168 423.88495 558.3315 431.0484 558.3315 439.88495 L 558.3315 939.5126 C 558.3315 948.3492 551.168 955.5126 542.3315 955.5126 L 374.33147 955.5126 C 365.4949 955.5126 358.33147 948.3492 358.33147 939.5126 L 358.33147 439.88495 C 358.33147 431.0484 365.4949 423.88495 374.33147 423.88495 Z" />
+    <path class="ld-panel" d="M 846.5 420.5 L 1014.5 420.5 C 1023.3366 420.5 1030.5 427.66344 1030.5 436.5 L 1030.5 939.5126 C 1030.5 948.3492 1023.3366 955.5126 1014.5 955.5126 L 846.5 955.5126 C 837.6634 955.5126 830.5 948.3492 830.5 939.5126 L 830.5 436.5 C 830.5 427.66344 837.6634 420.5 846.5 420.5 Z" />
 
     <!-- Zustand vor der Runde und nach den ersten drei Stufen -->
     <g id="zustaende-oben">
@@ -958,32 +1142,32 @@ S&#x27;_{0,0} = &amp; \mathtt{02} ∙ S_{0,0} &amp; ⊕ &amp; \mathtt{03} ∙ S_
       <use class="matrix" href="#aes-matrix-4x4" x="672.5" y="785.2001" width="40" height="40" />
     </g>
 
-    <line class="connector" x1="692.5" y1="596.9285" x2="692.5" y2="606.1876" marker-end="url(#aes-arrow)" />
-    <line class="connector" x1="692.5" y1="709.8001" x2="692.5" y2="720.6001" marker-end="url(#aes-arrow)" />
-    <line class="connector" x1="692.5" y1="825.2001" x2="692.5" y2="837.9125" marker-end="url(#aes-arrow)" />
+    <line class="connector" x1="692.5" y1="596.9285" x2="692.5" y2="612.7876" marker-end="url(#ld-arrow)" />
+    <line class="connector" x1="692.5" y1="709.8001" x2="692.5" y2="727.2001" marker-end="url(#ld-arrow)" />
+    <line class="connector" x1="692.5" y1="825.2001" x2="692.5" y2="844.5125" marker-end="url(#ld-arrow)" />
 
-    <text class="label" transform="translate(720.65925 424.5763)" font-size="18">
+    <text class="ld-label" transform="translate(720.65925 424.5763)" font-size="18">
       <tspan font-style="italic" x="0" y="19">State</tspan>-<tspan>Matrix</tspan>
       <tspan x="0" y="43">zu Beginn</tspan>
       <tspan x="0" y="67">der Runde</tspan>
     </text>
-    <text class="label" transform="translate(878 791.8125)" font-size="18">
+    <text class="ld-label" transform="translate(878 791.8125)" font-size="18">
       <tspan x="0" y="43" font-style="italic">Round Key</tspan>
     </text>
-    <text class="label" transform="translate(376.58147 820.0001)" font-size="18">
+    <text class="ld-label" transform="translate(376.58147 820.0001)" font-size="18">
       <tspan x="0" y="19" font-style="italic">MixColumns</tspan><tspan>-Matrix</tspan>
     </text>
 
     <!-- Die vier Stufen der Runde -->
     <g id="stufen">
-      <path class="cell" d="M 604.5 850.8125 L 780.5 850.8125 C 787.1274 850.8125 792.5 856.1851 792.5 862.8125 L 792.5 866.8125 C 792.5 873.4399 787.1274 878.8125 780.5 878.8125 L 604.5 878.8125 C 597.8726 878.8125 592.5 873.4399 592.5 866.8125 L 592.5 862.8125 C 592.5 856.1851 597.8726 850.8125 604.5 850.8125 Z" />
-      <text class="label" transform="translate(597.5 851.3125)"><tspan x="30.57" y="21" font-style="italic">AddRoundKey</tspan></text>
-      <path class="cell" d="M 604.5 504.7524 L 780.5 504.7524 C 787.1274 504.7524 792.5 510.1250 792.5 516.7524 L 792.5 520.7524 C 792.5 527.3798 787.1274 532.7524 780.5 532.7524 L 604.5 532.7524 C 597.8726 532.7524 592.5 527.3798 592.5 520.7524 L 592.5 516.7524 C 592.5 510.1250 597.8726 504.7524 604.5 504.7524 Z" />
-      <text class="label" transform="translate(692 505.2524)" text-anchor="middle"><tspan y="21" font-style="italic">SubBytes</tspan></text>
-      <path class="cell" d="M 604.5 619.0876 L 780.5 619.0876 C 787.1274 619.0876 792.5 624.4602 792.5 631.0876 L 792.5 635.0876 C 792.5 641.7150 787.1274 647.0876 780.5 647.0876 L 604.5 647.0876 C 597.8726 647.0876 592.5 641.7150 592.5 635.0876 L 592.5 631.0876 C 592.5 624.4602 597.8726 619.0876 604.5 619.0876 Z" />
-      <text class="label" transform="translate(597.5 619.5876)"><tspan x="51.2" y="21" font-style="italic">ShiftRows</tspan></text>
-      <path class="cell" d="M 604.5 733.5001 L 780.5 733.5001 C 787.1274 733.5001 792.5 738.8727 792.5 745.5001 L 792.5 749.5001 C 792.5 756.1275 787.1274 761.5001 780.5 761.5001 L 604.5 761.5001 C 597.8726 761.5001 592.5 756.1275 592.5 749.5001 L 592.5 745.5001 C 592.5 738.8727 597.8726 733.5001 604.5 733.5001 Z" />
-      <text class="label" transform="translate(597.5 734.0001)"><tspan x="38.83" y="21" font-style="italic">MixColumns</tspan></text>
+      <path class="ld-cell" d="M 604.5 850.8125 L 780.5 850.8125 C 787.1274 850.8125 792.5 856.1851 792.5 862.8125 L 792.5 866.8125 C 792.5 873.4399 787.1274 878.8125 780.5 878.8125 L 604.5 878.8125 C 597.8726 878.8125 592.5 873.4399 592.5 866.8125 L 592.5 862.8125 C 592.5 856.1851 597.8726 850.8125 604.5 850.8125 Z" />
+      <text class="ld-label" transform="translate(597.5 851.3125)"><tspan x="30.57" y="21" font-style="italic">AddRoundKey</tspan></text>
+      <path class="ld-cell" d="M 604.5 504.7524 L 780.5 504.7524 C 787.1274 504.7524 792.5 510.1250 792.5 516.7524 L 792.5 520.7524 C 792.5 527.3798 787.1274 532.7524 780.5 532.7524 L 604.5 532.7524 C 597.8726 532.7524 592.5 527.3798 592.5 520.7524 L 592.5 516.7524 C 592.5 510.1250 597.8726 504.7524 604.5 504.7524 Z" />
+      <text class="ld-label" transform="translate(692 505.2524)" text-anchor="middle"><tspan y="21" font-style="italic">SubBytes</tspan></text>
+      <path class="ld-cell" d="M 604.5 619.0876 L 780.5 619.0876 C 787.1274 619.0876 792.5 624.4602 792.5 631.0876 L 792.5 635.0876 C 792.5 641.7150 787.1274 647.0876 780.5 647.0876 L 604.5 647.0876 C 597.8726 647.0876 592.5 641.7150 592.5 635.0876 L 592.5 631.0876 C 592.5 624.4602 597.8726 619.0876 604.5 619.0876 Z" />
+      <text class="ld-label" transform="translate(597.5 619.5876)"><tspan x="51.2" y="21" font-style="italic">ShiftRows</tspan></text>
+      <path class="ld-cell" d="M 604.5 733.5001 L 780.5 733.5001 C 787.1274 733.5001 792.5 738.8727 792.5 745.5001 L 792.5 749.5001 C 792.5 756.1275 787.1274 761.5001 780.5 761.5001 L 604.5 761.5001 C 597.8726 761.5001 592.5 756.1275 592.5 749.5001 L 592.5 745.5001 C 592.5 738.8727 597.8726 733.5001 604.5 733.5001 Z" />
+      <text class="ld-label" transform="translate(597.5 734.0001)"><tspan x="38.83" y="21" font-style="italic">MixColumns</tspan></text>
     </g>
 
     <!-- Zustand nach AddRoundKey und der Rundenschlüssel -->
@@ -993,7 +1177,7 @@ S&#x27;_{0,0} = &amp; \mathtt{02} ∙ S_{0,0} &amp; ⊕ &amp; \mathtt{03} ∙ S_
     </g>
 
     <!-- S-Box in die SubBytes-Stufe -->
-    <line class="connector" x1="539.8315" y1="518.7524" x2="579.6" y2="518.7524" marker-end="url(#aes-arrow)" />
+    <line class="connector" x1="539.8315" y1="518.7524" x2="586.2" y2="518.7524" marker-end="url(#ld-arrow)" />
 
     <!-- S-Box: zwei gegeneinander versetzte 16x16-Raster -->
     <g id="s-box">
@@ -1002,54 +1186,54 @@ S&#x27;_{0,0} = &amp; \mathtt{02} ∙ S_{0,0} &amp; ⊕ &amp; \mathtt{03} ∙ S_
 
     <!-- Werte der MixColumns-Matrix -->
     <g id="mixcolumns-werte">
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(407.58147 691.8001)"><tspan x="14" y="21">02</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(435.5815 691.8001)"><tspan x="14" y="21">03</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(463.5815 691.8001)"><tspan x="14" y="21">01</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(491.5815 691.8001)"><tspan x="14" y="21">01</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(407.58147 719.8001)"><tspan x="14" y="21">01</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(435.5815 719.8001)"><tspan x="14" y="21">02</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(463.5815 719.8001)"><tspan x="14" y="21">03</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(491.5815 719.8001)"><tspan x="14" y="21">01</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(407.58147 747.8001)"><tspan x="14" y="21">01</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(435.5815 775.8001)"><tspan x="14" y="21">01</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(463.5815 747.8001)"><tspan x="14" y="21">02</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(491.5815 747.6001)"><tspan x="14" y="21">03</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(407.58147 775.8001)"><tspan x="14" y="21">03</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(435.5815 747.8001)"><tspan x="14" y="21">01</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(463.5815 775.9001)"><tspan x="14" y="21">01</tspan></text>
-      <text class="label hex" font-size="17.9" text-anchor="middle" transform="translate(491.5815 775.6001)"><tspan x="14" y="21">02</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(407.58147 691.8001)"><tspan x="14" y="21">02</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(435.5815 691.8001)"><tspan x="14" y="21">03</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(463.5815 691.8001)"><tspan x="14" y="21">01</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(491.5815 691.8001)"><tspan x="14" y="21">01</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(407.58147 719.8001)"><tspan x="14" y="21">01</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(435.5815 719.8001)"><tspan x="14" y="21">02</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(463.5815 719.8001)"><tspan x="14" y="21">03</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(491.5815 719.8001)"><tspan x="14" y="21">01</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(407.58147 747.8001)"><tspan x="14" y="21">01</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(435.5815 775.8001)"><tspan x="14" y="21">01</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(463.5815 747.8001)"><tspan x="14" y="21">02</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(491.5815 747.6001)"><tspan x="14" y="21">03</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(407.58147 775.8001)"><tspan x="14" y="21">03</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(435.5815 747.8001)"><tspan x="14" y="21">01</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(463.5815 775.9001)"><tspan x="14" y="21">01</tspan></text>
+      <text class="ld-label hex" font-size="17.9" text-anchor="middle" transform="translate(491.5815 775.6001)"><tspan x="14" y="21">02</tspan></text>
     </g>
 
     <!-- MixColumns-Matrix in die MixColumns-Stufe -->
-    <line class="connector" x1="519.5815" y1="747.1224" x2="579.6" y2="747.2535" marker-end="url(#aes-arrow)" />
+    <line class="connector" x1="519.5815" y1="747.1224" x2="586.2" y2="747.2679" marker-end="url(#ld-arrow)" />
 
-    <text class="label" transform="translate(720.65925 887.5126)" font-size="18">
+    <text class="ld-label" transform="translate(720.65925 887.5126)" font-size="18">
       <tspan font-style="italic" x="0" y="19">State</tspan>-<tspan>Matrix</tspan>
       <tspan x="0" y="43">am Ende</tspan>
       <tspan x="0" y="67">der Runde</tspan>
     </text>
 
     <!-- Übrige Verbindungspfeile -->
-    <line class="connector" x1="692.5" y1="480.5763" x2="692.5" y2="491.8524" marker-end="url(#aes-arrow)" />
-    <line class="connector" x1="692.5" y1="532.7524" x2="692.5" y2="544.0285" marker-end="url(#aes-arrow)" />
-    <line class="connector" x1="692.5" y1="647.0876" x2="692.5" y2="656.9001" marker-end="url(#aes-arrow)" />
-    <line class="connector" x1="692.5" y1="761.5001" x2="692.5" y2="772.3001" marker-end="url(#aes-arrow)" />
-    <line class="connector" x1="692.5" y1="878.8125" x2="692.5" y2="890.6126" marker-end="url(#aes-arrow)" />
-    <line class="connector" x1="898.5" y1="864.8125" x2="805.4" y2="864.8125" marker-end="url(#aes-arrow)" />
+    <line class="connector" x1="692.5" y1="480.5763" x2="692.5" y2="498.4524" marker-end="url(#ld-arrow)" />
+    <line class="connector" x1="692.5" y1="532.7524" x2="692.5" y2="550.6285" marker-end="url(#ld-arrow)" />
+    <line class="connector" x1="692.5" y1="647.0876" x2="692.5" y2="663.5001" marker-end="url(#ld-arrow)" />
+    <line class="connector" x1="692.5" y1="761.5001" x2="692.5" y2="778.9001" marker-end="url(#ld-arrow)" />
+    <line class="connector" x1="692.5" y1="878.8125" x2="692.5" y2="897.2126" marker-end="url(#ld-arrow)" />
+    <line class="connector" x1="898.5" y1="864.8125" x2="798.8" y2="864.8125" marker-end="url(#ld-arrow)" />
 
-    <text class="label" transform="translate(410.33147 605.2524)" font-size="18">
+    <text class="ld-label" transform="translate(410.33147 605.2524)" font-size="18">
       <tspan x="25.941" y="19">S-Box</tspan>
     </text>
 
     <!-- Marken der beiden Spalten -->
     <g id="marken">
       <path class="badge" d="M 846.5 891.5126 L 1014.5 891.5126 C 1023.3366 891.5126 1030.5 898.6761 1030.5 907.5126 L 1030.5 939.5126 C 1030.5 948.3492 1023.3366 955.5126 1014.5 955.5126 L 846.5 955.5126 C 837.6634 955.5126 830.5 948.3492 830.5 939.5126 L 830.5 907.5126 C 830.5 898.6761 837.6634 891.5126 846.5 891.5126 Z" />
-      <text class="badge-label" transform="translate(830.5 893.5126)" font-size="22">
+      <text class="ld-label-on-fill" transform="translate(830.5 893.5126)" font-size="22">
         <tspan x="56.275" y="24">Variabler</tspan>
         <tspan x="73.457" y="54">Input</tspan>
       </text>
       <path class="badge" d="M 374.33147 891.5126 L 542.3315 891.5126 C 551.168 891.5126 558.3315 898.6761 558.3315 907.5126 L 558.3315 939.5126 C 558.3315 948.3492 551.168 955.5126 542.3315 955.5126 L 374.33147 955.5126 C 365.4949 955.5126 358.33147 948.3492 358.33147 939.5126 L 358.33147 907.5126 C 358.33147 898.6761 365.4949 891.5126 374.33147 891.5126 Z" />
-      <text class="badge-label" transform="translate(358.33147 893.5126)" font-size="22">
+      <text class="ld-label-on-fill" transform="translate(358.33147 893.5126)" font-size="22">
         <tspan x="45.891" y="24">Konstanter</tspan>
         <tspan x="73.457" y="54">Input</tspan>
       </text>

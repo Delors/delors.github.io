@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Michael Eichberg" />
+<meta name="keywords" content="&quot;Lehrveranstaltungen&quot;, &quot;Foliensätze&quot;" />
+<meta name="description" content="Informationen über Lehrveranstaltungen und Foliensätze" lang="de" xml:lang="de" />
+<meta name="id" content="michael-eichberg/lectures/readme" />
+<meta name="exercises-passwords" content="MTAwMDAw:73vvRwP68G4r4bSmsYzkjsCCYFSfkqAwHbLGXTwhUNs=:GwA7jKDAJ19k3L4l:+NNIQ38anTLnLFlSnXTu3umEyQ==" />
+<meta name="version" content="LD2 RENAISSANCE" />
+<title>Lehrveranstaltungen und Foliensätze</title>
+<link rel="stylesheet" href="shared/ext/katex/katex.min.css" />
+<script src="LectureDoc2/dist/src/ld.js" type="module"></script>
+<link rel="stylesheet" href="LectureDoc2/dist/src/ld.css" />
+<style>@import url("LectureDoc2/dist/src/css/themes/dhbw.css") layer(theme);</style>
+<style>/* ---------------------------------------------------------------------------
+   Shared classes for the SVG drawings of LectureDoc2 decks.
+
+   Include with `ld.include-styles` (in a project: in `myst.yml`, together with
+   `ld-svg-defs.svg` in `ld.include-globals`). Documentation:
+   LectureDoc2Author/docs-svgs.md; the colour model: LectureDoc2/SVGs.md.
+
+   - Opt-in only: every rule needs an `ld-` class and matches only inside an
+     <svg>. Nothing here styles `line`, `path` or `text` as such, so drawings
+     that do not use the classes are unaffected.
+   - Everything paints with `currentColor`. The colour modifiers (`ld-muted`,
+     `ld-accent`, ...) only set `color`, so they work on a single element as
+     well as on a <g> or the root <svg>, and they follow the surrounding
+     [data-theme] (admonitions!).
+   - Lengths are in `em`, i.e. relative to the drawing's font-size. A drawing
+     that sets the size of a normal label as `font-size` on its root gets
+     stroke widths and dash patterns that match every other drawing.
+   - All rules sit in the cascade layer `ld-svg`. A deck's own CSS is not
+     layered and therefore always wins, whatever its specificity.
+   --------------------------------------------------------------------------- */
+
+@layer ld-svg {
+    /* ---- colour modifiers ------------------------------------------------ */
+
+    svg.ld-muted,
+    svg .ld-muted {
+        color: var(--muted-color);
+    }
+    svg.ld-accent,
+    svg .ld-accent {
+        color: var(--accent-color);
+    }
+    svg.ld-danger,
+    svg .ld-danger {
+        color: var(--danger-color);
+    }
+    svg.ld-success,
+    svg .ld-success {
+        color: var(--success-color);
+    }
+    svg.ld-info,
+    svg .ld-info {
+        color: var(--info-color);
+    }
+    svg.ld-warning,
+    svg .ld-warning {
+        color: var(--warning-color);
+    }
+
+    /* ---- lines ----------------------------------------------------------- */
+
+    svg .ld-line,
+    svg .ld-connector {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.1em;
+    }
+
+    /* A line with an arrowhead (ld-svg-defs.svg). The tip lies
+       1.5 x stroke-width beyond the line's end point. */
+    svg .ld-connector {
+        marker-end: url(#ld-arrow);
+    }
+
+    /* A marker is coloured where it is defined, not where it is used; the
+       modifiers therefore also have to switch the marker. Put the modifier on
+       the connector itself or on its closest group. */
+    :is(svg.ld-muted, svg .ld-muted) .ld-connector,
+    svg .ld-connector.ld-muted {
+        marker-end: url(#ld-arrow-muted);
+    }
+    :is(svg.ld-accent, svg .ld-accent) .ld-connector,
+    svg .ld-connector.ld-accent {
+        marker-end: url(#ld-arrow-accent);
+    }
+    :is(svg.ld-danger, svg .ld-danger) .ld-connector,
+    svg .ld-connector.ld-danger {
+        marker-end: url(#ld-arrow-danger);
+    }
+    :is(svg.ld-success, svg .ld-success) .ld-connector,
+    svg .ld-connector.ld-success {
+        marker-end: url(#ld-arrow-success);
+    }
+    :is(svg.ld-info, svg .ld-info) .ld-connector,
+    svg .ld-connector.ld-info {
+        marker-end: url(#ld-arrow-info);
+    }
+    :is(svg.ld-warning, svg .ld-warning) .ld-connector,
+    svg .ld-connector.ld-warning {
+        marker-end: url(#ld-arrow-warning);
+    }
+
+    svg .ld-dashed {
+        stroke-dasharray: 0.4em 0.25em;
+    }
+    svg .ld-dotted {
+        stroke-dasharray: 0 0.25em;
+        stroke-linecap: round;
+    }
+
+    /* ---- shapes ---------------------------------------------------------- */
+
+    svg .ld-box {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.1em;
+    }
+    /* Three fill levels of the current colour: background region, element,
+       emphasised element. They stack: a cell on a panel is darker still. */
+    svg .ld-panel {
+        fill: currentColor;
+        fill-opacity: 0.1;
+    }
+    svg .ld-cell {
+        fill: currentColor;
+        fill-opacity: 0.3;
+    }
+    svg .ld-highlight {
+        fill: currentColor;
+        fill-opacity: 0.65;
+    }
+
+    /* ---- text ------------------------------------------------------------ */
+
+    svg .ld-label {
+        fill: currentColor;
+    }
+    /* Text on a filled shape (e.g. on an ld-highlight). */
+    svg .ld-label-on-fill {
+        fill: var(--background-color);
+    }
+    /* Deliberately no `text-anchor` here: on a <tspan> in the middle of a
+       line it would re-anchor that chunk. Centre on the <text> or the <g>. */
+    svg .ld-mono {
+        font-family: var(--monospaced-font-family);
+    }
+}
+</style>
+</head>
+<body data-theme="<light-dark>">
+<ld-globals><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<!--
+    Shared definitions for the SVG drawings of LectureDoc2 decks.
+
+    Include this file ONCE per document with `ld.include-globals` (in a project:
+    in `myst.yml`, together with `ld-svg.css` in `ld.include-styles`). It is put
+    verbatim into <ld-globals>; every drawing inlined with {include-svg} can
+    then use the markers with `marker-end="url(#ld-arrow)"`.
+
+    Documentation: LectureDoc2Author/docs-svgs.md (catalog and usage) and
+    LectureDoc2/SVGs.md (why shared definitions live in <ld-globals>).
+
+    All markers follow the same rules:
+
+    - markerUnits="strokeWidth": a marker scales with the line it sits on.
+    - orient="auto-start-reverse": used as `marker-start`, an arrowhead points
+      backwards - one marker also draws a double-headed arrow.
+    - The outermost painted point lies exactly 1.5 x stroke-width beyond the
+      end point of the line. To let a tip touch a target, end the line
+      1.5 x stroke-width before it. The line's own (butt) end is hidden under
+      the head: 1.5 x stroke-width before the tip the head is already wider
+      than the line.
+    - Colour: `currentColor`, resolved at the DEFINITION site. <ld-globals> is
+      a child of <body>, which carries [data-theme] and therefore
+      `color: var(--color)` - so the plain markers have the deck's foreground
+      colour. The coloured variants set `color` to a theme variable on the
+      <marker> itself. Neither `light-dark()` (follows the OS only) nor
+      `context-stroke` (not implemented in WebKit) is used; see SVGs.md.
+    - A marker takes the colour of <body>, not of the admonition a drawing
+      sits in. Inside an admonition with its own theme, prefer a variant.
+-->
+<defs>
+
+    <!-- Filled arrowhead: 6 long, 5 wide; tip at +1.5, back at -4.5. -->
+    <marker id="ld-arrow" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+
+    <!-- The same arrowhead in the theme's semantic colours. -->
+    <marker id="ld-arrow-muted" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--muted-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-accent" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--accent-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-danger" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--danger-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-success" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--success-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-info" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--info-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+    <marker id="ld-arrow-warning" viewBox="-4.5 -2.5 6 5" refX="0" refY="0"
+            markerWidth="6" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" style="color: var(--warning-color)">
+        <path d="M -4.5 -2.5 L 1.5 0 L -4.5 2.5 Z" fill="currentColor" />
+    </marker>
+
+    <!-- Open arrowhead (chevron), same opening angle as ld-arrow. The mitred
+         vertex sits at +0.2; the mitre reaches +1.5. -->
+    <marker id="ld-arrow-open" viewBox="-5 -2.5 6.5 5" refX="0" refY="0"
+            markerWidth="6.5" markerHeight="5" markerUnits="strokeWidth"
+            orient="auto-start-reverse" overflow="visible">
+        <path d="M -4.3 -1.875 L 0.2 0 L -4.3 1.875" fill="none"
+              stroke="currentColor" stroke-width="1"
+              stroke-linejoin="miter" stroke-miterlimit="4" />
+    </marker>
+
+    <!-- Dot, centred on the end point (e.g. the start of a flow). -->
+    <marker id="ld-dot" viewBox="-1.5 -1.5 3 3" refX="0" refY="0"
+            markerWidth="3" markerHeight="3" markerUnits="strokeWidth">
+        <circle r="1.5" fill="currentColor" />
+    </marker>
+
+</defs>
+</svg>
+</ld-globals>
+<template>
+<ld-topic id="michael-eichberg/lectures/readme"><h1 class="title">Lehrveranstaltungen und Foliensätze</h1><ul class="simple"><li><p>Im Folgenden sind Foliensätze verlinkt, die für verschiedene Lehrveranstaltungen genommen werden können.</p></li><li><p>Die Foliensätze sind modularisiert, um sich an die jeweiligen Anforderungen der Vorlesungen anpassen zu lassen.</p></li><li><p>Im Folgenden sind Vorschläge für einige sinnvolle Kombinationen zu finden.</p></li></ul></ld-topic>
+<ld-topic id="vorlesung-einfuhrung-in-die-programmierung-i-und-ii"><h2>Vorlesung "Einführung in die Programmierung I und II"</h2><p>Die grundlegende Idee hinter der folgenden Reihenfolge ist, dass die Studierenden zuerst die Grundlagen der Programmierung in Java lernen und sich dann (kurz) mit der objekt-orientierten Modellierung realer Systeme beschäftigen, bevor dann mit der objekt-orientierten Programmierung in Java begonnen wird.</p><p>Aufgrund der Entwicklungen im Bereich Generative AI (z. B. Copilot, Claude, etc.) ist es sinnvoll auch auf diesen Bereich einzugehen, damit die Studierenden grundlegende Kompetenzen im Bereich Prompting erwerben.</p><ld-scrollable><ol class="arabic"><li><p><a class="reference external" href="./prog-einfuehrung/folien.de.rst.html">Einführung in die Programmierung</a></p></li><li><p><a class="reference external" href="./prog-java-basics/folien.de.rst.html">Grundlagen der Programmierung in Java </a></p></li><li><p><a class="reference external" href="./prog-java-arrays/folien.de.rst.html">Verwendung von Arrays in Java </a></p></li><li><p><a class="reference external" href="./prog-java-modularisierung-101/folien.de.rst.html">Modularisierung von einfachen Java Programming </a></p><p>Es wird lediglich diskutiert, wie Methoden in Klassen organisiert werden können und wie man diese aus anderen Klassen heraus aufrufen kann.</p></li><li><p><a class="reference external" href="./prog-modellierung_mit_uml/folien.de.rst.html">Einführung in die Modellierung mit UML </a></p></li><li><p><a class="reference external" href="./prog-java-oo/folien.de.rst.html">Objekt-orientierte Programmierung in Java - Einführung </a></p></li><li><p><a class="reference external" href="./prog-java-oo-inheritance/folien.de.rst.html">Objekt-orientierte Programmierung in Java - Vererbung und Polymorphie </a></p></li><li><p><a class="reference external" href="./prog-adv-java-domain-modeling/folien.de.rst.html">Objekt-orientierte Programmierung in Java - Domain Modeling, Java Records und Java Enums </a></p></li><li><p><a class="reference external" href="./prog-adv-java-generics/folien.de.rst.html">Objekt-orientierte Programmierung in Java - Generics </a></p></li><li><p><a class="reference external" href="./prog-interpreter-vms-und-compiler/folien.de.rst.html">Compiler und Interpreter </a></p></li><li><p><a class="reference external" href="./se-build-test-measure/folien.de.rst.html">Softwareprojekte bauen, testen und vermessen </a></p></li><li><p><a class="reference external" href="./prog-adv-java-projects/folien.de.rst.html">Java Projekte mit Maven aufsetzen </a></p></li><li><p><a class="reference external" href="./se-versionskontrolle/folien.de.rst.html">Versionsverwaltung mit GIT </a></p></li><li><p><a class="reference external" href="./prog-adv-java-funktionale-programmierung/folien.de.rst.html">Objekt-orientierte Programmierung in Java - Funktionale Programmierung </a></p></li><li><p><a class="reference external" href="./prog-adv-java-stream-api/folien.de.rst.html">Objekt-orientierte Programmierung in Java - Stream API </a></p></li><li><p><a class="reference external" href="./prog-adv-java-ea/folien.de.rst.html">Objekt-orientierte Programmierung in Java - Ein-/Ausgabe </a></p></li></ol><p><strong>Ergänzend</strong>:</p><p><a class="reference external" href="./se-using-llms/folien.de.rst.html">Generative AI und Programmierung </a></p></ld-scrollable></ld-topic>
+<ld-topic id="vorlesung-theoretische-informatik-bzw-algorithmen-und-datenstrukturen"><h2>Vorlesung "Theoretische Informatik" bzw. "Algorithmen und Datenstrukturen"</h2><ld-scrollable><ol class="arabic simple"><li><p><a class="reference external" href="./theo-algo-komplexitaet/folien.de.rst.html">Einführung in die Komplexität von Algorithmen </a></p></li><li><p><a class="reference external" href="./theo-algo-suchen_auf_arrays/folien.de.rst.html">Suchen auf Arrays </a></p></li><li><p><a class="reference external" href="./theo-algo-genetic_algorithms/folien.de.rst.html">Genetische Algorithmen </a></p></li><li><p><a class="reference external" href="./theo-algo-mixed_integer_programming/folien.de.rst.html">Lineare und Mixed-Integer Programmierung </a></p></li><li><p><a class="reference external" href="./theo-algo-hashing/folien.de.rst.html">Hashing und Hashmaps </a></p></li><li><p><a class="reference external" href="./theo-algo-backtracking/folien.de.rst.html">Backtracking </a></p></li><li><p><a class="reference external" href="./theo-algo-formale_sprachen/folien.de.rst.html">Formale Sprachen </a></p></li></ol></ld-scrollable></ld-topic>
+<ld-topic id="vorlesung-verteilte-systeme-distributed-systems"><h2>Vorlesung "Verteilte Systeme" / "Distributed Systems"</h2><ld-scrollable><ol class="arabic"><li><p><a class="reference external" href="./ds-einfuehrung/folien.de.rst.html">Einführung in verteilte Systeme </a></p><p><a class="reference external" href="./ds-introduction/folien.en.rst.html">Introduction to Distributed Systems </a></p></li><li><p><a class="reference external" href="./ds-http-and-sockets-java/folien.de.rst.html">HTTP und Sockets in Java </a></p><p><a class="reference external" href="./ds-http-and-sockets-java/folien.en.rst.html">HTTP and Sockets in Java </a></p><p>Alternativ:</p><p><a class="reference external" href="./ds-http-and-sockets-python/folien.de.rst.html">HTTP und Sockets in Python </a></p></li><li><p><a class="reference external" href="./ds-nebenlaeufigkeit-java/folien.de.rst.html">Nebenläufigkeit und Synchronisation in Java </a></p><p><a class="reference external" href="./ds-concurrency-in-java/folien.en.rst.html">Concurrency and Synchronization in Java </a></p><p>Alternativ:</p><p><a class="reference external" href="./ds-nebenlaeufigkeit-python/folien.de.rst.html">Nebenläufigkeit und Synchronisation in Python </a></p></li><li><p><a class="reference external" href="./ds-grundlegende-konzepte/folien.de.rst.html">Grundlegende Konzepte </a></p><p><a class="reference external" href="./ds-basic-concepts/folien.en.rst.html">Basic Concepts </a></p></li><li><p><a class="reference external" href="./ds-middleware/folien.de.rst.html">Einführung in Middleware </a></p><p><a class="reference external" href="./ds-introduction-to-middleware/folien.en.rst.html">Introduction to Middleware </a></p></li><li><p><a class="reference external" href="./ds-architekturen/folien.de.rst.html">Architekturen von verteilten Systemen </a></p><p><a class="reference external" href="./ds-architectures/folien.en.rst.html">Architectures of Distributed Systems </a></p></li></ol><p><strong>Ergänzend bzw. Vertiefend</strong></p><ul><li><p><a class="reference external" href="./ds-containers/folien.de.rst.html">Virtualisierung und Container </a></p></li><li><p><a class="reference external" href="./ds-se-agile/folien.de.rst.html">Zusammenspiel von agilen Methoden und Entwurf verteilter Systeme </a></p></li><li><p><a class="reference external" href="./ds-se-entwurfsprinzipien/folien.de.rst.html">Entwurfsprinzipien für verteilte Systeme </a></p></li><li><p><a class="reference external" href="./ds-restful/folien.de.rst.html">RESTful Web Services </a></p><p><a class="reference external" href="./ds-introduction_to_rest/folien.en.rst.html">Introduction to RESTful Web Services </a></p></li><li><p><a class="reference external" href="./ds-xml/folien.de.rst.html">XML und XPath </a></p></li></ul></ld-scrollable></ld-topic>
+<ld-topic id="vorlesungen-mit-bezug-zu-software-engineering"><h2>Vorlesungen mit Bezug zu "Software Engineering"</h2><ul class="simple"><li><p><a class="reference external" href="./ds-se-agile/folien.de.rst.html">Zusammenspiel von agilen Methoden und Entwurf verteilter Systeme </a></p></li><li><p><a class="reference external" href="./ds-se-entwurfsprinzipien/folien.de.rst.html">Entwurfsprinzipien für verteilte Systeme </a></p></li><li><p><a class="reference external" href="./se-build-test-measure/folien.de.rst.html">Projekt bauen, testen und vermessen </a></p></li><li><p><a class="reference external" href="./se-projektmanagement/folien.de.rst.html">Projektmanagement </a></p></li><li><p><a class="reference external" href="./se-versionskontrolle/folien.de.rst.html">Versionskontrolle </a></p></li></ul></ld-topic>
+<ld-topic id="vorlesung-web-engineering"><h2>Vorlesung "Web Engineering"</h2><ol class="arabic simple"><li><p><a class="reference external" href="./web-html/folien.de.rst.html">HTML </a></p></li><li><p><a class="reference external" href="./ds-xml/folien.de.rst.html">XML und XPath </a></p></li><li><p><a class="reference external" href="./web-css/folien.de.rst.html">CSS </a></p></li><li><p><a class="reference external" href="./web-javascript/folien.de.rst.html">JavaScript </a></p></li></ol><p><strong>Ergänzend</strong>:</p><ul class="simple"><li><p><a class="reference external" href="./web-vortragsthemen/folien.de.rst.html">Vortragsthemen, die sich gut in die Vorlesung einfügen </a></p></li></ul></ld-topic>
+<ld-topic id="vorlesung-mit-bezug-zu-it-sicherheit"><h2>Vorlesung mit Bezug zu "IT Sicherheit"</h2><ld-scrollable><ol class="arabic simple"><li><p><a class="reference external" href="./sec-cybersecurity/folien.de.rst.html">[Optional] Cybersecurity </a></p></li><li><p><a class="reference external" href="./sec-klassische-sicherheitsprinzipien/folien.de.rst.html">[Optional] Klassische Sicherheitsprinzipien </a></p></li><li><p><a class="reference external" href="./sec-einfuehrung-in-die-zahlentheorie/folien.de.rst.html">Einführung in die Zahlentheorie </a></p></li><li><p><a class="reference external" href="./sec-klassische-verschluesselungsverfahren/folien.de.rst.html">Klassische Verschlüsselungsverfahren </a></p></li><li><p><a class="reference external" href="./sec-blockchiffre/folien.de.rst.html">Blockchiffre </a></p></li><li><p><a class="reference external" href="./sec-endliche-koerper/folien.de.rst.html">Endliche Körper </a></p></li><li><p><a class="reference external" href="./sec-aes/folien.de.rst.html">AES </a></p></li><li><p><a class="reference external" href="./sec-blockchiffre-operationsmodi/folien.de.rst.html">Betriebsmodi von Blockchiffren </a></p></li><li><p><a class="reference external" href="./sec-stromchiffre/folien.de.rst.html">Stromchiffren </a></p></li><li><p><a class="reference external" href="./sec-public-key-kryptographie/folien.de.rst.html">Public-Key-Kryptographie </a></p></li><li><p><a class="reference external" href="./sec-hashfunktionen/folien.de.rst.html">Hashfunktionen </a></p></li><li><p><a class="reference external" href="./sec-authentifizierte-verschluesselung/folien.de.rst.html">Authentifizierte Verschlüsselung </a></p></li><li><p><a class="reference external" href="./sec-passwortsicherheit/folien.de.rst.html">Passwortsicherheit </a></p></li><li><p><a class="reference external" href="./sec-nutzerauthentifizierung/folien.de.rst.html">Nutzerauthentifizierung </a></p></li><li><p><a class="reference external" href="./sec-passwortwiederherstellung/folien.de.rst.html">Passwortwiederherstellung </a></p></li></ol></ld-scrollable></ld-topic>
+<ld-topic id="ausgewahlte-themen-der-it-sicherheit"><h2>Ausgewählte Themen der IT Sicherheit</h2><ul class="simple"><li><p><a class="reference external" href="./sec-tcp-ssh-firewalls/folien.de.rst.html">TCP SSH Firewalls </a></p></li><li><p><a class="reference external" href="./sec-tor/folien.de.rst.html">TOR </a></p></li><li><p><a class="reference external" href="./sec-cvss-cve-vep/folien.de.rst.html">CVSS-CVE-VEP </a></p></li><li><p><a class="reference external" href="./sec-cwe-owasp/folien.de.rst.html">CWE-OWASP </a></p></li></ul></ld-topic>
+<ld-topic id="labs"><h2>Labs</h2><ul class="simple"><li><p><a class="reference external" href="./lab-regexp/folien.de.rst.html">Reguläre Ausdrücke </a></p></li><li><p><a class="reference external" href="./lab-shell/folien.de.rst.html">Die Linux Shell </a></p></li><li><p><a class="reference external" href="./se-softwareprojektmanagement/folien.de.rst.html">Kurze Darstellung ausgewählter Aspekte des Softwareprojektmanagements </a></p></li></ul></ld-topic>
+<ld-topic id="allgemeine-foliensatze"><h2>Allgemeine Foliensätze</h2><ul class="simple"><li><p><a class="reference external" href="./allg-vortraege/folien.de.rst.html">Bei Vorträgen zu beachten </a></p></li><li><p><a class="reference external" href="./allg-ausarbeitungen/folien.de.rst.html">Bei Ausarbeitungen zu beachten </a></p></li></ul></ld-topic>
+</template>
+</body>
+</html>
