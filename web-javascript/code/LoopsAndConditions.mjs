@@ -62,7 +62,7 @@ outer: for (let i = 0; i < arr.length; i++) {
     }
 }
 
-ilog("\nin (properties of Arrays; i.e. the indexes):");
+ilog("\nin (properties of Objects (i.e., in case of Arrays the indexes)):");
 for (const key in arr) {
     log(key, arr[key]);
 }
@@ -82,17 +82,8 @@ const obj = {
     city: "Berlin",
 };
 
-ilog("\nin (properties of Objects):");
-for (const key in obj) {
-    log(key, obj[key]);
-}
-
-/*  TypeError: obj is not iterable
-
-    for (const value of obj) {
-        log(value);
-        }
-*/
+//  TypeError: obj is not iterable
+//  for (const value of obj) { log(value); }
 
 {
     ilog("\nIteration über Iterables (here: Map):");

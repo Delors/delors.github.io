@@ -1,7 +1,5 @@
 class Figure {
-  calcArea() {
-    throw new Error("calcArea is not implemented");
-  }
+  calcArea() { throw new Error("calcArea is not implemented"); }
 }
 class Rectangle extends Figure {
   height;
@@ -13,14 +11,9 @@ class Rectangle extends Figure {
     this.width = width;
   }
 
-  calcArea() {
-    return this.height * this.width;
-  }
+  calcArea() { return this.height * this.width; }
 
-  get area() {
-    return this.calcArea();
-  }
-
+  get area() { return this.calcArea(); }
   set area(value) {
     throw new Error("Area is read-only");
   }
@@ -77,15 +70,15 @@ class Queue {
 
 const q = new Queue();
 q.enqueue(1);
-console.log("new Queue().enqueue(1).foreach(console.log): "); 
+console.log("new Queue().enqueue(1).foreach(console.log): ");
 q.foreach(console.log);
 for (let v of q) { console.log(v); }
 
 try {
   /* "first" is not the name of the private field!
      Hence, q.first is not our private field and:
-     
-      console.log("q.first", q.first); 
+
+      console.log("q.first", q.first);
 
     would result in a run-time error.
   */

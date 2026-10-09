@@ -1,22 +1,14 @@
-import { ilog, log, done } from "./log.mjs";
-
-// Der "Scope" ist auf den umgebenden Block begrenzt.
-// Eine Änderung des Wertes ist möglich.
-let y = "yyy";
-
-// Der "Scope" ist auf den umgebenden Block begrenzt.
-// Eine Änderung des Wertes ist nicht möglich.
+// Der "Scope" von const und let ist auf den umgebenden Block begrenzt.
+// Bei const ist eine *Änderung des Wertes nicht möglich*.
 const z = "zzz";
+// Bei let ist eine *Änderung des Wertes möglich*.
+let   y = "yyy";
 
-log("y, z:", y, z);
-
-function doIt() {
+function logValues() {
   const y = "---";
-  log("y, z:", y, z);
-  return "";
+  console.log(`y=${y}`, `z=${z}`);
+
 }
-
-ilog('"doIt done"', doIt());
-log("y, z:", y, z);
-
-done();
+console.log(`y=${y}`, `z=${z}`);
+logValues();
+console.log(`y=${y}`, `z=${z}`);

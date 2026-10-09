@@ -5,29 +5,29 @@ import { log as show, ilog as log, done } from "./log.mjs";
 // strikt gleich        === // ohne Typumwandlung
 // strike Ungleichheit  !== // ohne Typumwandlung
 
-log('1 == "1": ', 1 == "1");
-log('1 === "1": ', 1 === "1");
-log("1.0 == 1: ", 1 == 1.0);
-log("1.0 === 1: ", 1 === 1.0);
-log("1 === 1n: ", 1 === 1n); // 1n ist ein bigint mit den Wert 1
-log("1 == 1n: ", 1 == 1n);
-log('1 < "1"', 1 < "1");
-log('0 < "1"', 0 < "1");
-log('0 <= "0"', 0 <= "0");
+log('1 == "1":   ', 1 == "1");
+log('1 === "1":  ', 1 === "1");
+log("1.0 == 1:   ", 1 == 1.0);
+log("1.0 === 1:  ", 1 === 1.0);
+log("1 === 1n:   ", 1 === 1n); // 1n ist ein BigInt mit den Wert 1
+log("1 == 1n:    ", 1 == 1n);
+log('1 < "1"     ', 1 < "1");
+log('0 < "1"     ', 0 < "1");
+log('0 <= "0"    ', 0 <= "0");
 log('"abc" <= "d"', "abc" <= "d");
 
 log('"asdf" === "as" + "df"', "asdf" === "as" + "df"); // unlike Java!
 
-log("NaN === NaN: ", NaN === NaN);
-log("NaN == NaN: ", NaN == NaN);
-log("null === NaN: ", null === NaN);
-log("null == NaN: ", null == NaN);
-log("null === null: ", null === null);
-log("null == null: ", null == null);
+log("NaN       === NaN:       ", NaN === NaN);
+log("NaN       == NaN:        ", NaN == NaN);
+log("null      === NaN:       ", null === NaN);
+log("null      == NaN:        ", null == NaN);
+log("null      === null:      ", null === null);
+log("null      == null:       ", null == null);
 log("undefined === undefined: ", undefined === undefined);
-log("undefined == undefined: ", undefined == undefined);
-log("null === undefined: ", null === undefined);
-log("null == undefined: ", (null == undefined) + "!");
+log("undefined == undefined:  ", undefined == undefined);
+log("null      === undefined: ", null === undefined);
+log("null      == undefined:  ", (null == undefined) + "!");
 
 const a1 = [1, 2, 3];
 const a2 = [1, 2, 3];
@@ -77,13 +77,13 @@ log("firstJohn == basedOnFirstJohn: ", firstJohn == basedOnFirstJohn);
 }
 
 log("\n?-Operator/if condition and Truthy and Falsy Values:");
-log('""', "" ? "is truthy" : "is falsy");
-log("f()", (() => {}) ? "is truthy" : "is falsy");
-log("Array ", Array ? "is truthy" : "is falsy");
-log("obj ", {} ? "is truthy" : "is falsy");
+log('""        ', ""        ? "is truthy" : "is falsy");
+log("f()       ", (() => {})? "is truthy" : "is falsy");
+log("Array     ", Array     ? "is truthy" : "is falsy");
+log("obj       ", {}        ? "is truthy" : "is falsy");
 log("undefined ", undefined ? "is truthy" : "is falsy");
-log("null ", null ? "is truthy" : "is falsy");
-log("0", 0 ? "is truthy" : "is falsy");
-log("1", 1 ? "is truthy" : "is falsy");
+log("null      ", null      ? "is truthy" : "is falsy");
+log("0         ", 0         ? "is truthy" : "is falsy");
+log("1         ", 1         ? "is truthy" : "is falsy");
 
 done();

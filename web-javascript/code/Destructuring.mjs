@@ -1,22 +1,22 @@
 import { log, ilog, done } from "./log.mjs";
 
-log("Array Destructuring:");
+log("Array Destructuring: ----------------------------------------------------");
 
 let [val1, val2] = [1, 2, 3, 4];
-ilog("[val1, val2] = [1, 2, 3, 4]:", "val1:", val1, ", val2:", val2); // 1
+ilog("[val1, val2] = [1, 2, 3, 4]:", "val1:", val1, ", val2:", val2);
 
-log("Object Destructuring:");
+log("Object Destructuring: ---------------------------------------------------");
 
 let { a, b } = { a: "aaa", b: "bbb" };
-ilog('let { a, b } = { a: "aaa", b: "bbb" }: ', "a:", a, ", b:", b); // 1
+ilog('let { a, b } = { a: "aaa", b: "bbb" }: ', "a:", a, ", b:", b);
 
 {
     let { a: x, b: y } = { a: "aaa", b: "bbb" };
-    ilog('let { a: x, b: y } = { a: "aaa", b: "bbb" }: ', "x:", x, ", y:", y); // 1
+    ilog('let { a: x, b: y } = { a: "aaa", b: "bbb" }: ', "x:", x, ", y:", y);
 }
 {
     let { a: x, c: y } = { a: "aaa", b: "bbb" };
-    ilog('let { a: x, c: y } = { a: "aaa", b: "bbb" }: ', "x:", x, ", y:", y); // 1
+    ilog('let { a: x, c: y } = { a: "aaa", b: "bbb" }: ', "x:", x, ", y:", y);
 }
 
 let { a: u, b: v, ...w } = { a: "+", b: "-", c: "*", d: "/" };

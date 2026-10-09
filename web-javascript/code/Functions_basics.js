@@ -5,12 +5,10 @@ const messages = [];
 // und kann hier verwendet werden.
 hello("Michael");
 
-function hello(person = "World" /* argument with default value */) {
+function hello(person = "You" /* argument with default value */) {
     log(`fun: Hello ${person}!`);
 }
 hello();
-
-waitOnInput();
 
 const helloExpr = function () {
     // Anonymer Funktionsausdruck
@@ -21,7 +19,7 @@ const helloExpr = function () {
 const times3 = (x) => x * 3;
 log("times3(5)", times3(5)); // 15
 
-const helloArrow = () => log("arrow: Hello World!");
+const helloArrow =    () => log("arrow: Hello World!");
 const helloBigArrow = () => {
     const s = "Hello World!";
     log("arrow: " + s);
@@ -39,8 +37,6 @@ var helloXXX = function helloYYY() {
 };
 helloXXX("Michael", "John", "Jane");
 
-waitOnInput();
-
 log("\nFunction Arguments ---------------------------------------------------");
 
 function sum(...args) {
@@ -48,7 +44,7 @@ function sum(...args) {
     log("typeof args: " + typeof args + "; isArray: " + Array.isArray(args));
     log("args: " + args);
     log("args:", ...args); // die Arraywerte werden als einzelne Args. übergeben
-    return args.reduce((a, b) => a + b, 0); // function nesting
+    return args.reduce((a, b) => a + b, 0); // Lambda-Funktionen
 }
 log("sum(1, 2, 3, 4, 5)", sum(1, 2, 3, 4, 5)); // 15
 log("sum()", sum());

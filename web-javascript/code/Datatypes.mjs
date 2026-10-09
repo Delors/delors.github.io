@@ -1,12 +1,12 @@
-import { log, done } from "./log.mjs"; 
+function log() { console.log(...arguments); }
 
-log("\nUndefined ----------------------------------------------------");
+log("\nUndefined --------------------------------------------------------------");
 let u = undefined;
 log("u", u);
 
-log("\nNumber -------------------------------------------------------");
-let i = 1; // double-precision 64-bit binary IEEE 754 value
-let f = 1.0; // double-precision 64-bit binary IEEE 754 value
+log("\nNumber -----------------------------------------------------------------");
+let i = 1;    // double-precision 64-bit binary IEEE 754 value
+let f = 1.0;  // double-precision 64-bit binary IEEE 754 value
 let l = 10_000;
 let binary = 0b1010;
 log("0b1010", binary);
@@ -26,32 +26,34 @@ let z = -Infinity;
 
 // Standard Operatoren: +, - , *, /, %, ++, --, **
 // Bitwise Operatoren:  &, |, ^, ~, <<, >>, >>>
-//                      werden immer auf dem Ganzzahlwert der Bits angewendet:
-//                      Beispiel: 1234.5678e4 << 1 = 24691356
+//                      werden immer auf dem Ganzzahlwert (der Bits) angewendet:
+//                      Beispiel: 12_345_678 << 1 === 24_691_356
 log("i =", i, "; i++ ", i++); // 1 oder 2?
 log("i =", i, "; ++i ", ++i); // 2 oder 3?
 log("2 ** 4 === 0 ", 2 ** 4);
 log("7 % 3 === ", 7 % 3);
 log("1 / 0 === ", 1 / 0);
 
-log("\nBigInt -------------------------------------------------------");
+log("\nBigInt -----------------------------------------------------------------");
 let ib = 1n;
 log(100n === BigInt(100));
-log(Number.MAX_SAFE_INTEGER + 2102); // 9007199254743092
+log(Number.MAX_SAFE_INTEGER + 2102);          // 9007199254743092
 log(BigInt(Number.MAX_SAFE_INTEGER) + 2102n); // 9007199254743093n
 
-log("\nBoolean ------------------------------------------------------");
+log("\nBoolean ----------------------------------------------------------------");
 let b = true; // oder false
-log("Boolean(undefined)", Boolean(undefined)); // true oder false?
-log(null == true ? "true" : "false"); // true oder false?
+log(b);
+// undefined und null sind falsy
+log("Boolean(undefined):", Boolean(undefined));               // true oder false?
+log("Boolean(null):     ", null == true ? "true" : "false");  // true oder false?
 
-log("\n(Quasi-)Logische Operatoren ----------------------------------");
-log('1 && "1": ', 1 && "1");
-log('null && "1": ', null && "1");
+log("\n(Quasi-)Logische Operatoren -------------------------------------------");
+log('1    && "1":  ', 1 && "1");
+log('null && "1":  ', null && "1");
 log("null && true: ", null && true);
 log("true && null: ", true && null);
-log("null && false: ", null && false);
-log("{} && true: ", {} && true);
+log("null && false:", null && false);
+log("{}   && true  ", {} && true);
 
 // Neben den Standardoperatoren: ``&&``, ``||``, ``!`` gibt es auch noch ``??``
 // Der ``??``-Operator gibt den rechten Operanden zurück, wenn der linke Operand
@@ -59,33 +61,35 @@ log("{} && true: ", {} && true);
 // zurück.
 // ``??`` ist der *nullish coalescing operator (??)*
 // Falls der linke Wert null oder undefined ist, dann ist er vergleichbar zu ||
-log('1 ?? "1": ', 1 ?? "1");
-log('null ?? "1": ', null ?? "1");
+log('null ?? "1":  ', null ?? "1");
 log("null ?? true: ", null ?? true);
-log("true ?? null: ", true ?? null);
-log("null ?? false: ", null ?? false);
-log("{} ?? true: ", {} ?? true);
+log("null ?? false:", null ?? false);
 
-log('undefined ?? "1": ', undefined ?? "1");
-log("undefined ?? true: ", undefined ?? true);
-log("true ?? undefined: ", true ?? undefined);
-log("undefined ?? false: ", undefined ?? false);
-log("undefined ?? undefined: ", undefined ?? undefined);
+log('undefined ?? "1":      ', undefined ?? "1");
+log("undefined ?? true:     ", undefined ?? true);
+log("undefined ?? false:    ", undefined ?? false);
+log("undefined ?? undefined:", undefined ?? undefined);
 
-log("\nStrings ------------------------------------------------------");
+log("{}   ?? true:     ", {} ?? true);
+log("true ?? null:     ", true ?? null);
+log("true ?? undefined:", true ?? undefined);
+
+log("\nStrings ----------------------------------------------------------------");
 let _s = "42";
 log("Die Antwort ist " + _s + "."); // String concatenation
-log(`Die Antwort ist ${_s}.`); // Template literals (Template strings)
-// multiline Strings
+log(`Die Antwort ist ${_s}.`);      // Template literals (Template strings)
+// multiline template literals
 log(`
     Die Antwort mag ${_s} sein,
     aber was ist die Frage?`);
-
 log(String(42)); // "42"
 
-// ACHTUNG Objekte und Errors am Besten direkt an log übergeben,
-// damit die Objekteigenschaften ausgeben werden.
-log("State: " + { a: "abc" }, { a: "abc" });
+// ACHTUNG: Objekte (Errors und Arrays sind auch Objekte in JavaScript)
+//          im Allgemeinen am Besten als mehrere Parameter an
+//          console.log(o1,o2,...); übergeben, damit die Objekteigenschaften
+//          ausgeben werden.
+log("State: " + { a: "abc" }, { a: "abc" });  // NICHT EMPFOHLEN
+log("State: ", { a: "abc" }, { a: "abc" });   // EMPFOHLEN
 
 log("\nObjekte ------------------------------------------------------");
 let emptyObject = null;
@@ -96,6 +100,7 @@ let anonymousObj = {
         return "anonymousObj";
     },
     "?": "question mark",
+    1: "1"
 };
 // Zugriff auf die Eigenschaften eines Objekts
 anonymousObj.j = 2; // mittels Bezeichner ("j") (eng. Identifier)
@@ -107,7 +112,7 @@ log("anonymousObj.toString():          ", anonymousObj.toString());
 // delete dient dem Löschen von Eigenschaften:
 delete anonymousObj["?"];
 delete anonymousObj.toString;
-log("anonymousObj.toString() [original]", anonymousObj.toString());
+log("anonymousObj.toString() [original/geerbt]", anonymousObj.toString());
 
 // Der Chain-Operator "?." kann verwendet werden, um auf Eigenschaften
 // (Properties) von Objekten zuzugreifen, ohne dass eine Fehlermeldung
@@ -133,9 +138,9 @@ let func = function () {
 log(func, func());
 
 log("\nArrays -------------------------------------------------------");
-let temp = undefined;
-let $a = [1];
-log("let $a = [1]; $a, $a.length", $a, $a.length);
+let temp  = undefined;
+let $a    = [1];
+log("let $a = [1]; $a, $a.length: ", $a, $a.length);
 $a.push(2); // append
 log("$a.push(2); $a", $a);
 temp = $a.unshift(0); // "prepend" -> return new length
@@ -143,9 +148,11 @@ log("temp = $a.unshift(0); temp, $a", temp, $a);
 temp = $a.shift(); // remove first element -> return removed element
 log("temp = $a.shift(); temp, $a", temp, $a);
 // Um zu prüfen ob eine Datenstruktur ein Array ist:
-log("Array.isArray($a)", Array.isArray($a));
-log("Array.isArray({})", Array.isArray({}));
-log("Array.isArray(1)", Array.isArray(1));
+log("Array.isArray($a):       ", Array.isArray($a));
+const arrayLike = { 0: 'zero', 1: 'one' }
+log(`arrayLike[0]:             ${arrayLike[0]}`);
+log(`Array.isArray(arrayLike): ${Array.isArray(arrayLike)}`);
+log("Array.isArray(1):        ", Array.isArray(1));
 
 log("\nSymbols ------------------------------------------------------");
 let sym1 = Symbol("1"); // a unique and immutable primitive value
@@ -160,6 +167,3 @@ log(obj1Values, " vs. ", obj2Values);
 
 log({ sym1: "this", sym1: "that" }); // ??? { sym1: "that" }
 log("sym1 == sym2", sym1 == sym2);
-
-
-done();
