@@ -245,10 +245,151 @@
 
 </defs>
 </svg>
+
+<svg xmlns="http://www.w3.org/2000/svg">
+<defs>
+
+    <!-- Gemeinsame Symbole für Netzwerk-Diagramme (Rechner, Server, Internet,
+         Firewall, …) aller Foliensätze. Präfix "net-".
+
+         Einbinden im Frontmatter eines Foliensatzes:
+             ld:
+               include-globals:
+                 - ../shared/svgs/net-symbols.svg
+
+         Verwendung: <use href="#net-…" x="…" y="…"/>.
+
+         Farbe: Alle Formen verwenden currentColor; die Farbe folgt also
+         color. Eine Gruppe setzt sie (class="ld-success"), eine einzelne
+         Instanz kann sie mit einer Farbklasse am <use> ändern:
+             <use href="#net-server" class="ld-info" x="…" y="…"/>
+         CSS-Selektoren greifen nicht in den Shadow-Tree eines <use>, vererbte
+         Eigenschaften (color, Custom Properties) dagegen schon. Die Formen
+         verwenden deshalb Deckkraft-Attribute statt der ld-Klassen
+         (fill-opacity 0.1 = ld-panel, 0.3 = ld-cell).
+
+         Anpassung: Custom Properties, jeweils mit Standardwert im var(); sie
+         werden am <use> (style="--net-…: …") oder an einer umgebenden Gruppe
+         bzw. am <svg> gesetzt. Übersicht:
+             --net-server-stroke-width       (0.18)
+             --net-server-slot-stroke-width  (0.08)
+             --net-server-frame-color        (currentColor)
+             --net-cloud-stroke-width        (0.16)
+             --net-flame-color               (#f97316)
+             --net-flame-core-color          (#facc15)
+
+         Keine viewBox: x/y des <use> verschieben das Symbol, die Koordinaten
+         entsprechen denen der Diagramme. overflow="visible", weil ein
+         <symbol> sonst an seinem Viewport abschneidet. -->
+
+    <!-- Server: 6 × 6,8, Ursprung oben links.
+         --net-server-stroke-width       Rahmen                  (0.18)
+         --net-server-slot-stroke-width  Einschübe               (0.08)
+         --net-server-frame-color        Farbe des Rahmens       (currentColor)
+         Ein dunklerer Rahmen: --net-server-frame-color:
+         oklch(from currentColor calc(l * 0.5) c h). -->
+    <symbol id="net-server" overflow="visible">
+        <rect x="0" y="0" width="6" height="6.8" rx="0.6"
+              fill="currentColor" fill-opacity="0.1"
+              style="stroke: var(--net-server-frame-color, currentColor);
+                     stroke-width: var(--net-server-stroke-width, 0.18);"/>
+        <g fill="currentColor" fill-opacity="0.3" stroke="currentColor"
+           style="stroke-width: var(--net-server-slot-stroke-width, 0.08);">
+            <rect x="0.7" y="0.7" width="4.6" height="1.5" rx="0.25"/>
+            <rect x="0.7" y="2.5" width="4.6" height="1.5" rx="0.25"/>
+            <rect x="0.7" y="4.3" width="4.6" height="1.5" rx="0.25"/>
+        </g>
+        <g fill="currentColor">
+            <circle cx="1.4" cy="1.45" r="0.22"/>
+            <circle cx="1.4" cy="3.25" r="0.22"/>
+            <circle cx="1.4" cy="5.05" r="0.22"/>
+        </g>
+    </symbol>
+
+    <!-- Laptop (Client mit Browser): Bildschirm 0,2 … 7,2 × 0 … 4,8,
+         Tastatur -0,7 … 8,1 × 4,8 … 5,8; Mitte x = 3,7. -->
+    <symbol id="net-laptop" overflow="visible">
+        <rect x="0.2" y="0" width="7" height="4.8" rx="0.4"
+              fill="currentColor" fill-opacity="0.1"
+              stroke="currentColor" stroke-width="0.18"/>
+        <rect x="0.7" y="0.5" width="6" height="1" rx="0.2"
+              fill="none" stroke="currentColor" stroke-width="0.08"/>
+        <g fill="currentColor">
+            <circle cx="1.1" cy="1" r="0.13"/>
+            <circle cx="1.55" cy="1" r="0.13"/>
+            <circle cx="2" cy="1" r="0.13"/>
+        </g>
+        <g fill="currentColor" fill-opacity="0.3">
+            <rect x="2.7" y="0.75" width="3.6" height="0.5" rx="0.25"/>
+            <rect x="0.8" y="2" width="4.6" height="0.45" rx="0.2"/>
+            <rect x="0.8" y="2.9" width="5.6" height="0.45" rx="0.2"/>
+            <rect x="0.8" y="3.8" width="3.4" height="0.45" rx="0.2"/>
+        </g>
+        <path d="M 0.1 4.8 L 7.3 4.8 L 8.1 5.8 L -0.7 5.8 Z"
+              fill="currentColor" fill-opacity="0.3"
+              stroke="currentColor" stroke-width="0.18" stroke-linejoin="round"/>
+    </symbol>
+
+    <!-- Internet-Wolke: ca. 12,8 × 7,4, Ursprung in der Mitte
+         (x -6,6 … 6,2, y -3,7 … 3,7). Die Beschriftung steht im Diagramm. -->
+    <symbol id="net-cloud" overflow="visible">
+        <path d="M -3.67 3.21 C -5.08 3.21 -6.09 2.10 -5.89 0.78
+                 C -6.59 0.38 -6.39 -1.03 -5.23 -1.23
+                 C -5.18 -2.54 -3.72 -3.30 -2.51 -2.54
+                 C -1.75 -3.65 0.82 -3.70 1.67 -2.39
+                 C 3.44 -2.94 5.05 -1.83 4.55 -0.32
+                 C 6.16 -0.02 6.21 2.20 4.70 2.80
+                 C 4.30 3.51 2.38 3.71 1.47 3.11 L -3.67 3.21 Z"
+              fill="var(--background-color)" stroke="currentColor"
+              style="stroke-width: var(--net-cloud-stroke-width, 0.16);"/>
+    </symbol>
+
+    <!-- Firewall-Flamme: 2,2 × 3,6, Ursprung in der Mitte. Feste Farben,
+         weil sie Bedeutung tragen und auf Hell und Dunkel lesbar sind. -->
+    <symbol id="net-flame" overflow="visible">
+        <path d="M 0 -1.8 C -0.8 -1 -1.1 -0.4 -1.1 0.2 C -1.1 1.2 -0.4 1.8 0 1.8
+                 C 0.4 1.8 1.1 1.2 1.1 0.2 C 1.1 -0.3 0.8 -0.7 0.5 -1.1
+                 C 0.6 -0.5 0.3 -0.1 0 -0.1 C -0.2 -0.1 -0.3 -0.3 -0.2 -0.6
+                 C -0.1 -1 0 -1.4 0 -1.8 Z"
+              style="fill: var(--net-flame-color, #f97316);"/>
+        <path d="M 0 0 C -0.3 0.3 -0.4 0.6 -0.4 0.9 C -0.4 1.3 -0.2 1.5 0 1.5
+                 C 0.2 1.5 0.4 1.3 0.4 0.9 C 0.4 0.5 0.2 0.3 0 0 Z"
+              style="fill: var(--net-flame-core-color, #facc15);"/>
+    </symbol>
+
+    <!-- Lüftungsschlitze eines Geräts: drei Punkte, 1,6 breit, Ursprung am
+         ersten Punkt. -->
+    <symbol id="net-vents" overflow="visible">
+        <g fill="currentColor">
+            <circle cx="0" cy="0" r="0.16"/>
+            <circle cx="0.8" cy="0" r="0.16"/>
+            <circle cx="1.6" cy="0" r="0.16"/>
+        </g>
+    </symbol>
+
+    <!-- Plaketten "blockiert" / "erlaubt": Kreis mit Radius 1,1, Ursprung in
+         der Mitte. Ein Pfeil, der die Plakette berühren soll, endet
+         1,1 + 1,5 × stroke-width vor der Mitte. -->
+    <symbol id="net-blocked" overflow="visible">
+        <circle r="1.1" fill="var(--background-color)"
+                stroke="currentColor" stroke-width="0.32"/>
+        <line x1="-0.78" y1="0.78" x2="0.78" y2="-0.78"
+              stroke="currentColor" stroke-width="0.32"/>
+    </symbol>
+    <symbol id="net-allowed" overflow="visible">
+        <circle r="1.1" fill="var(--background-color)"
+                stroke="currentColor" stroke-width="0.32"/>
+        <path d="M -0.65 0 L -0.2 0.5 L 0.7 -0.6" fill="none"
+              stroke="currentColor" stroke-width="0.32"
+              stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+</defs>
+</svg>
 </ld-globals>
 <template>
 <ld-topic id="it-security-ssh-vorlesung"><h1 class="title">Secure Shell (SSH)</h1><dl class="docinfo"><dt class="dozent">Dozent<span class="colon">:</span></dt><dd class="dozent"><a class="reference external" href="https://delors.github.io/cv/folien.de.md.html">Prof. Dr. Michael Eichberg</a></dd><dt class="contact">Kontakt<span class="colon">:</span></dt><dd class="contact"><a class="reference external" href="mailto:michael.eichberg@dhbw.de">michael.eichberg@dhbw.de</a>
-, Raum 149B</dd><dt class="version">Version<span class="colon">:</span></dt><dd class="version">1.4.0.1</dd></dl><dl class="sources field-list simple"><dt>Quellen<span class="colon">:</span></dt><dd><p>Teilweise basierend auf Folien von Prof. Dr. Henning Pagnia bzgl. Netzwerksicherheit</p></dd></dl><ld-supplemental><dl class="field-list"><dt>Folien<span class="colon">:</span></dt><dd><p>[HTML] <a class="reference external" href="https://delors.github.io/sec-ssh/folien.de.md.html">https://delors.github.io/sec-ssh/folien.de.md.html</a></p><p>[PDF] <a class="reference external" href="https://delors.github.io/sec-ssh/folien.de.md.html.pdf">https://delors.github.io/sec-ssh/folien.de.md.html.pdf</a></p></dd><dt>Fehler melden<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p></dd></dl><dl class="field-list simple"><dt>KI Verwendung<span class="colon">:</span></dt><dd><p>Bei der Erstellung der Unterlagen wurden KI Assistenten (insbesondere Claude
+, Raum 149B</dd><dt class="version">Version<span class="colon">:</span></dt><dd class="version">1.4.1</dd></dl><dl class="sources field-list simple"><dt>Quellen<span class="colon">:</span></dt><dd><p>Teilweise basierend auf Folien von Prof. Dr. Henning Pagnia bzgl. Netzwerksicherheit</p></dd></dl><ld-supplemental><dl class="field-list"><dt>Folien<span class="colon">:</span></dt><dd><p>[HTML] <a class="reference external" href="https://delors.github.io/sec-ssh/folien.de.md.html">https://delors.github.io/sec-ssh/folien.de.md.html</a></p><p>[PDF] <a class="reference external" href="https://delors.github.io/sec-ssh/folien.de.md.html.pdf">https://delors.github.io/sec-ssh/folien.de.md.html.pdf</a></p></dd><dt>Fehler melden<span class="colon">:</span></dt><dd><p><a class="reference external" href="https://github.com/Delors/delors.github.io/issues">https://github.com/Delors/delors.github.io/issues</a></p></dd></dl><dl class="field-list simple"><dt>KI Verwendung<span class="colon">:</span></dt><dd><p>Bei der Erstellung der Unterlagen wurden KI Assistenten (insbesondere Claude
 aber ggf. auch ChatGPT, Ollama mit Gemma/LLama/Qwen oder OpenCode mit
 Kimi/Qwen/Deepseek...) unterstützend eingesetzt.
 Dies erfolgte insbesondere zur Unterstützung bei der Generierung von Grafiken
@@ -257,9 +398,197 @@ Weiterhin wurde KI zur allgemeinen Qualitätssicherung eingesetzt.
 Inhalte, die ggf. von der KI vorgeschlagen wurden, wurden im Falle der
 Übernahme explizit validiert und angepasst.</p></dd></dl></ld-supplemental></ld-topic>
 <ld-topic id="secure-shell-ssh"><h2><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc4254">Secure Shell (SSH)</a></h2><p><strong>Verschlüsselte Verbindung</strong></p><p>SSH ermöglicht die sichere Fernanmeldung von einem Computer bei einem anderen (typischerweise über TCP über Port 22). Es bietet mehrere Optionen für eine starke Authentifizierung und schützt die Sicherheit und Integrität der Kommunikation durch starke Verschlüsselung.</p><div class="compound incremental"><p><strong>Ablauf</strong></p><ol class="arabic simple"><li><p>Authentisierung des Server-Rechners</p></li><li><p>Authentisierung des Benutzers (bzw. des Clients) mittels</p><ol class="loweralpha simple"><li><p>Passwort</p></li><li><p><span class="s">.rhosts-Eintrag</span></p></li><li><p>privatem <span class="peripheral">(RSA-)</span>Key (hauptsächlich verwendete Methode)</p></li></ol></li><li><p>Kommunikation über symmetrisch verschlüsselte Verbindung</p></li></ol></div><ld-supplemental><p>Die Authentifizierung mittels eines Schlüsselpaars dient primär der Automatisierung (dann wird auch keine „Schlüsselphrase“ zum Schutz des Passworts verwendet). Auf jeden Fall ist effektives Schlüsselmanagement erforderlich:</p><blockquote class="epigraph"><p>[...] In einigen Fällen haben wir mehrere Millionen SSH-Schlüssel gefunden, die den Zugang zu Produktionsservern in Kundenumgebungen autorisieren, wobei 90 % der Schlüssel tatsächlich ungenutzt sind und für einen Zugang stehen, der zwar bereitgestellt, aber nie gekündigt wurde.</p><p class="attribution">—<a class="reference external" href="https://www.ssh.com/academy/ssh/protocol">SSH.com (Dez. 2023)</a></p></blockquote></ld-supplemental></ld-topic>
-<ld-topic id="secure-shell-ssh-protokoll"><h2>Secure Shell (SSH) - Protokoll</h2><ld-story><object class="light-image align-center" data="images/ssh/initiation.svg" type="image/svg+xml" role="img" aria-label="SSH Protokoll"></object><p>Beide Seiten haben einen Public-private Key Schlüsselpaar zur gegenseitigen Authentifizierung</p><dl class="incremental-list dd-margin-left-8em field-list simple"><dt>User Keys<span class="colon">:</span></dt><dd><ul class="simple"><li><p><span class="docutils literal">Authorized keys</span> - Serverseitige Datei mit den öffentlichen Schlüsseln der Nutzer</p></li><li><p><span class="docutils literal">Identity keys</span> - private Schlüssel der Nutzer</p></li></ul></dd><dt>Host keys<span class="colon">:</span></dt><dd><p>dienen der Authentifizierung von Servern (verhindern Person-in-the-Middle-Angriffe)</p></dd><dt>Session Keys<span class="colon">:</span></dt><dd><p>werden für die symmetrische Verschlüsselung der Daten in einer Verbindung verwendet. Session Keys (<span class="ger">Sitzungsschlüssel</span>) werden während des Verbindungsaufbaus ausgehandelt.</p></dd></dl></ld-story><ld-supplemental><p>Im Falle von SSH gibt es kein initiales Vertrauen zwischen Server und Client.</p></ld-supplemental></ld-topic>
-<ld-topic id="secure-shell-ssh-authentifizierung-mittels-passwort"><h2>Secure Shell (SSH) - Authentifizierung mittels Passwort</h2><ld-scrollable><figure class="align-center"><object class="light-image" data="external/SSH-sequence-password.svg" type="image/svg+xml" role="img" aria-label="SSH Protokoll" width="1850px"></object><figcaption><p><a class="reference external" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC 4.0</a> - <a class="reference external" href="https://commons.wikimedia.org/wiki/File:SSH-sequence-password.svg">Aleksey Valov - 29 February 2016</a></p><p>Der Font wurde zwecks besserer Einbettung in den Foliensatz auf <em>Noto Sans Display</em> geändert.</p></figcaption></figure></ld-scrollable></ld-topic>
-<ld-topic id="secure-shell-ssh-verbindungsaufbau-beispiel"><h2>Secure Shell (SSH) - Verbindungsaufbau - Beispiel</h2><ld-scrollable><pre class="code text literal-block"><code>debug1: Reading configuration data /etc/ssh/ssh_config
+<ld-topic id="ssh-protokoll"><h2>SSH – Protokoll</h2><ld-story><div class="align-center" style="width: 60ch; height: 15.77ch;" aria-label="SSH-Verbindungsaufbau in vier Schritten"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 18.4" font-size="1.3"
+     text-anchor="middle">
+    <!-- SSH-Verbindungsaufbau (Überblick). Symbole um den Faktor 1,6
+         vergrößert: Client x = 1,4 … 15,5, Server x = 58,5 … 68,1
+         (y ≈ 4 … 15). Nachrichten zwischen x = 16 und 58,5 bei
+         y = 4,6 / 8,1 / 11,6 / 15,1; die Pfeilspitze berührt das Gerät
+         (Ende 0,195 = 1,5 × stroke-width davor).
+         Sicherer Kanal (Schritte 3 und 4): ld-success.
+         Symbole #net-…: shared/svgs/net-symbols.svg. -->
+
+    <!-- === Beteiligte === -->
+    <use href="#net-laptop" transform="translate(2.5 4.8) scale(1.6)"/>
+    <use href="#net-server" transform="translate(58.5 4) scale(1.6)"
+         style="--net-server-stroke-width: 0.12; --net-server-slot-stroke-width: 0.06;"/>
+    <g class="ld-label">
+        <text x="8.4" y="17.6">SSH-Client</text>
+        <text x="63.3" y="17.6">SSH-Server</text>
+    </g>
+
+    <!-- Schritt 1: Client → Server -->
+    <g class="incremental unroll-right">
+        <line class="ld-connector" x1="16" y1="4.6" x2="58.3" y2="4.6"/>
+        <text class="ld-label" x="37.25" y="3.8">1. Client initiiert die Verbindung</text>
+    </g>
+    <!-- Schritt 2: Server → Client -->
+    <g class="incremental">
+        <line class="ld-connector" x1="58.5" y1="8.1" x2="16.2" y2="8.1"/>
+        <text class="ld-label" x="37.25" y="7.3">2. Server sendet seinen öffentlichen Schlüssel (Host Key)</text>
+    </g>
+    <!-- Schritt 3: Aushandlung, in beide Richtungen -->
+    <g class="incremental ld-success">
+        <line class="ld-connector" x1="16.2" y1="11.6" x2="58.3" y2="11.6"
+              marker-start="url(#ld-arrow-success)"/>
+        <text class="ld-label" x="37.25" y="10.8">3. Aushandlung der Parameter und Öffnen eines sicheren Kanals</text>
+    </g>
+    <!-- Schritt 4: Anmeldung über den sicheren Kanal -->
+    <g class="incremental unroll-right ld-success">
+        <line class="ld-connector" x1="16" y1="15.1" x2="58.3" y2="15.1"/>
+        <text class="ld-label" x="37.25" y="14.3">4. Benutzeranmeldung beim Betriebssystem des Servers</text>
+    </g>
+</svg>
+</div><p>Beide Seiten haben einen Public-private Key Schlüsselpaar zur gegenseitigen Authentifizierung</p><dl class="incremental-list dd-margin-left-8em field-list simple"><dt>User Keys<span class="colon">:</span></dt><dd><ul class="simple"><li><p><span class="docutils literal">Authorized keys</span> - Serverseitige Datei mit den öffentlichen Schlüsseln der Nutzer</p></li><li><p><span class="docutils literal">Identity keys</span> - private Schlüssel der Nutzer</p></li></ul></dd><dt>Host keys<span class="colon">:</span></dt><dd><p>dienen der Authentifizierung von Servern (verhindern Person-in-the-Middle-Angriffe)</p></dd><dt>Session Keys<span class="colon">:</span></dt><dd><p>werden für die symmetrische Verschlüsselung der Daten in einer Verbindung verwendet. Session Keys (<span class="ger">Sitzungsschlüssel</span>) werden während des Verbindungsaufbaus ausgehandelt.</p></dd></dl></ld-story><ld-supplemental><p>Im Falle von SSH gibt es kein initiales Vertrauen zwischen Server und Client.</p></ld-supplemental></ld-topic>
+<ld-topic id="ssh-authentifizierung-mittels-passwort"><h2>SSH – Authentifizierung mittels Passwort</h2><ld-story><div class="align-center" style="width: 68ch; height: 67.27ch;" aria-label="Sequenzdiagramm des SSH-Verbindungsaufbaus mit Authentifizierung mittels Passwort"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 111.5 110.3" font-size="1.8"
+     text-anchor="middle">
+    <!-- SSH-Verbindungsaufbau mit Authentifizierung mittels Passwort.
+         Nachgezeichnet nach "SSH-sequence-password.svg" von Aleksey Valov
+         (CC BY 4.0, 2016); Notizen übersetzt, Phasen ergänzt.
+         Beschriftungen mit Hintergrund-Rand (paint-order), weil sie
+         Lebenslinien kreuzen. Lebenslinien bei x = 10, 30, 48, 66, 84, 102;
+         Nachrichten enden mit der Pfeilspitze auf der Lebenslinie.
+         TCP-Nachrichten: ld-muted. Jede Phase ist ein Schritt (incremental). -->
+
+    <!-- === Teilnehmer und Lebenslinien === -->
+    <rect class="ld-box ld-panel" x="1.5" y="0.5" width="17" height="3.6" rx="0.5"/>
+    <text class="ld-label" x="10" y="2.95" font-weight="bold">SSH-Client</text>
+    <line class="ld-line ld-dashed" x1="10" y1="4.1" x2="10" y2="109.8"/>
+    <rect class="ld-box ld-panel" x="21.5" y="0.5" width="17" height="3.6" rx="0.5"/>
+    <text class="ld-label" x="30" y="2.95" font-weight="bold">TCP/IP</text>
+    <line class="ld-line ld-dashed" x1="30" y1="4.1" x2="30" y2="109.8"/>
+    <rect class="ld-box ld-panel" x="39.5" y="0.5" width="17" height="3.6" rx="0.5"/>
+    <text class="ld-label" x="48" y="2.95" font-weight="bold">SSH-TRANS</text>
+    <line class="ld-line ld-dashed" x1="48" y1="4.1" x2="48" y2="109.8"/>
+    <rect class="ld-box ld-panel" x="57.5" y="0.5" width="17" height="3.6" rx="0.5"/>
+    <text class="ld-label" x="66" y="2.95" font-weight="bold">SSH-AUTH</text>
+    <line class="ld-line ld-dashed" x1="66" y1="4.1" x2="66" y2="109.8"/>
+    <rect class="ld-box ld-panel" x="75.5" y="0.5" width="17" height="3.6" rx="0.5"/>
+    <text class="ld-label" x="84" y="2.95" font-weight="bold">SSH-CONN</text>
+    <line class="ld-line ld-dashed" x1="84" y1="4.1" x2="84" y2="109.8"/>
+    <rect class="ld-box ld-panel" x="93.5" y="0.5" width="17" height="3.6" rx="0.5"/>
+    <text class="ld-label" x="102" y="2.95" font-weight="bold">SSH-Server</text>
+    <line class="ld-line ld-dashed" x1="102" y1="4.1" x2="102" y2="109.8"/>
+    <!-- Schritt 1: TCP-Verbindungsaufbau -->
+    <g class="incremental">
+        <line class="ld-line ld-dashed ld-muted" x1="0.5" y1="7.40" x2="111.0" y2="7.40"/>
+        <text class="ld-label ld-muted" x="111.0" y="6.90" text-anchor="end" font-size="1.5" font-style="italic" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;">TCP-Verbindungsaufbau</text>
+        <rect class="ld-box" style="fill: var(--background-color)" x="10.8" y="8.60" width="18" height="2.90" rx="0.5"/>
+        <text class="ld-label" x="19.8" y="10.55" font-size="1.5"><tspan>Konfiguration lesen</tspan></text>
+        <g class="ld-muted">
+            <line class="ld-connector" x1="10.000" y1="14.50" x2="29.730" y2="14.50"/>
+            <text class="ld-label ld-mono" x="20.0" y="14.00" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>TCP SYN an Port 22</tspan></text>
+        </g>
+        <g class="ld-muted">
+            <line class="ld-connector" x1="30.000" y1="17.50" x2="10.270" y2="17.50"/>
+            <text class="ld-label ld-mono" x="20.0" y="17.00" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>TCP SYN, ACK</tspan></text>
+        </g>
+        <g class="ld-muted">
+            <line class="ld-connector" x1="10.000" y1="20.50" x2="29.730" y2="20.50"/>
+            <text class="ld-label ld-mono" x="20.0" y="20.00" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>TCP ACK</tspan></text>
+        </g>
+    </g>
+    <!-- Schritt 2: Versionsaustausch -->
+    <g class="incremental">
+        <line class="ld-line ld-dashed ld-muted" x1="0.5" y1="22.50" x2="111.0" y2="22.50"/>
+        <text class="ld-label ld-muted" x="111.0" y="22.00" text-anchor="end" font-size="1.5" font-style="italic" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;">Versionsaustausch</text>
+        <g>
+            <line class="ld-connector" x1="48.000" y1="25.50" x2="10.270" y2="25.50"/>
+            <text class="ld-label ld-mono" x="29.0" y="25.00" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>Server: SSH-2.0-softwareversion</tspan></text>
+        </g>
+        <g class="ld-muted">
+            <line class="ld-connector" x1="10.000" y1="28.50" x2="29.730" y2="28.50"/>
+            <text class="ld-label ld-mono" x="20.0" y="28.00" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>TCP ACK (Msg recvd)</tspan></text>
+        </g>
+        <g>
+            <line class="ld-connector" x1="10.000" y1="31.50" x2="47.730" y2="31.50"/>
+            <text class="ld-label ld-mono" x="29.0" y="31.00" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>Client: SSH-2.0-softwareversion</tspan></text>
+        </g>
+        <g class="ld-muted">
+            <line class="ld-connector" x1="30.000" y1="34.50" x2="10.270" y2="34.50"/>
+            <text class="ld-label ld-mono" x="20.0" y="34.00" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>TCP ACK (Msg recvd)</tspan></text>
+        </g>
+    </g>
+    <!-- Schritt 3: Schlüsselaustausch -->
+    <g class="incremental">
+        <line class="ld-line ld-dashed ld-muted" x1="0.5" y1="36.50" x2="111.0" y2="36.50"/>
+        <text class="ld-label ld-muted" x="111.0" y="36.00" text-anchor="end" font-size="1.5" font-style="italic" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;">Schlüsselaustausch</text>
+        <g>
+            <line class="ld-connector" x1="10.000" y1="39.50" x2="47.730" y2="39.50"/>
+            <text class="ld-label ld-mono" x="29.0" y="39.00" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>Client Key Exchange Init</tspan></text>
+        </g>
+        <g class="ld-muted">
+            <line class="ld-connector" x1="30.000" y1="42.50" x2="10.270" y2="42.50"/>
+            <text class="ld-label ld-mono" x="20.0" y="42.00" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>TCP ACK (Msg recvd)</tspan></text>
+        </g>
+        <g>
+            <line class="ld-connector" x1="48.000" y1="45.50" x2="10.270" y2="45.50"/>
+            <text class="ld-label ld-mono" x="29.0" y="45.00" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>Server Key Exchange Init</tspan></text>
+        </g>
+        <rect class="ld-box" style="fill: var(--background-color)" x="10.8" y="46.70" width="18" height="6.70" rx="0.5"/>
+        <text class="ld-label" x="19.8" y="48.65" font-size="1.5"><tspan>Verschlüsselungs- und</tspan><tspan x="19.8" dy="1.9">Hash-Algorithmen</tspan><tspan x="19.8" dy="1.9">abgleichen</tspan></text>
+        <g>
+            <line class="ld-connector" x1="10.270" y1="56.40" x2="47.730" y2="56.40" marker-start="url(#ld-arrow)"/>
+            <text class="ld-label ld-mono" x="29.0" y="55.90" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>Diffie-Hellman-Schlüsselaustausch</tspan></text>
+        </g>
+    </g>
+    <!-- Schritt 4: Authentifizierung -->
+    <g class="incremental">
+        <line class="ld-line ld-dashed ld-muted" x1="0.5" y1="58.40" x2="111.0" y2="58.40"/>
+        <text class="ld-label ld-muted" x="111.0" y="57.90" text-anchor="end" font-size="1.5" font-style="italic" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;">Authentifizierung</text>
+        <g>
+            <line class="ld-connector" x1="10.000" y1="61.40" x2="47.730" y2="61.40"/>
+            <text class="ld-label ld-mono" x="29.0" y="60.90" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>SSH2_MSG_SERVICE_REQUEST (ssh-userauth)</tspan></text>
+        </g>
+        <g class="ld-muted">
+            <line class="ld-connector" x1="30.000" y1="64.40" x2="10.270" y2="64.40"/>
+            <text class="ld-label ld-mono" x="20.0" y="63.90" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>TCP ACK (Msg recvd)</tspan></text>
+        </g>
+        <g>
+            <line class="ld-connector" x1="48.000" y1="67.40" x2="10.270" y2="67.40"/>
+            <text class="ld-label ld-mono" x="29.0" y="66.90" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>SSH2_MSG_SERVICE_ACCEPT (ssh-userauth)</tspan></text>
+        </g>
+        <rect class="ld-box" style="fill: var(--background-color)" x="10.8" y="68.60" width="18" height="6.70" rx="0.5"/>
+        <text class="ld-label" x="19.8" y="70.55" font-size="1.5"><tspan>Passwort in</tspan><tspan x="19.8" dy="1.9">ISO 10646 (UTF-8)</tspan><tspan x="19.8" dy="1.9">kodieren</tspan></text>
+        <g>
+            <line class="ld-connector" x1="10.000" y1="80.30" x2="65.730" y2="80.30"/>
+            <text class="ld-label ld-mono" x="38.0" y="78.00" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>SSH2_MSG_USERAUTH_REQUEST (username, ssh-userauth,</tspan><tspan x="38.0" dy="1.8">&quot;password&quot;, FALSE, password)</tspan></text>
+        </g>
+        <rect class="ld-box" style="fill: var(--background-color)" x="47.5" y="81.50" width="18" height="6.70" rx="0.5"/>
+        <text class="ld-label" x="56.5" y="83.45" font-size="1.5"><tspan>Hash des Passworts</tspan><tspan x="56.5" dy="1.9">mit /etc/shadow</tspan><tspan x="56.5" dy="1.9">vergleichen</tspan></text>
+        <g>
+            <line class="ld-connector" x1="66.000" y1="91.20" x2="10.270" y2="91.20"/>
+            <text class="ld-label ld-mono" x="38.0" y="90.70" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>SSH2_MSG_USERAUTH_SUCCESS</tspan></text>
+        </g>
+    </g>
+    <!-- Schritt 5: Kanal öffnen -->
+    <g class="incremental">
+        <line class="ld-line ld-dashed ld-muted" x1="0.5" y1="93.20" x2="111.0" y2="93.20"/>
+        <text class="ld-label ld-muted" x="111.0" y="92.70" text-anchor="end" font-size="1.5" font-style="italic" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;">Kanal öffnen</text>
+        <g>
+            <line class="ld-connector" x1="10.000" y1="96.20" x2="83.730" y2="96.20"/>
+            <text class="ld-label ld-mono" x="47.0" y="95.70" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>SSH_MSG_CHANNEL_OPEN</tspan></text>
+        </g>
+        <g>
+            <line class="ld-connector" x1="84.000" y1="99.20" x2="10.270" y2="99.20"/>
+            <text class="ld-label ld-mono" x="47.0" y="98.70" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>SSH_MSG_CHANNEL_OPEN_CONFIRMATION</tspan></text>
+        </g>
+        <g>
+            <line class="ld-connector" x1="10.000" y1="102.20" x2="83.730" y2="102.20"/>
+            <text class="ld-label ld-mono" x="47.0" y="101.70" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>SSH_MSG_CHANNEL_DATA (shell)</tspan></text>
+        </g>
+        <g>
+            <line class="ld-connector" x1="84.000" y1="105.20" x2="101.730" y2="105.20"/>
+            <text class="ld-label ld-mono" x="93.0" y="104.70" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>Shell ausführen</tspan></text>
+        </g>
+        <g>
+            <line class="ld-connector" x1="84.000" y1="108.20" x2="10.270" y2="108.20"/>
+            <text class="ld-label ld-mono" x="47.0" y="107.70" font-size="1.45" style="paint-order: stroke; stroke: var(--background-color); stroke-width: 0.5;"><tspan>SSH_MSG_CHANNEL_DATA (shell)</tspan></text>
+        </g>
+    </g>
+</svg>
+</div><p class="text-align-center">Nachgezeichnet nach <a class="reference external" href="https://commons.wikimedia.org/wiki/File:SSH-sequence-password.svg">Aleksey Valov - 29 February 2016</a> (<a class="reference external" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a>); Notizen übersetzt und Phasen ergänzt.</p></ld-story></ld-topic>
+<ld-topic id="ssh-verbindungsaufbau-beispiel"><h2>SSH – Verbindungsaufbau – Beispiel</h2><ld-scrollable><pre class="code text literal-block"><code>debug1: Reading configuration data /etc/ssh/ssh_config
 debug1: Applying options for *
 debug1: Connecting to example.org [1.2.3.4] port 22.
 debug1: Connection established.
@@ -302,9 +631,51 @@ debug1: Requesting no-more-sessions@openssh.com
 debug1: Entering interactive session.
 debug1: Sending environment.
 debug1: Sending env LANG = en_US.UTF-8</code></pre></ld-scrollable></ld-topic>
-<ld-topic id="secure-shell-unterstutzte-transport-verschlusselungsverfahren"><h2>Secure Shell - <a class="reference external" href="https://www.openssh.org/specs.html">Unterstützte Transport-Verschlüsselungsverfahren</a></h2><p><strong>OpenSSH_10.2p1</strong></p><ld-scrollable><table class="sticky-header"><thead><tr><th class="head"><p>Cipher Name</p></th><th class="head"><p>Status</p></th><th class="head"><p>Beschreibung</p></th></tr></thead><tbody><tr><td><p>3des-cbc</p></td><td><p>DEPRECATED</p></td><td><p>three-key 3DES in CBC mode</p></td></tr><tr><td><p>aes256-cbc</p></td><td><p>LEGACY</p></td><td><p>AES in CBC mode, with a 256-bit key</p></td></tr><tr><td><p>aes192-cbc</p></td><td><p>LEGACY</p></td><td><p>AES with a 192-bit key</p></td></tr><tr><td><p>aes128-cbc</p></td><td><p>LEGACY</p></td><td><p>AES with a 128-bit key</p></td></tr><tr><td><p>aes128-ctr</p></td><td><p>RECOMMENDED</p></td><td><p>AES in CTR mode with a 128-bit key</p></td></tr><tr><td><p>aes192-ctr</p></td><td><p>RECOMMENDED</p></td><td><p>AES in CTR mode with a 192-bit key</p></td></tr><tr><td><p>aes256-ctr</p></td><td><p>RECOMMENDED</p></td><td><p>AES in CTR mode with a 256-bit key</p></td></tr><tr><td><p>aes128-gcm@openssh.com</p></td><td><p>RECOMMENDED</p></td><td><p>AES in Galois/Counter Mode (GCM) with a 128-bit key</p></td></tr><tr><td><p>aes256-gcm@openssh.com</p></td><td><p>RECOMMENDED</p></td><td><p>AES in Galois/Counter Mode (GCM) with a 256-bit key</p></td></tr><tr><td><p>chacha20-poly1305@openssh.com</p></td><td><p>RECOMMENDED</p></td><td><p>ChaCha20 stream cipher with Poly1305 MAC</p></td></tr></tbody></table><div class="legend"><dl class="field-list simple"><dt>DEPRECATED<span class="colon">:</span></dt><dd><p>Unterstützt, aber standardmäßig deaktiviert.</p></dd><dt>LEGACY<span class="colon">:</span></dt><dd><p>Unterstützt für Rückwärtskompatibilität, aber nicht empfohlen.</p></dd><dt>RECOMMENDED<span class="colon">:</span></dt><dd><p>Empfohlen für den Einsatz.</p></dd></dl></div></ld-scrollable><ld-supplemental><p><strong>Anmerkung</strong></p><p>CBC-Modi sind anfällig für bestimmte Angriffe (z. B. Padding-Oracle-Angriffe) und werden insbesondere für Rückwärtskompatibilität unterstützt.</p><p><strong>Algorithmen unterstützt von älteren OpenSSH-Versionen</strong></p><ul class="simple"><li><p>blowfish-cbc , Blowfish in CBC mode</p></li><li><p>twofish256-cbc , Twofish in CBC mode,with a 256-bit key</p></li><li><p>serpent256-cbc   , Serpent in CBC mode, with a 256-bit key</p></li><li><p>arcfour          , the ARCFOUR stream cipher with a 128-bit key</p></li><li><p>idea-cbc         , IDEA in CBC mode</p></li><li><p>cast128-cbc      , CAST-128 in CBC mode</p></li></ul></ld-supplemental></ld-topic>
-<ld-topic id="secure-shell-ssh-risiken-durch-mangelnde-schlusselverwaltung"><h2>Secure Shell (SSH) - Risiken durch mangelnde Schlüsselverwaltung</h2><ul class="incremental-list simple"><li><p>Schlüssel werden nicht regelmäßig ausgetauscht</p></li><li><p>Schlüssel werden nicht gelöscht, wenn sie nicht mehr benötigt werden</p></li><li><p>viele (die meisten) Schlüssel werden nicht verwendet</p></li><li><p>Es ist oft nicht bekannt, wer Zugriff auf welche Schlüssel hat(te)</p></li><li><p>Es ist nicht bekannt, welche Schlüssel auf welche Systeme Zugriff haben</p></li><li><p>Malware kann SSH-Schlüssel stehlen</p></li><li><p>SSH Keys können ggf. privilegierten Zugriff gewähren</p></li><li><p>SSH Keys können benutzt werden, um Backdoors zu verstecken</p></li><li><p>Server keys erlauben ggf. Person-in-the-Middle-Angriffe</p></li></ul></ld-topic>
-<ld-topic id="ssh-tunneling"><h2>SSH Tunneling</h2><ul class="list-with-details"><li><p>ermöglicht die Übertragung beliebiger Netzwerkdaten über eine verschlüsselte SSH-Verbindung. z. B.</p><ul class="simple"><li><p>um ältere Anwendungen zu verschlüsseln.</p></li><li><p>um VPNs (Virtual Private Networks) zu implementieren.</p></li><li><p>um über Firewalls hinweg auf Intranetdienste zuzugreifen.</p></li></ul></li><li><p>ermöglicht auch Port-forwarding</p><p>(Lokale Ports werden auf entfernten Rechner weitergeleitet.)</p></li></ul><object class="light-image align-center" data="images/ssh/tunneling.svg" type="image/svg+xml" role="img" aria-label="SSH Protokoll"></object></ld-topic>
+<ld-topic id="ssh-unterstutzte-transport-verschlusselungsverfahren"><h2>SSH – <a class="reference external" href="https://www.openssh.org/specs.html">Unterstützte Transport-Verschlüsselungsverfahren</a></h2><p><strong>OpenSSH_10.2p1</strong></p><ld-scrollable><table class="sticky-header"><colgroup><col style="width: 25.0%"><col style="width: 25.0%"><col style="width: 50.0%"></colgroup><thead><tr><th class="head"><p>Cipher Name</p></th><th class="head"><p>Status</p></th><th class="head"><p>Beschreibung</p></th></tr></thead><tbody><tr><td><p>3des-cbc</p></td><td><p>DEPRECATED</p></td><td><p>three-key 3DES in CBC mode</p></td></tr><tr><td><p>aes256-cbc</p></td><td><p>LEGACY</p></td><td><p>AES in CBC mode, with a 256-bit key</p></td></tr><tr><td><p>aes192-cbc</p></td><td><p>LEGACY</p></td><td><p>AES with a 192-bit key</p></td></tr><tr><td><p>aes128-cbc</p></td><td><p>LEGACY</p></td><td><p>AES with a 128-bit key</p></td></tr><tr><td><p>aes128-ctr</p></td><td><p>RECOMMENDED</p></td><td><p>AES in CTR mode with a 128-bit key</p></td></tr><tr><td><p>aes192-ctr</p></td><td><p>RECOMMENDED</p></td><td><p>AES in CTR mode with a 192-bit key</p></td></tr><tr><td><p>aes256-ctr</p></td><td><p>RECOMMENDED</p></td><td><p>AES in CTR mode with a 256-bit key</p></td></tr><tr><td><p>aes128-gcm@<wbr>openssh.com</p></td><td><p>RECOMMENDED</p></td><td><p>AES in Galois/Counter Mode (GCM) with a 128-bit key</p></td></tr><tr><td><p>aes256-gcm@<wbr>openssh.com</p></td><td><p>RECOMMENDED</p></td><td><p>AES in Galois/Counter Mode (GCM) with a 256-bit key</p></td></tr><tr><td><p>chacha20-<wbr>poly1305@<wbr>openssh.com</p></td><td><p>RECOMMENDED</p></td><td><p>ChaCha20 stream cipher with Poly1305 MAC</p></td></tr></tbody></table><div class="legend"><dl class="field-list simple"><dt>DEPRECATED<span class="colon">:</span></dt><dd><p>Unterstützt, aber standardmäßig deaktiviert.</p></dd><dt>LEGACY<span class="colon">:</span></dt><dd><p>Unterstützt für Rückwärtskompatibilität, aber nicht empfohlen.</p></dd><dt>RECOMMENDED<span class="colon">:</span></dt><dd><p>Empfohlen für den Einsatz.</p></dd></dl></div></ld-scrollable><ld-supplemental><p><strong>Anmerkung</strong></p><p>CBC-Modi sind anfällig für bestimmte Angriffe (z. B. Padding-Oracle-Angriffe) und werden insbesondere für Rückwärtskompatibilität unterstützt.</p><p><strong>Algorithmen unterstützt von älteren OpenSSH-Versionen</strong></p><ul class="simple"><li><p>blowfish-cbc , Blowfish in CBC mode</p></li><li><p>twofish256-cbc , Twofish in CBC mode,with a 256-bit key</p></li><li><p>serpent256-cbc   , Serpent in CBC mode, with a 256-bit key</p></li><li><p>arcfour          , the ARCFOUR stream cipher with a 128-bit key</p></li><li><p>idea-cbc         , IDEA in CBC mode</p></li><li><p>cast128-cbc      , CAST-128 in CBC mode</p></li></ul></ld-supplemental></ld-topic>
+<ld-topic id="ssh-risiken-durch-mangelnde-schlusselverwaltung"><h2>SSH – Risiken durch mangelnde Schlüsselverwaltung</h2><ul class="incremental-list simple"><li><p>Schlüssel werden nicht regelmäßig ausgetauscht</p></li><li><p>Schlüssel werden nicht gelöscht, wenn sie nicht mehr benötigt werden</p></li><li><p>viele (die meisten) Schlüssel werden nicht verwendet</p></li><li><p>Es ist oft nicht bekannt, wer Zugriff auf welche Schlüssel hat(te)</p></li><li><p>Es ist nicht bekannt, welche Schlüssel auf welche Systeme Zugriff haben</p></li><li><p>Malware kann SSH-Schlüssel stehlen</p></li><li><p>SSH Keys können ggf. privilegierten Zugriff gewähren</p></li><li><p>SSH Keys können benutzt werden, um Backdoors zu verstecken</p></li><li><p>Server keys erlauben ggf. Person-in-the-Middle-Angriffe</p></li></ul></ld-topic>
+<ld-topic id="ssh-tunneling"><h2>SSH Tunneling</h2><ul class="list-with-details"><li><p>ermöglicht die Übertragung beliebiger Netzwerkdaten über eine verschlüsselte SSH-Verbindung. z. B.</p><ul class="simple"><li><p>um ältere Anwendungen zu verschlüsseln.</p></li><li><p>um VPNs (Virtual Private Networks) zu implementieren.</p></li><li><p>um über Firewalls hinweg auf Intranetdienste zuzugreifen.</p></li></ul></li><li><p>ermöglicht auch Port-forwarding</p><p>(Lokale Ports werden auf entfernten Rechner weitergeleitet.)</p></li></ul><div class="align-center" style="width: 60ch; height: 18ch;" aria-label="SSH-Tunneling über das Internet zu einem Anwendungsserver"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 24" font-size="1.4"
+     text-anchor="middle">
+    <!-- SSH-Tunneling: die Anwendung auf dem Client spricht mit dem lokalen
+         SSH-Client; die Daten laufen verschlüsselt durch das Internet zum
+         SSH-Server, der sie an den Anwendungsserver weiterleitet.
+         Tunnel: ld-success; Daten der Anwendung: ld-accent.
+         Symbole #net-…: shared/svgs/net-symbols.svg. -->
+
+    <!-- === Client: Anwendung über SSH-Client === -->
+    <rect class="ld-panel" x="1" y="1" width="15" height="22" rx="0.6"/>
+    <rect class="ld-box" x="2.5" y="2.5" width="12" height="3.2" rx="0.4"/>
+    <text class="ld-label" x="8.5" y="4.6">Anwendung</text>
+    <rect class="ld-box" x="2.5" y="6.3" width="12" height="3.2" rx="0.4"/>
+    <text class="ld-label" x="8.5" y="8.4">SSH</text>
+    <use href="#net-laptop" x="4.8" y="12.5"/>
+    <text class="ld-label" x="8.5" y="21.6" font-weight="bold">Client</text>
+
+    <!-- === Internet === -->
+    <use href="#net-cloud" transform="translate(32 8) scale(1.5)"
+         style="--net-cloud-stroke-width: 0.1;"/>
+    <text class="ld-label" x="31.5" y="12.4" font-size="1.2">Internet</text>
+
+    <!-- === Server === -->
+    <use href="#net-server" x="49" y="4.5"/>
+    <text class="ld-label" x="52" y="13.4">SSH-Server</text>
+    <use href="#net-server" class="ld-info" x="71" y="4.5"/>
+    <text class="ld-label ld-info" x="74" y="13.4">Anwendungs-<tspan x="74" dy="1.3">server</tspan></text>
+
+    <!-- Schritt 1: der SSH-Tunnel wird aufgebaut -->
+    <g class="incremental unroll-right ld-success">
+        <rect class="ld-cell ld-box" x="14.5" y="6.5" width="34.5" height="2.8" rx="1.4"/>
+        <text class="ld-label" x="31.75" y="5.8" font-weight="bold">SSH-Tunnel (verschlüsselt)</text>
+    </g>
+
+    <!-- Schritt 2: Daten der Anwendung laufen durch den Tunnel -->
+    <g class="incremental unroll-right ld-accent">
+        <path class="ld-connector" fill="none" d="M 14.5 4.1 H 16.2 V 7.9 H 48.79"/>
+        <line class="ld-connector" x1="55" y1="7.9" x2="70.79" y2="7.9"/>
+        <text class="ld-label" x="31.75" y="10.6" font-size="1.1">Daten der Anwendung</text>
+        <text class="ld-label" x="63" y="7.1" font-size="1.1">unverschlüsselt</text>
+    </g>
+</svg>
+</div></ld-topic>
 <ld-topic id="ssh-und-back-tunneling"><h2>SSH und „Back-tunneling“</h2><ul class="incremental-list simple"><li><p>Der Angreifer richtet einen Server außerhalb des Zielnetzwerks ein</p></li><li><p>Nach Infiltration des Zielsystems verbindet der Angreifer sich von innen mit dem externen SSH-Server.</p></li><li><p>Diese SSH-Verbindung wird so eingerichtet, dass eine TCP-Port-Weiterleitung von einem Port auf dem externen Server zu einem SSH-Port auf einem Server im internen Netzwerk möglich ist.</p></li><li><p>Die meisten Firewalls bieten wenig bis gar keinen Schutz dagegen.</p></li></ul><ld-supplemental><p>Es ist in diesem Fall besonders interessant für den Angreifer den SSH Server zum Beispiel bei einem Cloud-Anbieter zu betreiben, welcher von dem Unternehmen  standardmäßig verwendet wird (am Anfang steht immer die Aufklärung!). In diesem Fall wird die Firewall keine ausgehenden SSH-Verbindungen dorthin blockieren.</p></ld-supplemental></ld-topic>
 <ld-topic id="schwachstellen-in-ssh"><h2>Schwachstellen in SSH</h2><blockquote class="epigraph"><p><strong>Nearly 11 million SSH servers vulnerable to new Terrapin attacks</strong></p><p>[...]
 It [The Terrapin attack] manipulates sequence numbers during the handshake process to compromise the integrity of the SSH channel, particularly when specific encryption modes like ChaCha20-Poly1305 or CBC with Encrypt-then-MAC are used.
